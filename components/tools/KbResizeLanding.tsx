@@ -97,6 +97,38 @@ export function KbResizeLanding({ kb }: { kb: number }) {
         </p>
       </section>
 
+      <section className="mt-8 space-y-3">
+        <h2 className="text-lg font-semibold">Where a {kb} KB photo is needed</h2>
+        <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
+          <li>
+            <strong className="text-foreground">
+              Indian exam &amp; government forms
+            </strong>{" "}
+            (SSC, UPSC, state PSCs, university portals) commonly ask for photos
+            around 20–50 KB and signatures around 10–20 KB.
+          </li>
+          <li>
+            <strong className="text-foreground">Passport &amp; visa uploads</strong>{" "}
+            each set their own cap — use the{" "}
+            <Link href="/passport-photo/" className="text-brand hover:underline">
+              passport photo maker
+            </Link>{" "}
+            or your{" "}
+            <Link href="/india/" className="text-brand hover:underline">
+              country&apos;s photo spec
+            </Link>{" "}
+            to get the exact size and background first, then compress here.
+          </li>
+          <li>
+            <strong className="text-foreground">Job &amp; web forms</strong>{" "}
+            worldwide often limit uploads to 50–200 KB.
+          </li>
+        </ul>
+        <p className="text-xs text-muted-foreground">
+          Always check the exact limit shown on your form — then set it above.
+        </p>
+      </section>
+
       <section className="mt-8">
         <h2 className="mb-3 text-sm font-semibold">Need a different size?</h2>
         <div className="flex flex-wrap gap-2">

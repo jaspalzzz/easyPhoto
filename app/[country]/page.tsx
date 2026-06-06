@@ -16,6 +16,7 @@ import {
   softwareApplicationSchema,
 } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
+import { kbPath } from "@/lib/kbTargets";
 
 // Static export: one page per launch country.
 export function generateStaticParams() {
@@ -182,6 +183,37 @@ export default async function CountryPage({
               ? "Confirmed against the official government source."
               : "Sourced from reputable guides — re-check the official portal before submitting."}
           </p>
+        </div>
+      </section>
+
+      {/* File-size help — interlinks to the KB resize tools */}
+      <section className="rounded-lg border bg-muted/30 p-5">
+        <h2 className="text-base font-semibold">
+          Meeting the {spec.label} upload file-size limit
+        </h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {spec.digital.fileSizeKb
+            ? `Online ${spec.label} uploads accept roughly ${spec.digital.fileSizeKb.min}–${spec.digital.fileSizeKb.max} KB. `
+            : ""}
+          If your portal or form needs a smaller file, compress your finished
+          photo to an exact size — your image stays in your browser.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {[20, 50, 100].map((kb) => (
+            <Link
+              key={kb}
+              href={kbPath(kb)}
+              className="rounded-full border bg-background px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            >
+              Resize to {kb} KB
+            </Link>
+          ))}
+          <Link
+            href="/tools/resize-kb/"
+            className="rounded-full border bg-background px-3 py-1.5 text-sm font-medium text-brand hover:bg-accent"
+          >
+            Custom size
+          </Link>
         </div>
       </section>
     </div>
