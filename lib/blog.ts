@@ -38,6 +38,50 @@ export const BLOG_POSTS: BlogPost[] = [
       "Most rejections come down to a handful of fixable mistakes. Here's the list, and how to avoid every one.",
     readMins: 6,
   },
+  {
+    slug: "passport-photo-size-by-country",
+    title: "Passport Photo Size by Country: US, India, UK, Canada & More",
+    description:
+      "Passport photo dimensions and head-size rules for the US, India, UK, Canada, Australia and Schengen — what differs, why it matters, and how to get the exact size.",
+    date: "June 5, 2026",
+    dateISO: "2026-06-05",
+    excerpt:
+      "2×2 inch, 35×45mm, 50×70mm — passport photo size isn't universal. Here's every major country's spec and how to hit it exactly.",
+    readMins: 6,
+  },
+  {
+    slug: "how-to-reduce-passport-photo-size-for-online-forms",
+    title: "How to Reduce Passport Photo Size for Online Forms (10–200 KB)",
+    description:
+      "Online passport, visa and exam portals cap the file size — often 10–100 KB. Here's how to compress your photo to an exact KB target without making it blurry.",
+    date: "June 4, 2026",
+    dateISO: "2026-06-04",
+    excerpt:
+      "Portals reject photos that are too large. Here's how to hit an exact KB limit — 20, 50, 100 KB — while keeping your photo sharp.",
+    readMins: 5,
+  },
+  {
+    slug: "baby-and-infant-passport-photo-guide",
+    title: "How to Take a Baby or Infant Passport Photo at Home",
+    description:
+      "Babies can't pose, but their passport photo still has to comply. A practical guide to photographing an infant — eyes, background, no hands or toys — and getting it accepted.",
+    date: "June 3, 2026",
+    dateISO: "2026-06-03",
+    excerpt:
+      "No studio, no posing, no tears. How to take a compliant baby passport photo on a plain sheet with your phone.",
+    readMins: 5,
+  },
+  {
+    slug: "passport-photo-background-color",
+    title: "Passport Photo Background Color: White, Grey or Cream?",
+    description:
+      "White is not universal. The UK wants light grey or cream, Schengen is wary of pure white, the US wants plain white. The correct background color per country, and how to set it.",
+    date: "June 2, 2026",
+    dateISO: "2026-06-02",
+    excerpt:
+      "Using the wrong background shade is a top reason photos bounce. Here's the right color for each country — and how to apply it.",
+    readMins: 5,
+  },
 ];
 
 export function getPost(slug: string): BlogPost | undefined {
