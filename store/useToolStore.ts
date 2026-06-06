@@ -78,7 +78,11 @@ interface ToolState {
   print: Preset | null;
   digital: Preset | null;
 
+  /** A photo chosen in the hero, to be processed once the country page mounts. */
+  pendingFile: File | null;
+
   setSpec: (spec: CountrySpec) => void;
+  setPendingFile: (file: File | null) => void;
   processFile: (file: File) => Promise<void>;
   applyManualCrop: (cropRect: CropRect) => Promise<void>;
   recomputeAuto: () => Promise<void>;
@@ -101,6 +105,9 @@ export const useToolStore = create<ToolState>((set, get) => ({
   segmentationFailed: false,
   print: null,
   digital: null,
+  pendingFile: null,
+
+  setPendingFile: (file) => set({ pendingFile: file }),
 
   setSpec: (spec) => {
     const prev = get();

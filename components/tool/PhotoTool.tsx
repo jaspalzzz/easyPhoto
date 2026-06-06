@@ -55,6 +55,13 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
 
   React.useEffect(() => {
     setSpec(spec);
+    // If the user picked a photo in the hero, process it now (one-click start).
+    const { pendingFile, setPendingFile, processFile: run } =
+      useToolStore.getState();
+    if (pendingFile) {
+      setPendingFile(null);
+      void run(pendingFile);
+    }
     return () => reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spec.id]);

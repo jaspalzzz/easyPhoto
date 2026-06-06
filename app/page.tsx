@@ -7,11 +7,12 @@ import {
 } from "@/lib/countrySpecs";
 import { POPULAR_TOOLS } from "@/lib/toolsCatalog";
 import { Card, CardContent } from "@/components/ui/card";
-import { buttonVariants } from "@/components/ui/button";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
 import { HowItWorks } from "@/components/site/HowItWorks";
 import { Faq } from "@/components/site/Faq";
 import { ToolIcon } from "@/components/site/ToolIcon";
+import { HeroStarter } from "@/components/site/HeroStarter";
+import { HeroVisual } from "@/components/site/HeroVisual";
 
 const FLAGS: Record<string, string> = {
   us: "🇺🇸",
@@ -27,36 +28,35 @@ export default function HomePage() {
       {/* Hero */}
       <section className="hero-surface relative overflow-hidden border-b">
         <div className="surface-grid pointer-events-none absolute inset-0" />
-        <div className="container relative py-20 text-center sm:py-28">
-          <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-            100% in-browser · your photo never leaves your device
-          </span>
-          <h1 className="mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-            Compliant passport &amp; visa photos,{" "}
-            <span className="text-brand">made in your browser</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-pretty text-lg text-muted-foreground">
-            Upload a photo and we auto-crop it to your country&apos;s exact
-            head-size and background rules, then check it for compliance. Free,
-            no watermark, no upload.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="#countries"
-              className={buttonVariants({ size: "lg", variant: "cta" })}
-            >
-              Make my passport photo <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/tools/"
-              className={buttonVariants({ size: "lg", variant: "outline" })}
-            >
-              Browse all tools
-            </Link>
+        <div className="container relative grid items-center gap-10 py-14 lg:grid-cols-2 lg:gap-12 lg:py-20">
+          {/* Left: message + in-hero starter */}
+          <div className="text-center lg:text-left">
+            <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+              100% in-browser · your photo never leaves your device
+            </span>
+            <h1 className="mx-auto mt-5 max-w-xl text-balance text-4xl font-bold tracking-tight sm:text-5xl lg:mx-0">
+              Compliant passport &amp; visa photos,{" "}
+              <span className="text-brand">made in your browser</span>
+            </h1>
+            <p className="mx-auto mt-4 max-w-lg text-pretty text-lg text-muted-foreground lg:mx-0">
+              Pick your country, drop a photo — we auto-crop to the exact
+              head-size and background rules and check it for compliance. Free,
+              no watermark, no upload.
+            </p>
+
+            <div className="mt-7">
+              <HeroStarter />
+            </div>
+
+            <div className="mt-6">
+              <TrustPills />
+            </div>
           </div>
-          <div className="mt-10">
-            <TrustPills />
+
+          {/* Right: animated before → after visual */}
+          <div className="hidden md:block">
+            <HeroVisual />
           </div>
         </div>
       </section>

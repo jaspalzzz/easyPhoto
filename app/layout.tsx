@@ -4,6 +4,7 @@ import "./globals.css";
 import { Footer } from "@/components/site/Footer";
 import { Wordmark } from "@/components/site/Wordmark";
 import { LogoMark } from "@/components/site/LogoMark";
+import { MainNav } from "@/components/site/MainNav";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -67,20 +68,7 @@ export default function RootLayout({
               <LogoMark className="h-10 w-10" />
               <Wordmark className="text-xl" />
             </Link>
-            <nav className="flex items-center gap-1 text-sm font-medium">
-              <Link
-                href="/"
-                className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-              >
-                Passport
-              </Link>
-              <Link
-                href="/tools/"
-                className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-              >
-                Tools
-              </Link>
-            </nav>
+            <MainNav />
           </div>
         </header>
 
