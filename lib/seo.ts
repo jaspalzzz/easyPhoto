@@ -17,8 +17,10 @@ export function absoluteUrl(path = "/"): string {
 }
 
 export interface PageMetaInput {
-  /** Page title (the layout template appends "— easyPhoto"). */
+  /** Page title. By default the layout template appends "— easyPhoto". */
   title: string;
+  /** Use the title verbatim (no brand suffix) — for precise SERP control. */
+  titleAbsolute?: boolean;
   description: string;
   /** Route path WITH trailing slash, e.g. "/tools/resize-kb/". */
   path: string;
@@ -35,6 +37,7 @@ export interface PageMetaInput {
  */
 export function pageMetadata({
   title,
+  titleAbsolute,
   description,
   path,
   image = "/og.png",
@@ -45,7 +48,7 @@ export function pageMetadata({
   const img = absoluteUrl(image);
 
   return {
-    title,
+    title: titleAbsolute ? { absolute: title } : title,
     description,
     alternates: { canonical: url },
     ...(noIndex ? { robots: { index: false, follow: false } } : {}),

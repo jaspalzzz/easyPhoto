@@ -6,10 +6,11 @@ import { getTool } from "@/lib/toolsCatalog";
 const tool = getTool("signature-resize")!;
 
 export const metadata = pageMetadata({
-  title: "Signature Resize — Exact Width & Height",
+  title: "Signature Resize Tool – Resize Signature Online Free",
+  titleAbsolute: true,
   description:
-    "Resize a signature image to exact pixel dimensions for forms and uploads, " +
-    "preserving transparency. High-quality scaling, fully in your browser.",
+    "Resize your signature to exact pixels or a KB limit for online forms " +
+    "(UPSC, SSC, bank, visa). Free, keeps transparency, processed in your browser.",
   path: `/tools/${tool.slug}/`,
 });
 

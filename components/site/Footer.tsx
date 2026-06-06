@@ -33,6 +33,22 @@ export function Footer() {
           <div className="space-y-3">
             <h3 className="text-sm font-semibold">Passport &amp; visa</h3>
             <ul className="space-y-2 text-sm">
+              <li>
+                <Link
+                  href="/passport-photo/"
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  Passport photo maker
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/visa-photo/"
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  Visa photo maker
+                </Link>
+              </li>
               {LAUNCH_ORDER.map((id) => (
                 <li key={id}>
                   <Link

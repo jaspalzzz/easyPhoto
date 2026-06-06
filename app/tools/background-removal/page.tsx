@@ -6,10 +6,11 @@ import { getTool } from "@/lib/toolsCatalog";
 const tool = getTool("background-removal")!;
 
 export const metadata = pageMetadata({
-  title: "Background Removal — Free Transparent PNG Maker",
+  title: "Free Background Remover – Transparent PNG in Seconds",
+  titleAbsolute: true,
   description:
-    "Remove the background from any photo and download a transparent PNG. " +
-    "Runs an AI model fully in your browser — your image is never uploaded.",
+    "Remove image backgrounds online free and download a transparent PNG. " +
+    "AI-powered, runs in your browser — no upload, no watermark, no sign-up.",
   path: `/tools/${tool.slug}/`,
 });
 

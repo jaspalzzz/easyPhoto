@@ -9,8 +9,8 @@ import { compressToCap } from "@/lib/compress";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 
-function Body({ source }: { source: ToolSource }) {
-  const [targetKb, setTargetKb] = React.useState(200);
+function Body({ source, defaultKb }: { source: ToolSource; defaultKb: number }) {
+  const [targetKb, setTargetKb] = React.useState(defaultKb);
   const [busy, setBusy] = React.useState(false);
   const [result, setResult] = React.useState<{
     url: string;
@@ -107,6 +107,10 @@ function Body({ source }: { source: ToolSource }) {
   );
 }
 
-export function ResizeKbTool() {
-  return <ImageToolShell>{(source) => <Body source={source} />}</ImageToolShell>;
+export function ResizeKbTool({ defaultKb = 200 }: { defaultKb?: number }) {
+  return (
+    <ImageToolShell>
+      {(source) => <Body source={source} defaultKb={defaultKb} />}
+    </ImageToolShell>
+  );
 }

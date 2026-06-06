@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { LAUNCH_ORDER } from "@/lib/countrySpecs";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
+import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
 
 export const dynamic = "force-static";
 
@@ -10,11 +11,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes: string[] = [
     "/",
     "/tools/",
+    "/passport-photo/",
+    "/visa-photo/",
     "/privacy/",
     "/terms/",
     ...LAUNCH_ORDER.map((id) => `/${id}/`),
     ...CATEGORY_SLUGS.map((s) => `/tools/${s}/`),
     ...READY_TOOLS.map((t) => `/tools/${t.slug}/`),
+    ...KB_TARGETS.map((kb) => kbPath(kb)),
   ];
 
   return routes.map((path) => ({

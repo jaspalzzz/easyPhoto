@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { TOOLS_CATALOG, POPULAR_TOOLS } from "@/lib/toolsCatalog";
+import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToolIcon } from "@/components/site/ToolIcon";
 import { TrustPills } from "@/components/site/TrustStrip";
@@ -66,6 +67,30 @@ export default function ToolsHubPage() {
               </Card>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Resize to an exact file size (high-intent landing pages) */}
+      <section className="mt-12">
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          Resize to an exact file size
+        </h2>
+        <div className="flex flex-wrap gap-2">
+          {KB_TARGETS.map((kb) => (
+            <Link
+              key={kb}
+              href={kbPath(kb)}
+              className="rounded-full border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            >
+              Resize to {kb} KB
+            </Link>
+          ))}
+          <Link
+            href="/tools/resize-kb/"
+            className="rounded-full border px-4 py-2 text-sm font-medium text-brand hover:bg-accent"
+          >
+            Custom size
+          </Link>
         </div>
       </section>
 

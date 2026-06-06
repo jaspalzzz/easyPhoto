@@ -6,10 +6,11 @@ import { getTool } from "@/lib/toolsCatalog";
 const tool = getTool("jpg-to-pdf")!;
 
 export const metadata = pageMetadata({
-  title: "JPG to PDF — Combine Images into a PDF (Free, Private)",
+  title: "JPG to PDF Converter – Free, Private, In Your Browser",
+  titleAbsolute: true,
   description:
-    "Combine JPG or PNG images into a single PDF, one image per page, in your " +
-    "browser. Reorder and remove pages. Nothing is uploaded to any server.",
+    "Convert JPG or PNG images to PDF online free. Combine multiple photos into " +
+    "one PDF, reorder pages — no upload, no watermark, all in your browser.",
   path: `/tools/${tool.slug}/`,
 });
 
