@@ -111,7 +111,7 @@ export default function Page() {
       <section className="mt-8">
         <h2 className="mb-3 text-sm font-semibold">Related tools</h2>
         <div className="flex flex-wrap gap-2">
-          <Link href="/tools/resize-image-to-20kb/" className="rounded-full border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground">
+          <Link href="/photo-resize-to-20kb/" className="rounded-full border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground">
             Resize photo to 20 KB
           </Link>
           <Link href="/tools/signature-resize/" className="rounded-full border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground">

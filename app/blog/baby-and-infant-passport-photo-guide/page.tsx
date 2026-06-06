@@ -66,8 +66,8 @@ export default function Page() {
         <Link href="/passport-photo/">passport photo maker</Link>, choose your
         country, and it crops to the correct head size and sets the right
         background — see the exact rules on your country page, such as{" "}
-        <Link href="/us/">US</Link>, <Link href="/india/">India</Link> or{" "}
-        <Link href="/uk/">UK</Link>. If a stray shadow or off-white sheet shows,
+        <Link href="/us-passport-photo-maker/">US</Link>, <Link href="/india-passport-photo-maker/">India</Link> or{" "}
+        <Link href="/uk-passport-photo-maker/">UK</Link>. If a stray shadow or off-white sheet shows,
         the <Link href="/tools/white-background/">white background tool</Link>{" "}
         cleans it up.
       </p>
@@ -75,7 +75,7 @@ export default function Page() {
       <h2>Then size it for the portal</h2>
       <p>
         For online applications, compress the final image to the upload limit
-        with <Link href="/tools/resize-image-to-50kb/">resize to 50 KB</Link> or
+        with <Link href="/photo-resize-to-50kb/">resize to 50 KB</Link> or
         a <Link href="/tools/resize-kb/">custom target</Link>. As always, the
         photo stays on your device.
       </p>

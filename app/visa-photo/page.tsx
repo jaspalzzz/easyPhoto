@@ -7,7 +7,7 @@ export const metadata = pageMetadata({
   titleAbsolute: true,
   description:
     "Create a compliant visa photo online free. Exact dimensions & background " +
-    "for Schengen, US (DS-160), UK, Canada & Australia visas. In-browser, no upload.",
+    "for US (DS-160), Canada, UK & Schengen visas. In-browser, no upload.",
   path: "/visa-photo/",
 });
 
@@ -17,7 +17,7 @@ export default function Page() {
       kind="visa"
       path="/visa-photo/"
       h1="Free Visa Photo Maker"
-      intro="Create a compliant visa photo online for free. Pick the destination country, drop a photo, and we apply the exact size and background — for Schengen, US (DS-160), UK, Canada and Australia visas. Made in your browser; nothing is uploaded."
+      intro="Create a compliant visa photo online for free. Pick the destination country, drop a photo, and we apply the exact size and background — for US (DS-160), Canada, UK and Schengen visas. Made in your browser; nothing is uploaded."
       faqItems={VISA_FAQ}
     />
   );

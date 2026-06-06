@@ -6,6 +6,7 @@ import {
   effectivePrintMm,
 } from "@/lib/countrySpecs";
 import { POPULAR_TOOLS } from "@/lib/toolsCatalog";
+import { primaryMakerPath } from "@/lib/makerPages";
 import { Card, CardContent } from "@/components/ui/card";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
 import { HowItWorks, HOW_IT_WORKS_STEPS } from "@/components/site/HowItWorks";
@@ -80,7 +81,7 @@ export default function HomePage() {
             const spec = COUNTRY_SPECS[id];
             const mm = effectivePrintMm(spec);
             return (
-              <Link key={id} href={`/${id}/`} className="group">
+              <Link key={id} href={primaryMakerPath(id)} className="group">
                 <Card className="card-hover h-full">
                   <CardContent className="flex h-full flex-col gap-3 p-5">
                     <div className="flex items-center gap-3">

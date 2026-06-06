@@ -28,25 +28,25 @@ export default function Page() {
       <ul>
         <li>
           <strong>United States</strong> — plain white or off-white.{" "}
-          <Link href="/us/">US spec</Link>.
+          <Link href="/us-passport-photo-maker/">US spec</Link>.
         </li>
         <li>
-          <strong>India</strong> — plain white. <Link href="/india/">India spec</Link>.
+          <strong>India</strong> — plain white. <Link href="/india-passport-photo-maker/">India spec</Link>.
         </li>
         <li>
           <strong>United Kingdom</strong> — light grey or cream.{" "}
-          <em>Pure white is rejected.</em> <Link href="/uk/">UK spec</Link>.
+          <em>Pure white is rejected.</em> <Link href="/uk-passport-photo-maker/">UK spec</Link>.
         </li>
         <li>
-          <strong>Canada</strong> — plain white. <Link href="/canada/">Canada spec</Link>.
+          <strong>Canada</strong> — plain white. <Link href="/canada-passport-photo-maker/">Canada spec</Link>.
         </li>
         <li>
           <strong>Australia</strong> — plain white or light grey.{" "}
-          <Link href="/australia/">Australia spec</Link>.
+          <Link href="/australia-passport-photo-maker/">Australia spec</Link>.
         </li>
         <li>
           <strong>Schengen (EU)</strong> — light grey is safest; many consulates
-          are wary of pure white. <Link href="/schengen/">Schengen spec</Link>.
+          are wary of pure white. <Link href="/schengen-visa-photo-maker/">Schengen spec</Link>.
         </li>
       </ul>
 

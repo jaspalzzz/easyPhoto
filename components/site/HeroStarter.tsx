@@ -6,20 +6,50 @@ import { Uploader } from "@/components/tool/Uploader";
 import { Flag } from "@/components/site/Flag";
 import { useToolStore } from "@/store/useToolStore";
 import { COUNTRY_SPECS, LAUNCH_ORDER } from "@/lib/countrySpecs";
+import {
+  PASSPORT_COUNTRIES,
+  VISA_COUNTRIES,
+  passportPath,
+  visaPath,
+  primaryMakerPath,
+} from "@/lib/makerPages";
 import { cn } from "@/lib/utils";
 
 /**
  * In-hero quick start: pick a country, drop a photo — we stash the file and
- * route to that country page, which processes it immediately. Zero detours.
+ * route to that country's maker page, which processes it immediately.
+ *
+ * `kind` selects which maker pages to route to:
+ *  - "primary" (homepage): every launch country → its main page
+ *  - "passport" / "visa" (hub pages): only countries with that page type
  */
-export function HeroStarter() {
+export function HeroStarter({
+  kind = "primary",
+}: {
+  kind?: "primary" | "passport" | "visa";
+}) {
   const router = useRouter();
   const setPendingFile = useToolStore((s) => s.setPendingFile);
-  const [country, setCountry] = React.useState(LAUNCH_ORDER[0]);
+
+  const countries: readonly string[] =
+    kind === "passport"
+      ? PASSPORT_COUNTRIES
+      : kind === "visa"
+        ? VISA_COUNTRIES
+        : LAUNCH_ORDER;
+
+  const pathFor = (id: string) =>
+    kind === "passport"
+      ? passportPath(id)
+      : kind === "visa"
+        ? visaPath(id)
+        : primaryMakerPath(id);
+
+  const [country, setCountry] = React.useState(countries[0]);
 
   const start = (file: File) => {
     setPendingFile(file);
-    router.push(`/${country}/`);
+    router.push(pathFor(country));
   };
 
   return (
@@ -29,7 +59,7 @@ export function HeroStarter() {
           1. Choose country
         </span>
         <div className="mt-3 flex flex-wrap gap-2">
-          {LAUNCH_ORDER.map((id) => (
+          {countries.map((id) => (
             <button
               key={id}
               type="button"

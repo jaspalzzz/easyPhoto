@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
-import { LAUNCH_ORDER } from "@/lib/countrySpecs";
+import { MAKER_PAGES } from "@/lib/makerPages";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
 import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
 import { BLOG_POSTS } from "@/lib/blog";
@@ -20,7 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/contact/",
     "/privacy/",
     "/terms/",
-    ...LAUNCH_ORDER.map((id) => `/${id}/`),
+    ...MAKER_PAGES.map((m) => `/${m.slug}/`),
     ...CATEGORY_SLUGS.map((s) => `/tools/${s}/`),
     ...READY_TOOLS.map((t) => `/tools/${t.slug}/`),
     ...KB_TARGETS.map((kb) => kbPath(kb)),

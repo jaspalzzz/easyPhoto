@@ -73,5 +73,12 @@ only be performed by you, after deploy. Work top to bottom.
 
 ### Already done in code (no action needed)
 Sitemap · robots · canonicals · 10 structured-data types · **per-page OG images
-(every route)** · verification `<meta>` slot · country/visa/KB/blog pages ·
-15+ FAQ pages with FAQPage schema · internal-link mesh · privacy/terms/about/contact.
+(every route)** · verification `<meta>` slot · **keyword-rich programmatic URLs**
+(`/india-passport-photo-maker/`, `/us-visa-photo-maker/`, `/photo-resize-to-20kb/`
+…) · country/visa/KB/blog pages · 15+ FAQ pages with FAQPage schema ·
+internal-link mesh · privacy/terms/about/contact.
+
+> URL note: the old short routes (`/india/`, `/tools/resize-image-to-20kb/`) were
+> **replaced**, not duplicated — there is one canonical URL per page. Since the
+> site has never been deployed, there are no live URLs to 301. If you had already
+> indexed the old paths, add host redirects before launch.

@@ -29,33 +29,33 @@ export default function Page() {
           <strong>United States</strong> — 2×2 inches (51×51mm), square. Head
           (chin to crown) 1 to 1⅜ inches (25–35mm). Plain white or off-white
           background.{" "}
-          <Link href="/us/">US passport photo maker</Link>.
+          <Link href="/us-passport-photo-maker/">US passport photo maker</Link>.
         </li>
         <li>
           <strong>India</strong> — 35×45mm, with a notably large face filling
           roughly 70–80% of the frame. Plain white background; online portals
           often cap the file at 10–100&nbsp;KB.{" "}
-          <Link href="/india/">India passport photo maker</Link>.
+          <Link href="/india-passport-photo-maker/">India passport photo maker</Link>.
         </li>
         <li>
           <strong>United Kingdom</strong> — 35×45mm. Head 29–34mm. Crucially, the
           background must be light grey or cream — <em>not</em> white.{" "}
-          <Link href="/uk/">UK passport photo maker</Link>.
+          <Link href="/uk-passport-photo-maker/">UK passport photo maker</Link>.
         </li>
         <li>
           <strong>Canada</strong> — 50×70mm, larger than most. Head 31–36mm.
           White background.{" "}
-          <Link href="/canada/">Canada passport photo maker</Link>.
+          <Link href="/canada-passport-photo-maker/">Canada passport photo maker</Link>.
         </li>
         <li>
           <strong>Australia</strong> — 35×45mm. Head 32–36mm. Plain white or
           light grey.{" "}
-          <Link href="/australia/">Australia passport photo maker</Link>.
+          <Link href="/australia-passport-photo-maker/">Australia passport photo maker</Link>.
         </li>
         <li>
           <strong>Schengen (EU visa)</strong> — 35×45mm. Head 32–36mm. Light grey
           is safest; several consulates dislike pure white.{" "}
-          <Link href="/schengen/">Schengen visa photo maker</Link>.
+          <Link href="/schengen-visa-photo-maker/">Schengen visa photo maker</Link>.
         </li>
       </ul>
 
@@ -91,8 +91,8 @@ export default function Page() {
       <p>
         Once the dimensions are right, the last hurdle is the portal&apos;s file
         cap. Compress the finished image to the limit with{" "}
-        <Link href="/tools/resize-image-to-20kb/">resize to 20 KB</Link>,{" "}
-        <Link href="/tools/resize-image-to-50kb/">50 KB</Link> or a{" "}
+        <Link href="/photo-resize-to-20kb/">resize to 20 KB</Link>,{" "}
+        <Link href="/photo-resize-to-50kb/">50 KB</Link> or a{" "}
         <Link href="/tools/resize-kb/">custom KB target</Link> — all in your
         browser, with nothing uploaded.
       </p>

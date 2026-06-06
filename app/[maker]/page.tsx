@@ -3,12 +3,15 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import {
-  COUNTRY_SPECS,
-  LAUNCH_ORDER,
-  getSpec,
   effectivePrintMm,
   type CountrySpec,
 } from "@/lib/countrySpecs";
+import {
+  MAKER_PAGES,
+  getMakerPage,
+  makerSpec,
+  type MakerKind,
+} from "@/lib/makerPages";
 import { PhotoTool } from "@/components/tool/PhotoTool";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -20,26 +23,33 @@ import { kbPath } from "@/lib/kbTargets";
 import { Faq } from "@/components/site/Faq";
 import { countryFaqItems } from "@/lib/faqs";
 
-// Static export: one page per launch country.
+// Static export: one page per maker slug (passport + visa).
 export function generateStaticParams() {
-  return LAUNCH_ORDER.map((country) => ({ country }));
+  return MAKER_PAGES.map((m) => ({ maker: m.slug }));
 }
 
 export const dynamicParams = false;
 
+const HUB = {
+  passport: { name: "Passport Photo Maker", path: "/passport-photo/" },
+  visa: { name: "Visa Photo Maker", path: "/visa-photo/" },
+} as const;
+
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ country: string }>;
+  params: Promise<{ maker: string }>;
 }): Promise<Metadata> {
-  const { country } = await params;
-  const spec = getSpec(country);
-  if (!spec) return {};
+  const { maker } = await params;
+  const page = getMakerPage(maker);
+  const spec = makerSpec(maker);
+  if (!page || !spec) return {};
   const mm = effectivePrintMm(spec);
+  const doc = page.kind === "visa" ? "visa" : "passport";
   return pageMetadata({
-    title: `${spec.label} Passport Photo Size & Maker`,
-    description: `Exact ${spec.label} passport/visa photo requirements: ${mm.width}×${mm.height}mm, ${spec.background.description}. Make a compliant photo free, in your browser.`,
-    path: `/${country}/`,
+    title: `${spec.label} ${doc === "visa" ? "Visa" : "Passport"} Photo Size & Maker`,
+    description: `Exact ${spec.label} ${doc} photo requirements: ${mm.width}×${mm.height}mm, ${spec.background.description}. Make a compliant ${doc} photo free, in your browser — nothing is uploaded.`,
+    path: `/${maker}/`,
   });
 }
 
@@ -54,14 +64,13 @@ function SpecRow({ label, value }: { label: string; value: React.ReactNode }) {
 
 function SpecSheet({ spec }: { spec: CountrySpec }) {
   const d = spec.digital;
-  const px =
-    d.pxMin
-      ? `min ${d.pxMin.width}×${d.pxMin.height}px`
-      : d.px
-        ? `${d.px.width}×${d.px.height}px`
-        : d.pxApprox300dpi
-          ? `~${d.pxApprox300dpi.width}×${d.pxApprox300dpi.height}px @300dpi`
-          : "—";
+  const px = d.pxMin
+    ? `min ${d.pxMin.width}×${d.pxMin.height}px`
+    : d.px
+      ? `${d.px.width}×${d.px.height}px`
+      : d.pxApprox300dpi
+        ? `~${d.pxApprox300dpi.width}×${d.pxApprox300dpi.height}px @300dpi`
+        : "—";
   const kb = d.fileSizeKb
     ? `${d.fileSizeKb.min}–${d.fileSizeKb.max} KB`
     : "varies by portal";
@@ -105,21 +114,33 @@ function SpecSheet({ spec }: { spec: CountrySpec }) {
       <SpecRow label="Min DPI" value={spec.dpiMin} />
       <SpecRow
         label="Glasses"
-        value={typeof spec.glasses === "boolean" ? (spec.glasses ? "Allowed" : "Not allowed") : spec.glasses}
+        value={
+          typeof spec.glasses === "boolean"
+            ? spec.glasses
+              ? "Allowed"
+              : "Not allowed"
+            : spec.glasses
+        }
       />
       <SpecRow label="Expression" value={spec.smileAllowed} />
     </dl>
   );
 }
 
-export default async function CountryPage({
+export default async function MakerPage({
   params,
 }: {
-  params: Promise<{ country: string }>;
+  params: Promise<{ maker: string }>;
 }) {
-  const { country } = await params;
-  const spec = COUNTRY_SPECS[country];
-  if (!spec) notFound();
+  const { maker } = await params;
+  const page = getMakerPage(maker);
+  const spec = makerSpec(maker);
+  if (!page || !spec) notFound();
+  const kind: MakerKind = page.kind;
+  const doc = kind === "visa" ? "visa" : "passport";
+  const Doc = kind === "visa" ? "Visa" : "Passport";
+  const hub = HUB[kind];
+  const mm = effectivePrintMm(spec);
 
   return (
     <div className="container max-w-4xl space-y-8 py-10">
@@ -127,13 +148,13 @@ export default async function CountryPage({
         schema={[
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Passport Photo Maker", path: "/passport-photo/" },
-            { name: `${spec.label} passport photo`, path: `/${country}/` },
+            { name: hub.name, path: hub.path },
+            { name: `${spec.label} ${doc} photo`, path: `/${maker}/` },
           ]),
           softwareApplicationSchema({
-            name: `${spec.label} Passport Photo Maker`,
-            description: `Make a compliant ${spec.label} passport/visa photo in your browser — exact size, correct background, compliance-checked.`,
-            url: `/${country}/`,
+            name: `${spec.label} ${Doc} Photo Maker`,
+            description: `Make a compliant ${spec.label} ${doc} photo in your browser — exact size, correct background, compliance-checked.`,
+            url: `/${maker}/`,
           }),
         ]}
       />
@@ -142,8 +163,8 @@ export default async function CountryPage({
           Home
         </Link>
         <span aria-hidden>/</span>
-        <Link href="/passport-photo/" className="hover:text-foreground">
-          Passport Photo Maker
+        <Link href={hub.path} className="hover:text-foreground">
+          {hub.name}
         </Link>
         <span aria-hidden>/</span>
         <span className="text-foreground">{spec.label}</span>
@@ -151,11 +172,10 @@ export default async function CountryPage({
 
       <header className="space-y-2">
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          {spec.label} Passport &amp; Visa Photo Maker
+          {spec.label} {Doc} Photo Maker
         </h1>
         <p className="text-muted-foreground">
-          Make a compliant {spec.label} photo —{" "}
-          {effectivePrintMm(spec).width}×{effectivePrintMm(spec).height}mm,{" "}
+          Make a compliant {spec.label} {doc} photo — {mm.width}×{mm.height}mm,{" "}
           {spec.background.description}. Free and fully in your browser.
         </p>
         <p className="text-xs text-muted-foreground">
@@ -168,7 +188,7 @@ export default async function CountryPage({
       <section className="grid gap-8 md:grid-cols-2">
         <div className="space-y-3">
           <h2 className="text-lg font-semibold">
-            {spec.label} photo requirements
+            {spec.label} {doc} photo requirements
           </h2>
           <SpecSheet spec={spec} />
         </div>

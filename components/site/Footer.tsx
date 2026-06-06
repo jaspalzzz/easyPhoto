@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 import { COUNTRY_SPECS, LAUNCH_ORDER } from "@/lib/countrySpecs";
+import { PASSPORT_COUNTRIES, primaryMakerPath } from "@/lib/makerPages";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { Wordmark } from "@/components/site/Wordmark";
 import { LogoMark } from "@/components/site/LogoMark";
@@ -52,10 +53,14 @@ export function Footer() {
               {LAUNCH_ORDER.map((id) => (
                 <li key={id}>
                   <Link
-                    href={`/${id}/`}
+                    href={primaryMakerPath(id)}
                     className="text-muted-foreground hover:text-foreground"
                   >
-                    {COUNTRY_SPECS[id].label} photo
+                    {COUNTRY_SPECS[id].label}{" "}
+                    {(PASSPORT_COUNTRIES as readonly string[]).includes(id)
+                      ? "passport"
+                      : "visa"}{" "}
+                    photo
                   </Link>
                 </li>
               ))}

@@ -119,7 +119,10 @@ export function KbResizeLanding({ kb }: { kb: number }) {
               passport photo maker
             </Link>{" "}
             or your{" "}
-            <Link href="/india/" className="text-brand hover:underline">
+            <Link
+              href="/india-passport-photo-maker/"
+              className="text-brand hover:underline"
+            >
               country&apos;s photo spec
             </Link>{" "}
             to get the exact size and background first, then compress here.

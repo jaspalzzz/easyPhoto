@@ -4,10 +4,8 @@ import { KbResizeLanding } from "@/components/tools/KbResizeLanding";
 export const metadata = pageMetadata({
   title: "Resize Image to 10KB Online – Free Photo Compressor",
   titleAbsolute: true,
-  description:
-    "Compress a photo to 10 KB online for free. Ideal for exam & government " +
-    "form uploads. Keeps quality, no upload — runs in your browser.",
-  path: "/tools/resize-image-to-10kb/",
+  description: "Compress a photo to 10 KB online for free — the tightest exam/form limit. Keeps maximum quality, runs in your browser, nothing uploaded.",
+  path: "/photo-resize-to-10kb/",
 });
 
 export default function Page() {

@@ -64,17 +64,17 @@ export default function Page() {
       </p>
       <ul>
         <li>
-          <Link href="/tools/resize-image-to-10kb/">Resize to 10 KB</Link> — the
+          <Link href="/photo-resize-to-10kb/">Resize to 10 KB</Link> — the
           tightest exam-form limit.
         </li>
         <li>
-          <Link href="/tools/resize-image-to-20kb/">Resize to 20 KB</Link> and{" "}
-          <Link href="/tools/resize-image-to-50kb/">50 KB</Link> — the most
+          <Link href="/photo-resize-to-20kb/">Resize to 20 KB</Link> and{" "}
+          <Link href="/photo-resize-to-50kb/">50 KB</Link> — the most
           common photo caps.
         </li>
         <li>
-          <Link href="/tools/resize-image-to-100kb/">100 KB</Link> /{" "}
-          <Link href="/tools/resize-image-to-200kb/">200 KB</Link>, or a{" "}
+          <Link href="/photo-resize-to-100kb/">100 KB</Link> /{" "}
+          <Link href="/photo-resize-to-200kb/">200 KB</Link>, or a{" "}
           <Link href="/tools/resize-kb/">custom KB value</Link> for anything
           else.
         </li>
