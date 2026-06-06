@@ -32,7 +32,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
     sections: [
       {
         h: "India passport photo requirements",
-        p: "The Passport Seva specification is a 35×45mm photo on a plain white background, taken with a neutral expression and both eyes open. India expects a large face — roughly 70–80% of the frame from chin to crown — so a tightly framed photo is essential. Shadows on the face or the wall behind you are the most common reasons a photo is sent back.",
+        p: "The Passport Seva specification is a 35×45mm photo on a plain white background, taken with a neutral expression and both eyes open. India expects a large face — roughly 80–85% of the frame from chin to crown — so a tightly framed photo is essential. Shadows on the face or the wall behind you are the most common reasons a photo is sent back.",
       },
       {
         h: "Printing vs. online upload",
@@ -54,7 +54,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "How much of the frame should my face fill?",
-        a: "Indian passport photos expect a large face — about 70–80% of the frame from chin to crown. The maker crops to that proportion so the photo isn't rejected for a small head size.",
+        a: "Indian passport photos expect a large face — about 80–85% of the frame from chin to crown. The maker crops to that proportion so the photo isn't rejected for a small head size.",
       },
       {
         q: "Can I get my Indian passport photo under 20 KB for upload?",
@@ -355,6 +355,43 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       {
         q: "Is an Australian visa photo the same as a passport photo?",
         a: "The size and background are the same (35×45mm, white or light grey), but the visa photo needs no guarantor endorsement and is uploaded digitally rather than printed.",
+      },
+    ],
+  },
+
+  "india-visa-photo-maker": {
+    intro:
+      "Visiting India? The Indian e-Visa photo is different from a passport photo — it's a square image (350–1000px), JPEG, on a plain white or light background, uploaded to the e-Visa portal. This maker produces a compliant square photo you can then size to the file limit.",
+    sections: [
+      {
+        h: "Indian e-Visa photo requirements",
+        p: "The official e-Visa photo is square (height must equal width), between 350×350 and 1000×1000 pixels, saved as JPEG, on a plain light-coloured or white background with no border and no shadows. It must show your full face, front view, with eyes open and no spectacles, and your head centred showing the full head from the top of your hair to the bottom of your chin.",
+      },
+      {
+        h: "It's square — not the 35×45mm passport size",
+        p: "Don't confuse this with an Indian passport photo. The passport photo (for Indian citizens) is a 35×45mm rectangle; the e-Visa photo (for foreign visitors) is square. Using the wrong shape is an easy way to get an upload rejected, so this page is set specifically to the square e-Visa format.",
+      },
+      {
+        h: "File size and uploading",
+        p: "The e-Visa image must be at least 10 KB. The official upload PDF caps it at 300 KB while the live registration form allows up to 1 MB, so aim for 300 KB or under to satisfy both. Make the square photo here, then use the resize-to-KB tool if you need to bring the file under the limit.",
+      },
+    ],
+    faqs: [
+      {
+        q: "What size should an Indian e-Visa photo be?",
+        a: "A square JPEG, between 350×350 and 1000×1000 pixels, on a plain white or light background with no border. Height must equal width.",
+      },
+      {
+        q: "Is the Indian e-Visa photo the same as a passport photo?",
+        a: "No. The Indian passport photo is a 35×45mm rectangle (for citizens); the e-Visa photo (for foreign visitors) is square. They are different specifications — use the right one for your application.",
+      },
+      {
+        q: "What file size does the Indian e-Visa photo need?",
+        a: "At least 10 KB. The official PDF caps it at 300 KB and the live form allows up to 1 MB, so 300 KB or under is the safe target. Use the resize-to-KB tool to fit it.",
+      },
+      {
+        q: "Can I wear glasses in an Indian e-Visa photo?",
+        a: "No — spectacles are not allowed. The photo must show your full face front-on, eyes open, head centred, on a plain white or light background with no shadows or border.",
       },
     ],
   },

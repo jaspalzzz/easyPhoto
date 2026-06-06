@@ -7,21 +7,25 @@ import { Flag } from "@/components/site/Flag";
 import { useToolStore } from "@/store/useToolStore";
 import { COUNTRY_SPECS, LAUNCH_ORDER } from "@/lib/countrySpecs";
 import {
-  PASSPORT_COUNTRIES,
-  VISA_COUNTRIES,
-  passportPath,
-  visaPath,
+  makerPagesByKind,
+  makerSpec,
   primaryMakerPath,
 } from "@/lib/makerPages";
 import { cn } from "@/lib/utils";
 
+interface Opt {
+  flag: string;
+  label: string;
+  path: string;
+}
+
 /**
  * In-hero quick start: pick a country, drop a photo — we stash the file and
- * route to that country's maker page, which processes it immediately.
+ * route to that maker page, which processes it immediately.
  *
- * `kind` selects which maker pages to route to:
+ * `kind` selects which maker pages to offer:
  *  - "primary" (homepage): every launch country → its main page
- *  - "passport" / "visa" (hub pages): only countries with that page type
+ *  - "passport" / "visa" (hub pages): the maker pages of that kind
  */
 export function HeroStarter({
   kind = "primary",
@@ -31,25 +35,24 @@ export function HeroStarter({
   const router = useRouter();
   const setPendingFile = useToolStore((s) => s.setPendingFile);
 
-  const countries: readonly string[] =
-    kind === "passport"
-      ? PASSPORT_COUNTRIES
-      : kind === "visa"
-        ? VISA_COUNTRIES
-        : LAUNCH_ORDER;
+  const opts: Opt[] =
+    kind === "primary"
+      ? LAUNCH_ORDER.map((id) => ({
+          flag: id,
+          label: COUNTRY_SPECS[id].label,
+          path: primaryMakerPath(id),
+        }))
+      : makerPagesByKind(kind).map((m) => ({
+          flag: m.flag,
+          label: makerSpec(m.slug)!.label,
+          path: `/${m.slug}/`,
+        }));
 
-  const pathFor = (id: string) =>
-    kind === "passport"
-      ? passportPath(id)
-      : kind === "visa"
-        ? visaPath(id)
-        : primaryMakerPath(id);
-
-  const [country, setCountry] = React.useState(countries[0]);
+  const [sel, setSel] = React.useState(opts[0].path);
 
   const start = (file: File) => {
     setPendingFile(file);
-    router.push(pathFor(country));
+    router.push(sel);
   };
 
   return (
@@ -59,21 +62,21 @@ export function HeroStarter({
           1. Choose country
         </span>
         <div className="mt-3 flex flex-wrap gap-2">
-          {countries.map((id) => (
+          {opts.map((o) => (
             <button
-              key={id}
+              key={o.path}
               type="button"
-              onClick={() => setCountry(id)}
-              aria-pressed={country === id}
+              onClick={() => setSel(o.path)}
+              aria-pressed={sel === o.path}
               className={cn(
                 "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
-                country === id
+                sel === o.path
                   ? "border-brand bg-brand text-brand-foreground"
                   : "border-input bg-background hover:bg-accent"
               )}
             >
-              <Flag country={id} />
-              {COUNTRY_SPECS[id].label}
+              <Flag country={o.flag} />
+              {o.label}
             </button>
           ))}
         </div>

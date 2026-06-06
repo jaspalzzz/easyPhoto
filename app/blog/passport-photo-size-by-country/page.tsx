@@ -33,7 +33,7 @@ export default function Page() {
         </li>
         <li>
           <strong>India</strong> — 35×45mm, with a notably large face filling
-          roughly 70–80% of the frame. Plain white background; online portals
+          roughly 80–85% of the frame. Plain white background; online portals
           often cap the file at 10–100&nbsp;KB.{" "}
           <Link href="/india-passport-photo-maker/">India passport photo maker</Link>.
         </li>

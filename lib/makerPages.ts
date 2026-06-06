@@ -18,8 +18,10 @@ export type MakerKind = "passport" | "visa";
 export interface MakerPage {
   /** URL slug, e.g. "india-passport-photo-maker". */
   slug: string;
-  /** Country id key into COUNTRY_SPECS, e.g. "india". */
+  /** Spec id key into COUNTRY_SPECS, e.g. "india" (or "india-evisa"). */
   countryId: string;
+  /** Flag code for the <Flag> component (usually the country, e.g. "india"). */
+  flag: string;
   kind: MakerKind;
 }
 
@@ -57,17 +59,32 @@ export const MAKER_PAGES: MakerPage[] = [
   ...PASSPORT_COUNTRIES.map((id) => ({
     slug: passportSlug(id),
     countryId: id,
+    flag: id,
     kind: "passport" as const,
   })),
   ...VISA_COUNTRIES.map((id) => ({
     slug: visaSlug(id),
     countryId: id,
+    flag: id,
     kind: "visa" as const,
   })),
+  // Manual: the Indian e-Visa is a distinct SQUARE spec ("india-evisa"), so its
+  // slug can't be auto-generated from a country id without doubling "visa".
+  {
+    slug: "india-visa-photo-maker",
+    countryId: "india-evisa",
+    flag: "india",
+    kind: "visa" as const,
+  },
 ];
 
 export function getMakerPage(slug: string): MakerPage | undefined {
   return MAKER_PAGES.find((m) => m.slug === slug);
+}
+
+/** Maker pages of one kind (drives the hub grids + hero choosers). */
+export function makerPagesByKind(kind: MakerKind): MakerPage[] {
+  return MAKER_PAGES.filter((m) => m.kind === kind);
 }
 
 /** Resolve a maker slug to its country spec (or undefined). */

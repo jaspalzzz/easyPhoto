@@ -115,12 +115,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     label: "India",
     documents: ["Passport (Passport Seva)"], // OCI is a DIFFERENT spec — see notes
     printMm: { width: 35, height: 45 }, // 4.5x3.5cm — official Passport Seva
-    // ⚠ OFFICIAL Passport Seva photo-upload instructions state the FACE must
-    // cover 80-85% of the photo (not 70-80%). Our crop targets 70-80% / head
-    // 32-36mm — LIGHTER than official, so the face may come out too small.
-    // Retarget to 80-85% (head ~36-38mm) pending decision — see notes.
-    headHeightMm: { min: 32, max: 36 },
-    headPercentOfFrame: { min: 70, max: 80 },
+    // Official Passport Seva photo-upload instructions: the FACE must cover
+    // 80-85% of the photo. On a 45mm-high photo that is ~36-38mm chin-to-crown
+    // (midpoint 37mm ≈ 82%). Confirmed 2026-06; do not lower without re-checking.
+    headHeightMm: { min: 36, max: 38 },
+    headPercentOfFrame: { min: 80, max: 85 },
     background: {
       description: "Plain white (strict — Passport Seva checks luminance)",
       hex: "#FFFFFF",
@@ -149,19 +148,62 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "— the pasted print must be a real photo-paper lab print. " +
       "CONFIRMED online upload (official Passport Seva photo-upload PDF): image " +
       "must be EXACTLY 630x810 px and under 250 KB, JPEG. " +
-      "⚠ HEAD COVERAGE: official says the FACE fills 80-85% of the photo; our " +
-      "crop currently targets 70-80% (head 32-36mm) and may render the face too " +
-      "small — retarget pending. OCI card is a DIFFERENT spec: 51x51mm square, " +
-      "LIGHT (not white) background — handle separately.",
+      "Head coverage retargeted to the official 80-85% face (head 36-38mm). " +
+      "OCI card is a DIFFERENT spec: 51x51mm square, LIGHT (not white) " +
+      "background — handle separately. The Indian e-VISA (for foreigners) is " +
+      "also different: square 350-1000px, white — see the india-visa spec.",
     advisory:
       "For the printed paper form, use a professional photo-lab print — " +
       "home/computer printouts are not accepted. For online upload we target " +
       "~630×810px and keep the file under the strictest reported limit (250 KB); " +
       "please confirm the current limit on passportindia.gov.in.",
     source: "https://www.passportindia.gov.in/",
-    // size/bg/print-rule/online-cap now CONFIRMED official (2026-06); kept as
-    // "aggregator" only until the head-coverage % is retargeted to 80-85%.
-    verified: "aggregator",
+    // Verified 2026-06 vs official Passport Seva PDFs: 45x35mm, white bg,
+    // 630x810px / <250KB, computer-print rule, 80-85% face coverage — all match.
+    verified: "gov",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Indian e-VISA (for FOREIGN nationals visiting India) — a SQUARE digital
+  // photo, completely different from the 35x45mm Indian passport above.
+  "india-evisa": {
+    id: "india-evisa",
+    label: "India",
+    documents: ["Indian e-Visa (tourist / business / medical)"],
+    // Square, digital-first. We use a 51x51mm (2x2in) physical equivalent so the
+    // DPI→pixel math produces a compliant square; the binding rule is the pixels.
+    printMm: { width: 51, height: 51 },
+    // No official face-coverage % is published for the e-Visa; "full head, top of
+    // hair to bottom of chin, centred" — inferred moderate band, headPercent omitted.
+    headHeightMm: { min: 30, max: 36 },
+    background: {
+      description: "Plain light-coloured or white, no shadows, no border",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA", "#F0F0F0"],
+    },
+    digital: {
+      square: true,
+      pxMin: { width: 350, height: 350 },
+      pxMax: { width: 1000, height: 1000 },
+      fileSizeKb: { min: 10, max: 300 }, // PDF says ≤300KB; live form allows ≤1MB — 300 satisfies both
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "not allowed (no spectacles)",
+    smileAllowed: "neutral, eyes open",
+    notes:
+      "Indian e-Visa photo (foreign visitors), CONFIRMED on the official " +
+      "indianvisaonline.gov.in portal + VSS_IMAGE.pdf: SQUARE (height = width), " +
+      "JPEG, 350x350 to 1000x1000 px, plain light-coloured or white background, " +
+      "no border, no shadows, full face front view, eyes open, no spectacles, " +
+      "head centred showing the full head. File size 10 KB minimum; the PDF caps " +
+      "at 300 KB while the live form allows up to 1 MB — we target ≤300 KB to " +
+      "satisfy both. No official face-coverage percentage is published. This is " +
+      "DIFFERENT from the Indian passport (35x45mm) and the OCI card (square but " +
+      "light — not white — background).",
+    source: "https://indianvisaonline.gov.in/evisa/Registration",
+    // Verified 2026-06 vs indianvisaonline.gov.in + official VSS_IMAGE.pdf.
+    verified: "gov",
   },
 
   // ─────────────────────────────────────────────────────────────

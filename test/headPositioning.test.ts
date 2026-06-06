@@ -28,7 +28,7 @@ describe("targetHeadMm", () => {
   it("aims for the centre of each band", () => {
     expect(targetHeadMm(us)).toBe(30); // (25+35)/2
     expect(targetHeadMm(uk)).toBe(31.5); // (29+34)/2
-    expect(targetHeadMm(india)).toBe(34); // (32+36)/2 — ICAO-aligned
+    expect(targetHeadMm(india)).toBe(37); // (36+38)/2 — official 80-85% face coverage
   });
 });
 

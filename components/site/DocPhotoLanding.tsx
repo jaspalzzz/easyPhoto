@@ -1,10 +1,6 @@
 import Link from "next/link";
-import { COUNTRY_SPECS, effectivePrintMm } from "@/lib/countrySpecs";
-import {
-  PASSPORT_COUNTRIES,
-  VISA_COUNTRIES,
-  makerPath,
-} from "@/lib/makerPages";
+import { effectivePrintMm } from "@/lib/countrySpecs";
+import { makerPagesByKind, makerSpec } from "@/lib/makerPages";
 import { HeroStarter } from "@/components/site/HeroStarter";
 import { Flag } from "@/components/site/Flag";
 import { TrustStrip } from "@/components/site/TrustStrip";
@@ -31,7 +27,7 @@ export function DocPhotoLanding({
   path: string;
 }) {
   const doc = kind === "passport" ? "passport" : "visa";
-  const countries = kind === "passport" ? PASSPORT_COUNTRIES : VISA_COUNTRIES;
+  const pages = makerPagesByKind(kind);
 
   return (
     <div className="container max-w-4xl py-10">
@@ -72,16 +68,16 @@ export function DocPhotoLanding({
           {kind === "passport" ? "Passport" : "Visa"} photo size by country
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {countries.map((id) => {
-            const spec = COUNTRY_SPECS[id];
+          {pages.map((m) => {
+            const spec = makerSpec(m.slug)!;
             const mm = effectivePrintMm(spec);
             return (
               <Link
-                key={id}
-                href={makerPath(kind, id)}
+                key={m.slug}
+                href={`/${m.slug}/`}
                 className="flex items-center gap-3 rounded-lg border p-4 transition-colors hover:border-brand"
               >
-                <Flag country={id} className="h-5 w-7" />
+                <Flag country={m.flag} className="h-5 w-7" />
                 <span className="text-sm font-medium">{spec.label}</span>
                 <span className="ml-auto text-xs text-muted-foreground">
                   {mm.width}×{mm.height}mm
