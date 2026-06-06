@@ -4,6 +4,7 @@ import { relatedTools, getTool, categoryOf } from "@/lib/toolsCatalog";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToolIcon } from "@/components/site/ToolIcon";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { Faq, type FaqItem } from "@/components/site/Faq";
 import { breadcrumbSchema, softwareApplicationSchema } from "@/lib/schema";
 
 /** Shared chrome for a tool page: breadcrumb, heading, body, related links. */
@@ -13,6 +14,7 @@ export function ToolPage({
   slug,
   children,
   footnote,
+  faqItems,
 }: {
   title: string;
   blurb: string;
@@ -20,6 +22,8 @@ export function ToolPage({
   slug?: string;
   children: React.ReactNode;
   footnote?: string;
+  /** Optional on-page FAQ (also emits FAQPage JSON-LD). */
+  faqItems?: FaqItem[];
 }) {
   const related = slug ? relatedTools(slug) : [];
   const entry = slug ? getTool(slug) : undefined;
@@ -86,6 +90,12 @@ export function ToolPage({
               </Link>
             ))}
           </div>
+        </section>
+      )}
+
+      {faqItems && faqItems.length > 0 && (
+        <section className="mt-12">
+          <Faq items={faqItems} />
         </section>
       )}
     </div>

@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { PHOTO_RESIZE_FAQ } from "@/lib/faqs";
 
 const tool = getTool("resize-kb")!;
 
@@ -15,7 +16,12 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <ToolPage title="Resize Image by KB" slug={tool.slug} blurb={tool.blurb}>
+    <ToolPage
+      title="Resize Image by KB"
+      slug={tool.slug}
+      blurb={tool.blurb}
+      faqItems={PHOTO_RESIZE_FAQ}
+    >
       <ResizeKbTool />
     </ToolPage>
   );
