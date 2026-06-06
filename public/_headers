@@ -14,3 +14,10 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   Cross-Origin-Opener-Policy: same-origin
+
+# Per-page Open Graph cards are emitted as EXTENSIONLESS files (…/opengraph-image).
+# With nosniff above, the host must declare the type explicitly or social/SERP
+# previews break. Cloudflare Pages reads this _headers file and applies it.
+/*opengraph-image
+  Content-Type: image/png
+  Cache-Control: public, max-age=86400
