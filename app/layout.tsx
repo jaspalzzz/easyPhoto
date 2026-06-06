@@ -7,7 +7,12 @@ import { LogoMark } from "@/components/site/LogoMark";
 import { MainNav } from "@/components/site/MainNav";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
-import { SITE_URL, SITE_NAME } from "@/lib/site";
+import {
+  SITE_URL,
+  SITE_NAME,
+  GOOGLE_SITE_VERIFICATION,
+  BING_SITE_VERIFICATION,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -30,6 +35,20 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
+  // Rendered only when the env vars are set (see lib/site.ts) — paste your
+  // Search Console / Bing codes post-deploy to verify ownership.
+  ...(GOOGLE_SITE_VERIFICATION || BING_SITE_VERIFICATION
+    ? {
+        verification: {
+          ...(GOOGLE_SITE_VERIFICATION
+            ? { google: GOOGLE_SITE_VERIFICATION }
+            : {}),
+          ...(BING_SITE_VERIFICATION
+            ? { other: { "msvalidate.01": BING_SITE_VERIFICATION } }
+            : {}),
+        },
+      }
+    : {}),
   openGraph: {
     type: "website",
     url: SITE_URL,

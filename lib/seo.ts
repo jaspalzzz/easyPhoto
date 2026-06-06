@@ -24,7 +24,11 @@ export interface PageMetaInput {
   description: string;
   /** Route path WITH trailing slash, e.g. "/tools/resize-kb/". */
   path: string;
-  /** OG/Twitter image path (defaults to the site card). */
+  /**
+   * Explicit OG/Twitter image path. Leave unset to let a route's generated
+   * `opengraph-image.tsx` card apply (or fall back to the site-wide /og.png
+   * from the root layout). Only set this to force a specific static image.
+   */
   image?: string;
   /** Set true to keep a page out of the index (e.g. gated content). */
   noIndex?: boolean;
@@ -40,12 +44,14 @@ export function pageMetadata({
   titleAbsolute,
   description,
   path,
-  image = "/og.png",
+  image,
   noIndex,
   type = "website",
 }: PageMetaInput): Metadata {
   const url = absoluteUrl(path);
-  const img = absoluteUrl(image);
+  // Only pin images when explicitly given; otherwise the route's generated
+  // opengraph-image.tsx (or the layout default) supplies the card.
+  const img = image ? absoluteUrl(image) : undefined;
 
   return {
     title: titleAbsolute ? { absolute: title } : title,
@@ -58,13 +64,15 @@ export function pageMetadata({
       title,
       description,
       siteName: SITE_NAME,
-      images: [{ url: img, width: 1200, height: 630, alt: SITE_NAME }],
+      ...(img
+        ? { images: [{ url: img, width: 1200, height: 630, alt: SITE_NAME }] }
+        : {}),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [img],
+      ...(img ? { images: [img] } : {}),
     },
   };
 }
