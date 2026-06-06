@@ -8,15 +8,38 @@ import {
 import { POPULAR_TOOLS } from "@/lib/toolsCatalog";
 import { Card, CardContent } from "@/components/ui/card";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
-import { HowItWorks } from "@/components/site/HowItWorks";
+import { HowItWorks, HOW_IT_WORKS_STEPS } from "@/components/site/HowItWorks";
 import { Faq } from "@/components/site/Faq";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { howToSchema } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 import { ToolIcon } from "@/components/site/ToolIcon";
 import { HeroStarter } from "@/components/site/HeroStarter";
 import { Flag } from "@/components/site/Flag";
 
+export const metadata = pageMetadata({
+  title: "Free Passport & Visa Photo Maker",
+  description:
+    "Create a compliant passport or visa photo for free. Pick your country, " +
+    "drop a photo — we auto-crop to the exact head-size and background rules " +
+    "and check compliance. 100% in your browser; nothing is uploaded.",
+  path: "/",
+});
+
 export default function HomePage() {
   return (
     <>
+      <JsonLd
+        schema={howToSchema({
+          name: "How to make a compliant passport photo",
+          description:
+            "Turn any photo into a passport/visa-compliant photo in three steps.",
+          steps: HOW_IT_WORKS_STEPS.map((s) => ({
+            name: s.title,
+            text: s.body,
+          })),
+        })}
+      />
       {/* Hero — centered, tool-first */}
       <section className="hero-surface relative overflow-hidden border-b">
         <div className="surface-grid pointer-events-none absolute inset-0" />

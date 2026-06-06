@@ -4,6 +4,8 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getCategory, TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToolIcon } from "@/components/site/ToolIcon";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
 
 /** A category landing page (e.g. /tools/photo) listing that category's tools. */
 export function CategoryPage({ slug }: { slug: string }) {
@@ -14,6 +16,20 @@ export function CategoryPage({ slug }: { slug: string }) {
 
   return (
     <div className="container max-w-5xl py-12">
+      <JsonLd
+        schema={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Tools", path: "/tools/" },
+            { name: cat.group, path: `/tools/${cat.slug}/` },
+          ]),
+          collectionPageSchema({
+            name: `Free ${cat.group}`,
+            description: cat.tagline,
+            url: `/tools/${cat.slug}/`,
+          }),
+        ]}
+      />
       <Link
         href="/tools/"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
@@ -73,18 +89,6 @@ export function CategoryPage({ slug }: { slug: string }) {
           </Link>
         </div>
       </section>
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            name: `Free ${cat.group}`,
-            description: cat.tagline,
-          }).replace(/</g, "\\u003c"),
-        }}
-      />
     </div>
   );
 }

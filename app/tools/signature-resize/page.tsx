@@ -1,16 +1,17 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ResizeDimensionsTool } from "@/components/tools/ResizeDimensionsTool";
 import { getTool } from "@/lib/toolsCatalog";
 
 const tool = getTool("signature-resize")!;
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Signature Resize — Exact Width & Height",
   description:
     "Resize a signature image to exact pixel dimensions for forms and uploads, " +
     "preserving transparency. High-quality scaling, fully in your browser.",
-};
+  path: `/tools/${tool.slug}/`,
+});
 
 export default function Page() {
   return (

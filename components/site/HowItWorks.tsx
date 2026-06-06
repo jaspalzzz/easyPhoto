@@ -1,6 +1,6 @@
 import { Upload, Wand2, Download } from "lucide-react";
 
-const STEPS = [
+export const HOW_IT_WORKS_STEPS = [
   {
     icon: Upload,
     title: "Upload your photo",
@@ -28,7 +28,7 @@ export function HowItWorks() {
         </p>
       </div>
       <ol className="grid gap-6 md:grid-cols-3">
-        {STEPS.map((s, i) => (
+        {HOW_IT_WORKS_STEPS.map((s, i) => (
           <li key={s.title} className="relative rounded-xl border bg-card p-6">
             <span className="absolute right-5 top-5 text-3xl font-bold text-muted/60">
               {i + 1}

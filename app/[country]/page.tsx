@@ -10,6 +10,12 @@ import {
   type CountrySpec,
 } from "@/lib/countrySpecs";
 import { PhotoTool } from "@/components/tool/PhotoTool";
+import { JsonLd } from "@/components/seo/JsonLd";
+import {
+  breadcrumbSchema,
+  softwareApplicationSchema,
+} from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 
 // Static export: one page per launch country.
 export function generateStaticParams() {
@@ -27,11 +33,11 @@ export async function generateMetadata({
   const spec = getSpec(country);
   if (!spec) return {};
   const mm = effectivePrintMm(spec);
-  const title = `${spec.label} Passport Photo Size & Maker`;
-  return {
-    title,
+  return pageMetadata({
+    title: `${spec.label} Passport Photo Size & Maker`,
     description: `Exact ${spec.label} passport/visa photo requirements: ${mm.width}×${mm.height}mm, ${spec.background.description}. Make a compliant photo free, in your browser.`,
-  };
+    path: `/${country}/`,
+  });
 }
 
 function SpecRow({ label, value }: { label: string; value: React.ReactNode }) {
@@ -114,6 +120,19 @@ export default async function CountryPage({
 
   return (
     <div className="container max-w-4xl space-y-8 py-10">
+      <JsonLd
+        schema={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: `${spec.label} passport photo`, path: `/${country}/` },
+          ]),
+          softwareApplicationSchema({
+            name: `${spec.label} Passport Photo Maker`,
+            description: `Make a compliant ${spec.label} passport/visa photo in your browser — exact size, correct background, compliance-checked.`,
+            url: `/${country}/`,
+          }),
+        ]}
+      />
       <Link
         href="/"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"

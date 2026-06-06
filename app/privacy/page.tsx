@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Privacy Policy",
   description:
     "How easyPhoto handles your data: it doesn't. Photos and PDFs are " +
     "processed entirely in your browser and never uploaded.",
-};
+  path: "/privacy/",
+});
 
 export default function PrivacyPage() {
   return (

@@ -1,22 +1,31 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { TOOLS_CATALOG, POPULAR_TOOLS } from "@/lib/toolsCatalog";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToolIcon } from "@/components/site/ToolIcon";
 import { TrustPills } from "@/components/site/TrustStrip";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbSchema } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Free Image, PDF & Signature Tools — Private, In Your Browser",
   description:
     "Free online tools that run entirely in your browser: background remover, " +
     "compress image to KB, resize images, JPG to PDF, PDF to JPG, and signature " +
     "tools. Nothing is uploaded — everything stays on your device.",
-};
+  path: "/tools/",
+});
 
 export default function ToolsHubPage() {
   return (
     <div className="container max-w-5xl py-12">
+      <JsonLd
+        schema={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Tools", path: "/tools/" },
+        ])}
+      />
       <header className="space-y-4 text-center">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
           Free, private tools

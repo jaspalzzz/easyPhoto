@@ -142,6 +142,11 @@ export function getCategory(slug: string): ToolGroup | undefined {
   return TOOLS_CATALOG.find((g) => g.slug === slug);
 }
 
+/** The category group that contains a given tool slug. */
+export function categoryOf(toolSlug: string): ToolGroup | undefined {
+  return TOOLS_CATALOG.find((g) => g.tools.some((t) => t.slug === toolSlug));
+}
+
 /** Other ready tools from the same group — for on-page "related" cross-links. */
 export function relatedTools(slug: string, limit = 3): ToolEntry[] {
   const group = TOOLS_CATALOG.find((g) => g.tools.some((t) => t.slug === slug));

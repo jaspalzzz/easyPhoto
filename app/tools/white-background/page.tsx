@@ -1,16 +1,17 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { WhiteBackgroundTool } from "@/components/tools/WhiteBackgroundTool";
 import { getTool } from "@/lib/toolsCatalog";
 
 const tool = getTool("white-background")!;
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "White Background Generator — Replace Photo Background",
   description:
     "Swap any photo's background for clean white (or any solid colour) in your " +
     "browser. Great for profile photos and product shots. Nothing is uploaded.",
-};
+  path: `/tools/${tool.slug}/`,
+});
 
 export default function Page() {
   return (

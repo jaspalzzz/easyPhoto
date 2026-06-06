@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
-import { relatedTools, getTool } from "@/lib/toolsCatalog";
+import { relatedTools, getTool, categoryOf } from "@/lib/toolsCatalog";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToolIcon } from "@/components/site/ToolIcon";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbSchema, softwareApplicationSchema } from "@/lib/schema";
 
 /** Shared chrome for a tool page: breadcrumb, heading, body, related links. */
 export function ToolPage({
@@ -21,9 +23,30 @@ export function ToolPage({
 }) {
   const related = slug ? relatedTools(slug) : [];
   const entry = slug ? getTool(slug) : undefined;
+  const category = slug ? categoryOf(slug) : undefined;
 
   return (
     <div className="container max-w-3xl py-10">
+      {entry && (
+        <JsonLd
+          schema={[
+            breadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Tools", path: "/tools/" },
+              ...(category
+                ? [{ name: category.group, path: `/tools/${category.slug}/` }]
+                : []),
+              { name: title, path: `/tools/${slug}/` },
+            ]),
+            softwareApplicationSchema({
+              name: title,
+              description: blurb,
+              url: `/tools/${slug}/`,
+              category: "MultimediaApplication",
+            }),
+          ]}
+        />
+      )}
       <Link
         href="/tools/"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
@@ -64,23 +87,6 @@ export function ToolPage({
             ))}
           </div>
         </section>
-      )}
-
-      {entry && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              name: title,
-              description: blurb,
-              applicationCategory: "MultimediaApplication",
-              operatingSystem: "Any (web browser)",
-              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-            }).replace(/</g, "\\u003c"),
-          }}
-        />
       )}
     </div>
   );
