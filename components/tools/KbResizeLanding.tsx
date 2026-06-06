@@ -39,6 +39,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
           breadcrumbSchema([
             { name: "Home", path: "/" },
             { name: "Tools", path: "/tools/" },
+            { name: "Photo Tools", path: "/tools/photo/" },
             { name: `Resize to ${kb} KB`, path },
           ]),
           softwareApplicationSchema({

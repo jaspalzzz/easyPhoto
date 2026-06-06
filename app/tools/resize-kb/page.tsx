@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
 import { PHOTO_RESIZE_FAQ } from "@/lib/faqs";
 
 const tool = getTool("resize-kb")!;
@@ -23,6 +25,21 @@ export default function Page() {
       faqItems={PHOTO_RESIZE_FAQ}
     >
       <ResizeKbTool />
+
+      <section className="mt-8">
+        <h2 className="mb-3 text-sm font-semibold">Resize to a specific size</h2>
+        <div className="flex flex-wrap gap-2">
+          {KB_TARGETS.map((kb) => (
+            <Link
+              key={kb}
+              href={kbPath(kb)}
+              className="rounded-full border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            >
+              Resize to {kb} KB
+            </Link>
+          ))}
+        </div>
+      </section>
     </ToolPage>
   );
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, ArrowLeft } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import {
   COUNTRY_SPECS,
   LAUNCH_ORDER,
@@ -127,6 +127,7 @@ export default async function CountryPage({
         schema={[
           breadcrumbSchema([
             { name: "Home", path: "/" },
+            { name: "Passport Photo Maker", path: "/passport-photo/" },
             { name: `${spec.label} passport photo`, path: `/${country}/` },
           ]),
           softwareApplicationSchema({
@@ -136,12 +137,17 @@ export default async function CountryPage({
           }),
         ]}
       />
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeft className="h-4 w-4" /> All countries
-      </Link>
+      <nav className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+        <Link href="/" className="hover:text-foreground">
+          Home
+        </Link>
+        <span aria-hidden>/</span>
+        <Link href="/passport-photo/" className="hover:text-foreground">
+          Passport Photo Maker
+        </Link>
+        <span aria-hidden>/</span>
+        <span className="text-foreground">{spec.label}</span>
+      </nav>
 
       <header className="space-y-2">
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">

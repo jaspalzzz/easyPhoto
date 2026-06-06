@@ -146,6 +146,29 @@ export default function ToolsHubPage() {
           </div>
         </section>
       ))}
+
+      {/* Cross-silo bridge → passport & visa makers */}
+      <section className="mt-12 rounded-xl border bg-muted/30 p-6">
+        <h2 className="text-lg font-semibold">Passport &amp; visa photos</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Need a compliant ID photo? Use the country-aware makers — exact size,
+          correct background and a compliance check.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Link
+            href="/passport-photo/"
+            className="rounded-full border bg-background px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          >
+            Passport photo maker
+          </Link>
+          <Link
+            href="/visa-photo/"
+            className="rounded-full border bg-background px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          >
+            Visa photo maker
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
