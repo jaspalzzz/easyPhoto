@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 export const metadata: Metadata = {
   title: "Terms of Use",
   description:
-    "Terms of use for EasyPhoto — a free, in-browser passport/visa photo " +
+    "Terms of use for easyPhoto — a free, in-browser passport/visa photo " +
     "and image tool provided as-is. Always verify against official requirements.",
 };
 
@@ -26,7 +26,7 @@ export default function TermsPage() {
         </header>
 
         <Section title="The service">
-          EasyPhoto is a free tool that helps you prepare passport, visa, and
+          easyPhoto is a free tool that helps you prepare passport, visa, and
           general-purpose photos and documents in your browser. By using it, you
           agree to these terms.
         </Section>
@@ -48,7 +48,7 @@ export default function TermsPage() {
         </Section>
 
         <Section title="No affiliation">
-          EasyPhoto is an independent tool and is not affiliated with,
+          easyPhoto is an independent tool and is not affiliated with,
           endorsed by, or connected to any government, passport authority, or
           consulate.
         </Section>

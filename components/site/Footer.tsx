@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 import { COUNTRY_SPECS, LAUNCH_ORDER } from "@/lib/countrySpecs";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
+import { Wordmark } from "@/components/site/Wordmark";
 
 /**
  * Rich footer = a crawlable internal-link sitemap (every country + every tool).
@@ -12,8 +13,9 @@ export function Footer() {
     <footer className="mt-20 border-t bg-muted/30">
       <div className="container grid gap-10 py-12 lg:grid-cols-[1.6fr_3fr]">
         <div className="space-y-3">
-          <Link href="/" className="font-semibold tracking-tight">
-            📷 EasyPhoto
+          <Link href="/" className="inline-flex items-center gap-1.5">
+            <span>📷</span>
+            <Wordmark />
           </Link>
           <p className="max-w-xs text-sm text-muted-foreground">
             Free, private passport &amp; visa photos and everyday image tools —
@@ -68,7 +70,7 @@ export function Footer() {
       <div className="border-t">
         <div className="container flex flex-col gap-3 py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {2026} EasyPhoto. Processed in your browser — never uploaded.
+            © {2026} easyPhoto. Processed in your browser — never uploaded.
             Always verify against official requirements before submitting.
           </p>
           <nav className="flex items-center gap-4">

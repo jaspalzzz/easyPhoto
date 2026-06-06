@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How EasyPhoto handles your data: it doesn't. Photos and PDFs are " +
+    "How easyPhoto handles your data: it doesn't. Photos and PDFs are " +
     "processed entirely in your browser and never uploaded.",
 };
 
@@ -26,7 +26,7 @@ export default function PrivacyPage() {
         </header>
 
         <p className="text-muted-foreground">
-          EasyPhoto is built privacy-first. The short version:{" "}
+          easyPhoto is built privacy-first. The short version:{" "}
           <strong className="text-foreground">
             your photos and PDFs never leave your device.
           </strong>

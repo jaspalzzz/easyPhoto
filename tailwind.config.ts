@@ -50,6 +50,11 @@ const config: Config = {
           foreground: "hsl(var(--brand-foreground))",
           muted: "hsl(var(--brand-muted))",
         },
+        cta: {
+          DEFAULT: "hsl(var(--cta))",
+          foreground: "hsl(var(--cta-foreground))",
+          muted: "hsl(var(--cta-muted))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

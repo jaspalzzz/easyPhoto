@@ -10,4 +10,4 @@ export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://easyphoto.in"
 ).replace(/\/$/, "");
 
-export const SITE_NAME = "EasyPhoto";
+export const SITE_NAME = "easyPhoto";

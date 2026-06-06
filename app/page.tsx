@@ -42,7 +42,10 @@ export default function HomePage() {
             no watermark, no upload.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link href="#countries" className={buttonVariants({ size: "lg" })}>
+            <Link
+              href="#countries"
+              className={buttonVariants({ size: "lg", variant: "cta" })}
+            >
               Make my passport photo <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
@@ -106,7 +109,7 @@ export default function HomePage() {
         <div className="container py-16">
           <div className="mb-8 text-center">
             <h2 className="text-2xl font-bold tracking-tight">
-              Why people trust EasyPhoto
+              Why people trust easyPhoto
             </h2>
             <p className="mx-auto mt-1 max-w-2xl text-muted-foreground">
               No accounts, no uploads, no guesswork — just the official rules,

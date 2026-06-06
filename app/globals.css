@@ -27,6 +27,11 @@
     --brand: 221 83% 53%;
     --brand-foreground: 210 40% 98%;
     --brand-muted: 214 95% 93%;
+
+    /* Secondary accent — logo orange, used for primary CTAs + the "easy" mark. */
+    --cta: 26 92% 53%;
+    --cta-foreground: 0 0% 100%;
+    --cta-muted: 28 100% 94%;
   }
 }
 
