@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { LAUNCH_ORDER } from "@/lib/countrySpecs";
-import { READY_TOOLS } from "@/lib/toolsCatalog";
+import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
 
 export const dynamic = "force-static";
 
@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/privacy/",
     "/terms/",
     ...LAUNCH_ORDER.map((id) => `/${id}/`),
+    ...CATEGORY_SLUGS.map((s) => `/tools/${s}/`),
     ...READY_TOOLS.map((t) => `/tools/${t.slug}/`),
   ];
 

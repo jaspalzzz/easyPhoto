@@ -73,9 +73,13 @@ export function MainNav() {
             <div className="grid gap-x-6 gap-y-4 sm:grid-cols-3">
               {TOOLS_CATALOG.map((group) => (
                 <div key={group.group}>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <Link
+                    href={`/tools/${group.slug}/`}
+                    onClick={() => setOpen(false)}
+                    className="mb-2 block text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-brand"
+                  >
                     {group.group}
-                  </p>
+                  </Link>
                   <ul className="space-y-1">
                     {group.tools
                       .filter((t) => t.ready)

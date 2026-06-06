@@ -18,12 +18,19 @@ export interface ToolEntry {
 
 export interface ToolGroup {
   group: string;
+  /** URL slug for the category landing page: /tools/<slug>/ */
+  slug: string;
+  /** One-line description for the category page + menu. */
+  tagline: string;
   tools: ToolEntry[];
 }
 
 export const TOOLS_CATALOG: ToolGroup[] = [
   {
     group: "Photo Tools",
+    slug: "photo",
+    tagline:
+      "Free photo utilities — remove backgrounds, compress to a KB target, and resize, all in your browser.",
     tools: [
       {
         slug: "background-removal",
@@ -60,6 +67,9 @@ export const TOOLS_CATALOG: ToolGroup[] = [
   },
   {
     group: "PDF Tools",
+    slug: "pdf",
+    tagline:
+      "Free PDF utilities — combine images into a PDF and export PDF pages back to images, privately.",
     tools: [
       {
         slug: "jpg-to-pdf",
@@ -81,6 +91,9 @@ export const TOOLS_CATALOG: ToolGroup[] = [
   },
   {
     group: "Signature Tools",
+    slug: "signature",
+    tagline:
+      "Free signature utilities — crop, resize, remove the paper background and make a transparent PNG.",
     tools: [
       {
         slug: "transparent-signature",
@@ -121,6 +134,12 @@ export const POPULAR_TOOLS = ALL.filter((t) => t.popular && t.ready);
 
 export function getTool(slug: string): ToolEntry | undefined {
   return ALL.find((t) => t.slug === slug);
+}
+
+export const CATEGORY_SLUGS = TOOLS_CATALOG.map((g) => g.slug);
+
+export function getCategory(slug: string): ToolGroup | undefined {
+  return TOOLS_CATALOG.find((g) => g.slug === slug);
 }
 
 /** Other ready tools from the same group — for on-page "related" cross-links. */

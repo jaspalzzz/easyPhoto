@@ -63,7 +63,13 @@ export default function ToolsHubPage() {
       {/* Full catalog by category */}
       {TOOLS_CATALOG.map((group) => (
         <section key={group.group} className="mt-12">
-          <h2 className="mb-4 text-lg font-semibold">{group.group}</h2>
+          <Link
+            href={`/tools/${group.slug}/`}
+            className="mb-4 inline-flex items-center gap-1 text-lg font-semibold hover:text-brand"
+          >
+            {group.group}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
           <div className="grid gap-4 sm:grid-cols-2">
             {group.tools.map((tool) =>
               tool.ready ? (
