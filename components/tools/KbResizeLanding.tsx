@@ -105,7 +105,11 @@ export function KbResizeLanding({ kb }: { kb: number }) {
               Indian exam &amp; government forms
             </strong>{" "}
             (SSC, UPSC, state PSCs, university portals) commonly ask for photos
-            around 20–50 KB and signatures around 10–20 KB.
+            around 20–50 KB and{" "}
+            <Link href="/signature-resize-to-20kb/" className="text-brand hover:underline">
+              signatures around 10–20 KB
+            </Link>
+            .
           </li>
           <li>
             <strong className="text-foreground">Passport &amp; visa uploads</strong>{" "}

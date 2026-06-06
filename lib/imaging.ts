@@ -57,6 +57,34 @@ export async function picaResizeTo(
   return dest;
 }
 
+/**
+ * Compress a TRANSPARENT canvas to a PNG under `maxKb`. PNG has no quality
+ * knob, so we shrink dimensions (preserving the alpha channel) until it fits —
+ * the right approach for signatures, which must keep a transparent background.
+ */
+export async function pngUnderKb(
+  source: HTMLCanvasElement,
+  maxKb: number,
+  minScale = 0.2
+): Promise<{ canvas: HTMLCanvasElement; blob: Blob; bytes: number; scale: number; underCap: boolean }> {
+  const maxBytes = maxKb * 1024;
+  let scale = 1;
+  let smallest: { canvas: HTMLCanvasElement; blob: Blob; bytes: number; scale: number } | null = null;
+
+  while (scale >= minScale) {
+    const w = Math.max(1, Math.round(source.width * scale));
+    const h = Math.max(1, Math.round(source.height * scale));
+    const c = scale === 1 ? source : imageToCanvas(source, w, h);
+    const blob = await canvasToBlob(c, "image/png");
+    if (!smallest || blob.size < smallest.bytes)
+      smallest = { canvas: c, blob, bytes: blob.size, scale };
+    if (blob.size <= maxBytes)
+      return { canvas: c, blob, bytes: blob.size, scale, underCap: true };
+    scale *= 0.82;
+  }
+  return { ...smallest!, underCap: false };
+}
+
 /** Encode a canvas to a Blob (Promise wrapper around canvas.toBlob). */
 export function canvasToBlob(
   canvas: HTMLCanvasElement,
