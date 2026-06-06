@@ -106,7 +106,7 @@ export default function HomePage() {
         <div className="container py-16">
           <div className="mb-8 text-center">
             <h2 className="text-2xl font-bold tracking-tight">
-              Why people trust PassportPhoto
+              Why people trust EasyPhoto
             </h2>
             <p className="mx-auto mt-1 max-w-2xl text-muted-foreground">
               No accounts, no uploads, no guesswork — just the official rules,

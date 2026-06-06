@@ -13,7 +13,7 @@ export function Footer() {
       <div className="container grid gap-10 py-12 lg:grid-cols-[1.6fr_3fr]">
         <div className="space-y-3">
           <Link href="/" className="font-semibold tracking-tight">
-            📷 PassportPhoto
+            📷 EasyPhoto
           </Link>
           <p className="max-w-xs text-sm text-muted-foreground">
             Free, private passport &amp; visa photos and everyday image tools —
@@ -68,7 +68,7 @@ export function Footer() {
       <div className="border-t">
         <div className="container flex flex-col gap-3 py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {2026} PassportPhoto. Processed in your browser — never uploaded.
+            © {2026} EasyPhoto. Processed in your browser — never uploaded.
             Always verify against official requirements before submitting.
           </p>
           <nav className="flex items-center gap-4">

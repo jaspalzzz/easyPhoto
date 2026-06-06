@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: "Passport & Visa Photo Maker — Free, Private, In-Browser",
-    template: "%s — PassportPhoto",
+    template: "%s — EasyPhoto",
   },
   description:
     "Create a compliant passport or visa photo for free. Auto-crops to your " +
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description:
       "Compliant passport & visa photos plus free image and PDF tools. " +
       "Everything runs in your browser — nothing is uploaded.",
-    siteName: "PassportPhoto",
+    siteName: "EasyPhoto",
   },
 };
 
@@ -35,7 +35,7 @@ export default function RootLayout({
         <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container flex h-16 items-center justify-between">
             <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
-              <span className="text-lg">📷</span> PassportPhoto
+              <span className="text-lg">📷</span> EasyPhoto
             </Link>
             <nav className="flex items-center gap-1 text-sm font-medium">
               <Link

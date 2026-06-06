@@ -7,7 +7,7 @@
  * one value to change before going live.
  */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://passportphoto.app"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://easyphoto.in"
 ).replace(/\/$/, "");
 
-export const SITE_NAME = "PassportPhoto";
+export const SITE_NAME = "EasyPhoto";
