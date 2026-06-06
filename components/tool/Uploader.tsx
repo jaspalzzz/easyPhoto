@@ -7,13 +7,15 @@ import { cn } from "@/lib/utils";
 interface UploaderProps {
   onFile: (file: File) => void;
   disabled?: boolean;
+  /** Extra classes for the dropzone (e.g. a taller hero variant). */
+  className?: string;
 }
 
 /**
  * File / drag-drop input. The selected file is read in-memory by the caller —
  * it is NEVER uploaded to any server.
  */
-export function Uploader({ onFile, disabled }: UploaderProps) {
+export function Uploader({ onFile, disabled, className }: UploaderProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = React.useState(false);
 
@@ -44,7 +46,8 @@ export function Uploader({ onFile, disabled }: UploaderProps) {
       className={cn(
         "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed p-10 text-center transition-colors",
         dragging ? "border-primary bg-accent" : "border-input hover:bg-accent/50",
-        disabled && "pointer-events-none opacity-60"
+        disabled && "pointer-events-none opacity-60",
+        className
       )}
     >
       <UploadCloud className="h-10 w-10 text-muted-foreground" />

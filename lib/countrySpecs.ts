@@ -273,7 +273,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
  *              caps unconfirmed, so we target the strictest reported limit
  *              (≤250KB @ ~630×810) and show an advisory (see india.advisory).
  */
-export const LAUNCH_ORDER = ["us", "canada", "schengen", "uk", "india"];
+// India first — primary market (easyphoto.in). Order drives the hero chips,
+// home grid, footer and sitemap. (NOTE: India's online-upload specs are still
+// the inferred/strictest-cap values — see india.notes — re-verify when possible.)
+export const LAUNCH_ORDER = ["india", "us", "canada", "schengen", "uk"];
 
 /**
  * Hard production gate — countries whose specs are too uncertain to produce

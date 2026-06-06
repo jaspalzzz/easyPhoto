@@ -1,0 +1,33 @@
+import { cn } from "@/lib/utils";
+
+// Country id → ISO flag file (real SVG flags in /public/flags, not emoji).
+const CODE: Record<string, string> = {
+  us: "us",
+  canada: "ca",
+  schengen: "eu",
+  uk: "gb",
+  india: "in",
+};
+
+/** Genuine SVG flag, rounded with a hairline ring for a premium look. */
+export function Flag({
+  country,
+  className,
+}: {
+  country: string;
+  className?: string;
+}) {
+  const code = CODE[country] ?? country;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`/flags/${code}.svg`}
+      alt=""
+      aria-hidden
+      className={cn(
+        "inline-block h-4 w-[1.5rem] shrink-0 rounded-[3px] object-cover shadow-sm ring-1 ring-black/10",
+        className
+      )}
+    />
+  );
+}

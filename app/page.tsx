@@ -12,14 +12,7 @@ import { HowItWorks } from "@/components/site/HowItWorks";
 import { Faq } from "@/components/site/Faq";
 import { ToolIcon } from "@/components/site/ToolIcon";
 import { HeroStarter } from "@/components/site/HeroStarter";
-
-const FLAGS: Record<string, string> = {
-  us: "🇺🇸",
-  india: "🇮🇳",
-  schengen: "🇪🇺",
-  uk: "🇬🇧",
-  canada: "🇨🇦",
-};
+import { Flag } from "@/components/site/Flag";
 
 export default function HomePage() {
   return (
@@ -39,7 +32,7 @@ export default function HomePage() {
           </p>
 
           {/* The main tool — the centrepiece */}
-          <div className="mx-auto mt-8 max-w-2xl text-left">
+          <div className="mx-auto mt-8 max-w-3xl text-left">
             <HeroStarter />
           </div>
 
@@ -68,9 +61,7 @@ export default function HomePage() {
                 <Card className="card-hover h-full">
                   <CardContent className="flex h-full flex-col gap-3 p-5">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl" aria-hidden>
-                        {FLAGS[id]}
-                      </span>
+                      <Flag country={id} className="h-5 w-7" />
                       <span className="font-semibold">{spec.label}</span>
                       <ArrowRight className="ml-auto h-4 w-4 -translate-x-1 text-brand opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
                     </div>

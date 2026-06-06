@@ -3,17 +3,10 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Uploader } from "@/components/tool/Uploader";
+import { Flag } from "@/components/site/Flag";
 import { useToolStore } from "@/store/useToolStore";
 import { COUNTRY_SPECS, LAUNCH_ORDER } from "@/lib/countrySpecs";
 import { cn } from "@/lib/utils";
-
-const FLAGS: Record<string, string> = {
-  us: "🇺🇸",
-  canada: "🇨🇦",
-  schengen: "🇪🇺",
-  uk: "🇬🇧",
-  india: "🇮🇳",
-};
 
 /**
  * In-hero quick start: pick a country, drop a photo — we stash the file and
@@ -22,7 +15,7 @@ const FLAGS: Record<string, string> = {
 export function HeroStarter() {
   const router = useRouter();
   const setPendingFile = useToolStore((s) => s.setPendingFile);
-  const [country, setCountry] = React.useState("us");
+  const [country, setCountry] = React.useState(LAUNCH_ORDER[0]);
 
   const start = (file: File) => {
     setPendingFile(file);
@@ -30,12 +23,12 @@ export function HeroStarter() {
   };
 
   return (
-    <div className="rounded-2xl border bg-card/90 p-5 shadow-lg ring-1 ring-black/5 backdrop-blur sm:p-6">
-      <div className="mb-3">
+    <div className="rounded-2xl border bg-card/95 p-6 shadow-xl ring-1 ring-black/5 backdrop-blur sm:p-8">
+      <div className="mb-5">
         <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           1. Choose country
         </span>
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {LAUNCH_ORDER.map((id) => (
             <button
               key={id}
@@ -43,13 +36,13 @@ export function HeroStarter() {
               onClick={() => setCountry(id)}
               aria-pressed={country === id}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
                 country === id
                   ? "border-brand bg-brand text-brand-foreground"
                   : "border-input bg-background hover:bg-accent"
               )}
             >
-              <span aria-hidden>{FLAGS[id]}</span>
+              <Flag country={id} />
               {COUNTRY_SPECS[id].label}
             </button>
           ))}
@@ -59,8 +52,8 @@ export function HeroStarter() {
       <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         2. Add your photo
       </span>
-      <div className="mt-2">
-        <Uploader onFile={start} />
+      <div className="mt-3">
+        <Uploader onFile={start} className="min-h-[240px] gap-4 py-14" />
       </div>
     </div>
   );
