@@ -12,7 +12,6 @@ import { HowItWorks } from "@/components/site/HowItWorks";
 import { Faq } from "@/components/site/Faq";
 import { ToolIcon } from "@/components/site/ToolIcon";
 import { HeroStarter } from "@/components/site/HeroStarter";
-import { HeroVisual } from "@/components/site/HeroVisual";
 
 const FLAGS: Record<string, string> = {
   us: "🇺🇸",
@@ -25,38 +24,27 @@ const FLAGS: Record<string, string> = {
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
+      {/* Hero — centered, tool-first */}
       <section className="hero-surface relative overflow-hidden border-b">
         <div className="surface-grid pointer-events-none absolute inset-0" />
-        <div className="container relative grid items-center gap-10 py-14 lg:grid-cols-2 lg:gap-12 lg:py-20">
-          {/* Left: message + in-hero starter */}
-          <div className="text-center lg:text-left">
-            <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-              100% in-browser · your photo never leaves your device
-            </span>
-            <h1 className="mx-auto mt-5 max-w-xl text-balance text-4xl font-bold tracking-tight sm:text-5xl lg:mx-0">
-              Compliant passport &amp; visa photos,{" "}
-              <span className="text-brand">made in your browser</span>
-            </h1>
-            <p className="mx-auto mt-4 max-w-lg text-pretty text-lg text-muted-foreground lg:mx-0">
-              Pick your country, drop a photo — we auto-crop to the exact
-              head-size and background rules and check it for compliance. Free,
-              no watermark, no upload.
-            </p>
+        <div className="container relative py-12 text-center sm:py-16">
+          <h1 className="mx-auto max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl">
+            Compliant passport &amp; visa photos,{" "}
+            <span className="text-brand">made in your browser</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-pretty text-lg text-muted-foreground">
+            Pick your country, drop a photo — we auto-crop to the exact head-size
+            and background rules and check it for compliance. Free, no watermark,
+            no upload.
+          </p>
 
-            <div className="mt-7">
-              <HeroStarter />
-            </div>
-
-            <div className="mt-6">
-              <TrustPills />
-            </div>
+          {/* The main tool — the centrepiece */}
+          <div className="mx-auto mt-8 max-w-2xl text-left">
+            <HeroStarter />
           </div>
 
-          {/* Right: animated before → after visual */}
-          <div className="hidden md:block">
-            <HeroVisual />
+          <div className="mt-6">
+            <TrustPills />
           </div>
         </div>
       </section>
