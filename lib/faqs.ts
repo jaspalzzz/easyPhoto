@@ -4,6 +4,7 @@
  * One set per page; never mix sets across URLs (schema must match the page).
  */
 import type { FaqItem } from "@/components/site/Faq";
+import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
 
 export const PASSPORT_FAQ: FaqItem[] = [
   { q: "What size is a passport photo?", a: "Most countries use 35×45mm; the US and a few others use 2×2 inches (51×51mm). EasyPhoto sets the correct size automatically once you pick your country." },
@@ -99,3 +100,95 @@ export const BACKGROUND_REMOVER_FAQ: FaqItem[] = [
   { q: "Is there a limit on image size or number of images?", a: "No hard limit, though very large images use more memory on your device." },
   { q: "How accurate is the AI background removal?", a: "It's good for people and products; results depend on the contrast between the subject and the background." },
 ];
+
+export const JPG_TO_PDF_FAQ: FaqItem[] = [
+  { q: "How do I convert a JPG to PDF?", a: "Add your JPG (or PNG/HEIC) images, arrange them in order, and download a single PDF — each image becomes one page." },
+  { q: "Can I combine multiple images into one PDF?", a: "Yes. Add as many images as you like and they're merged into a single PDF in the order you choose." },
+  { q: "Can I reorder or remove pages before converting?", a: "Yes — remove any image, and they're added to the PDF in the order you select them." },
+  { q: "Is JPG to PDF free with no watermark?", a: "Yes, completely free with no watermark and no sign-up." },
+  { q: "Are my images uploaded to a server?", a: "No. The PDF is built in your browser, which is ideal for IDs and certificates that shouldn't be uploaded." },
+  { q: "Does JPG to PDF work on mobile?", a: "Yes, it works the same in a mobile browser." },
+  { q: "Can I convert PNG or HEIC images to PDF too?", a: "Yes — JPG, PNG and iPhone HEIC images are all supported." },
+  { q: "How do I convert a PDF back into images?", a: "Use the PDF to JPG tool to export each PDF page as an image." },
+];
+
+export const PDF_TO_JPG_FAQ: FaqItem[] = [
+  { q: "How do I convert a PDF to JPG?", a: "Upload your PDF and each page is rendered as a JPG image you can download individually or all at once." },
+  { q: "Can I export every page of a PDF as an image?", a: "Yes — every page becomes its own JPG, and there's a download-all option." },
+  { q: "Is PDF to JPG free and private?", a: "Yes, free with no watermark, and the PDF is processed entirely in your browser." },
+  { q: "Is my PDF uploaded anywhere?", a: "No, it's rendered locally on your device and never sent to a server." },
+  { q: "What image quality do I get?", a: "Pages are rendered at a high resolution so text and photos stay sharp." },
+  { q: "Can I convert a multi-page PDF?", a: "Yes — large PDFs are supported, with a page cap to protect your browser's memory." },
+  { q: "Does PDF to JPG work on mobile?", a: "Yes, it runs in mobile browsers." },
+  { q: "How do I turn images back into a PDF?", a: "Use the JPG to PDF tool to combine images into a single PDF." },
+];
+
+export const WHITE_BACKGROUND_FAQ: FaqItem[] = [
+  { q: "How do I add a white background to a photo?", a: "Upload your photo; the tool removes the existing background and places the subject on white. You can change the colour too." },
+  { q: "Can I use a colour other than white?", a: "Yes — pick any solid colour, including light grey and cream for passport or visa photos." },
+  { q: "Is the white background tool free with no watermark?", a: "Yes, free with no sign-up and no watermark." },
+  { q: "Is my photo uploaded?", a: "No. Background removal and compositing run in your browser; your image never leaves your device." },
+  { q: "How do I make a white background for a passport photo?", a: "For passports, use the country page instead — it applies the exact required background colour and size automatically." },
+  { q: "Does it remove the old background automatically?", a: "Yes — the AI removes the original background, then drops in the colour you choose." },
+  { q: "What format is the output?", a: "A full-resolution PNG or JPG, your choice." },
+  { q: "Does it handle hair and fine edges?", a: "Yes, the model keeps hair and detailed edges reasonably clean." },
+];
+
+/**
+ * Per-country passport FAQ — built from the verified spec so every country's
+ * set is genuinely different (sizes, background, head height, rules all differ).
+ */
+export function countryFaqItems(spec: CountrySpec): FaqItem[] {
+  const mm = effectivePrintMm(spec);
+  const size =
+    mm.width === 51 && mm.height === 51
+      ? "2×2 inches (51×51mm)"
+      : `${mm.width}×${mm.height}mm`;
+  const glasses =
+    typeof spec.glasses === "boolean"
+      ? spec.glasses
+        ? "Glasses are allowed if there's no glare and your eyes are clearly visible."
+        : "No — glasses are not allowed."
+      : `Glasses: ${spec.glasses}.`;
+  const fileSize = spec.digital.fileSizeKb
+    ? `Online uploads typically accept ${spec.digital.fileSizeKb.min}–${spec.digital.fileSizeKb.max} KB; compress your photo to fit if needed.`
+    : "The online file-size limit varies by portal — check the limit on your form, then compress to fit.";
+
+  const EXTRA: Record<string, FaqItem> = {
+    us: {
+      q: "Can I use this for a US visa or DV Lottery photo?",
+      a: "The 2×2 inch spec also covers US visa (DS-160) photos. The DV Lottery is stricter (600×600, JPEG, under 240KB) — use the resize tool to meet it.",
+    },
+    india: {
+      q: "Is a home-printed Indian passport photo accepted?",
+      a: "For the pasted paper form, India requires a real photo-lab print — a home/computer printout may be rejected. Online upload sizes vary, so confirm the current limit at passportindia.gov.in.",
+    },
+    canada: {
+      q: "Can I use this for a Canadian passport photo?",
+      a: "Use it for Canada visa, PR/Express Entry and online renewal (35×45mm). The printed Canadian passport photo needs a commercial photographer's certification, which a DIY tool can't provide.",
+    },
+    uk: {
+      q: "Why shouldn't a UK passport photo have a white background?",
+      a: "Plain white is the top UK rejection reason — HMPO wants a light grey or cream background, which this tool applies for you.",
+    },
+    australia: {
+      q: "Does the Australian passport photo need a guarantor?",
+      a: "Yes — your guarantor must sign the back of the printed photo. This tool makes the compliant image; the signature is added after printing.",
+    },
+    schengen: {
+      q: "Is the background the same for every Schengen country?",
+      a: "Light grey is the safest universal choice; pure white is risky for France and Switzerland. We default to light grey.",
+    },
+  };
+
+  const items: FaqItem[] = [
+    { q: `What size is a ${spec.label} passport photo?`, a: `A ${spec.label} passport/visa photo is ${size}. EasyPhoto sets this size automatically.` },
+    { q: `What background colour does a ${spec.label} passport photo need?`, a: `${spec.background.description}. The tool applies the correct colour for you.` },
+    { q: `What is the head size in a ${spec.label} passport photo?`, a: `Your head should measure ${spec.headHeightMm.min}–${spec.headHeightMm.max}mm from chin to crown. We size it to that band and flag it if it's off.` },
+    { q: `Can I wear glasses or smile in a ${spec.label} passport photo?`, a: `${glasses} Expression: ${spec.smileAllowed}.` },
+    { q: `What file size does the ${spec.label} online photo upload need?`, a: fileSize },
+    { q: `Is the ${spec.label} passport photo maker free and private?`, a: "Yes — free, no watermark, and processed entirely in your browser. Your photo is never uploaded." },
+  ];
+  if (EXTRA[spec.id]) items.push(EXTRA[spec.id]);
+  return items;
+}

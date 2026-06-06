@@ -17,6 +17,8 @@ import {
 } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { kbPath } from "@/lib/kbTargets";
+import { Faq } from "@/components/site/Faq";
+import { countryFaqItems } from "@/lib/faqs";
 
 // Static export: one page per launch country.
 export function generateStaticParams() {
@@ -215,6 +217,10 @@ export default async function CountryPage({
             Custom size
           </Link>
         </div>
+      </section>
+
+      <section>
+        <Faq items={countryFaqItems(spec)} />
       </section>
     </div>
   );

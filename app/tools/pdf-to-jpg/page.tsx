@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { PdfToJpgTool } from "@/components/tools/PdfToJpgTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { PDF_TO_JPG_FAQ } from "@/lib/faqs";
 
 const tool = getTool("pdf-to-jpg")!;
 
@@ -17,7 +18,9 @@ export default function Page() {
   return (
     <ToolPage
       title="PDF to JPG"
-      slug={tool.slug} blurb={tool.blurb}
+      slug={tool.slug}
+      blurb={tool.blurb}
+      faqItems={PDF_TO_JPG_FAQ}
       footnote="The PDF is rendered locally in your browser; it never leaves your device."
     >
       <PdfToJpgTool />

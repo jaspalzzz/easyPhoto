@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { JpgToPdfTool } from "@/components/tools/JpgToPdfTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { JPG_TO_PDF_FAQ } from "@/lib/faqs";
 
 const tool = getTool("jpg-to-pdf")!;
 
@@ -16,7 +17,12 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <ToolPage title="JPG to PDF" slug={tool.slug} blurb={tool.blurb}>
+    <ToolPage
+      title="JPG to PDF"
+      slug={tool.slug}
+      blurb={tool.blurb}
+      faqItems={JPG_TO_PDF_FAQ}
+    >
       <JpgToPdfTool />
     </ToolPage>
   );
