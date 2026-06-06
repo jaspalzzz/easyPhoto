@@ -191,7 +191,8 @@ export default async function MakerPage({
         </p>
       </header>
 
-      <PhotoTool spec={spec} />
+      {/* On visa pages, drop the passport-only advisory (e.g. AU guarantor). */}
+      <PhotoTool spec={kind === "visa" ? { ...spec, advisory: undefined } : spec} />
 
       <section className="grid gap-8 md:grid-cols-2">
         <div className="space-y-3">

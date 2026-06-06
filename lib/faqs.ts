@@ -181,7 +181,7 @@ export function countryFaqItems(
     },
     schengen: {
       q: "Is the background the same for every Schengen country?",
-      a: "Light grey is the safest universal choice; pure white is risky for France and Switzerland. We default to light grey.",
+      a: "Light grey is the safest universal choice; some states accept white (e.g. France) but Switzerland requires grey, so we default to light grey.",
     },
   };
 

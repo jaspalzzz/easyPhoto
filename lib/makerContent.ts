@@ -322,9 +322,46 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
     ],
   },
 
+  "australia-visa-photo-maker": {
+    intro:
+      "Australian visa photos (visitor, student, work and partner visas) are a passport-sized 35×45mm image on a plain white or light grey background. Unlike the passport, a visa photo needs no guarantor endorsement — this maker sizes and backgrounds it, ready to upload to ImmiAccount.",
+    sections: [
+      {
+        h: "Australia visa photo specification",
+        p: "Use a recent colour photo, 35×45mm, with the head 32–36mm from chin to crown on a plain white or light grey background with even lighting and no shadows. A neutral expression with the mouth closed and both eyes open is required, and glasses should be removed unless medically necessary.",
+      },
+      {
+        h: "No guarantor needed for a visa photo",
+        p: "The back-of-photo guarantor declaration applies to the Australian passport, not to visa applications. For an online visa you simply attach a compliant digital photo in ImmiAccount, so there's nothing to sign — just upload the file this maker produces.",
+      },
+      {
+        h: "Uploading to ImmiAccount",
+        p: "Online Australian visa applications accept a clear, recent digital photo. Make the photo here, then if the portal caps the file size, compress it with the resize-to-KB tool so it uploads without losing sharpness.",
+      },
+    ],
+    faqs: [
+      {
+        q: "What size is an Australian visa photo?",
+        a: "A passport-sized 35×45mm photo with the head 32–36mm from chin to crown, on a plain white or light grey background.",
+      },
+      {
+        q: "Does an Australian visa photo need a guarantor signature?",
+        a: "No — the guarantor endorsement on the back applies only to the Australian passport. A visa photo is simply uploaded to ImmiAccount, with no signature required.",
+      },
+      {
+        q: "Can I upload this photo to ImmiAccount?",
+        a: "Yes — it produces a compliant digital photo. If the application limits the file size, use the resize-to-KB tool to fit the cap while keeping the photo clear.",
+      },
+      {
+        q: "Is an Australian visa photo the same as a passport photo?",
+        a: "The size and background are the same (35×45mm, white or light grey), but the visa photo needs no guarantor endorsement and is uploaded digitally rather than printed.",
+      },
+    ],
+  },
+
   "schengen-visa-photo-maker": {
     intro:
-      "A Schengen visa photo is 35×45mm and follows the ICAO biometric standard used across all 27 Schengen countries. The safe background is light grey — pure white is risky at several consulates — and your face should fill about 70–80% of the frame. This maker sets all of it automatically.",
+      "A Schengen visa photo is 35×45mm and follows the ICAO biometric standard used across all 29 Schengen countries. The safe background is light grey — some states accept white, but Switzerland requires grey — and your face should fill about 70–80% of the frame. This maker sets all of it automatically.",
     sections: [
       {
         h: "Schengen / ICAO photo specification",
@@ -332,7 +369,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         h: "Background: light grey, not white",
-        p: "Although some countries accept white, consulates in France and Switzerland in particular are wary of pure white backgrounds. A plain light grey is the safest universal choice across the Schengen area, and this maker defaults to it so one photo works for any member state.",
+        p: "Some states officially accept white (France, for example), but others are stricter — Switzerland requires a grey background and rejects pure white. A plain light grey is the safest universal choice across the Schengen area, and this maker defaults to it so one photo works for any member state.",
       },
       {
         h: "One photo for any Schengen country",
@@ -346,11 +383,11 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "What background colour should a Schengen visa photo have?",
-        a: "Light grey is the safest universal choice. Pure white is risky for some consulates (notably France and Switzerland), so the tool defaults to light grey.",
+        a: "Light grey is the safest universal choice. Some states accept white (e.g. France), but Switzerland requires grey and rejects white — so the tool defaults to light grey, which every consulate accepts.",
       },
       {
         q: "Does the same photo work for every Schengen country?",
-        a: "Yes — the 35×45mm ICAO standard is shared across all 27 Schengen countries, so one compliant photo works whether you apply through Germany, France, Italy, Spain and so on.",
+        a: "Yes — the 35×45mm ICAO standard is shared across all 29 Schengen countries, so one compliant photo works whether you apply through Germany, France, Italy, Spain and so on.",
       },
       {
         q: "Are glasses allowed in a Schengen visa photo?",

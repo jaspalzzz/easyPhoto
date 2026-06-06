@@ -114,11 +114,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     id: "india",
     label: "India",
     documents: ["Passport (Passport Seva)"], // OCI is a DIFFERENT spec — see notes
-    printMm: { width: 35, height: 45 }, // ICAO standard, effective Sep 2025
-    // ICAO Doc 9303 (adopted by India Sep 2025) = head 70-80% of frame height =
-    // 31.5-36mm on a 45mm photo. The earlier aggregator value 36-38mm
-    // contradicted this same 70-80% band (gave ~82%); 32-36 is self-consistent.
-    // Re-confirm the exact mm at passportindia.gov.in.
+    printMm: { width: 35, height: 45 }, // 4.5x3.5cm — official Passport Seva
+    // ⚠ OFFICIAL Passport Seva photo-upload instructions state the FACE must
+    // cover 80-85% of the photo (not 70-80%). Our crop targets 70-80% / head
+    // 32-36mm — LIGHTER than official, so the face may come out too small.
+    // Retarget to 80-85% (head ~36-38mm) pending decision — see notes.
     headHeightMm: { min: 32, max: 36 },
     headPercentOfFrame: { min: 70, max: 80 },
     background: {
@@ -138,28 +138,30 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     glasses: "discouraged",
     smileAllowed: "neutral preferred",
     notes:
-      "India switched to ICAO 35x45mm from Sep 1, 2025 (was 51x51mm). " +
-      "CONFIRMED (official PSK form 'DOs & DON'Ts for Photograph'): printed " +
-      "photo is 4.5cm x 3.5cm (45x35mm), PLAIN WHITE background, dark clothing, " +
-      "frontal full face, natural expression, eyes open, both ears visible, head " +
-      "centred, no glasses glare, no shadows, head coverings only for religious " +
-      "reasons. NOTE: 'Photograph in computer print will NOT be accepted' — the " +
-      "pasted print must be a real photo-paper lab print, so a home/inkjet " +
-      "printout may be rejected (advise a photo lab). " +
-      "ONLINE upload caps are not officially confirmed: sources report 250KB / " +
-      "300KB / 1MB, so we target the commonly-cited 630x810 size and keep the " +
-      "file under the STRICTEST reported limit (≤250KB), which satisfies all " +
-      "three. Head height set to the ICAO 32-36mm (70-80% of frame) the country " +
-      "adopted, not the inconsistent aggregator 36-38mm. Re-confirm the online " +
-      "pixel/KB limits at passportindia.gov.in. OCI card is a DIFFERENT spec: " +
-      "51x51mm square, LIGHT (not white) background — handle separately.",
+      "Domestic Passport Seva has long specified a 4.5cm x 3.5cm (45x35mm) " +
+      "printed photo; the widely-reported '51x51mm → 35x45mm' ICAO switch " +
+      "(effective Sep 1, 2025) applies to Indian EMBASSIES/CONSULATES abroad " +
+      "(NRI/VFS), NOT the domestic portal. CONFIRMED (official PSK 'DOs & DON'Ts " +
+      "for Photograph'): printed photo 45x35mm, PLAIN WHITE background, dark " +
+      "clothing, frontal full face, natural expression, eyes open, both ears " +
+      "visible, head centred, no glasses glare, no shadows, head coverings only " +
+      "for religious reasons. 'Photograph in computer print will NOT be accepted' " +
+      "— the pasted print must be a real photo-paper lab print. " +
+      "CONFIRMED online upload (official Passport Seva photo-upload PDF): image " +
+      "must be EXACTLY 630x810 px and under 250 KB, JPEG. " +
+      "⚠ HEAD COVERAGE: official says the FACE fills 80-85% of the photo; our " +
+      "crop currently targets 70-80% (head 32-36mm) and may render the face too " +
+      "small — retarget pending. OCI card is a DIFFERENT spec: 51x51mm square, " +
+      "LIGHT (not white) background — handle separately.",
     advisory:
       "For the printed paper form, use a professional photo-lab print — " +
       "home/computer printouts are not accepted. For online upload we target " +
       "~630×810px and keep the file under the strictest reported limit (250 KB); " +
       "please confirm the current limit on passportindia.gov.in.",
     source: "https://www.passportindia.gov.in/",
-    verified: "aggregator", // digital upload caps + head height STILL UNCONFIRMED
+    // size/bg/print-rule/online-cap now CONFIRMED official (2026-06); kept as
+    // "aggregator" only until the head-coverage % is retargeted to 80-85%.
+    verified: "aggregator",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -172,8 +174,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     headPercentOfFrame: { min: 70, max: 80 },
     background: {
       description:
-        "Light, uniform. Light grey is the safest universal choice; " +
-        "pure white is risky for France/Switzerland.",
+        "Light, uniform. Light grey is the safest universal choice; white is " +
+        "officially accepted by some states (e.g. France) but NOT by Switzerland, " +
+        "which requires a grey background.",
       hex: "#DCDCDC", // ~RGB 220 light grey — safest
       acceptableHex: ["#DCDCDC", "#C8C8C8", "#FFFFFF"],
     },
@@ -188,11 +191,16 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     glasses: "strongly discouraged",
     smileAllowed: "neutral only",
     notes:
-      "ICAO Doc 9303 standard. Background colour is the main per-state " +
-      "variation: default to light grey, offer white as a secondary option. " +
-      "Same 35x45mm applies to most EU national passports too.",
-    source: "https://schengenvisainfo.com/photo/",
-    verified: "aggregator",
+      "ICAO Doc 9303 standard (per EU Visa Code Reg. 810/2009 Art.13(4)). " +
+      "Background colour is the main per-state variation: France officially " +
+      "accepts white; Switzerland requires grey and rejects white; light grey " +
+      "satisfies all. Default to light grey. 29 Schengen states as of 2026 " +
+      "(Bulgaria & Romania joined 2025-01-01). Same 35x45mm applies to most EU " +
+      "national passports too.",
+    source:
+      "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02009R0810-20200202",
+    // Verified 2026-06 vs EU Visa Code + ICAO Doc 9303 + France-visas/Swiss SEM.
+    verified: "gov",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -221,7 +229,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "Do NOT default UK to a white background — light grey/cream only. " +
       "Online flow issues a 'digital photo code' the user enters on gov.uk.",
     source: "https://www.gov.uk/photos-for-passports",
-    verified: "aggregator",
+    // Verified 2026-06 vs gov.uk/photos-for-passports/photo-requirements: 45x35mm,
+    // head 29-34mm, cream/light-grey bg, 600x750px min, 50KB-10MB — all confirmed.
+    verified: "gov",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -293,12 +303,16 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "the back by your guarantor — this tool makes the compliant photo; you " +
       "still need the guarantor's signature. Verify current specs at " +
       "passports.gov.au before submitting.",
-    source: "https://www.passports.gov.au/getting-passport-how-it-works/photo-guarantor-fees",
-    verified: "aggregator",
+    source: "https://www.passports.gov.au/help/passport-photos",
+    // Verified 2026-06 vs passports.gov.au: 35-40x45-50mm, head 32-36mm, white/
+    // light-grey bg, guarantor endorses back of one photo. No official applicant
+    // digital-upload spec exists (print-based process) — fileSizeKb stays null.
+    verified: "gov",
     advisory:
-      "For the printed Australian passport, your guarantor must sign the back of " +
-      "the photo — this tool produces the compliant image; the signature is added " +
-      "after printing.",
+      "For the printed Australian passport, your guarantor must endorse the back " +
+      "of one photo in black pen — “This is a true photo of [full name]” — " +
+      "and also sign section 11 of the form. This tool produces the compliant " +
+      "image; the endorsement is added by hand after printing.",
   },
 };
 

@@ -35,9 +35,10 @@ export default function Page() {
       <h2>Wrong background colour</h2>
       <p>
         White is <em>not</em> universal. The UK rejects plain white and wants
-        light grey or cream; Schengen consulates in France and Switzerland are
-        wary of pure white too. Using the wrong shade is a frequent bounce — so
-        the background should be set per country, not assumed.
+        light grey or cream; for Schengen visas, Switzerland requires a grey
+        background and rejects white (light grey is the safe choice everywhere).
+        Using the wrong shade is a frequent bounce — so the background should be
+        set per country, not assumed.
       </p>
 
       <h2>Glasses, smiling and expression</h2>
