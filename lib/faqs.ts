@@ -138,7 +138,11 @@ export const WHITE_BACKGROUND_FAQ: FaqItem[] = [
  * Per-country passport FAQ — built from the verified spec so every country's
  * set is genuinely different (sizes, background, head height, rules all differ).
  */
-export function countryFaqItems(spec: CountrySpec): FaqItem[] {
+export function countryFaqItems(
+  spec: CountrySpec,
+  kind: "passport" | "visa" = "passport"
+): FaqItem[] {
+  const doc = kind === "visa" ? "visa" : "passport";
   const mm = effectivePrintMm(spec);
   const size =
     mm.width === 51 && mm.height === 51
@@ -182,13 +186,15 @@ export function countryFaqItems(spec: CountrySpec): FaqItem[] {
   };
 
   const items: FaqItem[] = [
-    { q: `What size is a ${spec.label} passport photo?`, a: `A ${spec.label} passport/visa photo is ${size}. EasyPhoto sets this size automatically.` },
-    { q: `What background colour does a ${spec.label} passport photo need?`, a: `${spec.background.description}. The tool applies the correct colour for you.` },
-    { q: `What is the head size in a ${spec.label} passport photo?`, a: `Your head should measure ${spec.headHeightMm.min}–${spec.headHeightMm.max}mm from chin to crown. We size it to that band and flag it if it's off.` },
-    { q: `Can I wear glasses or smile in a ${spec.label} passport photo?`, a: `${glasses} Expression: ${spec.smileAllowed}.` },
-    { q: `What file size does the ${spec.label} online photo upload need?`, a: fileSize },
-    { q: `Is the ${spec.label} passport photo maker free and private?`, a: "Yes — free, no watermark, and processed entirely in your browser. Your photo is never uploaded." },
+    { q: `What size is a ${spec.label} ${doc} photo?`, a: `A ${spec.label} ${doc} photo is ${size}. EasyPhoto sets this size automatically.` },
+    { q: `What background colour does a ${spec.label} ${doc} photo need?`, a: `${spec.background.description}. The tool applies the correct colour for you.` },
+    { q: `What is the head size in a ${spec.label} ${doc} photo?`, a: `Your head should measure ${spec.headHeightMm.min}–${spec.headHeightMm.max}mm from chin to crown. We size it to that band and flag it if it's off.` },
+    { q: `Can I wear glasses or smile in a ${spec.label} ${doc} photo?`, a: `${glasses} Expression: ${spec.smileAllowed}.` },
+    { q: `What file size does the ${spec.label} online ${doc} upload need?`, a: fileSize },
+    { q: `Is the ${spec.label} ${doc} photo maker free and private?`, a: "Yes — free, no watermark, and processed entirely in your browser. Your photo is never uploaded." },
   ];
-  if (EXTRA[spec.id]) items.push(EXTRA[spec.id]);
+  // Country caveats are passport-flavoured; visa pages get their specifics from
+  // the per-page maker content instead.
+  if (kind === "passport" && EXTRA[spec.id]) items.push(EXTRA[spec.id]);
   return items;
 }

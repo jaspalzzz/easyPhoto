@@ -12,6 +12,7 @@ import {
   makerSpec,
   type MakerKind,
 } from "@/lib/makerPages";
+import { getMakerContent } from "@/lib/makerContent";
 import { PhotoTool } from "@/components/tool/PhotoTool";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -141,6 +142,13 @@ export default async function MakerPage({
   const Doc = kind === "visa" ? "Visa" : "Passport";
   const hub = HUB[kind];
   const mm = effectivePrintMm(spec);
+  const content = getMakerContent(maker);
+  // Page-specific FAQs first (unique per page), then the spec-driven set
+  // (kind-aware so passport and visa pages don't read as duplicates).
+  const faqItems = [
+    ...(content?.faqs ?? []),
+    ...countryFaqItems(spec, kind),
+  ];
 
   return (
     <div className="container max-w-4xl space-y-8 py-10">
@@ -175,8 +183,8 @@ export default async function MakerPage({
           {spec.label} {Doc} Photo Maker
         </h1>
         <p className="text-muted-foreground">
-          Make a compliant {spec.label} {doc} photo — {mm.width}×{mm.height}mm,{" "}
-          {spec.background.description}. Free and fully in your browser.
+          {content?.intro ??
+            `Make a compliant ${spec.label} ${doc} photo — ${mm.width}×${mm.height}mm, ${spec.background.description}. Free and fully in your browser.`}
         </p>
         <p className="text-xs text-muted-foreground">
           Accepted for: {spec.documents.join(", ")}.
@@ -214,6 +222,20 @@ export default async function MakerPage({
         </div>
       </section>
 
+      {/* Unique editorial content — country/kind-specific, for ranking depth */}
+      {content && content.sections.length > 0 && (
+        <section className="space-y-6">
+          {content.sections.map((s) => (
+            <div key={s.h} className="space-y-2">
+              <h2 className="text-lg font-semibold">{s.h}</h2>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {s.p}
+              </p>
+            </div>
+          ))}
+        </section>
+      )}
+
       {/* File-size help — interlinks to the KB resize tools */}
       <section className="rounded-lg border bg-muted/30 p-5">
         <h2 className="text-base font-semibold">
@@ -246,7 +268,7 @@ export default async function MakerPage({
       </section>
 
       <section>
-        <Faq items={countryFaqItems(spec)} />
+        <Faq items={faqItems} />
       </section>
     </div>
   );
