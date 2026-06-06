@@ -46,6 +46,13 @@ export function MainNav() {
         Passport
       </Link>
 
+      <Link
+        href="/blog/"
+        className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      >
+        Blog
+      </Link>
+
       <div
         ref={wrapRef}
         className="relative"

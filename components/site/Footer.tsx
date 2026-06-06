@@ -90,7 +90,16 @@ export function Footer() {
             © {2026} easyPhoto. Processed in your browser — never uploaded.
             Always verify against official requirements before submitting.
           </p>
-          <nav className="flex items-center gap-4">
+          <nav className="flex flex-wrap items-center gap-4">
+            <Link href="/blog/" className="hover:text-foreground">
+              Blog
+            </Link>
+            <Link href="/about/" className="hover:text-foreground">
+              About
+            </Link>
+            <Link href="/contact/" className="hover:text-foreground">
+              Contact
+            </Link>
             <Link href="/privacy/" className="hover:text-foreground">
               Privacy
             </Link>
