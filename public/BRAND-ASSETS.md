@@ -1,24 +1,23 @@
-# Brand assets to add to /public
+# Brand assets
 
-The site metadata, manifest, and header already reference these files. Drop the
-exported logo assets here with these exact names and everything wires up
-automatically (no code change needed):
+The logo lives as editable vector source:
+- `public/icon.svg` — the camera + ID-photo mark (also `components/site/LogoMark.tsx`)
+- `public/logo.svg` — full logo (mark + "easyPhoto" wordmark)
+
+## Generated raster assets
+
+All PNGs below are produced from the SVGs by `scripts/gen-icons.mjs`
+(`node scripts/gen-icons.mjs`). Re-run it whenever the SVGs change.
 
 | File | Size | Used by |
 |------|------|---------|
-| `favicon.ico` | 16/32/48 multi | browser tab icon |
-| `icon.svg` | vector | modern browsers (sharp at any size) |
-| `apple-touch-icon.png` | 180×180 | iOS home-screen icon |
-| `icon-192.png` | 192×192 | PWA manifest |
-| `icon-512.png` | 512×512 | PWA manifest |
-| `icon-512-maskable.png` | 512×512 (safe-zone padded) | Android maskable icon |
-| `og.png` | 1200×630 | social share card (OpenGraph/Twitter) |
-| `logo.svg` | vector | full header logo (optional) |
+| `favicon-16x16.png`, `favicon-32x32.png` | 16 / 32 | browser tab |
+| `icon.svg` | vector | modern browsers |
+| `apple-touch-icon.png` | 180×180 | iOS home screen |
+| `icon-192.png`, `icon-512.png` | PWA manifest |
+| `icon-512-maskable.png` | 512 (safe-zone) | Android maskable |
+| `og.png` | 1200×630 | social share card |
 
-Tips
-- Use the **simplified camera+frame mark** (drop the small silhouette detail) for
-  the favicon/icon sizes so it stays legible at 16–32px.
-- For the maskable icon, keep the mark inside the central ~80% safe zone.
-- To show the full SVG logo in the header instead of the text wordmark, replace
-  `<Wordmark />` in `app/layout.tsx` and `components/site/Footer.tsx` with:
-  `<img src="/logo.svg" alt="easyPhoto" className="h-7 w-auto" />`
+> These are a faithful vector recreation of the supplied logo in the exact brand
+> palette (blue #2563EB, orange #F57819). To use a precise raster instead, drop
+> your file at `public/logo.svg` (or edit the SVGs) and re-run the script.

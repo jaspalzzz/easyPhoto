@@ -3,6 +3,7 @@ import Link from "next/link";
 import "./globals.css";
 import { Footer } from "@/components/site/Footer";
 import { Wordmark } from "@/components/site/Wordmark";
+import { LogoMark } from "@/components/site/LogoMark";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   // These reference files you drop into /public (see public/site.webmanifest).
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
     apple: "/apple-touch-icon.png",
@@ -57,9 +59,13 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col antialiased">
         <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container flex h-16 items-center justify-between">
-            <Link href="/" className="flex items-center gap-2" aria-label="easyPhoto home">
-              <span className="text-lg">📷</span>
-              <Wordmark className="text-base" />
+            <Link
+              href="/"
+              className="flex items-center gap-2"
+              aria-label="easyPhoto home"
+            >
+              <LogoMark className="h-10 w-10" />
+              <Wordmark className="text-xl" />
             </Link>
             <nav className="flex items-center gap-1 text-sm font-medium">
               <Link

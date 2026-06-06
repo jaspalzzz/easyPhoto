@@ -3,6 +3,7 @@ import { ShieldCheck } from "lucide-react";
 import { COUNTRY_SPECS, LAUNCH_ORDER } from "@/lib/countrySpecs";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { Wordmark } from "@/components/site/Wordmark";
+import { LogoMark } from "@/components/site/LogoMark";
 
 /**
  * Rich footer = a crawlable internal-link sitemap (every country + every tool).
@@ -13,9 +14,9 @@ export function Footer() {
     <footer className="mt-20 border-t bg-muted/30">
       <div className="container grid gap-10 py-12 lg:grid-cols-[1.6fr_3fr]">
         <div className="space-y-3">
-          <Link href="/" className="inline-flex items-center gap-1.5">
-            <span>📷</span>
-            <Wordmark />
+          <Link href="/" className="inline-flex items-center gap-2">
+            <LogoMark className="h-8 w-8" />
+            <Wordmark className="text-lg" />
           </Link>
           <p className="max-w-xs text-sm text-muted-foreground">
             Free, private passport &amp; visa photos and everyday image tools —
