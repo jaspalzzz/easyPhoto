@@ -261,6 +261,45 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "photographer + guarantor signature on the back). Use this for Canada " +
       "visa/permit, PR/Express Entry, and online passport renewal (35×45mm).",
   },
+
+  // ─────────────────────────────────────────────────────────────
+  australia: {
+    id: "australia",
+    label: "Australia",
+    documents: ["Passport (APO)", "Australian visa"],
+    // Official AU passport photo is a RANGE: 35-40mm wide x 45-50mm high.
+    // We target the common lower bound (35x45mm), within spec.
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 }, // chin to crown (face ~2/3 of photo)
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white or light grey, uniform, no shadows",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#F0F0F0", "#DCDCDC"],
+    },
+    digital: {
+      // Printed photos are standard for AU passport (endorsed by a guarantor).
+      // Online/app renewal accepts a digital photo; caps not pinned here.
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "remove (not permitted unless for medical reasons)",
+    smileAllowed: "neutral only",
+    notes:
+      "Australian passport photos are 35-40mm wide x 45-50mm high (we use " +
+      "35x45mm) with the head 32-36mm chin-to-crown on a plain white or light " +
+      "grey background. The PRINTED passport photo must be endorsed (signed) on " +
+      "the back by your guarantor — this tool makes the compliant photo; you " +
+      "still need the guarantor's signature. Verify current specs at " +
+      "passports.gov.au before submitting.",
+    source: "https://www.passports.gov.au/getting-passport-how-it-works/photo-guarantor-fees",
+    verified: "aggregator",
+    advisory:
+      "For the printed Australian passport, your guarantor must sign the back of " +
+      "the photo — this tool produces the compliant image; the signature is added " +
+      "after printing.",
+  },
 };
 
 /**
@@ -276,7 +315,14 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
 // India first — primary market (easyphoto.in). Order drives the hero chips,
 // home grid, footer and sitemap. (NOTE: India's online-upload specs are still
 // the inferred/strictest-cap values — see india.notes — re-verify when possible.)
-export const LAUNCH_ORDER = ["india", "us", "canada", "schengen", "uk"];
+export const LAUNCH_ORDER = [
+  "india",
+  "us",
+  "canada",
+  "uk",
+  "australia",
+  "schengen",
+];
 
 /**
  * Hard production gate — countries whose specs are too uncertain to produce

@@ -7,6 +7,7 @@ const CODE: Record<string, string> = {
   schengen: "eu",
   uk: "gb",
   india: "in",
+  australia: "au",
 };
 
 /** Genuine SVG flag, rounded with a hairline ring for a premium look. */
