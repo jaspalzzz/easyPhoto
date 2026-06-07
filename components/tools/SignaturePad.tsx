@@ -1,0 +1,350 @@
+"use client";
+
+import * as React from "react";
+import { Loader2, Trash2, Check, FileUp, PenTool } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { whiteToTransparent, trimToContent } from "@/lib/signature";
+import { imageToCanvas } from "@/lib/imaging";
+import { ensureDecodable } from "@/lib/heic";
+
+interface SignaturePadProps {
+  onSignatureReady: (dataUrl: string) => void;
+  onCancel?: () => void;
+}
+
+export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) {
+  const [activeTab, setActiveTab] = React.useState<"draw" | "upload">("draw");
+  
+  // Drawing pad states
+  const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
+  const [isDrawing, setIsDrawing] = React.useState(false);
+  const [penColor, setPenColor] = React.useState("#000000"); // black
+  const [hasDrawn, setHasDrawn] = React.useState(false);
+  const lastPointRef = React.useRef<{ x: number; y: number } | null>(null);
+
+  // Upload states
+  const [uploadLoading, setUploadLoading] = React.useState(false);
+  const [uploadError, setUploadError] = React.useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  // Initialize drawing canvas resolution
+  React.useEffect(() => {
+    if (activeTab === "draw" && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * 2; // high DPI scale
+      canvas.height = rect.height * 2;
+      
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.scale(2, 2);
+        ctx.fillStyle = "rgba(0,0,0,0)";
+        ctx.fillRect(0, 0, rect.width, rect.height);
+      }
+    }
+  }, [activeTab]);
+
+  const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!canvasRef.current) return null;
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    
+    let clientX: number;
+    let clientY: number;
+    
+    if ("touches" in e) {
+      if (e.touches.length === 0) return null;
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+    
+    // Coordinate relative to CSS rect bounds
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    
+    return { x, y };
+  };
+
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    const coords = getCoordinates(e);
+    if (!coords) return;
+    
+    setIsDrawing(true);
+    lastPointRef.current = coords;
+    setHasDrawn(true);
+
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (ctx) {
+      ctx.beginPath();
+      ctx.strokeStyle = penColor;
+      ctx.lineWidth = 3;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.moveTo(coords.x, coords.y);
+    }
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDrawing || !lastPointRef.current) return;
+    e.preventDefault();
+    const coords = getCoordinates(e);
+    if (!coords) return;
+    
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (ctx && lastPointRef.current) {
+      ctx.beginPath();
+      ctx.strokeStyle = penColor;
+      ctx.lineWidth = 3;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.moveTo(lastPointRef.current.x, lastPointRef.current.y);
+      ctx.lineTo(coords.x, coords.y);
+      ctx.stroke();
+      
+      lastPointRef.current = coords;
+    }
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+    lastPointRef.current = null;
+  };
+
+  const clearPad = () => {
+    if (!canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      setHasDrawn(false);
+    }
+  };
+
+  const applyDrawn = () => {
+    if (!canvasRef.current || !hasDrawn) return;
+    const canvas = canvasRef.current;
+    
+    // Trim drawing bounds close to the strokes
+    const { canvas: trimmed, bbox } = trimToContent(canvas, {
+      mode: "alpha",
+      padding: 6,
+    });
+    
+    if (!bbox) return;
+    
+    onSignatureReady(trimmed.toDataURL("image/png"));
+  };
+
+  const onImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setUploadLoading(true);
+    setUploadError(null);
+    try {
+      const decodable = await ensureDecodable(file);
+      
+      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image();
+        image.src = URL.createObjectURL(decodable);
+        image.onload = () => {
+          URL.revokeObjectURL(image.src);
+          resolve(image);
+        };
+        image.onerror = (err) => {
+          URL.revokeObjectURL(image.src);
+          reject(err);
+        };
+      });
+      
+      const base = imageToCanvas(img, img.width, img.height);
+      const cleaned = whiteToTransparent(base, {
+        threshold: 210, // clean lighter gray values
+        softness: 35,
+        inkColor: "original",
+      });
+      
+      const { canvas: trimmed, bbox } = trimToContent(cleaned, {
+        mode: "alpha",
+        padding: 8,
+      });
+      
+      if (!bbox) {
+        throw new Error("No signature detected. Verify the image has dark strokes on light paper.");
+      }
+      
+      onSignatureReady(trimmed.toDataURL("image/png"));
+    } catch (err: any) {
+      console.error(err);
+      setUploadError(err?.message || "Could not extract signature from image. Try a clearer scan.");
+    } finally {
+      setUploadLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Tab toggle */}
+      <div className="flex border-b border-hairline">
+        <button
+          id="sig-pad-tab-draw"
+          type="button"
+          onClick={() => setActiveTab("draw")}
+          className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider transition-colors -mb-[2px] ${
+            activeTab === "draw"
+              ? "border-brand text-brand font-bold"
+              : "border-transparent text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <PenTool className="h-3.5 w-3.5" /> Draw Signature
+        </button>
+        <button
+          id="sig-pad-tab-upload"
+          type="button"
+          onClick={() => setActiveTab("upload")}
+          className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider transition-colors -mb-[2px] ${
+            activeTab === "upload"
+              ? "border-brand text-brand font-bold"
+              : "border-transparent text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <FileUp className="h-3.5 w-3.5" /> Upload Photo
+        </button>
+      </div>
+
+      {/* Drawing Mode Workspace */}
+      {activeTab === "draw" && (
+        <div className="space-y-4 animate-fadeIn">
+          <div className="flex items-center justify-between">
+            <div className="flex gap-2">
+              <button
+                id="sig-pad-color-black"
+                type="button"
+                onClick={() => setPenColor("#000000")}
+                className={`h-6 w-6 rounded-full border-2 transition-all ${
+                  penColor === "#000000" ? "border-brand scale-110" : "border-hairline hover:scale-105"
+                }`}
+                style={{ backgroundColor: "#000000" }}
+                title="Black Ink"
+              />
+              <button
+                id="sig-pad-color-blue"
+                type="button"
+                onClick={() => setPenColor("#0033CB")}
+                className={`h-6 w-6 rounded-full border-2 transition-all ${
+                  penColor === "#0033CB" ? "border-brand scale-110" : "border-hairline hover:scale-105"
+                }`}
+                style={{ backgroundColor: "#0033CB" }}
+                title="Blue Ink"
+              />
+            </div>
+            <Button
+              id="sig-pad-clear-btn"
+              variant="outline"
+              size="sm"
+              onClick={clearPad}
+              className="h-8 text-xs font-semibold"
+            >
+              <Trash2 className="h-3.5 w-3.5" /> Clear Pad
+            </Button>
+          </div>
+
+          <div className="relative border border-hairline rounded-md bg-paper overflow-hidden aspect-[8/3] max-w-full">
+            <canvas
+              ref={canvasRef}
+              className="absolute inset-0 w-full h-full cursor-crosshair touch-none"
+              onMouseDown={startDrawing}
+              onMouseMove={draw}
+              onMouseUp={stopDrawing}
+              onMouseLeave={stopDrawing}
+              onTouchStart={startDrawing}
+              onTouchMove={draw}
+              onTouchEnd={stopDrawing}
+            />
+            {!hasDrawn && (
+              <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground/60 pointer-events-none select-none">
+                Draw your signature here using mouse or finger
+              </div>
+            )}
+          </div>
+
+          <div className="flex gap-2 justify-end">
+            {onCancel && (
+              <Button id="sig-pad-cancel-btn" variant="outline" size="sm" onClick={onCancel}>
+                Cancel
+              </Button>
+            )}
+            <Button
+              id="sig-pad-apply-btn"
+              variant="cta"
+              size="sm"
+              onClick={applyDrawn}
+              disabled={!hasDrawn}
+            >
+              <Check className="h-4 w-4" /> Use Drawn Signature
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Upload Mode Workspace */}
+      {activeTab === "upload" && (
+        <div className="space-y-4 animate-fadeIn">
+          {uploadError && (
+            <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-xs text-destructive">
+              {uploadError}
+            </p>
+          )}
+
+          <div
+            id="sig-pad-upload-dropzone"
+            role="button"
+            tabIndex={0}
+            onClick={() => fileInputRef.current?.click()}
+            onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && fileInputRef.current?.click()}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                fileInputRef.current!.files = e.dataTransfer.files;
+                onImageUpload({ target: { files: e.dataTransfer.files } } as any);
+              }
+            }}
+            className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
+          >
+            {uploadLoading ? (
+              <Loader2 className="h-8 w-8 animate-spin text-brand" />
+            ) : (
+              <FileUp className="h-8 w-8 text-brand" strokeWidth={1.75} />
+            )}
+            <p className="font-semibold tracking-tight text-sm">Select signature image, or drop it here</p>
+            <p className="text-xs text-muted-foreground">Automatically removes white background paper. Supports JPG, PNG, HEIC.</p>
+            <input
+              id="sig-pad-upload-file-input"
+              ref={fileInputRef}
+              type="file"
+              accept="image/*,.heic,.heif"
+              className="hidden"
+              onChange={onImageUpload}
+              disabled={uploadLoading}
+            />
+          </div>
+
+          {onCancel && (
+            <div className="flex justify-end">
+              <Button id="sig-pad-upload-cancel-btn" variant="outline" size="sm" onClick={onCancel}>
+                Cancel
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
