@@ -34,20 +34,20 @@ export const HOME_FAQ: FaqItem[] = [
 
 export function Faq({ items = HOME_FAQ }: { items?: FaqItem[] }) {
   return (
-    <section className="space-y-6">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold tracking-tight">
+    <section>
+      <div className="border-b border-hairline pb-4">
+        <h2 className="text-2xl font-semibold tracking-tight">
           Frequently asked questions
         </h2>
       </div>
-      <div className="mx-auto max-w-3xl divide-y rounded-xl border bg-card">
+      <div className="divide-y divide-hairline">
         {items.map((item) => (
-          <details key={item.q} className="group p-5 [&_summary]:list-none">
-            <summary className="flex cursor-pointer items-center justify-between gap-4 font-medium">
+          <details key={item.q} className="group py-4 [&_summary]:list-none">
+            <summary className="flex cursor-pointer items-center justify-between gap-4 text-[15px] font-medium leading-snug">
               {item.q}
-              <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+              <ChevronDown className="h-4 w-4 shrink-0 text-ink-faint transition-transform group-open:rotate-180" />
             </summary>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-2.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
               {item.a}
             </p>
           </details>

@@ -56,9 +56,11 @@ export async function generateMetadata({
 
 function SpecRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="flex justify-between gap-4 border-b py-2 text-sm last:border-0">
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd className="text-right font-medium">{value}</dd>
+    <div className="flex items-baseline justify-between gap-4 border-b border-hairline py-2.5 text-sm last:border-0">
+      <dt className="text-ink-soft">{label}</dt>
+      <dd className="text-right font-mono text-[13px] font-medium tabular-nums">
+        {value}
+      </dd>
     </div>
   );
 }
@@ -103,7 +105,7 @@ function SpecSheet({ spec }: { spec: CountrySpec }) {
         value={
           <span className="inline-flex items-center gap-2">
             <span
-              className="inline-block h-3.5 w-3.5 rounded-sm border"
+              className="inline-block h-3.5 w-3.5 rounded-[2px] border border-hairline-strong"
               style={{ backgroundColor: spec.background.hex }}
             />
             {spec.background.hex}
@@ -166,27 +168,36 @@ export default async function MakerPage({
           }),
         ]}
       />
-      <nav className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+      <nav className="flex flex-wrap items-center gap-1.5 text-[13px] text-ink-soft">
         <Link href="/" className="hover:text-foreground">
           Home
         </Link>
-        <span aria-hidden>/</span>
+        <span aria-hidden className="text-ink-faint">/</span>
         <Link href={hub.path} className="hover:text-foreground">
           {hub.name}
         </Link>
-        <span aria-hidden>/</span>
+        <span aria-hidden className="text-ink-faint">/</span>
         <span className="text-foreground">{spec.label}</span>
       </nav>
 
-      <header className="space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+      <header className="space-y-3 border-b border-hairline pb-7">
+        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
           {spec.label} {Doc} Photo Maker
         </h1>
-        <p className="text-muted-foreground">
+        <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           {content?.intro ??
-            `Make a compliant ${spec.label} ${doc} photo — ${mm.width}×${mm.height}mm, ${spec.background.description}. Free and fully in your browser.`}
+            `Make a compliant ${spec.label} ${doc} photo at ${mm.width}×${mm.height}mm with the correct background. Free, and fully in your browser.`}
         </p>
-        <p className="text-xs text-muted-foreground">
+        <div className="spec flex flex-wrap items-center gap-x-3 gap-y-1 pt-0.5">
+          <span>
+            {mm.width}×{mm.height}mm
+          </span>
+          <span className="text-ink-faint">/</span>
+          <span>{spec.background.description.split("(")[0].split(",")[0].trim()}</span>
+          <span className="text-ink-faint">/</span>
+          <span>{spec.dpiMin} dpi min</span>
+        </div>
+        <p className="text-xs text-ink-faint">
           Accepted for: {spec.documents.join(", ")}.
         </p>
       </header>
@@ -196,13 +207,13 @@ export default async function MakerPage({
 
       <section className="grid gap-8 md:grid-cols-2">
         <div className="space-y-3">
-          <h2 className="text-lg font-semibold">
-            {spec.label} {doc} photo requirements
+          <h2 className="eyebrow">
+            {spec.label} {doc} photo specification
           </h2>
           <SpecSheet spec={spec} />
         </div>
         <div className="space-y-3">
-          <h2 className="text-lg font-semibold">Good to know</h2>
+          <h2 className="eyebrow">Good to know</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
             {spec.notes}
           </p>
@@ -238,30 +249,30 @@ export default async function MakerPage({
       )}
 
       {/* File-size help — interlinks to the KB resize tools */}
-      <section className="rounded-lg border bg-muted/30 p-5">
-        <h2 className="text-base font-semibold">
+      <section className="rounded-lg border border-hairline bg-paper p-5 sm:p-6">
+        <h2 className="text-base font-semibold tracking-tight">
           Meeting the {spec.label} upload file-size limit
         </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           {spec.digital.fileSizeKb
             ? `Online ${spec.label} uploads accept roughly ${spec.digital.fileSizeKb.min}–${spec.digital.fileSizeKb.max} KB. `
             : ""}
-          If your portal or form needs a smaller file, compress your finished
-          photo to an exact size — your image stays in your browser.
+          If your portal needs a smaller file, compress the finished photo to an
+          exact size. Your image stays in your browser.
         </p>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap gap-1.5">
           {[20, 50, 100].map((kb) => (
             <Link
               key={kb}
               href={kbPath(kb)}
-              className="rounded-full border bg-background px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
             >
               Resize to {kb} KB
             </Link>
           ))}
           <Link
             href="/tools/resize-kb/"
-            className="rounded-full border bg-background px-3 py-1.5 text-sm font-medium text-brand hover:bg-accent"
+            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
           >
             Custom size
           </Link>

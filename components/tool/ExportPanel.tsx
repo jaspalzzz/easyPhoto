@@ -86,57 +86,63 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-sm font-semibold">Download</h3>
+    <div className="space-y-3.5">
+      <h3 className="eyebrow">Download</h3>
 
-      <div className="rounded-md border p-3">
-        <div className="mb-2 flex items-center gap-2 text-sm font-medium">
-          <Printer className="h-4 w-4" /> Print
-          <span className="font-normal text-muted-foreground">
-            {print.result.output.width}×{print.result.output.height}px ·{" "}
-            {print.dpi} DPI · {photoMm.width}×{photoMm.height}mm
-          </span>
+      <div className="rounded-md border border-hairline">
+        <div className="flex items-center gap-2 border-b border-hairline px-3 py-2 text-[13px] font-semibold">
+          <Printer className="h-4 w-4 text-ink-soft" strokeWidth={1.75} /> Print
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Button size="sm" onClick={onPrintJpg} disabled={busy !== null}>
-            <Download className="h-4 w-4" /> JPG
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={onPrintPng}
-            disabled={busy !== null}
-          >
-            <Download className="h-4 w-4" /> PNG
-          </Button>
-          {sheetCopies > 0 && (
+        <div className="px-3 py-3">
+          <p className="spec mb-2.5 normal-case tracking-[0.06em]">
+            {print.result.output.width}×{print.result.output.height}px ·{" "}
+            {print.dpi} dpi · {photoMm.width}×{photoMm.height}mm
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Button size="sm" onClick={onPrintJpg} disabled={busy !== null}>
+              <Download className="h-4 w-4" /> JPG
+            </Button>
             <Button
               size="sm"
               variant="outline"
-              onClick={onSheet}
+              onClick={onPrintPng}
               disabled={busy !== null}
             >
-              <LayoutGrid className="h-4 w-4" /> 4×6″ sheet ({sheetCopies})
+              <Download className="h-4 w-4" /> PNG
             </Button>
-          )}
+            {sheetCopies > 0 && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={onSheet}
+                disabled={busy !== null}
+              >
+                <LayoutGrid className="h-4 w-4" /> 4×6″ sheet ({sheetCopies})
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="rounded-md border p-3">
-        <div className="mb-2 flex items-center gap-2 text-sm font-medium">
-          <Globe className="h-4 w-4" /> Online upload
-          <span className="font-normal text-muted-foreground">
-            {digital.result.output.width}×{digital.result.output.height}px ·{" "}
-            {digital.dpi} DPI
-            {capKb ? ` · ≤ ${capKb} KB` : ""}
-          </span>
+      <div className="rounded-md border border-hairline">
+        <div className="flex items-center gap-2 border-b border-hairline px-3 py-2 text-[13px] font-semibold">
+          <Globe className="h-4 w-4 text-ink-soft" strokeWidth={1.75} /> Online
+          upload
         </div>
-        <Button size="sm" onClick={onDigital} disabled={busy !== null}>
-          <Download className="h-4 w-4" /> JPG for upload
-        </Button>
-        {digitalInfo && (
-          <p className="mt-2 text-xs text-muted-foreground">{digitalInfo}</p>
-        )}
+        <div className="px-3 py-3">
+          <p className="spec mb-2.5 normal-case tracking-[0.06em]">
+            {digital.result.output.width}×{digital.result.output.height}px ·{" "}
+            {digital.dpi} dpi{capKb ? ` · ≤ ${capKb} KB` : ""}
+          </p>
+          <Button size="sm" onClick={onDigital} disabled={busy !== null}>
+            <Download className="h-4 w-4" /> JPG for upload
+          </Button>
+          {digitalInfo && (
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              {digitalInfo}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

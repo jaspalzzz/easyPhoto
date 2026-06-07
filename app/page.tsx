@@ -7,7 +7,6 @@ import {
 } from "@/lib/countrySpecs";
 import { POPULAR_TOOLS } from "@/lib/toolsCatalog";
 import { primaryMakerPath } from "@/lib/makerPages";
-import { Card, CardContent } from "@/components/ui/card";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
 import { HowItWorks, HOW_IT_WORKS_STEPS } from "@/components/site/HowItWorks";
 import { Faq } from "@/components/site/Faq";
@@ -35,86 +34,86 @@ export default function HomePage() {
           name: "How to make a compliant passport photo",
           description:
             "Turn any photo into a passport/visa-compliant photo in three steps.",
-          steps: HOW_IT_WORKS_STEPS.map((s) => ({
-            name: s.title,
-            text: s.body,
-          })),
+          steps: HOW_IT_WORKS_STEPS.map((s) => ({ name: s.title, text: s.body })),
         })}
       />
-      {/* Hero: centered, tool-first */}
-      <section className="hero-surface relative overflow-hidden border-b">
-        <div className="surface-grid pointer-events-none absolute inset-0" />
-        <div className="container relative py-12 text-center sm:py-16">
-          <h1 className="mx-auto max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-            Compliant passport &amp; visa photos,{" "}
-            <span className="text-brand">made in your browser</span>
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-pretty text-lg text-muted-foreground">
-            Pick your country and drop a photo. We auto-crop to the exact
-            head-size and background rules, then check it for compliance. It&apos;s
-            free, with no watermark and no upload.
-          </p>
 
-          {/* The main tool, the centrepiece */}
-          <div className="mx-auto mt-8 max-w-3xl text-left">
+      {/* Hero — paper, tool-first, no gradients */}
+      <section className="border-b border-hairline">
+        <div className="container py-14 sm:py-20">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="eyebrow">Passport &amp; visa photo bureau</span>
+            <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.05] tracking-tightest sm:text-[3.25rem]">
+              Document photos, exact{" "}
+              <span className="text-brand">to the millimetre</span>
+            </h1>
+            <p className="mx-auto mt-4 max-w-xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
+              Pick your country and drop a photo. We crop to the exact head size
+              and apply the background your government requires, then check it.
+              It&apos;s free and runs entirely in your browser.
+            </p>
+            <div className="spec mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+              <span>Exact size</span>
+              <span className="text-ink-faint">/</span>
+              <span>Correct background</span>
+              <span className="text-ink-faint">/</span>
+              <span>Compliance-checked</span>
+            </div>
+          </div>
+
+          <div className="mx-auto mt-9 max-w-2xl text-left">
             <HeroStarter />
           </div>
 
-          <div className="mt-6">
+          <div className="mt-7">
             <TrustPills />
           </div>
         </div>
       </section>
 
-      {/* Country picker */}
-      <section id="countries" className="container scroll-mt-20 py-16">
-        <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold tracking-tight">
+      {/* Country index — a ruled bureau register, not floating cards */}
+      <section id="countries" className="container scroll-mt-16 py-14 sm:py-16">
+        <div className="flex items-baseline justify-between border-b border-hairline pb-4">
+          <h2 className="text-2xl font-semibold tracking-tight">
             Choose your country
           </h2>
-          <p className="mt-1 text-muted-foreground">
-            Each option uses that country&apos;s official photo specification.
-          </p>
+          <span className="eyebrow hidden sm:block">Official specifications</span>
         </div>
-        <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
           {LAUNCH_ORDER.map((id) => {
             const spec = COUNTRY_SPECS[id];
             const mm = effectivePrintMm(spec);
             return (
-              <Link key={id} href={primaryMakerPath(id)} className="group">
-                <Card className="card-hover h-full">
-                  <CardContent className="flex h-full flex-col gap-3 p-5">
-                    <div className="flex items-center gap-3">
-                      <Flag country={id} className="h-5 w-7" />
-                      <span className="font-semibold">{spec.label}</span>
-                      <ArrowRight className="ml-auto h-4 w-4 -translate-x-1 text-brand opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      {mm.width}×{mm.height}mm ·{" "}
-                      {spec.background.description.split("(")[0].trim()}
-                    </p>
-                    <p className="mt-auto text-xs text-muted-foreground">
-                      {spec.documents[0]}
-                      {spec.documents.length > 1
-                        ? ` +${spec.documents.length - 1} more`
-                        : ""}
-                    </p>
-                  </CardContent>
-                </Card>
+              <Link
+                key={id}
+                href={primaryMakerPath(id)}
+                className="group flex items-center gap-3.5 bg-card p-4 transition-colors hover:bg-accent/40"
+              >
+                <Flag country={id} className="h-5 w-7 shrink-0 rounded-[2px]" />
+                <span className="min-w-0">
+                  <span className="block truncate font-medium leading-tight">
+                    {spec.label}
+                  </span>
+                  <span className="spec mt-1 block normal-case tracking-[0.08em]">
+                    {mm.width}×{mm.height}mm ·{" "}
+                    {spec.background.description.split("(")[0].trim().split(",")[0]}
+                  </span>
+                </span>
+                <ArrowRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
               </Link>
             );
           })}
         </div>
       </section>
 
-      {/* Trust */}
-      <section className="border-y bg-muted/30">
-        <div className="container py-16">
-          <div className="mb-8 text-center">
-            <h2 className="text-2xl font-bold tracking-tight">
+      {/* Trust — ruled blocks */}
+      <section className="bg-paper">
+        <div className="container py-14 sm:py-16">
+          <div className="mb-8">
+            <h2 className="text-2xl font-semibold tracking-tight">
               Why people trust easyPhoto
             </h2>
-            <p className="mx-auto mt-1 max-w-2xl text-muted-foreground">
+            <p className="mt-1 max-w-2xl text-[15px] text-muted-foreground">
               No accounts, no uploads, no guesswork. Just the official rules,
               applied automatically.
             </p>
@@ -124,45 +123,42 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="container py-16">
+      <section className="container py-14 sm:py-16">
         <HowItWorks />
       </section>
 
-      {/* Popular tools */}
-      <section className="border-t bg-muted/30">
-        <div className="container py-16">
-          <div className="mb-8 flex items-end justify-between">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight">
-                Popular free tools
-              </h2>
-              <p className="mt-1 text-muted-foreground">
-                Quick image &amp; PDF utilities. All private, all in your browser.
-              </p>
-            </div>
+      {/* Tools — same ruled register treatment */}
+      <section className="border-t border-hairline bg-paper">
+        <div className="container py-14 sm:py-16">
+          <div className="flex items-baseline justify-between border-b border-hairline pb-4">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Free image &amp; PDF tools
+            </h2>
             <Link
               href="/tools/"
-              className="hidden shrink-0 items-center gap-1 text-sm font-medium text-brand hover:underline sm:inline-flex"
+              className="hidden items-center gap-1 text-sm font-medium text-brand hover:underline sm:inline-flex"
             >
               All tools <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
             {POPULAR_TOOLS.map((tool) => (
-              <Link key={tool.slug} href={`/tools/${tool.slug}/`} className="group">
-                <Card className="card-hover h-full">
-                  <CardContent className="flex h-full items-start gap-4 p-5">
-                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-muted text-brand">
-                      <ToolIcon name={tool.icon} className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <span className="font-semibold">{tool.title}</span>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {tool.blurb}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+              <Link
+                key={tool.slug}
+                href={`/tools/${tool.slug}/`}
+                className="group flex items-start gap-3.5 bg-card p-5 transition-colors hover:bg-accent/40"
+              >
+                <span className="mt-0.5 text-ink-soft transition-colors group-hover:text-brand">
+                  <ToolIcon name={tool.icon} className="h-5 w-5" />
+                </span>
+                <span>
+                  <span className="block font-medium leading-tight">
+                    {tool.title}
+                  </span>
+                  <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                    {tool.blurb}
+                  </span>
+                </span>
               </Link>
             ))}
           </div>
@@ -170,7 +166,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="container py-16">
+      <section className="container py-14 sm:py-16">
         <Faq />
       </section>
     </>

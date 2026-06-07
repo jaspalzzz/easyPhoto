@@ -56,12 +56,12 @@ export function HeroStarter({
   };
 
   return (
-    <div className="rounded-2xl border bg-card/95 p-6 shadow-xl ring-1 ring-black/5 backdrop-blur sm:p-8">
-      <div className="mb-5">
-        <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          1. Choose country
+    <div className="panel overflow-hidden">
+      <div className="border-b border-hairline px-5 py-4 sm:px-6">
+        <span className="eyebrow flex items-center gap-2">
+          <span className="text-ink-faint">01</span> Choose country
         </span>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-1.5">
           {opts.map((o) => (
             <button
               key={o.path}
@@ -69,10 +69,10 @@ export function HeroStarter({
               onClick={() => setSel(o.path)}
               aria-pressed={sel === o.path}
               className={cn(
-                "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
                 sel === o.path
-                  ? "border-brand bg-brand text-brand-foreground"
-                  : "border-input bg-background hover:bg-accent"
+                  ? "border-ink bg-ink text-paper"
+                  : "border-hairline-strong bg-paper text-foreground hover:border-ink/30 hover:bg-accent/50"
               )}
             >
               <Flag country={o.flag} />
@@ -82,11 +82,13 @@ export function HeroStarter({
         </div>
       </div>
 
-      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        2. Add your photo
-      </span>
-      <div className="mt-3">
-        <Uploader onFile={start} className="min-h-[240px] gap-4 py-14" />
+      <div className="px-5 py-4 sm:px-6">
+        <span className="eyebrow flex items-center gap-2">
+          <span className="text-ink-faint">02</span> Add your photo
+        </span>
+        <div className="mt-3">
+          <Uploader onFile={start} className="min-h-[230px] gap-4 py-12" />
+        </div>
       </div>
     </div>
   );

@@ -76,7 +76,7 @@ export function MainNav() {
         </button>
 
         {open && (
-          <div className="absolute right-0 z-50 mt-2 w-[min(92vw,560px)] rounded-xl border bg-background p-4 shadow-xl ring-1 ring-black/5">
+          <div className="absolute right-0 z-50 mt-2 w-[min(92vw,560px)] rounded-lg border border-hairline bg-paper p-4 shadow-pop">
             <div className="grid gap-x-6 gap-y-4 sm:grid-cols-3">
               {TOOLS_CATALOG.map((group) => (
                 <div key={group.group}>
@@ -95,9 +95,9 @@ export function MainNav() {
                           <Link
                             href={`/tools/${t.slug}/`}
                             onClick={() => setOpen(false)}
-                            className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                            className="flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-foreground transition-colors hover:bg-accent/60"
                           >
-                            <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded bg-brand-muted text-brand">
+                            <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded border border-hairline bg-card text-ink-soft">
                               <ToolIcon name={t.icon} className="h-3.5 w-3.5" />
                             </span>
                             {t.title}

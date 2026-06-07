@@ -10,7 +10,7 @@ import {
   Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CropMarks } from "@/components/site/CropMarks";
 import { Uploader } from "./Uploader";
 import { Editor } from "./Editor";
 import { CompliancePanel } from "./CompliancePanel";
@@ -87,44 +87,40 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
   };
 
   return (
-    <Card>
-      <CardContent className="space-y-6 p-6">
+    <div className="panel">
+      <div className="space-y-6 p-5 sm:p-6">
         {blocked && (
-          <div className="flex items-start gap-2 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
-            <span>
-              <strong>Specs pending verification.</strong> {spec.label}&apos;s
-              requirements are not yet confirmed against the official portal. You
-              can preview the crop, but do not rely on this output for a real
-              submission yet.
-            </span>
+          <div className="border-l-2 border-amber-500 bg-amber-50/60 py-2.5 pl-3 pr-2 text-sm leading-relaxed text-amber-900">
+            <strong>Specs pending verification.</strong> {spec.label}&apos;s
+            requirements aren&apos;t yet confirmed against the official portal.
+            You can preview the crop, but don&apos;t rely on this output for a
+            real submission yet.
           </div>
         )}
 
         {!blocked && spec.advisory && (
-          <div className="flex items-start gap-2 rounded-md border border-sky-300 bg-sky-50 p-3 text-sm text-sky-900">
-            <Info className="mt-0.5 h-4 w-4 shrink-0" />
-            <span>
-              <strong>Before you submit:</strong> {spec.advisory}
-            </span>
+          <div className="border-l-2 border-brand bg-brand-soft/50 py-2.5 pl-3 pr-2 text-sm leading-relaxed text-foreground">
+            <strong>Before you submit:</strong> {spec.advisory}
           </div>
         )}
 
         {status === "idle" && <Uploader onFile={processFile} disabled={busy} />}
 
         {busy && (
-          <div className="flex flex-col items-center justify-center gap-3 py-12 text-muted-foreground">
-            <Loader2 className="h-8 w-8 animate-spin" />
-            <p className="text-sm">{STATUS_LABEL[status]}</p>
-            <p className="text-xs">
-              First run downloads the AI models — this can take a moment.
+          <div className="flex flex-col items-center justify-center gap-3 py-14 text-muted-foreground">
+            <Loader2 className="h-7 w-7 animate-spin text-ink-soft" />
+            <p className="text-sm font-medium text-foreground">
+              {STATUS_LABEL[status]}
+            </p>
+            <p className="spec normal-case tracking-[0.04em]">
+              First run downloads the AI models. This can take a moment.
             </p>
           </div>
         )}
 
         {status === "error" && (
           <div className="space-y-4">
-            <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+            <div className="flex items-start gap-2 border-l-2 border-destructive bg-destructive/5 py-2.5 pl-3 pr-2 text-sm text-destructive">
               <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
               <span>{error}</span>
             </div>
@@ -137,7 +133,7 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
         {ready && (
           <div className="space-y-4">
             {segmentationFailed && (
-              <div className="flex items-start gap-2 rounded-md border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">
+              <div className="flex items-start gap-2 border-l-2 border-amber-400 bg-amber-50/60 py-2 pl-3 pr-2 text-xs text-amber-900">
                 <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                 <span>
                   Automatic background removal didn&apos;t run, so the original
@@ -168,24 +164,25 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                   />
                 ) : (
                   <>
-                    <div className="flex justify-center rounded-md border bg-muted/30 p-4">
+                    <div className="relative flex justify-center rounded-md border border-hairline bg-paper p-6">
+                      <CropMarks size={16} inset={8} />
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={print!.previewUrl}
                         alt={`${spec.label} passport photo preview`}
-                        className="max-h-[360px] w-auto rounded shadow-sm ring-1 ring-border"
+                        className="max-h-[360px] w-auto ring-1 ring-hairline-strong"
                         style={{
                           aspectRatio: `${photoMm.width} / ${photoMm.height}`,
                         }}
                       />
                     </div>
                     <div className="flex items-center justify-between">
-                      <p className="text-xs text-muted-foreground">
+                      <p className="spec normal-case tracking-[0.06em]">
                         {photoMm.width}×{photoMm.height}mm ·{" "}
                         {segmented
                           ? "background replaced"
                           : "original background"}
-                        {manual ? " · manually adjusted" : ""}
+                        {manual ? " · adjusted" : ""}
                       </p>
                       <div className="flex gap-1">
                         {manual && (
@@ -219,7 +216,7 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
         )}
 
         {(sourceUrl || composite) && null}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

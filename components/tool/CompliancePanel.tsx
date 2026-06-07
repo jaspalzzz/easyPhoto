@@ -34,21 +34,25 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
   const retake = retakeReason(result);
 
   return (
-    <div className="space-y-3">
-      <h3 className="text-sm font-semibold">Compliance check</h3>
+    <div className="space-y-3.5">
+      <h3 className="eyebrow">Compliance check</h3>
 
       {retake && (
-        <div className="flex items-start gap-2 rounded-md border border-amber-400 bg-amber-50 p-3 text-xs text-amber-900">
-          <Camera className="mt-0.5 h-4 w-4 shrink-0" />
-          <span>
-            <strong>Retake recommended.</strong> {retake}
+        <div className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-xs leading-relaxed text-amber-900">
+          <span className="inline-flex items-center gap-1.5 font-semibold">
+            <Camera className="h-3.5 w-3.5" /> Retake recommended
           </span>
+          <p className="mt-0.5">{retake}</p>
         </div>
       )}
 
       <ul className="space-y-2 text-sm">
         <CheckItem ok={headInBand}>
-          Head height {achieved.headPercentOfFrame}% of frame
+          Head height{" "}
+          <span className="font-mono text-[13px]">
+            {achieved.headPercentOfFrame}%
+          </span>{" "}
+          of frame
           {band && (
             <span className="text-muted-foreground">
               {" "}
@@ -64,21 +68,27 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
           </span>
         </CheckItem>
 
-        <li className="flex items-start gap-2">
+        <li className="flex items-start gap-2.5">
           <span
-            className="mt-0.5 inline-block h-4 w-4 shrink-0 rounded-sm border"
+            className="mt-0.5 inline-block h-4 w-4 shrink-0 rounded-[3px] border border-hairline-strong"
             style={{ backgroundColor: spec.background.hex }}
             aria-hidden
           />
           <span>
-            Background {spec.background.hex}
-            <span className="text-muted-foreground"> — {spec.background.description}</span>
+            Background{" "}
+            <span className="font-mono text-[13px] uppercase">
+              {spec.background.hex}
+            </span>
+            <span className="text-muted-foreground">
+              {" "}
+              — {spec.background.description}
+            </span>
           </span>
         </li>
       </ul>
 
       {warnings.length > 0 ? (
-        <div className="space-y-2 rounded-md border border-amber-300 bg-amber-50 p-3">
+        <div className="space-y-1.5 border-l-2 border-amber-400 bg-amber-50/60 py-2 pl-3 pr-2">
           {warnings.map((w, i) => (
             <p key={i} className="flex items-start gap-2 text-xs text-amber-900">
               <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
@@ -87,13 +97,13 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
           ))}
         </div>
       ) : (
-        <p className="flex items-center gap-2 rounded-md border border-green-300 bg-green-50 p-3 text-xs text-green-800">
+        <p className="flex items-center gap-2 border-l-2 border-success bg-success-soft py-2 pl-3 pr-2 text-xs text-success">
           <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
-          No automatic warnings — head size, framing and resolution look good.
+          Head size, framing and resolution look good.
         </p>
       )}
 
-      <p className="flex items-start gap-2 text-xs text-muted-foreground">
+      <p className="flex items-start gap-2 text-xs leading-relaxed text-ink-faint">
         <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
         Automated checks can&apos;t catch everything (expression, glasses glare,
         shadows). Review against the official requirements before submitting.
@@ -104,9 +114,9 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
 
 function CheckItem({ ok, children }: { ok: boolean; children: React.ReactNode }) {
   return (
-    <li className="flex items-start gap-2">
+    <li className="flex items-start gap-2.5">
       {ok ? (
-        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
+        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
       ) : (
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
       )}

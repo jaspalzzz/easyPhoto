@@ -20,24 +20,29 @@ export const HOW_IT_WORKS_STEPS = [
 
 export function HowItWorks() {
   return (
-    <section className="space-y-6">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold tracking-tight">How it works</h2>
-        <p className="mt-1 text-muted-foreground">
-          A compliant photo in three steps. No design skills needed.
-        </p>
+    <section>
+      <div className="flex items-baseline justify-between border-b border-hairline pb-4">
+        <h2 className="text-2xl font-semibold tracking-tight">How it works</h2>
+        <span className="eyebrow hidden sm:block">Three steps</span>
       </div>
-      <ol className="grid gap-6 md:grid-cols-3">
+      <ol className="grid md:grid-cols-3">
         {HOW_IT_WORKS_STEPS.map((s, i) => (
-          <li key={s.title} className="relative rounded-xl border bg-card p-6">
-            <span className="absolute right-5 top-5 text-3xl font-bold text-muted/60">
-              {i + 1}
-            </span>
-            <span className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-brand-muted text-brand">
-              <s.icon className="h-5 w-5" />
-            </span>
-            <h3 className="font-semibold">{s.title}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">{s.body}</p>
+          <li
+            key={s.title}
+            className="border-hairline py-7 md:px-7 md:py-8 md:[&:first-child]:pl-0 [&:not(:last-child)]:border-b md:[&:not(:last-child)]:border-b-0 md:[&:not(:last-child)]:border-r"
+          >
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-sm font-medium text-ink-faint">
+                0{i + 1}
+              </span>
+              <s.icon className="h-[18px] w-[18px] text-ink" strokeWidth={1.75} />
+            </div>
+            <h3 className="mt-4 text-[15px] font-semibold tracking-tight">
+              {s.title}
+            </h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+              {s.body}
+            </p>
           </li>
         ))}
       </ol>

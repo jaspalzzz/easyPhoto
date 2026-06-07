@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { UploadCloud, ShieldCheck } from "lucide-react";
+import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CropMarks } from "@/components/site/CropMarks";
 
 interface UploaderProps {
   onFile: (file: File) => void;
@@ -12,8 +13,8 @@ interface UploaderProps {
 }
 
 /**
- * File / drag-drop input. The selected file is read in-memory by the caller —
- * it is NEVER uploaded to any server.
+ * File / drag-drop input, framed like a photo being aligned under crop marks.
+ * The selected file is read in-memory by the caller — NEVER uploaded.
  */
 export function Uploader({ onFile, disabled, className }: UploaderProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -44,22 +45,35 @@ export function Uploader({ onFile, disabled, className }: UploaderProps) {
         if (!disabled) pick(e.dataTransfer.files);
       }}
       className={cn(
-        "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed p-10 text-center transition-colors",
-        dragging ? "border-primary bg-accent" : "border-input hover:bg-accent/50",
+        "group relative flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md border bg-card p-10 text-center transition-colors",
+        dragging
+          ? "border-brand bg-brand-soft/40"
+          : "border-hairline-strong hover:border-ink/30 hover:bg-accent/40",
         disabled && "pointer-events-none opacity-60",
         className
       )}
     >
-      <UploadCloud className="h-10 w-10 text-muted-foreground" />
+      <CropMarks
+        size={18}
+        inset={10}
+        className={cn(
+          "transition-opacity",
+          dragging ? "opacity-100" : "opacity-60 group-hover:opacity-100"
+        )}
+      />
+      <span className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-hairline-strong bg-paper text-ink-soft">
+        <Plus className="h-5 w-5" strokeWidth={1.75} />
+      </span>
       <div>
-        <p className="font-medium">Drop a photo here, or click to choose</p>
-        <p className="text-sm text-muted-foreground">
-          JPG, PNG or HEIC · a clear, front-facing photo works best
+        <p className="text-[15px] font-medium text-foreground">
+          Drop a photo, or click to browse
+        </p>
+        <p className="mt-0.5 text-sm text-muted-foreground">
+          A clear, front-facing photo works best
         </p>
       </div>
-      <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-        <ShieldCheck className="h-3.5 w-3.5" />
-        Processed in your browser — never uploaded
+      <p className="spec mt-1 normal-case tracking-[0.04em]">
+        JPG · PNG · HEIC &nbsp;·&nbsp; processed on your device, never uploaded
       </p>
       <input
         ref={inputRef}

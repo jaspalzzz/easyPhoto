@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
  */
 export function Wordmark({ className }: { className?: string }) {
   return (
-    <span className={cn("font-bold tracking-tight", className)}>
+    <span className={cn("font-display font-bold tracking-tightest", className)}>
       <span className="text-cta">easy</span>
       <span className="text-brand">Photo</span>
     </span>

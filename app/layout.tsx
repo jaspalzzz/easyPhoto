@@ -1,6 +1,26 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+
+// Self-hosted at build (no runtime CDN — keeps the CSP tight).
+const display = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+const sans = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: "swap",
+});
 import { Footer } from "@/components/site/Footer";
 import { Wordmark } from "@/components/site/Wordmark";
 import { LogoMark } from "@/components/site/LogoMark";
@@ -68,7 +88,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2563eb",
+  themeColor: "#faf6ee",
 };
 
 export default function RootLayout({
@@ -77,19 +97,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${display.variable} ${sans.variable} ${mono.variable}`}
+    >
       <body className="flex min-h-screen flex-col antialiased">
         {/* Site-wide structured data: brand + website */}
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
-        <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container flex h-16 items-center justify-between">
+        {/* Solid paper header on a hairline — no glass/blur. */}
+        <header className="sticky top-0 z-40 border-b border-hairline bg-paper">
+          <div className="container flex h-14 items-center justify-between">
             <Link
               href="/"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2.5"
               aria-label="easyPhoto home"
             >
-              <LogoMark className="h-10 w-10" />
-              <Wordmark className="text-xl" />
+              <LogoMark className="h-8 w-8" />
+              <Wordmark className="text-lg" />
             </Link>
             <MainNav />
           </div>

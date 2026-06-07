@@ -30,17 +30,19 @@ const SIGNALS = [
 
 export function TrustStrip() {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid border-y border-hairline sm:grid-cols-2 lg:grid-cols-4 lg:border-x">
       {SIGNALS.map((s) => (
         <div
           key={s.title}
-          className="rounded-xl border bg-card p-5"
+          className="border-hairline p-6 [&:not(:last-child)]:border-b lg:[&:not(:last-child)]:border-b-0 lg:[&:not(:last-child)]:border-r"
         >
-          <span className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted text-brand">
-            <s.icon className="h-5 w-5" />
-          </span>
-          <h3 className="text-sm font-semibold">{s.title}</h3>
-          <p className="mt-1 text-sm text-muted-foreground">{s.body}</p>
+          <s.icon className="h-5 w-5 text-ink" strokeWidth={1.75} />
+          <h3 className="mt-4 text-[15px] font-semibold tracking-tight">
+            {s.title}
+          </h3>
+          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            {s.body}
+          </p>
         </div>
       ))}
     </div>
@@ -56,10 +58,10 @@ export function TrustPills() {
     { icon: Landmark, label: "Official sources" },
   ];
   return (
-    <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+    <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-ink-soft">
       {pills.map((p) => (
         <span key={p.label} className="inline-flex items-center gap-1.5">
-          <p.icon className="h-4 w-4 text-brand" />
+          <p.icon className="h-3.5 w-3.5 text-ink" strokeWidth={1.75} />
           {p.label}
         </span>
       ))}
