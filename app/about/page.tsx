@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="space-y-2">
-      <h2 className="text-lg font-semibold">{title}</h2>
+      <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
       <p className="leading-relaxed text-muted-foreground">{children}</p>
     </section>
   );
@@ -47,10 +47,10 @@ export default function AboutPage() {
         <ArrowLeft className="h-4 w-4" /> Home
       </Link>
 
-      <article className="mt-6 space-y-6">
-        <header className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">About EasyPhoto</h1>
-          <p className="text-muted-foreground">
+      <article className="mt-6 divide-y divide-hairline [&>section]:py-8 [&>section:first-of-type]:pt-8">
+        <header className="space-y-2 pb-8">
+          <h1 className="text-3xl font-semibold tracking-tight">About EasyPhoto</h1>
+          <p className="leading-relaxed text-muted-foreground">
             Compliant passport &amp; visa photos and everyday image tools. Free,
             private, and made entirely in your browser.
           </p>
@@ -87,7 +87,7 @@ export default function AboutPage() {
           your own photo.
         </Section>
 
-        <p className="text-sm text-muted-foreground">
+        <p className="pt-8 text-sm leading-relaxed text-muted-foreground">
           Spotted a spec that looks out of date?{" "}
           <Link href="/contact/" className="text-brand hover:underline">
             Tell us

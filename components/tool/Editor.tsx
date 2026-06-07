@@ -52,11 +52,11 @@ export function Editor({
 
   return (
     <div className="space-y-3">
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-ink-soft">
         Drag to reposition · drag a corner to resize. The box is locked to the
         required photo shape.
       </p>
-      <div className="overflow-hidden rounded-md border bg-muted/30">
+      <div className="overflow-hidden rounded-md border border-hairline bg-paper">
         <Cropper
           ref={cropperRef}
           src={src}
@@ -73,11 +73,11 @@ export function Editor({
         />
       </div>
       <div className="flex gap-2">
-        <Button size="sm" onClick={apply}>
-          <Check className="h-4 w-4" /> Apply crop
+        <Button size="sm" variant="cta" onClick={apply}>
+          <Check className="h-4 w-4" strokeWidth={1.75} /> Apply crop
         </Button>
         <Button size="sm" variant="outline" onClick={onCancel}>
-          <X className="h-4 w-4" /> Cancel
+          <X className="h-4 w-4" strokeWidth={1.75} /> Cancel
         </Button>
       </div>
     </div>

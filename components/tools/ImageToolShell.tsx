@@ -3,8 +3,8 @@
 import * as React from "react";
 import { Loader2, RotateCcw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Uploader } from "@/components/tool/Uploader";
+import { CropMarks } from "@/components/site/CropMarks";
 import { loadImageFromFile, type LoadedImage } from "@/lib/pipeline";
 import { ensureDecodable } from "@/lib/heic";
 
@@ -51,11 +51,11 @@ export function ImageToolShell({
   };
 
   return (
-    <Card>
-      <CardContent className="space-y-6 p-6">
+    <div className="panel">
+      <div className="space-y-6 p-6">
         {error && (
-          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <div className="flex items-start gap-2 border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.75} />
             <span>{error}</span>
           </div>
         )}
@@ -72,18 +72,18 @@ export function ImageToolShell({
         {source && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <p className="text-xs text-muted-foreground">
+              <p className="spec normal-case tracking-[0.04em]">
                 {source.file.name} · {source.size.width}×{source.size.height}px
               </p>
               <Button variant="ghost" size="sm" onClick={reset}>
-                <RotateCcw className="h-4 w-4" /> New image
+                <RotateCcw className="h-4 w-4" strokeWidth={1.75} /> New image
               </Button>
             </div>
             {children(source, reset)}
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -97,8 +97,9 @@ export function PreviewFrame({
 }) {
   return (
     <div
-      className={`flex justify-center rounded-md border p-4 ${checker ? "checkerboard" : "bg-muted/30"}`}
+      className={`relative flex justify-center rounded-md border border-hairline p-4 ${checker ? "checkerboard" : "bg-paper"}`}
     >
+      <CropMarks size={14} inset={8} className="opacity-60" />
       {children}
     </div>
   );

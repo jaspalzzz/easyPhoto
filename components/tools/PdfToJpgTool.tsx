@@ -73,12 +73,12 @@ export function PdfToJpgTool() {
             e.preventDefault();
             onFile(e.dataTransfer.files?.[0]);
           }}
-          className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed border-input p-8 text-center hover:bg-accent/50"
+          className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
         >
-          <FileUp className="h-8 w-8 text-muted-foreground" />
-          <p className="font-medium">Choose a PDF, or drop it here</p>
-          <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-            <ShieldCheck className="h-3.5 w-3.5" /> Processed in your browser —
+          <FileUp className="h-8 w-8 text-brand" strokeWidth={1.75} />
+          <p className="font-semibold tracking-tight">Choose a PDF, or drop it here</p>
+          <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-ink-soft">
+            <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.75} /> Processed in your browser —
             never uploaded
           </p>
           <input
@@ -91,28 +91,32 @@ export function PdfToJpgTool() {
         </div>
 
         {busy && (
-          <div className="flex flex-col items-center justify-center gap-3 py-8 text-muted-foreground">
-            <Loader2 className="h-7 w-7 animate-spin" />
+          <div className="flex flex-col items-center justify-center gap-3 py-8 text-ink-soft">
+            <Loader2 className="h-7 w-7 animate-spin text-brand" strokeWidth={1.75} />
             <p className="text-sm">{progress ?? "Loading PDF…"}</p>
           </div>
         )}
 
-        {error && <p className="text-sm text-destructive">{error}</p>}
+        {error && (
+          <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
+            {error}
+          </p>
+        )}
 
         {pages.length > 0 && (
           <>
             <div className="flex items-center justify-between">
-              <p className="text-sm text-muted-foreground">
+              <p className="spec">
                 {pages.length} {pages.length === 1 ? "page" : "pages"}
               </p>
-              <Button size="sm" onClick={downloadAll}>
-                <Download className="h-4 w-4" /> Download all
+              <Button variant="cta" size="sm" onClick={downloadAll}>
+                <Download className="h-4 w-4" strokeWidth={1.75} /> Download all
               </Button>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {pages.map((page, i) => (
                 <div key={i} className="space-y-2">
-                  <div className="overflow-hidden rounded-md border">
+                  <div className="overflow-hidden rounded-md border border-hairline bg-paper">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={page.url} alt={`Page ${i + 1}`} className="w-full" />
                   </div>
@@ -122,7 +126,7 @@ export function PdfToJpgTool() {
                     className="w-full"
                     onClick={() => downloadOne(page, i)}
                   >
-                    <Download className="h-4 w-4" /> Page {i + 1}
+                    <Download className="h-4 w-4" strokeWidth={1.75} /> Page {i + 1}
                   </Button>
                 </div>
               ))}

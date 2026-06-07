@@ -48,9 +48,9 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
       </PreviewFrame>
 
       <label className="block text-sm">
-        <span className="mb-1 flex justify-between font-medium">
-          <span>Paper removal strength</span>
-          <span className="text-muted-foreground">{threshold}</span>
+        <span className="mb-1 flex items-center justify-between">
+          <span className="eyebrow">Paper removal strength</span>
+          <span className="font-mono text-[13px] text-ink-soft">{threshold}</span>
         </span>
         <input
           type="range"
@@ -76,8 +76,8 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
         </label>
       )}
 
-      <Button onClick={onDownload} disabled={!out}>
-        <Download className="h-4 w-4" /> Download transparent PNG
+      <Button variant="cta" onClick={onDownload} disabled={!out}>
+        <Download className="h-4 w-4" strokeWidth={1.75} /> Download transparent PNG
       </Button>
     </div>
   );

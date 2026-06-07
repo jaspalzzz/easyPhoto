@@ -55,7 +55,8 @@ export function DocPhotoLanding({
       />
 
       <header className="space-y-3 text-center">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{h1}</h1>
+        <span className="eyebrow">{kind === "passport" ? "Passport" : "Visa"} photo bureau</span>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{h1}</h1>
         <p className="mx-auto max-w-2xl text-muted-foreground">{intro}</p>
       </header>
 
@@ -63,11 +64,14 @@ export function DocPhotoLanding({
         <HeroStarter kind={kind} />
       </div>
 
-      <section className="mt-12 space-y-4">
-        <h2 className="text-center text-xl font-bold tracking-tight">
-          {kind === "passport" ? "Passport" : "Visa"} photo size by country
-        </h2>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="mt-14">
+        <div className="flex items-baseline justify-between border-b border-hairline pb-4">
+          <h2 className="text-xl font-semibold tracking-tight">
+            {kind === "passport" ? "Passport" : "Visa"} photo size by country
+          </h2>
+          <span className="eyebrow hidden sm:block">Official specifications</span>
+        </div>
+        <div className="mt-6 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
           {pages.map((m) => {
             const spec = makerSpec(m.slug)!;
             const mm = effectivePrintMm(spec);
@@ -75,11 +79,11 @@ export function DocPhotoLanding({
               <Link
                 key={m.slug}
                 href={`/${m.slug}/`}
-                className="flex items-center gap-3 rounded-lg border p-4 transition-colors hover:border-brand"
+                className="flex items-center gap-3 bg-card p-4 transition-colors hover:bg-accent/40"
               >
-                <Flag country={m.flag} className="h-5 w-7" />
+                <Flag country={m.flag} className="h-5 w-7 shrink-0" />
                 <span className="text-sm font-medium">{spec.label}</span>
-                <span className="ml-auto text-xs text-muted-foreground">
+                <span className="spec ml-auto normal-case tracking-[0.08em]">
                   {mm.width}×{mm.height}mm
                 </span>
               </Link>
@@ -88,10 +92,12 @@ export function DocPhotoLanding({
         </div>
       </section>
 
-      <section className="mt-12">
-        <h2 className="mb-6 text-center text-xl font-bold tracking-tight">
-          Why people trust easyPhoto
-        </h2>
+      <section className="mt-14">
+        <div className="mb-6 border-b border-hairline pb-4">
+          <h2 className="text-xl font-semibold tracking-tight">
+            Why people trust easyPhoto
+          </h2>
+        </div>
         <TrustStrip />
       </section>
 

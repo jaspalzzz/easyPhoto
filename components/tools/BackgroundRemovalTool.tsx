@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Loader2, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CropMarks } from "@/components/site/CropMarks";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { removeBg } from "@/lib/segmentation";
 import { canvasToBlob } from "@/lib/imaging";
@@ -44,24 +45,32 @@ function Body({ source }: { source: ToolSource }) {
 
   if (busy)
     return (
-      <div className="flex flex-col items-center justify-center gap-3 py-12 text-muted-foreground">
-        <Loader2 className="h-8 w-8 animate-spin" />
+      <div className="flex flex-col items-center justify-center gap-3 py-12 text-ink-soft">
+        <Loader2 className="h-8 w-8 animate-spin text-brand" strokeWidth={1.75} />
         <p className="text-sm">Removing background…</p>
         <p className="text-xs">First run downloads the AI model — one moment.</p>
       </div>
     );
 
-  if (error) return <p className="text-sm text-destructive">{error}</p>;
+  if (error)
+    return (
+      <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
+        {error}
+      </p>
+    );
   if (!url) return null;
 
   return (
     <div className="space-y-4">
-      <PreviewFrame checker>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={url} alt="Background removed" className="max-h-[360px] w-auto" />
-      </PreviewFrame>
-      <Button onClick={onDownload}>
-        <Download className="h-4 w-4" /> Download transparent PNG
+      <div className="relative">
+        <PreviewFrame checker>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={url} alt="Background removed" className="max-h-[360px] w-auto" />
+        </PreviewFrame>
+        <CropMarks size={16} inset={8} />
+      </div>
+      <Button variant="cta" onClick={onDownload}>
+        <Download className="h-4 w-4" strokeWidth={1.75} /> Download transparent PNG
       </Button>
     </div>
   );

@@ -63,11 +63,11 @@ export function KbResizeLanding({ kb }: { kb: number }) {
         href="/tools/"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft className="h-4 w-4" /> All tools
+        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All tools
       </Link>
 
       <header className="mt-4 space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
           Resize Image to {kb} KB
         </h1>
         <p className="text-muted-foreground">
@@ -81,7 +81,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
       </div>
 
       <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
-        <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
+        <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
         Compression runs on your device — your photo is never uploaded.
       </p>
 
@@ -138,20 +138,20 @@ export function KbResizeLanding({ kb }: { kb: number }) {
       </section>
 
       <section className="mt-8">
-        <h2 className="mb-3 text-sm font-semibold">Need a different size?</h2>
+        <h2 className="eyebrow mb-3">Need a different size?</h2>
         <div className="flex flex-wrap gap-2">
           {KB_TARGETS.filter((t) => t !== kb).map((t) => (
             <Link
               key={t}
               href={kbPath(t)}
-              className="rounded-full border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className="rounded-md border border-hairline px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/40 hover:text-foreground"
             >
               Resize to {t} KB
             </Link>
           ))}
           <Link
             href="/tools/resize-kb/"
-            className="rounded-full border px-4 py-2 text-sm font-medium text-brand hover:bg-accent"
+            className="rounded-md border border-hairline px-4 py-2 text-sm font-medium text-brand transition-colors hover:border-ink/30 hover:bg-accent/40"
           >
             Custom size
           </Link>

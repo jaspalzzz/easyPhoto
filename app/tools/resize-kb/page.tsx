@@ -27,13 +27,13 @@ export default function Page() {
       <ResizeKbTool />
 
       <section className="mt-8">
-        <h2 className="mb-3 text-sm font-semibold">Resize to a specific size</h2>
+        <h2 className="eyebrow mb-3">Resize to a specific size</h2>
         <div className="flex flex-wrap gap-2">
           {KB_TARGETS.map((kb) => (
             <Link
               key={kb}
               href={kbPath(kb)}
-              className="rounded-full border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className="rounded-md border border-hairline px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/40 hover:text-foreground"
             >
               Resize to {kb} KB
             </Link>

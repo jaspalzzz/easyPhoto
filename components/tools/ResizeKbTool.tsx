@@ -57,24 +57,24 @@ function Body({ source, defaultKb }: { source: ToolSource; defaultKb: number }) 
         <img
           src={result?.url ?? source.url}
           alt="To resize"
-          className="max-h-[320px] w-auto rounded"
+          className="max-h-[320px] w-auto rounded-md"
         />
       </PreviewFrame>
 
       <div className="flex flex-wrap items-end gap-3">
         <label className="text-sm">
-          <span className="mb-1 block font-medium">Target size (KB)</span>
+          <span className="eyebrow mb-1 block">Target size (KB)</span>
           <input
             type="number"
             min={5}
             value={targetKb}
             onChange={(e) => setTargetKb(Math.max(5, Number(e.target.value) || 0))}
-            className="h-10 w-32 rounded-md border border-input bg-background px-3"
+            className="h-10 w-32 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
           />
         </label>
-        <Button onClick={run} disabled={busy}>
+        <Button variant="cta" onClick={run} disabled={busy}>
           {busy ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
           ) : (
             "Compress to size"
           )}
@@ -82,15 +82,21 @@ function Body({ source, defaultKb }: { source: ToolSource; defaultKb: number }) 
       </div>
 
       {result && (
-        <div className="space-y-2 rounded-md border p-3 text-sm">
+        <div className="space-y-2 rounded-md border border-hairline bg-paper p-3 text-sm">
           <p>
-            Result: <strong>{formatKb(result.bytes)}</strong> ·{" "}
-            {result.width}×{result.height}px · quality{" "}
-            {result.quality.toFixed(2)}
+            Result:{" "}
+            <strong className="spec text-ink">{formatKb(result.bytes)}</strong> ·{" "}
+            <span className="font-mono text-[13px]">
+              {result.width}×{result.height}px
+            </span>{" "}
+            · quality{" "}
+            <span className="font-mono text-[13px]">
+              {result.quality.toFixed(2)}
+            </span>
             {result.scale < 1 ? ` · resized to fit` : ""}
           </p>
           {!result.underCap && (
-            <p className="text-amber-700">
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-amber-900">
               Couldn&apos;t get under {targetKb} KB even at minimum quality — this
               is the smallest achievable. Try a lower target or smaller image.
             </p>
@@ -99,7 +105,7 @@ function Body({ source, defaultKb }: { source: ToolSource; defaultKb: number }) 
             size="sm"
             onClick={() => downloadBlob(result.blob, `resized-${targetKb}kb.jpg`)}
           >
-            <Download className="h-4 w-4" /> Download JPG
+            <Download className="h-4 w-4" strokeWidth={1.75} /> Download JPG
           </Button>
         </div>
       )}

@@ -12,19 +12,19 @@ import { LogoMark } from "@/components/site/LogoMark";
  */
 export function Footer() {
   return (
-    <footer className="mt-20 border-t bg-muted/30">
+    <footer className="mt-20 border-t border-hairline bg-paper">
       <div className="container grid gap-10 py-12 lg:grid-cols-[1.6fr_3fr]">
         <div className="space-y-3">
           <Link href="/" className="inline-flex items-center gap-2">
             <LogoMark className="h-8 w-8" />
             <Wordmark className="text-lg" />
           </Link>
-          <p className="max-w-xs text-sm text-muted-foreground">
+          <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
             Free, private passport &amp; visa photos and everyday image tools —
             made entirely in your browser.
           </p>
           <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-            <ShieldCheck className="h-3.5 w-3.5 text-brand" />
+            <ShieldCheck className="h-3.5 w-3.5 text-brand" strokeWidth={1.75} />
             Your files never leave your device.
           </p>
         </div>
@@ -32,7 +32,7 @@ export function Footer() {
         {/* Four link groups divide evenly: 2×2 on phones, 1×4 on wider screens. */}
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold">Passport &amp; visa</h3>
+            <h3 className="eyebrow">Passport &amp; visa</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
@@ -69,7 +69,7 @@ export function Footer() {
 
           {TOOLS_CATALOG.map((group) => (
             <div key={group.group} className="space-y-3">
-              <h3 className="text-sm font-semibold">{group.group}</h3>
+              <h3 className="eyebrow">{group.group}</h3>
               <ul className="space-y-2 text-sm">
                 {group.tools
                   .filter((t) => t.ready)
@@ -89,7 +89,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t">
+      <div className="border-t border-hairline">
         <div className="container flex flex-col gap-3 py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {2026} easyPhoto. Processed in your browser — never uploaded.

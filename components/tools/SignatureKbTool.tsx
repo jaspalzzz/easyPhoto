@@ -61,9 +61,9 @@ function Body({ source, kb }: { source: ToolSource; kb: number }) {
       </PreviewFrame>
 
       <label className="block text-sm">
-        <span className="mb-1 flex justify-between font-medium">
-          <span>Paper removal strength</span>
-          <span className="text-muted-foreground">{threshold}</span>
+        <span className="mb-1 flex items-center justify-between">
+          <span className="eyebrow">Paper removal strength</span>
+          <span className="font-mono text-[13px] text-ink-soft">{threshold}</span>
         </span>
         <input
           type="range"
@@ -76,22 +76,23 @@ function Body({ source, kb }: { source: ToolSource; kb: number }) {
       </label>
 
       {out && (
-        <div className="space-y-2 rounded-md border p-3 text-sm">
-          <p>
-            Result: <strong>{formatKb(out.bytes)}</strong> · {out.width}×
+        <div className="space-y-2 rounded-md border border-hairline bg-card p-3 text-sm">
+          <p className="font-mono text-[13px]">
+            Result: <strong className="font-semibold">{formatKb(out.bytes)}</strong> · {out.width}×
             {out.height}px · transparent PNG
           </p>
           {!out.underCap && (
-            <p className="text-amber-700">
+            <p className="border-l-2 border-amber-500 pl-3 text-amber-700">
               Couldn&apos;t get under {kb} KB without losing too much detail —
               this is the smallest clean version. Try a tighter scan.
             </p>
           )}
           <Button
+            variant="cta"
             size="sm"
             onClick={() => downloadBlob(out.blob, `signature-${kb}kb.png`)}
           >
-            <Download className="h-4 w-4" /> Download PNG
+            <Download className="h-4 w-4" strokeWidth={1.75} /> Download PNG
           </Button>
         </div>
       )}

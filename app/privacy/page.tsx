@@ -20,13 +20,13 @@ export default function PrivacyPage() {
         <ArrowLeft className="h-4 w-4" /> Home
       </Link>
 
-      <article className="mt-6 space-y-6">
-        <header className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight">Privacy Policy</h1>
+      <article className="mt-6 divide-y divide-hairline [&>section]:py-8">
+        <header className="space-y-1 pb-8">
+          <h1 className="text-3xl font-semibold tracking-tight">Privacy Policy</h1>
           <p className="text-sm text-muted-foreground">Last updated: June 6, 2026</p>
         </header>
 
-        <p className="text-muted-foreground">
+        <p className="pb-8 leading-relaxed text-muted-foreground">
           easyPhoto is built privacy-first. The short version:{" "}
           <strong className="text-foreground">
             your photos and PDFs never leave your device.
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
           changes will be reflected on this page.
         </Section>
 
-        <p className="text-sm text-muted-foreground">
+        <p className="pt-8 text-sm leading-relaxed text-muted-foreground">
           See also our{" "}
           <Link href="/terms/" className="text-brand hover:underline">
             Terms of Use
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="space-y-2">
-      <h2 className="text-lg font-semibold">{title}</h2>
+      <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
       <p className="leading-relaxed text-muted-foreground">{children}</p>
     </section>
   );

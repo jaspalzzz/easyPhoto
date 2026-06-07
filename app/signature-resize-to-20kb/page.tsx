@@ -72,11 +72,11 @@ export default function Page() {
         href="/tools/"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft className="h-4 w-4" /> All tools
+        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All tools
       </Link>
 
       <header className="mt-4 space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
           Resize Signature to 20KB
         </h1>
         <p className="text-muted-foreground">
@@ -93,12 +93,12 @@ export default function Page() {
       </div>
 
       <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
-        <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
+        <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
         Your signature is processed on your device and never uploaded.
       </p>
 
       <section className="mt-10 space-y-3">
-        <h2 className="text-lg font-semibold">What this tool does</h2>
+        <h2 className="text-lg font-semibold tracking-tight">What this tool does</h2>
         <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
           <li>Gets your signature under 20 KB while keeping it legible.</li>
           <li>Removes the paper background and keeps a transparent PNG — not a white box.</li>
@@ -109,15 +109,15 @@ export default function Page() {
       </section>
 
       <section className="mt-8">
-        <h2 className="mb-3 text-sm font-semibold">Related tools</h2>
+        <h2 className="mb-3 text-sm font-semibold tracking-tight">Related tools</h2>
         <div className="flex flex-wrap gap-2">
-          <Link href="/photo-resize-to-20kb/" className="rounded-full border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground">
+          <Link href="/photo-resize-to-20kb/" className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground">
             Resize photo to 20 KB
           </Link>
-          <Link href="/tools/signature-resize/" className="rounded-full border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground">
+          <Link href="/tools/signature-resize/" className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground">
             Signature resize (pixels)
           </Link>
-          <Link href="/tools/signature/" className="rounded-full border px-4 py-2 text-sm font-medium text-brand hover:bg-accent">
+          <Link href="/tools/signature/" className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-accent/50">
             All signature tools
           </Link>
         </div>

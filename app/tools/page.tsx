@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { TOOLS_CATALOG, POPULAR_TOOLS } from "@/lib/toolsCatalog";
 import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
-import { Card, CardContent } from "@/components/ui/card";
 import { ToolIcon } from "@/components/site/ToolIcon";
 import { TrustPills } from "@/components/site/TrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -28,7 +27,7 @@ export default function ToolsHubPage() {
         ])}
       />
       <header className="space-y-4 text-center">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
           Free, private tools
         </h1>
         <p className="mx-auto max-w-2xl text-muted-foreground">
@@ -43,28 +42,26 @@ export default function ToolsHubPage() {
 
       {/* Most popular — highest-demand tools surfaced first */}
       <section className="mt-12">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+        <h2 className="eyebrow mb-4">
           Most popular
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
           {POPULAR_TOOLS.map((tool) => (
-            <Link key={tool.slug} href={`/tools/${tool.slug}/`} className="group">
-              <Card className="card-hover h-full">
-                <CardContent className="flex h-full items-start gap-4 p-5">
-                  <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand text-brand-foreground">
-                    <ToolIcon name={tool.icon} className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <span className="flex items-center gap-1 font-semibold">
-                      {tool.title}
-                      <ArrowRight className="h-3.5 w-3.5 -translate-x-1 text-brand opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
-                    </span>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {tool.blurb}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+            <Link
+              key={tool.slug}
+              href={`/tools/${tool.slug}/`}
+              className="group flex h-full items-start gap-4 bg-card p-5 transition-colors hover:bg-accent/40"
+            >
+              <ToolIcon name={tool.icon} className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+              <div>
+                <span className="flex items-center gap-1 font-semibold">
+                  {tool.title}
+                  <ArrowRight className="h-3.5 w-3.5 -translate-x-1 text-brand opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" strokeWidth={1.75} />
+                </span>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {tool.blurb}
+                </p>
+              </div>
             </Link>
           ))}
         </div>
@@ -72,7 +69,7 @@ export default function ToolsHubPage() {
 
       {/* Resize to an exact file size (high-intent landing pages) */}
       <section className="mt-12">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+        <h2 className="eyebrow mb-4">
           Resize to an exact file size
         </h2>
         <div className="flex flex-wrap gap-2">
@@ -80,14 +77,14 @@ export default function ToolsHubPage() {
             <Link
               key={kb}
               href={kbPath(kb)}
-              className="rounded-full border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className="rounded-md border border-hairline px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/40 hover:text-foreground"
             >
               Resize to {kb} KB
             </Link>
           ))}
           <Link
             href="/tools/resize-kb/"
-            className="rounded-full border px-4 py-2 text-sm font-medium text-brand hover:bg-accent"
+            className="rounded-md border border-hairline px-4 py-2 text-sm font-medium text-brand transition-colors hover:border-ink/30 hover:bg-accent/40"
           >
             Custom size
           </Link>
@@ -102,45 +99,39 @@ export default function ToolsHubPage() {
             className="mb-4 inline-flex items-center gap-1 text-lg font-semibold hover:text-brand"
           >
             {group.group}
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
           </Link>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2">
             {group.tools.map((tool) =>
               tool.ready ? (
-                <Link key={tool.slug} href={`/tools/${tool.slug}/`} className="group">
-                  <Card className="card-hover h-full">
-                    <CardContent className="flex items-start gap-4 p-5">
-                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-muted text-brand">
-                        <ToolIcon name={tool.icon} className="h-5 w-5" />
-                      </span>
-                      <div>
-                        <span className="font-medium">{tool.title}</span>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          {tool.blurb}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                <Link
+                  key={tool.slug}
+                  href={`/tools/${tool.slug}/`}
+                  className="group flex items-start gap-4 bg-card p-5 transition-colors hover:bg-accent/40"
+                >
+                  <ToolIcon name={tool.icon} className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+                  <div>
+                    <span className="font-medium">{tool.title}</span>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {tool.blurb}
+                    </p>
+                  </div>
                 </Link>
               ) : (
-                <Card key={tool.slug} className="h-full opacity-60">
-                  <CardContent className="flex items-start gap-4 p-5">
-                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                      <ToolIcon name={tool.icon} className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{tool.title}</span>
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                          Coming soon
-                        </span>
-                      </div>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {tool.blurb}
-                      </p>
+                <div key={tool.slug} className="flex items-start gap-4 bg-card p-5 opacity-60">
+                  <ToolIcon name={tool.icon} className="mt-0.5 h-5 w-5 shrink-0 text-ink-soft" />
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{tool.title}</span>
+                      <span className="rounded-md border border-hairline px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                        Coming soon
+                      </span>
                     </div>
-                  </CardContent>
-                </Card>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {tool.blurb}
+                    </p>
+                  </div>
+                </div>
               )
             )}
           </div>
@@ -148,7 +139,7 @@ export default function ToolsHubPage() {
       ))}
 
       {/* Cross-silo bridge → passport & visa makers */}
-      <section className="mt-12 rounded-xl border bg-muted/30 p-6">
+      <section className="mt-12 rounded-lg border border-hairline bg-card p-6">
         <h2 className="text-lg font-semibold">Passport &amp; visa photos</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Need a compliant ID photo? Use the country-aware makers — exact size,
@@ -157,13 +148,13 @@ export default function ToolsHubPage() {
         <div className="mt-3 flex flex-wrap gap-2">
           <Link
             href="/passport-photo/"
-            className="rounded-full border bg-background px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            className="rounded-md border border-hairline bg-paper px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/40 hover:text-foreground"
           >
             Passport photo maker
           </Link>
           <Link
             href="/visa-photo/"
-            className="rounded-full border bg-background px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            className="rounded-md border border-hairline bg-paper px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/40 hover:text-foreground"
           >
             Visa photo maker
           </Link>

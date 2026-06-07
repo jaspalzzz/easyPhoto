@@ -55,29 +55,34 @@ function Body({ source }: { source: ToolSource }) {
 
   if (busy)
     return (
-      <div className="flex flex-col items-center justify-center gap-3 py-12 text-muted-foreground">
-        <Loader2 className="h-8 w-8 animate-spin" />
+      <div className="flex flex-col items-center justify-center gap-3 py-12 text-ink-soft">
+        <Loader2 className="h-8 w-8 animate-spin text-brand" strokeWidth={1.75} />
         <p className="text-sm">Removing background…</p>
       </div>
     );
-  if (error) return <p className="text-sm text-destructive">{error}</p>;
+  if (error)
+    return (
+      <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
+        {error}
+      </p>
+    );
   if (!url) return null;
 
   return (
     <div className="space-y-4">
       <PreviewFrame>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={url} alt="New background" className="max-h-[360px] w-auto rounded" />
+        <img src={url} alt="New background" className="max-h-[360px] w-auto rounded-md" />
       </PreviewFrame>
 
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm font-medium">Background:</span>
+        <span className="eyebrow">Background</span>
         {PRESETS.map((p) => (
           <button
             key={p}
             onClick={() => setHex(p)}
             aria-label={p}
-            className={`h-7 w-7 rounded-full border-2 ${hex.toUpperCase() === p ? "border-primary" : "border-border"}`}
+            className={`h-7 w-7 rounded-md border ${hex.toUpperCase() === p ? "border-brand" : "border-hairline-strong"}`}
             style={{ backgroundColor: p }}
           />
         ))}
@@ -85,18 +90,18 @@ function Body({ source }: { source: ToolSource }) {
           type="color"
           value={hex}
           onChange={(e) => setHex(e.target.value)}
-          className="h-7 w-9 cursor-pointer rounded border bg-transparent"
+          className="h-7 w-9 cursor-pointer rounded-md border border-hairline-strong bg-transparent"
           aria-label="Custom colour"
         />
-        <code className="text-xs text-muted-foreground">{hex.toUpperCase()}</code>
+        <code className="font-mono text-[13px] text-ink-soft">{hex.toUpperCase()}</code>
       </div>
 
       <div className="flex gap-2">
-        <Button onClick={() => onDownload("image/jpeg")}>
-          <Download className="h-4 w-4" /> JPG
+        <Button variant="cta" onClick={() => onDownload("image/jpeg")}>
+          <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
         </Button>
         <Button variant="outline" onClick={() => onDownload("image/png")}>
-          <Download className="h-4 w-4" /> PNG
+          <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
         </Button>
       </div>
     </div>

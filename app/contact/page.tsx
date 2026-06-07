@@ -41,21 +41,19 @@ export default function ContactPage() {
         <ArrowLeft className="h-4 w-4" /> Home
       </Link>
 
-      <article className="mt-6 space-y-6">
+      <article className="mt-6 space-y-8">
         <header className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Contact us</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-semibold tracking-tight">Contact us</h1>
+          <p className="leading-relaxed text-muted-foreground">
             Got a question, a bug report, or a photo specification that needs
             updating? We&apos;d like to hear from you.
           </p>
         </header>
 
-        <div className="rounded-xl border bg-muted/30 p-6">
-          <span className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-muted text-brand">
-            <Mail className="h-5 w-5" />
-          </span>
-          <h2 className="text-base font-semibold">Email</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+        <div className="rounded-lg border border-hairline bg-card p-6">
+          <Mail className="h-5 w-5 text-brand" strokeWidth={1.75} />
+          <h2 className="mt-4 text-base font-semibold tracking-tight">Email</h2>
+          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
             The fastest way to reach us. We aim to reply within a couple of
             business days.
           </p>
@@ -67,8 +65,8 @@ export default function ContactPage() {
           </a>
         </div>
 
-        <section className="space-y-2">
-          <h2 className="text-lg font-semibold">Reporting a spec correction</h2>
+        <section className="space-y-2 border-t border-hairline pt-8">
+          <h2 className="text-lg font-semibold tracking-tight">Reporting a spec correction</h2>
           <p className="leading-relaxed text-muted-foreground">
             EasyPhoto&apos;s value is accuracy. If you find a country&apos;s photo
             size, background colour or file-size limit is out of date, email us
@@ -77,8 +75,8 @@ export default function ContactPage() {
           </p>
         </section>
 
-        <p className="inline-flex items-start gap-2 text-xs text-muted-foreground">
-          <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
+        <p className="inline-flex items-start gap-2 border-t border-hairline pt-8 text-xs text-muted-foreground">
+          <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
           We don&apos;t collect your photos. There&apos;s nothing to ask about
           your images, because they never leave your device.
         </p>

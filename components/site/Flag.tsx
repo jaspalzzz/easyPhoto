@@ -26,7 +26,7 @@ export function Flag({
       alt=""
       aria-hidden
       className={cn(
-        "inline-block h-4 w-[1.5rem] shrink-0 rounded-[3px] object-cover shadow-sm ring-1 ring-black/10",
+        "inline-block h-4 w-[1.5rem] shrink-0 rounded-[2px] object-cover ring-1 ring-ink/15",
         className
       )}
     />

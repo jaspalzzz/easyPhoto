@@ -75,15 +75,15 @@ export function JpgToPdfTool() {
             e.preventDefault();
             add(e.dataTransfer.files);
           }}
-          className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed border-input p-8 text-center hover:bg-accent/50"
+          className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
         >
-          <Plus className="h-8 w-8 text-muted-foreground" />
-          <p className="font-medium">Add images (JPG / PNG)</p>
-          <p className="text-sm text-muted-foreground">
+          <Plus className="h-8 w-8 text-brand" strokeWidth={1.75} />
+          <p className="font-semibold tracking-tight">Add images (JPG / PNG)</p>
+          <p className="text-sm text-ink-soft">
             Each image becomes one page, in the order added.
           </p>
-          <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-            <ShieldCheck className="h-3.5 w-3.5" /> Processed in your browser —
+          <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-ink-soft">
+            <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.75} /> Processed in your browser —
             never uploaded
           </p>
           <input
@@ -101,7 +101,7 @@ export function JpgToPdfTool() {
             {items.map((it, i) => (
               <div
                 key={it.url}
-                className="group relative aspect-square overflow-hidden rounded-md border"
+                className="group relative aspect-square overflow-hidden rounded-md border border-hairline bg-paper"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -109,26 +109,26 @@ export function JpgToPdfTool() {
                   alt={`Page ${i + 1}`}
                   className="h-full w-full object-cover"
                 />
-                <span className="absolute left-1 top-1 rounded bg-black/60 px-1.5 text-xs text-white">
+                <span className="absolute left-1 top-1 rounded-md bg-black/60 px-1.5 font-mono text-[11px] text-white">
                   {i + 1}
                 </span>
                 <button
                   onClick={() => remove(i)}
-                  className="absolute right-1 top-1 rounded-full bg-black/60 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                  className="absolute right-1 top-1 rounded-md bg-black/60 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
                   aria-label={`Remove page ${i + 1}`}
                 >
-                  <X className="h-3 w-3" />
+                  <X className="h-3 w-3" strokeWidth={1.75} />
                 </button>
               </div>
             ))}
           </div>
         )}
 
-        <Button onClick={generate} disabled={busy || items.length === 0}>
+        <Button variant="cta" onClick={generate} disabled={busy || items.length === 0}>
           {busy ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
           ) : (
-            <FileText className="h-4 w-4" />
+            <FileText className="h-4 w-4" strokeWidth={1.75} />
           )}
           Create PDF ({items.length} {items.length === 1 ? "page" : "pages"})
         </Button>

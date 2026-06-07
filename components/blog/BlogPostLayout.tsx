@@ -43,24 +43,24 @@ export function BlogPostLayout({
 
       <Link
         href="/blog/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
       >
-        <ArrowLeft className="h-4 w-4" /> All articles
+        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All articles
       </Link>
 
-      <header className="mt-4 space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">{post.title}</h1>
-        <p className="text-sm text-muted-foreground">
+      <header className="mt-5 space-y-3 border-b border-hairline pb-6">
+        <p className="eyebrow">
           <time dateTime={post.dateISO}>{post.date}</time> · {post.readMins} min
           read
         </p>
+        <h1 className="text-3xl font-semibold tracking-tight">{post.title}</h1>
       </header>
 
-      <article className="mt-6 space-y-4 text-[15px] leading-7 text-muted-foreground [&_a]:text-brand [&_a]:underline [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_li]:ml-1 [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5">
+      <article className="mt-8 space-y-4 text-[15px] leading-7 text-muted-foreground [&_a]:text-brand [&_a]:hover:underline [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-foreground [&_li]:ml-1 [&_strong]:font-semibold [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5">
         {children}
       </article>
 
-      <p className="mt-10 rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
+      <p className="mt-10 rounded-lg border border-hairline bg-card p-4 text-sm text-muted-foreground">
         Ready to make yours?{" "}
         <Link href="/passport-photo/" className="font-medium text-brand hover:underline">
           Use the free passport photo maker

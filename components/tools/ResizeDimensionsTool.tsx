@@ -49,19 +49,19 @@ function Body({ source }: { source: ToolSource }) {
         <img
           src={out?.url ?? source.url}
           alt="To resize"
-          className="max-h-[320px] w-auto rounded"
+          className="max-h-[320px] w-auto rounded-md"
         />
       </PreviewFrame>
 
       <div className="flex flex-wrap items-end gap-3">
         <label className="text-sm">
-          <span className="mb-1 block font-medium">Width (px)</span>
+          <span className="eyebrow mb-1 block">Width (px)</span>
           <input
             type="number"
             min={1}
             value={width}
             onChange={(e) => onWidth(Math.max(1, Number(e.target.value) || 0))}
-            className="h-10 w-28 rounded-md border border-input bg-background px-3"
+            className="h-10 w-28 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
           />
         </label>
         <Button
@@ -71,30 +71,34 @@ function Body({ source }: { source: ToolSource }) {
           aria-label={lock ? "Aspect ratio locked" : "Aspect ratio unlocked"}
           title={lock ? "Aspect ratio locked" : "Aspect ratio unlocked"}
         >
-          {lock ? <Link2 className="h-4 w-4" /> : <Link2Off className="h-4 w-4" />}
+          {lock ? (
+            <Link2 className="h-4 w-4 text-brand" strokeWidth={1.75} />
+          ) : (
+            <Link2Off className="h-4 w-4 text-ink-soft" strokeWidth={1.75} />
+          )}
         </Button>
         <label className="text-sm">
-          <span className="mb-1 block font-medium">Height (px)</span>
+          <span className="eyebrow mb-1 block">Height (px)</span>
           <input
             type="number"
             min={1}
             value={height}
             onChange={(e) => onHeight(Math.max(1, Number(e.target.value) || 0))}
-            className="h-10 w-28 rounded-md border border-input bg-background px-3"
+            className="h-10 w-28 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
           />
         </label>
-        <Button onClick={run} disabled={busy}>
-          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Resize"}
+        <Button variant="cta" onClick={run} disabled={busy}>
+          {busy ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : "Resize"}
         </Button>
       </div>
 
       {out && (
         <div className="flex gap-2">
           <Button size="sm" onClick={() => onDownload("image/png")}>
-            <Download className="h-4 w-4" /> PNG
+            <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
           </Button>
           <Button size="sm" variant="outline" onClick={() => onDownload("image/jpeg")}>
-            <Download className="h-4 w-4" /> JPG
+            <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
           </Button>
         </div>
       )}

@@ -49,7 +49,7 @@ function Body({ source }: { source: ToolSource }) {
       </PreviewFrame>
 
       {empty && (
-        <p className="text-sm text-amber-700">
+        <p className="border-l-2 border-amber-500 pl-3 text-sm text-amber-700">
           Couldn&apos;t find dark content — try raising the sensitivity, or use a
           clearer scan of the signature.
         </p>
@@ -57,9 +57,9 @@ function Body({ source }: { source: ToolSource }) {
 
       <div className="space-y-3">
         <label className="block text-sm">
-          <span className="mb-1 flex justify-between font-medium">
-            <span>Edge padding</span>
-            <span className="text-muted-foreground">{padding}px</span>
+          <span className="mb-1 flex items-center justify-between">
+            <span className="eyebrow">Edge padding</span>
+            <span className="font-mono text-[13px] text-ink-soft">{padding}px</span>
           </span>
           <input
             type="range"
@@ -71,9 +71,9 @@ function Body({ source }: { source: ToolSource }) {
           />
         </label>
         <label className="block text-sm">
-          <span className="mb-1 flex justify-between font-medium">
-            <span>Sensitivity (ink darkness)</span>
-            <span className="text-muted-foreground">{threshold}</span>
+          <span className="mb-1 flex items-center justify-between">
+            <span className="eyebrow">Sensitivity (ink darkness)</span>
+            <span className="font-mono text-[13px] text-ink-soft">{threshold}</span>
           </span>
           <input
             type="range"
@@ -88,13 +88,13 @@ function Body({ source }: { source: ToolSource }) {
 
       {out && (
         <div className="flex items-center gap-2">
-          <Button size="sm" onClick={() => onDownload("image/png")}>
-            <Download className="h-4 w-4" /> PNG
+          <Button variant="cta" size="sm" onClick={() => onDownload("image/png")}>
+            <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
           </Button>
           <Button size="sm" variant="outline" onClick={() => onDownload("image/jpeg")}>
-            <Download className="h-4 w-4" /> JPG
+            <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
           </Button>
-          <span className="text-xs text-muted-foreground">
+          <span className="font-mono text-[13px] text-ink-soft">
             {out.w}×{out.h}px
           </span>
         </div>
