@@ -14,11 +14,6 @@
  * (maxCopiesPerSheet) stays dependency-free for the rest of the UI.
  */
 
-const SHEET_IN = { w: 4, h: 6 };
-const MM_PER_IN = 25.4;
-const MARGIN_MM = 4;
-const GAP_MM = 3;
-
 export interface PrintSheetOptions {
   /** Finished photo canvas (rendered at print DPI). */
   canvas: HTMLCanvasElement;
@@ -26,6 +21,12 @@ export interface PrintSheetOptions {
   photoMm: { width: number; height: number };
   /** Desired copies; clamped to what fits. Defaults to the max that fit. */
   copies?: number;
+  /** Custom paper size. Defaults to '4x6'. */
+  paperSize?: "4x6" | "5x7" | "a4" | "letter";
+  /** Custom page margins in mm. Defaults to 4. */
+  marginMm?: number;
+  /** Custom gap spacing in mm. Defaults to 3. */
+  gapMm?: number;
 }
 
 interface Layout {
@@ -36,29 +37,45 @@ interface Layout {
   capacity: number;
 }
 
+const PAPER_DIMENSIONS = {
+  "4x6": { w: 4 * 25.4, h: 6 * 25.4 },
+  "5x7": { w: 5 * 25.4, h: 7 * 25.4 },
+  a4: { w: 210, h: 297 },
+  letter: { w: 8.5 * 25.4, h: 11 * 25.4 },
+};
+
 function gridFor(
   sheetW: number,
   sheetH: number,
   pw: number,
-  ph: number
+  ph: number,
+  marginMm: number,
+  gapMm: number
 ): { cols: number; rows: number } {
   const cols = Math.max(
     0,
-    Math.floor((sheetW - 2 * MARGIN_MM + GAP_MM) / (pw + GAP_MM))
+    Math.floor((sheetW - 2 * marginMm + gapMm) / (pw + gapMm))
   );
   const rows = Math.max(
     0,
-    Math.floor((sheetH - 2 * MARGIN_MM + GAP_MM) / (ph + GAP_MM))
+    Math.floor((sheetH - 2 * marginMm + gapMm) / (ph + gapMm))
   );
   return { cols, rows };
 }
 
-function bestLayout(photoMm: { width: number; height: number }): Layout {
-  const portrait = { w: SHEET_IN.w * MM_PER_IN, h: SHEET_IN.h * MM_PER_IN };
-  const landscape = { w: portrait.h, h: portrait.w };
+function bestLayout(
+  photoMm: { width: number; height: number },
+  opts: Omit<PrintSheetOptions, "canvas" | "photoMm"> = {}
+): Layout {
+  const paper = PAPER_DIMENSIONS[opts.paperSize ?? "4x6"] ?? PAPER_DIMENSIONS["4x6"];
+  const marginMm = opts.marginMm ?? 4;
+  const gapMm = opts.gapMm ?? 3;
 
-  const p = gridFor(portrait.w, portrait.h, photoMm.width, photoMm.height);
-  const l = gridFor(landscape.w, landscape.h, photoMm.width, photoMm.height);
+  const portrait = { w: paper.w, h: paper.h };
+  const landscape = { w: paper.h, h: paper.w };
+
+  const p = gridFor(portrait.w, portrait.h, photoMm.width, photoMm.height, marginMm, gapMm);
+  const l = gridFor(landscape.w, landscape.h, photoMm.width, photoMm.height, marginMm, gapMm);
   const pCap = p.cols * p.rows;
   const lCap = l.cols * l.rows;
 
@@ -80,22 +97,22 @@ function bestLayout(photoMm: { width: number; height: number }): Layout {
   };
 }
 
-export function maxCopiesPerSheet(photoMm: {
-  width: number;
-  height: number;
-}): number {
-  return bestLayout(photoMm).capacity;
+export function maxCopiesPerSheet(
+  photoMm: { width: number; height: number },
+  opts?: Omit<PrintSheetOptions, "canvas" | "photoMm">
+): number {
+  return bestLayout(photoMm, opts).capacity;
 }
 
-/** Build a 4×6" print sheet PDF; returns a Blob ready to download. */
+/** Build a printable PDF; returns a Blob ready to download. */
 export async function generatePrintSheet(
   opts: PrintSheetOptions
 ): Promise<Blob> {
   const { jsPDF } = await import("jspdf");
-  const { canvas, photoMm } = opts;
-  const layout = bestLayout(photoMm);
+  const { canvas, photoMm, paperSize = "4x6", marginMm = 4, gapMm = 3 } = opts;
+  const layout = bestLayout(photoMm, { paperSize, marginMm, gapMm });
   if (layout.capacity === 0) {
-    throw new Error("Photo is too large to fit on a 4×6 inch sheet.");
+    throw new Error("Photo is too large to fit on the selected sheet size.");
   }
 
   const copies = Math.min(opts.copies ?? layout.capacity, layout.capacity);
@@ -103,8 +120,8 @@ export async function generatePrintSheet(
   const ph = photoMm.height;
 
   // Centre the grid block on the sheet.
-  const blockW = layout.cols * pw + (layout.cols - 1) * GAP_MM;
-  const blockH = layout.rows * ph + (layout.rows - 1) * GAP_MM;
+  const blockW = layout.cols * pw + (layout.cols - 1) * gapMm;
+  const blockH = layout.rows * ph + (layout.rows - 1) * gapMm;
   const startX = (layout.sheet.w - blockW) / 2;
   const startY = (layout.sheet.h - blockH) / 2;
 
@@ -121,8 +138,8 @@ export async function generatePrintSheet(
   let placed = 0;
   for (let r = 0; r < layout.rows && placed < copies; r++) {
     for (let c = 0; c < layout.cols && placed < copies; c++) {
-      const x = startX + c * (pw + GAP_MM);
-      const y = startY + r * (ph + GAP_MM);
+      const x = startX + c * (pw + gapMm);
+      const y = startY + r * (ph + gapMm);
       doc.addImage(imgData, "JPEG", x, y, pw, ph);
       doc.rect(x, y, pw, ph); // thin cut guide
       placed++;

@@ -104,9 +104,13 @@ interface ToolState {
 
   /** A photo chosen in the hero, to be processed once the country page mounts. */
   pendingFile: File | null;
+  brightness: number;
+  contrast: number;
 
   setSpec: (spec: CountrySpec) => void;
   setPendingFile: (file: File | null) => void;
+  setBrightness: (b: number) => void;
+  setContrast: (c: number) => void;
   processFile: (file: File) => Promise<void>;
   applyManualCrop: (cropRect: CropRect) => Promise<void>;
   recomputeAuto: () => Promise<void>;
@@ -130,8 +134,20 @@ export const useToolStore = create<ToolState>((set, get) => ({
   print: null,
   digital: null,
   pendingFile: null,
+  brightness: 100,
+  contrast: 100,
 
   setPendingFile: (file) => set({ pendingFile: file }),
+
+  setBrightness: (b) => {
+    set({ brightness: b });
+    void rebuildPresets(set, get);
+  },
+
+  setContrast: (c) => {
+    set({ contrast: c });
+    void rebuildPresets(set, get);
+  },
 
   setSpec: (spec) => {
     const prev = get();
@@ -177,6 +193,8 @@ export const useToolStore = create<ToolState>((set, get) => ({
       segmented: false,
       segmentationFailed: false,
       sourceFile: file,
+      brightness: 100,
+      contrast: 100,
     });
 
     try {
@@ -299,7 +317,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
   },
 
   applyManualCrop: async (cropRect) => {
-    const { spec, sourceImage, sourceSize, measurements, composite, print, digital } =
+    const { spec, sourceImage, sourceSize, measurements, composite, print, digital, brightness, contrast } =
       get();
     if (!spec || !sourceImage || !sourceSize || !measurements) return;
 
@@ -317,7 +335,8 @@ export const useToolStore = create<ToolState>((set, get) => ({
       cropRect,
       measurements,
       rspec,
-      printDpi
+      printDpi,
+      { brightness, contrast }
     );
     const digitalPreset = await buildPresetFromCrop(
       renderSource,
@@ -325,7 +344,8 @@ export const useToolStore = create<ToolState>((set, get) => ({
       cropRect,
       measurements,
       rspec,
-      digitalDpi
+      digitalDpi,
+      { brightness, contrast }
     );
 
     set({
@@ -367,6 +387,8 @@ export const useToolStore = create<ToolState>((set, get) => ({
       segmentationFailed: false,
       print: null,
       digital: null,
+      brightness: 100,
+      contrast: 100,
     });
   },
 }));
@@ -376,7 +398,7 @@ async function rebuildPresets(
   set: (partial: Partial<ToolState>) => void,
   get: () => ToolState
 ) {
-  const { spec, sourceImage, sourceSize, measurements, composite, print, digital } =
+  const { spec, sourceImage, sourceSize, measurements, composite, print, digital, brightness, contrast } =
     get();
   if (!spec || !sourceImage || !sourceSize || !measurements) return;
 
@@ -393,14 +415,14 @@ async function rebuildPresets(
     sourceSize,
     measurements,
     rspec,
-    { dpi: printDpi, source: sourceSize }
+    { dpi: printDpi, source: sourceSize, brightness, contrast }
   );
   const digitalPreset = await buildPreset(
     renderSource,
     sourceSize,
     measurements,
     rspec,
-    { dpi: digitalDpi, source: sourceSize }
+    { dpi: digitalDpi, source: sourceSize, brightness, contrast }
   );
 
   set({

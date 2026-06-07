@@ -20,10 +20,23 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
   const [busy, setBusy] = React.useState<string | null>(null);
   const [digitalInfo, setDigitalInfo] = React.useState<string | null>(null);
 
+  // Print Sheet Customizer States
+  const [paperSize, setPaperSize] = React.useState<"4x6" | "5x7" | "a4" | "letter">("4x6");
+  const [marginMm, setMarginMm] = React.useState(4);
+  const [gapMm, setGapMm] = React.useState(3);
+
   const capKb = spec.digital.fileSizeKb?.max ?? null;
   const base = spec.id;
   const photoMm = effectivePrintMm(spec);
-  const sheetCopies = maxCopiesPerSheet(photoMm);
+  
+  // Calculate dynamic capacity based on custom margins and size
+  const maxCapacity = maxCopiesPerSheet(photoMm, { paperSize, marginMm, gapMm });
+  const [copies, setCopies] = React.useState(maxCapacity);
+
+  // Keep copies count locked to maximum capacity when layout size changes
+  React.useEffect(() => {
+    setCopies(maxCapacity);
+  }, [maxCapacity]);
 
   const onPrintJpg = async () => {
     setBusy("print-jpg");
@@ -51,9 +64,12 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
       const blob = await generatePrintSheet({
         canvas: print.canvas,
         photoMm,
-        copies: sheetCopies,
+        copies,
+        paperSize,
+        marginMm,
+        gapMm,
       });
-      download(blob, `${base}-passport-print-sheet-4x6.pdf`);
+      download(blob, `${base}-passport-${paperSize}-print-sheet.pdf`);
     } finally {
       setBusy(null);
     }
@@ -110,14 +126,75 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             >
               <Download className="h-4 w-4" /> PNG
             </Button>
-            {sheetCopies > 0 && (
+          </div>
+
+          {/* Printable sheet customizer settings */}
+          <div className="mt-4 pt-3.5 border-t border-hairline space-y-3">
+            <span className="text-[11px] font-semibold eyebrow uppercase tracking-wider text-brand block">
+              PDF Print Sheet Layout
+            </span>
+            <div className="grid grid-cols-2 gap-2.5 text-xs">
+              <label className="block">
+                <span className="text-muted-foreground block mb-0.5 text-[11px]">Paper Size</span>
+                <select
+                  value={paperSize}
+                  onChange={(e) => setPaperSize(e.target.value as any)}
+                  className="w-full rounded border border-hairline bg-background p-1 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-brand"
+                >
+                  <option value="4x6">4×6″ Photo Sheet</option>
+                  <option value="5x7">5×7″ Photo Sheet</option>
+                  <option value="a4">A4 Page</option>
+                  <option value="letter">Letter Page</option>
+                </select>
+              </label>
+
+              <label className="block">
+                <span className="text-muted-foreground block mb-0.5 text-[11px]">Copies ({copies})</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={maxCapacity}
+                  value={copies}
+                  onChange={(e) => setCopies(Math.max(1, Math.min(maxCapacity, Number(e.target.value) || 1)))}
+                  className="w-full rounded border border-hairline bg-background p-1 text-xs font-semibold font-mono focus:outline-none focus:ring-1 focus:ring-brand"
+                />
+              </label>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-[11px]">
+              <label className="block">
+                <span className="text-muted-foreground block mb-0.5 text-[10px] uppercase font-semibold">Margin: {marginMm}mm</span>
+                <input
+                  type="range"
+                  min={4}
+                  max={20}
+                  value={marginMm}
+                  onChange={(e) => setMarginMm(Number(e.target.value))}
+                  className="w-full accent-brand"
+                />
+              </label>
+              <label className="block">
+                <span className="text-muted-foreground block mb-0.5 text-[10px] uppercase font-semibold">Gap: {gapMm}mm</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={10}
+                  value={gapMm}
+                  onChange={(e) => setGapMm(Number(e.target.value))}
+                  className="w-full accent-brand"
+                />
+              </label>
+            </div>
+
+            {maxCapacity > 0 && (
               <Button
                 size="sm"
                 variant="outline"
+                className="w-full mt-2 flex items-center justify-center gap-1.5"
                 onClick={onSheet}
                 disabled={busy !== null}
               >
-                <LayoutGrid className="h-4 w-4" /> 4×6″ sheet ({sheetCopies})
+                <LayoutGrid className="h-3.5 w-3.5" /> Download PDF Print Sheet ({copies} copies)
               </Button>
             )}
           </div>

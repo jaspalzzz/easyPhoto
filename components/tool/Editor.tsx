@@ -31,6 +31,7 @@ export function Editor({
   onCancel,
 }: EditorProps) {
   const cropperRef = React.useRef<ReactCropperElement>(null);
+  const [box, setBox] = React.useState<{ top: number; left: number; width: number; height: number } | null>(null);
 
   const seed = () => {
     const cropper = cropperRef.current?.cropper;
@@ -40,6 +41,19 @@ export function Editor({
       y: initialCrop.sy,
       width: initialCrop.sw,
       height: initialCrop.sh,
+    });
+    handleCrop();
+  };
+
+  const handleCrop = () => {
+    const cropper = cropperRef.current?.cropper;
+    if (!cropper) return;
+    const boxData = cropper.getCropBoxData();
+    setBox({
+      top: boxData.top,
+      left: boxData.left,
+      width: boxData.width,
+      height: boxData.height,
     });
   };
 
@@ -53,10 +67,9 @@ export function Editor({
   return (
     <div className="space-y-3">
       <p className="text-sm text-ink-soft">
-        Drag to reposition · drag a corner to resize. The box is locked to the
-        required photo shape.
+        Drag to reposition · drag a corner to resize. Align your chin and head top to the overlay.
       </p>
-      <div className="overflow-hidden rounded-md border border-hairline bg-paper">
+      <div className="overflow-hidden rounded-md border border-hairline bg-paper relative">
         <Cropper
           ref={cropperRef}
           src={src}
@@ -70,7 +83,67 @@ export function Editor({
           checkOrientation={false}
           guides
           ready={seed}
+          crop={handleCrop}
         />
+        
+        {box && (
+          <svg
+            style={{
+              position: "absolute",
+              pointerEvents: "none", // click-through
+              top: box.top,
+              left: box.left,
+              width: box.width,
+              height: box.height,
+              zIndex: 10,
+            }}
+            viewBox="0 0 100 100"
+          >
+            {/* Biometric head shape guide */}
+            <ellipse
+              cx="50"
+              cy="46"
+              rx="23"
+              ry="32"
+              fill="none"
+              stroke="#157F75"
+              strokeWidth="1.2"
+              strokeDasharray="2,2"
+            />
+            {/* Eye horizontal guideline */}
+            <line
+              x1="10"
+              y1="40"
+              x2="90"
+              y2="40"
+              stroke="#157F75"
+              strokeWidth="0.8"
+              strokeDasharray="2,2"
+              opacity="0.7"
+            />
+            {/* Center alignment vertical guideline */}
+            <line
+              x1="50"
+              y1="10"
+              x2="50"
+              y2="82"
+              stroke="#157F75"
+              strokeWidth="0.8"
+              strokeDasharray="2,2"
+              opacity="0.7"
+            />
+            <text
+              x="50"
+              y="9"
+              textAnchor="middle"
+              fill="#157F75"
+              fontSize="4.5"
+              fontWeight="bold"
+            >
+              ALIGN FACE TO OVAL
+            </text>
+          </svg>
+        )}
       </div>
       <div className="flex gap-2">
         <Button size="sm" variant="cta" onClick={apply}>

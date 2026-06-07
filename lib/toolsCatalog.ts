@@ -110,6 +110,14 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         popular: true,
         icon: "Scissors",
       },
+      {
+        slug: "pdf-reorder",
+        title: "Reorder & Rotate PDF",
+        blurb: "Rearrange, rotate, or delete pages of a PDF visually.",
+        ready: true,
+        popular: true,
+        icon: "ArrowUpDown",
+      },
     ],
   },
   {

@@ -18,6 +18,36 @@ interface SignatureWorkflowProps {
   autoCropDefault?: boolean;
 }
 
+function smoothCanvas(canvas: HTMLCanvasElement, radius: number): HTMLCanvasElement {
+  if (radius <= 0) return canvas;
+  
+  const width = canvas.width;
+  const height = canvas.height;
+  
+  const temp = document.createElement("canvas");
+  temp.width = width;
+  temp.height = height;
+  const tctx = temp.getContext("2d");
+  if (!tctx) return canvas;
+  
+  tctx.filter = `blur(${radius}px)`;
+  tctx.drawImage(canvas, 0, 0);
+  
+  const imgData = tctx.getImageData(0, 0, width, height);
+  const data = imgData.data;
+  
+  for (let i = 0; i < data.length; i += 4) {
+    const alpha = data[i + 3];
+    let newAlpha = (alpha - 110) * 8;
+    if (newAlpha < 0) newAlpha = 0;
+    if (newAlpha > 255) newAlpha = 255;
+    data[i + 3] = newAlpha;
+  }
+  
+  tctx.putImageData(imgData, 0, 0);
+  return temp;
+}
+
 function Body({
   source,
   defaultTab = "clean",
@@ -51,6 +81,106 @@ function Body({
   const [width, setWidth] = React.useState<number>(0);
   const [height, setHeight] = React.useState<number>(0);
   const [lock, setLock] = React.useState(true);
+
+  // Eraser Settings
+  const [eraserEnabled, setEraserEnabled] = React.useState(false);
+  const [brushSize, setBrushSize] = React.useState(15);
+  const [eraserVersion, setEraserVersion] = React.useState(0);
+  const eraserCanvasRef = React.useRef<HTMLCanvasElement | null>(null);
+
+  // Smoothing Settings
+  const [smoothing, setSmoothing] = React.useState(0);
+
+  // Reset eraser mask when new source image is loaded
+  React.useEffect(() => {
+    if (source) {
+      const canvas = document.createElement("canvas");
+      canvas.width = source.size.width;
+      canvas.height = source.size.height;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.fillStyle = "rgba(0, 0, 0, 0)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      eraserCanvasRef.current = canvas;
+      setEraserVersion(0);
+    }
+  }, [source]);
+
+  // Drawing event handlers for Eraser tool
+  const [isDrawing, setIsDrawing] = React.useState(false);
+  const imgRef = React.useRef<HTMLImageElement>(null);
+
+  const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!imgRef.current || !source) return null;
+    const img = imgRef.current;
+    const rect = img.getBoundingClientRect();
+    
+    let clientX: number;
+    let clientY: number;
+    
+    if ("touches" in e) {
+      if (e.touches.length === 0) return null;
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+    
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    
+    const origX = (x / rect.width) * source.size.width;
+    const origY = (y / rect.height) * source.size.height;
+    
+    return { x: origX, y: origY };
+  };
+
+  const handleStart = (e: React.MouseEvent<HTMLImageElement> | React.TouchEvent<HTMLImageElement>) => {
+    if (!eraserEnabled) return;
+    e.preventDefault();
+    const coords = getCoordinates(e);
+    if (!coords) return;
+    
+    setIsDrawing(true);
+    const canvas = eraserCanvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(255, 255, 255, 1.0)";
+        ctx.lineWidth = brushSize;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.moveTo(coords.x, coords.y);
+      }
+    }
+  };
+
+  const handleMove = (e: React.MouseEvent<HTMLImageElement> | React.TouchEvent<HTMLImageElement>) => {
+    if (!eraserEnabled || !isDrawing) return;
+    e.preventDefault();
+    const coords = getCoordinates(e);
+    if (!coords) return;
+    
+    const canvas = eraserCanvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.lineTo(coords.x, coords.y);
+        ctx.stroke();
+        setEraserVersion((v) => v + 1);
+      }
+    }
+  };
+
+  const handleEnd = () => {
+    if (isDrawing) {
+      setIsDrawing(false);
+      setEraserVersion((v) => v + 1);
+    }
+  };
 
   // Processing Output State
   const [busy, setBusy] = React.useState(false);
@@ -88,11 +218,28 @@ function Body({
           inkContrast,
         });
 
+        // Apply Eraser Mask if it exists
+        if (eraserCanvasRef.current && eraserVersion > 0) {
+          const cctx = cleaned.getContext("2d");
+          if (cctx) {
+            cctx.save();
+            cctx.globalCompositeOperation = "destination-out";
+            cctx.drawImage(eraserCanvasRef.current, 0, 0);
+            cctx.restore();
+          }
+        }
+
+        // Apply Ink Smoothing if specified
+        let finalCleaned = cleaned;
+        if (smoothing > 0) {
+          finalCleaned = smoothCanvas(cleaned, smoothing);
+        }
+
         // Step 3: Trim / Crop
-        let finalCanvas = cleaned;
+        let finalCanvas = finalCleaned;
         let cropOk = true;
         if (autoCrop) {
-          const { canvas: trimmed, bbox } = trimToContent(cleaned, {
+          const { canvas: trimmed, bbox } = trimToContent(finalCleaned, {
             mode: "alpha",
             padding,
           });
@@ -154,6 +301,8 @@ function Body({
     targetKb,
     width,
     height,
+    eraserVersion,
+    smoothing,
   ]);
 
   // Handle preset selections
@@ -237,10 +386,26 @@ function Body({
           ) : out ? (
             <div className="flex flex-col items-center">
               <img
+                ref={imgRef}
                 src={out.url}
                 alt="Processed signature preview"
-                className="max-h-[260px] w-auto object-contain"
+                className={`max-h-[260px] w-auto object-contain select-none ${
+                  eraserEnabled ? "cursor-crosshair border border-dashed border-brand/40" : ""
+                }`}
+                draggable={false}
+                onMouseDown={handleStart}
+                onMouseMove={handleMove}
+                onMouseUp={handleEnd}
+                onMouseLeave={handleEnd}
+                onTouchStart={handleStart}
+                onTouchMove={handleMove}
+                onTouchEnd={handleEnd}
               />
+              {eraserEnabled && (
+                <p className="text-[11px] text-brand font-medium mt-2 text-center">
+                  Drag on the image above to erase unwanted parts.
+                </p>
+              )}
             </div>
           ) : (
             <div className="py-20 text-sm text-muted-foreground">No preview available</div>
@@ -355,6 +520,62 @@ function Body({
                 />
               </label>
 
+              {/* Manual Eraser Brush */}
+              <div className="border-t border-hairline pt-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xs font-semibold eyebrow uppercase tracking-wider text-muted-foreground">Manual Eraser</h4>
+                    <p className="text-[11px] text-muted-foreground">Erase background noise or lines manually.</p>
+                  </div>
+                  <Button
+                    type="button"
+                    variant={eraserEnabled ? "cta" : "outline"}
+                    size="sm"
+                    className="h-8"
+                    onClick={() => setEraserEnabled(!eraserEnabled)}
+                  >
+                    {eraserEnabled ? "Active" : "Enable"}
+                  </Button>
+                </div>
+
+                {eraserEnabled && (
+                  <div className="space-y-3 p-3 bg-accent/5 rounded-md border border-hairline animate-fadeIn">
+                    <label className="block text-xs">
+                      <span className="mb-1 flex items-center justify-between font-semibold uppercase text-[10px] text-muted-foreground">
+                        <span>Brush Size</span>
+                        <span>{brushSize}px</span>
+                      </span>
+                      <input
+                        type="range"
+                        min={5}
+                        max={60}
+                        value={brushSize}
+                        onChange={(e) => setBrushSize(Number(e.target.value))}
+                        className="w-full accent-brand cursor-pointer"
+                      />
+                    </label>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="w-full text-xs text-destructive hover:bg-destructive/10"
+                      onClick={() => {
+                        if (eraserCanvasRef.current) {
+                          const ctx = eraserCanvasRef.current.getContext("2d");
+                          if (ctx) {
+                            ctx.clearRect(0, 0, eraserCanvasRef.current.width, eraserCanvasRef.current.height);
+                            setEraserVersion(0);
+                          }
+                        }
+                      }}
+                    >
+                      Reset Erasures
+                    </Button>
+                  </div>
+                )}
+              </div>
+
               <div className="border-t border-hairline pt-4 space-y-4">
                 <div className="space-y-1">
                   <h4 className="text-xs font-semibold eyebrow uppercase tracking-wider text-muted-foreground">Ink Adjustments</h4>
@@ -396,6 +617,27 @@ function Body({
                   />
                   <span className="text-[11px] text-muted-foreground block mt-0.5">
                     Enhance faint ink writing for better biometric readability.
+                  </span>
+                </label>
+
+                <label className="block text-sm">
+                  <span className="mb-1 flex items-center justify-between">
+                    <span className="eyebrow">Ink Smoothing</span>
+                    <span className="font-mono text-xs text-brand font-semibold">
+                      {smoothing === 0 ? "Off" : `${smoothing}px`}
+                    </span>
+                  </span>
+                  <input
+                    type="range"
+                    min={0}
+                    max={3}
+                    step={0.5}
+                    value={smoothing}
+                    onChange={(e) => setSmoothing(Number(e.target.value))}
+                    className="w-full"
+                  />
+                  <span className="text-[11px] text-muted-foreground block mt-0.5">
+                    Smooths out jagged borders and pixelation on low-res scans.
                   </span>
                 </label>
               </div>

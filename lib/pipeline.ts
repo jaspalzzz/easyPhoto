@@ -145,7 +145,8 @@ async function getPica() {
 export async function renderPhoto(
   image: HTMLImageElement | HTMLCanvasElement | ImageBitmap,
   result: CropResult,
-  spec: CountrySpec
+  spec: CountrySpec,
+  adjustments?: { brightness: number; contrast: number }
 ): Promise<HTMLCanvasElement> {
   const { crop, output } = result;
 
@@ -156,6 +157,15 @@ export async function renderPhoto(
   const cctx = cropCanvas.getContext("2d");
   if (!cctx) throw new Error("Could not acquire 2D canvas context.");
   cctx.imageSmoothingQuality = "high";
+
+  // Apply Brightness & Contrast canvas filters client-side
+  if (adjustments) {
+    const { brightness = 100, contrast = 100 } = adjustments;
+    if (brightness !== 100 || contrast !== 100) {
+      cctx.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
+    }
+  }
+
   cctx.drawImage(
     image,
     crop.sx,
@@ -192,10 +202,13 @@ export async function buildPreset(
   source: { width: number; height: number },
   measurements: FaceMeasurements,
   spec: CountrySpec,
-  opts: ComputeCropOpts
+  opts: ComputeCropOpts & { brightness?: number; contrast?: number }
 ): Promise<{ result: CropResult; canvas: HTMLCanvasElement }> {
   const result = computeCrop(measurements, spec, { ...opts, source });
-  const canvas = await renderPhoto(renderSource, result, spec);
+  const canvas = await renderPhoto(renderSource, result, spec, {
+    brightness: opts.brightness ?? 100,
+    contrast: opts.contrast ?? 100,
+  });
   return { result, canvas };
 }
 
@@ -211,7 +224,8 @@ export async function buildPresetFromCrop(
   cropRect: CropRect,
   measurements: FaceMeasurements,
   spec: CountrySpec,
-  dpi: number
+  dpi: number,
+  adjustments?: { brightness: number; contrast: number }
 ): Promise<{ result: CropResult; canvas: HTMLCanvasElement }> {
   const output = {
     width: mmToPx(spec.printMm.width, dpi),
@@ -255,6 +269,6 @@ export async function buildPresetFromCrop(
     },
     warnings,
   };
-  const canvas = await renderPhoto(renderSource, result, spec);
+  const canvas = await renderPhoto(renderSource, result, spec, adjustments);
   return { result, canvas };
 }

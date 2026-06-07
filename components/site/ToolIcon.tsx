@@ -8,6 +8,11 @@ import {
   PenLine,
   Crop,
   Wrench,
+  FileText,
+  Scissors,
+  RefreshCw,
+  RotateCw,
+  ArrowUpDown,
   type LucideIcon,
 } from "lucide-react";
 
@@ -20,6 +25,11 @@ const MAP: Record<string, LucideIcon> = {
   FileImage,
   PenLine,
   Crop,
+  FileText,
+  Scissors,
+  RefreshCw,
+  RotateCw,
+  ArrowUpDown,
 };
 
 export function ToolIcon({ name, className }: { name: string; className?: string }) {

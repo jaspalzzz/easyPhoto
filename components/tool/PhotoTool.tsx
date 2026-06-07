@@ -48,6 +48,10 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
     applyManualCrop,
     recomputeAuto,
     reset,
+    brightness,
+    contrast,
+    setBrightness,
+    setContrast,
   } = useToolStore();
 
   const [editing, setEditing] = React.useState(false);
@@ -177,6 +181,42 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                         }}
                       />
                     </div>
+
+                    {/* Image Adjustment sliders */}
+                    <div className="bg-paper border border-hairline rounded-md p-3.5 space-y-3">
+                      <span className="text-[11px] font-semibold eyebrow uppercase tracking-wider text-brand block">
+                        Image Adjustments
+                      </span>
+                      <div className="grid grid-cols-2 gap-4">
+                        <label className="block text-xs">
+                          <span className="text-muted-foreground block mb-1 font-semibold uppercase text-[10px]">
+                            Brightness: {brightness}%
+                          </span>
+                          <input
+                            type="range"
+                            min={60}
+                            max={140}
+                            value={brightness}
+                            onChange={(e) => setBrightness(Number(e.target.value))}
+                            className="w-full accent-brand cursor-pointer"
+                          />
+                        </label>
+                        <label className="block text-xs">
+                          <span className="text-muted-foreground block mb-1 font-semibold uppercase text-[10px]">
+                            Contrast: {contrast}%
+                          </span>
+                          <input
+                            type="range"
+                            min={60}
+                            max={140}
+                            value={contrast}
+                            onChange={(e) => setContrast(Number(e.target.value))}
+                            className="w-full accent-brand cursor-pointer"
+                          />
+                        </label>
+                      </div>
+                    </div>
+
                     <div className="flex items-center justify-between">
                       <p className="spec normal-case tracking-[0.06em]">
                         {photoMm.width}×{photoMm.height}mm ·{" "}
