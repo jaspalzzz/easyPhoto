@@ -19,7 +19,7 @@ import {
   buildPresetFromCrop,
   loadImageFromFile,
 } from "@/lib/pipeline";
-import { removeBg, findCrownY, compositeFull } from "@/lib/segmentation";
+import { segmentPerson, findCrownY, compositeFull } from "@/lib/segmentation";
 import { ensureDecodable } from "@/lib/heic";
 
 /** Reject with a friendly message if a promise doesn't settle in time. */
@@ -169,7 +169,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
       // Segmentation: real background removal + the PREFERRED crownY.
       set({ status: "segmenting" });
       try {
-        const cutout = await removeBg(decodable, size);
+        const cutout = await segmentPerson(image, size);
         const crownY = findCrownY(cutout, measurements.faceXSpan);
         if (crownY != null && crownY < measurements.chinY) {
           measurements.crownY = crownY;

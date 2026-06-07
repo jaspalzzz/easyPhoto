@@ -14,6 +14,81 @@
  * Lazy-loaded so the (heavy) model never blocks first paint.
  */
 
+// ── Person segmentation via MediaPipe ImageSegmenter (selfie) ───────────────
+// The passport pipeline uses this instead of the heavy onnxruntime model: the
+// MediaPipe selfie model is ~250KB and runs in the SAME wasm runtime that face
+// detection already uses, so it stays within iOS Safari's memory limit (the
+// onnxruntime model OOMs on iPhone). The cutout contract is identical to
+// removeBg, so findCrownY/compositeFull are unchanged.
+const SEG_WASM_BASE =
+  "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm";
+const SELFIE_MODEL_URL =
+  "https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let segmenterPromise: Promise<any> | null = null;
+async function getSegmenter() {
+  if (!segmenterPromise) {
+    segmenterPromise = (async () => {
+      const { FilesetResolver, ImageSegmenter } = await import(
+        "@mediapipe/tasks-vision"
+      );
+      const fileset = await FilesetResolver.forVisionTasks(SEG_WASM_BASE);
+      return ImageSegmenter.createFromOptions(fileset, {
+        baseOptions: { modelAssetPath: SELFIE_MODEL_URL, delegate: "GPU" },
+        runningMode: "IMAGE",
+        outputCategoryMask: false,
+        outputConfidenceMasks: true,
+      });
+    })();
+  }
+  return segmenterPromise;
+}
+
+/**
+ * Cut the person out of the photo with MediaPipe selfie segmentation. Returns an
+ * RGBA canvas at SOURCE dimensions (person opaque, background transparent) — the
+ * same contract as removeBg, so the rest of the pipeline is untouched.
+ */
+export async function segmentPerson(
+  image: HTMLImageElement | HTMLCanvasElement | ImageBitmap,
+  size: { width: number; height: number }
+): Promise<HTMLCanvasElement> {
+  const segmenter = await getSegmenter();
+  const canvas = document.createElement("canvas");
+  canvas.width = size.width;
+  canvas.height = size.height;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) throw new Error("Could not acquire 2D canvas context.");
+  ctx.drawImage(image as CanvasImageSource, 0, 0, size.width, size.height);
+
+  const result = segmenter.segment(image);
+  const mask = result.confidenceMasks?.[0];
+  if (!mask) {
+    result.close?.();
+    throw new Error("Segmentation produced no mask.");
+  }
+  const conf: Float32Array = mask.getAsFloat32Array();
+  const mw: number = mask.width;
+  const mh: number = mask.height;
+
+  const imgData = ctx.getImageData(0, 0, size.width, size.height);
+  const d = imgData.data;
+  for (let y = 0; y < size.height; y++) {
+    const my = Math.min(mh - 1, ((y * mh) / size.height) | 0);
+    const row = my * mw;
+    for (let x = 0; x < size.width; x++) {
+      const mx = Math.min(mw - 1, ((x * mw) / size.width) | 0);
+      const c = conf[row + mx]; // 0..1 person-confidence
+      d[(y * size.width + x) * 4 + 3] = c >= 0.5 ? 255 : (c * 255) | 0;
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+  mask.close?.();
+  result.close?.();
+  return canvas;
+}
+
 /**
  * Remove the background from a source image, returning an RGBA cutout canvas
  * drawn at the SOURCE dimensions (so all coordinates stay in source space,
