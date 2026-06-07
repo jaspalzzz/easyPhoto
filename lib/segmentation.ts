@@ -159,22 +159,56 @@ export async function describeWebGPU(): Promise<string> {
   }
 }
 
+// RMBG-1.4 is a CUSTOM architecture: its config.json has no standard model_type,
+// so pipeline("image-segmentation", …) and AutoModel auto-resolution both fail
+// with "unsupported model type". The supported path is AutoModel +
+// AutoProcessor with explicit configs (model_type: "custom" + the processor
+// settings RMBG-1.4 expects). We cache model + processor; failures reset so one
+// error can't permanently disable the path.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let rmbgPipelinePromise: Promise<any> | null = null;
-function getRMBGPipeline() {
-  if (!rmbgPipelinePromise) {
-    rmbgPipelinePromise = (async () => {
-      const { pipeline } = await import("@huggingface/transformers");
-      return pipeline("image-segmentation", "briaai/RMBG-1.4", {
-        device: "webgpu",
-        dtype: "fp16", // fp32 is too heavy for most mobile GPUs
-      });
-    })().catch((e) => {
-      rmbgPipelinePromise = null; // don't cache a failure
+let rmbgModelPromise: Promise<any> | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let rmbgProcessorPromise: Promise<any> | null = null;
+
+async function getRMBG() {
+  const { AutoModel, AutoProcessor } = await import("@huggingface/transformers");
+  if (!rmbgModelPromise) {
+    rmbgModelPromise = AutoModel.from_pretrained("briaai/RMBG-1.4", {
+      device: "webgpu",
+      dtype: "fp16", // GPU memory + download small enough for mobile GPUs
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      config: { model_type: "custom" } as any,
+    }).catch((e: unknown) => {
+      rmbgModelPromise = null;
       throw e;
     });
   }
-  return rmbgPipelinePromise;
+  if (!rmbgProcessorPromise) {
+    rmbgProcessorPromise = AutoProcessor.from_pretrained("briaai/RMBG-1.4", {
+      // RMBG-1.4 ships no preprocessor recognised by AutoProcessor, so supply it.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      config: {
+        do_normalize: true,
+        do_pad: false,
+        do_rescale: true,
+        do_resize: true,
+        image_mean: [0.5, 0.5, 0.5],
+        image_std: [1, 1, 1],
+        feature_extractor_type: "ImageFeatureExtractor",
+        resample: 2,
+        rescale_factor: 0.00392156862745098,
+        size: { width: 1024, height: 1024 },
+      } as any,
+    }).catch((e: unknown) => {
+      rmbgProcessorPromise = null;
+      throw e;
+    });
+  }
+  const [model, processor] = await Promise.all([
+    rmbgModelPromise,
+    rmbgProcessorPromise,
+  ]);
+  return { model, processor };
 }
 
 /**
@@ -186,7 +220,7 @@ export async function removeBgWebGPU(
   source: Blob,
   size: { width: number; height: number }
 ): Promise<HTMLCanvasElement> {
-  const pipe = await getRMBGPipeline();
+  const { model, processor } = await getRMBG();
   const { RawImage } = await import("@huggingface/transformers");
 
   const url = URL.createObjectURL(source);
@@ -198,9 +232,13 @@ export async function removeBgWebGPU(
     URL.revokeObjectURL(url);
   }
 
-  const result = await pipe(rawImg);
-  const maskImg = Array.isArray(result) ? result[0]?.mask : result?.mask;
-  if (!maskImg) throw new Error("RMBG-1.4 produced no mask.");
+  // Preprocess → infer → the model returns a single-channel alpha matte (0..1).
+  const { pixel_values } = await processor(rawImg);
+  const { output } = await model({ input: pixel_values });
+  if (!output) throw new Error("RMBG-1.4 produced no output tensor.");
+  const maskImg = await RawImage.fromTensor(
+    output[0].mul(255).to("uint8")
+  ).resize(size.width, size.height);
 
   const canvas = document.createElement("canvas");
   canvas.width = size.width;
@@ -211,9 +249,8 @@ export async function removeBgWebGPU(
 
   const imgData = ctx.getImageData(0, 0, size.width, size.height);
   const d = imgData.data;
-  const resized = await maskImg.resize(size.width, size.height);
-  const md: Uint8Array = resized.data;
-  const ch: number = resized.channels || 1;
+  const md: ArrayLike<number> = maskImg.data;
+  const ch: number = maskImg.channels || 1;
   for (let i = 0; i < size.width * size.height; i++) {
     d[i * 4 + 3] = md[i * ch]; // mask value -> alpha (foreground opaque)
   }
