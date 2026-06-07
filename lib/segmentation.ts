@@ -258,6 +258,45 @@ export async function segmentPerson(
       const w11_b = mean_b[rowOffset_y1 + x1];
       const val_b = (w00_b * (1 - tx) + w10_b * tx) * (1 - ty) + (w01_b * (1 - tx) + w11_b * tx) * ty;
 
+      // Interpolate confidence from raw MediaPipe mask for dynamic trimap
+      const w00_c = conf[rowOffset_y0 + x0];
+      const w10_c = conf[rowOffset_y0 + x1];
+      const w01_c = conf[rowOffset_y1 + x0];
+      const w11_c = conf[rowOffset_y1 + x1];
+      const c_val = (w00_c * (1 - tx) + w10_c * tx) * (1 - ty) + (w01_c * (1 - tx) + w11_c * tx) * ty;
+
+      // Compute geometric ROI weight to zero out far-away background objects
+      let weight = 1.0;
+      if (measurements) {
+        const scaleX = mw / size.width;
+        const scaleY = mh / size.height;
+        const lowResFaceCenterX = measurements.faceCenterX * scaleX;
+        const lowResChinY = measurements.chinY * scaleY;
+        const lowResFaceWidth = Math.max(10, (measurements.faceXSpan.max - measurements.faceXSpan.min) * scaleX);
+
+        const headHalfWidth = lowResFaceWidth * 0.95;
+        const transitionWidth = lowResFaceWidth * 0.25;
+        const maxHalfWidth = lowResFaceWidth * 1.25;
+
+        const row = gy;
+        const col = gx;
+
+        let halfWidth = headHalfWidth;
+        if (row > lowResChinY) {
+          halfWidth += (row - lowResChinY) * 0.45;
+        }
+        halfWidth = Math.min(maxHalfWidth, halfWidth);
+
+        const dx = Math.abs(col - lowResFaceCenterX);
+        if (dx > halfWidth) {
+          if (dx > halfWidth + transitionWidth) {
+            weight = 0.0;
+          } else {
+            weight = 1.0 - (dx - halfWidth) / transitionWidth;
+          }
+        }
+      }
+
       // Get high-res grayscale guidance I_val
       const idx = (rowOffset_orig + x) * 4;
       const r = d[idx] / 255;
@@ -265,17 +304,27 @@ export async function segmentPerson(
       const b = d[idx + 2] / 255;
       const I_val = 0.299 * r + 0.587 * g + 0.114 * b;
 
-      // Linear model: q = a * I + b
-      let q = val_a * I_val + val_b;
-
-      // Apply contrast boost to make it near-binary (sharp edges, no ghosting)
-      if (q < 0.1) {
+      let q = 1.0;
+      if (c_val <= 0.15) {
         q = 0.0;
-      } else if (q > 0.9) {
+      } else if (c_val >= 0.85) {
         q = 1.0;
       } else {
-        q = (q - 0.1) / 0.8;
+        // Linear model in transition region
+        q = val_a * I_val + val_b;
+
+        // Apply contrast boost to make it near-binary (sharp edges, no ghosting)
+        if (q < 0.1) {
+          q = 0.0;
+        } else if (q > 0.9) {
+          q = 1.0;
+        } else {
+          q = (q - 0.1) / 0.8;
+        }
       }
+
+      // Apply geometric ROI mask
+      q *= weight;
 
       // Set alpha channel (clamped to [0, 255])
       d[idx + 3] = Math.max(0, Math.min(255, q * 255)) | 0;
