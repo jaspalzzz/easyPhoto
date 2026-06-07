@@ -43,6 +43,7 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
     sourceUrl,
     segmented,
     segmentationFailed,
+    segDiagnostic,
     setSpec,
     processFile,
     applyManualCrop,
@@ -140,6 +141,12 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                   background is still shown. The crop and sizing are still
                   correct, so retry or use a photo with a clearer background.
                 </span>
+              </div>
+            )}
+
+            {segmentationFailed && segDiagnostic && (
+              <div className="break-all border-l-2 border-slate-400 bg-slate-50 py-2 pl-3 pr-2 font-mono text-[11px] leading-snug text-slate-700">
+                diag: {segDiagnostic}
               </div>
             )}
 

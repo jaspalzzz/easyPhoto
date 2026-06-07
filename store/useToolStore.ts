@@ -80,6 +80,8 @@ interface ToolState {
   /** True once background removal succeeded; false means Phase-1 fallback. */
   segmented: boolean;
   segmentationFailed: boolean;
+  /** TEMP diagnostic: why segmentation fell back (shown on dev). */
+  segDiagnostic: string | null;
 
   print: Preset | null;
   digital: Preset | null;
@@ -109,6 +111,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
   compositeUrl: null,
   segmented: false,
   segmentationFailed: false,
+      segDiagnostic: null,
   print: null,
   digital: null,
   pendingFile: null,
@@ -149,6 +152,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
       compositeUrl: null,
       segmented: false,
       segmentationFailed: false,
+      segDiagnostic: null,
       sourceFile: file,
     });
 
@@ -170,24 +174,30 @@ export const useToolStore = create<ToolState>((set, get) => ({
 
       // Segmentation: real background removal + the PREFERRED crownY.
       set({ status: "segmenting" });
+      // Engine choice is about MEMORY, not quality preference:
+      //   • Desktop → isnet (onnxruntime WASM). Proven, unchanged.
+      //   • Mobile  → isnet's WASM heap OOMs, so use RMBG-1.4 on WebGPU
+      //     (GPU memory). Premium quality, no uploads — model only downloads.
+      //   • Mobile without WebGPU → no safe on-device premium path; throw so
+      //     the catch below falls back honestly (original bg + the notice).
+      const isMobile =
+        typeof navigator !== "undefined" &&
+        /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      let webgpuOK = false;
+      if (isMobile) {
+        try {
+          webgpuOK = await isWebGPUSupported();
+        } catch {
+          webgpuOK = false;
+        }
+      }
       try {
-        // Engine choice is about MEMORY, not quality preference:
-        //   • Desktop → isnet (onnxruntime WASM). Proven, unchanged.
-        //   • Mobile  → isnet's WASM heap OOMs, so use RMBG-1.4 on WebGPU
-        //     (GPU memory). Premium quality, no uploads — model only downloads.
-        //   • Mobile without WebGPU → no safe on-device premium path; throw so
-        //     the catch below falls back honestly (original bg + the notice).
-        const isMobile =
-          typeof navigator !== "undefined" &&
-          /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         let cutout: HTMLCanvasElement;
         if (isMobile) {
-          if (await isWebGPUSupported()) {
+          if (webgpuOK) {
             cutout = await removeBgWebGPU(decodable, size);
           } else {
-            throw new Error(
-              "This phone doesn't support on-device background removal (no WebGPU)."
-            );
+            throw new Error("no-webgpu-adapter");
           }
         } else {
           cutout = await removeBg(decodable, size);
@@ -208,8 +218,17 @@ export const useToolStore = create<ToolState>((set, get) => ({
       } catch (segErr) {
         // Fallback to Phase-1 behaviour: crop the original, keep the
         // landmark-estimated crownY. Surfaced to the user via segmentationFailed.
-        console.warn("Background removal failed; using original image.", segErr);
-        set({ measurements, segmented: false, segmentationFailed: true });
+        const reason =
+          segErr instanceof Error ? `${segErr.name}: ${segErr.message}` : String(segErr);
+        // TEMP diagnostic so we can see on the phone WHY it fell back.
+        const diag = `mobile=${isMobile} webgpu=${webgpuOK} · ${reason}`;
+        console.warn("Background removal failed; using original image.", diag, segErr);
+        set({
+          measurements,
+          segmented: false,
+          segmentationFailed: true,
+          segDiagnostic: diag,
+        });
       }
 
       set({ status: "rendering" });
@@ -293,6 +312,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
       compositeUrl: null,
       segmented: false,
       segmentationFailed: false,
+      segDiagnostic: null,
       print: null,
       digital: null,
     });
