@@ -11,6 +11,7 @@ import type { CropRect, CropResult } from "@/lib/headPositioning";
 import { recommendedDigitalDpi } from "@/lib/headPositioning";
 import {
   detectFace,
+  disposeLandmarker,
   FaceDetectionError,
   type DetectionResult,
 } from "@/lib/faceDetection";
@@ -218,7 +219,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
       } | null = null;
       if (isMobile) {
         if (isIOS) {
-          engine = { device: "wasm", dtype: "q8", inputSize: 384, threads: 1 };
+          engine = { device: "wasm", dtype: "q8", inputSize: 256, threads: 1 };
         } else if (webgpuF16) {
           engine = { device: "webgpu", dtype: "fp16", inputSize: 1024 };
         } else {
@@ -227,6 +228,12 @@ export const useToolStore = create<ToolState>((set, get) => ({
       }
       const rmbgInputSize = engine?.inputSize ?? 0;
       const engineLabel = engine ? `${engine.device}/${engine.dtype}` : "isnet";
+      // Detection is done; on mobile, free MediaPipe (GPU+WASM) BEFORE loading
+      // the segmentation runtime so the two don't fight for the tab's memory
+      // budget — critical on a 4GB iPhone where both at once kills the tab.
+      if (isMobile && engine) {
+        await disposeLandmarker();
+      }
       try {
         let cutout: HTMLCanvasElement;
         if (isMobile && engine) {

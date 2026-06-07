@@ -67,6 +67,25 @@ async function getLandmarker() {
 }
 
 /**
+ * Free the FaceLandmarker (GPU + WASM memory) and reset the cache. On
+ * memory-constrained devices (iPhone), call this right after detection so the
+ * heavy segmentation model isn't competing with MediaPipe for the tab's tiny
+ * memory budget. The next detect() lazily re-creates it (model is HTTP-cached).
+ */
+export async function disposeLandmarker(): Promise<void> {
+  if (!landmarkerPromise) return;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lm = (await landmarkerPromise) as any;
+    lm?.close?.();
+  } catch {
+    /* already gone / no close() — ignore */
+  } finally {
+    landmarkerPromise = null;
+  }
+}
+
+/**
  * Detect a single face and return measurements in source-image pixels.
  * @param image a loaded HTMLImageElement / ImageBitmap / canvas
  * @param size  the natural pixel dimensions of the image
