@@ -33,10 +33,39 @@ export interface LoadedImage {
  * Cap the longest edge of the working image. Modern phones shoot 48–108MP;
  * processing at that size allocates 200–400MB+ per full-res canvas across the
  * pipeline (detection, segmentation compose, crop) and can OOM any device.
- * Passport output is only ~500–800px, so 2500px is far more than enough — no
- * visible quality loss, and every device uses less memory and runs faster.
+ * Passport output is only ~500–800px, so even the mobile cap is far more than
+ * enough — no visible quality loss, and every device uses less memory.
+ *
+ * Mobile gets a tighter cap (tab-memory limits); desktop can afford more detail.
  */
-const SOURCE_MAX_EDGE = 2500;
+const SOURCE_MAX_EDGE_MOBILE = 2500;
+const SOURCE_MAX_EDGE_DESKTOP = 4096;
+
+function sourceMaxEdge(): number {
+  const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
+  return /Android|iPhone|iPad|iPod/i.test(ua)
+    ? SOURCE_MAX_EDGE_MOBILE
+    : SOURCE_MAX_EDGE_DESKTOP;
+}
+
+/**
+ * Encode a canvas to a PNG **object URL**. Object URLs reference a Blob held
+ * once in memory; data: URIs (toDataURL) inline a base64 copy (~1.37× the
+ * bytes) into a JS string that lives as long as the URL does. For preview
+ * images that can be replaced repeatedly (re-crop, country switch), object URLs
+ * are lighter — provided callers revokeObjectURL when replacing/discarding.
+ */
+export function canvasToObjectURL(canvas: HTMLCanvasElement): Promise<string> {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        reject(new Error("canvas.toBlob returned null"));
+        return;
+      }
+      resolve(URL.createObjectURL(blob));
+    }, "image/png");
+  });
+}
 
 /** Read a user-selected File into an in-memory HTMLImageElement. No upload. */
 export function loadImageFromFile(file: File): Promise<LoadedImage> {
@@ -47,14 +76,15 @@ export function loadImageFromFile(file: File): Promise<LoadedImage> {
       const w = image.naturalWidth;
       const h = image.naturalHeight;
       const longest = Math.max(w, h);
-      if (longest <= SOURCE_MAX_EDGE) {
+      const maxEdge = sourceMaxEdge();
+      if (longest <= maxEdge) {
         resolve({ image, size: { width: w, height: h }, url });
         return;
       }
       // Oversized photo: downscale ONCE here so the entire pipeline works in a
       // bounded, lower-memory space (coordinates stay consistent end to end).
       try {
-        const scale = SOURCE_MAX_EDGE / longest;
+        const scale = maxEdge / longest;
         const dw = Math.max(1, Math.round(w * scale));
         const dh = Math.max(1, Math.round(h * scale));
         const canvas = document.createElement("canvas");

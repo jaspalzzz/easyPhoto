@@ -19,6 +19,7 @@ import {
   buildPreset,
   buildPresetFromCrop,
   loadImageFromFile,
+  canvasToObjectURL,
 } from "@/lib/pipeline";
 import {
   removeBg,
@@ -28,6 +29,22 @@ import {
   compositeFull,
 } from "@/lib/segmentation";
 import { ensureDecodable } from "@/lib/heic";
+
+/**
+ * Upper bound for a single segmentation attempt. webgpu/fp16 finishes in
+ * seconds; wasm/fp32 on a weak CPU can legitimately take ~30–60s, so this is
+ * generous. A timeout just triggers the next engine / graceful fallback — it
+ * never strands the user on the spinner.
+ */
+const SEGMENTATION_TIMEOUT_MS = 120_000;
+
+/** One background-removal engine configuration (RMBG-1.4 via transformers.js). */
+interface SegEngine {
+  device: string;
+  dtype: string;
+  inputSize: number;
+  threads?: number;
+}
 
 /** Reject with a friendly message if a promise doesn't settle in time. */
 function withTimeout<T>(promise: Promise<T>, ms: number, message: string): Promise<T> {
@@ -124,7 +141,12 @@ export const useToolStore = create<ToolState>((set, get) => ({
       if (prev.cutout) {
         if (prev.compositeUrl) URL.revokeObjectURL(prev.compositeUrl);
         const composite = compositeFull(prev.cutout, spec.background.hex);
-        set({ composite, compositeUrl: composite.toDataURL("image/png") });
+        // Object URL is async; set the canvas now, swap the URL in when ready.
+        set({ composite, compositeUrl: null });
+        void canvasToObjectURL(composite).then((compositeUrl) => {
+          if (get().composite === composite) set({ compositeUrl });
+          else URL.revokeObjectURL(compositeUrl);
+        });
       }
       void rebuildPresets(set, get);
     }
@@ -138,6 +160,10 @@ export const useToolStore = create<ToolState>((set, get) => ({
     }
     if (state.sourceUrl) URL.revokeObjectURL(state.sourceUrl);
     if (state.compositeUrl) URL.revokeObjectURL(state.compositeUrl);
+    // Preview URLs are now object URLs — revoke the previous ones too so a new
+    // upload (without an explicit reset) doesn't leak them.
+    if (state.print?.previewUrl) URL.revokeObjectURL(state.print.previewUrl);
+    if (state.digital?.previewUrl) URL.revokeObjectURL(state.digital.previewUrl);
 
     set({
       status: "loading",
@@ -186,34 +212,56 @@ export const useToolStore = create<ToolState>((set, get) => ({
         typeof navigator !== "undefined" ? navigator.userAgent : "";
       const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
       const isIOS = /iPhone|iPad|iPod/i.test(ua);
-      let engine: {
-        device: string;
-        dtype: string;
-        inputSize: number;
-        threads?: number;
-      } | null = null;
+      // Ordered engine candidates: try the best for the device, then fall back
+      // at RUNTIME if it throws (a GPU can pass the capability probe yet fail
+      // mid-inference — e.g. device-lost). Each attempt is time-bounded.
+      const engines: SegEngine[] = [];
       if (isMobile) {
         if (isIOS) {
-          engine = { device: "wasm", dtype: "q8", inputSize: 256, threads: 1 };
+          engines.push({ device: "wasm", dtype: "q8", inputSize: 256, threads: 1 });
         } else if (await webgpuSupportsF16()) {
-          engine = { device: "webgpu", dtype: "fp16", inputSize: 1024 };
+          engines.push({ device: "webgpu", dtype: "fp16", inputSize: 1024 });
+          // If the GPU dies mid-run, the full model on CPU still produces a
+          // clean cutout (slower).
+          engines.push({ device: "wasm", dtype: "fp32", inputSize: 1024 });
         } else {
-          engine = { device: "wasm", dtype: "fp32", inputSize: 1024 };
+          engines.push({ device: "wasm", dtype: "fp32", inputSize: 1024 });
         }
       }
       // Detection is done; on mobile, free MediaPipe (GPU+WASM) BEFORE loading
       // the segmentation runtime so the two don't fight for the tab's memory
       // budget — important on low-memory phones.
-      if (isMobile && engine) {
+      if (isMobile && engines.length) {
         await disposeLandmarker();
       }
       try {
-        let cutout: HTMLCanvasElement;
-        if (isMobile && engine) {
-          // Pass the already-decoded image element (no re-decode / no fetch).
-          cutout = await removeBgWebGPU(image, size, engine);
+        let cutout: HTMLCanvasElement | null = null;
+        if (isMobile && engines.length) {
+          let lastErr: unknown = null;
+          for (const eng of engines) {
+            try {
+              // Pass the already-decoded image (no re-decode / no fetch).
+              cutout = await withTimeout(
+                removeBgWebGPU(image, size, eng),
+                SEGMENTATION_TIMEOUT_MS,
+                "Background removal timed out."
+              );
+              break;
+            } catch (e) {
+              lastErr = e;
+              console.warn(
+                `Segmentation engine ${eng.device}/${eng.dtype} failed; trying next.`,
+                e
+              );
+            }
+          }
+          if (!cutout) throw lastErr ?? new Error("All segmentation engines failed.");
         } else {
-          cutout = await removeBg(decodable, size);
+          cutout = await withTimeout(
+            removeBg(decodable, size),
+            SEGMENTATION_TIMEOUT_MS,
+            "Background removal timed out."
+          );
         }
         const crownY = findCrownY(cutout, measurements.faceXSpan);
         if (crownY != null && crownY < measurements.chinY) {
@@ -225,7 +273,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
           measurements,
           cutout,
           composite,
-          compositeUrl: composite.toDataURL("image/png"),
+          compositeUrl: await canvasToObjectURL(composite),
           segmented: true,
         });
       } catch (segErr) {
@@ -284,12 +332,12 @@ export const useToolStore = create<ToolState>((set, get) => ({
       print: {
         ...printPreset,
         dpi: printDpi,
-        previewUrl: printPreset.canvas.toDataURL("image/png"),
+        previewUrl: await canvasToObjectURL(printPreset.canvas),
       },
       digital: {
         ...digitalPreset,
         dpi: digitalDpi,
-        previewUrl: digitalPreset.canvas.toDataURL("image/png"),
+        previewUrl: await canvasToObjectURL(digitalPreset.canvas),
       },
     });
   },
@@ -359,12 +407,12 @@ async function rebuildPresets(
     print: {
       ...printPreset,
       dpi: printDpi,
-      previewUrl: printPreset.canvas.toDataURL("image/png"),
+      previewUrl: await canvasToObjectURL(printPreset.canvas),
     },
     digital: {
       ...digitalPreset,
       dpi: digitalDpi,
-      previewUrl: digitalPreset.canvas.toDataURL("image/png"),
+      previewUrl: await canvasToObjectURL(digitalPreset.canvas),
     },
   });
 }
