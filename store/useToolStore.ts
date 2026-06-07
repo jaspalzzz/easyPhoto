@@ -23,6 +23,7 @@ import {
   removeBg,
   removeBgWebGPU,
   isWebGPUSupported,
+  webgpuSupportsF16,
   describeWebGPU,
   findCrownY,
   compositeFull,
@@ -189,10 +190,12 @@ export const useToolStore = create<ToolState>((set, get) => ({
       const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
       const isIOS = /iPhone|iPad|iPod/i.test(ua);
       let webgpuOK = false;
+      let webgpuF16 = false;
       let webgpuDetail = "desktop-path";
       if (isMobile && !isIOS) {
         try {
           webgpuOK = await isWebGPUSupported();
+          webgpuF16 = webgpuOK && (await webgpuSupportsF16());
           webgpuDetail = await describeWebGPU();
         } catch (e) {
           webgpuOK = false;
@@ -200,20 +203,27 @@ export const useToolStore = create<ToolState>((set, get) => ({
         }
       }
       // Pick the engine for the diagnostic + the actual call.
+      //   • Android + WebGPU + shader-f16 → webgpu/fp16 (fast, premium).
+      //   • Android + WebGPU without f16  → webgpu/q8 (no f16 needed).
+      //   • iOS / Android without WebGPU  → wasm/q8 (universal, low memory).
       let engine: { device: string; dtype: string; inputSize: number } | null =
         null;
       if (isMobile) {
-        engine =
-          !isIOS && webgpuOK
+        if (!isIOS && webgpuOK) {
+          engine = webgpuF16
             ? { device: "webgpu", dtype: "fp16", inputSize: 1024 }
-            : { device: "wasm", dtype: "q8", inputSize: 512 };
+            : { device: "webgpu", dtype: "q8", inputSize: 1024 };
+        } else {
+          engine = { device: "wasm", dtype: "q8", inputSize: 512 };
+        }
       }
       const rmbgInputSize = engine?.inputSize ?? 0;
       const engineLabel = engine ? `${engine.device}/${engine.dtype}` : "isnet";
       try {
         let cutout: HTMLCanvasElement;
         if (isMobile && engine) {
-          cutout = await removeBgWebGPU(decodable, size, engine);
+          // Pass the already-decoded image element (no re-decode / no fetch).
+          cutout = await removeBgWebGPU(image, size, engine);
         } else {
           cutout = await removeBg(decodable, size);
         }

@@ -123,6 +123,31 @@ export async function isWebGPUSupported(): Promise<boolean> {
 }
 
 /**
+ * Whether the WebGPU adapter supports the `shader-f16` feature. fp16 models
+ * fail at model-load on adapters without it ("device does not support fp16"),
+ * so we fall back to the q8 model there.
+ */
+export async function webgpuSupportsF16(): Promise<boolean> {
+  const gpu =
+    typeof navigator !== "undefined"
+      ? (navigator as Navigator & {
+          gpu?: {
+            requestAdapter: () => Promise<{
+              features?: { has: (f: string) => boolean };
+            } | null>;
+          };
+        }).gpu
+      : undefined;
+  if (!gpu) return false;
+  try {
+    const adapter = await gpu.requestAdapter();
+    return !!adapter?.features?.has("shader-f16");
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Human-readable WebGPU status — used only for on-screen diagnostics so we can
  * tell, from the phone, WHY the adapter is unavailable.
  */
@@ -233,7 +258,7 @@ async function getRMBG(opts: {
  * as removeBg, so findCrownY/compositeFull are unchanged.
  */
 export async function removeBgWebGPU(
-  source: Blob,
+  source: CanvasImageSource,
   size: { width: number; height: number },
   opts: { device?: string; dtype?: string; inputSize?: number } = {}
 ): Promise<HTMLCanvasElement> {
@@ -248,18 +273,17 @@ export async function removeBgWebGPU(
     const { model, processor } = await getRMBG({ device, dtype, inputSize });
     const { RawImage } = await import("@huggingface/transformers");
 
-    // Decode the photo OURSELVES (no fetch). RawImage.fromURL(blob:) fetches
-    // the blob, which fails under COEP credentialless on Android Chrome
-    // ("[decode] Failed to fetch"). createImageBitmap has no such issue.
+    // Draw the ALREADY-DECODED source (an HTMLImageElement the store decoded for
+    // face detection) onto a canvas. No fetch (blob: fetch dies under COEP on
+    // Android Chrome) and no createImageBitmap (which throws InvalidStateError
+    // on some Android/iOS browsers for valid JPEGs). Both proved fragile.
     stage.at = "decode";
-    const bitmap = await createImageBitmap(source);
     const srcCanvas = document.createElement("canvas");
-    srcCanvas.width = bitmap.width;
-    srcCanvas.height = bitmap.height;
+    srcCanvas.width = size.width;
+    srcCanvas.height = size.height;
     const sctx = srcCanvas.getContext("2d");
     if (!sctx) throw new Error("Could not acquire 2D canvas context.");
-    sctx.drawImage(bitmap, 0, 0);
-    bitmap.close?.();
+    sctx.drawImage(source, 0, 0, size.width, size.height);
     const rawImg = RawImage.fromCanvas(srcCanvas);
 
     // Preprocess → infer → model returns a single-channel alpha matte (0..1).
