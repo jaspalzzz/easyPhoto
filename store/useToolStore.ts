@@ -202,14 +202,14 @@ export const useToolStore = create<ToolState>((set, get) => ({
           webgpuDetail = `probe threw: ${(e as Error)?.message ?? e}`;
         }
       }
-      // Pick the engine for the diagnostic + the actual call.
-      //   • WebGPU + shader-f16  → webgpu/fp16 (fast, premium).            [Redmi]
-      //   • WebGPU, no f16       → webgpu/fp32 (clean; q8-on-webgpu        [OnePlus]
-      //                            outputs CORRUPTION, so use full precision).
-      //   • iOS                  → wasm/q8, single-thread, small input —   [iPhone]
-      //                            iPhone tab memory is tight; threaded ORT
-      //                            pre-reserves too much and OOMs.
-      //   • Android, no WebGPU   → wasm/q8, multi-thread, 1024.
+      // Pick the engine. WebGPU is only reliable WITH shader-f16; without it
+      // every WebGPU mode failed on real devices (fp16 unsupported, q8 corrupts
+      // output, fp32 crashes the GPU device). So:
+      //   • WebGPU + shader-f16 → webgpu/fp16 (fast, premium).            [Redmi]
+      //   • iOS                 → wasm/q8, single-thread, 384 (tab memory).[iPhone]
+      //   • Otherwise (no f16 GPU, or no WebGPU) → wasm/fp32: the FULL     [OnePlus]
+      //     model on CPU. Clean edges like fp16, just slower. These phones
+      //     have the RAM; iOS does not, hence its lighter q8 path above.
       let engine: {
         device: string;
         dtype: string;
@@ -219,12 +219,10 @@ export const useToolStore = create<ToolState>((set, get) => ({
       if (isMobile) {
         if (isIOS) {
           engine = { device: "wasm", dtype: "q8", inputSize: 384, threads: 1 };
-        } else if (webgpuOK) {
-          engine = webgpuF16
-            ? { device: "webgpu", dtype: "fp16", inputSize: 1024 }
-            : { device: "webgpu", dtype: "fp32", inputSize: 1024 };
+        } else if (webgpuF16) {
+          engine = { device: "webgpu", dtype: "fp16", inputSize: 1024 };
         } else {
-          engine = { device: "wasm", dtype: "q8", inputSize: 1024 };
+          engine = { device: "wasm", dtype: "fp32", inputSize: 1024 };
         }
       }
       const rmbgInputSize = engine?.inputSize ?? 0;
