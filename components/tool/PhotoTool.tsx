@@ -43,7 +43,6 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
     sourceUrl,
     segmented,
     segmentationFailed,
-    segmentationError,
     setSpec,
     processFile,
     applyManualCrop,
@@ -140,11 +139,6 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                   Automatic background removal didn&apos;t run, so the original
                   background is still shown. The crop and sizing are still
                   correct, so retry or use a photo with a clearer background.
-                  {segmentationError && (
-                    <span className="mt-1 block font-mono text-[10px] opacity-80">
-                      diag: {segmentationError}
-                    </span>
-                  )}
                 </span>
               </div>
             )}
@@ -189,7 +183,6 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                           ? "background replaced"
                           : "original background"}
                         {manual ? " · adjusted" : ""}
-                        {segmentationError ? ` · ${segmentationError}` : ""}
                       </p>
                       <div className="flex gap-1">
                         {manual && (

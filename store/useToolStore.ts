@@ -79,8 +79,6 @@ interface ToolState {
   /** True once background removal succeeded; false means Phase-1 fallback. */
   segmented: boolean;
   segmentationFailed: boolean;
-  /** TEMP diagnostic: the actual reason segmentation failed (shown in UI). */
-  segmentationError: string | null;
 
   print: Preset | null;
   digital: Preset | null;
@@ -110,7 +108,6 @@ export const useToolStore = create<ToolState>((set, get) => ({
   compositeUrl: null,
   segmented: false,
   segmentationFailed: false,
-  segmentationError: null,
   print: null,
   digital: null,
   pendingFile: null,
@@ -151,7 +148,6 @@ export const useToolStore = create<ToolState>((set, get) => ({
       compositeUrl: null,
       segmented: false,
       segmentationFailed: false,
-      segmentationError: null,
       sourceFile: file,
     });
 
@@ -178,25 +174,20 @@ export const useToolStore = create<ToolState>((set, get) => ({
         // step down to the lighter isnet on memory-constrained mobile, and only
         // fall back to the coarse MediaPipe mask if BOTH isnet models OOM.
         let cutout: HTMLCanvasElement;
-        let segPath = "isnet_fp16";
         try {
           cutout = await removeBg(decodable, size, "isnet_fp16");
         } catch (fp16Err) {
           console.warn("isnet_fp16 failed; trying isnet_quint8.", fp16Err);
           try {
             cutout = await removeBg(decodable, size, "isnet_quint8");
-            segPath = "isnet_quint8";
           } catch (quint8Err) {
             console.warn(
               "isnet_quint8 failed; falling back to MediaPipe selfie.",
               quint8Err
             );
             cutout = await segmentPerson(image, size);
-            segPath = "mediapipe";
           }
         }
-        // TEMP: expose which engine ran so we can confirm on-device.
-        set({ segmentationError: `engine: ${segPath}` });
         const crownY = findCrownY(cutout, measurements.faceXSpan);
         if (crownY != null && crownY < measurements.chinY) {
           measurements.crownY = crownY;
@@ -214,16 +205,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
         // Fallback to Phase-1 behaviour: crop the original, keep the
         // landmark-estimated crownY. Surfaced to the user via segmentationFailed.
         console.warn("Background removal failed; using original image.", segErr);
-        const segMsg =
-          segErr instanceof Error
-            ? `${segErr.name}: ${segErr.message}`
-            : String(segErr);
-        set({
-          measurements,
-          segmented: false,
-          segmentationFailed: true,
-          segmentationError: segMsg.slice(0, 300),
-        });
+        set({ measurements, segmented: false, segmentationFailed: true });
       }
 
       set({ status: "rendering" });
@@ -307,7 +289,6 @@ export const useToolStore = create<ToolState>((set, get) => ({
       compositeUrl: null,
       segmented: false,
       segmentationFailed: false,
-      segmentationError: null,
       print: null,
       digital: null,
     });
