@@ -13,7 +13,7 @@ import { ImageResponse } from "next/og";
 export const OG_SIZE = { width: 1200, height: 630 } as const;
 export const OG_CONTENT_TYPE = "image/png";
 
-const BRAND_BLUE = "#2563EB";
+const BRAND_TEAL = "#157F75";
 const BRAND_ORANGE = "#F57819";
 
 export interface OgInput {
@@ -37,7 +37,7 @@ export function ogImage({
           flexDirection: "column",
           justifyContent: "space-between",
           background:
-            "linear-gradient(135deg, #ffffff 0%, #eef4ff 55%, #fff1e8 100%)",
+            "linear-gradient(135deg, #ffffff 0%, #eef4f0 55%, #fdf3ea 100%)",
           padding: "72px 80px",
           fontFamily: "sans-serif",
         }}
@@ -45,7 +45,7 @@ export function ogImage({
         {/* Wordmark */}
         <div style={{ display: "flex", alignItems: "center", fontSize: 48, fontWeight: 800 }}>
           <span style={{ color: BRAND_ORANGE }}>easy</span>
-          <span style={{ color: BRAND_BLUE }}>Photo</span>
+          <span style={{ color: BRAND_TEAL }}>Photo</span>
         </div>
 
         {/* Headline */}
@@ -88,7 +88,7 @@ export function ogImage({
             style={{
               display: "flex",
               alignItems: "center",
-              background: BRAND_BLUE,
+              background: BRAND_TEAL,
               color: "white",
               fontSize: 28,
               fontWeight: 600,
