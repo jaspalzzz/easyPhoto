@@ -81,6 +81,7 @@ interface ToolState {
   /** True once background removal succeeded; false means Phase-1 fallback. */
   segmented: boolean;
   segmentationFailed: boolean;
+  segEngine: string | null;
 
   print: Preset | null;
   digital: Preset | null;
@@ -113,6 +114,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
   print: null,
   digital: null,
   pendingFile: null,
+  segEngine: null,
 
   setPendingFile: (file) => set({ pendingFile: file }),
 
@@ -150,6 +152,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
       compositeUrl: null,
       segmented: false,
       segmentationFailed: false,
+      segEngine: null,
       sourceFile: file,
     });
 
@@ -332,6 +335,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
       segmentationFailed: false,
       print: null,
       digital: null,
+      segEngine: null,
     });
   },
 }));

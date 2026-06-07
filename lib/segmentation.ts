@@ -148,31 +148,35 @@ export async function segmentPerson(
     p_sub[i] = conf[i] >= 0.5 ? 1.0 : 0.0;
   }
 
-  // Restrict mask to the head/shoulders region using face landmarks to discard background clutter (like headphones)
+  // Restrict mask to the head/neck/shoulders region using face landmarks to discard background clutter
   if (measurements) {
     const scaleX = mw / size.width;
     const scaleY = mh / size.height;
     const lowResFaceCenterX = measurements.faceCenterX * scaleX;
     const lowResChinY = measurements.chinY * scaleY;
     const lowResFaceWidth = Math.max(10, (measurements.faceXSpan.max - measurements.faceXSpan.min) * scaleX);
+    const lowResFaceHeight = Math.max(10, (measurements.chinY - measurements.crownY) * scaleY);
 
-    // Width boundaries: head is approx face width * 0.95 on each side of center
-    const headHalfWidth = lowResFaceWidth * 0.95;
     const transitionWidth = lowResFaceWidth * 0.25;
-    const maxHalfWidth = lowResFaceWidth * 1.25;
 
     for (let i = 0; i < mw * mh; i++) {
       const row = Math.floor(i / mw);
       const col = i % mw;
-
-      let halfWidth = headHalfWidth;
-      if (row > lowResChinY) {
-        // Widen constraint downwards to accommodate shoulders
-        halfWidth += (row - lowResChinY) * 0.45;
-      }
-      halfWidth = Math.min(maxHalfWidth, halfWidth);
-
       const dx = Math.abs(col - lowResFaceCenterX);
+      const dy = row - lowResChinY;
+
+      // Silhouette modeling: head zone (above chin) vs neck zone vs shoulders zone (slope out)
+      let halfWidth = 0.65 * lowResFaceWidth;
+      if (dy > 0) {
+        const neckZone = 0.2 * lowResFaceHeight;
+        if (dy <= neckZone) {
+          const t = dy / neckZone;
+          halfWidth = (1 - t) * 0.65 * lowResFaceWidth + t * 0.55 * lowResFaceWidth;
+        } else {
+          halfWidth = 0.55 * lowResFaceWidth + (dy - neckZone) * 0.85;
+        }
+      }
+
       let weight = 1.0;
       if (dx > halfWidth) {
         if (dx > halfWidth + transitionWidth) {
@@ -265,29 +269,29 @@ export async function segmentPerson(
       const w11_c = conf[rowOffset_y1 + x1];
       const c_val = (w00_c * (1 - tx) + w10_c * tx) * (1 - ty) + (w01_c * (1 - tx) + w11_c * tx) * ty;
 
-      // Compute geometric ROI weight to zero out far-away background objects
+      // Compute geometric ROI weight using high-res coordinates directly to zero out background
       let weight = 1.0;
       if (measurements) {
-        const scaleX = mw / size.width;
-        const scaleY = mh / size.height;
-        const lowResFaceCenterX = measurements.faceCenterX * scaleX;
-        const lowResChinY = measurements.chinY * scaleY;
-        const lowResFaceWidth = Math.max(10, (measurements.faceXSpan.max - measurements.faceXSpan.min) * scaleX);
+        const faceCenterX = measurements.faceCenterX;
+        const chinY = measurements.chinY;
+        const faceWidth = Math.max(10, measurements.faceXSpan.max - measurements.faceXSpan.min);
+        const faceHeight = Math.max(10, measurements.chinY - measurements.crownY);
 
-        const headHalfWidth = lowResFaceWidth * 0.95;
-        const transitionWidth = lowResFaceWidth * 0.25;
-        const maxHalfWidth = lowResFaceWidth * 1.25;
+        const dx = Math.abs(x - faceCenterX);
+        const dy = y - chinY;
 
-        const row = gy;
-        const col = gx;
-
-        let halfWidth = headHalfWidth;
-        if (row > lowResChinY) {
-          halfWidth += (row - lowResChinY) * 0.45;
+        let halfWidth = 0.65 * faceWidth;
+        if (dy > 0) {
+          const neckZone = 0.2 * faceHeight;
+          if (dy <= neckZone) {
+            const t = dy / neckZone;
+            halfWidth = (1 - t) * 0.65 * faceWidth + t * 0.55 * faceWidth;
+          } else {
+            halfWidth = 0.55 * faceWidth + (dy - neckZone) * 0.85;
+          }
         }
-        halfWidth = Math.min(maxHalfWidth, halfWidth);
 
-        const dx = Math.abs(col - lowResFaceCenterX);
+        const transitionWidth = faceWidth * 0.25;
         if (dx > halfWidth) {
           if (dx > halfWidth + transitionWidth) {
             weight = 0.0;
