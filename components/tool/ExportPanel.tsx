@@ -73,7 +73,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
         setDigitalInfo(
           res.underCap
             ? `${formatKb(res.bytes)} (under ${capKb} KB cap, quality ${res.quality.toFixed(2)}${downscaled})`
-            : `⚠ ${formatKb(res.bytes)} — can't get under the ${capKb} KB cap without going below the required ${spec.digital.pxMin?.width}×${spec.digital.pxMin?.height}px minimum. Use a simpler background or check the portal's limits.`
+            : `⚠ ${formatKb(res.bytes)}. Can't get under the ${capKb} KB cap without going below the required ${spec.digital.pxMin?.width}×${spec.digital.pxMin?.height}px minimum. Use a simpler background or check the portal's limits.`
         );
       } else {
         const blob = await encode(digital.canvas, "image/jpeg", 0.92);

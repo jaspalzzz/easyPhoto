@@ -132,7 +132,7 @@ export function computeCrop(
   if (upscale > maxUpscale)
     warnings.push(
       `Low source resolution: needs ${upscale.toFixed(2)}x upscaling ` +
-        `(> ${maxUpscale}). Result may be soft — request a higher-res photo.`
+        `(> ${maxUpscale}). Result may be soft. Request a higher-res photo.`
     );
 
   // Cross-check the achieved head fraction against the percentage band.
@@ -158,7 +158,7 @@ export function computeCrop(
       cropTopY + cropH > src.height;
     if (outOfBounds) {
       warnings.push(
-        "Ideal crop extends past the photo edges — not enough space around " +
+        "Ideal crop extends past the photo edges. Not enough space around " +
           "the head. Clamped best-effort; recommend retaking with more margin."
       );
       cropLeftX = Math.max(0, Math.min(cropLeftX, src.width - cropW));

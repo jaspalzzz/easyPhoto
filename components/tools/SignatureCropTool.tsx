@@ -50,7 +50,7 @@ function Body({ source }: { source: ToolSource }) {
 
       {empty && (
         <p className="border-l-2 border-amber-500 pl-3 text-sm text-amber-700">
-          Couldn&apos;t find dark content — try raising the sensitivity, or use a
+          Couldn&apos;t find dark content. Try raising the sensitivity, or use a
           clearer scan of the signature.
         </p>
       )}

@@ -24,7 +24,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
     },
     {
       q: `Is the ${kb} KB compressor free and private?`,
-      a: "Yes — it's completely free with no watermark and no sign-up, and your photo is processed entirely on your device. Nothing is uploaded to any server.",
+      a: "Yes. It's completely free with no watermark and no sign-up, and your photo is processed entirely on your device. Nothing is uploaded to any server.",
     },
     {
       q: "What formats are supported?",
@@ -72,7 +72,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
         </h1>
         <p className="text-muted-foreground">
           Compress a JPG, PNG or HEIC photo to under {kb} KB for exam, government
-          and online form uploads — free, and entirely in your browser.
+          and online form uploads, free, and entirely in your browser.
         </p>
       </header>
 
@@ -82,7 +82,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
 
       <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
-        Compression runs on your device — your photo is never uploaded.
+        Compression runs on your device, so your photo is never uploaded.
       </p>
 
       <section className="mt-10 space-y-3">
@@ -90,8 +90,8 @@ export function KbResizeLanding({ kb }: { kb: number }) {
           Resize photos for exam &amp; government forms
         </h2>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Many application portals — exam boards, passport and visa sites, banks
-          and job forms across India, the US, UK, Canada and Australia — cap the
+          Many application portals (exam boards, passport and visa sites, banks
+          and job forms across India, the US, UK, Canada and Australia) cap the
           photo file size. This tool gets your image under {kb} KB while keeping
           it as clear as possible, so uploads aren&apos;t rejected for being too
           large.
@@ -114,7 +114,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
           </li>
           <li>
             <strong className="text-foreground">Passport &amp; visa uploads</strong>{" "}
-            each set their own cap — use the{" "}
+            each set their own cap, so use the{" "}
             <Link href="/passport-photo/" className="text-brand hover:underline">
               passport photo maker
             </Link>{" "}
@@ -133,7 +133,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
           </li>
         </ul>
         <p className="text-xs text-muted-foreground">
-          Always check the exact limit shown on your form — then set it above.
+          Always check the exact limit shown on your form, then set it above.
         </p>
       </section>
 

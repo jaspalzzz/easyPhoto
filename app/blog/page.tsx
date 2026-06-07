@@ -34,7 +34,7 @@ export default function BlogIndex() {
         <span className="eyebrow">Blog</span>
         <h1 className="text-3xl font-semibold tracking-tight">Guides &amp; articles</h1>
         <p className="text-muted-foreground">
-          How to get passport, visa and ID photos right — and the tools that make
+          How to get passport, visa and ID photos right, and the tools that make
           it quick.
         </p>
       </header>

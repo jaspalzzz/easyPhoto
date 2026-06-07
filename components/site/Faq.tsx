@@ -8,7 +8,7 @@ export interface FaqItem {
 export const HOME_FAQ: FaqItem[] = [
   {
     q: "Is my photo uploaded to a server?",
-    a: "No. Every step — face detection, cropping, background replacement and file compression — runs entirely in your browser. Your image is never sent to or stored on any server.",
+    a: "No. Every step (face detection, cropping, background replacement and file compression) runs entirely in your browser. Your image is never sent to or stored on any server.",
   },
   {
     q: "Is it really free? Is there a watermark?",

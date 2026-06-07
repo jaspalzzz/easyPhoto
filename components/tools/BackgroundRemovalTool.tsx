@@ -48,7 +48,7 @@ function Body({ source }: { source: ToolSource }) {
       <div className="flex flex-col items-center justify-center gap-3 py-12 text-ink-soft">
         <Loader2 className="h-8 w-8 animate-spin text-brand" strokeWidth={1.75} />
         <p className="text-sm">Removing background…</p>
-        <p className="text-xs">First run downloads the AI model — one moment.</p>
+        <p className="text-xs">First run downloads the AI model. One moment.</p>
       </div>
     );
 

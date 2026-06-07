@@ -30,7 +30,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
     group: "Photo Tools",
     slug: "photo",
     tagline:
-      "Free photo utilities — remove backgrounds, compress to a KB target, and resize, all in your browser.",
+      "Free photo utilities. Remove backgrounds, compress to a KB target, and resize, all in your browser.",
     tools: [
       {
         slug: "background-removal",
@@ -69,12 +69,12 @@ export const TOOLS_CATALOG: ToolGroup[] = [
     group: "PDF Tools",
     slug: "pdf",
     tagline:
-      "Free PDF utilities — combine images into a PDF and export PDF pages back to images, privately.",
+      "Free PDF utilities. Combine images into a PDF and export PDF pages back to images, privately.",
     tools: [
       {
         slug: "jpg-to-pdf",
         title: "JPG to PDF",
-        blurb: "Combine images into a single PDF — one image per page.",
+        blurb: "Combine images into a single PDF, one image per page.",
         ready: true,
         popular: true,
         icon: "FileStack",
@@ -93,7 +93,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
     group: "Signature Tools",
     slug: "signature",
     tagline:
-      "Free signature utilities — crop, resize, remove the paper background and make a transparent PNG.",
+      "Free signature utilities: crop, resize, remove the paper background and make a transparent PNG.",
     tools: [
       {
         slug: "transparent-signature",

@@ -142,7 +142,7 @@ export default function ToolsHubPage() {
       <section className="mt-12 rounded-lg border border-hairline bg-card p-6">
         <h2 className="text-lg font-semibold">Passport &amp; visa photos</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Need a compliant ID photo? Use the country-aware makers — exact size,
+          Need a compliant ID photo? Use the country-aware makers for exact size,
           correct background and a compliance check.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">

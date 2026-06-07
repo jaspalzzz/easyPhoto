@@ -20,7 +20,7 @@ export function Footer() {
             <Wordmark className="text-lg" />
           </Link>
           <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-            Free, private passport &amp; visa photos and everyday image tools —
+            Free, private passport &amp; visa photos and everyday image tools,
             made entirely in your browser.
           </p>
           <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -92,7 +92,7 @@ export function Footer() {
       <div className="border-t border-hairline">
         <div className="container flex flex-col gap-3 py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {2026} easyPhoto. Processed in your browser — never uploaded.
+            © {2026} easyPhoto. Processed in your browser, never uploaded.
             Always verify against official requirements before submitting.
           </p>
           <nav className="flex flex-wrap items-center gap-4">

@@ -78,7 +78,7 @@ export function PdfToJpgTool() {
           <FileUp className="h-8 w-8 text-brand" strokeWidth={1.75} />
           <p className="font-semibold tracking-tight">Choose a PDF, or drop it here</p>
           <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-ink-soft">
-            <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.75} /> Processed in your browser —
+            <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.75} /> Processed in your browser,
             never uploaded
           </p>
           <input

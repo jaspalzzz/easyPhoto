@@ -97,7 +97,7 @@ function Body({ source, defaultKb }: { source: ToolSource; defaultKb: number }) 
           </p>
           {!result.underCap && (
             <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-amber-900">
-              Couldn&apos;t get under {targetKb} KB even at minimum quality — this
+              Couldn&apos;t get under {targetKb} KB even at minimum quality. This
               is the smallest achievable. Try a lower target or smaller image.
             </p>
           )}

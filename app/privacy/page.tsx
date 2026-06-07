@@ -34,8 +34,8 @@ export default function PrivacyPage() {
         </p>
 
         <Section title="Your images and files">
-          Every operation — face detection, background removal, cropping,
-          resizing, PDF conversion and file compression — runs entirely in your
+          Every operation (face detection, background removal, cropping,
+          resizing, PDF conversion and file compression) runs entirely in your
           web browser using your device&apos;s own processor. Your images and
           PDFs are <strong className="text-foreground">never uploaded</strong> to
           us or any third party, and we never see, receive, copy, or store them.
@@ -49,7 +49,7 @@ export default function PrivacyPage() {
           program files (the face-detection and background-removal models and
           their WebAssembly runtimes) from public content-delivery networks
           (jsDelivr, Google Cloud Storage, and staticimgly.com). This is a
-          one-directional download of software to your device — your image data
+          one-directional download of software to your device, so your image data
           is never sent in the other direction.
         </Section>
 

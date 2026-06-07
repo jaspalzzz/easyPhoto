@@ -83,8 +83,8 @@ function Body({ source, kb }: { source: ToolSource; kb: number }) {
           </p>
           {!out.underCap && (
             <p className="border-l-2 border-amber-500 pl-3 text-amber-700">
-              Couldn&apos;t get under {kb} KB without losing too much detail —
-              this is the smallest clean version. Try a tighter scan.
+              Couldn&apos;t get under {kb} KB without losing too much detail.
+              This is the smallest clean version. Try a tighter scan.
             </p>
           )}
           <Button

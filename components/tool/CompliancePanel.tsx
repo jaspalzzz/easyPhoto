@@ -80,8 +80,8 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
               {spec.background.hex}
             </span>
             <span className="text-muted-foreground">
-              {" "}
-              — {spec.background.description}
+              {": "}
+              {spec.background.description}
             </span>
           </span>
         </li>

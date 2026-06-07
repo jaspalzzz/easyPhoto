@@ -248,7 +248,7 @@ export default async function MakerPage({
             Verification status:{" "}
             {spec.verified === "gov"
               ? "Confirmed against the official government source."
-              : "Sourced from reputable guides — re-check the official portal before submitting."}
+              : "Sourced from reputable guides, so re-check the official portal before submitting."}
           </p>
         </div>
       </section>

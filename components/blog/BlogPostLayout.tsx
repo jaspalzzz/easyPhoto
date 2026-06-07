@@ -64,8 +64,7 @@ export function BlogPostLayout({
         Ready to make yours?{" "}
         <Link href="/passport-photo/" className="font-medium text-brand hover:underline">
           Use the free passport photo maker
-        </Link>{" "}
-        — compliant size and background, checked before you download.
+        </Link>. Compliant size and background, checked before you download.
       </p>
     </div>
   );

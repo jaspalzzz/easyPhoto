@@ -24,7 +24,7 @@ export const metadata = pageMetadata({
 const faqItems = [
   {
     q: "Why won't my signature upload to the form?",
-    a: "Portals like UPSC, SSC and bank forms cap the signature file size — often 10–20 KB — and expect a clean background. A phone photo is usually far larger, so the upload is rejected.",
+    a: "Portals like UPSC, SSC and bank forms cap the signature file size (often 10–20 KB) and expect a clean background. A phone photo is usually far larger, so the upload is rejected.",
   },
   {
     q: "Will the background stay transparent?",
@@ -36,7 +36,7 @@ const faqItems = [
   },
   {
     q: "Is it free and private?",
-    a: "Completely free, no watermark, and processed entirely on your device — your signature is never uploaded.",
+    a: "Completely free, no watermark, and processed entirely on your device, so your signature is never uploaded.",
   },
 ];
 
@@ -101,7 +101,7 @@ export default function Page() {
         <h2 className="text-lg font-semibold tracking-tight">What this tool does</h2>
         <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
           <li>Gets your signature under 20 KB while keeping it legible.</li>
-          <li>Removes the paper background and keeps a transparent PNG — not a white box.</li>
+          <li>Removes the paper background and keeps a transparent PNG, not a white box.</li>
           <li>Auto-trims the empty space around the signature.</li>
           <li>Works from a phone photo or a scan.</li>
           <li>Free, no upload, no watermark.</li>

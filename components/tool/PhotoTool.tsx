@@ -138,7 +138,7 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                 <span>
                   Automatic background removal didn&apos;t run, so the original
                   background is still shown. The crop and sizing are still
-                  correct — retry or use a photo with a clearer background.
+                  correct, so retry or use a photo with a clearer background.
                 </span>
               </div>
             )}

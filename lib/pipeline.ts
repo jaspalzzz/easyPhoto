@@ -153,7 +153,7 @@ export async function buildPresetFromCrop(
   if (upscale > 1.15)
     warnings.push(
       `Low source resolution: needs ${upscale.toFixed(2)}x upscaling (> 1.15). ` +
-        `Result may be soft — request a higher-res photo.`
+        `Result may be soft. Request a higher-res photo.`
     );
   if (
     spec.headPercentOfFrame &&
