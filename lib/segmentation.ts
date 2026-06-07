@@ -227,25 +227,79 @@ export async function removeBgWebGPU(
   opts: { inputSize?: number } = {}
 ): Promise<HTMLCanvasElement> {
   const inputSize = opts.inputSize ?? 1024;
-  const { model, processor } = await getRMBG(inputSize);
-  const { RawImage } = await import("@huggingface/transformers");
 
-  const url = URL.createObjectURL(source);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let rawImg: any;
-  try {
-    rawImg = await RawImage.fromURL(url);
-  } finally {
-    URL.revokeObjectURL(url);
+  // TEMP diagnostic: name the exact stage + the last network host so an
+  // on-device "Failed to fetch" tells us WHICH download was blocked
+  // (model on xethub vs. onnxruntime runtime on jsdelivr). Removed once green.
+  const stage = { at: "model-load" };
+  let lastUrl = "";
+  const origFetch =
+    typeof globalThis !== "undefined" && globalThis.fetch
+      ? globalThis.fetch.bind(globalThis)
+      : null;
+  if (origFetch) {
+    globalThis.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
+      try {
+        lastUrl =
+          typeof input === "string"
+            ? input
+            : input instanceof URL
+              ? input.href
+              : (input as Request)?.url ?? "";
+      } catch {
+        /* ignore */
+      }
+      return origFetch(input, init);
+    }) as typeof fetch;
   }
 
-  // Preprocess → infer → the model returns a single-channel alpha matte (0..1).
-  const { pixel_values } = await processor(rawImg);
-  const { output } = await model({ input: pixel_values });
-  if (!output) throw new Error("RMBG-1.4 produced no output tensor.");
-  const maskImg = await RawImage.fromTensor(
-    output[0].mul(255).to("uint8")
-  ).resize(size.width, size.height);
+  try {
+    const { model, processor } = await getRMBG(inputSize);
+    const { RawImage } = await import("@huggingface/transformers");
+
+    stage.at = "decode";
+    const url = URL.createObjectURL(source);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let rawImg: any;
+    try {
+      rawImg = await RawImage.fromURL(url);
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+
+    // Preprocess → infer → model returns a single-channel alpha matte (0..1).
+    stage.at = "preprocess";
+    const { pixel_values } = await processor(rawImg);
+    stage.at = "inference";
+    const { output } = await model({ input: pixel_values });
+    if (!output) throw new Error("RMBG-1.4 produced no output tensor.");
+    stage.at = "compose";
+    const maskImg = await RawImage.fromTensor(
+      output[0].mul(255).to("uint8")
+    ).resize(size.width, size.height);
+    return finishCutout(rawImg, maskImg, size);
+  } catch (e) {
+    let host = "n/a";
+    try {
+      if (lastUrl) host = new URL(lastUrl, location.href).host;
+    } catch {
+      /* ignore */
+    }
+    const msg = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
+    throw new Error(`[${stage.at}] ${msg} (lastFetch=${host})`);
+  } finally {
+    if (origFetch) globalThis.fetch = origFetch;
+  }
+}
+
+/** Apply the alpha matte to the source image at the target size. */
+function finishCutout(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  rawImg: any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  maskImg: any,
+  size: { width: number; height: number }
+): HTMLCanvasElement {
 
   const canvas = document.createElement("canvas");
   canvas.width = size.width;
