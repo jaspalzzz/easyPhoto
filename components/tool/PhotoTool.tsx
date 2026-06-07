@@ -194,8 +194,8 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                           </span>
                           <input
                             type="range"
-                            min={60}
-                            max={140}
+                            min={80}
+                            max={120}
                             value={brightness}
                             onChange={(e) => setBrightness(Number(e.target.value))}
                             className="w-full accent-brand cursor-pointer"
@@ -207,14 +207,19 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                           </span>
                           <input
                             type="range"
-                            min={60}
-                            max={140}
+                            min={80}
+                            max={120}
                             value={contrast}
                             onChange={(e) => setContrast(Number(e.target.value))}
                             className="w-full accent-brand cursor-pointer"
                           />
                         </label>
                       </div>
+                      <p className="text-[10px] leading-snug text-muted-foreground">
+                        Use sparingly to correct lighting only. Passport and visa
+                        authorities can reject photos that look digitally altered
+                        — don&apos;t change your natural appearance.
+                      </p>
                     </div>
 
                     <div className="flex items-center justify-between">
