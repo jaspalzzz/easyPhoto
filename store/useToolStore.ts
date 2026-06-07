@@ -74,6 +74,8 @@ interface ToolState {
   /** True once background removal succeeded; false means Phase-1 fallback. */
   segmented: boolean;
   segmentationFailed: boolean;
+  /** TEMP diagnostic: the actual reason segmentation failed (shown in UI). */
+  segmentationError: string | null;
 
   print: Preset | null;
   digital: Preset | null;
@@ -103,6 +105,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
   compositeUrl: null,
   segmented: false,
   segmentationFailed: false,
+  segmentationError: null,
   print: null,
   digital: null,
   pendingFile: null,
@@ -143,6 +146,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
       compositeUrl: null,
       segmented: false,
       segmentationFailed: false,
+      segmentationError: null,
       sourceFile: file,
     });
 
@@ -183,7 +187,16 @@ export const useToolStore = create<ToolState>((set, get) => ({
         // Fallback to Phase-1 behaviour: crop the original, keep the
         // landmark-estimated crownY. Surfaced to the user via segmentationFailed.
         console.warn("Background removal failed; using original image.", segErr);
-        set({ measurements, segmented: false, segmentationFailed: true });
+        const segMsg =
+          segErr instanceof Error
+            ? `${segErr.name}: ${segErr.message}`
+            : String(segErr);
+        set({
+          measurements,
+          segmented: false,
+          segmentationFailed: true,
+          segmentationError: segMsg.slice(0, 300),
+        });
       }
 
       set({ status: "rendering" });
@@ -267,6 +280,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
       compositeUrl: null,
       segmented: false,
       segmentationFailed: false,
+      segmentationError: null,
       print: null,
       digital: null,
     });
