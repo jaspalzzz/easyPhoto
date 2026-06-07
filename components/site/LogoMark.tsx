@@ -1,6 +1,6 @@
 /**
  * easyPhoto logo mark — the camera + ID-photo icon (no wordmark).
- * Brand colours: blue #2563EB, orange #F57819. Crisp at any size.
+ * Brand colours: document teal #157F75, orange #F57819. Crisp at any size.
  * Keep this in sync with /public/icon.svg (used for favicons/app icons).
  */
 export function LogoMark({ className }: { className?: string }) {
@@ -13,12 +13,12 @@ export function LogoMark({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
     >
       {/* camera body */}
-      <rect x="4" y="22" width="52" height="30" rx="5" fill="#2563EB" />
+      <rect x="4" y="22" width="52" height="30" rx="5" fill="#157F75" />
       {/* viewfinder prism + window */}
-      <path d="M25 22 L29 15 L39 15 L43 22 Z" fill="#2563EB" />
+      <path d="M25 22 L29 15 L39 15 L43 22 Z" fill="#157F75" />
       <rect x="29.5" y="16.5" width="9" height="3" rx="1.5" fill="#fff" />
       {/* hot shoe (left) */}
-      <rect x="9" y="17" width="9" height="5" rx="1.5" fill="#2563EB" />
+      <rect x="9" y="17" width="9" height="5" rx="1.5" fill="#157F75" />
       <rect x="10.5" y="18.5" width="6" height="2" rx="1" fill="#fff" />
       {/* ID photo print (juts below the body) */}
       <rect
@@ -28,7 +28,7 @@ export function LogoMark({ className }: { className?: string }) {
         height="29"
         rx="1.5"
         fill="#fff"
-        stroke="#2563EB"
+        stroke="#157F75"
         strokeWidth="2.6"
       />
       {/* person silhouette */}

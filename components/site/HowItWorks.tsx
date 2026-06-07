@@ -35,7 +35,7 @@ export function HowItWorks() {
               <span className="font-mono text-sm font-medium text-ink-faint">
                 0{i + 1}
               </span>
-              <s.icon className="h-[18px] w-[18px] text-ink" strokeWidth={1.75} />
+              <s.icon className="h-[18px] w-[18px] text-brand" strokeWidth={1.75} />
             </div>
             <h3 className="mt-4 text-[15px] font-semibold tracking-tight">
               {s.title}

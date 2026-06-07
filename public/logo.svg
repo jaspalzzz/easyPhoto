@@ -1,15 +1,15 @@
 <svg viewBox="0 0 250 64" xmlns="http://www.w3.org/2000/svg">
   <g>
-    <rect x="4" y="22" width="52" height="30" rx="5" fill="#2563EB"/>
-    <path d="M25 22 L29 15 L39 15 L43 22 Z" fill="#2563EB"/>
+    <rect x="4" y="22" width="52" height="30" rx="5" fill="#157F75"/>
+    <path d="M25 22 L29 15 L39 15 L43 22 Z" fill="#157F75"/>
     <rect x="29.5" y="16.5" width="9" height="3" rx="1.5" fill="#fff"/>
-    <rect x="9" y="17" width="9" height="5" rx="1.5" fill="#2563EB"/>
+    <rect x="9" y="17" width="9" height="5" rx="1.5" fill="#157F75"/>
     <rect x="10.5" y="18.5" width="6" height="2" rx="1" fill="#fff"/>
-    <rect x="23.5" y="27.5" width="25" height="29" rx="1.5" fill="#fff" stroke="#2563EB" stroke-width="2.6"/>
+    <rect x="23.5" y="27.5" width="25" height="29" rx="1.5" fill="#fff" stroke="#157F75" stroke-width="2.6"/>
     <circle cx="36" cy="37" r="5" fill="#F57819"/>
     <path d="M27 54 C27 45 45 45 45 54 Z" fill="#F57819"/>
   </g>
   <text x="72" y="45" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="34" letter-spacing="-0.5">
-    <tspan fill="#F57819">easy</tspan><tspan fill="#2563EB">Photo</tspan>
+    <tspan fill="#F57819">easy</tspan><tspan fill="#157F75">Photo</tspan>
   </text>
 </svg>

@@ -24,9 +24,9 @@
     --hairline: 36 18% 85%;        /* default rule / border */
     --hairline-strong: 33 14% 74%; /* emphasised rule */
 
-    /* Brand — recognised from the logo, used with discipline */
-    --brand: 222 76% 47%;          /* ink-blue: links, active, focus */
-    --brand-soft: 221 70% 95%;     /* faint blue wash */
+    /* Brand — signature "document teal", used confidently across the UI */
+    --brand: 174 72% 29%;          /* teal: wordmark, links, active, focus, icons */
+    --brand-soft: 174 42% 92%;     /* faint teal wash */
     --cta: 22 89% 50%;             /* stamp orange: PRIMARY ACTION ONLY */
     --cta-foreground: 40 33% 98%;
     --success: 151 42% 33%;        /* passport-stamp green: "compliant" */

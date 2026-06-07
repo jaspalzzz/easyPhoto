@@ -54,6 +54,25 @@ export async function generateMetadata({
   });
 }
 
+/**
+ * User-facing "Good to know" copy, keyed by spec id. Kept here (not in the spec
+ * DB) so the internal `spec.notes` developer documentation never reaches users.
+ */
+const GOOD_TO_KNOW: Record<string, string> = {
+  india:
+    "India is strict about a plain white background and a large, well-lit face. For the older pasted paper form you'll need a genuine photo-lab print, since a home printout is often refused. (The OCI card and the Indian e-Visa use different photos.)",
+  us: "The US wants a plain white or off-white background and no glasses. Use a photo from the last six months, and leave a little space above your head so there's room to crop.",
+  canada:
+    "This covers Canada's 35×45mm photo for visas, study and work permits, PR/Express Entry and online passport renewal. The printed passport booklet photo is different: it needs a commercial photographer's certification and a guarantor signature, which a self-serve tool can't provide.",
+  uk: "The UK rejects plain white backgrounds. It wants light grey or cream, which this tool applies for you. Take your glasses off unless you need them for medical reasons.",
+  australia:
+    "Australia accepts a plain white or light grey background. For a new passport, your guarantor signs the back of one printed photo to confirm it's a true likeness, so add that by hand after you print.",
+  schengen:
+    "Schengen follows the ICAO standard across all 29 member states. Light grey is the safe background everywhere. Some consulates (Switzerland in particular) reject pure white, so the tool defaults to grey.",
+  "india-evisa":
+    "The Indian e-Visa photo is square, not the 35×45mm passport shape, on a plain white or light background with no border. Keep it between 350×350 and 1000×1000 px and under about 300 KB for the upload.",
+};
+
 function SpecRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-hairline py-2.5 text-sm last:border-0">
@@ -215,7 +234,7 @@ export default async function MakerPage({
         <div className="space-y-3">
           <h2 className="eyebrow">Good to know</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            {spec.notes}
+            {GOOD_TO_KNOW[spec.id] ?? spec.notes}
           </p>
           <a
             href={spec.source}

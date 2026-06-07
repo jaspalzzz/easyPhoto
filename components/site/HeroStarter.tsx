@@ -71,8 +71,8 @@ export function HeroStarter({
               className={cn(
                 "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
                 sel === o.path
-                  ? "border-ink bg-ink text-paper"
-                  : "border-hairline-strong bg-paper text-foreground hover:border-ink/30 hover:bg-accent/50"
+                  ? "border-brand bg-brand text-brand-foreground"
+                  : "border-hairline-strong bg-paper text-foreground hover:border-brand/40 hover:bg-brand-soft/40"
               )}
             >
               <Flag country={o.flag} />

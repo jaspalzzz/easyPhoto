@@ -36,7 +36,7 @@ export function TrustStrip() {
           key={s.title}
           className="border-hairline p-6 [&:not(:last-child)]:border-b lg:[&:not(:last-child)]:border-b-0 lg:[&:not(:last-child)]:border-r"
         >
-          <s.icon className="h-5 w-5 text-ink" strokeWidth={1.75} />
+          <s.icon className="h-5 w-5 text-brand" strokeWidth={1.75} />
           <h3 className="mt-4 text-[15px] font-semibold tracking-tight">
             {s.title}
           </h3>
@@ -61,7 +61,7 @@ export function TrustPills() {
     <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-ink-soft">
       {pills.map((p) => (
         <span key={p.label} className="inline-flex items-center gap-1.5">
-          <p.icon className="h-3.5 w-3.5 text-ink" strokeWidth={1.75} />
+          <p.icon className="h-3.5 w-3.5 text-brand" strokeWidth={1.75} />
           {p.label}
         </span>
       ))}

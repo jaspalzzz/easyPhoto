@@ -19,5 +19,5 @@ All PNGs below are produced from the SVGs by `scripts/gen-icons.mjs`
 | `og.png` | 1200×630 | social share card |
 
 > These are a faithful vector recreation of the supplied logo in the exact brand
-> palette (blue #2563EB, orange #F57819). To use a precise raster instead, drop
+> palette (document teal #157F75, orange #F57819). To use a precise raster instead, drop
 > your file at `public/logo.svg` (or edit the SVGs) and re-run the script.
