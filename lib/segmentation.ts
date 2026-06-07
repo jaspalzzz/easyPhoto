@@ -122,6 +122,43 @@ export async function isWebGPUSupported(): Promise<boolean> {
   }
 }
 
+/**
+ * Human-readable WebGPU status — used only for on-screen diagnostics so we can
+ * tell, from the phone, WHY the adapter is unavailable.
+ */
+export async function describeWebGPU(): Promise<string> {
+  const gpu =
+    typeof navigator !== "undefined"
+      ? (navigator as Navigator & {
+          gpu?: {
+            requestAdapter: (o?: unknown) => Promise<unknown>;
+          };
+        }).gpu
+      : undefined;
+  const ctx =
+    typeof window !== "undefined" && "isSecureContext" in window
+      ? (window as Window & { isSecureContext: boolean }).isSecureContext
+      : "?";
+  if (!gpu) return `no navigator.gpu (secureCtx=${ctx})`;
+  try {
+    const adapter = await gpu.requestAdapter();
+    if (!adapter) {
+      // Some devices only expose a software fallback; probe that too.
+      try {
+        const fb = await gpu.requestAdapter({ forceFallbackAdapter: true });
+        return fb
+          ? "adapter=null but fallback OK (GPU blocklisted)"
+          : "adapter=null, no fallback (unsupported GPU)";
+      } catch (e2) {
+        return `adapter=null, fallback threw: ${(e2 as Error)?.message ?? e2}`;
+      }
+    }
+    return "adapter OK";
+  } catch (e) {
+    return `requestAdapter threw: ${(e as Error)?.name}: ${(e as Error)?.message}`;
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let rmbgPipelinePromise: Promise<any> | null = null;
 function getRMBGPipeline() {

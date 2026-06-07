@@ -23,6 +23,7 @@ import {
   removeBg,
   removeBgWebGPU,
   isWebGPUSupported,
+  describeWebGPU,
   findCrownY,
   compositeFull,
 } from "@/lib/segmentation";
@@ -184,11 +185,14 @@ export const useToolStore = create<ToolState>((set, get) => ({
         typeof navigator !== "undefined" &&
         /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
       let webgpuOK = false;
+      let webgpuDetail = "desktop-path";
       if (isMobile) {
         try {
           webgpuOK = await isWebGPUSupported();
-        } catch {
+          webgpuDetail = await describeWebGPU();
+        } catch (e) {
           webgpuOK = false;
+          webgpuDetail = `probe threw: ${(e as Error)?.message ?? e}`;
         }
       }
       try {
@@ -221,7 +225,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
         const reason =
           segErr instanceof Error ? `${segErr.name}: ${segErr.message}` : String(segErr);
         // TEMP diagnostic so we can see on the phone WHY it fell back.
-        const diag = `mobile=${isMobile} webgpu=${webgpuOK} · ${reason}`;
+        const diag = `mobile=${isMobile} webgpu=${webgpuOK} [${webgpuDetail}] · ${reason}`;
         console.warn("Background removal failed; using original image.", diag, segErr);
         set({
           measurements,
