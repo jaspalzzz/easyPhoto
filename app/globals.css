@@ -124,6 +124,16 @@
   .paper-2 {
     background-color: hsl(38 26% 95%);
   }
+
+  /* Ruled register: a hairline-divided grid (the bureau index). Borders are
+     drawn per-cell so an incomplete final row leaves a clean empty slot — never
+     a grey void — at any column count. Pair with grid-cols-* utilities. */
+  .register {
+    @apply grid overflow-hidden rounded-lg border border-hairline bg-card;
+  }
+  .register > * {
+    @apply border-b border-r border-hairline;
+  }
 }
 
 /* Checkerboard for transparent/preview areas. */

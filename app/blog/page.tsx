@@ -39,7 +39,7 @@ export default function BlogIndex() {
         </p>
       </header>
 
-      <div className="mt-8 overflow-hidden rounded-lg border border-hairline bg-hairline grid gap-px">
+      <div className="register mt-8">
         {BLOG_POSTS.map((post) => (
           <Link
             key={post.slug}

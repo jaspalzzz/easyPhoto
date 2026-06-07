@@ -43,7 +43,7 @@ export function CategoryPage({ slug }: { slug: string }) {
         <p className="text-muted-foreground">{cat.tagline}</p>
       </header>
 
-      <div className="mt-8 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2">
+      <div className="mt-8 register sm:grid-cols-2">
         {tools.map((tool) => (
           <Link
             key={tool.slug}

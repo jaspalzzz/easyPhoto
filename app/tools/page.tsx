@@ -45,7 +45,7 @@ export default function ToolsHubPage() {
         <h2 className="eyebrow mb-4">
           Most popular
         </h2>
-        <div className="grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+        <div className="register sm:grid-cols-2 lg:grid-cols-3">
           {POPULAR_TOOLS.map((tool) => (
             <Link
               key={tool.slug}
@@ -101,7 +101,7 @@ export default function ToolsHubPage() {
             {group.group}
             <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
           </Link>
-          <div className="grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2">
+          <div className="register sm:grid-cols-2">
             {group.tools.map((tool) =>
               tool.ready ? (
                 <Link

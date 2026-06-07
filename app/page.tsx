@@ -79,7 +79,7 @@ export default function HomePage() {
           </h2>
           <span className="eyebrow hidden sm:block">Official specifications</span>
         </div>
-        <div className="mt-6 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 register sm:grid-cols-2 lg:grid-cols-3">
           {LAUNCH_ORDER.map((id) => {
             const spec = COUNTRY_SPECS[id];
             const mm = effectivePrintMm(spec);
@@ -141,7 +141,7 @@ export default function HomePage() {
               All tools <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="mt-6 grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 register sm:grid-cols-2 lg:grid-cols-3">
             {POPULAR_TOOLS.map((tool) => (
               <Link
                 key={tool.slug}

@@ -72,7 +72,7 @@ export function ToolPage({
       {related.length > 0 && (
         <section className="mt-12">
           <h2 className="eyebrow mb-4">Related tools</h2>
-          <div className="grid gap-px overflow-hidden rounded-lg border border-hairline bg-hairline sm:grid-cols-3">
+          <div className="register sm:grid-cols-3">
             {related.map((t) => (
               <Link
                 key={t.slug}
