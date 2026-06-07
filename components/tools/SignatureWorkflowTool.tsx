@@ -426,10 +426,10 @@ function Body({
             )}
 
             <div className="flex gap-2 pt-1">
-              <Button variant="cta" className="flex-1" onClick={() => onDownload("image/png")}>
+              <Button id="sig-download-png" variant="cta" className="flex-1" onClick={() => onDownload("image/png")}>
                 <Download className="h-4 w-4" /> Download PNG (Transparent)
               </Button>
-              <Button variant="outline" onClick={() => onDownload("image/jpeg")} title="Download flattened JPG">
+              <Button id="sig-download-jpg" variant="outline" onClick={() => onDownload("image/jpeg")} title="Download flattened JPG">
                 Download JPG
               </Button>
             </div>
@@ -442,6 +442,7 @@ function Body({
         {/* Navigation Tabs */}
         <div className="flex border-b border-hairline">
           <button
+            id="sig-tab-clean"
             type="button"
             onClick={() => setActiveTab("clean")}
             className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition-colors -mb-[2px] ${
@@ -453,6 +454,7 @@ function Body({
             <Sparkles className="h-4 w-4" /> Clean
           </button>
           <button
+            id="sig-tab-crop"
             type="button"
             onClick={() => setActiveTab("crop")}
             className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition-colors -mb-[2px] ${
@@ -464,6 +466,7 @@ function Body({
             <Crop className="h-4 w-4" /> Crop
           </button>
           <button
+            id="sig-tab-resize"
             type="button"
             onClick={() => setActiveTab("resize")}
             className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition-colors -mb-[2px] ${
@@ -493,6 +496,7 @@ function Body({
                   <span className="font-mono text-xs text-brand font-semibold">{threshold}</span>
                 </span>
                 <input
+                  id="sig-clean-threshold"
                   type="range"
                   min={100}
                   max={250}
@@ -511,6 +515,7 @@ function Body({
                   <span className="font-mono text-xs text-brand font-semibold">{softness}px</span>
                 </span>
                 <input
+                  id="sig-clean-softness"
                   type="range"
                   min={10}
                   max={80}
@@ -528,6 +533,7 @@ function Body({
                     <p className="text-[11px] text-muted-foreground">Erase background noise or lines manually.</p>
                   </div>
                   <Button
+                    id="sig-eraser-toggle"
                     type="button"
                     variant={eraserEnabled ? "cta" : "outline"}
                     size="sm"
@@ -546,6 +552,7 @@ function Body({
                         <span>{brushSize}px</span>
                       </span>
                       <input
+                        id="sig-eraser-brush-size"
                         type="range"
                         min={5}
                         max={60}
@@ -556,6 +563,7 @@ function Body({
                     </label>
 
                     <Button
+                      id="sig-eraser-reset"
                       type="button"
                       variant="outline"
                       size="sm"
@@ -581,11 +589,12 @@ function Body({
                   <h4 className="text-xs font-semibold eyebrow uppercase tracking-wider text-muted-foreground">Ink Adjustments</h4>
                 </div>
 
-                <div className="space-y-2">
+                 <div className="space-y-2">
                   <span className="text-xs font-medium text-muted-foreground block">Ink Color Preset</span>
                   <div className="grid grid-cols-3 gap-2">
                     {(["original", "black", "blue"] as const).map((color) => (
                       <button
+                        id={`sig-ink-color-${color}`}
                         key={color}
                         type="button"
                         onClick={() => setInkColor(color)}
@@ -607,6 +616,7 @@ function Body({
                     <span className="font-mono text-xs text-brand font-semibold">{inkContrast.toFixed(1)}x</span>
                   </span>
                   <input
+                    id="sig-ink-contrast"
                     type="range"
                     min={1.0}
                     max={3.0}
@@ -628,6 +638,7 @@ function Body({
                     </span>
                   </span>
                   <input
+                    id="sig-ink-smoothing"
                     type="range"
                     min={0}
                     max={3}
@@ -654,6 +665,7 @@ function Body({
 
               <label className="flex items-center gap-2.5 rounded-md border border-hairline p-3 bg-background cursor-pointer">
                 <input
+                  id="sig-crop-enable"
                   type="checkbox"
                   checked={autoCrop}
                   onChange={(e) => setAutoCrop(e.target.checked)}
@@ -672,6 +684,7 @@ function Body({
                     <span className="font-mono text-xs text-brand font-semibold">{padding}px</span>
                   </span>
                   <input
+                    id="sig-crop-padding"
                     type="range"
                     min={0}
                     max={60}
@@ -699,6 +712,7 @@ function Body({
               <label className="block text-sm">
                 <span className="eyebrow mb-1.5 block">Application Form Preset</span>
                 <select
+                  id="sig-resize-preset"
                   value={presetKey}
                   onChange={(e) => applyPreset(e.target.value)}
                   className="h-10 w-full rounded-md border border-hairline-strong bg-background px-3 text-sm text-foreground focus:border-brand focus:ring-1 focus:ring-brand"
@@ -719,6 +733,7 @@ function Body({
                 <span className="text-xs font-medium text-muted-foreground block">Sizing Mode</span>
                 <div className="grid grid-cols-2 gap-2">
                   <button
+                    id="sig-resize-mode-kb"
                     type="button"
                     onClick={() => setResizeMode("kb")}
                     className={`rounded-md border py-1.5 text-xs font-medium transition-colors ${
@@ -730,6 +745,7 @@ function Body({
                     Target File Size (KB)
                   </button>
                   <button
+                    id="sig-resize-mode-pixels"
                     type="button"
                     onClick={() => setResizeMode("pixels")}
                     className={`rounded-md border py-1.5 text-xs font-medium transition-colors ${
@@ -748,6 +764,7 @@ function Body({
                 <label className="block text-sm space-y-1 animate-fadeIn">
                   <span className="eyebrow block">Target Size Limit (KB)</span>
                   <input
+                    id="sig-resize-target-kb"
                     type="number"
                     min={5}
                     max={1000}
@@ -768,6 +785,7 @@ function Body({
                     <label className="text-sm flex-1">
                       <span className="eyebrow mb-1 block">Width (px)</span>
                       <input
+                        id="sig-resize-width-px"
                         type="number"
                         min={20}
                         value={width || ""}
@@ -778,6 +796,7 @@ function Body({
                     </label>
 
                     <button
+                      id="sig-resize-aspect-lock"
                       type="button"
                       onClick={() => setLock((v) => !v)}
                       className={`h-10 w-10 flex items-center justify-center border rounded-md transition-colors ${
@@ -791,6 +810,7 @@ function Body({
                     <label className="text-sm flex-1">
                       <span className="eyebrow mb-1 block">Height (px)</span>
                       <input
+                        id="sig-resize-height-px"
                         type="number"
                         min={20}
                         value={height || ""}

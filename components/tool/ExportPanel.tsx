@@ -115,10 +115,11 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             {print.dpi} dpi · {photoMm.width}×{photoMm.height}mm
           </p>
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" onClick={onPrintJpg} disabled={busy !== null}>
+            <Button id="print-jpg-download-btn" size="sm" onClick={onPrintJpg} disabled={busy !== null}>
               <Download className="h-4 w-4" /> JPG
             </Button>
             <Button
+              id="print-png-download-btn"
               size="sm"
               variant="outline"
               onClick={onPrintPng}
@@ -127,77 +128,82 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               <Download className="h-4 w-4" /> PNG
             </Button>
           </div>
+        </div>
 
-          {/* Printable sheet customizer settings */}
-          <div className="mt-4 pt-3.5 border-t border-hairline space-y-3">
-            <span className="text-[11px] font-semibold eyebrow uppercase tracking-wider text-brand block">
-              PDF Print Sheet Layout
-            </span>
-            <div className="grid grid-cols-2 gap-2.5 text-xs">
-              <label className="block">
-                <span className="text-muted-foreground block mb-0.5 text-[11px]">Paper Size</span>
-                <select
-                  value={paperSize}
-                  onChange={(e) => setPaperSize(e.target.value as any)}
-                  className="w-full rounded border border-hairline bg-background p-1 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-brand"
-                >
-                  <option value="4x6">4×6″ Photo Sheet</option>
-                  <option value="5x7">5×7″ Photo Sheet</option>
-                  <option value="a4">A4 Page</option>
-                  <option value="letter">Letter Page</option>
-                </select>
-              </label>
-
-              <label className="block">
-                <span className="text-muted-foreground block mb-0.5 text-[11px]">Copies ({copies})</span>
-                <input
-                  type="number"
-                  min={1}
-                  max={maxCapacity}
-                  value={copies}
-                  onChange={(e) => setCopies(Math.max(1, Math.min(maxCapacity, Number(e.target.value) || 1)))}
-                  className="w-full rounded border border-hairline bg-background p-1 text-xs font-semibold font-mono focus:outline-none focus:ring-1 focus:ring-brand"
-                />
-              </label>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 text-[11px]">
-              <label className="block">
-                <span className="text-muted-foreground block mb-0.5 text-[10px] uppercase font-semibold">Margin: {marginMm}mm</span>
-                <input
-                  type="range"
-                  min={4}
-                  max={20}
-                  value={marginMm}
-                  onChange={(e) => setMarginMm(Number(e.target.value))}
-                  className="w-full accent-brand"
-                />
-              </label>
-              <label className="block">
-                <span className="text-muted-foreground block mb-0.5 text-[10px] uppercase font-semibold">Gap: {gapMm}mm</span>
-                <input
-                  type="range"
-                  min={0}
-                  max={10}
-                  value={gapMm}
-                  onChange={(e) => setGapMm(Number(e.target.value))}
-                  className="w-full accent-brand"
-                />
-              </label>
-            </div>
-
-            {maxCapacity > 0 && (
-              <Button
-                size="sm"
-                variant="outline"
-                className="w-full mt-2 flex items-center justify-center gap-1.5"
-                onClick={onSheet}
-                disabled={busy !== null}
+        {/* Printable sheet customizer settings */}
+        <div className="mt-4 pt-3.5 border-t border-hairline space-y-3">
+          <span className="text-[11px] font-semibold eyebrow uppercase tracking-wider text-brand block">
+            PDF Print Sheet Layout
+          </span>
+          <div className="grid grid-cols-2 gap-2.5 text-xs">
+            <label className="block">
+              <span className="text-muted-foreground block mb-0.5 text-[11px]">Paper Size</span>
+              <select
+                id="print-sheet-paper-size"
+                value={paperSize}
+                onChange={(e) => setPaperSize(e.target.value as any)}
+                className="w-full rounded border border-hairline bg-background p-1 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-brand"
               >
-                <LayoutGrid className="h-3.5 w-3.5" /> Download PDF Print Sheet ({copies} copies)
-              </Button>
-            )}
+                <option value="4x6">4×6″ Photo Sheet</option>
+                <option value="5x7">5×7″ Photo Sheet</option>
+                <option value="a4">A4 Page</option>
+                <option value="letter">Letter Page</option>
+              </select>
+            </label>
+
+            <label className="block">
+              <span className="text-muted-foreground block mb-0.5 text-[11px]">Copies ({copies})</span>
+              <input
+                id="print-sheet-copies-input"
+                type="number"
+                min={1}
+                max={maxCapacity}
+                value={copies}
+                onChange={(e) => setCopies(Math.max(1, Math.min(maxCapacity, Number(e.target.value) || 1)))}
+                className="w-full rounded border border-hairline bg-background p-1 text-xs font-semibold font-mono focus:outline-none focus:ring-1 focus:ring-brand"
+              />
+            </label>
           </div>
+
+          <div className="grid grid-cols-2 gap-3 text-[11px]">
+            <label className="block">
+              <span className="text-muted-foreground block mb-0.5 text-[10px] uppercase font-semibold">Margin: {marginMm}mm</span>
+              <input
+                id="print-sheet-margin-slider"
+                type="range"
+                min={4}
+                max={20}
+                value={marginMm}
+                onChange={(e) => setMarginMm(Number(e.target.value))}
+                className="w-full accent-brand"
+              />
+            </label>
+            <label className="block">
+              <span className="text-muted-foreground block mb-0.5 text-[10px] uppercase font-semibold">Gap: {gapMm}mm</span>
+              <input
+                id="print-sheet-gap-slider"
+                type="range"
+                min={0}
+                max={10}
+                value={gapMm}
+                onChange={(e) => setGapMm(Number(e.target.value))}
+                className="w-full accent-brand"
+              />
+            </label>
+          </div>
+
+          {maxCapacity > 0 && (
+            <Button
+              id="print-sheet-pdf-download-btn"
+              size="sm"
+              variant="outline"
+              className="w-full mt-2 flex items-center justify-center gap-1.5"
+              onClick={onSheet}
+              disabled={busy !== null}
+            >
+              <LayoutGrid className="h-3.5 w-3.5" /> Download PDF Print Sheet ({copies} copies)
+            </Button>
+          )}
         </div>
       </div>
 
@@ -211,7 +217,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             {digital.result.output.width}×{digital.result.output.height}px ·{" "}
             {digital.dpi} dpi{capKb ? ` · ≤ ${capKb} KB` : ""}
           </p>
-          <Button size="sm" onClick={onDigital} disabled={busy !== null}>
+          <Button id="digital-jpg-download-btn" size="sm" onClick={onDigital} disabled={busy !== null}>
             <Download className="h-4 w-4" /> JPG for upload
           </Button>
           {digitalInfo && (
@@ -230,18 +236,21 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
         </p>
         <div className="flex flex-wrap gap-1.5 pt-1">
           <a
+            id="promo-compress-20kb"
             href="/photo-resize-to-20kb/"
             className="rounded px-2 py-1.5 bg-card border border-hairline hover:bg-accent/50 font-medium text-[11px] text-foreground transition-colors"
           >
             Compress to 20 KB
           </a>
           <a
+            id="promo-compress-50kb"
             href="/photo-resize-to-50kb/"
             className="rounded px-2 py-1.5 bg-card border border-hairline hover:bg-accent/50 font-medium text-[11px] text-foreground transition-colors"
           >
             Compress to 50 KB
           </a>
           <a
+            id="promo-compress-custom"
             href="/tools/resize-kb/"
             className="rounded px-2 py-1.5 bg-card border border-hairline hover:bg-accent/50 font-medium text-[11px] text-brand transition-colors"
           >

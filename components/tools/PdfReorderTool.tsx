@@ -212,6 +212,7 @@ export function PdfReorderTool() {
       <CardContent className="space-y-5 p-6">
         {pages.length === 0 && !busy && (
           <div
+            id="pdf-reorder-dropzone"
             role="button"
             tabIndex={0}
             onClick={() => inputRef.current?.click()}
@@ -232,6 +233,7 @@ export function PdfReorderTool() {
               <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.75} /> Processed 100% locally
             </p>
             <input
+              id="pdf-reorder-file-input"
               ref={inputRef}
               type="file"
               accept="application/pdf"
@@ -257,10 +259,10 @@ export function PdfReorderTool() {
                 <p className="text-xs text-muted-foreground">{pages.length} pages in document</p>
               </div>
               <div className="flex items-center gap-2 w-full sm:w-auto">
-                <Button variant="outline" size="sm" onClick={reset} disabled={busy}>
+                <Button id="pdf-reorder-reset-btn" variant="outline" size="sm" onClick={reset} disabled={busy}>
                   Reset
                 </Button>
-                <Button variant="cta" size="sm" onClick={runExport} disabled={busy} className="flex-1 sm:flex-none">
+                <Button id="pdf-reorder-save-btn" variant="cta" size="sm" onClick={runExport} disabled={busy} className="flex-1 sm:flex-none">
                   <Download className="h-4 w-4" /> Save PDF
                 </Button>
               </div>
@@ -294,6 +296,7 @@ export function PdfReorderTool() {
                     <div className="flex items-center justify-between gap-1">
                       <div className="flex items-center gap-1">
                         <Button
+                          id={`pdf-reorder-ccw-btn-${index}`}
                           type="button"
                           variant="ghost"
                           size="icon"
@@ -304,6 +307,7 @@ export function PdfReorderTool() {
                           <RotateCcw className="h-3.5 w-3.5" />
                         </Button>
                         <Button
+                          id={`pdf-reorder-cw-btn-${index}`}
                           type="button"
                           variant="ghost"
                           size="icon"
@@ -316,6 +320,7 @@ export function PdfReorderTool() {
                       </div>
 
                       <Button
+                        id={`pdf-reorder-delete-btn-${index}`}
                         type="button"
                         variant="ghost"
                         size="icon"
@@ -329,6 +334,7 @@ export function PdfReorderTool() {
 
                     <div className="flex items-center justify-between border-t border-hairline/40 pt-1.5 gap-1">
                       <Button
+                        id={`pdf-reorder-left-btn-${index}`}
                         type="button"
                         variant="ghost"
                         size="icon"
@@ -343,6 +349,7 @@ export function PdfReorderTool() {
                         Orig: #{item.originalIndex + 1}
                       </span>
                       <Button
+                        id={`pdf-reorder-right-btn-${index}`}
                         type="button"
                         variant="ghost"
                         size="icon"

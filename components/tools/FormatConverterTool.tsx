@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { canvasToBlob } from "@/lib/imaging";
 import { ensureDecodable } from "@/lib/heic";
 import { downloadBlob } from "@/lib/download";
-import { formatKb } from "@/lib/utils";
+import { formatKb, generateBatchFilename } from "@/lib/utils";
 
 type ImageFormat = "image/jpeg" | "image/png" | "image/webp";
 
@@ -20,17 +20,6 @@ interface BatchItem {
   error?: string;
   resultBlob?: Blob;
   resultUrl?: string;
-}
-
-function generateBatchFilename(template: string, index: number, ext: string): string {
-  const num = index + 1;
-  const match = template.match(/#+/);
-  if (match) {
-    const hashes = match[0];
-    const paddedNum = String(num).padStart(hashes.length, "0");
-    return template.replace(hashes, paddedNum) + "." + ext;
-  }
-  return `${template}_${num}.${ext}`;
 }
 
 export function FormatConverterTool() {
@@ -244,6 +233,7 @@ export function FormatConverterTool() {
         {/* Upload Zone */}
         {items.length === 0 && (
           <div
+            id="converter-dropzone"
             role="button"
             tabIndex={0}
             onClick={() => fileInputRef.current?.click()}
@@ -264,6 +254,7 @@ export function FormatConverterTool() {
               <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.75} /> Processed 100% locally
             </p>
             <input
+              id="converter-file-input"
               ref={fileInputRef}
               type="file"
               accept="image/*,.heic,.heif"
@@ -288,10 +279,11 @@ export function FormatConverterTool() {
               <div className="flex items-center justify-between border-b border-hairline pb-2">
                 <h4 className="font-semibold text-sm">Conversion Queue ({items.length} files)</h4>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={clearQueue} disabled={busy}>
+                  <Button id="converter-clear-btn" variant="outline" size="sm" onClick={clearQueue} disabled={busy}>
                     Clear All
                   </Button>
                   <Button
+                    id="converter-run-btn"
                     variant={items.some((it) => it.status !== "completed") ? "cta" : "outline"}
                     size="sm"
                     onClick={convertBatch}
@@ -351,6 +343,7 @@ export function FormatConverterTool() {
 
                       {item.status === "completed" && (
                         <Button
+                          id={`converter-dl-btn-${index}`}
                           type="button"
                           variant="ghost"
                           size="icon"
@@ -363,6 +356,7 @@ export function FormatConverterTool() {
                       )}
 
                       <Button
+                        id={`converter-remove-btn-${index}`}
                         type="button"
                         variant="ghost"
                         size="icon"
@@ -392,6 +386,7 @@ export function FormatConverterTool() {
                   <div className="grid grid-cols-3 gap-2">
                     {(["image/jpeg", "image/png", "image/webp"] as const).map((fmt) => (
                       <button
+                        id={`converter-fmt-btn-${getFormatLabel(fmt).toLowerCase()}`}
                         key={fmt}
                         type="button"
                         onClick={() => setTargetFormat(fmt)}
@@ -415,6 +410,7 @@ export function FormatConverterTool() {
                       <span className="font-mono text-xs text-brand font-semibold">{Math.round(quality * 100)}%</span>
                     </span>
                     <input
+                      id="converter-quality-slider"
                       type="range"
                       min={0.2}
                       max={1.0}
@@ -430,6 +426,7 @@ export function FormatConverterTool() {
                 <label className="block text-sm space-y-1">
                   <span className="eyebrow text-xs">Naming Template</span>
                   <input
+                    id="converter-naming-template"
                     type="text"
                     value={namingTemplate}
                     onChange={(e) => setNamingTemplate(e.target.value)}
@@ -445,7 +442,7 @@ export function FormatConverterTool() {
               {/* Batch Download ZIP */}
               {completedCount > 0 && (
                 <div className="space-y-2">
-                  <Button variant="cta" className="w-full" onClick={downloadZip} disabled={busy}>
+                  <Button id="converter-zip-btn" variant="cta" className="w-full" onClick={downloadZip} disabled={busy}>
                     <Archive className="h-4 w-4" /> Download ZIP ({completedCount} files)
                   </Button>
                   <p className="text-[10px] text-center text-muted-foreground leading-normal">
