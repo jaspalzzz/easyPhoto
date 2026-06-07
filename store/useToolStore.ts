@@ -203,18 +203,29 @@ export const useToolStore = create<ToolState>((set, get) => ({
         }
       }
       // Pick the engine for the diagnostic + the actual call.
-      //   • WebGPU WITH shader-f16 → webgpu/fp16 (fast, premium quality).
-      //   • Everything else → wasm/q8. NOTE: q8 on the WebGPU backend produces
-      //     CORRUPTED output (onnxruntime-web limitation), so non-f16 GPUs must
-      //     use WASM, not webgpu/q8. WASM runs q8 correctly (just slower).
-      //     iOS uses a smaller input (tight tab memory); other phones 1024.
-      let engine: { device: string; dtype: string; inputSize: number } | null =
-        null;
+      //   • WebGPU + shader-f16  → webgpu/fp16 (fast, premium).            [Redmi]
+      //   • WebGPU, no f16       → webgpu/fp32 (clean; q8-on-webgpu        [OnePlus]
+      //                            outputs CORRUPTION, so use full precision).
+      //   • iOS                  → wasm/q8, single-thread, small input —   [iPhone]
+      //                            iPhone tab memory is tight; threaded ORT
+      //                            pre-reserves too much and OOMs.
+      //   • Android, no WebGPU   → wasm/q8, multi-thread, 1024.
+      let engine: {
+        device: string;
+        dtype: string;
+        inputSize: number;
+        threads?: number;
+      } | null = null;
       if (isMobile) {
-        engine =
-          !isIOS && webgpuF16
+        if (isIOS) {
+          engine = { device: "wasm", dtype: "q8", inputSize: 384, threads: 1 };
+        } else if (webgpuOK) {
+          engine = webgpuF16
             ? { device: "webgpu", dtype: "fp16", inputSize: 1024 }
-            : { device: "wasm", dtype: "q8", inputSize: isIOS ? 512 : 1024 };
+            : { device: "webgpu", dtype: "fp32", inputSize: 1024 };
+        } else {
+          engine = { device: "wasm", dtype: "q8", inputSize: 1024 };
+        }
       }
       const rmbgInputSize = engine?.inputSize ?? 0;
       const engineLabel = engine ? `${engine.device}/${engine.dtype}` : "isnet";

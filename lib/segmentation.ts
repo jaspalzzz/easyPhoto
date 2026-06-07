@@ -201,9 +201,22 @@ async function getRMBG(opts: {
   device: string;
   dtype: string;
   inputSize: number;
+  threads?: number;
 }) {
-  const { AutoModel, AutoProcessor } = await import("@huggingface/transformers");
-  const modelKey = `${opts.device}:${opts.dtype}`;
+  const transformers = await import("@huggingface/transformers");
+  const { AutoModel, AutoProcessor } = transformers;
+  // Constrain WASM threads BEFORE the session is created. Threaded ORT
+  // pre-reserves a large SharedArrayBuffer; single-thread uses a smaller,
+  // growable heap — the difference between fitting and OOM on iPhone 11.
+  if (opts.device === "wasm" && opts.threads) {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (transformers as any).env.backends.onnx.wasm.numThreads = opts.threads;
+    } catch {
+      /* env shape changed; ignore */
+    }
+  }
+  const modelKey = `${opts.device}:${opts.dtype}:${opts.threads ?? 0}`;
   if (!rmbgModelPromise || rmbgModelKey !== modelKey) {
     rmbgModelKey = modelKey;
     rmbgModelPromise = AutoModel.from_pretrained("briaai/RMBG-1.4", {
@@ -260,7 +273,12 @@ async function getRMBG(opts: {
 export async function removeBgWebGPU(
   source: CanvasImageSource,
   size: { width: number; height: number },
-  opts: { device?: string; dtype?: string; inputSize?: number } = {}
+  opts: {
+    device?: string;
+    dtype?: string;
+    inputSize?: number;
+    threads?: number;
+  } = {}
 ): Promise<HTMLCanvasElement> {
   const device = opts.device ?? "webgpu";
   const dtype = opts.dtype ?? "fp16";
@@ -270,7 +288,12 @@ export async function removeBgWebGPU(
   const stage = { at: "model-load" };
 
   try {
-    const { model, processor } = await getRMBG({ device, dtype, inputSize });
+    const { model, processor } = await getRMBG({
+      device,
+      dtype,
+      inputSize,
+      threads: opts.threads,
+    });
     const { RawImage } = await import("@huggingface/transformers");
 
     // Draw the ALREADY-DECODED source (an HTMLImageElement the store decoded for
