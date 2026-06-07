@@ -25,8 +25,14 @@ function Body({ source }: { source: ToolSource }) {
         if (cancelled) return;
         canvasRef.current = cutout;
         setUrl(cutout.toDataURL("image/png"));
-      } catch {
-        if (!cancelled) setError("Background removal failed. Try another image.");
+      } catch (e) {
+        console.error("[bg-removal]", e);
+        if (!cancelled)
+          setError(
+            "Background removal failed. Try another image. [diag: " +
+              ((e as Error)?.message || String(e)).slice(0, 300) +
+              "]"
+          );
       } finally {
         if (!cancelled) setBusy(false);
       }
