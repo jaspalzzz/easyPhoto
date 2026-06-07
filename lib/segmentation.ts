@@ -101,3 +101,85 @@ export function compositeFull(
   ctx.drawImage(cutout, 0, 0);
   return out;
 }
+
+// ── Premium matting on WebGPU (RMBG-1.4) ────────────────────────────────────
+// onnxruntime/isnet OOMs on mobile (WASM heap). RMBG-1.4 via transformers.js on
+// WebGPU runs on GPU memory instead, so it works on mobile that supports WebGPU.
+// Privacy: only the model downloads (from Hugging Face); the image stays local.
+// fp16 keeps GPU memory + download small enough for mobile GPUs.
+
+/** True if the browser exposes a usable WebGPU adapter. */
+export async function isWebGPUSupported(): Promise<boolean> {
+  const gpu =
+    typeof navigator !== "undefined"
+      ? (navigator as Navigator & { gpu?: { requestAdapter: () => Promise<unknown> } }).gpu
+      : undefined;
+  if (!gpu) return false;
+  try {
+    return !!(await gpu.requestAdapter());
+  } catch {
+    return false;
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let rmbgPipelinePromise: Promise<any> | null = null;
+function getRMBGPipeline() {
+  if (!rmbgPipelinePromise) {
+    rmbgPipelinePromise = (async () => {
+      const { pipeline } = await import("@huggingface/transformers");
+      return pipeline("image-segmentation", "briaai/RMBG-1.4", {
+        device: "webgpu",
+        dtype: "fp16", // fp32 is too heavy for most mobile GPUs
+      });
+    })().catch((e) => {
+      rmbgPipelinePromise = null; // don't cache a failure
+      throw e;
+    });
+  }
+  return rmbgPipelinePromise;
+}
+
+/**
+ * Premium background matting via WebGPU (RMBG-1.4). Returns an RGBA cutout canvas
+ * at SOURCE dimensions (person opaque, background transparent) — same contract
+ * as removeBg, so findCrownY/compositeFull are unchanged.
+ */
+export async function removeBgWebGPU(
+  source: Blob,
+  size: { width: number; height: number }
+): Promise<HTMLCanvasElement> {
+  const pipe = await getRMBGPipeline();
+  const { RawImage } = await import("@huggingface/transformers");
+
+  const url = URL.createObjectURL(source);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let rawImg: any;
+  try {
+    rawImg = await RawImage.fromURL(url);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+
+  const result = await pipe(rawImg);
+  const maskImg = Array.isArray(result) ? result[0]?.mask : result?.mask;
+  if (!maskImg) throw new Error("RMBG-1.4 produced no mask.");
+
+  const canvas = document.createElement("canvas");
+  canvas.width = size.width;
+  canvas.height = size.height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Could not acquire 2D canvas context.");
+  ctx.drawImage(rawImg.toCanvas(), 0, 0, size.width, size.height);
+
+  const imgData = ctx.getImageData(0, 0, size.width, size.height);
+  const d = imgData.data;
+  const resized = await maskImg.resize(size.width, size.height);
+  const md: Uint8Array = resized.data;
+  const ch: number = resized.channels || 1;
+  for (let i = 0; i < size.width * size.height; i++) {
+    d[i * 4 + 3] = md[i * ch]; // mask value -> alpha (foreground opaque)
+  }
+  ctx.putImageData(imgData, 0, 0);
+  return canvas;
+}

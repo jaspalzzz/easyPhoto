@@ -19,7 +19,13 @@ import {
   buildPresetFromCrop,
   loadImageFromFile,
 } from "@/lib/pipeline";
-import { removeBg, findCrownY, compositeFull } from "@/lib/segmentation";
+import {
+  removeBg,
+  removeBgWebGPU,
+  isWebGPUSupported,
+  findCrownY,
+  compositeFull,
+} from "@/lib/segmentation";
 import { ensureDecodable } from "@/lib/heic";
 
 /** Reject with a friendly message if a promise doesn't settle in time. */
@@ -165,7 +171,27 @@ export const useToolStore = create<ToolState>((set, get) => ({
       // Segmentation: real background removal + the PREFERRED crownY.
       set({ status: "segmenting" });
       try {
-        const cutout = await removeBg(decodable, size);
+        // Engine choice is about MEMORY, not quality preference:
+        //   • Desktop → isnet (onnxruntime WASM). Proven, unchanged.
+        //   • Mobile  → isnet's WASM heap OOMs, so use RMBG-1.4 on WebGPU
+        //     (GPU memory). Premium quality, no uploads — model only downloads.
+        //   • Mobile without WebGPU → no safe on-device premium path; throw so
+        //     the catch below falls back honestly (original bg + the notice).
+        const isMobile =
+          typeof navigator !== "undefined" &&
+          /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        let cutout: HTMLCanvasElement;
+        if (isMobile) {
+          if (await isWebGPUSupported()) {
+            cutout = await removeBgWebGPU(decodable, size);
+          } else {
+            throw new Error(
+              "This phone doesn't support on-device background removal (no WebGPU)."
+            );
+          }
+        } else {
+          cutout = await removeBg(decodable, size);
+        }
         const crownY = findCrownY(cutout, measurements.faceXSpan);
         if (crownY != null && crownY < measurements.chinY) {
           measurements.crownY = crownY;
