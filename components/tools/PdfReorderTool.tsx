@@ -59,6 +59,7 @@ function makeThumbnail(canvas: HTMLCanvasElement, maxDim = 300): string {
 
 export function PdfReorderTool() {
   const [pages, setPages] = React.useState<PageItem[]>([]);
+  const [srcFile, setSrcFile] = React.useState<File | null>(null);
   const [fileName, setFileName] = React.useState<string>("");
   const [busy, setBusy] = React.useState(false);
   const [progress, setProgress] = React.useState<string | null>(null);
@@ -79,6 +80,7 @@ export function PdfReorderTool() {
     setError(null);
     setBusy(true);
     setPages([]);
+    setSrcFile(file);
     setFileName(file.name);
     setProgress("Loading PDF pages...");
     try {
@@ -146,7 +148,7 @@ export function PdfReorderTool() {
   };
 
   const runExport = async () => {
-    if (pages.length === 0) {
+    if (pages.length === 0 || !srcFile) {
       setError("No pages to export.");
       return;
     }
@@ -154,42 +156,15 @@ export function PdfReorderTool() {
     setProgress("Compiling PDF document...");
     setError(null);
     try {
-      const { jsPDF } = await import("jspdf");
-      let doc: import("jspdf").jsPDF | null = null;
+      // LOSSLESS: rebuild from the ORIGINAL pages via pdf-lib (text/vectors
+      // preserved). The on-screen thumbnails stay rasterized for preview only;
+      // the exported file copies + rotates the real pages in the chosen order.
+      const { reorderPdf } = await import("@/lib/pdfEdit");
+      const pdfBlob = await reorderPdf(
+        srcFile,
+        pages.map((p) => ({ originalIndex: p.originalIndex, rotation: p.rotation }))
+      );
 
-      for (let i = 0; i < pages.length; i++) {
-        const item = pages[i];
-        setProgress(`Adding page ${i + 1} of ${pages.length}...`);
-
-        // Get rotated canvas
-        const canvas = rotateCanvas(item.originalCanvas, item.rotation);
-        const w = canvas.width;
-        const h = canvas.height;
-        const orientation: "p" | "l" = w >= h ? "l" : "p";
-
-        // Convert pixels to mm: mm = (px / 150) * 25.4 (since scale = 1.5 in pdfToCanvases)
-        const mmW = (w / 150) * 25.4;
-        const mmH = (h / 150) * 25.4;
-
-        if (!doc) {
-          doc = new jsPDF({
-            unit: "mm",
-            format: [mmW, mmH],
-            orientation,
-          });
-        } else {
-          doc.addPage([mmW, mmH], orientation);
-        }
-
-        // Draw rotated canvas onto PDF
-        const dataUrl = canvas.toDataURL("image/jpeg", 0.90);
-        doc.addImage(dataUrl, "JPEG", 0, 0, mmW, mmH);
-      }
-
-      if (!doc) throw new Error("Could not construct PDF document.");
-      const pdfBlob = doc.output("blob");
-
-      // Save file name with indicator
       const baseName = fileName.replace(/\.[^/.]+$/, "");
       downloadBlob(pdfBlob, `${baseName}-modified.pdf`);
     } catch (err) {
@@ -203,6 +178,7 @@ export function PdfReorderTool() {
 
   const reset = () => {
     setPages([]);
+    setSrcFile(null);
     setFileName("");
     setError(null);
   };

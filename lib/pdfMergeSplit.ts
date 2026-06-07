@@ -1,99 +1,57 @@
 /**
- * Core PDF merging and splitting utilities — client-side using pdfjs-dist and jsPDF.
+ * Core PDF merging and splitting — client-side, LOSSLESS via pdf-lib.
+ *
+ * We copy the original pages (text, vectors, fonts preserved) into a new
+ * document — never rasterize. Output stays small and selectable. Nothing is
+ * uploaded; everything runs in the browser.
  */
 
-import { pdfToCanvases } from "./pdfToImages";
-
-/**
- * Merge multiple PDF files into a single PDF blob, maintaining page orientations.
- */
+/** Merge multiple PDFs into one, preserving every page's content and order. */
 export async function mergePdfs(
   files: File[],
   onProgress?: (msg: string) => void
 ): Promise<Blob> {
   if (files.length === 0) throw new Error("No PDF files selected.");
-  const { jsPDF } = await import("jspdf");
+  const { PDFDocument } = await import("pdf-lib");
 
-  let doc: import("jspdf").jsPDF | null = null;
-  let fileIndex = 1;
-
+  const out = await PDFDocument.create();
+  let i = 1;
   for (const file of files) {
-    onProgress?.(`Reading PDF ${fileIndex} of ${files.length}: ${file.name}…`);
-    const canvases = await pdfToCanvases(file, {
-      scale: 1.5, // 150 DPI is a good balance between speed, file size, and legibility
+    onProgress?.(`Merging PDF ${i} of ${files.length}: ${file.name}…`);
+    const src = await PDFDocument.load(await file.arrayBuffer(), {
+      ignoreEncryption: true,
     });
-
-    for (let i = 0; i < canvases.length; i++) {
-      const canvas = canvases[i];
-      const w = canvas.width;
-      const h = canvas.height;
-      const orientation: "p" | "l" = w >= h ? "l" : "p";
-
-      // Convert pixels (at 150 DPI scale) to millimetres: mm = (px / 150) * 25.4
-      const mmW = (w / 150) * 25.4;
-      const mmH = (h / 150) * 25.4;
-
-      if (!doc) {
-        doc = new jsPDF({
-          unit: "mm",
-          format: [mmW, mmH],
-          orientation,
-        });
-      } else {
-        doc.addPage([mmW, mmH], orientation);
-      }
-
-      // Flatten background to white and draw
-      const dataUrl = canvas.toDataURL("image/jpeg", 0.90);
-      doc.addImage(dataUrl, "JPEG", 0, 0, mmW, mmH);
-    }
-    fileIndex++;
+    const pages = await out.copyPages(src, src.getPageIndices());
+    pages.forEach((p) => out.addPage(p));
+    i++;
   }
 
-  if (!doc) throw new Error("Could not construct PDF document.");
-  return doc.output("blob");
+  const bytes = await out.save();
+  return new Blob([bytes as BlobPart], { type: "application/pdf" });
 }
 
-/**
- * Split a single PDF file by extracting specific pages, returning a single PDF blob of those pages.
- */
+/** Extract specific pages (0-indexed) into a new PDF, losslessly. */
 export async function splitPdf(
   file: File,
-  selectedPages: number[], // 0-indexed page indices
+  selectedPages: number[],
   onProgress?: (msg: string) => void
 ): Promise<Blob> {
-  if (selectedPages.length === 0) throw new Error("No pages selected to extract.");
-  const { jsPDF } = await import("jspdf");
+  if (selectedPages.length === 0)
+    throw new Error("No pages selected to extract.");
+  const { PDFDocument } = await import("pdf-lib");
 
-  onProgress?.("Loading and rendering PDF pages…");
-  const canvases = await pdfToCanvases(file, { scale: 1.5 });
+  onProgress?.("Extracting selected pages…");
+  const src = await PDFDocument.load(await file.arrayBuffer(), {
+    ignoreEncryption: true,
+  });
+  const total = src.getPageCount();
+  const valid = selectedPages.filter((i) => i >= 0 && i < total);
+  if (valid.length === 0) throw new Error("Selected pages are out of range.");
 
-  let doc: import("jspdf").jsPDF | null = null;
+  const out = await PDFDocument.create();
+  const copied = await out.copyPages(src, valid);
+  copied.forEach((p) => out.addPage(p));
 
-  for (const pageIdx of selectedPages) {
-    const canvas = canvases[pageIdx];
-    if (!canvas) continue;
-
-    const w = canvas.width;
-    const h = canvas.height;
-    const orientation: "p" | "l" = w >= h ? "l" : "p";
-    const mmW = (w / 150) * 25.4;
-    const mmH = (h / 150) * 25.4;
-
-    if (!doc) {
-      doc = new jsPDF({
-        unit: "mm",
-        format: [mmW, mmH],
-        orientation,
-      });
-    } else {
-      doc.addPage([mmW, mmH], orientation);
-    }
-
-    const dataUrl = canvas.toDataURL("image/jpeg", 0.90);
-    doc.addImage(dataUrl, "JPEG", 0, 0, mmW, mmH);
-  }
-
-  if (!doc) throw new Error("Could not extract selected pages.");
-  return doc.output("blob");
+  const bytes = await out.save();
+  return new Blob([bytes as BlobPart], { type: "application/pdf" });
 }

@@ -8,6 +8,7 @@ import { pdfToCanvases } from "@/lib/pdfToImages";
 import { downloadBlob } from "@/lib/download";
 import { SignaturePad } from "./SignaturePad";
 import { SignatureOverlay, type Placement } from "./SignatureOverlay";
+import type { SignaturePlacement } from "@/lib/pdfEdit";
 
 interface PlacedSignature {
   id: string;
@@ -137,65 +138,22 @@ export function SignPdfTool() {
     setError(null);
 
     try {
-      const { jsPDF } = await import("jspdf");
-      let doc: import("jspdf").jsPDF | null = null;
-
-      for (let i = 0; i < preRenderedCanvases.length; i++) {
-        setProgress(`Compiling page ${i + 1} of ${preRenderedCanvases.length}...`);
-        const sourceCanvas = preRenderedCanvases[i];
-        
-        // Setup drawing canvas
-        const drawCanvas = document.createElement("canvas");
-        drawCanvas.width = sourceCanvas.width;
-        drawCanvas.height = sourceCanvas.height;
-        const dctx = drawCanvas.getContext("2d")!;
-        
-        // Draw base page
-        dctx.drawImage(sourceCanvas, 0, 0);
-
-        // Overlay signatures placed on this page
-        const signatures = signaturesPerPage[i] || [];
-        for (const sig of signatures) {
-          const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-            const image = new Image();
-            image.src = sig.signatureUrl;
-            image.onload = () => resolve(image);
-            image.onerror = (err) => reject(err);
-          });
-
-          const x = (sig.placement.x / 100) * drawCanvas.width;
-          const y = (sig.placement.y / 100) * drawCanvas.height;
-          const w = (sig.placement.width / 100) * drawCanvas.width;
-          const h = (sig.placement.height / 100) * drawCanvas.height;
-          
-          dctx.drawImage(img, x, y, w, h);
-        }
-
-        const w = drawCanvas.width;
-        const h = drawCanvas.height;
-        const orientation: "p" | "l" = w >= h ? "l" : "p";
-        
-        // Convert to mm (150 DPI scale: mm = px/150 * 25.4)
-        const mmW = (w / 150) * 25.4;
-        const mmH = (h / 150) * 25.4;
-
-        if (!doc) {
-          doc = new jsPDF({
-            unit: "mm",
-            format: [mmW, mmH],
-            orientation,
-          });
-        } else {
-          doc.addPage([mmW, mmH], orientation);
-        }
-
-        const dataUrl = drawCanvas.toDataURL("image/jpeg", 0.92);
-        doc.addImage(dataUrl, "JPEG", 0, 0, mmW, mmH);
+      // LOSSLESS: overlay signatures onto the ORIGINAL pages via pdf-lib so the
+      // document's text/vectors are preserved (no rasterizing the whole PDF).
+      const { signPdf } = await import("@/lib/pdfEdit");
+      const map: Record<number, SignaturePlacement[]> = {};
+      for (const [idx, sigs] of Object.entries(signaturesPerPage)) {
+        if (!sigs?.length) continue;
+        map[Number(idx)] = sigs.map((s) => ({
+          signatureUrl: s.signatureUrl,
+          x: s.placement.x,
+          y: s.placement.y,
+          width: s.placement.width,
+          height: s.placement.height,
+        }));
       }
+      const pdfBlob = await signPdf(pdfFile, map);
 
-      if (!doc) throw new Error("Could not compile document.");
-      const pdfBlob = doc.output("blob");
-      
       const baseName = pdfFile.name.replace(/\.[^/.]+$/, "");
       downloadBlob(pdfBlob, `${baseName}-signed.pdf`);
     } catch (err: any) {
