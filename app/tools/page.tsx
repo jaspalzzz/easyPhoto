@@ -7,6 +7,7 @@ import { TrustPills } from "@/components/site/TrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
+import { ToolSearch } from "@/components/site/ToolSearch";
 
 export const metadata = pageMetadata({
   title: "Free Image, PDF & Signature Tools — Private, In Your Browser",
@@ -37,6 +38,9 @@ export default function ToolsHubPage() {
         </p>
         <div className="pt-1">
           <TrustPills />
+        </div>
+        <div className="mt-6">
+          <ToolSearch />
         </div>
       </header>
 

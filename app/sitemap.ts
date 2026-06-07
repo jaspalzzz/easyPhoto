@@ -4,6 +4,7 @@ import { MAKER_PAGES } from "@/lib/makerPages";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
 import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
 import { BLOG_POSTS } from "@/lib/blog";
+import { PORTAL_KEYS } from "@/lib/portalPresets";
 
 export const dynamic = "force-static";
 
@@ -14,7 +15,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/tools/",
     "/passport-photo/",
     "/visa-photo/",
+    "/signature-resize-to-10kb/",
     "/signature-resize-to-20kb/",
+    "/signature-resize-to-50kb/",
+    "/signature-resize-to-100kb/",
     "/blog/",
     "/about/",
     "/contact/",
@@ -23,6 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...MAKER_PAGES.map((m) => `/${m.slug}/`),
     ...CATEGORY_SLUGS.map((s) => `/tools/${s}/`),
     ...READY_TOOLS.map((t) => `/tools/${t.slug}/`),
+    ...PORTAL_KEYS.map((key) => `/tools/form-resizer/${key}/`),
     ...KB_TARGETS.map((kb) => kbPath(kb)),
     ...BLOG_POSTS.map((p) => `/blog/${p.slug}/`),
   ];

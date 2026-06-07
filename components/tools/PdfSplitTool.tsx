@@ -1,0 +1,206 @@
+"use client";
+
+import * as React from "react";
+import { Loader2, Download, FileUp, ShieldCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { pdfToCanvases, PdfTooLargeError } from "@/lib/pdfToImages";
+import { splitPdf } from "@/lib/pdfMergeSplit";
+import { downloadBlob } from "@/lib/download";
+
+interface PageItem {
+  index: number;
+  url: string;
+}
+
+export function PdfSplitTool() {
+  const [file, setFile] = React.useState<File | null>(null);
+  const [pages, setPages] = React.useState<PageItem[]>([]);
+  const [selected, setSelected] = React.useState<number[]>([]);
+  const [busy, setBusy] = React.useState(false);
+  const [progress, setProgress] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const onFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      loadFile(selectedFile);
+    }
+  };
+
+  const loadFile = async (selectedFile: File) => {
+    setFile(selectedFile);
+    setBusy(true);
+    setError(null);
+    setPages([]);
+    setSelected([]);
+    try {
+      const canvases = await pdfToCanvases(selectedFile, {
+        scale: 1.0, // Scale 1.0 is sufficient for thumbnails
+        onProgress: (p, t) => setProgress(`Loading PDF page ${p} of ${t}…`),
+      });
+      const items: PageItem[] = canvases.map((canvas, index) => ({
+        index,
+        url: canvas.toDataURL("image/jpeg", 0.85),
+      }));
+      setPages(items);
+    } catch (err) {
+      console.error(err);
+      setError(
+        err instanceof PdfTooLargeError
+          ? err.message
+          : "Could not load this PDF. Make sure it is a valid, unencrypted file."
+      );
+      setFile(null);
+    } finally {
+      setBusy(false);
+      setProgress(null);
+    }
+  };
+
+  const toggleSelectPage = (index: number) => {
+    setSelected((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index].sort((a, b) => a - b)
+    );
+  };
+
+  const selectAll = () => {
+    setSelected(pages.map((p) => p.index));
+  };
+
+  const selectNone = () => {
+    setSelected([]);
+  };
+
+  const runSplit = async () => {
+    if (!file || selected.length === 0) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const splitBlob = await splitPdf(
+        file,
+        selected,
+        (msg) => setProgress(msg)
+      );
+      downloadBlob(splitBlob, `${file.name.replace(/\.[^/.]+$/, "")}-extracted.pdf`);
+    } catch (err) {
+      console.error(err);
+      setError("Could not extract pages. Make sure the file remains accessible.");
+    } finally {
+      setBusy(false);
+      setProgress(null);
+    }
+  };
+
+  return (
+    <Card>
+      <CardContent className="space-y-5 p-6">
+        {/* Upload Zone */}
+        {!file && !busy && (
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={() => inputRef.current?.click()}
+            onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (e.dataTransfer.files?.[0]) {
+                loadFile(e.dataTransfer.files[0]);
+              }
+            }}
+            className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
+          >
+            <FileUp className="h-8 w-8 text-brand" strokeWidth={1.75} />
+            <p className="font-semibold tracking-tight">Choose a PDF, or drop it here</p>
+            <p className="text-xs text-muted-foreground">Select a multi-page PDF to extract individual pages.</p>
+            <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-ink-soft">
+              <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.75} /> Processed locally in your browser
+            </p>
+            <input
+              ref={inputRef}
+              type="file"
+              accept="application/pdf"
+              className="hidden"
+              onChange={onFileSelect}
+            />
+          </div>
+        )}
+
+        {/* Loading/Processing State */}
+        {busy && (
+          <div className="flex flex-col items-center justify-center gap-3 py-10 text-ink-soft">
+            <Loader2 className="h-8 w-8 animate-spin text-brand" strokeWidth={1.75} />
+            <p className="text-sm font-medium">{progress ?? "Loading PDF details…"}</p>
+          </div>
+        )}
+
+        {/* Error message */}
+        {error && (
+          <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
+            {error}
+          </p>
+        )}
+
+        {/* Pages Grid */}
+        {pages.length > 0 && !busy && (
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-hairline pb-3">
+              <div>
+                <h4 className="font-semibold text-sm">Select pages to extract</h4>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {selected.length} of {pages.length} pages selected
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" onClick={selectAll}>Select All</Button>
+                <Button variant="ghost" size="sm" onClick={selectNone}>Clear</Button>
+                {selected.length > 0 && (
+                  <Button variant="cta" size="sm" onClick={runSplit}>
+                    <Download className="h-4 w-4" /> Extract PDF ({selected.length})
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 max-h-[400px] overflow-y-auto pr-1 py-1">
+              {pages.map((page) => {
+                const isSelected = selected.includes(page.index);
+                return (
+                  <div
+                    key={page.index}
+                    onClick={() => toggleSelectPage(page.index)}
+                    className={`relative cursor-pointer rounded-md border p-2 transition-all hover:shadow-md ${
+                      isSelected ? "border-brand bg-brand/5 ring-1 ring-brand" : "border-hairline bg-paper"
+                    }`}
+                  >
+                    <div className="overflow-hidden rounded border border-hairline bg-paper aspect-[3/4] flex items-center justify-center">
+                      <img src={page.url} alt={`Page ${page.index + 1}`} className="w-full h-full object-contain" />
+                    </div>
+                    <div className="mt-2 flex items-center justify-between text-xs px-1">
+                      <span className="font-medium text-muted-foreground">Page {page.index + 1}</span>
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => {}} // toggled by parent div click
+                        className="rounded text-brand focus:ring-brand h-3.5 w-3.5 cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            <div className="flex justify-end pt-2">
+              <Button variant="outline" size="sm" onClick={() => { setFile(null); setPages([]); setSelected([]); }}>
+                Choose another file
+              </Button>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}

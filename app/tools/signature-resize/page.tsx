@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
-import { ResizeDimensionsTool } from "@/components/tools/ResizeDimensionsTool";
+import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
 import { getTool } from "@/lib/toolsCatalog";
 import { SIGNATURE_FAQ } from "@/lib/faqs";
 
@@ -24,7 +24,10 @@ export default function Page() {
       faqItems={SIGNATURE_FAQ}
       footnote="Transparency is preserved in PNG output. Your file never leaves your device."
     >
-      <ResizeDimensionsTool />
+      <SignatureWorkflowTool
+        defaultTab="resize"
+        autoCropDefault={true}
+      />
     </ToolPage>
   );
 }

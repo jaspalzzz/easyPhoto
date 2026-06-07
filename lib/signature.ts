@@ -17,8 +17,12 @@ export interface TransparentOptions {
   threshold?: number;
   /** Width of the soft edge below the threshold (anti-aliasing). */
   softness?: number;
-  /** Force the remaining ink to solid black. */
+  /** Force the remaining ink to solid black (deprecated, use inkColor instead). */
   darkenInk?: boolean;
+  /** Force ink to a specific color preset: original, black, or blue. */
+  inkColor?: "original" | "black" | "blue";
+  /** Contrast multiplier for signature strokes (1.0 to 3.0). */
+  inkContrast?: number;
 }
 
 /**
@@ -31,6 +35,8 @@ export function whiteToTransparent(
 ): HTMLCanvasElement {
   const threshold = opts.threshold ?? 200;
   const softness = Math.max(1, opts.softness ?? 40);
+  const contrast = opts.inkContrast ?? 1.0;
+  const inkColor = opts.inkColor ?? (opts.darkenInk ? "black" : "original");
 
   const out = document.createElement("canvas");
   out.width = source.width;
@@ -45,12 +51,25 @@ export function whiteToTransparent(
     const L = luma(d[i], d[i + 1], d[i + 2]);
     // alpha: 0 at/above threshold (paper) → 255 at threshold-softness (ink)
     let alpha = ((threshold - L) / softness) * 255;
+    
+    // Boost contrast if specified
+    if (contrast > 1.0) {
+      alpha = alpha * contrast;
+    }
+    
     alpha = alpha < 0 ? 0 : alpha > 255 ? 255 : alpha;
     d[i + 3] = Math.round((d[i + 3] / 255) * alpha);
-    if (opts.darkenInk && alpha > 0) {
-      d[i] = 0;
-      d[i + 1] = 0;
-      d[i + 2] = 0;
+    
+    if (alpha > 0) {
+      if (inkColor === "black") {
+        d[i] = 0;
+        d[i + 1] = 0;
+        d[i + 2] = 0;
+      } else if (inkColor === "blue") {
+        d[i] = 0;
+        d[i + 1] = 51;  // Compliant dark blue ink
+        d[i + 2] = 203;
+      }
     }
   }
   octx.putImageData(img, 0, 0);

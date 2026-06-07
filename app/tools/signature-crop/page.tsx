@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
-import { SignatureCropTool } from "@/components/tools/SignatureCropTool";
+import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
 import { getTool } from "@/lib/toolsCatalog";
 
 const tool = getTool("signature-crop")!;
@@ -16,7 +16,10 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <ToolPage title="Signature Crop" slug={tool.slug} blurb={tool.blurb}>
-      <SignatureCropTool />
+      <SignatureWorkflowTool
+        defaultTab="crop"
+        autoCropDefault={true}
+      />
     </ToolPage>
   );
 }

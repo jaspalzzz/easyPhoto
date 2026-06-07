@@ -144,6 +144,34 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
           )}
         </div>
       </div>
+
+      {/* Cross-promotion CTA */}
+      <div className="rounded-md border border-hairline-strong bg-brand/5 p-3.5 text-xs space-y-1.5 mt-1.5">
+        <span className="font-semibold text-brand block">Need a specific file size?</span>
+        <p className="text-muted-foreground leading-normal">
+          If your application portal has a strict file-size limit, compress this photo to an exact target (e.g., 20 KB or 50 KB) in one click.
+        </p>
+        <div className="flex flex-wrap gap-1.5 pt-1">
+          <a
+            href="/photo-resize-to-20kb/"
+            className="rounded px-2 py-1.5 bg-card border border-hairline hover:bg-accent/50 font-medium text-[11px] text-foreground transition-colors"
+          >
+            Compress to 20 KB
+          </a>
+          <a
+            href="/photo-resize-to-50kb/"
+            className="rounded px-2 py-1.5 bg-card border border-hairline hover:bg-accent/50 font-medium text-[11px] text-foreground transition-colors"
+          >
+            Compress to 50 KB
+          </a>
+          <a
+            href="/tools/resize-kb/"
+            className="rounded px-2 py-1.5 bg-card border border-hairline hover:bg-accent/50 font-medium text-[11px] text-brand transition-colors"
+          >
+            Custom Size
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

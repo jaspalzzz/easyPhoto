@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
-import { SignatureCleanTool } from "@/components/tools/SignatureCleanTool";
+import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
 import { getTool } from "@/lib/toolsCatalog";
 
 const tool = getTool("signature-background-removal")!;
@@ -16,10 +16,9 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <ToolPage title="Signature Background Removal" slug={tool.slug} blurb={tool.blurb}>
-      <SignatureCleanTool
-        autoCrop={false}
-        allowDarken={false}
-        filename="signature-no-background.png"
+      <SignatureWorkflowTool
+        defaultTab="clean"
+        autoCropDefault={false}
       />
     </ToolPage>
   );

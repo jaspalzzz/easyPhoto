@@ -8,3 +8,8 @@ export type KbTarget = (typeof KB_TARGETS)[number];
 
 export const kbSlug = (kb: number) => `photo-resize-to-${kb}kb`;
 export const kbPath = (kb: number) => `/${kbSlug(kb)}/`;
+
+export const SIGNATURE_KB_TARGETS = [10, 20, 50, 100] as const;
+export type SignatureKbTarget = (typeof SIGNATURE_KB_TARGETS)[number];
+export const sigKbSlug = (kb: number) => `signature-resize-to-${kb}kb`;
+export const sigKbPath = (kb: number) => `/${sigKbSlug(kb)}/`;

@@ -16,6 +16,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolIcon } from "@/components/site/ToolIcon";
 import { HeroStarter } from "@/components/site/HeroStarter";
 import { Flag } from "@/components/site/Flag";
+import { ToolSearch } from "@/components/site/ToolSearch";
 
 export const metadata = pageMetadata({
   title: "Free Passport & Visa Photo Maker",
@@ -52,6 +53,11 @@ export default function HomePage() {
               and apply the background your government requires, then check it.
               It&apos;s free and runs entirely in your browser.
             </p>
+            
+            <div className="mt-6">
+              <ToolSearch />
+            </div>
+
             <div className="spec mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
               <span>Exact size</span>
               <span className="text-ink-faint">/</span>
