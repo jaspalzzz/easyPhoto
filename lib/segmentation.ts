@@ -169,8 +169,9 @@ export async function describeWebGPU(): Promise<string> {
 let rmbgModelPromise: Promise<any> | null = null;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let rmbgProcessorPromise: Promise<any> | null = null;
+let rmbgProcessorSize = 0;
 
-async function getRMBG() {
+async function getRMBG(inputSize: number) {
   const { AutoModel, AutoProcessor } = await import("@huggingface/transformers");
   if (!rmbgModelPromise) {
     rmbgModelPromise = AutoModel.from_pretrained("briaai/RMBG-1.4", {
@@ -183,7 +184,11 @@ async function getRMBG() {
       throw e;
     });
   }
-  if (!rmbgProcessorPromise) {
+  // RMBG/ISNet is fully convolutional, so the inference resolution is a free
+  // memory↔quality knob. Low-RAM phones (e.g. iPhone 11) OOM at 1024², so we
+  // run them smaller. If the requested size changes, rebuild the processor.
+  if (!rmbgProcessorPromise || rmbgProcessorSize !== inputSize) {
+    rmbgProcessorSize = inputSize;
     rmbgProcessorPromise = AutoProcessor.from_pretrained("briaai/RMBG-1.4", {
       // RMBG-1.4 ships no preprocessor recognised by AutoProcessor, so supply it.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -197,7 +202,7 @@ async function getRMBG() {
         feature_extractor_type: "ImageFeatureExtractor",
         resample: 2,
         rescale_factor: 0.00392156862745098,
-        size: { width: 1024, height: 1024 },
+        size: { width: inputSize, height: inputSize },
       } as any,
     }).catch((e: unknown) => {
       rmbgProcessorPromise = null;
@@ -218,9 +223,11 @@ async function getRMBG() {
  */
 export async function removeBgWebGPU(
   source: Blob,
-  size: { width: number; height: number }
+  size: { width: number; height: number },
+  opts: { inputSize?: number } = {}
 ): Promise<HTMLCanvasElement> {
-  const { model, processor } = await getRMBG();
+  const inputSize = opts.inputSize ?? 1024;
+  const { model, processor } = await getRMBG(inputSize);
   const { RawImage } = await import("@huggingface/transformers");
 
   const url = URL.createObjectURL(source);

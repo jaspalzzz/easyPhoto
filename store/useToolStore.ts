@@ -181,9 +181,13 @@ export const useToolStore = create<ToolState>((set, get) => ({
       //     (GPU memory). Premium quality, no uploads — model only downloads.
       //   • Mobile without WebGPU → no safe on-device premium path; throw so
       //     the catch below falls back honestly (original bg + the notice).
-      const isMobile =
-        typeof navigator !== "undefined" &&
-        /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const ua =
+        typeof navigator !== "undefined" ? navigator.userAgent : "";
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+      // iOS/iPadOS gets tight per-tab memory limits; run RMBG at a smaller
+      // resolution there so the WebGPU buffers fit (1024² OOMs on iPhone 11).
+      const isIOS = /iPhone|iPad|iPod/i.test(ua);
+      const rmbgInputSize = isIOS ? 512 : 1024;
       let webgpuOK = false;
       let webgpuDetail = "desktop-path";
       if (isMobile) {
@@ -199,7 +203,9 @@ export const useToolStore = create<ToolState>((set, get) => ({
         let cutout: HTMLCanvasElement;
         if (isMobile) {
           if (webgpuOK) {
-            cutout = await removeBgWebGPU(decodable, size);
+            cutout = await removeBgWebGPU(decodable, size, {
+              inputSize: rmbgInputSize,
+            });
           } else {
             throw new Error("no-webgpu-adapter");
           }
@@ -225,7 +231,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
         const reason =
           segErr instanceof Error ? `${segErr.name}: ${segErr.message}` : String(segErr);
         // TEMP diagnostic so we can see on the phone WHY it fell back.
-        const diag = `mobile=${isMobile} webgpu=${webgpuOK} [${webgpuDetail}] · ${reason}`;
+        const diag = `mobile=${isMobile} webgpu=${webgpuOK} in=${rmbgInputSize} [${webgpuDetail}] · ${reason}`;
         console.warn("Background removal failed; using original image.", diag, segErr);
         set({
           measurements,
