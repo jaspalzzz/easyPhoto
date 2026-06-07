@@ -74,13 +74,33 @@ export async function segmentPerson(
 
   const imgData = ctx.getImageData(0, 0, size.width, size.height);
   const d = imgData.data;
+  // Smoothly upsample the coarse (e.g. 256²) confidence mask with BILINEAR
+  // sampling, then run a smoothstep so low-confidence background speckle drops
+  // to fully transparent and the person edge is a soft, clean transition
+  // instead of a jagged/blocky cutout.
+  const sx = mw / size.width;
+  const sy = mh / size.height;
+  const LO = 0.4;
+  const HI = 0.62;
+  const span = HI - LO;
   for (let y = 0; y < size.height; y++) {
-    const my = Math.min(mh - 1, ((y * mh) / size.height) | 0);
-    const row = my * mw;
+    const fy = Math.min(mh - 1.001, y * sy);
+    const y0 = fy | 0;
+    const ty = fy - y0;
+    const r0 = y0 * mw;
+    const r1 = Math.min(mh - 1, y0 + 1) * mw;
     for (let x = 0; x < size.width; x++) {
-      const mx = Math.min(mw - 1, ((x * mw) / size.width) | 0);
-      const c = conf[row + mx]; // 0..1 person-confidence
-      d[(y * size.width + x) * 4 + 3] = c >= 0.5 ? 255 : (c * 255) | 0;
+      const fx = Math.min(mw - 1.001, x * sx);
+      const x0 = fx | 0;
+      const tx = fx - x0;
+      const x1 = Math.min(mw - 1, x0 + 1);
+      const top = conf[r0 + x0] * (1 - tx) + conf[r0 + x1] * tx;
+      const bot = conf[r1 + x0] * (1 - tx) + conf[r1 + x1] * tx;
+      const c = top * (1 - ty) + bot * ty; // bilinear-sampled confidence
+      let t = (c - LO) / span;
+      t = t < 0 ? 0 : t > 1 ? 1 : t;
+      const a = t * t * (3 - 2 * t); // smoothstep
+      d[(y * size.width + x) * 4 + 3] = (a * 255) | 0;
     }
   }
   ctx.putImageData(imgData, 0, 0);
