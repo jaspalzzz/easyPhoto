@@ -43,7 +43,6 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
     sourceUrl,
     segmented,
     segmentationFailed,
-    segDiagnostic,
     setSpec,
     processFile,
     applyManualCrop,
@@ -137,16 +136,11 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
               <div className="flex items-start gap-2 border-l-2 border-amber-400 bg-amber-50/60 py-2 pl-3 pr-2 text-xs text-amber-900">
                 <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                 <span>
-                  Automatic background removal didn&apos;t run, so the original
-                  background is still shown. The crop and sizing are still
-                  correct, so retry or use a photo with a clearer background.
+                  We kept your original background on this device. The crop and
+                  sizing are correct and ready to use. For an automatic plain
+                  background, try a photo taken against a clear wall, or open
+                  this page on a laptop or desktop.
                 </span>
-              </div>
-            )}
-
-            {segmentationFailed && segDiagnostic && (
-              <div className="break-all border-l-2 border-slate-400 bg-slate-50 py-2 pl-3 pr-2 font-mono text-[11px] leading-snug text-slate-700">
-                diag: {segDiagnostic}
               </div>
             )}
 

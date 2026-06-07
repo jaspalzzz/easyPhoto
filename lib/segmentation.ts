@@ -102,30 +102,15 @@ export function compositeFull(
   return out;
 }
 
-// ── Premium matting on WebGPU (RMBG-1.4) ────────────────────────────────────
-// onnxruntime/isnet OOMs on mobile (WASM heap). RMBG-1.4 via transformers.js on
-// WebGPU runs on GPU memory instead, so it works on mobile that supports WebGPU.
-// Privacy: only the model downloads (from Hugging Face); the image stays local.
-// fp16 keeps GPU memory + download small enough for mobile GPUs.
-
-/** True if the browser exposes a usable WebGPU adapter. */
-export async function isWebGPUSupported(): Promise<boolean> {
-  const gpu =
-    typeof navigator !== "undefined"
-      ? (navigator as Navigator & { gpu?: { requestAdapter: () => Promise<unknown> } }).gpu
-      : undefined;
-  if (!gpu) return false;
-  try {
-    return !!(await gpu.requestAdapter());
-  } catch {
-    return false;
-  }
-}
+// ── Premium matting via RMBG-1.4 (transformers.js) ──────────────────────────
+// isnet (onnxruntime WASM) OOMs on mobile, so phones run RMBG-1.4 instead:
+// webgpu/fp16 on f16-capable GPUs, otherwise the WASM runtime. Privacy: only
+// the model downloads (from Hugging Face); the image never leaves the device.
 
 /**
  * Whether the WebGPU adapter supports the `shader-f16` feature. fp16 models
  * fail at model-load on adapters without it ("device does not support fp16"),
- * so we fall back to the q8 model there.
+ * so callers fall back to a WASM path there.
  */
 export async function webgpuSupportsF16(): Promise<boolean> {
   const gpu =
@@ -147,42 +132,6 @@ export async function webgpuSupportsF16(): Promise<boolean> {
   }
 }
 
-/**
- * Human-readable WebGPU status — used only for on-screen diagnostics so we can
- * tell, from the phone, WHY the adapter is unavailable.
- */
-export async function describeWebGPU(): Promise<string> {
-  const gpu =
-    typeof navigator !== "undefined"
-      ? (navigator as Navigator & {
-          gpu?: {
-            requestAdapter: (o?: unknown) => Promise<unknown>;
-          };
-        }).gpu
-      : undefined;
-  const ctx =
-    typeof window !== "undefined" && "isSecureContext" in window
-      ? (window as Window & { isSecureContext: boolean }).isSecureContext
-      : "?";
-  if (!gpu) return `no navigator.gpu (secureCtx=${ctx})`;
-  try {
-    const adapter = await gpu.requestAdapter();
-    if (!adapter) {
-      // Some devices only expose a software fallback; probe that too.
-      try {
-        const fb = await gpu.requestAdapter({ forceFallbackAdapter: true });
-        return fb
-          ? "adapter=null but fallback OK (GPU blocklisted)"
-          : "adapter=null, no fallback (unsupported GPU)";
-      } catch (e2) {
-        return `adapter=null, fallback threw: ${(e2 as Error)?.message ?? e2}`;
-      }
-    }
-    return "adapter OK";
-  } catch (e) {
-    return `requestAdapter threw: ${(e as Error)?.name}: ${(e as Error)?.message}`;
-  }
-}
 
 // RMBG-1.4 is a CUSTOM architecture: its config.json has no standard model_type,
 // so pipeline("image-segmentation", …) and AutoModel auto-resolution both fail
@@ -196,8 +145,6 @@ let rmbgModelPromise: Promise<any> | null = null;
 let rmbgProcessorPromise: Promise<any> | null = null;
 let rmbgProcessorSize = 0;
 let rmbgModelKey = "";
-/** TEMP diagnostic: the wasm thread count ORT actually ended up with. */
-export let effectiveWasmThreads = "n/a";
 
 async function getRMBG(opts: {
   device: string;
@@ -207,9 +154,9 @@ async function getRMBG(opts: {
 }) {
   const transformers = await import("@huggingface/transformers");
   const { AutoModel, AutoProcessor } = transformers;
-  // Constrain WASM threads BEFORE the session is created. Threaded ORT
-  // pre-reserves a large SharedArrayBuffer; single-thread uses a smaller,
-  // growable heap — the difference between fitting and OOM on iPhone 11.
+  // Constrain WASM threads BEFORE the session is created. The threaded ORT
+  // build allocates a large SharedArrayBuffer; single-thread uses a smaller,
+  // growable heap — lower peak memory on constrained phones (iOS).
   if (opts.device === "wasm" && opts.threads) {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -217,12 +164,9 @@ async function getRMBG(opts: {
       if (wasmEnv) {
         wasmEnv.numThreads = opts.threads;
         wasmEnv.proxy = false;
-        effectiveWasmThreads = String(wasmEnv.numThreads);
-      } else {
-        effectiveWasmThreads = "no-wasm-env";
       }
-    } catch (e) {
-      effectiveWasmThreads = `set-threw:${(e as Error)?.message ?? e}`;
+    } catch {
+      /* env shape changed; ignore */
     }
   }
   const modelKey = `${opts.device}:${opts.dtype}:${opts.threads ?? 0}`;
@@ -334,14 +278,10 @@ export async function removeBgWebGPU(
     // with the mask upscaled to match — only here do we touch full dimensions.
     return finishCutout(source, maskImg, size);
   } catch (e) {
+    // Tag the failing stage for logs; the store turns this into a graceful
+    // fallback (original background + notice), never a hard failure.
     const msg = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
-    const coi =
-      typeof globalThis !== "undefined" && "crossOriginIsolated" in globalThis
-        ? String((globalThis as { crossOriginIsolated?: boolean }).crossOriginIsolated)
-        : "?";
-    throw new Error(
-      `[${stage.at}] ${msg} (coi=${coi} thr=${effectiveWasmThreads})`
-    );
+    throw new Error(`[${stage.at}] ${msg}`);
   }
 }
 

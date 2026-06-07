@@ -23,9 +23,7 @@ import {
 import {
   removeBg,
   removeBgWebGPU,
-  isWebGPUSupported,
   webgpuSupportsF16,
-  describeWebGPU,
   findCrownY,
   compositeFull,
 } from "@/lib/segmentation";
@@ -83,8 +81,6 @@ interface ToolState {
   /** True once background removal succeeded; false means Phase-1 fallback. */
   segmented: boolean;
   segmentationFailed: boolean;
-  /** TEMP diagnostic: why segmentation fell back (shown on dev). */
-  segDiagnostic: string | null;
 
   print: Preset | null;
   digital: Preset | null;
@@ -114,7 +110,6 @@ export const useToolStore = create<ToolState>((set, get) => ({
   compositeUrl: null,
   segmented: false,
   segmentationFailed: false,
-      segDiagnostic: null,
   print: null,
   digital: null,
   pendingFile: null,
@@ -155,7 +150,6 @@ export const useToolStore = create<ToolState>((set, get) => ({
       compositeUrl: null,
       segmented: false,
       segmentationFailed: false,
-      segDiagnostic: null,
       sourceFile: file,
     });
 
@@ -177,40 +171,21 @@ export const useToolStore = create<ToolState>((set, get) => ({
 
       // Segmentation: real background removal + the PREFERRED crownY.
       set({ status: "segmenting" });
-      // Engine choice is about MEMORY, not quality preference:
-      //   • Desktop → isnet (onnxruntime WASM). Proven, unchanged.
-      //   • Android → RMBG-1.4 on WebGPU (fp16). isnet's WASM heap OOMs there;
-      //     WebGPU runs on GPU memory. Premium quality.
-      //   • iOS → WebGPU OOMs at model-load even at 512², so run RMBG on the
-      //     WASM runtime with the quantized (q8) model at a small input. Lower
-      //     memory, no WebGPU flag needed, works in iOS Chrome too.
-      //   • Android without WebGPU → best-effort WASM q8 as well.
-      // All paths are 100% on-device; only the model downloads.
+      // Engine choice is about device MEMORY, not quality preference. Every path
+      // is 100% on-device; only the model downloads (never the photo).
+      //   • Desktop            → isnet (@imgly, onnxruntime WASM). Proven.
+      //   • Android, f16 GPU   → RMBG-1.4 webgpu/fp16. Fast + premium.   [Redmi]
+      //   • Android, no f16    → RMBG-1.4 wasm/fp32 (full model on CPU). Clean
+      //                          edges, slower. (q8-on-webgpu corrupts output,
+      //                          fp32-on-webgpu crashes those GPUs.)        [OnePlus]
+      //   • iOS                → RMBG-1.4 wasm/q8, single-thread, small input.
+      //                          Safari tab memory is tight; this is the lightest
+      //                          path. Old 4GB iPhones still can't fit it and
+      //                          fall back gracefully below; iPhone 12+ succeed.
       const ua =
         typeof navigator !== "undefined" ? navigator.userAgent : "";
       const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
       const isIOS = /iPhone|iPad|iPod/i.test(ua);
-      let webgpuOK = false;
-      let webgpuF16 = false;
-      let webgpuDetail = "desktop-path";
-      if (isMobile && !isIOS) {
-        try {
-          webgpuOK = await isWebGPUSupported();
-          webgpuF16 = webgpuOK && (await webgpuSupportsF16());
-          webgpuDetail = await describeWebGPU();
-        } catch (e) {
-          webgpuOK = false;
-          webgpuDetail = `probe threw: ${(e as Error)?.message ?? e}`;
-        }
-      }
-      // Pick the engine. WebGPU is only reliable WITH shader-f16; without it
-      // every WebGPU mode failed on real devices (fp16 unsupported, q8 corrupts
-      // output, fp32 crashes the GPU device). So:
-      //   • WebGPU + shader-f16 → webgpu/fp16 (fast, premium).            [Redmi]
-      //   • iOS                 → wasm/q8, single-thread, 384 (tab memory).[iPhone]
-      //   • Otherwise (no f16 GPU, or no WebGPU) → wasm/fp32: the FULL     [OnePlus]
-      //     model on CPU. Clean edges like fp16, just slower. These phones
-      //     have the RAM; iOS does not, hence its lighter q8 path above.
       let engine: {
         device: string;
         dtype: string;
@@ -220,17 +195,15 @@ export const useToolStore = create<ToolState>((set, get) => ({
       if (isMobile) {
         if (isIOS) {
           engine = { device: "wasm", dtype: "q8", inputSize: 256, threads: 1 };
-        } else if (webgpuF16) {
+        } else if (await webgpuSupportsF16()) {
           engine = { device: "webgpu", dtype: "fp16", inputSize: 1024 };
         } else {
           engine = { device: "wasm", dtype: "fp32", inputSize: 1024 };
         }
       }
-      const rmbgInputSize = engine?.inputSize ?? 0;
-      const engineLabel = engine ? `${engine.device}/${engine.dtype}` : "isnet";
       // Detection is done; on mobile, free MediaPipe (GPU+WASM) BEFORE loading
       // the segmentation runtime so the two don't fight for the tab's memory
-      // budget — critical on a 4GB iPhone where both at once kills the tab.
+      // budget — important on low-memory phones.
       if (isMobile && engine) {
         await disposeLandmarker();
       }
@@ -256,19 +229,11 @@ export const useToolStore = create<ToolState>((set, get) => ({
           segmented: true,
         });
       } catch (segErr) {
-        // Fallback to Phase-1 behaviour: crop the original, keep the
-        // landmark-estimated crownY. Surfaced to the user via segmentationFailed.
-        const reason =
-          segErr instanceof Error ? `${segErr.name}: ${segErr.message}` : String(segErr);
-        // TEMP diagnostic so we can see on the phone WHY it fell back.
-        const diag = `mobile=${isMobile} eng=${engineLabel} webgpu=${webgpuOK} in=${rmbgInputSize} [${webgpuDetail}] · ${reason}`;
-        console.warn("Background removal failed; using original image.", diag, segErr);
-        set({
-          measurements,
-          segmented: false,
-          segmentationFailed: true,
-          segDiagnostic: diag,
-        });
+        // Graceful fallback: crop the original (correct sizing), keep the
+        // landmark-estimated crownY, surface segmentationFailed to the user.
+        // Hit on low-memory iOS where the model can't be allocated.
+        console.warn("Background removal failed; using original image.", segErr);
+        set({ measurements, segmented: false, segmentationFailed: true });
       }
 
       set({ status: "rendering" });
@@ -352,7 +317,6 @@ export const useToolStore = create<ToolState>((set, get) => ({
       compositeUrl: null,
       segmented: false,
       segmentationFailed: false,
-      segDiagnostic: null,
       print: null,
       digital: null,
     });
