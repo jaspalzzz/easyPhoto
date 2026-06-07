@@ -203,19 +203,18 @@ export const useToolStore = create<ToolState>((set, get) => ({
         }
       }
       // Pick the engine for the diagnostic + the actual call.
-      //   • Android + WebGPU + shader-f16 → webgpu/fp16 (fast, premium).
-      //   • Android + WebGPU without f16  → webgpu/q8 (no f16 needed).
-      //   • iOS / Android without WebGPU  → wasm/q8 (universal, low memory).
+      //   • WebGPU WITH shader-f16 → webgpu/fp16 (fast, premium quality).
+      //   • Everything else → wasm/q8. NOTE: q8 on the WebGPU backend produces
+      //     CORRUPTED output (onnxruntime-web limitation), so non-f16 GPUs must
+      //     use WASM, not webgpu/q8. WASM runs q8 correctly (just slower).
+      //     iOS uses a smaller input (tight tab memory); other phones 1024.
       let engine: { device: string; dtype: string; inputSize: number } | null =
         null;
       if (isMobile) {
-        if (!isIOS && webgpuOK) {
-          engine = webgpuF16
+        engine =
+          !isIOS && webgpuF16
             ? { device: "webgpu", dtype: "fp16", inputSize: 1024 }
-            : { device: "webgpu", dtype: "q8", inputSize: 1024 };
-        } else {
-          engine = { device: "wasm", dtype: "q8", inputSize: 512 };
-        }
+            : { device: "wasm", dtype: "q8", inputSize: isIOS ? 512 : 1024 };
       }
       const rmbgInputSize = engine?.inputSize ?? 0;
       const engineLabel = engine ? `${engine.device}/${engine.dtype}` : "isnet";
