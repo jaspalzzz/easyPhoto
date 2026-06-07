@@ -196,6 +196,8 @@ let rmbgModelPromise: Promise<any> | null = null;
 let rmbgProcessorPromise: Promise<any> | null = null;
 let rmbgProcessorSize = 0;
 let rmbgModelKey = "";
+/** TEMP diagnostic: the wasm thread count ORT actually ended up with. */
+export let effectiveWasmThreads = "n/a";
 
 async function getRMBG(opts: {
   device: string;
@@ -211,9 +213,16 @@ async function getRMBG(opts: {
   if (opts.device === "wasm" && opts.threads) {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (transformers as any).env.backends.onnx.wasm.numThreads = opts.threads;
-    } catch {
-      /* env shape changed; ignore */
+      const wasmEnv = (transformers as any).env?.backends?.onnx?.wasm;
+      if (wasmEnv) {
+        wasmEnv.numThreads = opts.threads;
+        wasmEnv.proxy = false;
+        effectiveWasmThreads = String(wasmEnv.numThreads);
+      } else {
+        effectiveWasmThreads = "no-wasm-env";
+      }
+    } catch (e) {
+      effectiveWasmThreads = `set-threw:${(e as Error)?.message ?? e}`;
     }
   }
   const modelKey = `${opts.device}:${opts.dtype}:${opts.threads ?? 0}`;
@@ -326,7 +335,13 @@ export async function removeBgWebGPU(
     return finishCutout(source, maskImg, size);
   } catch (e) {
     const msg = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
-    throw new Error(`[${stage.at}] ${msg}`);
+    const coi =
+      typeof globalThis !== "undefined" && "crossOriginIsolated" in globalThis
+        ? String((globalThis as { crossOriginIsolated?: boolean }).crossOriginIsolated)
+        : "?";
+    throw new Error(
+      `[${stage.at}] ${msg} (coi=${coi} thr=${effectiveWasmThreads})`
+    );
   }
 }
 
