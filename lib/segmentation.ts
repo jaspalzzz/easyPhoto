@@ -170,13 +170,24 @@ let rmbgModelPromise: Promise<any> | null = null;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let rmbgProcessorPromise: Promise<any> | null = null;
 let rmbgProcessorSize = 0;
+let rmbgModelKey = "";
 
-async function getRMBG(inputSize: number) {
+async function getRMBG(opts: {
+  device: string;
+  dtype: string;
+  inputSize: number;
+}) {
   const { AutoModel, AutoProcessor } = await import("@huggingface/transformers");
-  if (!rmbgModelPromise) {
+  const modelKey = `${opts.device}:${opts.dtype}`;
+  if (!rmbgModelPromise || rmbgModelKey !== modelKey) {
+    rmbgModelKey = modelKey;
     rmbgModelPromise = AutoModel.from_pretrained("briaai/RMBG-1.4", {
-      device: "webgpu",
-      dtype: "fp16", // GPU memory + download small enough for mobile GPUs
+      // webgpu (Android) is fast; wasm (iOS, where webgpu OOMs at model-load)
+      // is universal. q8 keeps memory low; fp16 balances quality on GPU.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      device: opts.device as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      dtype: opts.dtype as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       config: { model_type: "custom" } as any,
     }).catch((e: unknown) => {
@@ -187,8 +198,8 @@ async function getRMBG(inputSize: number) {
   // RMBG/ISNet is fully convolutional, so the inference resolution is a free
   // memory↔quality knob. Low-RAM phones (e.g. iPhone 11) OOM at 1024², so we
   // run them smaller. If the requested size changes, rebuild the processor.
-  if (!rmbgProcessorPromise || rmbgProcessorSize !== inputSize) {
-    rmbgProcessorSize = inputSize;
+  if (!rmbgProcessorPromise || rmbgProcessorSize !== opts.inputSize) {
+    rmbgProcessorSize = opts.inputSize;
     rmbgProcessorPromise = AutoProcessor.from_pretrained("briaai/RMBG-1.4", {
       // RMBG-1.4 ships no preprocessor recognised by AutoProcessor, so supply it.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -202,7 +213,7 @@ async function getRMBG(inputSize: number) {
         feature_extractor_type: "ImageFeatureExtractor",
         resample: 2,
         rescale_factor: 0.00392156862745098,
-        size: { width: inputSize, height: inputSize },
+        size: { width: opts.inputSize, height: opts.inputSize },
       } as any,
     }).catch((e: unknown) => {
       rmbgProcessorPromise = null;
@@ -224,48 +235,32 @@ async function getRMBG(inputSize: number) {
 export async function removeBgWebGPU(
   source: Blob,
   size: { width: number; height: number },
-  opts: { inputSize?: number } = {}
+  opts: { device?: string; dtype?: string; inputSize?: number } = {}
 ): Promise<HTMLCanvasElement> {
+  const device = opts.device ?? "webgpu";
+  const dtype = opts.dtype ?? "fp16";
   const inputSize = opts.inputSize ?? 1024;
 
-  // TEMP diagnostic: name the exact stage + the last network host so an
-  // on-device "Failed to fetch" tells us WHICH download was blocked
-  // (model on xethub vs. onnxruntime runtime on jsdelivr). Removed once green.
+  // TEMP diagnostic: name the exact stage so an on-device failure says where.
   const stage = { at: "model-load" };
-  let lastUrl = "";
-  const origFetch =
-    typeof globalThis !== "undefined" && globalThis.fetch
-      ? globalThis.fetch.bind(globalThis)
-      : null;
-  if (origFetch) {
-    globalThis.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
-      try {
-        lastUrl =
-          typeof input === "string"
-            ? input
-            : input instanceof URL
-              ? input.href
-              : (input as Request)?.url ?? "";
-      } catch {
-        /* ignore */
-      }
-      return origFetch(input, init);
-    }) as typeof fetch;
-  }
 
   try {
-    const { model, processor } = await getRMBG(inputSize);
+    const { model, processor } = await getRMBG({ device, dtype, inputSize });
     const { RawImage } = await import("@huggingface/transformers");
 
+    // Decode the photo OURSELVES (no fetch). RawImage.fromURL(blob:) fetches
+    // the blob, which fails under COEP credentialless on Android Chrome
+    // ("[decode] Failed to fetch"). createImageBitmap has no such issue.
     stage.at = "decode";
-    const url = URL.createObjectURL(source);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let rawImg: any;
-    try {
-      rawImg = await RawImage.fromURL(url);
-    } finally {
-      URL.revokeObjectURL(url);
-    }
+    const bitmap = await createImageBitmap(source);
+    const srcCanvas = document.createElement("canvas");
+    srcCanvas.width = bitmap.width;
+    srcCanvas.height = bitmap.height;
+    const sctx = srcCanvas.getContext("2d");
+    if (!sctx) throw new Error("Could not acquire 2D canvas context.");
+    sctx.drawImage(bitmap, 0, 0);
+    bitmap.close?.();
+    const rawImg = RawImage.fromCanvas(srcCanvas);
 
     // Preprocess → infer → model returns a single-channel alpha matte (0..1).
     stage.at = "preprocess";
@@ -277,36 +272,26 @@ export async function removeBgWebGPU(
     const maskImg = await RawImage.fromTensor(
       output[0].mul(255).to("uint8")
     ).resize(size.width, size.height);
-    return finishCutout(rawImg, maskImg, size);
+    return finishCutout(srcCanvas, maskImg, size);
   } catch (e) {
-    let host = "n/a";
-    try {
-      if (lastUrl) host = new URL(lastUrl, location.href).host;
-    } catch {
-      /* ignore */
-    }
     const msg = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
-    throw new Error(`[${stage.at}] ${msg} (lastFetch=${host})`);
-  } finally {
-    if (origFetch) globalThis.fetch = origFetch;
+    throw new Error(`[${stage.at}] ${msg}`);
   }
 }
 
 /** Apply the alpha matte to the source image at the target size. */
 function finishCutout(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rawImg: any,
+  srcCanvas: HTMLCanvasElement,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   maskImg: any,
   size: { width: number; height: number }
 ): HTMLCanvasElement {
-
   const canvas = document.createElement("canvas");
   canvas.width = size.width;
   canvas.height = size.height;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Could not acquire 2D canvas context.");
-  ctx.drawImage(rawImg.toCanvas(), 0, 0, size.width, size.height);
+  ctx.drawImage(srcCanvas, 0, 0, size.width, size.height);
 
   const imgData = ctx.getImageData(0, 0, size.width, size.height);
   const d = imgData.data;

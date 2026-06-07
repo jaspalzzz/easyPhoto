@@ -177,20 +177,20 @@ export const useToolStore = create<ToolState>((set, get) => ({
       set({ status: "segmenting" });
       // Engine choice is about MEMORY, not quality preference:
       //   • Desktop → isnet (onnxruntime WASM). Proven, unchanged.
-      //   • Mobile  → isnet's WASM heap OOMs, so use RMBG-1.4 on WebGPU
-      //     (GPU memory). Premium quality, no uploads — model only downloads.
-      //   • Mobile without WebGPU → no safe on-device premium path; throw so
-      //     the catch below falls back honestly (original bg + the notice).
+      //   • Android → RMBG-1.4 on WebGPU (fp16). isnet's WASM heap OOMs there;
+      //     WebGPU runs on GPU memory. Premium quality.
+      //   • iOS → WebGPU OOMs at model-load even at 512², so run RMBG on the
+      //     WASM runtime with the quantized (q8) model at a small input. Lower
+      //     memory, no WebGPU flag needed, works in iOS Chrome too.
+      //   • Android without WebGPU → best-effort WASM q8 as well.
+      // All paths are 100% on-device; only the model downloads.
       const ua =
         typeof navigator !== "undefined" ? navigator.userAgent : "";
       const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
-      // iOS/iPadOS gets tight per-tab memory limits; run RMBG at a smaller
-      // resolution there so the WebGPU buffers fit (1024² OOMs on iPhone 11).
       const isIOS = /iPhone|iPad|iPod/i.test(ua);
-      const rmbgInputSize = isIOS ? 512 : 1024;
       let webgpuOK = false;
       let webgpuDetail = "desktop-path";
-      if (isMobile) {
+      if (isMobile && !isIOS) {
         try {
           webgpuOK = await isWebGPUSupported();
           webgpuDetail = await describeWebGPU();
@@ -199,16 +199,21 @@ export const useToolStore = create<ToolState>((set, get) => ({
           webgpuDetail = `probe threw: ${(e as Error)?.message ?? e}`;
         }
       }
+      // Pick the engine for the diagnostic + the actual call.
+      let engine: { device: string; dtype: string; inputSize: number } | null =
+        null;
+      if (isMobile) {
+        engine =
+          !isIOS && webgpuOK
+            ? { device: "webgpu", dtype: "fp16", inputSize: 1024 }
+            : { device: "wasm", dtype: "q8", inputSize: 512 };
+      }
+      const rmbgInputSize = engine?.inputSize ?? 0;
+      const engineLabel = engine ? `${engine.device}/${engine.dtype}` : "isnet";
       try {
         let cutout: HTMLCanvasElement;
-        if (isMobile) {
-          if (webgpuOK) {
-            cutout = await removeBgWebGPU(decodable, size, {
-              inputSize: rmbgInputSize,
-            });
-          } else {
-            throw new Error("no-webgpu-adapter");
-          }
+        if (isMobile && engine) {
+          cutout = await removeBgWebGPU(decodable, size, engine);
         } else {
           cutout = await removeBg(decodable, size);
         }
@@ -231,7 +236,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
         const reason =
           segErr instanceof Error ? `${segErr.name}: ${segErr.message}` : String(segErr);
         // TEMP diagnostic so we can see on the phone WHY it fell back.
-        const diag = `mobile=${isMobile} webgpu=${webgpuOK} in=${rmbgInputSize} [${webgpuDetail}] · ${reason}`;
+        const diag = `mobile=${isMobile} eng=${engineLabel} webgpu=${webgpuOK} in=${rmbgInputSize} [${webgpuDetail}] · ${reason}`;
         console.warn("Background removal failed; using original image.", diag, segErr);
         set({
           measurements,
