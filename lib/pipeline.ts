@@ -29,17 +29,66 @@ export interface LoadedImage {
   url: string;
 }
 
+/**
+ * Cap the longest edge of the working image. Modern phones shoot 48–108MP;
+ * processing at that size allocates 200–400MB+ per full-res canvas across the
+ * pipeline (detection, segmentation compose, crop) and can OOM any device.
+ * Passport output is only ~500–800px, so 2500px is far more than enough — no
+ * visible quality loss, and every device uses less memory and runs faster.
+ */
+const SOURCE_MAX_EDGE = 2500;
+
 /** Read a user-selected File into an in-memory HTMLImageElement. No upload. */
 export function loadImageFromFile(file: File): Promise<LoadedImage> {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const image = new Image();
-    image.onload = () =>
-      resolve({
-        image,
-        size: { width: image.naturalWidth, height: image.naturalHeight },
-        url,
-      });
+    image.onload = () => {
+      const w = image.naturalWidth;
+      const h = image.naturalHeight;
+      const longest = Math.max(w, h);
+      if (longest <= SOURCE_MAX_EDGE) {
+        resolve({ image, size: { width: w, height: h }, url });
+        return;
+      }
+      // Oversized photo: downscale ONCE here so the entire pipeline works in a
+      // bounded, lower-memory space (coordinates stay consistent end to end).
+      try {
+        const scale = SOURCE_MAX_EDGE / longest;
+        const dw = Math.max(1, Math.round(w * scale));
+        const dh = Math.max(1, Math.round(h * scale));
+        const canvas = document.createElement("canvas");
+        canvas.width = dw;
+        canvas.height = dh;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("no 2d context");
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(image, 0, 0, dw, dh);
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            // Fall back to the original full-res image if encoding fails.
+            resolve({ image, size: { width: w, height: h }, url });
+            return;
+          }
+          URL.revokeObjectURL(url);
+          const scaledUrl = URL.createObjectURL(blob);
+          const scaled = new Image();
+          scaled.onload = () =>
+            resolve({
+              image: scaled,
+              size: { width: dw, height: dh },
+              url: scaledUrl,
+            });
+          scaled.onerror = () => {
+            URL.revokeObjectURL(scaledUrl);
+            reject(new Error("Could not read that image file."));
+          };
+          scaled.src = scaledUrl;
+        }, "image/png");
+      } catch {
+        resolve({ image, size: { width: w, height: h }, url });
+      }
+    };
     image.onerror = () => {
       URL.revokeObjectURL(url);
       reject(new Error("Could not read that image file."));
