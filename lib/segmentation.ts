@@ -25,8 +25,10 @@ export async function removeBg(
 ): Promise<HTMLCanvasElement> {
   const { removeBackground } = await import("@imgly/background-removal");
   const cutBlob = await removeBackground(source, {
-    // fp16 balances quality vs. speed; default output is a transparent PNG.
-    model: "isnet_fp16",
+    // quint8 (int8-quantized) is the smallest model — roughly half the memory of
+    // fp16 — so it loads/runs on memory-constrained mobile (iOS/WebKit). Quality
+    // is plenty here since we composite the cutout over a solid background.
+    model: "isnet_quint8",
     output: { format: "image/png" },
   });
 
