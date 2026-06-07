@@ -185,7 +185,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
               "isnet_quint8 failed; falling back to MediaPipe selfie.",
               quint8Err
             );
-            cutout = await segmentPerson(image, size);
+            cutout = await segmentPerson(image, size, measurements);
           }
         }
         const crownY = findCrownY(cutout, measurements.faceXSpan);

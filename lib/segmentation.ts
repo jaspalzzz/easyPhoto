@@ -1,3 +1,5 @@
+import type { DetectionResult } from "./faceDetection";
+
 /**
  * Background segmentation — @imgly/background-removal.
  * ---------------------------------------------------
@@ -99,7 +101,8 @@ export function boxFilter2D(src: Float32Array, w: number, h: number, r: number, 
  */
 export async function segmentPerson(
   image: HTMLImageElement | HTMLCanvasElement | ImageBitmap,
-  size: { width: number; height: number }
+  size: { width: number; height: number },
+  measurements?: DetectionResult
 ): Promise<HTMLCanvasElement> {
   const segmenter = await getSegmenter();
   const canvas = document.createElement("canvas");
@@ -150,6 +153,42 @@ export async function segmentPerson(
     t = t < 0 ? 0 : t > 1 ? 1 : t;
     p_sub[i] = t * t * (3 - 2 * t);
   }
+
+  // Restrict mask to the head/shoulders region using face landmarks to discard background clutter (like headphones)
+  if (measurements) {
+    const scaleX = mw / size.width;
+    const scaleY = mh / size.height;
+    const lowResFaceCenterX = measurements.faceCenterX * scaleX;
+    const lowResChinY = measurements.chinY * scaleY;
+    const lowResFaceWidth = Math.max(10, (measurements.faceXSpan.max - measurements.faceXSpan.min) * scaleX);
+
+    // Width boundaries: head is approx face width * 0.95 on each side of center
+    const headHalfWidth = lowResFaceWidth * 0.95;
+    const transitionWidth = lowResFaceWidth * 0.25;
+
+    for (let i = 0; i < mw * mh; i++) {
+      const row = Math.floor(i / mw);
+      const col = i % mw;
+
+      let halfWidth = headHalfWidth;
+      if (row > lowResChinY) {
+        // Widen constraint downwards to accommodate shoulders
+        halfWidth += (row - lowResChinY) * 0.8;
+      }
+
+      const dx = Math.abs(col - lowResFaceCenterX);
+      let weight = 1.0;
+      if (dx > halfWidth) {
+        if (dx > halfWidth + transitionWidth) {
+          weight = 0.0;
+        } else {
+          weight = 1.0 - (dx - halfWidth) / transitionWidth;
+        }
+      }
+      p_sub[i] *= weight;
+    }
+  }
+
 
   // 3. Compute Fast Guided Filter coefficients (a and b) in the downsampled domain
   const r_filter = 4; // filter radius
