@@ -1,7 +1,7 @@
 import { ShieldCheck, BadgeCheck, Landmark, Gift } from "lucide-react";
 
 /**
- * Authentic trust signals — every claim is verifiable from how the app actually
+ * Authentic trust signals. Every claim is verifiable from how the app actually
  * works (client-side processing, gov-source links, free, no watermark). No
  * fabricated stats or testimonials.
  */
@@ -14,7 +14,7 @@ const SIGNALS = [
   {
     icon: Landmark,
     title: "Built on official requirements",
-    body: "Sizes and rules come from each country's government source — linked on every page.",
+    body: "Sizes and rules come from each country's government source, linked on every page.",
   },
   {
     icon: BadgeCheck,

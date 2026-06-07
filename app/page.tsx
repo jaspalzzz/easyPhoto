@@ -21,9 +21,9 @@ import { Flag } from "@/components/site/Flag";
 export const metadata = pageMetadata({
   title: "Free Passport & Visa Photo Maker",
   description:
-    "Create a compliant passport or visa photo for free. Pick your country, " +
-    "drop a photo — we auto-crop to the exact head-size and background rules " +
-    "and check compliance. 100% in your browser; nothing is uploaded.",
+    "Create a compliant passport or visa photo for free. Pick your country and " +
+    "drop a photo. We auto-crop to the exact head-size and background rules, " +
+    "then check compliance. 100% in your browser; nothing is uploaded.",
   path: "/",
 });
 
@@ -41,7 +41,7 @@ export default function HomePage() {
           })),
         })}
       />
-      {/* Hero — centered, tool-first */}
+      {/* Hero: centered, tool-first */}
       <section className="hero-surface relative overflow-hidden border-b">
         <div className="surface-grid pointer-events-none absolute inset-0" />
         <div className="container relative py-12 text-center sm:py-16">
@@ -50,12 +50,12 @@ export default function HomePage() {
             <span className="text-brand">made in your browser</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-pretty text-lg text-muted-foreground">
-            Pick your country, drop a photo — we auto-crop to the exact head-size
-            and background rules and check it for compliance. Free, no watermark,
-            no upload.
+            Pick your country and drop a photo. We auto-crop to the exact
+            head-size and background rules, then check it for compliance. It&apos;s
+            free, with no watermark and no upload.
           </p>
 
-          {/* The main tool — the centrepiece */}
+          {/* The main tool, the centrepiece */}
           <div className="mx-auto mt-8 max-w-3xl text-left">
             <HeroStarter />
           </div>
@@ -115,7 +115,7 @@ export default function HomePage() {
               Why people trust easyPhoto
             </h2>
             <p className="mx-auto mt-1 max-w-2xl text-muted-foreground">
-              No accounts, no uploads, no guesswork — just the official rules,
+              No accounts, no uploads, no guesswork. Just the official rules,
               applied automatically.
             </p>
           </div>
@@ -137,7 +137,7 @@ export default function HomePage() {
                 Popular free tools
               </h2>
               <p className="mt-1 text-muted-foreground">
-                Quick image &amp; PDF utilities — all private, all in your browser.
+                Quick image &amp; PDF utilities. All private, all in your browser.
               </p>
             </div>
             <Link

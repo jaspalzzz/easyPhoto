@@ -18,36 +18,36 @@ export default function Page() {
     <BlogPostLayout slug={post.slug}>
       <p>
         A baby can&apos;t sit up on command, hold a neutral expression or look at
-        a lens — yet the photo still has to meet the same compliance rules as an
-        adult&apos;s. The good news: countries relax a few rules for infants, and
-        a plain white sheet plus a phone is all you need. Here&apos;s how to do it
-        without a studio.
+        a lens. Yet the photo still has to meet the same compliance rules as an
+        adult&apos;s. The good news is that countries relax a few rules for
+        infants, and a plain white sheet plus a phone is all you need.
+        Here&apos;s how to do it without a studio.
       </p>
 
-      <h2>What&apos;s relaxed for babies — and what isn&apos;t</h2>
+      <h2>What&apos;s relaxed for babies, and what isn&apos;t</h2>
       <ul>
         <li>
           <strong>Expression:</strong> a neutral face is ideal, but a closed-mouth
           baby who isn&apos;t crying is usually fine. Eyes should be open where
-          possible (very young newborns are often excused).
+          possible. Very young newborns are often excused.
         </li>
         <li>
-          <strong>Still required:</strong> plain, uniform background; no other
-          people, hands, toys, pacifiers or straps visible; even lighting and no
-          shadows; the face fully visible and roughly centred.
+          <strong>Still required:</strong> a plain, uniform background. No other
+          people, hands, toys, pacifiers or straps visible. Even lighting and no
+          shadows, with the face fully visible and roughly centred.
         </li>
       </ul>
 
       <h2>The lay-down method</h2>
       <p>
-        The easiest setup: lay the baby on their back on a plain white sheet or
-        blanket, with no patterns. Photograph straight down from above, keeping
-        the phone parallel to the baby so the face isn&apos;t distorted. A white
-        sheet doubles as the background, which removes the hardest part.
+        The easiest setup is to lay the baby on their back on a plain white sheet
+        or blanket, with no patterns. Photograph straight down from above,
+        keeping the phone parallel to the baby so the face isn&apos;t distorted. A
+        white sheet doubles as the background, which removes the hardest part.
       </p>
       <ul>
-        <li>Smooth out wrinkles and crumbs in the sheet — they count as a busy background.</li>
-        <li>Use soft daylight; turn off flash to avoid shadows and red-eye.</li>
+        <li>Smooth out wrinkles and crumbs in the sheet. They count as a busy background.</li>
+        <li>Use soft daylight and turn off flash to avoid shadows and red-eye.</li>
         <li>Support the head if needed, but keep hands out of frame.</li>
         <li>Take many shots and pick the one with open eyes and a calm face.</li>
       </ul>
@@ -65,7 +65,7 @@ export default function Page() {
         your best shot to the{" "}
         <Link href="/passport-photo/">passport photo maker</Link>, choose your
         country, and it crops to the correct head size and sets the right
-        background — see the exact rules on your country page, such as{" "}
+        background. See the exact rules on your country page, such as{" "}
         <Link href="/us-passport-photo-maker/">US</Link>, <Link href="/india-passport-photo-maker/">India</Link> or{" "}
         <Link href="/uk-passport-photo-maker/">UK</Link>. If a stray shadow or off-white sheet shows,
         the <Link href="/tools/white-background/">white background tool</Link>{" "}

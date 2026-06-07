@@ -11,8 +11,8 @@ const EMAIL = "hello@easyphoto.in";
 export const metadata = pageMetadata({
   title: "Contact EasyPhoto",
   description:
-    "Get in touch with EasyPhoto — report a photo-spec correction, a bug, or " +
-    "ask a question. We read every message.",
+    "Get in touch with EasyPhoto to report a photo-spec correction or a bug, or " +
+    "to ask a question. We read every message.",
   path: "/contact/",
 });
 
@@ -45,8 +45,8 @@ export default function ContactPage() {
         <header className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Contact us</h1>
           <p className="text-muted-foreground">
-            Questions, bug reports, or a photo specification that needs updating —
-            we&apos;d like to hear from you.
+            Got a question, a bug report, or a photo specification that needs
+            updating? We&apos;d like to hear from you.
           </p>
         </header>
 
@@ -72,14 +72,14 @@ export default function ContactPage() {
           <p className="leading-relaxed text-muted-foreground">
             EasyPhoto&apos;s value is accuracy. If you find a country&apos;s photo
             size, background colour or file-size limit is out of date, email us
-            with the country, the detail, and a link to the official source — we
+            with the country, the detail, and a link to the official source. We
             prioritise these.
           </p>
         </section>
 
         <p className="inline-flex items-start gap-2 text-xs text-muted-foreground">
           <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
-          We don&apos;t collect your photos — there&apos;s nothing to ask about
+          We don&apos;t collect your photos. There&apos;s nothing to ask about
           your images, because they never leave your device.
         </p>
       </article>

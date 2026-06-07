@@ -18,28 +18,29 @@ export default function Page() {
     <BlogPostLayout slug={post.slug}>
       <p>
         A phone photo is several megabytes. Most government, visa and exam
-        portals accept only a tiny fraction of that — often 10 to 100&nbsp;KB.
+        portals accept only a tiny fraction of that, often 10 to 100&nbsp;KB.
         When your upload fails with &quot;file too large,&quot; the fix is
-        compression, not retaking the photo. Here&apos;s how to hit an exact KB
-        target without turning your face into mush.
+        compression. You don&apos;t need to retake the photo. Here&apos;s how to
+        hit an exact KB target without turning your face into mush.
       </p>
 
       <h2>Common file-size limits you&apos;ll meet</h2>
       <ul>
         <li>
-          <strong>Indian government &amp; exam forms</strong> — frequently 20–50
-          KB for photos, sometimes as low as 10 KB; signatures often 10–20 KB.
+          <strong>Indian government &amp; exam forms.</strong> Photos are
+          frequently 20–50 KB, sometimes as low as 10 KB. Signatures often run
+          10–20 KB.
         </li>
         <li>
-          <strong>Visa portals</strong> — typically 50–300 KB, with minimum
-          dimensions too.
+          <strong>Visa portals.</strong> Typically 50–300 KB, and they tend to
+          set minimum dimensions too.
         </li>
         <li>
-          <strong>Job and university applications</strong> — usually 100–200 KB.
+          <strong>Job and university applications.</strong> Usually 100–200 KB.
         </li>
       </ul>
       <p>
-        Always read the form&apos;s instructions — limits vary, and some set a
+        Always read the form&apos;s instructions. Limits vary, and some set a
         minimum as well as a maximum.
       </p>
 
@@ -48,12 +49,12 @@ export default function Page() {
         Two things control a JPEG&apos;s file size: its pixel dimensions and its
         quality setting. The trick is to reduce both just enough to slip under
         the cap while keeping the face crisp. Done well, a 20&nbsp;KB passport
-        photo still looks clean at the size a portal displays it.
+        photo still looks clean at the size a portal displays it at.
       </p>
       <ul>
         <li>Start from the properly cropped passport photo, not the raw selfie.</li>
         <li>Lower quality first; only shrink dimensions if you must.</li>
-        <li>Keep it a JPEG — PNGs are far larger for photos.</li>
+        <li>Keep it a JPEG. PNGs are far larger for photos.</li>
         <li>Don&apos;t over-compress below the portal&apos;s minimum, if it has one.</li>
       </ul>
 
@@ -64,12 +65,12 @@ export default function Page() {
       </p>
       <ul>
         <li>
-          <Link href="/photo-resize-to-10kb/">Resize to 10 KB</Link> — the
+          <Link href="/photo-resize-to-10kb/">Resize to 10 KB</Link> for the
           tightest exam-form limit.
         </li>
         <li>
           <Link href="/photo-resize-to-20kb/">Resize to 20 KB</Link> and{" "}
-          <Link href="/photo-resize-to-50kb/">50 KB</Link> — the most
+          <Link href="/photo-resize-to-50kb/">50 KB</Link>, the most
           common photo caps.
         </li>
         <li>
@@ -92,7 +93,7 @@ export default function Page() {
         Compression can&apos;t fix a non-compliant photo. Crop and set the
         correct background with the{" "}
         <Link href="/passport-photo/">passport photo maker</Link> first, then
-        compress the result. Everything runs in your browser — your photo is
+        compress the result. Everything runs in your browser, so your photo is
         never uploaded to a server.
       </p>
     </BlogPostLayout>

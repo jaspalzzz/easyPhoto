@@ -19,7 +19,7 @@ export default function Page() {
       <p>
         &quot;Just use a white wall&quot; is the most common piece of bad
         passport-photo advice. White is correct for some countries and
-        explicitly wrong for others — and the wrong shade is one of the top
+        explicitly wrong for others, and the wrong shade is one of the top
         reasons photos get rejected. Here&apos;s the right background color for
         each major country, and how to apply it.
       </p>
@@ -27,26 +27,26 @@ export default function Page() {
       <h2>Background color by country</h2>
       <ul>
         <li>
-          <strong>United States</strong> — plain white or off-white.{" "}
+          <strong>United States:</strong> plain white or off-white.{" "}
           <Link href="/us-passport-photo-maker/">US spec</Link>.
         </li>
         <li>
-          <strong>India</strong> — plain white. <Link href="/india-passport-photo-maker/">India spec</Link>.
+          <strong>India:</strong> plain white. <Link href="/india-passport-photo-maker/">India spec</Link>.
         </li>
         <li>
-          <strong>United Kingdom</strong> — light grey or cream.{" "}
+          <strong>United Kingdom:</strong> light grey or cream.{" "}
           <em>Pure white is rejected.</em> <Link href="/uk-passport-photo-maker/">UK spec</Link>.
         </li>
         <li>
-          <strong>Canada</strong> — plain white. <Link href="/canada-passport-photo-maker/">Canada spec</Link>.
+          <strong>Canada:</strong> plain white. <Link href="/canada-passport-photo-maker/">Canada spec</Link>.
         </li>
         <li>
-          <strong>Australia</strong> — plain white or light grey.{" "}
+          <strong>Australia:</strong> plain white or light grey.{" "}
           <Link href="/australia-passport-photo-maker/">Australia spec</Link>.
         </li>
         <li>
-          <strong>Schengen (EU)</strong> — light grey is safest; many consulates
-          are wary of pure white. <Link href="/schengen-visa-photo-maker/">Schengen spec</Link>.
+          <strong>Schengen (EU):</strong> light grey is safest, since many
+          consulates are wary of pure white. <Link href="/schengen-visa-photo-maker/">Schengen spec</Link>.
         </li>
       </ul>
 
@@ -55,7 +55,7 @@ export default function Page() {
         Passport backgrounds must be a single, even tone with no shadows,
         gradients or texture so that facial-recognition systems can separate your
         head from the background. A &quot;white&quot; wall photographed in warm
-        indoor light often comes out cream or grey anyway — and a real shadow
+        indoor light often comes out cream or grey anyway. And a real shadow
         behind your head reads as a non-uniform background. Both fail.
       </p>
 
@@ -71,7 +71,7 @@ export default function Page() {
       <p>
         You don&apos;t need a perfect wall. Upload your photo to the{" "}
         <Link href="/passport-photo/">passport photo maker</Link> and pick your
-        country — it applies that country&apos;s correct background color
+        country. It applies that country&apos;s correct background color
         automatically, so you never have to remember whether it&apos;s white,
         grey or cream. To put any photo on a clean white background directly, use
         the <Link href="/tools/white-background/">white background tool</Link>;
@@ -82,13 +82,13 @@ export default function Page() {
       <h2>One more check before you submit</h2>
       <p>
         After setting the background, make sure the photo still meets the size
-        and head-proportion rules — see{" "}
+        and head-proportion rules (see{" "}
         <Link href="/blog/passport-photo-size-by-country/">
           passport photo size by country
-        </Link>{" "}
-        — and compress it to your portal&apos;s file limit with{" "}
+        </Link>
+        ), then compress it to your portal&apos;s file limit with{" "}
         <Link href="/tools/resize-kb/">resize to an exact KB</Link>. Everything
-        runs locally; your photo never leaves your device.
+        runs locally, so your photo never leaves your device.
       </p>
     </BlogPostLayout>
   );

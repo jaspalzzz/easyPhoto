@@ -24,7 +24,7 @@ export function HowItWorks() {
       <div className="text-center">
         <h2 className="text-2xl font-bold tracking-tight">How it works</h2>
         <p className="mt-1 text-muted-foreground">
-          A compliant photo in three steps — no design skills needed.
+          A compliant photo in three steps. No design skills needed.
         </p>
       </div>
       <ol className="grid gap-6 md:grid-cols-3">
