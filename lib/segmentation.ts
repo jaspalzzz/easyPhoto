@@ -142,16 +142,10 @@ export async function segmentPerson(
     I_sub[i] = 0.299 * r + 0.587 * g + 0.114 * b;
   }
 
-  // 2. Prepare clean low-res starting mask using smoothstep
-  const LO = 0.4;
-  const HI = 0.62;
-  const span = HI - LO;
+  // 2. Prepare clean low-res starting mask using a sharp threshold to remove halos
   const p_sub = new Float32Array(mw * mh);
   for (let i = 0; i < mw * mh; i++) {
-    const c = conf[i];
-    let t = (c - LO) / span;
-    t = t < 0 ? 0 : t > 1 ? 1 : t;
-    p_sub[i] = t * t * (3 - 2 * t);
+    p_sub[i] = conf[i] >= 0.5 ? 1.0 : 0.0;
   }
 
   // Restrict mask to the head/shoulders region using face landmarks to discard background clutter (like headphones)
@@ -272,7 +266,16 @@ export async function segmentPerson(
       const I_val = 0.299 * r + 0.587 * g + 0.114 * b;
 
       // Linear model: q = a * I + b
-      const q = val_a * I_val + val_b;
+      let q = val_a * I_val + val_b;
+
+      // Apply contrast boost to make it near-binary (sharp edges, no ghosting)
+      if (q < 0.1) {
+        q = 0.0;
+      } else if (q > 0.9) {
+        q = 1.0;
+      } else {
+        q = (q - 0.1) / 0.8;
+      }
 
       // Set alpha channel (clamped to [0, 255])
       d[idx + 3] = Math.max(0, Math.min(255, q * 255)) | 0;
