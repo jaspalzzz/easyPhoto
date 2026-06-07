@@ -14,7 +14,12 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Embedder-Policy: credentialless
+  # NOTE: deliberately NO Cross-Origin-Embedder-Policy. Enabling it makes
+  # onnxruntime use the multi-threaded WASM build, which reserves a large memory
+  # block that iOS Safari refuses to allocate ("RangeError: Out of memory" at
+  # session creation). Without COEP, onnxruntime runs single-threaded (smaller
+  # footprint) and background removal works on iOS too. Slightly slower on
+  # desktop, but works on every device.
 
 # Per-page Open Graph cards are emitted as EXTENSIONLESS files (…/opengraph-image).
 # With nosniff above, the host must declare the type explicitly or social/SERP
