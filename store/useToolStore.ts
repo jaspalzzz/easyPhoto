@@ -24,6 +24,8 @@ import {
   segmentPerson,
   findCrownY,
   compositeFull,
+  isWebGPUSupported,
+  removeBgWebGPU,
 } from "@/lib/segmentation";
 import { ensureDecodable } from "@/lib/heic";
 
@@ -170,22 +172,61 @@ export const useToolStore = create<ToolState>((set, get) => ({
       // Segmentation: real background removal + the PREFERRED crownY.
       set({ status: "segmenting" });
       try {
-        // Quality ladder: best isnet model first (desktop keeps fp16, unchanged),
-        // step down to the lighter isnet on memory-constrained mobile, and only
-        // fall back to the coarse MediaPipe mask if BOTH isnet models OOM.
+        // Phones/tablets cannot load the heavy onnxruntime isnet models — they
+        // OOM, and the failed loads bloat memory enough to CRASH the tab before
+        // the lighter path even runs. So on mobile go straight to MediaPipe; keep
+        // the premium isnet ladder for desktop only.
+        const nav =
+          typeof navigator !== "undefined"
+            ? (navigator as Navigator & {
+                userAgentData?: { mobile?: boolean };
+              })
+            : undefined;
+        const isMobile =
+          !!nav &&
+          (nav.userAgentData?.mobile === true ||
+            /iPhone|iPad|iPod|Android/i.test(nav.userAgent) ||
+            (nav.platform === "MacIntel" && nav.maxTouchPoints > 1));
+
         let cutout: HTMLCanvasElement;
-        try {
-          cutout = await removeBg(decodable, size, "isnet_fp16");
-        } catch (fp16Err) {
-          console.warn("isnet_fp16 failed; trying isnet_quint8.", fp16Err);
+        const webGpuAvailable = await isWebGPUSupported();
+
+        if (webGpuAvailable) {
           try {
-            cutout = await removeBg(decodable, size, "isnet_quint8");
-          } catch (quint8Err) {
-            console.warn(
-              "isnet_quint8 failed; falling back to MediaPipe selfie.",
-              quint8Err
-            );
+            cutout = await removeBgWebGPU(decodable, size);
+          } catch (webGpuErr) {
+            console.warn("WebGPU background removal failed; falling back to CPU/WASM.", webGpuErr);
+            if (isMobile) {
+              cutout = await segmentPerson(image, size, measurements);
+            } else {
+              try {
+                cutout = await removeBg(decodable, size, "isnet_fp16");
+              } catch (fp16Err) {
+                console.warn("isnet_fp16 failed; trying isnet_quint8.", fp16Err);
+                try {
+                  cutout = await removeBg(decodable, size, "isnet_quint8");
+                } catch (quint8Err) {
+                  console.warn("isnet_quint8 failed; falling back to MediaPipe.", quint8Err);
+                  cutout = await segmentPerson(image, size, measurements);
+                }
+              }
+            }
+          }
+        } else {
+          if (isMobile) {
             cutout = await segmentPerson(image, size, measurements);
+          } else {
+            try {
+              cutout = await removeBg(decodable, size, "isnet_fp16");
+            } catch (fp16Err) {
+              console.warn("isnet_fp16 failed; trying isnet_quint8.", fp16Err);
+              try {
+                cutout = await removeBg(decodable, size, "isnet_quint8");
+              } catch (quint8Err) {
+                console.warn("isnet_quint8 failed; falling back to MediaPipe.", quint8Err);
+                cutout = await segmentPerson(image, size, measurements);
+              }
+            }
           }
         }
         const crownY = findCrownY(cutout, measurements.faceXSpan);

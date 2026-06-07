@@ -165,6 +165,7 @@ export async function segmentPerson(
     // Width boundaries: head is approx face width * 0.95 on each side of center
     const headHalfWidth = lowResFaceWidth * 0.95;
     const transitionWidth = lowResFaceWidth * 0.25;
+    const maxHalfWidth = lowResFaceWidth * 1.25;
 
     for (let i = 0; i < mw * mh; i++) {
       const row = Math.floor(i / mw);
@@ -173,8 +174,9 @@ export async function segmentPerson(
       let halfWidth = headHalfWidth;
       if (row > lowResChinY) {
         // Widen constraint downwards to accommodate shoulders
-        halfWidth += (row - lowResChinY) * 0.8;
+        halfWidth += (row - lowResChinY) * 0.45;
       }
+      halfWidth = Math.min(maxHalfWidth, halfWidth);
 
       const dx = Math.abs(col - lowResFaceCenterX);
       let weight = 1.0;
@@ -370,4 +372,89 @@ export function compositeFull(
   ctx.fillRect(0, 0, out.width, out.height);
   ctx.drawImage(cutout, 0, 0);
   return out;
+}
+
+/**
+ * Detect WebGPU support in the browser.
+ */
+export async function isWebGPUSupported(): Promise<boolean> {
+  const nav = typeof navigator !== "undefined" ? (navigator as any) : undefined;
+  if (typeof window === "undefined" || !nav || !nav.gpu) {
+    return false;
+  }
+  try {
+    const adapter = await nav.gpu.requestAdapter();
+    return !!adapter;
+  } catch {
+    return false;
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let rmbgPipelinePromise: Promise<any> | null = null;
+async function getRMBGPipeline() {
+  if (!rmbgPipelinePromise) {
+    const { pipeline } = await import("@huggingface/transformers");
+    rmbgPipelinePromise = pipeline("image-segmentation", "briaai/RMBG-1.4", {
+      device: "webgpu",
+      dtype: "fp32", // Safe for mobile WebGPU
+    });
+  }
+  return rmbgPipelinePromise;
+}
+
+/**
+ * Remove the background from a source image using WebGPU-accelerated briaai/RMBG-1.4.
+ * Returns an RGBA cutout canvas drawn at the SOURCE dimensions.
+ */
+export async function removeBgWebGPU(
+  source: Blob,
+  size: { width: number; height: number }
+): Promise<HTMLCanvasElement> {
+  const pipe = await getRMBGPipeline();
+
+  const imgUrl = URL.createObjectURL(source);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let rawImg: any;
+  try {
+    const { RawImage: RawImageClass } = await import("@huggingface/transformers");
+    rawImg = await RawImageClass.fromURL(imgUrl);
+  } finally {
+    URL.revokeObjectURL(imgUrl);
+  }
+
+  // Run image segmentation
+  const result = await pipe(rawImg);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = size.width;
+  canvas.height = size.height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Could not acquire 2D canvas context.");
+
+  // Draw the original image to get the color pixels
+  const srcCanvas = rawImg.toCanvas();
+  ctx.drawImage(srcCanvas, 0, 0, size.width, size.height);
+
+  const imgData = ctx.getImageData(0, 0, size.width, size.height);
+  const d = imgData.data;
+
+  // The result of briaai/RMBG-1.4 is usually an array of segment objects
+  const maskImg = Array.isArray(result) ? result[0].mask : result.mask;
+  if (!maskImg) {
+    throw new Error("RMBG-1.4 output contains no mask.");
+  }
+
+  // Resize mask to match original image dimensions
+  const resizedMask = await maskImg.resize(size.width, size.height);
+  const maskData = resizedMask.data;
+  const channels = resizedMask.channels || 1;
+
+  // Set the alpha channel based on the mask
+  for (let i = 0; i < size.width * size.height; i++) {
+    d[i * 4 + 3] = maskData[i * channels];
+  }
+
+  ctx.putImageData(imgData, 0, 0);
+  return canvas;
 }
