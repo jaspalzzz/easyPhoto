@@ -19,7 +19,12 @@ import {
   buildPresetFromCrop,
   loadImageFromFile,
 } from "@/lib/pipeline";
-import { segmentPerson, findCrownY, compositeFull } from "@/lib/segmentation";
+import {
+  removeBg,
+  segmentPerson,
+  findCrownY,
+  compositeFull,
+} from "@/lib/segmentation";
 import { ensureDecodable } from "@/lib/heic";
 
 /** Reject with a friendly message if a promise doesn't settle in time. */
@@ -169,7 +174,19 @@ export const useToolStore = create<ToolState>((set, get) => ({
       // Segmentation: real background removal + the PREFERRED crownY.
       set({ status: "segmenting" });
       try {
-        const cutout = await segmentPerson(image, size);
+        // Prefer the high-quality isnet matting (clean hair edges). It can OOM
+        // on very memory-constrained devices, so fall back to the lighter
+        // MediaPipe selfie mask only if isnet genuinely fails.
+        let cutout: HTMLCanvasElement;
+        try {
+          cutout = await removeBg(decodable, size);
+        } catch (isnetErr) {
+          console.warn(
+            "isnet matting failed; falling back to MediaPipe selfie segmentation.",
+            isnetErr
+          );
+          cutout = await segmentPerson(image, size);
+        }
         const crownY = findCrownY(cutout, measurements.faceXSpan);
         if (crownY != null && crownY < measurements.chinY) {
           measurements.crownY = crownY;
