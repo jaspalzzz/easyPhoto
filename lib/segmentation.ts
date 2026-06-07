@@ -446,10 +446,20 @@ export async function isWebGPUSupported(): Promise<boolean> {
 let rmbgPipelinePromise: Promise<any> | null = null;
 async function getRMBGPipeline() {
   if (!rmbgPipelinePromise) {
-    const { pipeline } = await import("@huggingface/transformers");
-    rmbgPipelinePromise = pipeline("image-segmentation", "briaai/RMBG-1.4", {
-      device: "webgpu",
-      dtype: "fp32", // Safe for mobile WebGPU
+    rmbgPipelinePromise = (async () => {
+      const { pipeline } = await import("@huggingface/transformers");
+      return pipeline("image-segmentation", "briaai/RMBG-1.4", {
+        device: "webgpu",
+        // fp16: half the GPU memory + download of fp32, well-supported on mobile
+        // WebGPU. fp32 is too heavy for most mobile GPUs — it fails to allocate
+        // there and silently drops to the coarse fallback (bad edges on phones).
+        dtype: "fp16",
+      });
+    })().catch((e) => {
+      // Don't cache a rejection — let a later attempt retry instead of being
+      // permanently stuck on the fallback for the rest of the session.
+      rmbgPipelinePromise = null;
+      throw e;
     });
   }
   return rmbgPipelinePromise;
