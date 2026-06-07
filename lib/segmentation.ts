@@ -46,8 +46,55 @@ async function getSegmenter() {
 }
 
 /**
- * Cut the person out of the photo with MediaPipe selfie segmentation. Returns an
- * RGBA canvas at SOURCE dimensions (person opaque, background transparent) — the
+ * Helper: O(N) 2D box filter using horizontal and vertical sliding window passes.
+ * Exported for testing.
+ */
+export function boxFilter2D(src: Float32Array, w: number, h: number, r: number, dest: Float32Array) {
+  const temp = new Float32Array(w * h);
+
+  // Horizontal blur
+  for (let y = 0; y < h; y++) {
+    const rowOffset = y * w;
+    let sum = 0;
+
+    // Initialize window
+    for (let x = -r; x <= r; x++) {
+      const px = Math.max(0, Math.min(w - 1, x));
+      sum += src[rowOffset + px];
+    }
+
+    for (let x = 0; x < w; x++) {
+      temp[rowOffset + x] = sum / (2 * r + 1);
+
+      const nextX = Math.min(w - 1, x + r + 1);
+      const prevX = Math.max(0, x - r);
+      sum += src[rowOffset + nextX] - src[rowOffset + prevX];
+    }
+  }
+
+  // Vertical blur
+  for (let x = 0; x < w; x++) {
+    let sum = 0;
+
+    // Initialize window
+    for (let y = -r; y <= r; y++) {
+      const py = Math.max(0, Math.min(h - 1, y));
+      sum += temp[py * w + x];
+    }
+
+    for (let y = 0; y < h; y++) {
+      dest[y * w + x] = sum / (2 * r + 1);
+
+      const nextY = Math.min(h - 1, y + r + 1);
+      const prevY = Math.max(0, y - r);
+      sum += temp[nextY * w + x] - temp[prevY * w + x];
+    }
+  }
+}
+
+/**
+ * Cut the person out of the photo with MediaPipe selfie segmentation refined via Fast Guided Filter.
+ * Returns an RGBA canvas at SOURCE dimensions (person opaque, background transparent) — the
  * same contract as removeBg, so the rest of the pipeline is untouched.
  */
 export async function segmentPerson(
@@ -72,35 +119,122 @@ export async function segmentPerson(
   const mw: number = mask.width;
   const mh: number = mask.height;
 
-  const imgData = ctx.getImageData(0, 0, size.width, size.height);
-  const d = imgData.data;
-  // Smoothly upsample the coarse (e.g. 256²) confidence mask with BILINEAR
-  // sampling, then run a smoothstep so low-confidence background speckle drops
-  // to fully transparent and the person edge is a soft, clean transition
-  // instead of a jagged/blocky cutout.
-  const sx = mw / size.width;
-  const sy = mh / size.height;
+  // 1. Get downsampled grayscale guidance image
+  const subCanvas = document.createElement("canvas");
+  subCanvas.width = mw;
+  subCanvas.height = mh;
+  const subCtx = subCanvas.getContext("2d");
+  if (!subCtx) throw new Error("Could not acquire 2D sub-canvas context.");
+  subCtx.imageSmoothingEnabled = true;
+  subCtx.imageSmoothingQuality = "high";
+  subCtx.drawImage(image as CanvasImageSource, 0, 0, mw, mh);
+  const subImgData = subCtx.getImageData(0, 0, mw, mh);
+  const subD = subImgData.data;
+
+  const I_sub = new Float32Array(mw * mh);
+  for (let i = 0; i < mw * mh; i++) {
+    const r = subD[i * 4] / 255;
+    const g = subD[i * 4 + 1] / 255;
+    const b = subD[i * 4 + 2] / 255;
+    I_sub[i] = 0.299 * r + 0.587 * g + 0.114 * b;
+  }
+
+  // 2. Prepare clean low-res starting mask using smoothstep
   const LO = 0.4;
   const HI = 0.62;
   const span = HI - LO;
+  const p_sub = new Float32Array(mw * mh);
+  for (let i = 0; i < mw * mh; i++) {
+    const c = conf[i];
+    let t = (c - LO) / span;
+    t = t < 0 ? 0 : t > 1 ? 1 : t;
+    p_sub[i] = t * t * (3 - 2 * t);
+  }
+
+  // 3. Compute Fast Guided Filter coefficients (a and b) in the downsampled domain
+  const r_filter = 4; // filter radius
+  const eps = 1e-4;   // regularization parameter
+
+  const II = new Float32Array(mw * mh);
+  const Ip = new Float32Array(mw * mh);
+  for (let i = 0; i < mw * mh; i++) {
+    II[i] = I_sub[i] * I_sub[i];
+    Ip[i] = I_sub[i] * p_sub[i];
+  }
+
+  const mean_I = new Float32Array(mw * mh);
+  const mean_p = new Float32Array(mw * mh);
+  const mean_II = new Float32Array(mw * mh);
+  const mean_Ip = new Float32Array(mw * mh);
+
+  boxFilter2D(I_sub, mw, mh, r_filter, mean_I);
+  boxFilter2D(p_sub, mw, mh, r_filter, mean_p);
+  boxFilter2D(II, mw, mh, r_filter, mean_II);
+  boxFilter2D(Ip, mw, mh, r_filter, mean_Ip);
+
+  const a = new Float32Array(mw * mh);
+  const b = new Float32Array(mw * mh);
+  for (let i = 0; i < mw * mh; i++) {
+    const varI = mean_II[i] - mean_I[i] * mean_I[i];
+    const covIp = mean_Ip[i] - mean_I[i] * mean_p[i];
+    a[i] = covIp / (varI + eps);
+    b[i] = mean_p[i] - a[i] * mean_I[i];
+  }
+
+  const mean_a = new Float32Array(mw * mh);
+  const mean_b = new Float32Array(mw * mh);
+  boxFilter2D(a, mw, mh, r_filter, mean_a);
+  boxFilter2D(b, mw, mh, r_filter, mean_b);
+
+  // 4. Upsample coefficients bilinearly and apply the linear model at original resolution
+  const imgData = ctx.getImageData(0, 0, size.width, size.height);
+  const d = imgData.data;
+
+  const sx = size.width > 1 ? (mw - 1) / (size.width - 1) : 0;
+  const sy = size.height > 1 ? (mh - 1) / (size.height - 1) : 0;
+
   for (let y = 0; y < size.height; y++) {
-    const fy = Math.min(mh - 1.001, y * sy);
-    const y0 = fy | 0;
-    const ty = fy - y0;
-    const r0 = y0 * mw;
-    const r1 = Math.min(mh - 1, y0 + 1) * mw;
+    const gy = y * sy;
+    const y0 = Math.floor(gy);
+    const y1 = Math.min(mh - 1, y0 + 1);
+    const ty = gy - y0;
+
+    const rowOffset_y0 = y0 * mw;
+    const rowOffset_y1 = y1 * mw;
+    const rowOffset_orig = y * size.width;
+
     for (let x = 0; x < size.width; x++) {
-      const fx = Math.min(mw - 1.001, x * sx);
-      const x0 = fx | 0;
-      const tx = fx - x0;
+      const gx = x * sx;
+      const x0 = Math.floor(gx);
       const x1 = Math.min(mw - 1, x0 + 1);
-      const top = conf[r0 + x0] * (1 - tx) + conf[r0 + x1] * tx;
-      const bot = conf[r1 + x0] * (1 - tx) + conf[r1 + x1] * tx;
-      const c = top * (1 - ty) + bot * ty; // bilinear-sampled confidence
-      let t = (c - LO) / span;
-      t = t < 0 ? 0 : t > 1 ? 1 : t;
-      const a = t * t * (3 - 2 * t); // smoothstep
-      d[(y * size.width + x) * 4 + 3] = (a * 255) | 0;
+      const tx = gx - x0;
+
+      // Bilinear interpolation for mean_a
+      const w00_a = mean_a[rowOffset_y0 + x0];
+      const w10_a = mean_a[rowOffset_y0 + x1];
+      const w01_a = mean_a[rowOffset_y1 + x0];
+      const w11_a = mean_a[rowOffset_y1 + x1];
+      const val_a = (w00_a * (1 - tx) + w10_a * tx) * (1 - ty) + (w01_a * (1 - tx) + w11_a * tx) * ty;
+
+      // Bilinear interpolation for mean_b
+      const w00_b = mean_b[rowOffset_y0 + x0];
+      const w10_b = mean_b[rowOffset_y0 + x1];
+      const w01_b = mean_b[rowOffset_y1 + x0];
+      const w11_b = mean_b[rowOffset_y1 + x1];
+      const val_b = (w00_b * (1 - tx) + w10_b * tx) * (1 - ty) + (w01_b * (1 - tx) + w11_b * tx) * ty;
+
+      // Get high-res grayscale guidance I_val
+      const idx = (rowOffset_orig + x) * 4;
+      const r = d[idx] / 255;
+      const g = d[idx + 1] / 255;
+      const b = d[idx + 2] / 255;
+      const I_val = 0.299 * r + 0.587 * g + 0.114 * b;
+
+      // Linear model: q = a * I + b
+      const q = val_a * I_val + val_b;
+
+      // Set alpha channel (clamped to [0, 255])
+      d[idx + 3] = Math.max(0, Math.min(255, q * 255)) | 0;
     }
   }
   ctx.putImageData(imgData, 0, 0);
