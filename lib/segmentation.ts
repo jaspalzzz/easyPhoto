@@ -296,18 +296,20 @@ export async function removeBgWebGPU(
     });
     const { RawImage } = await import("@huggingface/transformers");
 
-    // Draw the ALREADY-DECODED source (an HTMLImageElement the store decoded for
-    // face detection) onto a canvas. No fetch (blob: fetch dies under COEP on
-    // Android Chrome) and no createImageBitmap (which throws InvalidStateError
-    // on some Android/iOS browsers for valid JPEGs). Both proved fragile.
+    // Build the model input at inputSize×inputSize ONLY. The network never sees
+    // more than that, so loading a full 12–48MP photo into RawImage is wasted
+    // memory (a 12MP photo = ~140MB float heap → OOM/crash on iOS Safari). A
+    // small pre-resized canvas cuts that ~98%. We draw the already-decoded
+    // source (HTMLImageElement) — no fetch (blob: dies under COEP on Android
+    // Chrome) and no createImageBitmap (InvalidStateError on some browsers).
     stage.at = "decode";
-    const srcCanvas = document.createElement("canvas");
-    srcCanvas.width = size.width;
-    srcCanvas.height = size.height;
-    const sctx = srcCanvas.getContext("2d");
-    if (!sctx) throw new Error("Could not acquire 2D canvas context.");
-    sctx.drawImage(source, 0, 0, size.width, size.height);
-    const rawImg = RawImage.fromCanvas(srcCanvas);
+    const modelCanvas = document.createElement("canvas");
+    modelCanvas.width = inputSize;
+    modelCanvas.height = inputSize;
+    const mctx = modelCanvas.getContext("2d");
+    if (!mctx) throw new Error("Could not acquire 2D canvas context.");
+    mctx.drawImage(source, 0, 0, inputSize, inputSize);
+    const rawImg = RawImage.fromCanvas(modelCanvas);
 
     // Preprocess → infer → model returns a single-channel alpha matte (0..1).
     stage.at = "preprocess";
@@ -319,7 +321,9 @@ export async function removeBgWebGPU(
     const maskImg = await RawImage.fromTensor(
       output[0].mul(255).to("uint8")
     ).resize(size.width, size.height);
-    return finishCutout(srcCanvas, maskImg, size);
+    // Compose at SOURCE resolution from the ORIGINAL image (full RGB quality)
+    // with the mask upscaled to match — only here do we touch full dimensions.
+    return finishCutout(source, maskImg, size);
   } catch (e) {
     const msg = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
     throw new Error(`[${stage.at}] ${msg}`);
@@ -328,7 +332,7 @@ export async function removeBgWebGPU(
 
 /** Apply the alpha matte to the source image at the target size. */
 function finishCutout(
-  srcCanvas: HTMLCanvasElement,
+  source: CanvasImageSource,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   maskImg: any,
   size: { width: number; height: number }
@@ -338,7 +342,7 @@ function finishCutout(
   canvas.height = size.height;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Could not acquire 2D canvas context.");
-  ctx.drawImage(srcCanvas, 0, 0, size.width, size.height);
+  ctx.drawImage(source, 0, 0, size.width, size.height);
 
   const imgData = ctx.getImageData(0, 0, size.width, size.height);
   const d = imgData.data;
