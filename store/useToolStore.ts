@@ -174,19 +174,29 @@ export const useToolStore = create<ToolState>((set, get) => ({
       // Segmentation: real background removal + the PREFERRED crownY.
       set({ status: "segmenting" });
       try {
-        // Prefer the high-quality isnet matting (clean hair edges). It can OOM
-        // on very memory-constrained devices, so fall back to the lighter
-        // MediaPipe selfie mask only if isnet genuinely fails.
+        // Quality ladder: best isnet model first (desktop keeps fp16, unchanged),
+        // step down to the lighter isnet on memory-constrained mobile, and only
+        // fall back to the coarse MediaPipe mask if BOTH isnet models OOM.
         let cutout: HTMLCanvasElement;
+        let segPath = "isnet_fp16";
         try {
-          cutout = await removeBg(decodable, size);
-        } catch (isnetErr) {
-          console.warn(
-            "isnet matting failed; falling back to MediaPipe selfie segmentation.",
-            isnetErr
-          );
-          cutout = await segmentPerson(image, size);
+          cutout = await removeBg(decodable, size, "isnet_fp16");
+        } catch (fp16Err) {
+          console.warn("isnet_fp16 failed; trying isnet_quint8.", fp16Err);
+          try {
+            cutout = await removeBg(decodable, size, "isnet_quint8");
+            segPath = "isnet_quint8";
+          } catch (quint8Err) {
+            console.warn(
+              "isnet_quint8 failed; falling back to MediaPipe selfie.",
+              quint8Err
+            );
+            cutout = await segmentPerson(image, size);
+            segPath = "mediapipe";
+          }
         }
+        // TEMP: expose which engine ran so we can confirm on-device.
+        set({ segmentationError: `engine: ${segPath}` });
         const crownY = findCrownY(cutout, measurements.faceXSpan);
         if (crownY != null && crownY < measurements.chinY) {
           measurements.crownY = crownY;

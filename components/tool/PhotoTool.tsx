@@ -189,6 +189,7 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                           ? "background replaced"
                           : "original background"}
                         {manual ? " · adjusted" : ""}
+                        {segmentationError ? ` · ${segmentationError}` : ""}
                       </p>
                       <div className="flex gap-1">
                         {manual && (

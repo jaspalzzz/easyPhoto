@@ -96,14 +96,14 @@ export async function segmentPerson(
  */
 export async function removeBg(
   source: Blob,
-  size: { width: number; height: number }
+  size: { width: number; height: number },
+  // fp16 = best quality (desktop). quint8 = ~half the memory (memory-constrained
+  // mobile). The caller can step down the ladder if fp16 runs out of memory.
+  model: "isnet_fp16" | "isnet_quint8" = "isnet_fp16"
 ): Promise<HTMLCanvasElement> {
   const { removeBackground } = await import("@imgly/background-removal");
   const cutBlob = await removeBackground(source, {
-    // quint8 (int8-quantized) is the smallest model — roughly half the memory of
-    // fp16 — so it loads/runs on memory-constrained mobile (iOS/WebKit). Quality
-    // is plenty here since we composite the cutout over a solid background.
-    model: "isnet_quint8",
+    model,
     output: { format: "image/png" },
   });
 
