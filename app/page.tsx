@@ -5,7 +5,7 @@ import {
   LAUNCH_ORDER,
   effectivePrintMm,
 } from "@/lib/countrySpecs";
-import { POPULAR_TOOLS } from "@/lib/toolsCatalog";
+import { POPULAR_TOOLS, getTool } from "@/lib/toolsCatalog";
 import { primaryMakerPath } from "@/lib/makerPages";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
 import { HowItWorks, HOW_IT_WORKS_STEPS } from "@/components/site/HowItWorks";
@@ -26,6 +26,22 @@ export const metadata = pageMetadata({
     "then check compliance. 100% in your browser; nothing is uploaded.",
   path: "/",
 });
+
+/**
+ * Quick-access strip of the highest-intent tools, surfaced right under the hero
+ * so visitors who came for an image/PDF/professional-photo task (not a passport)
+ * immediately see the breadth — fixes the "reads as a passport-only site" gap.
+ */
+const QUICK_TOOLS = [
+  "background-removal",
+  "resize-kb",
+  "resume-photo",
+  "linkedin-photo",
+  "jpg-to-pdf",
+  "pdf-compress",
+  "pdf-merge",
+  "sign-pdf",
+].map((slug) => getTool(slug)!);
 
 /** Top exam destinations — dedicated landing page where it exists, else the form-resizer. */
 const EXAM_LINKS: { label: string; href: string }[] = [
@@ -86,6 +102,45 @@ export default function HomePage() {
           <div className="mt-7">
             <TrustPills />
           </div>
+        </div>
+      </section>
+
+      {/* Quick tools — surface breadth (image/PDF/professional) right after the hero */}
+      <section className="border-b border-hairline bg-paper">
+        <div className="container py-10 sm:py-12">
+          <div className="flex items-baseline justify-between border-b border-hairline pb-4">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Popular free tools
+            </h2>
+            <Link
+              href="/tools/"
+              className="hidden items-center gap-1 text-sm font-medium text-brand hover:underline sm:inline-flex"
+            >
+              All tools <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {QUICK_TOOLS.map((tool) => (
+              <Link
+                key={tool.slug}
+                href={`/tools/${tool.slug}/`}
+                className="group flex items-center gap-2.5 rounded-md border border-hairline bg-card px-3.5 py-3 transition-colors hover:bg-accent/40"
+              >
+                <span className="text-ink-soft transition-colors group-hover:text-brand">
+                  <ToolIcon name={tool.icon} className="h-4 w-4" />
+                </span>
+                <span className="text-sm font-medium leading-tight">
+                  {tool.title}
+                </span>
+              </Link>
+            ))}
+          </div>
+          <Link
+            href="/tools/"
+            className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline sm:hidden"
+          >
+            All tools <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
