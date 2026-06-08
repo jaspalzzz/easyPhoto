@@ -7,6 +7,7 @@ import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell"
 import { imageToCanvas, canvasToBlob } from "@/lib/imaging";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
+import { useDebouncedValue } from "@/lib/useDebouncedValue";
 
 interface Options {
   /** Auto-crop tight to the ink after removing the paper. */
@@ -20,11 +21,13 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
   const [threshold, setThreshold] = React.useState(200);
   const [darken, setDarken] = React.useState(false);
   const [out, setOut] = React.useState<{ url: string; canvas: HTMLCanvasElement } | null>(null);
+  // Debounce the slider so the full-res pass runs when dragging pauses, not per tick.
+  const debouncedThreshold = useDebouncedValue(threshold, 150);
 
   React.useEffect(() => {
     const base = imageToCanvas(source.image, source.size.width, source.size.height);
     let result = whiteToTransparent(base, {
-      threshold,
+      threshold: debouncedThreshold,
       softness: 40,
       darkenInk: options.allowDarken && darken,
     });
@@ -32,7 +35,7 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
       result = trimToContent(result, { mode: "alpha", padding: 12 }).canvas;
     }
     setOut({ url: result.toDataURL("image/png"), canvas: result });
-  }, [source, threshold, darken, options.autoCrop, options.allowDarken]);
+  }, [source, debouncedThreshold, darken, options.autoCrop, options.allowDarken]);
 
   const onDownload = async () => {
     if (!out) return;

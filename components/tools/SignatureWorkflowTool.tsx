@@ -11,6 +11,7 @@ import { formatKb } from "@/lib/utils";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
 import { compressToCap } from "@/lib/compress";
 import { track, deviceClass } from "@/lib/analytics";
+import { useDebouncedValue } from "@/lib/useDebouncedValue";
 
 type Tab = "clean" | "crop" | "resize";
 
@@ -197,6 +198,18 @@ function Body({
   };
 
   // Re-run pipeline whenever options change
+  // Debounce continuous inputs so the full-res pipeline runs when the user
+  // pauses, not on every slider tick / keystroke (mobile-perf). The inputs stay
+  // bound to the raw state, so the controls themselves remain instant.
+  const dThreshold = useDebouncedValue(threshold, 150);
+  const dSoftness = useDebouncedValue(softness, 150);
+  const dInkContrast = useDebouncedValue(inkContrast, 150);
+  const dPadding = useDebouncedValue(padding, 150);
+  const dSmoothing = useDebouncedValue(smoothing, 150);
+  const dTargetKb = useDebouncedValue(targetKb, 200);
+  const dWidth = useDebouncedValue(width, 200);
+  const dHeight = useDebouncedValue(height, 200);
+
   React.useEffect(() => {
     let cancelled = false;
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
@@ -209,10 +222,10 @@ function Body({
         
         // Step 2: Clean background & adjust ink
         const cleaned = whiteToTransparent(base, {
-          threshold,
-          softness,
+          threshold: dThreshold,
+          softness: dSoftness,
           inkColor,
-          inkContrast,
+          inkContrast: dInkContrast,
         });
 
         // Apply Eraser Mask if it exists
@@ -228,8 +241,8 @@ function Body({
 
         // Apply Ink Smoothing if specified
         let finalCleaned = cleaned;
-        if (smoothing > 0) {
-          finalCleaned = smoothCanvas(cleaned, smoothing);
+        if (dSmoothing > 0) {
+          finalCleaned = smoothCanvas(cleaned, dSmoothing);
         }
 
         // Step 3: Trim / Crop
@@ -238,7 +251,7 @@ function Body({
         if (autoCrop) {
           const { canvas: trimmed, bbox } = trimToContent(finalCleaned, {
             mode: "alpha",
-            padding,
+            padding: dPadding,
           });
           if (bbox) {
             finalCanvas = trimmed;
@@ -268,7 +281,7 @@ function Body({
         if (resizeMode === "kb") {
           if (bgFormat === "jpeg") {
             // High-quality JPEG binary search compression
-            const compressed = await compressToCap(renderCanvas, targetKb, {
+            const compressed = await compressToCap(renderCanvas, dTargetKb, {
               minScale: 0.1,
             });
             resultBlob = compressed.blob;
@@ -283,7 +296,7 @@ function Body({
             isUnderCap = compressed.underCap;
           } else {
             // PNG compression (scale down only)
-            const compressed = await pngUnderKb(renderCanvas, targetKb);
+            const compressed = await pngUnderKb(renderCanvas, dTargetKb);
             resultBlob = compressed.blob;
             resultCanvas = compressed.canvas;
             isUnderCap = compressed.underCap;
@@ -292,8 +305,8 @@ function Body({
           // Custom pixels resizing
           const resized = await picaResizeTo(
             renderCanvas,
-            width || renderCanvas.width,
-            height || renderCanvas.height
+            dWidth || renderCanvas.width,
+            dHeight || renderCanvas.height
           );
           resultBlob = await canvasToBlob(
             resized,
@@ -343,18 +356,18 @@ function Body({
     };
   }, [
     source,
-    threshold,
-    softness,
+    dThreshold,
+    dSoftness,
     inkColor,
-    inkContrast,
+    dInkContrast,
     autoCrop,
-    padding,
+    dPadding,
     resizeMode,
-    targetKb,
-    width,
-    height,
+    dTargetKb,
+    dWidth,
+    dHeight,
     eraserVersion,
-    smoothing,
+    dSmoothing,
     bgFormat,
     toolName,
   ]);

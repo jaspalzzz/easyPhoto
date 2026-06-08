@@ -11,6 +11,7 @@ import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import { Cropper, type ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { track, deviceClass } from "@/lib/analytics";
+import { useDebouncedValue } from "@/lib/useDebouncedValue";
 
 // Standard formatting for DOP
 function getTodayDateString() {
@@ -211,6 +212,12 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     }
   };
 
+  // Debounce text/slider inputs so the preview re-renders when typing/dragging
+  // pauses, not on every keystroke (each render is a full toDataURL pass).
+  const dName = useDebouncedValue(name, 200);
+  const dDate = useDebouncedValue(date, 200);
+  const dStripHeight = useDebouncedValue(stripHeight, 150);
+
   // Generate live preview when crop boundaries or text options change
   const updatePreview = React.useCallback(() => {
     const cropper = cropperRef.current?.cropper;
@@ -224,9 +231,9 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
 
     try {
       const annotCanvas = drawNameDateStrip(croppedCanvas, {
-        name,
-        date,
-        stripHeightPercent: stripHeight,
+        name: dName,
+        date: dDate,
+        stripHeightPercent: dStripHeight,
       });
 
       const url = annotCanvas.toDataURL("image/jpeg", 0.9);
@@ -234,7 +241,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     } catch (e) {
       console.error("Preview render failed:", e);
     }
-  }, [name, date, stripHeight, activePreset, cropperReady]);
+  }, [dName, dDate, dStripHeight, activePreset, cropperReady]);
 
   React.useEffect(() => {
     updatePreview();
