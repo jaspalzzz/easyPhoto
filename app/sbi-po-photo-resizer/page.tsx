@@ -18,6 +18,7 @@ export default function Page() {
     <ToolPage
       title="SBI PO Photo Resizer"
       slug="sbi-po-photo-resizer"
+      path="/sbi-po-photo-resizer/"
       blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB) and standard dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for State Bank of India recruitment portals.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >

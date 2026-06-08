@@ -11,6 +11,7 @@ export function ToolPage({
   title,
   blurb,
   slug,
+  path,
   children,
   footnote,
   faqItems,
@@ -19,6 +20,8 @@ export function ToolPage({
   blurb: string;
   /** Catalog slug — enables related cross-links + structured data. */
   slug?: string;
+  /** Canonical route path, e.g. "/ssc-photo-resizer/". If provided, schemas are generated. */
+  path?: string;
   children: React.ReactNode;
   footnote?: string;
   /** Optional on-page FAQ (also emits FAQPage JSON-LD). */
@@ -28,23 +31,28 @@ export function ToolPage({
   const entry = slug ? getTool(slug) : undefined;
   const category = slug ? categoryOf(slug) : undefined;
 
+  const urlPath = path || (slug ? `/tools/${slug}/` : undefined);
+  const crumbs = [{ name: "Home", path: "/" }];
+  if (urlPath) {
+    if (urlPath.startsWith("/tools/") && urlPath !== "/tools/") {
+      crumbs.push({ name: "Tools", path: "/tools/" });
+      if (category) {
+        crumbs.push({ name: category.group, path: `/tools/${category.slug}/` });
+      }
+    }
+    crumbs.push({ name: title, path: urlPath });
+  }
+
   return (
     <div className="container max-w-3xl py-10">
-      {entry && (
+      {urlPath && (
         <JsonLd
           schema={[
-            breadcrumbSchema([
-              { name: "Home", path: "/" },
-              { name: "Tools", path: "/tools/" },
-              ...(category
-                ? [{ name: category.group, path: `/tools/${category.slug}/` }]
-                : []),
-              { name: title, path: `/tools/${slug}/` },
-            ]),
+            breadcrumbSchema(crumbs),
             softwareApplicationSchema({
               name: title,
               description: blurb,
-              url: `/tools/${slug}/`,
+              url: urlPath,
               category: "MultimediaApplication",
             }),
           ]}

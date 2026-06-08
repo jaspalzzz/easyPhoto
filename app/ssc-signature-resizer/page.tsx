@@ -18,6 +18,7 @@ export default function Page() {
     <ToolPage
       title="SSC Signature Resizer"
       slug="ssc-signature-resizer"
+      path="/ssc-signature-resizer/"
       blurb={`Resize, clean, and compress your signature to under ${spec.sigLimitKb} KB (${spec.sigMinKb}–${spec.sigLimitKb} KB) and standard dimensions (${spec.sigWidthPx}×${spec.sigHeightPx}px) for the Staff Selection Commission portal.`}
       footnote="Your signature is processed entirely in your browser. No server uploads."
     >

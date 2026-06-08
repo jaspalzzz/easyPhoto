@@ -18,6 +18,7 @@ export default function Page() {
     <ToolPage
       title="Railway Photo Resizer"
       slug="railway-photo-resizer"
+      path="/railway-photo-resizer/"
       blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB) and standard dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for the Railway Recruitment Board portal.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >

@@ -18,6 +18,7 @@ export default function Page() {
     <ToolPage
       title="IBPS Photo Resizer"
       slug="ibps-photo-resizer"
+      path="/ibps-photo-resizer/"
       blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB) and standard dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for IBPS online bank application forms.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >

@@ -41,6 +41,7 @@ export default async function Page({
     <ToolPage
       title={`Form Resizer for ${spec.name}`}
       slug={`form-resizer/${portal}`}
+      path={`/tools/form-resizer/${portal}/`}
       blurb={`Resize and compress your documents to meet the official requirements for ${spec.name} registration forms.`}
     >
       <PortalResizer portalId={portal} />

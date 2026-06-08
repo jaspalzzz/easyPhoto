@@ -18,6 +18,7 @@ export default function Page() {
     <ToolPage
       title="UPSC Signature Resizer"
       slug="upsc-signature-resizer"
+      path="/upsc-signature-resizer/"
       blurb={`Resize, clean, and compress your signature to under ${spec.sigLimitKb} KB (${spec.sigMinKb}–${spec.sigLimitKb} KB) and standard dimensions (minimum ${spec.sigWidthPx}×${spec.sigHeightPx}px) for the Union Public Service Commission portal.`}
       footnote="Your signature is processed entirely in your browser. No server uploads."
     >

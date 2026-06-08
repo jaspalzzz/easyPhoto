@@ -18,6 +18,7 @@ export default function Page() {
     <ToolPage
       title="UPSC Photo Resizer"
       slug="upsc-photo-resizer"
+      path="/upsc-photo-resizer/"
       blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB) and standard dimensions (minimum ${spec.photoWidthPx}×${spec.photoHeightPx}px) for the Union Public Service Commission portal.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >

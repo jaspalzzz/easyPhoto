@@ -95,6 +95,71 @@ export default function ToolsHubPage() {
         </div>
       </section>
 
+      {/* Exam & Job Application Resizers */}
+      <section className="mt-12">
+        <h2 className="eyebrow mb-4">
+          Exam &amp; Job Application Resizers
+        </h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Link
+            href="/ssc-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">SSC Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
+          </Link>
+          <Link
+            href="/ssc-signature-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">SSC Signature Resizer</span>
+            <span className="text-muted-foreground leading-normal">Compress to under 20 KB</span>
+          </Link>
+          <Link
+            href="/ssc-photo-with-name-date/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">SSC Name &amp; Date Photo</span>
+            <span className="text-muted-foreground leading-normal">Add DOP strip + resize</span>
+          </Link>
+          <Link
+            href="/upsc-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">UPSC Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">Square photo under 300 KB</span>
+          </Link>
+          <Link
+            href="/upsc-signature-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">UPSC Signature Resizer</span>
+            <span className="text-muted-foreground leading-normal">Compress to under 300 KB</span>
+          </Link>
+          <Link
+            href="/railway-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">Railway Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">RRB photo under 70 KB</span>
+          </Link>
+          <Link
+            href="/ibps-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">IBPS Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
+          </Link>
+          <Link
+            href="/sbi-po-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">SBI PO Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
+          </Link>
+        </div>
+      </section>
+
       {/* Full catalog by category */}
       {TOOLS_CATALOG.map((group) => (
         <section key={group.group} className="mt-12">

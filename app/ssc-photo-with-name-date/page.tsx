@@ -18,6 +18,7 @@ export default function Page() {
     <ToolPage
       title="SSC Photo with Name &amp; Date"
       slug="ssc-photo-with-name-date"
+      path="/ssc-photo-with-name-date/"
       blurb={`Add custom candidate name and photo printing date (DOP) at the bottom of your photo, resized to under ${spec.photoLimitKb} KB and compliant dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for the Staff Selection Commission.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >
