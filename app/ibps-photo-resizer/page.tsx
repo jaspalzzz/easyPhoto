@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { portalFaqItems } from "@/lib/faqs";
 import { Info } from "lucide-react";
 
 const spec = getPortalSpec("ibps")!;
@@ -18,6 +19,7 @@ export default function Page() {
     <ToolPage
       title="IBPS Photo Resizer"
       slug="ibps-photo-resizer"
+      faqItems={portalFaqItems(spec)}
       path="/ibps-photo-resizer/"
       blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB) and standard dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for IBPS online bank application forms.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."

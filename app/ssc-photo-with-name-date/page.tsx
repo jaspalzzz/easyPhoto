@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { NameDatePhotoTool } from "@/components/tools/NameDatePhotoTool";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { portalFaqItems } from "@/lib/faqs";
 import { Info } from "lucide-react";
 
 const spec = getPortalSpec("ssc")!;
@@ -18,6 +19,7 @@ export default function Page() {
     <ToolPage
       title="SSC Photo with Name &amp; Date"
       slug="ssc-photo-with-name-date"
+      faqItems={portalFaqItems(spec)}
       path="/ssc-photo-with-name-date/"
       blurb={`Add custom candidate name and photo printing date (DOP) at the bottom of your photo, resized to under ${spec.photoLimitKb} KB and compliant dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for the Staff Selection Commission.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."

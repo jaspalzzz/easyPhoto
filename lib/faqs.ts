@@ -5,6 +5,59 @@
  */
 import type { FaqItem } from "@/components/site/Faq";
 import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
+import type { PortalSpec } from "@/lib/portalPresets";
+
+/**
+ * Exam/portal FAQ built from the verified spec — targets high-intent searches
+ * ("what is the ssc photo size", "resize signature to 20kb") and emits valid
+ * FAQPage JSON-LD via ToolPage. Numbers come from the registry, never hardcoded.
+ */
+export function portalFaqItems(spec: PortalSpec): FaqItem[] {
+  const photoKb = spec.photoMinKb
+    ? `${spec.photoMinKb}–${spec.photoLimitKb} KB`
+    : `under ${spec.photoLimitKb} KB`;
+  const photoDim =
+    spec.photoWidthPx && spec.photoHeightPx
+      ? `, around ${spec.photoWidthPx}×${spec.photoHeightPx} px`
+      : "";
+  const sigKb = spec.sigLimitKb
+    ? spec.sigMinKb
+      ? `${spec.sigMinKb}–${spec.sigLimitKb} KB`
+      : `under ${spec.sigLimitKb} KB`
+    : null;
+  const sigDim =
+    spec.sigWidthPx && spec.sigHeightPx
+      ? `, around ${spec.sigWidthPx}×${spec.sigHeightPx} px`
+      : "";
+
+  const items: FaqItem[] = [
+    {
+      q: `What is the photo size for the ${spec.name} application?`,
+      a: `The ${spec.name} photo should be ${photoKb}${photoDim}, in JPG format. This tool resizes and compresses your photo to fit automatically.`,
+    },
+  ];
+  if (sigKb) {
+    items.push({
+      q: `What is the signature size for ${spec.name}?`,
+      a: `The signature should be ${sigKb}${sigDim}. Sign on white paper in black ink, then upload it here to clean and resize it.`,
+    });
+  }
+  items.push(
+    {
+      q: `How do I resize my photo to ${photoKb} for ${spec.name}?`,
+      a: `Upload your photo and the tool compresses it under the ${spec.name} limit while keeping the correct dimensions. Everything runs in your browser.`,
+    },
+    {
+      q: `Is this ${spec.name} resizer free and private?`,
+      a: "Yes — free, no watermark, no sign-up, and your photo never leaves your device. All processing happens in your browser.",
+    },
+    {
+      q: `Where can I confirm the official ${spec.name} requirements?`,
+      a: `Always verify the current limits on the official source${spec.source ? ` (${spec.source.label})` : ""} before submitting, as requirements can change between notification cycles.`,
+    }
+  );
+  return items;
+}
 
 export const PASSPORT_FAQ: FaqItem[] = [
   { q: "What size is a passport photo?", a: "Most countries use 35×45mm. The US and a few others use 2×2 inches (51×51mm). EasyPhoto sets the correct size automatically once you pick your country." },

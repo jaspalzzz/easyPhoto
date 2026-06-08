@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { SignatureKbTool } from "@/components/tools/SignatureKbTool";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { portalFaqItems } from "@/lib/faqs";
 import { Info } from "lucide-react";
 
 const spec = getPortalSpec("upsc")!;
@@ -18,6 +19,7 @@ export default function Page() {
     <ToolPage
       title="UPSC Signature Resizer"
       slug="upsc-signature-resizer"
+      faqItems={portalFaqItems(spec)}
       path="/upsc-signature-resizer/"
       blurb={`Resize, clean, and compress your signature to under ${spec.sigLimitKb} KB (${spec.sigMinKb}–${spec.sigLimitKb} KB) and standard dimensions (minimum ${spec.sigWidthPx}×${spec.sigHeightPx}px) for the Union Public Service Commission portal.`}
       footnote="Your signature is processed entirely in your browser. No server uploads."

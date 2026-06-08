@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { portalFaqItems } from "@/lib/faqs";
 import { Info } from "lucide-react";
 
 const spec = getPortalSpec("ssc")!;
@@ -18,6 +19,7 @@ export default function Page() {
     <ToolPage
       title="SSC Photo Resizer"
       slug="ssc-photo-resizer"
+      faqItems={portalFaqItems(spec)}
       path="/ssc-photo-resizer/"
       blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB) and standard dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for the Staff Selection Commission portal.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
