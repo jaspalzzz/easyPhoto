@@ -2,7 +2,26 @@
  * Portal specifications for image resizing (photo + signature).
  * -----------------------------------------------------------
  * Standard rules for Indian government & global portal forms.
+ *
+ * SPEC ACCURACY IS THE PRODUCT. A wrong dimension/KB cap means a rejected
+ * application — so every spec carries provenance: the official `source`, a
+ * `verification` status, and the date it was last confirmed (`verifiedOn`).
+ * Use lib/specRegistry.ts to surface this on pages and to flag stale specs.
  */
+
+/** Where a spec's numbers came from. */
+export interface SpecSource {
+  /** Official portal / notification URL the numbers were taken from. */
+  url: string;
+  /** Short human label, e.g. "SSC official portal". */
+  label: string;
+}
+
+/**
+ * "official"     = numbers confirmed against `source` on `verifiedOn`.
+ * "needs-review" = carried from earlier code; not yet re-confirmed live.
+ */
+export type VerificationStatus = "official" | "needs-review";
 
 export interface PortalSpec {
   id: string;
@@ -18,6 +37,11 @@ export interface PortalSpec {
   photoAspectRatio?: number; // width / height
   sigAspectRatio?: number;
   description: string;
+  /** Provenance (optional for back-compat; should be set for all live specs). */
+  source?: SpecSource;
+  verification?: VerificationStatus;
+  /** ISO date (YYYY-MM-DD) the numbers were last confirmed against `source`. */
+  verifiedOn?: string;
 }
 
 export const PORTAL_PRESETS: Record<string, PortalSpec> = {
@@ -35,6 +59,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 4 / 2,
     description: "Staff Selection Commission photo (20-50 KB, 3.5x4.5cm) and signature (10-20 KB, 4.0x2.0cm).",
+    source: { url: "https://ssc.gov.in", label: "SSC official portal (ssc.gov.in)" },
+    verification: "needs-review",
   },
   upsc: {
     id: "upsc",
@@ -50,6 +76,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 1,
     sigAspectRatio: 1,
     description: "Union Public Service Commission online application photo & signature. Limits: 20-300 KB each, minimum 350x350 px.",
+    source: { url: "https://upsconline.nic.in", label: "UPSC online application (upsconline.nic.in)" },
+    verification: "needs-review",
   },
   ds160: {
     id: "ds160",
@@ -59,6 +87,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoHeightPx: 600,
     photoAspectRatio: 1,
     description: "Online US Visa Application DS-160. Square photo (600x600px up to 1200x1200px), under 240 KB limit, white background.",
+    source: { url: "https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/photos.html", label: "US Dept. of State photo requirements" },
+    verification: "needs-review",
   },
   "passport-seva": {
     id: "passport-seva",
@@ -74,6 +104,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 4.5 / 1.5,
     description: "Passport Seva online portal. Photo needs white background (30-50 KB, 3.5x4.5cm). Signature size: 10-20 KB.",
+    source: { url: "https://www.passportindia.gov.in", label: "Passport Seva (passportindia.gov.in)" },
+    verification: "needs-review",
   },
   oci: {
     id: "oci",
@@ -87,6 +119,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 1,
     sigAspectRatio: 1,
     description: "Overseas Citizen of India (OCI) registration. Square photo and signature (up to 200 KB each, minimum 360x360 px).",
+    source: { url: "https://ociservices.gov.in", label: "OCI Services (ociservices.gov.in)" },
+    verification: "needs-review",
   },
 };
 

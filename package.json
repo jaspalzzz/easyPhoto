@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check:specs": "node scripts/check-specs.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.2.0",
