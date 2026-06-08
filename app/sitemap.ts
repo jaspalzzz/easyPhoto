@@ -5,6 +5,7 @@ import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
 import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
 import { BLOG_POSTS } from "@/lib/blog";
 import { PORTAL_KEYS } from "@/lib/portalPresets";
+import { HINGLISH_SLUGS } from "@/lib/hinglishPages";
 
 export const dynamic = "force-static";
 
@@ -37,6 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...READY_TOOLS.map((t) => `/tools/${t.slug}/`),
     ...PORTAL_KEYS.map((key) => `/tools/form-resizer/${key}/`),
     ...KB_TARGETS.map((kb) => kbPath(kb)),
+    ...HINGLISH_SLUGS.map((s) => `/${s}/`),
     ...BLOG_POSTS.map((p) => `/blog/${p.slug}/`),
   ];
 

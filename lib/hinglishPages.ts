@@ -1,0 +1,118 @@
+/**
+ * Hindi / Hinglish SEO landing pages.
+ * -----------------------------------
+ * India is ~half our traffic and searches these tasks in Roman Hinglish
+ * ("photo ka size 20kb kaise kare", "signature resize kaise kare"). These are
+ * dedicated landing pages over the EXISTING tools — no i18n framework (wrong for
+ * a static export). Copy is plain Roman Hinglish, which is how the audience reads
+ * and searches online.
+ */
+import type { FaqItem } from "@/components/site/Faq";
+
+export interface HinglishPage {
+  slug: string;
+  title: string; // SEO <title>
+  description: string; // meta description
+  h1: string; // on-page heading
+  blurb: string; // intro line
+  tool: "photo-kb" | "signature-kb";
+  kb: number;
+  faqs: FaqItem[];
+}
+
+const photoFaqs = (kb: number): FaqItem[] => [
+  {
+    q: `Photo ka size ${kb}kb kaise kare?`,
+    a: `Apni photo upload kare, target size ${kb} KB set kare, aur "Compress to size" dabaye. Tool quality apne aap adjust karke photo ko ${kb} KB se kam kar deta hai. Sab kuch aapke browser me hota hai.`,
+  },
+  {
+    q: "Kya yeh tool free hai aur photo upload hoti hai?",
+    a: "Haan, bilkul free hai — koi watermark nahi, koi login nahi. Aapki photo kabhi server par upload nahi hoti; poora kaam aapke phone/computer ke browser me hota hai.",
+  },
+  {
+    q: "Mobile se photo ka size kaise kam kare?",
+    a: "Mobile browser me yeh page kholiye, gallery se photo choose kijiye, size set karke compress kijiye, aur download kar lijiye. Alag app ki zaroorat nahi.",
+  },
+  {
+    q: "Photo ki quality kharab to nahi hogi?",
+    a: "Tool sabse acchi quality rakhte hue size ghatata hai. Bahut chhota target chunne par thodi quality kam ho sakti hai, isliye form ki limit jitna hi size rakhe.",
+  },
+];
+
+export const HINGLISH_PAGES: HinglishPage[] = [
+  {
+    slug: "photo-resize-kaise-kare",
+    title: "Photo Resize Kaise Kare — Free Online Photo Size Kam Kare",
+    description:
+      "Photo ka size online free me kam kare. Exam aur sarkari form (SSC, UPSC, Passport) ke liye photo ko KB me compress kare. Koi upload nahi, 100% private.",
+    h1: "Photo Resize Kaise Kare",
+    blurb:
+      "Apni photo ka size seconds me kam kare — exam aur sarkari form ke liye. Sab kuch browser me, koi upload nahi.",
+    tool: "photo-kb",
+    kb: 50,
+    faqs: photoFaqs(50),
+  },
+  {
+    slug: "photo-ka-size-20kb-kaise-kare",
+    title: "Photo Ka Size 20KB Kaise Kare — Free Online Tool",
+    description:
+      "Photo ka size 20 KB kaise kare? Online free me photo ko 20 KB se kam kare — SSC, UPSC aur form upload ke liye. Private, koi upload nahi.",
+    h1: "Photo Ka Size 20KB Kaise Kare",
+    blurb:
+      "Photo ko 20 KB se kam karne ka sabse aasaan tarika — form upload ke liye perfect.",
+    tool: "photo-kb",
+    kb: 20,
+    faqs: photoFaqs(20),
+  },
+  {
+    slug: "photo-ka-size-50kb-kaise-kare",
+    title: "Photo Ka Size 50KB Kaise Kare — Free Online Tool",
+    description:
+      "Photo ka size 50 KB kaise kare? Online free me photo ko 50 KB se kam kare — exam aur sarkari form ke liye. 100% private, koi upload nahi.",
+    h1: "Photo Ka Size 50KB Kaise Kare",
+    blurb: "Photo ko 50 KB se kam kare — exam aur form upload ke liye.",
+    tool: "photo-kb",
+    kb: 50,
+    faqs: photoFaqs(50),
+  },
+  {
+    slug: "photo-ka-size-100kb-kaise-kare",
+    title: "Photo Ka Size 100KB Kaise Kare — Free Online Tool",
+    description:
+      "Photo ka size 100 KB kaise kare? Online free me photo ko 100 KB se kam kare. Private, koi upload nahi, koi watermark nahi.",
+    h1: "Photo Ka Size 100KB Kaise Kare",
+    blurb: "Photo ko 100 KB se kam kare — form aur document upload ke liye.",
+    tool: "photo-kb",
+    kb: 100,
+    faqs: photoFaqs(100),
+  },
+  {
+    slug: "signature-resize-kaise-kare",
+    title: "Signature Resize Kaise Kare — Online Signature Size Kam Kare",
+    description:
+      "Signature ka size online free me kam kare. Form ke liye signature ko 10-20 KB me compress kare, background saaf kare. Private, koi upload nahi.",
+    h1: "Signature Resize Kaise Kare",
+    blurb:
+      "Apne signature ka scan upload kare — background saaf hoke size form ki limit (10-20 KB) me aa jata hai.",
+    tool: "signature-kb",
+    kb: 20,
+    faqs: [
+      {
+        q: "Signature ka size kaise kam kare?",
+        a: "Signature ka photo/scan upload kare; tool background hata kar use crop karta hai aur target KB me compress kar deta hai. Download kar lijiye.",
+      },
+      {
+        q: "Signature ka background white kaise kare?",
+        a: "Tool kaagaz ka background apne aap hata deta hai — aap transparent PNG ya white background, dono choose kar sakte hai.",
+      },
+      {
+        q: "Kya signature upload hota hai kahin?",
+        a: "Nahi. Signature aapke browser me hi process hota hai, kabhi server par upload nahi hota.",
+      },
+    ],
+  },
+];
+
+export const HINGLISH_SLUGS = HINGLISH_PAGES.map((p) => p.slug);
+export const getHinglishPage = (slug: string) =>
+  HINGLISH_PAGES.find((p) => p.slug === slug);
