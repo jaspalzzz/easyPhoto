@@ -22,6 +22,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/ssc-photo-resizer/",
     "/ssc-signature-resizer/",
     "/ssc-photo-with-name-date/",
+    "/upsc-photo-resizer/",
+    "/upsc-signature-resizer/",
     "/blog/",
     "/about/",
     "/contact/",
