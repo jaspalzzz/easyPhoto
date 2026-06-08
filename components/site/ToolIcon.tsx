@@ -14,6 +14,7 @@ import {
   RotateCw,
   ArrowUpDown,
   UserSquare,
+  IdCard,
   type LucideIcon,
 } from "lucide-react";
 
@@ -32,6 +33,7 @@ const MAP: Record<string, LucideIcon> = {
   RotateCw,
   ArrowUpDown,
   UserSquare,
+  IdCard,
 };
 
 export function ToolIcon({ name, className }: { name: string; className?: string }) {

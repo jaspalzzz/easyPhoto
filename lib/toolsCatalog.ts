@@ -73,6 +73,13 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         icon: "UserSquare",
       },
       {
+        slug: "resume-photo",
+        title: "Resume / CV Photo Maker",
+        blurb: "Make a professional passport-size photo for your resume, CV or bio-data.",
+        ready: true,
+        icon: "IdCard",
+      },
+      {
         slug: "white-background",
         title: "White Background Maker",
         blurb: "Replace any background with clean white (or any solid colour).",
