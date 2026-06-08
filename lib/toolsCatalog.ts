@@ -171,6 +171,14 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         icon: "Scaling",
       },
       {
+        slug: "signature-cleaner",
+        title: "Signature Cleaner",
+        blurb: "Clean scan background, crop tightly, and optimize file size.",
+        ready: true,
+        popular: true,
+        icon: "PenLine",
+      },
+      {
         slug: "sign-image",
         title: "Sign Image / Photo",
         blurb: "Draw or overlay a transparent signature on any photo or image.",
