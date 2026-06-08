@@ -33,6 +33,14 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       "Free photo utilities. Remove backgrounds, compress to a KB target, and resize, all in your browser.",
     tools: [
       {
+        slug: "exam-package",
+        title: "Exam Application Kit",
+        blurb: "Get a photo + signature in the correct size for any exam, in one guided flow.",
+        ready: true,
+        popular: true,
+        icon: "FileStack",
+      },
+      {
         slug: "background-removal",
         title: "Background Remover",
         blurb: "Remove the background from any photo and download a transparent PNG.",
