@@ -47,6 +47,13 @@ export function MainNav() {
       </Link>
 
       <Link
+        href="/tools/exam-package/"
+        className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      >
+        Exams
+      </Link>
+
+      <Link
         href="/blog/"
         className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       >

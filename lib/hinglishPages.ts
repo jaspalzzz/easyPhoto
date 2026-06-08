@@ -15,8 +15,8 @@ export interface HinglishPage {
   description: string; // meta description
   h1: string; // on-page heading
   blurb: string; // intro line
-  tool: "photo-kb" | "signature-kb";
-  kb: number;
+  tool: "photo-kb" | "signature-kb" | "white-bg";
+  kb: number; // KB target (ignored for white-bg)
   faqs: FaqItem[];
 }
 
@@ -108,6 +108,56 @@ export const HINGLISH_PAGES: HinglishPage[] = [
       {
         q: "Kya signature upload hota hai kahin?",
         a: "Nahi. Signature aapke browser me hi process hota hai, kabhi server par upload nahi hota.",
+      },
+    ],
+  },
+  {
+    slug: "passport-photo-white-background-kaise-kare",
+    title: "Passport Photo White Background Kaise Kare — Free Online Tool",
+    description:
+      "Passport ya form photo ka background white kaise kare? Online free me background hata kar white background banaye. 100% private, koi upload nahi.",
+    h1: "Photo Ka White Background Kaise Kare",
+    blurb:
+      "Apni photo ka background ek click me saaf, white background me badle — passport aur form ke liye.",
+    tool: "white-bg",
+    kb: 50,
+    faqs: [
+      {
+        q: "Photo ka background white kaise kare?",
+        a: "Photo upload kare; tool background apne aap hata kar white laga deta hai. Phir download kar lijiye. Sab kuch browser me hota hai.",
+      },
+      {
+        q: "Kya yeh free hai aur photo upload hoti hai?",
+        a: "Haan, bilkul free. Photo kabhi server par upload nahi hoti — poora kaam aapke browser me hota hai.",
+      },
+      {
+        q: "Passport ke liye kaunsa background chahiye?",
+        a: "India aur US passport ke liye white background chahiye. Yeh tool clean white background bana deta hai jo aksar accept hota hai — phir bhi apne form ki guideline zaroor check kare.",
+      },
+    ],
+  },
+  {
+    slug: "photo-ka-background-white-kaise-kare",
+    title: "Photo Ka Background White Kaise Kare — Free Online Tool",
+    description:
+      "Photo ka background white kaise kare online free me? Ek click me background hata kar white kare — form aur ID ke liye. Private, koi upload nahi.",
+    h1: "Photo Ka Background White Kaise Kare",
+    blurb:
+      "Kisi bhi photo ka background hata kar white background banaye — bilkul free, browser me.",
+    tool: "white-bg",
+    kb: 50,
+    faqs: [
+      {
+        q: "Background white karne ke liye kya karna hoga?",
+        a: "Bas photo upload kijiye — tool subject ko rakh kar background ko white kar deta hai. Download kar lijiye.",
+      },
+      {
+        q: "Quality kharab to nahi hogi?",
+        a: "Tool edges ko saaf rakhte hue background badalta hai. Achhi lighting wali photo me result sabse accha aata hai.",
+      },
+      {
+        q: "Kya photo private rahti hai?",
+        a: "Haan. Photo aapke device ke browser me hi process hoti hai, kahin upload nahi hoti.",
       },
     ],
   },
