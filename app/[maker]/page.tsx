@@ -224,6 +224,16 @@ export default async function MakerPage({
       {/* On visa pages, drop the passport-only advisory (e.g. AU guarantor). */}
       <PhotoTool spec={kind === "visa" ? { ...spec, advisory: undefined } : spec} />
 
+      {kind === "passport" && (
+        <p className="text-sm text-muted-foreground">
+          Making a passport photo for a baby or infant?{" "}
+          <Link href="/baby-passport-photo/" className="text-brand hover:underline">
+            Use the baby &amp; infant guide
+          </Link>{" "}
+          — the lay-on-a-white-sheet method makes it easy.
+        </p>
+      )}
+
       <section className="grid gap-8 md:grid-cols-2">
         <div className="space-y-3">
           <h2 className="eyebrow">

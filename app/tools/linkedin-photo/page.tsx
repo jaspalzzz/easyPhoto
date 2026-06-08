@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { LinkedInPhotoTool } from "@/components/tools/LinkedInPhotoTool";
@@ -46,6 +47,14 @@ export default function Page() {
       footnote="Face detection and cropping run entirely in your browser. Your photo is never uploaded."
     >
       <LinkedInPhotoTool />
+
+      <p className="mt-6 text-sm text-muted-foreground">
+        Need a printed photo for a resume or CV too? Make a passport-size{" "}
+        <Link href="/tools/resume-photo/" className="text-brand hover:underline">
+          resume / CV photo
+        </Link>{" "}
+        from the same headshot.
+      </p>
     </ToolPage>
   );
 }
