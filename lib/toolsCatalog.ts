@@ -119,6 +119,14 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         icon: "Scissors",
       },
       {
+        slug: "pdf-compress",
+        title: "Compress PDF to KB",
+        blurb: "Shrink a PDF to fit form upload limits (100 KB, 200 KB, 500 KB).",
+        ready: true,
+        popular: true,
+        icon: "FileDown",
+      },
+      {
         slug: "pdf-reorder",
         title: "Reorder & Rotate PDF",
         blurb: "Rearrange, rotate, or delete pages of a PDF visually.",
