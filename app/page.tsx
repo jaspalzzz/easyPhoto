@@ -71,7 +71,7 @@ export default function HomePage() {
       <section className="border-b border-hairline">
         <div className="container py-14 sm:py-20">
           <div className="mx-auto max-w-2xl text-center">
-            <span className="eyebrow">Passport &amp; visa photo bureau</span>
+            <span className="eyebrow">Passport, exam &amp; document tools</span>
             <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.05] tracking-tightest sm:text-[3.25rem]">
               Document photos, exact{" "}
               <span className="text-brand">to the millimetre</span>
