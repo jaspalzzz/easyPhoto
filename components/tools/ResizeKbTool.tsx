@@ -8,8 +8,15 @@ import { imageToCanvas } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
+import { track, deviceClass } from "@/lib/analytics";
 
-function Body({ source, defaultKb }: { source: ToolSource; defaultKb: number }) {
+interface BodyProps {
+  source: ToolSource;
+  defaultKb: number;
+  toolName: string;
+}
+
+function Body({ source, defaultKb, toolName }: BodyProps) {
   const [targetKb, setTargetKb] = React.useState(defaultKb);
   const [busy, setBusy] = React.useState(false);
   const [result, setResult] = React.useState<{
@@ -23,8 +30,13 @@ function Body({ source, defaultKb }: { source: ToolSource; defaultKb: number }) 
     blob: Blob;
   } | null>(null);
 
+  React.useEffect(() => {
+    track({ name: "tool_start", tool: toolName, device: deviceClass() });
+  }, [toolName]);
+
   const run = async () => {
     setBusy(true);
+    const t0 = typeof performance !== "undefined" ? performance.now() : 0;
     try {
       const canvas = imageToCanvas(
         source.image,
@@ -45,9 +57,35 @@ function Body({ source, defaultKb }: { source: ToolSource; defaultKb: number }) 
         underCap: res.underCap,
         blob: res.blob,
       });
+
+      const duration = typeof performance !== "undefined" ? performance.now() - t0 : 0;
+      track({
+        name: "tool_success",
+        tool: toolName,
+        device: deviceClass(),
+        ms: Math.round(duration),
+      });
+    } catch (e) {
+      console.error(e);
+      track({
+        name: "tool_failure",
+        tool: toolName,
+        device: deviceClass(),
+        reason: "compress-error",
+      });
     } finally {
       setBusy(false);
     }
+  };
+
+  const handleDownload = () => {
+    if (!result) return;
+    downloadBlob(result.blob, `resized-${targetKb}kb.jpg`);
+    track({
+      name: "download",
+      tool: toolName,
+      format: "jpg",
+    });
   };
 
   return (
@@ -103,7 +141,7 @@ function Body({ source, defaultKb }: { source: ToolSource; defaultKb: number }) 
           )}
           <Button
             size="sm"
-            onClick={() => downloadBlob(result.blob, `resized-${targetKb}kb.jpg`)}
+            onClick={handleDownload}
           >
             <Download className="h-4 w-4" strokeWidth={1.75} /> Download JPG
           </Button>
@@ -113,10 +151,20 @@ function Body({ source, defaultKb }: { source: ToolSource; defaultKb: number }) 
   );
 }
 
-export function ResizeKbTool({ defaultKb = 200 }: { defaultKb?: number }) {
+export function ResizeKbTool({
+  defaultKb = 200,
+  toolName = "resize-kb",
+}: {
+  defaultKb?: number;
+  toolName?: string;
+}) {
+  React.useEffect(() => {
+    track({ name: "tool_view", tool: toolName });
+  }, [toolName]);
+
   return (
     <ImageToolShell>
-      {(source) => <Body source={source} defaultKb={defaultKb} />}
+      {(source) => <Body source={source} defaultKb={defaultKb} toolName={toolName} />}
     </ImageToolShell>
   );
 }

@@ -161,14 +161,22 @@ function drawNameDateStrip(
   return out;
 }
 
-function Body({ source }: { source: ToolSource }) {
+function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId?: string }) {
   const cropperRef = React.useRef<ReactCropperElement>(null);
   
-  const [activePreset, setActivePreset] = React.useState(PRESETS[0]);
+  const initialPreset = React.useMemo(() => {
+    if (defaultPresetId) {
+      const p = PRESETS.find((pr) => pr.id === defaultPresetId);
+      if (p) return p;
+    }
+    return PRESETS[0];
+  }, [defaultPresetId]);
+
+  const [activePreset, setActivePreset] = React.useState(initialPreset);
   const [name, setName] = React.useState("");
   const [date, setDate] = React.useState(getTodayDateString());
   const [stripHeight, setStripHeight] = React.useState(15);
-  const [targetKb, setTargetKb] = React.useState(50);
+  const [targetKb, setTargetKb] = React.useState(initialPreset.kb);
   
   const [busy, setBusy] = React.useState(false);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
@@ -493,14 +501,14 @@ function Body({ source }: { source: ToolSource }) {
   );
 }
 
-export function NameDatePhotoTool() {
+export function NameDatePhotoTool({ defaultPresetId }: { defaultPresetId?: string }) {
   React.useEffect(() => {
     track({ name: "tool_view", tool: "photo-with-name-date" });
   }, []);
 
   return (
     <ImageToolShell>
-      {(source) => <Body source={source} />}
+      {(source) => <Body source={source} defaultPresetId={defaultPresetId} />}
     </ImageToolShell>
   );
 }

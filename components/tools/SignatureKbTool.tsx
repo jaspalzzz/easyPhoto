@@ -8,6 +8,7 @@ import { imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
+import { track, deviceClass } from "@/lib/analytics";
 
 interface Out {
   url: string;
@@ -18,34 +19,76 @@ interface Out {
   underCap: boolean;
 }
 
-function Body({ source, kb }: { source: ToolSource; kb: number }) {
+interface BodyProps {
+  source: ToolSource;
+  kb: number;
+  toolName: string;
+}
+
+function Body({ source, kb, toolName }: BodyProps) {
   const [threshold, setThreshold] = React.useState(200);
   const [busy, setBusy] = React.useState(false);
   const [out, setOut] = React.useState<Out | null>(null);
 
   React.useEffect(() => {
+    track({ name: "tool_start", tool: toolName, device: deviceClass() });
+  }, [toolName]);
+
+  React.useEffect(() => {
     let cancelled = false;
+    const t0 = typeof performance !== "undefined" ? performance.now() : 0;
     (async () => {
       setBusy(true);
-      const base = imageToCanvas(source.image, source.size.width, source.size.height);
-      const transparent = whiteToTransparent(base, { threshold, softness: 40 });
-      const trimmed = trimToContent(transparent, { mode: "alpha", padding: 12 }).canvas;
-      const res = await pngUnderKb(trimmed, kb);
-      if (cancelled) return;
-      setOut({
-        url: res.canvas.toDataURL("image/png"),
-        blob: res.blob,
-        bytes: res.bytes,
-        width: res.canvas.width,
-        height: res.canvas.height,
-        underCap: res.underCap,
-      });
-      setBusy(false);
+      try {
+        const base = imageToCanvas(source.image, source.size.width, source.size.height);
+        const transparent = whiteToTransparent(base, { threshold, softness: 40 });
+        const trimmed = trimToContent(transparent, { mode: "alpha", padding: 12 }).canvas;
+        const res = await pngUnderKb(trimmed, kb);
+        if (cancelled) return;
+        setOut({
+          url: res.canvas.toDataURL("image/png"),
+          blob: res.blob,
+          bytes: res.bytes,
+          width: res.canvas.width,
+          height: res.canvas.height,
+          underCap: res.underCap,
+        });
+
+        const duration = typeof performance !== "undefined" ? performance.now() - t0 : 0;
+        track({
+          name: "tool_success",
+          tool: toolName,
+          device: deviceClass(),
+          ms: Math.round(duration),
+        });
+      } catch (e) {
+        console.error(e);
+        if (!cancelled) {
+          track({
+            name: "tool_failure",
+            tool: toolName,
+            device: deviceClass(),
+            reason: "clean-error",
+          });
+        }
+      } finally {
+        if (!cancelled) setBusy(false);
+      }
     })();
     return () => {
       cancelled = true;
     };
-  }, [source, threshold, kb]);
+  }, [source, threshold, kb, toolName]);
+
+  const handleDownload = () => {
+    if (!out) return;
+    downloadBlob(out.blob, `signature-${kb}kb.png`);
+    track({
+      name: "download",
+      tool: toolName,
+      format: "png",
+    });
+  };
 
   return (
     <div className="space-y-4">
@@ -56,7 +99,7 @@ function Body({ source, kb }: { source: ToolSource; kb: number }) {
           </div>
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={out.url} alt="Transparent signature" className="max-h-[240px] w-auto" />
+          <img src={out.url} alt="Transparent signature" className="max-h-[240px].w-auto" />
         )}
       </PreviewFrame>
 
@@ -75,7 +118,7 @@ function Body({ source, kb }: { source: ToolSource; kb: number }) {
         />
       </label>
 
-      {out && (
+      {out && !busy && (
         <div className="space-y-2 rounded-md border border-hairline bg-card p-3 text-sm">
           <p className="font-mono text-[13px]">
             Result: <strong className="font-semibold">{formatKb(out.bytes)}</strong> · {out.width}×
@@ -90,7 +133,7 @@ function Body({ source, kb }: { source: ToolSource; kb: number }) {
           <Button
             variant="cta"
             size="sm"
-            onClick={() => downloadBlob(out.blob, `signature-${kb}kb.png`)}
+            onClick={handleDownload}
           >
             <Download className="h-4 w-4" strokeWidth={1.75} /> Download PNG
           </Button>
@@ -100,8 +143,20 @@ function Body({ source, kb }: { source: ToolSource; kb: number }) {
   );
 }
 
-export function SignatureKbTool({ kb = 20 }: { kb?: number }) {
+export function SignatureKbTool({
+  kb = 20,
+  toolName = "signature-kb",
+}: {
+  kb?: number;
+  toolName?: string;
+}) {
+  React.useEffect(() => {
+    track({ name: "tool_view", tool: toolName });
+  }, [toolName]);
+
   return (
-    <ImageToolShell>{(source) => <Body source={source} kb={kb} />}</ImageToolShell>
+    <ImageToolShell>
+      {(source) => <Body source={source} kb={kb} toolName={toolName} />}
+    </ImageToolShell>
   );
 }
