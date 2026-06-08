@@ -1,0 +1,469 @@
+"use client";
+
+import * as React from "react";
+import { Loader2, Download, AlertCircle, Calendar, User, Info, ShieldCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
+import { imageToCanvas } from "@/lib/imaging";
+import { compressToCap } from "@/lib/compress";
+import { downloadBlob } from "@/lib/download";
+import { formatKb } from "@/lib/utils";
+import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { Cropper, type ReactCropperElement } from "react-cropper";
+import "cropperjs/dist/cropper.css";
+import { track, deviceClass } from "@/lib/analytics";
+
+// Standard formatting for DOP
+function getTodayDateString() {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, "0");
+  const d = String(today.getDate()).padStart(2, "0");
+  return `${d}/${m}/${y}`;
+}
+
+const PRESETS = [
+  { id: "ssc", name: "SSC Preset (3.5×4.5 cm, 20–50 KB)", specId: "ssc", width: 350, height: 450, ar: 3.5 / 4.5, kb: 50 },
+  { id: "upsc", name: "UPSC Preset (Square, 20–300 KB)", specId: "upsc", width: 350, height: 350, ar: 1, kb: 300 },
+  { id: "passport", name: "Passport Seva (3.5×4.5 cm, 30–50 KB)", specId: "passport-seva", width: 350, height: 450, ar: 3.5 / 4.5, kb: 50 },
+  { id: "custom", name: "Custom / Free Resize", specId: null, width: null, height: null, ar: 3.5 / 4.5, kb: 100 },
+];
+
+interface RenderOptions {
+  name: string;
+  date: string;
+  stripHeightPercent: number;
+}
+
+function drawNameDateStrip(
+  imgCanvas: HTMLCanvasElement,
+  options: RenderOptions
+): HTMLCanvasElement {
+  const w = imgCanvas.width;
+  const h = imgCanvas.height;
+  
+  const s = Math.round(h * (options.stripHeightPercent / 100));
+  
+  const out = document.createElement("canvas");
+  out.width = w;
+  out.height = h + s;
+  
+  const ctx = out.getContext("2d");
+  if (!ctx) throw new Error("Could not acquire 2D canvas context");
+  
+  // Fill background white
+  ctx.fillStyle = "#FFFFFF";
+  ctx.fillRect(0, 0, out.width, out.height);
+  
+  // Draw main cropped image
+  ctx.drawImage(imgCanvas, 0, 0);
+  
+  // Draw white strip at the bottom (covers any image bleed)
+  ctx.fillStyle = "#FFFFFF";
+  ctx.fillRect(0, h, w, s);
+  
+  // Draw a thin grey border at the top of the strip to separate photo from text area
+  ctx.strokeStyle = "#E5E7EB";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, h);
+  ctx.lineTo(w, h);
+  ctx.stroke();
+
+  // Draw text
+  ctx.fillStyle = "#000000";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  
+  const textLines: string[] = [];
+  if (options.name.trim()) textLines.push(options.name.trim().toUpperCase());
+  if (options.date.trim()) textLines.push(options.date.trim().toUpperCase());
+  
+  // Autoscale font size
+  const fontSize = Math.round(s * 0.3);
+  
+  if (textLines.length === 1) {
+    const textY = h + s / 2;
+    let currentFontSize = fontSize;
+    ctx.font = `bold ${currentFontSize}px sans-serif`;
+    let measured = ctx.measureText(textLines[0]);
+    while (measured.width > w * 0.95 && currentFontSize > 8) {
+      currentFontSize -= 1;
+      ctx.font = `bold ${currentFontSize}px sans-serif`;
+      measured = ctx.measureText(textLines[0]);
+    }
+    ctx.fillText(textLines[0], w / 2, textY);
+  } else if (textLines.length === 2) {
+    const lineSpacing = s / 3;
+    const y1 = h + lineSpacing;
+    const y2 = h + lineSpacing * 2;
+    
+    // Line 1
+    let currentFontSize1 = fontSize;
+    ctx.font = `bold ${currentFontSize1}px sans-serif`;
+    let measured1 = ctx.measureText(textLines[0]);
+    while (measured1.width > w * 0.95 && currentFontSize1 > 8) {
+      currentFontSize1 -= 1;
+      ctx.font = `bold ${currentFontSize1}px sans-serif`;
+      measured1 = ctx.measureText(textLines[0]);
+    }
+    ctx.fillText(textLines[0], w / 2, y1);
+    
+    // Line 2
+    let currentFontSize2 = fontSize;
+    ctx.font = `bold ${currentFontSize2}px sans-serif`;
+    let measured2 = ctx.measureText(textLines[1]);
+    while (measured2.width > w * 0.95 && currentFontSize2 > 8) {
+      currentFontSize2 -= 1;
+      ctx.font = `bold ${currentFontSize2}px sans-serif`;
+      measured2 = ctx.measureText(textLines[1]);
+    }
+    ctx.fillText(textLines[1], w / 2, y2);
+  }
+  
+  return out;
+}
+
+function Body({ source }: { source: ToolSource }) {
+  const cropperRef = React.useRef<ReactCropperElement>(null);
+  
+  const [activePreset, setActivePreset] = React.useState(PRESETS[0]);
+  const [name, setName] = React.useState("");
+  const [date, setDate] = React.useState(getTodayDateString());
+  const [stripHeight, setStripHeight] = React.useState(15);
+  const [targetKb, setTargetKb] = React.useState(50);
+  
+  const [busy, setBusy] = React.useState(false);
+  const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
+  const [result, setResult] = React.useState<{
+    url: string;
+    bytes: number;
+    width: number;
+    height: number;
+    underCap: boolean;
+    blob: Blob;
+  } | null>(null);
+  const [cropperReady, setCropperReady] = React.useState(false);
+
+  React.useEffect(() => {
+    track({ name: "tool_start", tool: "photo-with-name-date", device: deviceClass() });
+  }, []);
+
+  // Load portal spec for provenance display
+  const spec = activePreset.specId ? getPortalSpec(activePreset.specId) : undefined;
+  const provenance = spec ? specProvenance(spec) : undefined;
+
+  // Handle preset change
+  const handlePresetChange = (presetId: string) => {
+    const p = PRESETS.find((pr) => pr.id === presetId);
+    if (!p) return;
+    setActivePreset(p);
+    setTargetKb(p.kb);
+    
+    const cropper = cropperRef.current?.cropper;
+    if (cropper) {
+      cropper.setAspectRatio(p.ar);
+    }
+  };
+
+  // Generate live preview when crop boundaries or text options change
+  const updatePreview = React.useCallback(() => {
+    const cropper = cropperRef.current?.cropper;
+    if (!cropper || !cropperReady) return;
+
+    // Use low-res crop to keep preview rendering snappy
+    const croppedCanvas = cropper.getCroppedCanvas({
+      width: activePreset.width || 400,
+    });
+    if (!croppedCanvas) return;
+
+    try {
+      const annotCanvas = drawNameDateStrip(croppedCanvas, {
+        name,
+        date,
+        stripHeightPercent: stripHeight,
+      });
+
+      const url = annotCanvas.toDataURL("image/jpeg", 0.9);
+      setPreviewUrl(url);
+    } catch (e) {
+      console.error("Preview render failed:", e);
+    }
+  }, [name, date, stripHeight, activePreset, cropperReady]);
+
+  React.useEffect(() => {
+    updatePreview();
+  }, [updatePreview]);
+
+  const onDownload = async () => {
+    const cropper = cropperRef.current?.cropper;
+    if (!cropper) return;
+
+    setBusy(true);
+    const t0 = typeof performance !== "undefined" ? performance.now() : 0;
+    try {
+      // Get full resolution cropped canvas for high-quality output
+      const croppedCanvas = cropper.getCroppedCanvas({
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: "high",
+      });
+
+      if (!croppedCanvas) throw new Error("Could not acquire cropped canvas");
+
+      // Draw Name/Date strip at full resolution
+      const annotCanvas = drawNameDateStrip(croppedCanvas, {
+        name,
+        date,
+        stripHeightPercent: stripHeight,
+      });
+
+      // Compress output canvas to target KB
+      const res = await compressToCap(annotCanvas, targetKb, {
+        minScale: 0.1,
+      });
+
+      if (result?.url) URL.revokeObjectURL(result.url);
+
+      const downloadUrl = URL.createObjectURL(res.blob);
+      setResult({
+        url: downloadUrl,
+        bytes: res.bytes,
+        width: res.width,
+        height: res.height,
+        underCap: res.underCap,
+        blob: res.blob,
+      });
+
+      downloadBlob(res.blob, `photo-with-name-date.jpg`);
+
+      const duration = typeof performance !== "undefined" ? performance.now() - t0 : 0;
+      track({
+        name: "tool_success",
+        tool: "photo-with-name-date",
+        device: deviceClass(),
+        ms: Math.round(duration),
+      });
+      track({
+        name: "download",
+        tool: "photo-with-name-date",
+        format: "jpg",
+      });
+    } catch (e) {
+      console.error(e);
+      const reason = e instanceof Error ? e.message.slice(0, 30) : "unknown";
+      track({
+        name: "tool_failure",
+        tool: "photo-with-name-date",
+        device: deviceClass(),
+        reason,
+      });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {/* Left Column: Crop Workspace & Real-time preview */}
+      <div className="lg:col-span-7 space-y-6">
+        <div>
+          <h3 className="eyebrow mb-2">1. Crop Your Photo</h3>
+          <div className="overflow-hidden rounded-md border border-hairline bg-paper">
+            <Cropper
+              ref={cropperRef}
+              src={source.url}
+              style={{ height: 320, width: "100%" }}
+              aspectRatio={activePreset.ar}
+              viewMode={1}
+              dragMode="move"
+              autoCropArea={0.8}
+              background={false}
+              responsive
+              checkOrientation={false}
+              guides={true}
+              ready={() => {
+                setCropperReady(true);
+                updatePreview();
+              }}
+              cropend={updatePreview}
+              zoom={updatePreview}
+            />
+          </div>
+        </div>
+
+        {previewUrl && (
+          <div>
+            <h3 className="eyebrow mb-2">Real-time Result Preview</h3>
+            <PreviewFrame>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={previewUrl}
+                alt="Real-time preview with Name & Date"
+                className="max-h-[300px] w-auto border border-hairline shadow-sm rounded bg-white"
+              />
+            </PreviewFrame>
+          </div>
+        )}
+      </div>
+
+      {/* Right Column: Customization Controls */}
+      <div className="lg:col-span-5 space-y-6">
+        <div className="panel p-5 space-y-5">
+          {/* Preset Selector */}
+          <div>
+            <label className="block text-sm font-semibold mb-2">Select Exam Preset</label>
+            <select
+              value={activePreset.id}
+              onChange={(e) => handlePresetChange(e.target.value)}
+              className="w-full h-10 rounded-md border border-hairline-strong bg-background px-3 text-sm focus:border-brand"
+            >
+              {PRESETS.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Form Provenance Block */}
+          {provenance && (
+            <div className="flex gap-2 rounded-md bg-brand-soft/30 border border-brand/10 p-3 text-xs text-ink-soft leading-relaxed">
+              <Info className="h-4 w-4 shrink-0 text-brand mt-0.5" />
+              <div>
+                <span>{provenance.label}. </span>
+                {provenance.url && (
+                  <a
+                    href={provenance.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-brand underline font-medium inline-flex items-center gap-0.5"
+                  >
+                    Confirm on official portal
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Name Input */}
+          <div>
+            <label className="block text-sm font-semibold mb-1.5 flex items-center gap-1.5">
+              <User className="h-4 w-4 text-ink-soft" />
+              Candidate Name
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. JASPAL SINGH"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full h-10 rounded-md border border-hairline-strong bg-background px-3 text-sm font-mono focus:border-brand uppercase placeholder:normal-case placeholder:font-sans"
+              maxLength={40}
+            />
+            <span className="text-xs text-muted-foreground mt-1 block">
+              Printed at the bottom in bold black letters.
+            </span>
+          </div>
+
+          {/* Date Input */}
+          <div>
+            <label className="block text-sm font-semibold mb-1.5 flex items-center gap-1.5">
+              <Calendar className="h-4 w-4 text-ink-soft" />
+              Date of Photo (DOP)
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. 08/06/2026"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full h-10 rounded-md border border-hairline-strong bg-background px-3 text-sm font-mono focus:border-brand"
+              maxLength={20}
+            />
+            <span className="text-xs text-muted-foreground mt-1 block">
+              Usually required to be taken within the last 3 months.
+            </span>
+          </div>
+
+          {/* Strip Height slider */}
+          <div>
+            <div className="flex items-center justify-between text-sm mb-1.5">
+              <span className="font-semibold">White Strip Height</span>
+              <span className="font-mono text-xs text-ink-soft">{stripHeight}%</span>
+            </div>
+            <input
+              type="range"
+              min={10}
+              max={25}
+              value={stripHeight}
+              onChange={(e) => setStripHeight(Number(e.target.value))}
+              className="w-full h-1.5 bg-hairline rounded-lg cursor-pointer accent-brand"
+            />
+          </div>
+
+          {/* Target KB slider */}
+          <div>
+            <div className="flex items-center justify-between text-sm mb-1.5">
+              <span className="font-semibold">Target File Size (KB)</span>
+              <span className="font-mono text-xs text-ink-soft">Max {targetKb} KB</span>
+            </div>
+            <input
+              type="range"
+              min={15}
+              max={500}
+              value={targetKb}
+              onChange={(e) => setTargetKb(Number(e.target.value))}
+              className="w-full h-1.5 bg-hairline rounded-lg cursor-pointer accent-brand"
+            />
+            <span className="text-xs text-muted-foreground mt-1.5 block">
+              Compression adjusts quality automatically to fit under the cap.
+            </span>
+          </div>
+
+          {/* Actions */}
+          <div className="pt-2">
+            <Button variant="cta" onClick={onDownload} className="w-full h-11" disabled={busy || !cropperReady}>
+              {busy ? (
+                <Loader2 className="h-4 w-4 animate-spin text-white" strokeWidth={2} />
+              ) : (
+                <>
+                  <Download className="h-4 w-4" strokeWidth={2} />
+                  Download &amp; Export JPG
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+
+        {/* Compression statistics */}
+        {result && (
+          <div className="rounded-md border border-hairline bg-paper p-4 text-xs space-y-1.5">
+            <p className="font-semibold text-ink">Export Summary:</p>
+            <ul className="space-y-1 text-ink-soft font-mono">
+              <li>· Actual Size: {formatKb(result.bytes)}</li>
+              <li>· Dimensions: {result.width}×{result.height}px</li>
+              <li>· Status: {result.underCap ? "🟢 Compliant size" : "⚠️ Size target exceeded"}</li>
+            </ul>
+          </div>
+        )}
+
+        <div className="flex items-start gap-2 text-xs text-muted-foreground px-1">
+          <ShieldCheck className="h-4 w-4 shrink-0 text-brand mt-0.5" />
+          <p>
+            Privacy First: All processing and canvas editing occurs strictly inside your web browser. No photos or data are uploaded.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function NameDatePhotoTool() {
+  React.useEffect(() => {
+    track({ name: "tool_view", tool: "photo-with-name-date" });
+  }, []);
+
+  return (
+    <ImageToolShell>
+      {(source) => <Body source={source} />}
+    </ImageToolShell>
+  );
+}

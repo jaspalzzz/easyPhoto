@@ -70,6 +70,14 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         ready: true,
         icon: "RefreshCw",
       },
+      {
+        slug: "photo-with-name-date",
+        title: "Photo with Name and Date",
+        blurb: "Add a custom name and date text strip at the bottom of your passport photo.",
+        ready: true,
+        popular: true,
+        icon: "Calendar",
+      },
     ],
   },
   {
