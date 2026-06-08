@@ -63,9 +63,9 @@ export default function Page() {
       <p>
         Babies move, so you&apos;ll rarely frame it perfectly in-camera. Upload
         your best shot to the{" "}
-        <Link href="/passport-photo/">passport photo maker</Link>, choose your
-        country, and it crops to the correct head size and sets the right
-        background. See the exact rules on your country page, such as{" "}
+        <Link href="/baby-passport-photo/">baby passport photo maker</Link>, and
+        it crops to the correct head size and sets the right background. See the
+        exact rules on your country page, such as{" "}
         <Link href="/us-passport-photo-maker/">US</Link>, <Link href="/india-passport-photo-maker/">India</Link> or{" "}
         <Link href="/uk-passport-photo-maker/">UK</Link>. If a stray shadow or off-white sheet shows,
         the <Link href="/tools/white-background/">white background tool</Link>{" "}

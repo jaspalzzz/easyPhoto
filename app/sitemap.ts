@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/tools/",
     "/passport-photo/",
+    "/baby-passport-photo/",
     "/visa-photo/",
     "/signature-resize-to-10kb/",
     "/signature-resize-to-20kb/",
