@@ -27,6 +27,18 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
+/** Top exam destinations — dedicated landing page where it exists, else the form-resizer. */
+const EXAM_LINKS: { label: string; href: string }[] = [
+  { label: "SSC", href: "/ssc-photo-resizer/" },
+  { label: "UPSC", href: "/upsc-photo-resizer/" },
+  { label: "IBPS", href: "/ibps-photo-resizer/" },
+  { label: "SBI PO", href: "/sbi-po-photo-resizer/" },
+  { label: "Railway (RRB)", href: "/railway-photo-resizer/" },
+  { label: "NEET / JEE", href: "/tools/form-resizer/nta/" },
+  { label: "RBI", href: "/tools/form-resizer/rbi/" },
+  { label: "CTET", href: "/tools/form-resizer/ctet/" },
+];
+
 export default function HomePage() {
   return (
     <>
@@ -109,6 +121,68 @@ export default function HomePage() {
               </Link>
             );
           })}
+        </div>
+      </section>
+
+      {/* Indian exams & forms — convert the dominant exam-candidate audience */}
+      <section id="exams" className="border-t border-hairline bg-paper scroll-mt-16">
+        <div className="container py-14 sm:py-16">
+          <div className="flex items-baseline justify-between border-b border-hairline pb-4">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Indian exams &amp; forms
+            </h2>
+            <span className="eyebrow hidden sm:block">
+              Exact size, KB &amp; dimensions
+            </span>
+          </div>
+
+          {/* Featured: the guided wizard */}
+          <Link
+            href="/tools/exam-package/"
+            className="group mt-6 flex items-center gap-4 rounded-md border border-brand/25 bg-brand-soft/20 p-5 transition-colors hover:bg-brand-soft/40"
+          >
+            <ToolIcon name="FileStack" className="h-7 w-7 shrink-0 text-brand" />
+            <span className="min-w-0">
+              <span className="block font-semibold leading-tight">
+                Exam Application Kit
+              </span>
+              <span className="mt-0.5 block text-sm text-muted-foreground">
+                Pick your exam, then get a correctly sized photo &amp; signature in
+                one guided flow.
+              </span>
+            </span>
+            <ArrowRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-brand opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+          </Link>
+
+          {/* Per-exam resizers */}
+          <div className="mt-4 register sm:grid-cols-3 lg:grid-cols-4">
+            {EXAM_LINKS.map((e) => (
+              <Link
+                key={e.href}
+                href={e.href}
+                className="group flex items-center gap-2 bg-card p-4 text-sm font-medium transition-colors hover:bg-accent/40"
+              >
+                {e.label}
+                <ArrowRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
+              </Link>
+            ))}
+          </div>
+
+          {/* Hindi / Hinglish */}
+          <p className="mt-5 text-sm text-muted-foreground">
+            Hindi me:{" "}
+            <Link href="/photo-resize-kaise-kare/" className="text-brand hover:underline">
+              photo resize kaise kare
+            </Link>{" "}
+            ·{" "}
+            <Link href="/photo-ka-size-20kb-kaise-kare/" className="text-brand hover:underline">
+              size 20kb kaise kare
+            </Link>{" "}
+            ·{" "}
+            <Link href="/signature-resize-kaise-kare/" className="text-brand hover:underline">
+              signature resize
+            </Link>
+          </p>
         </div>
       </section>
 
