@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { FormatConverterTool } from "@/components/tools/FormatConverterTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { FORMAT_CONVERTER_FAQ } from "@/lib/faqs";
 
 const tool = getTool("format-converter")!;
 
@@ -19,6 +20,7 @@ export default function Page() {
       title="Universal Image Format Converter"
       slug={tool.slug}
       blurb={tool.blurb}
+      faqItems={FORMAT_CONVERTER_FAQ}
       footnote="Image format conversion runs entirely on your device. Your photos are never uploaded to any server."
     >
       <FormatConverterTool />

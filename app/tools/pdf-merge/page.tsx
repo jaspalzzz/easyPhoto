@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { PdfMergeTool } from "@/components/tools/PdfMergeTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { PDF_MERGE_FAQ } from "@/lib/faqs";
 
 const tool = getTool("pdf-merge")!;
 
@@ -19,6 +20,7 @@ export default function Page() {
       title="Merge PDF Files"
       slug={tool.slug}
       blurb={tool.blurb}
+      faqItems={PDF_MERGE_FAQ}
       footnote="Merging runs entirely on your device. Your PDF pages are never uploaded to any server."
     >
       <PdfMergeTool />

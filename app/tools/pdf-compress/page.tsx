@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { PdfCompressTool } from "@/components/tools/PdfCompressTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { PDF_COMPRESS_FAQ } from "@/lib/faqs";
 
 const tool = getTool("pdf-compress")!;
 
@@ -19,6 +20,7 @@ export default function Page() {
       title="Compress PDF to a Size Limit"
       slug={tool.slug}
       blurb={tool.blurb}
+      faqItems={PDF_COMPRESS_FAQ}
       footnote="Compression runs entirely on your device. Your PDF is never uploaded to any server."
     >
       <PdfCompressTool />

@@ -196,6 +196,102 @@ export const EXAM_PACKAGE_FAQ: FaqItem[] = [
   { q: "Should I still check the official exam notification?", a: "Yes. Requirements can change between notification cycles, so confirm the current photo and signature limits in the official notification before you submit." },
 ];
 
+export const PDF_COMPRESS_FAQ: FaqItem[] = [
+  { q: "How do I compress a PDF to a target size (100, 200, 500 KB)?", a: "Upload your PDF, pick a target like 100, 200 or 500 KB, and the tool rasterises and re-compresses the pages to land under it, then you download. Everything happens in your browser." },
+  { q: "Will compressing reduce the PDF's quality?", a: "Some quality is traded for the smaller size. We keep the highest quality that still fits your target, and smaller targets reduce sharpness more, so pick the largest size your form allows." },
+  { q: "Is the PDF compressor free and private?", a: "Yes — free, no watermark, no sign-up, and your PDF is processed entirely on your device. Nothing is uploaded." },
+  { q: "Why does my form reject my PDF for size?", a: "It's over the upload cap. Compress it under the stated limit (for example 200 KB) and re-upload." },
+  { q: "Does it work on scanned PDFs?", a: "Yes. Scanned, image-heavy PDFs usually compress the most, since the pages are images." },
+];
+
+export const PDF_MERGE_FAQ: FaqItem[] = [
+  { q: "How do I merge PDF files into one?", a: "Add two or more PDFs, arrange them in order, and download a single combined PDF. It's lossless — pages are copied as-is." },
+  { q: "Is there a limit on how many PDFs I can merge?", a: "No fixed limit. Very large documents use more memory on your device, but typical multi-file merges work fine." },
+  { q: "Will merging reduce quality?", a: "No. Merge copies the original pages without re-compressing, so text and images stay exactly as they were." },
+  { q: "Is the PDF merger free and private?", a: "Yes — free, no watermark, and the merge happens in your browser, so your files are never uploaded." },
+  { q: "Can I reorder the files before merging?", a: "Yes, arrange them in the order you want before downloading the combined PDF." },
+];
+
+export const PDF_SPLIT_FAQ: FaqItem[] = [
+  { q: "How do I split a PDF or extract pages?", a: "Upload your PDF, select the pages you want, and download them as a new PDF. The original is untouched." },
+  { q: "Can I extract a single page from a PDF?", a: "Yes. Pick just the page (or range) you need and export it as its own PDF." },
+  { q: "Does splitting reduce quality?", a: "No. Pages are copied losslessly into the new file, so nothing is re-compressed." },
+  { q: "Is the PDF splitter free and private?", a: "Yes — free, no watermark, and processed entirely in your browser. Your PDF is never uploaded." },
+];
+
+export const PDF_REORDER_FAQ: FaqItem[] = [
+  { q: "How do I reorder pages in a PDF?", a: "Upload your PDF, drag the page thumbnails into the order you want, and download the rearranged file." },
+  { q: "Can I rotate or delete pages too?", a: "Yes. You can rotate any page and remove pages you don't need before downloading." },
+  { q: "Will reordering or rotating reduce quality?", a: "No. Pages are moved and rotated losslessly — the content isn't re-compressed." },
+  { q: "Is the tool free and private?", a: "Yes — free, no watermark, and everything runs in your browser, so your PDF is never uploaded." },
+];
+
+export const SIGN_PDF_FAQ: FaqItem[] = [
+  { q: "How do I sign a PDF online for free?", a: "Upload your PDF, draw or place your signature image on the page, position it, and download the signed PDF — all in your browser." },
+  { q: "Can I draw my signature or upload an image?", a: "Both. Draw it with your mouse or finger, or upload a transparent signature PNG and drop it onto the page." },
+  { q: "Is signing a PDF here legally valid?", a: "It adds a visible signature image, which is accepted for many everyday forms. For qualified e-signatures with certificates, use a dedicated e-sign service." },
+  { q: "Is the PDF signer free and private?", a: "Yes — free, no watermark, and your PDF and signature never leave your device." },
+  { q: "How do I get a clean signature to place?", a: "Use the transparent signature tool first to turn a scan into a clean, background-free PNG, then place it here." },
+];
+
+export const SIGN_IMAGE_FAQ: FaqItem[] = [
+  { q: "How do I add a signature to a photo or image?", a: "Upload your image, draw or place a transparent signature on top, position and size it, then download the signed image." },
+  { q: "Can I overlay a transparent signature PNG?", a: "Yes. Upload a transparent signature and drop it onto the photo, or draw a new one directly." },
+  { q: "Will the signature have a white box around it?", a: "No, if you use a transparent signature. Make one with the transparent signature tool first for a clean overlay." },
+  { q: "Is it free and private?", a: "Yes — free, no watermark, and the image is processed in your browser, never uploaded." },
+];
+
+export const TRANSPARENT_SIGNATURE_FAQ: FaqItem[] = [
+  { q: "How do I make a transparent signature PNG?", a: "Upload a scan or photo of your signature on white paper. The tool removes the paper background, trims to the ink, and exports a transparent PNG." },
+  { q: "Why do I need a transparent signature?", a: "Forms and documents expect a signature with no white box around it, so it sits cleanly on the page. A transparent PNG does exactly that." },
+  { q: "My scan has grey or shadowed paper — will it clean up?", a: "Yes. Increase the background-removal strength to push the paper fully transparent while keeping the ink crisp." },
+  { q: "Is it free and private?", a: "Yes — free, no watermark, and your signature is processed on your device and never uploaded." },
+];
+
+export const SIGNATURE_BG_REMOVAL_FAQ: FaqItem[] = [
+  { q: "How do I remove the background from a signature?", a: "Upload a photo or scan of your signature and the tool lifts the paper tone, keeping just the ink on a transparent background." },
+  { q: "Does it keep the ink sharp?", a: "Yes. It targets the paper colour and leaves the ink intact; a strength control lets you push faint paper fully transparent." },
+  { q: "What's the difference from the transparent signature tool?", a: "This focuses on background removal; the transparent signature tool also auto-trims and optimises the file. Use whichever fits, or chain them." },
+  { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser. Your signature is never uploaded." },
+];
+
+export const SIGNATURE_CLEANER_FAQ: FaqItem[] = [
+  { q: "What does the signature cleaner do?", a: "It removes the paper background, auto-trims the empty space around the ink, and optimises the file size — turning a phone photo of your signature into a clean, form-ready image." },
+  { q: "Will it keep a transparent background?", a: "Yes. The cleaned signature is exported as a transparent PNG so it sits cleanly on forms and documents." },
+  { q: "Can it fix a faint or shadowed scan?", a: "Yes. Adjust the cleanup strength to lift faint paper and shadows while keeping the ink legible." },
+  { q: "Is it free and private?", a: "Yes — free, no watermark, and your signature is processed on your device only." },
+];
+
+export const SIGNATURE_CROP_FAQ: FaqItem[] = [
+  { q: "How do I crop a signature to the ink?", a: "Upload your signature scan and the tool auto-trims the blank space around it, leaving a tight crop of just the signature." },
+  { q: "Why crop a signature before uploading?", a: "Forms expect the signature to fill the frame, not float in a sea of white. A tight crop also helps it meet pixel-dimension limits." },
+  { q: "Can I also remove the paper background?", a: "Yes — use the signature cleaner or background-removal tool to drop the paper and keep a transparent PNG." },
+  { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser." },
+];
+
+export const FORMAT_CONVERTER_FAQ: FaqItem[] = [
+  { q: "How do I convert an image between JPG, PNG, WebP and HEIC?", a: "Upload your image, choose the output format, and download. The conversion runs in your browser — nothing is uploaded." },
+  { q: "How do I convert an iPhone HEIC photo to JPG?", a: "Drop in the HEIC file and select JPG as the output. This is handy because many forms and sites don't accept HEIC." },
+  { q: "Does converting reduce quality?", a: "Converting to PNG is lossless. JPG and WebP use compression, but at high quality the difference is hard to see." },
+  { q: "Is the format converter free and private?", a: "Yes — free, no watermark, and your image is processed on your device only." },
+  { q: "What's the difference between JPG, PNG and WebP?", a: "JPG is best for photos and small files, PNG keeps transparency and sharp edges, and WebP gives smaller files at similar quality." },
+];
+
+export const RESIZE_DIMENSIONS_FAQ: FaqItem[] = [
+  { q: "How do I resize an image to exact pixel dimensions?", a: "Upload your image, enter the width and height in pixels (with an optional aspect-ratio lock), and download. It runs in your browser." },
+  { q: "How do I keep the aspect ratio while resizing?", a: "Turn on the lock and the other dimension updates automatically as you type, so the image isn't stretched." },
+  { q: "What's the difference between resizing by pixels and by KB?", a: "Pixels set the width and height; KB sets the file size for upload limits. Use the resize-to-KB tool when a form caps the file size." },
+  { q: "Does resizing reduce quality?", a: "Shrinking is high quality. Enlarging beyond the original size can look soft, since there's no extra detail to add." },
+  { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser." },
+];
+
+export const PHOTO_NAME_DATE_FAQ: FaqItem[] = [
+  { q: "How do I add my name and date under a photo?", a: "Upload your photo, type your name and the date, and the tool prints them in a clean strip at the bottom — then you download it." },
+  { q: "Why do some exam photos need a name and date?", a: "Several exam and recruitment forms (and some banks) require the photo to show your name and the date it was taken, written below the image." },
+  { q: "Can I change the date or text format?", a: "Yes, you can set the name and the date text to match exactly what your form asks for." },
+  { q: "Is it free and private?", a: "Yes — free, no watermark, and your photo is processed on your device only." },
+];
+
 /**
  * Per-country passport FAQ — built from the verified spec so every country's
  * set is genuinely different (sizes, background, head height, rules all differ).

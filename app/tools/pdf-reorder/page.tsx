@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { PdfReorderTool } from "@/components/tools/PdfReorderTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { PDF_REORDER_FAQ } from "@/lib/faqs";
 
 const tool = getTool("pdf-reorder")!;
 
@@ -19,6 +20,7 @@ export default function Page() {
       title="Reorder & Rotate PDF Pages"
       slug={tool.slug}
       blurb={tool.blurb}
+      faqItems={PDF_REORDER_FAQ}
       footnote="Processing runs entirely on your device. Your PDF pages are never uploaded to any server."
     >
       <PdfReorderTool />

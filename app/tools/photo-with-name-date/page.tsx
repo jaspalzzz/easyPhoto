@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { NameDatePhotoTool } from "@/components/tools/NameDatePhotoTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { PHOTO_NAME_DATE_FAQ } from "@/lib/faqs";
 
 const tool = getTool("photo-with-name-date")!;
 
@@ -19,6 +20,7 @@ export default function Page() {
       title="Photo with Name &amp; Date Generator"
       slug={tool.slug}
       blurb={tool.blurb}
+      faqItems={PHOTO_NAME_DATE_FAQ}
       footnote="All processing runs entirely on your device. Your photo data, name, and date are never uploaded."
     >
       <NameDatePhotoTool />

@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { PdfSplitTool } from "@/components/tools/PdfSplitTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { PDF_SPLIT_FAQ } from "@/lib/faqs";
 
 const tool = getTool("pdf-split")!;
 
@@ -19,6 +20,7 @@ export default function Page() {
       title="Split PDF File"
       slug={tool.slug}
       blurb={tool.blurb}
+      faqItems={PDF_SPLIT_FAQ}
       footnote="Splitting runs entirely on your device. Your PDF pages are never uploaded to any server."
     >
       <PdfSplitTool />

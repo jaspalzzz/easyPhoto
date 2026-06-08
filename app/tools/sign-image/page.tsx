@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { SignImageTool } from "@/components/tools/SignImageTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { SIGN_IMAGE_FAQ } from "@/lib/faqs";
 
 const tool = getTool("sign-image")!;
 
@@ -19,6 +20,7 @@ export default function Page() {
       title="Sign Image or Photo"
       slug={tool.slug}
       blurb={tool.blurb}
+      faqItems={SIGN_IMAGE_FAQ}
       footnote="Signing runs entirely on your device. Your photos and signature data are never uploaded."
     >
       <SignImageTool />

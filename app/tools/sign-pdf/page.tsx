@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { SignPdfTool } from "@/components/tools/SignPdfTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { SIGN_PDF_FAQ } from "@/lib/faqs";
 
 const tool = getTool("sign-pdf")!;
 
@@ -19,6 +20,7 @@ export default function Page() {
       title="Sign PDF Document"
       slug={tool.slug}
       blurb={tool.blurb}
+      faqItems={SIGN_PDF_FAQ}
       footnote="Signing runs entirely on your device. Your PDF pages and signature data are never uploaded."
     >
       <SignPdfTool />
