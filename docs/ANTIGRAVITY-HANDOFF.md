@@ -105,5 +105,57 @@ Route `/tools/photo-with-name-date` (+ exam variants like `/ssc-photo-with-name-
 - [ ] `npm run build` succeeds
 - [ ] every new route has `opengraph-image.tsx` + appears in the sitemap
 - [ ] no hardcoded spec numbers (read from registry)
-- [ ] no `fetch(data:)`, no PDF rasterizing, no uploads
+- [ ] no `fetch(data:)`, no PDF rasterizing (EXCEPT the compressor — see Round 2), no uploads
 - [ ] working tree committed & clean on `feature-seo-tools`
+
+---
+
+# ROUND 2 — next batch (Task A is done & shipped)
+
+## What's already shipped (don't rebuild)
+- Per-exam landing pages: SSC, UPSC, Railway, IBPS, SBI-PO (photo + signature resizers).
+- DOP Maker (`/tools/photo-with-name-date`), Signature Cleaner (`/tools/signature-cleaner`).
+- Spec registry verified: SSC, IBPS, SBI, DS-160, Passport Seva, OCI are
+  `verification: "official"`. UPSC + RRB are still `needs-review` (don't mark them
+  official without an official-notification source).
+- **FAQ foundation:** `portalFaqItems(spec)` in `@/lib/faqs` → pass it to
+  `ToolPage`'s `faqItems` prop on every exam page for FAQPage rich results.
+  Use this pattern on any NEW exam/portal page you add.
+
+## New building blocks available
+- `portalFaqItems(spec)` — `@/lib/faqs` (registry-driven exam FAQ + JSON-LD).
+- `specProvenance(spec)` / `getPortalSpec(id)` — `@/lib/specRegistry`.
+- `track()` — `@/lib/analytics` (anonymous events only).
+
+## Task C — Hindi / Hinglish SEO pages (highest priority)
+The audience searches in Hinglish: "photo ka size 20kb kaise kare", "signature
+resize kaise kare", "passport photo white background kaise banaye".
+- **Do NOT add an i18n framework** (next-intl etc.) — overkill for a static export
+  and it complicates the build. Instead create **dedicated Hinglish landing pages**
+  with Hindi/Hinglish copy that point at the EXISTING tools.
+- Suggested routes: `/photo-ka-size-20kb-kaise-kare/`, `/signature-resize-kaise-kare/`,
+  `/passport-photo-white-background/` (one per top Hinglish query).
+- Each: `pageMetadata()` (Hinglish title/description), `opengraph-image.tsx`,
+  `<ToolPage>` + the matching existing tool (`ResizeKbTool` / `SignatureKbTool`),
+  `portalFaqItems`-style Hindi FAQ (write Hindi Q&A as plain strings), `track()`.
+  Set `<html lang>` appropriately if you add a Hindi section, and keep numbers
+  from the registry.
+
+## Task D — Exam Package Wizard
+Route `/tools/exam-package` (+ per-exam like `/ssc-exam-kit`).
+- Step 1: pick exam (from `PORTAL_KEYS`). Step 2: upload + fix PHOTO (reuse the
+  photo/KB tools, driven by `getPortalSpec(id)`). Step 3: upload + fix SIGNATURE.
+  Step 4: show both with ✅ compliance ("18 KB ✓ under 20 KB") and download both.
+- 100% client-side, reuse existing tools/libs, `track()` each step.
+
+## Task E — PDF Compressor
+Route `/tools/pdf-compress`. Targets: 100 / 200 / 500 KB (marksheets, certificates).
+- **IMPORTANT — this is the ONE place rasterizing is correct.** A size-compressor
+  must resample: scanned PDFs can't be shrunk losslessly. Render pages with
+  `pdfToCanvases` (`@/lib/pdfToImages`), then re-encode to JPEG at an **adaptive
+  scale × quality** until total bytes ≤ target, and rebuild with `jspdf`. Be
+  honest in the UI: "output is optimised to fit the size limit (text becomes
+  images)". (Merge/split/reorder/sign stay LOSSLESS via `pdf-lib` — do not change them.)
+- Client-side only, `track()`, OG image, add to `toolsCatalog`.
+
+Same checklist + branch rules as above apply to Round 2.
