@@ -41,7 +41,7 @@ export default function Page() {
         </div>
       </div>
 
-      <ResizeKbTool defaultKb={spec.photoLimitKb} toolName="ssc-photo-resizer" />
+      <ResizeKbTool defaultKb={spec.photoLimitKb} minWidth={spec.photoWidthPx} minHeight={spec.photoHeightPx} toolName="ssc-photo-resizer" />
     </ToolPage>
   );
 }

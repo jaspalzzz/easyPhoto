@@ -14,9 +14,12 @@ interface BodyProps {
   source: ToolSource;
   defaultKb: number;
   toolName: string;
+  /** Portal minimum pixel size — compression won't shrink below this. */
+  minWidth?: number;
+  minHeight?: number;
 }
 
-function Body({ source, defaultKb, toolName }: BodyProps) {
+function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
   const [targetKb, setTargetKb] = React.useState(defaultKb);
   const [busy, setBusy] = React.useState(false);
   const [result, setResult] = React.useState<{
@@ -43,8 +46,15 @@ function Body({ source, defaultKb, toolName }: BodyProps) {
         source.size.width,
         source.size.height
       );
-      // Allow dimension downscaling (to 10%) so small KB targets are reachable.
-      const res = await compressToCap(canvas, targetKb, { minScale: 0.1 });
+      // Compress to the KB cap. If the portal specifies a minimum pixel size,
+      // never shrink below it (an undersized photo gets rejected); otherwise
+      // allow downscaling to 10% so small KB targets stay reachable.
+      const minDimensions =
+        minWidth && minHeight ? { width: minWidth, height: minHeight } : undefined;
+      const res = await compressToCap(canvas, targetKb, {
+        minScale: 0.1,
+        minDimensions,
+      });
       // Revoke the previous result URL before replacing it (avoid blob leaks).
       if (result?.url) URL.revokeObjectURL(result.url);
       setResult({
@@ -117,6 +127,11 @@ function Body({ source, defaultKb, toolName }: BodyProps) {
             "Compress to size"
           )}
         </Button>
+        {minWidth && minHeight ? (
+          <span className="text-xs text-muted-foreground">
+            Kept at ≥ {minWidth}×{minHeight}px
+          </span>
+        ) : null}
       </div>
 
       {result && (
@@ -154,9 +169,13 @@ function Body({ source, defaultKb, toolName }: BodyProps) {
 export function ResizeKbTool({
   defaultKb = 200,
   toolName = "resize-kb",
+  minWidth,
+  minHeight,
 }: {
   defaultKb?: number;
   toolName?: string;
+  minWidth?: number;
+  minHeight?: number;
 }) {
   React.useEffect(() => {
     track({ name: "tool_view", tool: toolName });
@@ -164,7 +183,15 @@ export function ResizeKbTool({
 
   return (
     <ImageToolShell>
-      {(source) => <Body source={source} defaultKb={defaultKb} toolName={toolName} />}
+      {(source) => (
+        <Body
+          source={source}
+          defaultKb={defaultKb}
+          toolName={toolName}
+          minWidth={minWidth}
+          minHeight={minHeight}
+        />
+      )}
     </ImageToolShell>
   );
 }

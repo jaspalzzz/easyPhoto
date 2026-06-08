@@ -79,7 +79,12 @@ export function PortalResizer({ portalId }: { portalId: string }) {
               <h4 className="text-sm font-semibold mb-1">Photo Sizer</h4>
               <p className="text-xs text-muted-foreground">Upload your passport-style photograph to compress below {spec.photoLimitKb} KB.</p>
             </div>
-            <ResizeKbTool defaultKb={spec.photoLimitKb} />
+            <ResizeKbTool
+              defaultKb={spec.photoLimitKb}
+              minWidth={spec.photoWidthPx}
+              minHeight={spec.photoHeightPx}
+              toolName={`form-resizer-${portalId}`}
+            />
           </div>
         ) : (
           <div className="space-y-3">
