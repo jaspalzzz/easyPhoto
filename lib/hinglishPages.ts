@@ -161,6 +161,55 @@ export const HINGLISH_PAGES: HinglishPage[] = [
       },
     ],
   },
+  {
+    slug: "photo-resize-mobile-se",
+    title: "Mobile Se Photo Resize Kaise Kare — Free Online Tool",
+    description:
+      "Mobile se photo resize kaise kare? Apne phone me hi photo ka size KB me kam kare — exam aur sarkari form ke liye. Koi app nahi, 100% private.",
+    h1: "Mobile Se Photo Resize Kaise Kare",
+    blurb:
+      "Sirf apne mobile browser me photo ka size kam kare — exam aur form ke liye. Koi app install karne ki zaroorat nahi.",
+    tool: "photo-kb",
+    kb: 50,
+    faqs: photoFaqs(50),
+  },
+  {
+    slug: "photo-ka-size-kam-kaise-kare",
+    title: "Photo Ka Size Kam Kaise Kare — Free Online Photo Compressor",
+    description:
+      "Photo ka size kam kaise kare online free me? Photo ko KB me compress kare — SSC, UPSC aur form upload ke liye. Private, koi upload nahi.",
+    h1: "Photo Ka Size Kam Kaise Kare",
+    blurb:
+      "Apni photo ka size aasani se kam kare aur form ki KB limit me laaye. Sab kuch browser me, koi upload nahi.",
+    tool: "photo-kb",
+    kb: 50,
+    faqs: photoFaqs(50),
+  },
+  {
+    slug: "signature-ka-size-kaise-kam-kare",
+    title: "Signature Ka Size Kaise Kam Kare — Online Signature Compressor",
+    description:
+      "Signature ka size kaise kam kare? Form ke liye signature ko 10-20 KB me compress kare aur background saaf kare. Private, koi upload nahi.",
+    h1: "Signature Ka Size Kaise Kam Kare",
+    blurb:
+      "Apne signature ka scan upload kare — background saaf hoke size form ki limit (10-20 KB) me aa jata hai.",
+    tool: "signature-kb",
+    kb: 20,
+    faqs: [
+      {
+        q: "Signature ka size kaise kam kare?",
+        a: "Signature ka photo ya scan upload kare; tool background hata kar use crop karta hai aur target KB me compress kar deta hai. Phir download kar lijiye.",
+      },
+      {
+        q: "Signature ka background white ya transparent kaise kare?",
+        a: "Tool kaagaz ka background apne aap hata deta hai — aap transparent PNG ya white background, dono choose kar sakte hai.",
+      },
+      {
+        q: "Kya signature kahin upload hota hai?",
+        a: "Nahi. Signature aapke browser me hi process hota hai, kabhi server par upload nahi hota.",
+      },
+    ],
+  },
 ];
 
 export const HINGLISH_SLUGS = HINGLISH_PAGES.map((p) => p.slug);

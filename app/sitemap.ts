@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { MAKER_PAGES } from "@/lib/makerPages";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
-import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
+import { KB_TARGETS, kbPath, PDF_KB_TARGETS, pdfKbPath } from "@/lib/kbTargets";
 import { BLOG_POSTS } from "@/lib/blog";
 import { PORTAL_KEYS } from "@/lib/portalPresets";
 import { HINGLISH_SLUGS } from "@/lib/hinglishPages";
@@ -39,6 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...READY_TOOLS.map((t) => `/tools/${t.slug}/`),
     ...PORTAL_KEYS.map((key) => `/tools/form-resizer/${key}/`),
     ...KB_TARGETS.map((kb) => kbPath(kb)),
+    ...PDF_KB_TARGETS.map((kb) => pdfKbPath(kb)),
     ...HINGLISH_SLUGS.map((s) => `/${s}/`),
     ...BLOG_POSTS.map((p) => `/blog/${p.slug}/`),
   ];

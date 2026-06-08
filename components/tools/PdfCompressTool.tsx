@@ -11,9 +11,9 @@ import { track, deviceClass } from "@/lib/analytics";
 
 const TARGETS = [100, 200, 500] as const;
 
-export function PdfCompressTool() {
+export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}) {
   const [file, setFile] = React.useState<File | null>(null);
-  const [targetKb, setTargetKb] = React.useState<number>(100);
+  const [targetKb, setTargetKb] = React.useState<number>(defaultKb);
   const [busy, setBusy] = React.useState(false);
   const [progress, setProgress] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
