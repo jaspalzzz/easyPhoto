@@ -26,6 +26,7 @@ import { Wordmark } from "@/components/site/Wordmark";
 import { LogoMark } from "@/components/site/LogoMark";
 import { MainNav } from "@/components/site/MainNav";
 import { MobileNav } from "@/components/site/MobileNav";
+import { AnalyticsBeacon } from "@/components/site/AnalyticsBeacon";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import {
@@ -126,6 +127,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
 
         <Footer />
+        <AnalyticsBeacon />
       </body>
     </html>
   );
