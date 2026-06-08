@@ -29,6 +29,7 @@ import {
   compositeFull,
 } from "@/lib/segmentation";
 import { ensureDecodable } from "@/lib/heic";
+import { track, deviceClass, type EngineLabel } from "@/lib/analytics";
 
 /**
  * Upper bound for a single segmentation attempt. webgpu/fp16 finishes in
@@ -44,6 +45,14 @@ interface SegEngine {
   dtype: string;
   inputSize: number;
   threads?: number;
+}
+
+/** Map an engine config to its analytics label. */
+function engineToLabel(e: SegEngine): EngineLabel {
+  if (e.device === "webgpu" && e.dtype === "fp16") return "webgpu-fp16";
+  if (e.device === "wasm" && e.dtype === "fp32") return "wasm-fp32";
+  if (e.device === "wasm" && e.dtype === "q8") return "wasm-q8";
+  return "none";
 }
 
 /** Reject with a friendly message if a promise doesn't settle in time. */
@@ -197,6 +206,12 @@ export const useToolStore = create<ToolState>((set, get) => ({
       contrast: 100,
     });
 
+    // Privacy-safe analytics: anonymous outcome only — no file/photo data.
+    const t0 = typeof performance !== "undefined" ? performance.now() : 0;
+    const dev = deviceClass();
+    let usedEngine: EngineLabel = "none";
+    track({ name: "tool_start", tool: "passport-photo", device: dev });
+
     try {
       // iPhone HEIC → JPEG (no-op for already-decodable formats).
       const decodable = await ensureDecodable(file);
@@ -264,6 +279,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
                 SEGMENTATION_TIMEOUT_MS,
                 "Background removal timed out."
               );
+              usedEngine = engineToLabel(eng);
               break;
             } catch (e) {
               lastErr = e;
@@ -280,6 +296,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
             SEGMENTATION_TIMEOUT_MS,
             "Background removal timed out."
           );
+          usedEngine = "isnet";
         }
         const crownY = findCrownY(cutout, measurements.faceXSpan);
         if (crownY != null && crownY < measurements.chinY) {
@@ -305,6 +322,16 @@ export const useToolStore = create<ToolState>((set, get) => ({
       set({ status: "rendering" });
       await rebuildPresets(set, get);
       set({ status: "ready" });
+      track({
+        name: "tool_success",
+        tool: "passport-photo",
+        device: dev,
+        engine: usedEngine,
+        ms:
+          typeof performance !== "undefined"
+            ? Math.round(performance.now() - t0)
+            : undefined,
+      });
     } catch (err) {
       const message =
         err instanceof FaceDetectionError
@@ -313,6 +340,12 @@ export const useToolStore = create<ToolState>((set, get) => ({
             ? err.message
             : "Something went wrong processing that photo.";
       set({ status: "error", error: message });
+      track({
+        name: "tool_failure",
+        tool: "passport-photo",
+        device: dev,
+        reason: err instanceof FaceDetectionError ? "no-face" : "error",
+      });
     }
   },
 
