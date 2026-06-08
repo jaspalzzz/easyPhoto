@@ -187,6 +187,15 @@ export const WHITE_BACKGROUND_FAQ: FaqItem[] = [
   { q: "Does it handle hair and fine edges?", a: "Yes, the model keeps hair and detailed edges reasonably clean." },
 ];
 
+export const EXAM_PACKAGE_FAQ: FaqItem[] = [
+  { q: "What is the Exam Application Kit?", a: "It's a guided flow that gets your photo and signature into the exact size, dimensions and file size an exam form needs. Pick your exam, add your photo and signature, and download an application-ready set in one go." },
+  { q: "Which exams does it support?", a: "Indian exam and recruitment portals including SSC, UPSC, IBPS, SBI, Railway (RRB), NEET/JEE (NTA), RBI, CTET and state PSCs. Each preset uses that exam's published photo and signature requirements." },
+  { q: "What photo and signature size do exam forms need?", a: "It varies by exam, but photos are commonly 20–50 KB and signatures 10–20 KB, each within set pixel dimensions. The kit applies the right values for the exam you pick, so you don't have to look them up." },
+  { q: "Do I need to resize the photo and signature separately?", a: "No. The kit handles both in one flow — it sizes the photo, cleans and sizes the signature, and gives you files that fit the form's limits." },
+  { q: "Is the Exam Application Kit free and private?", a: "Yes. It's free, with no watermark and no sign-up, and everything runs in your browser — your photo and signature are never uploaded to any server." },
+  { q: "Should I still check the official exam notification?", a: "Yes. Requirements can change between notification cycles, so confirm the current photo and signature limits in the official notification before you submit." },
+];
+
 /**
  * Per-country passport FAQ — built from the verified spec so every country's
  * set is genuinely different (sizes, background, head height, rules all differ).

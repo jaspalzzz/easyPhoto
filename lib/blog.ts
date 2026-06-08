@@ -17,6 +17,17 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "exam-photo-signature-size-guide",
+    title: "Photo & Signature Size for Government Exam Forms (SSC, UPSC, IBPS)",
+    description:
+      "Photo and signature size, dimensions and KB limits for Indian exam and recruitment forms — SSC, UPSC, IBPS, SBI, Railway, NEET/JEE and more — and how to resize yours to fit.",
+    date: "June 8, 2026",
+    dateISO: "2026-06-08",
+    excerpt:
+      "Most exam portals cap the photo at 20–50 KB and the signature at 10–20 KB, with set dimensions. Here's what each major exam wants and how to hit it exactly.",
+    readMins: 6,
+  },
+  {
     slug: "linkedin-profile-photo-size-and-tips",
     title: "LinkedIn Profile Photo: Size, Tips & How to Make One Free",
     description:

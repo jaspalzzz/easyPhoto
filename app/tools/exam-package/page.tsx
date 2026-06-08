@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ExamPackageTool } from "@/components/tools/ExamPackageTool";
 import { getTool } from "@/lib/toolsCatalog";
+import { EXAM_PACKAGE_FAQ } from "@/lib/faqs";
 
 const tool = getTool("exam-package")!;
 
@@ -18,6 +19,7 @@ export default function Page() {
       title="Exam Application Kit"
       slug={tool.slug}
       blurb={tool.blurb}
+      faqItems={EXAM_PACKAGE_FAQ}
       footnote="Photo and signature are processed entirely in your browser — nothing is uploaded."
     >
       <ExamPackageTool />

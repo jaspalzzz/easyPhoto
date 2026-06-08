@@ -4,6 +4,7 @@ import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { PortalResizer } from "@/components/tools/PortalResizer";
+import { portalFaqItems } from "@/lib/faqs";
 
 export function generateStaticParams() {
   return PORTAL_KEYS.map((portal) => ({ portal }));
@@ -43,6 +44,7 @@ export default async function Page({
       slug={`form-resizer/${portal}`}
       path={`/tools/form-resizer/${portal}/`}
       blurb={`Resize and compress your documents to meet the official requirements for ${spec.name} registration forms.`}
+      faqItems={portalFaqItems(spec)}
     >
       <PortalResizer portalId={portal} />
     </ToolPage>
