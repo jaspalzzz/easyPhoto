@@ -17,6 +17,28 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "linkedin-profile-photo-size-and-tips",
+    title: "LinkedIn Profile Photo: Size, Tips & How to Make One Free",
+    description:
+      "The right LinkedIn profile photo size (400×400 and up), why it's shown in a circle, and what makes a headshot look professional. Plus a free, private way to crop and size yours.",
+    date: "June 8, 2026",
+    dateISO: "2026-06-08",
+    excerpt:
+      "Square, at least 400×400, face centred for the circle crop. Here's the exact LinkedIn photo size and the tips that make a headshot look professional.",
+    readMins: 5,
+  },
+  {
+    slug: "resume-photo-size-and-rules",
+    title: "Resume Photo: Size, Background & Rules (India Guide)",
+    description:
+      "Whether to put a photo on your resume, the standard passport size used in India, the right background and attire, and how to make a clean resume photo free in your browser.",
+    date: "June 7, 2026",
+    dateISO: "2026-06-07",
+    excerpt:
+      "In India a resume photo is usually passport-size on a plain background. Here's when to include one, the exact size, and how to make it look professional.",
+    readMins: 5,
+  },
+  {
     slug: "how-to-take-a-passport-photo-at-home",
     title: "How to Take a Passport Photo at Home (and Get It Accepted)",
     description:
