@@ -4,10 +4,27 @@
     {
       "name": "dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 3000,
       "autoPort": true,
-      "env": { "NEXT_DIST_DIR": ".next-preview" }
+      "env": {
+        "NEXT_DIST_DIR": ".next-preview"
+      }
+    },
+    {
+      "name": "smoke",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4321",
+        "--directory",
+        "out"
+      ],
+      "port": 4321
     }
   ]
 }

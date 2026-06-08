@@ -4,7 +4,6 @@ import * as React from "react";
 import { Loader2, Download, AlertCircle, Calendar, User, Info, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
-import { imageToCanvas } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
@@ -22,11 +21,49 @@ function getTodayDateString() {
   return `${d}/${m}/${y}`;
 }
 
-const PRESETS = [
-  { id: "ssc", name: "SSC Preset (3.5×4.5 cm, 20–50 KB)", specId: "ssc", width: 350, height: 450, ar: 3.5 / 4.5, kb: 50 },
-  { id: "upsc", name: "UPSC Preset (Square, 20–300 KB)", specId: "upsc", width: 350, height: 350, ar: 1, kb: 300 },
-  { id: "passport", name: "Passport Seva (3.5×4.5 cm, 30–50 KB)", specId: "passport-seva", width: 350, height: 450, ar: 3.5 / 4.5, kb: 50 },
-  { id: "custom", name: "Custom / Free Resize", specId: null, width: null, height: null, ar: 3.5 / 4.5, kb: 100 },
+interface Preset {
+  id: string;
+  name: string;
+  specId: string | null;
+  width: number | null;
+  height: number | null;
+  ar: number;
+  kb: number;
+}
+
+const DEFAULT_AR = 3.5 / 4.5;
+
+/**
+ * Build a preset from the spec registry — never hardcode KB/dimension numbers,
+ * so presets stay in lock-step with the single source of truth (and its
+ * verification status). Falls back gracefully if a spec is missing.
+ */
+function presetFromSpec(id: string, label: string, specId: string): Preset {
+  const s = getPortalSpec(specId);
+  const dims =
+    s?.photoWidthPx && s?.photoHeightPx ? `${s.photoWidthPx}×${s.photoHeightPx}px` : "";
+  const kbRange = s
+    ? s.photoMinKb
+      ? `${s.photoMinKb}–${s.photoLimitKb} KB`
+      : `≤${s.photoLimitKb} KB`
+    : "";
+  const detail = [dims, kbRange].filter(Boolean).join(", ");
+  return {
+    id,
+    name: detail ? `${label} (${detail})` : label,
+    specId,
+    width: s?.photoWidthPx ?? null,
+    height: s?.photoHeightPx ?? null,
+    ar: s?.photoAspectRatio ?? DEFAULT_AR,
+    kb: s?.photoLimitKb ?? 100,
+  };
+}
+
+const PRESETS: Preset[] = [
+  presetFromSpec("ssc", "SSC Preset", "ssc"),
+  presetFromSpec("upsc", "UPSC Preset", "upsc"),
+  presetFromSpec("passport", "Passport Seva", "passport-seva"),
+  { id: "custom", name: "Custom / Free Resize", specId: null, width: null, height: null, ar: DEFAULT_AR, kb: 100 },
 ];
 
 interface RenderOptions {
@@ -249,13 +286,13 @@ function Body({ source }: { source: ToolSource }) {
         format: "jpg",
       });
     } catch (e) {
+      // Analytics reason must be a stable CODE, not a free-form message (no PII).
       console.error(e);
-      const reason = e instanceof Error ? e.message.slice(0, 30) : "unknown";
       track({
         name: "tool_failure",
         tool: "photo-with-name-date",
         device: deviceClass(),
-        reason,
+        reason: "export-error",
       });
     } finally {
       setBusy(false);
