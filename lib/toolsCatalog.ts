@@ -65,6 +65,14 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         icon: "Scaling",
       },
       {
+        slug: "linkedin-photo",
+        title: "LinkedIn Photo Maker",
+        blurb: "Crop any photo to a square LinkedIn profile picture, centred on your face.",
+        ready: true,
+        popular: true,
+        icon: "UserSquare",
+      },
+      {
         slug: "white-background",
         title: "White Background Maker",
         blurb: "Replace any background with clean white (or any solid colour).",
