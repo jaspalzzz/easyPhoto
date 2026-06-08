@@ -55,10 +55,17 @@ describe("specRegistry — staleness", () => {
     expect(isSpecStale(old, 6, today)).toBe(true);
   });
 
-  it("current live portals are all flagged needs-review (provenance pending)", () => {
-    // We added source URLs but have not re-confirmed numbers, so every live spec
-    // should currently surface in the review list — exactly what we want tracked.
-    const review = specsNeedingReview(6, today);
-    expect(review.length).toBe(allPortalSpecs().length);
+  it("verified portals are NOT in the review list; unverified ones are", () => {
+    const review = specsNeedingReview(6, today).map((s) => s.id);
+    // Verified against official sources on 2026-06-08:
+    expect(review).not.toContain("ssc");
+    expect(review).not.toContain("ibps");
+    expect(review).not.toContain("sbi");
+    // Still pending re-confirmation (conflicting/variable sources):
+    expect(review).toContain("upsc");
+    expect(review).toContain("rrb");
+    // Not all are verified yet — the review list must be non-empty.
+    expect(review.length).toBeGreaterThan(0);
+    expect(review.length).toBeLessThan(allPortalSpecs().length);
   });
 });

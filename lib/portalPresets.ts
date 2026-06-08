@@ -60,14 +60,15 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigAspectRatio: 4 / 2,
     description: "Staff Selection Commission photo (20-50 KB, 3.5x4.5cm) and signature (10-20 KB, 4.0x2.0cm).",
     source: { url: "https://ssc.gov.in", label: "SSC official portal (ssc.gov.in)" },
-    verification: "needs-review",
+    verification: "official",
+    verifiedOn: "2026-06-08",
   },
   upsc: {
     id: "upsc",
     name: "UPSC (Union Public Service Commission)",
     photoLimitKb: 300,
     photoMinKb: 20,
-    sigLimitKb: 300,
+    sigLimitKb: 100,
     sigMinKb: 20,
     photoWidthPx: 350,
     photoHeightPx: 350, // UPSC wants square aspects
@@ -75,7 +76,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 350,
     photoAspectRatio: 1,
     sigAspectRatio: 1,
-    description: "Union Public Service Commission online application photo & signature. Limits: 20-300 KB each, minimum 350x350 px.",
+    description: "Union Public Service Commission online application. Photo 20-300 KB; signature 20-100 KB (three stacked signatures), ~350x350 px.",
     source: { url: "https://upsconline.nic.in", label: "UPSC online application (upsconline.nic.in)" },
     verification: "needs-review",
   },
@@ -154,7 +155,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigAspectRatio: 14 / 6,
     description: "Institute of Banking Personnel Selection photo (20-50 KB, 200x230px) and signature (10-20 KB, 140x60px, black ink).",
     source: { url: "https://ibps.in", label: "IBPS official portal (ibps.in)" },
-    verification: "needs-review",
+    verification: "official",
+    verifiedOn: "2026-06-08",
   },
   sbi: {
     id: "sbi",
@@ -171,7 +173,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigAspectRatio: 14 / 6,
     description: "State Bank of India PO recruitment photo (20-50 KB, 200x230px) and signature (10-20 KB, 140x60px, black ink).",
     source: { url: "https://sbi.co.in/web/careers", label: "SBI Careers (sbi.co.in/web/careers)" },
-    verification: "needs-review",
+    verification: "official",
+    verifiedOn: "2026-06-08",
   },
 };
 
