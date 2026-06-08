@@ -25,6 +25,7 @@ import { Footer } from "@/components/site/Footer";
 import { Wordmark } from "@/components/site/Wordmark";
 import { LogoMark } from "@/components/site/LogoMark";
 import { MainNav } from "@/components/site/MainNav";
+import { MobileNav } from "@/components/site/MobileNav";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import {
@@ -115,7 +116,10 @@ export default function RootLayout({
               <LogoMark className="h-8 w-8" />
               <Wordmark className="text-lg" />
             </Link>
-            <MainNav />
+            <div className="flex items-center">
+              <MainNav />
+              <MobileNav />
+            </div>
           </div>
         </header>
 

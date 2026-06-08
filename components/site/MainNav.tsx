@@ -38,7 +38,7 @@ export function MainNav() {
   };
 
   return (
-    <nav className="flex items-center gap-1 text-sm font-medium">
+    <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
       <Link
         href="/"
         className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
