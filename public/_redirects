@@ -1,7 +1,0 @@
-# Cloudflare Pages redirects/rewrites.
-# -------------------------------------
-# Serve the bare /favicon.ico convention path (requested by bots, crawlers and
-# legacy clients regardless of the declared PNG/SVG icons) from our existing
-# 32x32 icon. A 200 rewrite returns the asset in place — no extra binary file,
-# single source of truth — and removes a recurring 404 from the error rate.
-/favicon.ico  /favicon-32x32.png  200
