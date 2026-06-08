@@ -19,6 +19,15 @@ export interface PdfCompressResult {
   pages: number;
 }
 
+/**
+ * pdfjs renders at scale 1 = 72 DPI (1 CSS px per PDF point). We render the base
+ * at RENDER_SCALE, so the effective DPI of the base canvas is 72 × RENDER_SCALE.
+ * Physical page size (mm) must be derived from THIS, not a hardcoded guess, or
+ * the rebuilt PDF comes out the wrong physical size (e.g. A4 → ~151mm wide).
+ */
+const RENDER_SCALE = 1.5;
+const BASE_DPI = 72 * RENDER_SCALE; // = 108
+
 /** Quality ladder from best → smallest. First level under target wins. */
 const LEVELS: Array<{ scale: number; quality: number }> = [
   { scale: 1.0, quality: 0.82 },
@@ -60,9 +69,9 @@ async function encodeLevel(
   let total = 0;
   for (const b of base) {
     await yieldToUi(); // keep the UI responsive across many pages × levels
-    // Physical size from the 150-DPI base render (constant across levels).
-    const mmW = (b.width / 150) * 25.4;
-    const mmH = (b.height / 150) * 25.4;
+    // Physical size from the base render DPI (constant across levels).
+    const mmW = (b.width / BASE_DPI) * 25.4;
+    const mmH = (b.height / BASE_DPI) * 25.4;
     const w = Math.max(1, Math.round(b.width * scale));
     const h = Math.max(1, Math.round(b.height * scale));
     const c = document.createElement("canvas");
@@ -110,7 +119,7 @@ export async function compressPdfToTarget(
   const budget = targetBytes * 0.92;
 
   onProgress?.("Rendering PDF pages…");
-  const base = await pdfToCanvases(file, { scale: 1.5, maxPages: 30 });
+  const base = await pdfToCanvases(file, { scale: RENDER_SCALE, maxPages: 30 });
   if (base.length === 0) throw new Error("Could not read the PDF.");
 
   let best: { pages: EncodedPage[]; total: number } | null = null;

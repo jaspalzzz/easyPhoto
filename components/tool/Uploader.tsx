@@ -22,7 +22,13 @@ export function Uploader({ onFile, disabled, className }: UploaderProps) {
 
   const pick = (files: FileList | null) => {
     const file = files?.[0];
-    if (file && file.type.startsWith("image/")) onFile(file);
+    if (!file) return;
+    // Accept images, plus HEIC by extension — iPhone/Android HEIC files often
+    // arrive with an empty or non-"image/*" MIME type, so the type check alone
+    // silently drops valid uploads. The pipeline decodes/validates downstream.
+    const ok =
+      file.type.startsWith("image/") || /\.(heic|heif)$/i.test(file.name);
+    if (ok) onFile(file);
   };
 
   return (
@@ -78,7 +84,7 @@ export function Uploader({ onFile, disabled, className }: UploaderProps) {
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept="image/*,.heic,.heif"
         className="hidden"
         onChange={(e) => pick(e.target.files)}
       />

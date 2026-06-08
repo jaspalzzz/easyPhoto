@@ -8,6 +8,7 @@ import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell"
 import { removeBg } from "@/lib/segmentation";
 import { canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
+import { withTimeout } from "@/lib/withTimeout";
 
 function Body({ source }: { source: ToolSource }) {
   const [busy, setBusy] = React.useState(false);
@@ -22,7 +23,10 @@ function Body({ source }: { source: ToolSource }) {
       setBusy(true);
       setError(null);
       try {
-        const cutout = await removeBg(source.file, source.size);
+        const cutout = await withTimeout(
+          removeBg(source.file, source.size),
+          120000
+        );
         if (cancelled) return;
         canvasRef.current = cutout;
         setUrl(cutout.toDataURL("image/png"));

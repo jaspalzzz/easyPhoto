@@ -7,6 +7,7 @@ import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell"
 import { removeBg, compositeFull } from "@/lib/segmentation";
 import { canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
+import { withTimeout } from "@/lib/withTimeout";
 
 const PRESETS = ["#FFFFFF", "#F5F5F5", "#DCDCDC", "#EFEAD9", "#A4C8E1"];
 
@@ -25,7 +26,10 @@ function Body({ source }: { source: ToolSource }) {
       setBusy(true);
       setError(null);
       try {
-        const cutout = await removeBg(source.file, source.size);
+        const cutout = await withTimeout(
+          removeBg(source.file, source.size),
+          120000
+        );
         if (cancelled) return;
         cutoutRef.current = cutout;
       } catch {
