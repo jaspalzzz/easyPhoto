@@ -41,6 +41,13 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         icon: "FileStack",
       },
       {
+        slug: "compliance-checker",
+        title: "Exam Photo & Signature Checker",
+        blurb: "Check if your exam photo or signature will be rejected — size, dimensions & format vs the official spec.",
+        ready: true,
+        icon: "BadgeCheck",
+      },
+      {
         slug: "background-removal",
         title: "Background Remover",
         blurb: "Remove the background from any photo and download a transparent PNG.",

@@ -292,6 +292,14 @@ export const PHOTO_NAME_DATE_FAQ: FaqItem[] = [
   { q: "Is it free and private?", a: "Yes — free, no watermark, and your photo is processed on your device only." },
 ];
 
+export const COMPLIANCE_CHECKER_FAQ: FaqItem[] = [
+  { q: "What does the photo & signature checker do?", a: "Pick your exam, choose photo or signature, and upload your file. It checks the file against that exam's official spec — file size (KB), pixel dimensions, aspect, format and a white-background guide — and tells you whether it will likely be accepted, before you upload to the portal." },
+  { q: "Is the check accurate?", a: "The size, dimensions and format checks are exact — they compare your file to the official spec. The background check is a guide, not a guarantee. Always confirm against the official portal before submitting." },
+  { q: "Does it upload my photo or signature?", a: "No. The file is read and checked entirely in your browser — nothing is uploaded to any server." },
+  { q: "Why does a portal reject my upload?", a: "Usually the file is over the KB limit, the pixel dimensions/aspect are wrong, it isn't a JPG, or the background isn't plain white. The checker flags each of these so you know exactly what to fix." },
+  { q: "How do I fix a failing check?", a: "When something fails, the result links straight to the resizer for your exam, which compresses and resizes your file to the exact required spec." },
+];
+
 /**
  * Per-country passport FAQ — built from the verified spec so every country's
  * set is genuinely different (sizes, background, head height, rules all differ).

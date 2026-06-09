@@ -15,6 +15,7 @@ import {
   ArrowUpDown,
   UserSquare,
   IdCard,
+  BadgeCheck,
   type LucideIcon,
 } from "lucide-react";
 
@@ -34,6 +35,7 @@ const MAP: Record<string, LucideIcon> = {
   ArrowUpDown,
   UserSquare,
   IdCard,
+  BadgeCheck,
 };
 
 export function ToolIcon({ name, className }: { name: string; className?: string }) {
