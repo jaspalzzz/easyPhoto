@@ -15,7 +15,16 @@ function Body({ source }: { source: ToolSource }) {
   const [busy, setBusy] = React.useState(false);
   const [url, setUrl] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  const [retryCount, setRetryCount] = React.useState(0);
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
+
+  // Revoke the object URL when it is replaced or the component unmounts,
+  // mirroring the cleanup pattern in ResizeKbTool.
+  React.useEffect(() => {
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [url]);
 
   // Auto-run on load — background removal is the whole point of this tool.
   React.useEffect(() => {
@@ -30,7 +39,9 @@ function Body({ source }: { source: ToolSource }) {
         );
         if (cancelled) return;
         canvasRef.current = cutout;
-        setUrl(cutout.toDataURL("image/png"));
+        const blob = await canvasToBlob(cutout, "image/png");
+        if (cancelled) return;
+        setUrl(URL.createObjectURL(blob));
       } catch {
         if (!cancelled) setError("Background removal failed. Try another image.");
       } finally {
@@ -40,7 +51,7 @@ function Body({ source }: { source: ToolSource }) {
     return () => {
       cancelled = true;
     };
-  }, [source]);
+  }, [source, retryCount]);
 
   const onDownload = async () => {
     if (!canvasRef.current) return;
@@ -59,9 +70,22 @@ function Body({ source }: { source: ToolSource }) {
 
   if (error)
     return (
-      <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
-        {error}
-      </p>
+      <div className="space-y-2">
+        <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
+          {error}
+        </p>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            setError(null);
+            setBusy(false);
+            setRetryCount((c) => c + 1);
+          }}
+        >
+          Try again
+        </Button>
+      </div>
     );
   if (!url) return null;
 

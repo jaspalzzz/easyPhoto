@@ -13,13 +13,21 @@ import "cropperjs/dist/cropper.css";
 import { track, deviceClass } from "@/lib/analytics";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
 
-// Standard formatting for DOP
-function getTodayDateString() {
+// Returns today as YYYY-MM-DD (value format for type='date' inputs).
+function getTodayIsoString() {
   const today = new Date();
   const y = today.getFullYear();
   const m = String(today.getMonth() + 1).padStart(2, "0");
   const d = String(today.getDate()).padStart(2, "0");
-  return `${d}/${m}/${y}`;
+  return `${y}-${m}-${d}`;
+}
+
+// Convert a YYYY-MM-DD string to DD/MM/YYYY for display on the photo.
+function isoToDmy(iso: string): string {
+  if (!iso) return "";
+  const parts = iso.split("-");
+  if (parts.length !== 3) return iso; // fallback: return as-is
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
 }
 
 interface Preset {
@@ -132,9 +140,10 @@ function drawNameDateStrip(
     }
     ctx.fillText(textLines[0], w / 2, textY);
   } else if (textLines.length === 2) {
-    const lineSpacing = s / 3;
-    const y1 = h + lineSpacing;
-    const y2 = h + lineSpacing * 2;
+    const pad = s * 0.1;
+    const lineH = (s - 2 * pad) / 2;
+    const y1 = h + pad + lineH * 0.5;
+    const y2 = h + pad + lineH * 1.5;
     
     // Line 1
     let currentFontSize1 = fontSize;
@@ -175,11 +184,12 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
 
   const [activePreset, setActivePreset] = React.useState(initialPreset);
   const [name, setName] = React.useState("");
-  const [date, setDate] = React.useState(getTodayDateString());
+  const [date, setDate] = React.useState(getTodayIsoString());
   const [stripHeight, setStripHeight] = React.useState(15);
   const [targetKb, setTargetKb] = React.useState(initialPreset.kb);
   
   const [busy, setBusy] = React.useState(false);
+  const [exportError, setExportError] = React.useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<{
     url: string;
@@ -231,16 +241,20 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     const cropper = cropperRef.current?.cropper;
     if (!cropper || !cropperReady) return;
 
-    // Use low-res crop to keep preview rendering snappy
-    const croppedCanvas = cropper.getCroppedCanvas({
-      width: activePreset.width || 400,
-    });
+    // Use low-res crop to keep preview rendering snappy.
+    // Pass both width and height when known so the preview aspect ratio
+    // matches the final export exactly.
+    const croppedCanvas = cropper.getCroppedCanvas(
+      activePreset.width && activePreset.height
+        ? { width: activePreset.width, height: activePreset.height }
+        : { width: 400 }
+    );
     if (!croppedCanvas) return;
 
     try {
       const annotCanvas = drawNameDateStrip(croppedCanvas, {
         name: dName,
-        date: dDate,
+        date: isoToDmy(dDate),
         stripHeightPercent: dStripHeight,
       });
 
@@ -260,6 +274,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     if (!cropper) return;
 
     setBusy(true);
+    setExportError(null);
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
     try {
       // Get full resolution cropped canvas for high-quality output
@@ -273,7 +288,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
       // Draw Name/Date strip at full resolution
       const annotCanvas = drawNameDateStrip(croppedCanvas, {
         name,
-        date,
+        date: isoToDmy(date),
         stripHeightPercent: stripHeight,
       });
 
@@ -312,6 +327,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     } catch (e) {
       // Analytics reason must be a stable CODE, not a free-form message (no PII).
       console.error(e);
+      setExportError("Export failed. Please try again.");
       track({
         name: "tool_failure",
         tool: "photo-with-name-date",
@@ -432,12 +448,10 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
               Date of Photo (DOP)
             </label>
             <input
-              type="text"
-              placeholder="e.g. 08/06/2026"
+              type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               className="w-full h-10 rounded-md border border-hairline-strong bg-background px-3 text-sm font-mono focus:border-brand"
-              maxLength={20}
             />
             <span className="text-xs text-muted-foreground mt-1 block">
               Usually required to be taken within the last 3 months.
@@ -457,6 +471,10 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
               value={stripHeight}
               onChange={(e) => setStripHeight(Number(e.target.value))}
               className="w-full h-1.5 bg-hairline rounded-lg cursor-pointer accent-brand"
+              aria-label="White Strip Height"
+              aria-valuemin={10}
+              aria-valuemax={25}
+              aria-valuenow={stripHeight}
             />
           </div>
 
@@ -473,6 +491,10 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
               value={targetKb}
               onChange={(e) => setTargetKb(Number(e.target.value))}
               className="w-full h-1.5 bg-hairline rounded-lg cursor-pointer accent-brand"
+              aria-label="Target File Size in KB"
+              aria-valuemin={15}
+              aria-valuemax={500}
+              aria-valuenow={targetKb}
             />
             <span className="text-xs text-muted-foreground mt-1.5 block">
               Compression adjusts quality automatically to fit under the cap.
@@ -480,7 +502,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
           </div>
 
           {/* Actions */}
-          <div className="pt-2">
+          <div className="pt-2 space-y-2">
             <Button variant="cta" onClick={onDownload} className="w-full h-11" disabled={busy || !cropperReady}>
               {busy ? (
                 <Loader2 className="h-4 w-4 animate-spin text-white" strokeWidth={2} />
@@ -491,6 +513,12 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
                 </>
               )}
             </Button>
+            {exportError && (
+              <div className="flex items-center gap-2 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-700">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                <span>{exportError}</span>
+              </div>
+            )}
           </div>
         </div>
 

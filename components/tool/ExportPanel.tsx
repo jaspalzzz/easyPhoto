@@ -31,7 +31,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
   
   // Calculate dynamic capacity based on custom margins and size
   const maxCapacity = maxCopiesPerSheet(photoMm, { paperSize, marginMm, gapMm });
-  const [copies, setCopies] = React.useState(maxCapacity);
+  const [copies, setCopies] = React.useState(() => maxCapacity);
 
   // Keep copies count locked to maximum capacity when layout size changes
   React.useEffect(() => {
@@ -59,6 +59,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
   };
 
   const onSheet = async () => {
+    if (copies < 1) return;
     setBusy("sheet");
     try {
       const blob = await generatePrintSheet({
@@ -115,7 +116,15 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             {print.dpi} dpi · {photoMm.width}×{photoMm.height}mm
           </p>
           <div className="flex flex-wrap gap-2">
-            <Button id="print-jpg-download-btn" size="sm" variant="outline" onClick={onPrintJpg} disabled={busy !== null}>
+            <Button
+              id="print-jpg-download-btn"
+              size="sm"
+              variant="outline"
+              onClick={onPrintJpg}
+              disabled={busy !== null}
+              aria-busy={busy === "print-jpg"}
+              aria-label={busy === "print-jpg" ? "Generating JPG…" : "Download JPG"}
+            >
               {busy === "print-jpg" ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : <Download className="h-4 w-4" strokeWidth={1.75} />} JPG
             </Button>
             <Button
@@ -124,6 +133,8 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               variant="outline"
               onClick={onPrintPng}
               disabled={busy !== null}
+              aria-busy={busy === "print-png"}
+              aria-label={busy === "print-png" ? "Generating PNG…" : "Download PNG"}
             >
               {busy === "print-png" ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : <Download className="h-4 w-4" strokeWidth={1.75} />} PNG
             </Button>
@@ -199,6 +210,8 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               className="w-full flex items-center justify-center gap-1.5"
               onClick={onSheet}
               disabled={busy !== null}
+              aria-busy={busy === "sheet"}
+              aria-label={busy === "sheet" ? "Generating PDF Print Sheet…" : `Download PDF Print Sheet (${copies} copies)`}
             >
               {busy === "sheet" ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" strokeWidth={1.75} />
@@ -221,7 +234,14 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             {digital.result.output.width}×{digital.result.output.height}px ·{" "}
             {digital.dpi} dpi{capKb ? ` · ≤ ${capKb} KB` : ""}
           </p>
-          <Button id="digital-jpg-download-btn" size="sm" onClick={onDigital} disabled={busy !== null}>
+          <Button
+            id="digital-jpg-download-btn"
+            size="sm"
+            onClick={onDigital}
+            disabled={busy !== null}
+            aria-busy={busy === "digital"}
+            aria-label={busy === "digital" ? "Generating JPG for upload…" : "Download JPG for upload"}
+          >
             {busy === "digital" ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : <Download className="h-4 w-4" strokeWidth={1.75} />} JPG for upload
           </Button>
           {digitalInfo && (

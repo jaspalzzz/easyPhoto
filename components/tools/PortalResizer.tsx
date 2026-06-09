@@ -11,6 +11,10 @@ export function PortalResizer({ portalId }: { portalId: string }) {
   const spec = PORTAL_PRESETS[portalId];
   const [activeSubTool, setActiveSubTool] = React.useState<"photo" | "signature">("photo");
 
+  React.useEffect(() => {
+    setActiveSubTool("photo");
+  }, [portalId]);
+
   if (!spec) {
     return (
       <div className="flex items-center gap-2 border-l-2 border-destructive bg-destructive/5 py-3 pl-4 text-sm text-destructive">

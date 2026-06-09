@@ -9,28 +9,79 @@ import { downloadBlob } from "@/lib/download";
 
 function Body({ source }: { source: ToolSource }) {
   const aspect = source.size.width / source.size.height;
+  const [widthStr, setWidthStr] = React.useState(String(source.size.width));
+  const [heightStr, setHeightStr] = React.useState(String(source.size.height));
   const [width, setWidth] = React.useState(source.size.width);
   const [height, setHeight] = React.useState(source.size.height);
   const [lock, setLock] = React.useState(true);
   const [busy, setBusy] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
   const [out, setOut] = React.useState<{ url: string; canvas: HTMLCanvasElement } | null>(
     null
   );
 
-  const onWidth = (w: number) => {
+  // Fix #2: revoke the previous blob URL whenever `out` changes
+  React.useEffect(() => {
+    const url = out?.url;
+    return () => {
+      if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
+    };
+  }, [out?.url]);
+
+  const onWidth = (raw: string) => {
+    setWidthStr(raw);
+    const w = Math.max(1, Number(raw) || 1);
     setWidth(w);
-    if (lock) setHeight(Math.max(1, Math.round(w / aspect)));
+    if (lock) {
+      const h = Math.max(1, Math.round(w / aspect));
+      setHeight(h);
+      setHeightStr(String(h));
+    }
   };
-  const onHeight = (h: number) => {
+  const onHeight = (raw: string) => {
+    setHeightStr(raw);
+    const h = Math.max(1, Number(raw) || 1);
     setHeight(h);
-    if (lock) setWidth(Math.max(1, Math.round(h * aspect)));
+    if (lock) {
+      const w = Math.max(1, Math.round(h * aspect));
+      setWidth(w);
+      setWidthStr(String(w));
+    }
+  };
+  // Fix #3: clamp on blur so the displayed value stays consistent
+  const commitWidth = () => {
+    const clamped = Math.max(1, Number(widthStr) || 1);
+    setWidth(clamped);
+    setWidthStr(String(clamped));
+    if (lock) {
+      const h = Math.max(1, Math.round(clamped / aspect));
+      setHeight(h);
+      setHeightStr(String(h));
+    }
+  };
+  const commitHeight = () => {
+    const clamped = Math.max(1, Number(heightStr) || 1);
+    setHeight(clamped);
+    setHeightStr(String(clamped));
+    if (lock) {
+      const w = Math.max(1, Math.round(clamped * aspect));
+      setWidth(w);
+      setWidthStr(String(w));
+    }
   };
 
   const run = async () => {
+    setError(null);
     setBusy(true);
     try {
       const canvas = await picaResizeTo(source.image, width, height);
-      setOut({ url: canvas.toDataURL("image/png"), canvas });
+      // Fix #2: use a blob URL instead of a data URL to avoid memory accumulation
+      const blob = await canvasToBlob(canvas, "image/png", 1);
+      const url = URL.createObjectURL(blob);
+      setOut({ url, canvas });
+    } catch {
+      // Fix #1: surface the error to the user rather than silently swallowing it
+      setError("Resize failed. Try a different image or dimensions.");
     } finally {
       setBusy(false);
     }
@@ -71,8 +122,9 @@ function Body({ source }: { source: ToolSource }) {
           <input
             type="number"
             min={1}
-            value={width}
-            onChange={(e) => onWidth(Math.max(1, Number(e.target.value) || 0))}
+            value={widthStr}
+            onChange={(e) => onWidth(e.target.value)}
+            onBlur={commitWidth}
             className="h-10 w-28 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
           />
         </label>
@@ -94,8 +146,9 @@ function Body({ source }: { source: ToolSource }) {
           <input
             type="number"
             min={1}
-            value={height}
-            onChange={(e) => onHeight(Math.max(1, Number(e.target.value) || 0))}
+            value={heightStr}
+            onChange={(e) => onHeight(e.target.value)}
+            onBlur={commitHeight}
             className="h-10 w-28 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
           />
         </label>
@@ -103,6 +156,10 @@ function Body({ source }: { source: ToolSource }) {
           {busy ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : "Resize"}
         </Button>
       </div>
+
+      {error && (
+        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+      )}
 
       {out && (
         <div className="flex gap-2">

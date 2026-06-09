@@ -107,13 +107,15 @@ export function ExamPackageTool() {
             : undefined,
       });
       if (photo?.url) URL.revokeObjectURL(photo.url);
+      const photoCompliant =
+        res.underCap && (!spec.photoMinKb || res.bytes >= spec.photoMinKb * 1024);
       setPhoto({
         url: URL.createObjectURL(res.blob),
         blob: res.blob,
         bytes: res.bytes,
         width: res.width,
         height: res.height,
-        compliant: res.underCap,
+        compliant: photoCompliant,
         kind: "photo",
       });
     } catch (e) {
@@ -146,13 +148,15 @@ export function ExamPackageTool() {
       // (e.g. SSC's 20 KB) be met automatically instead of surfacing a size error.
       const res = await pngUnderKb(trimmed, spec.sigLimitKb, 0.05);
       if (signature?.url) URL.revokeObjectURL(signature.url);
+      const sigCompliant =
+        res.underCap && (!spec.sigMinKb || res.bytes >= spec.sigMinKb * 1024);
       setSignature({
         url: URL.createObjectURL(res.blob),
         blob: res.blob,
         bytes: res.bytes,
         width: res.canvas.width,
         height: res.canvas.height,
-        compliant: res.underCap,
+        compliant: sigCompliant,
         kind: "signature",
       });
     } catch (e) {
@@ -187,32 +191,38 @@ export function ExamPackageTool() {
     <Card>
       <CardContent className="space-y-6 p-6">
         {/* Stepper */}
-        <div className="flex items-center gap-2 text-xs font-semibold">
-          {STEPS.map((s, i) => (
-            <React.Fragment key={s.id}>
-              <span
-                className={`flex items-center gap-1.5 ${
-                  i <= stepIndex ? "text-brand" : "text-muted-foreground"
-                }`}
-              >
-                <span
-                  className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
-                    i < stepIndex
-                      ? "bg-brand text-white"
-                      : i === stepIndex
-                        ? "border-2 border-brand text-brand"
-                        : "border border-hairline-strong"
+        <nav aria-label="Progress">
+          <ol role="list" className="flex items-center gap-2 text-xs font-semibold">
+            {STEPS.map((s, i) => (
+              <React.Fragment key={s.id}>
+                <li
+                  aria-current={i === stepIndex ? "step" : undefined}
+                  className={`flex items-center gap-1.5 ${
+                    i <= stepIndex ? "text-brand" : "text-muted-foreground"
                   }`}
                 >
-                  {i < stepIndex ? <Check className="h-3 w-3" /> : i + 1}
-                </span>
-                {s.label}
-              </span>
-              {i < STEPS.length - 1 && (
-                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
-              )}
-            </React.Fragment>
-          ))}
+                  <span
+                    className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
+                      i < stepIndex
+                        ? "bg-brand text-white"
+                        : i === stepIndex
+                          ? "border-2 border-brand text-brand"
+                          : "border border-hairline-strong"
+                    }`}
+                  >
+                    {i < stepIndex ? <Check className="h-3 w-3" /> : i + 1}
+                  </span>
+                  {s.label}
+                </li>
+                {i < STEPS.length - 1 && (
+                  <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
+                )}
+              </React.Fragment>
+            ))}
+          </ol>
+        </nav>
+        <div aria-live="polite" aria-atomic="true" className="sr-only">
+          {STEPS[stepIndex]?.label} step
         </div>
 
         {error && (
@@ -273,6 +283,7 @@ export function ExamPackageTool() {
             onBack={() => setStep("exam")}
             nextLabel={needsSignature ? "Next: signature" : "Finish"}
             targetKb={spec.photoLimitKb}
+            minKb={spec.photoMinKb}
           />
         )}
 
@@ -288,29 +299,42 @@ export function ExamPackageTool() {
             onBack={() => setStep("photo")}
             nextLabel="Finish"
             targetKb={spec.sigLimitKb!}
+            minKb={spec.sigMinKb}
           />
         )}
 
         {/* Step 4: done */}
         {step === "done" && (
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold flex items-center gap-2">
-              <Check className="h-4 w-4 text-brand" /> Your {spec?.name} package is ready
-            </h3>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {photo && <AssetCard asset={photo} onDownload={() => download(photo)} />}
-              {signature && (
-                <AssetCard asset={signature} onDownload={() => download(signature)} />
-              )}
-            </div>
-            <Button variant="outline" size="sm" onClick={reset}>
-              <RotateCcw className="h-4 w-4" /> Start over
-            </Button>
-            <p className="flex items-start gap-2 text-xs text-muted-foreground">
-              <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
-              Everything was processed in your browser — nothing was uploaded.
-            </p>
-          </div>
+          <>
+            {!photo ? (
+              // Guard: no photo available — send back to photo step
+              <div className="space-y-3">
+                <p className="text-sm text-destructive">No photo found. Please upload your photo first.</p>
+                <Button variant="outline" size="sm" onClick={() => setStep("photo")}>
+                  <ChevronLeft className="h-4 w-4" /> Back to photo
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <h3 className="text-sm font-semibold flex items-center gap-2">
+                  <Check className="h-4 w-4 text-brand" /> Your {spec?.name} package is ready
+                </h3>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <AssetCard asset={photo} onDownload={() => download(photo)} />
+                  {signature && (
+                    <AssetCard asset={signature} onDownload={() => download(signature)} />
+                  )}
+                </div>
+                <Button variant="outline" size="sm" onClick={reset}>
+                  <RotateCcw className="h-4 w-4" /> Start over
+                </Button>
+                <p className="flex items-start gap-2 text-xs text-muted-foreground">
+                  <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
+                  Everything was processed in your browser — nothing was uploaded.
+                </p>
+              </div>
+            )}
+          </>
         )}
       </CardContent>
     </Card>
@@ -327,6 +351,7 @@ function StepUpload({
   onBack,
   nextLabel,
   targetKb,
+  minKb,
 }: {
   kind: "photo" | "signature";
   label: string;
@@ -337,10 +362,33 @@ function StepUpload({
   onBack: () => void;
   nextLabel: string;
   targetKb: number;
+  minKb?: number;
 }) {
+  // Single always-mounted input avoids the dual-ref problem (Fix 2)
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  // Determine the non-compliance reason for the amber warning (Fix 1 UI)
+  const overCap = asset && asset.bytes > targetKb * 1024;
+  const belowMin = asset && minKb && asset.bytes < minKb * 1024;
+
   return (
     <div className="space-y-4">
+      {/* Always-mounted hidden input — single ref, no duplication (Fix 2) */}
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*,.heic,.heif"
+        className="hidden"
+        onChange={(e) => {
+          if (busy) return; // Guard concurrent submissions (Fix 2)
+          if (e.target.files?.[0]) {
+            onFile(e.target.files[0]);
+            // Reset value so the same file can be re-selected after a Replace
+            e.target.value = "";
+          }
+        }}
+      />
+
       <button
         type="button"
         onClick={onBack}
@@ -353,14 +401,21 @@ function StepUpload({
         <div
           role="button"
           tabIndex={0}
-          onClick={() => inputRef.current?.click()}
-          onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
+          // Guard dropzone interactivity while busy (Fix 3)
+          onClick={() => { if (busy) return; inputRef.current?.click(); }}
+          onKeyDown={(e) => {
+            if (busy) return; // Fix 3
+            if (e.key === "Enter" || e.key === " ") inputRef.current?.click();
+          }}
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
             e.preventDefault();
+            if (busy) return; // Fix 3
             if (e.dataTransfer.files?.[0]) onFile(e.dataTransfer.files[0]);
           }}
-          className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
+          className={`flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40 ${
+            busy ? "pointer-events-none opacity-60" : ""
+          }`}
         >
           {busy ? (
             <Loader2 className="h-8 w-8 animate-spin text-brand" />
@@ -371,20 +426,14 @@ function StepUpload({
           <p className="text-xs text-muted-foreground">
             We resize and compress it to the {targetKb} KB limit automatically.
           </p>
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/*,.heic,.heif"
-            className="hidden"
-            onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])}
-          />
         </div>
       )}
 
       {asset && (
         <>
           <AssetCard asset={asset} />
-          {!asset.compliant && (
+          {/* Amber warning: over cap (Fix 1 UI) */}
+          {overCap && (
             <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-xs leading-relaxed text-amber-800">
               Still over the {targetKb} KB limit even after automatic resizing.
               Replace it with a tighter, higher-contrast{" "}
@@ -394,25 +443,32 @@ function StepUpload({
               to continue.
             </p>
           )}
+          {/* Amber warning: below minimum (Fix 1 UI) */}
+          {!overCap && belowMin && (
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-xs leading-relaxed text-amber-800">
+              File is below the {minKb} KB minimum required by this portal.
+              Replace it with a higher-quality{" "}
+              {kind === "signature" ? "signature scan" : "photo"} to continue.
+            </p>
+          )}
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={() => inputRef.current?.click()}>
+            {/* Replace button disabled while busy (Fix 2) */}
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={busy}
+              onClick={() => inputRef.current?.click()}
+            >
               Replace
             </Button>
             <Button
               variant="cta"
               size="sm"
               onClick={onNext}
-              disabled={!asset.compliant}
+              disabled={!asset.compliant || busy}
             >
               {nextLabel} <ChevronRight className="h-4 w-4" />
             </Button>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*,.heic,.heif"
-              className="hidden"
-              onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])}
-            />
           </div>
         </>
       )}

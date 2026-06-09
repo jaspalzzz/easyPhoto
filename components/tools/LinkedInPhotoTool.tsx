@@ -77,7 +77,10 @@ function Body({ source }: { source: ToolSource }) {
         const cropped = cropToCanvas(source.image, crop);
         const canvas =
           crop.sw === target ? cropped : await picaResizeTo(cropped, target, target);
-        setOut({ url: canvas.toDataURL("image/png"), canvas });
+        canvas.toBlob((blob) => {
+          if (!blob) return;
+          setOut({ url: URL.createObjectURL(blob), canvas });
+        }, "image/png");
         setNote(warn);
         track({ name: "tool_success", tool: "linkedin-photo", device: deviceClass() });
       } catch {
@@ -103,7 +106,15 @@ function Body({ source }: { source: ToolSource }) {
     if (lastUrl.current === source.url) return;
     lastUrl.current = source.url;
     void run(side);
-  }, [source, run, side]);
+  }, [source, run]);
+
+  // Revoke previous blob URL to free memory whenever out changes.
+  React.useEffect(() => {
+    const url = out?.url;
+    return () => {
+      if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
+    };
+  }, [out?.url]);
 
   const onSize = (s: number) => {
     setSide(s);
@@ -157,6 +168,9 @@ function Body({ source }: { source: ToolSource }) {
           LinkedIn shows your photo inside a circle — keep your face centred.
         </p>
       )}
+      {out && (
+        <p className="text-center text-xs text-ink-soft">{side}×{side}px</p>
+      )}
 
       {note && (
         <p className="flex items-start gap-2 rounded-md border border-brand/10 bg-brand-soft/30 p-3 text-xs leading-relaxed text-ink-soft">
@@ -179,6 +193,7 @@ function Body({ source }: { source: ToolSource }) {
                 key={s}
                 size="sm"
                 variant={side === s ? "cta" : "outline"}
+                aria-pressed={side === s}
                 onClick={() => onSize(s)}
                 disabled={busy}
               >

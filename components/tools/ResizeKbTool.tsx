@@ -22,6 +22,7 @@ interface BodyProps {
 function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
   const [targetKb, setTargetKb] = React.useState(defaultKb);
   const [busy, setBusy] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<{
     url: string;
     bytes: number;
@@ -37,6 +38,11 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
     track({ name: "tool_start", tool: toolName, device: deviceClass() });
   }, [toolName]);
 
+  // Fix 3: re-apply defaultKb when SPA navigation reuses this component instance
+  React.useEffect(() => {
+    setTargetKb(defaultKb);
+  }, [defaultKb]);
+
   // Revoke the result's object URL when it's replaced or the tool unmounts,
   // so compressed-image blobs don't leak across runs / navigation.
   React.useEffect(() => {
@@ -48,6 +54,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
 
   const run = async () => {
     setBusy(true);
+    setError(null);
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
     try {
       const canvas = imageToCanvas(
@@ -91,6 +98,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
         device: deviceClass(),
         reason: "compress-error",
       });
+      setError("Compression failed. Try a smaller target or a different image.");
     } finally {
       setBusy(false);
     }
@@ -108,14 +116,34 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
 
   return (
     <div className="space-y-4">
-      <PreviewFrame>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={result?.url ?? source.url}
-          alt="To resize"
-          className="max-h-[320px] w-auto rounded-md"
-        />
-      </PreviewFrame>
+      <div className={result ? "grid grid-cols-2 gap-3" : undefined}>
+        <div className="space-y-1">
+          {result && (
+            <p className="eyebrow text-center text-xs text-muted-foreground">Before</p>
+          )}
+          <PreviewFrame>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={source.url}
+              alt="Original"
+              className="max-h-[320px] w-auto rounded-md"
+            />
+          </PreviewFrame>
+        </div>
+        {result && (
+          <div className="space-y-1">
+            <p className="eyebrow text-center text-xs text-muted-foreground">After</p>
+            <PreviewFrame>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={result.url}
+                alt="Compressed result"
+                className="max-h-[320px] w-auto rounded-md"
+              />
+            </PreviewFrame>
+          </div>
+        )}
+      </div>
 
       <div className="flex flex-wrap items-end gap-3">
         <label className="text-sm">
@@ -142,9 +170,18 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
         ) : null}
       </div>
 
+      {error && (
+        <p className="border-l-2 border-red-500 bg-red-50/60 py-2 pl-3 pr-2 text-red-900 text-sm">
+          {error}
+        </p>
+      )}
+
       {result && (
         <div className="space-y-2 rounded-md border border-hairline bg-paper p-3 text-sm">
           <p>
+            Original:{" "}
+            <strong className="spec text-ink">{formatKb(source.file.size)}</strong>
+            {" "}·{" "}
             Result:{" "}
             <strong className="spec text-ink">{formatKb(result.bytes)}</strong> ·{" "}
             <span className="font-mono text-[13px]">

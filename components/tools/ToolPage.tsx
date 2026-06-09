@@ -4,7 +4,7 @@ import { relatedTools, getTool, categoryOf } from "@/lib/toolsCatalog";
 import { ToolIcon } from "@/components/site/ToolIcon";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Faq, type FaqItem } from "@/components/site/Faq";
-import { breadcrumbSchema, softwareApplicationSchema } from "@/lib/schema";
+import { breadcrumbSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
 
 /** Shared chrome for a tool page: breadcrumb, heading, body, related links. */
 export function ToolPage({
@@ -15,6 +15,7 @@ export function ToolPage({
   children,
   footnote,
   faqItems,
+  breadcrumbs: breadcrumbsProp,
 }: {
   title: string;
   blurb: string;
@@ -26,22 +27,25 @@ export function ToolPage({
   footnote?: string;
   /** Optional on-page FAQ (also emits FAQPage JSON-LD). */
   faqItems?: FaqItem[];
+  /** Explicit breadcrumb chain override. When provided, replaces the auto-built crumbs. */
+  breadcrumbs?: Crumb[];
 }) {
   const related = slug ? relatedTools(slug) : [];
   const entry = slug ? getTool(slug) : undefined;
   const category = slug ? categoryOf(slug) : undefined;
 
   const urlPath = path || (slug ? `/tools/${slug}/` : undefined);
-  const crumbs = [{ name: "Home", path: "/" }];
+  const autoCrumbs: Crumb[] = [{ name: "Home", path: "/" }];
   if (urlPath) {
     if (urlPath.startsWith("/tools/") && urlPath !== "/tools/") {
-      crumbs.push({ name: "Tools", path: "/tools/" });
+      autoCrumbs.push({ name: "Tools", path: "/tools/" });
       if (category) {
-        crumbs.push({ name: category.group, path: `/tools/${category.slug}/` });
+        autoCrumbs.push({ name: category.group, path: `/tools/${category.slug}/` });
       }
     }
-    crumbs.push({ name: title, path: urlPath });
+    autoCrumbs.push({ name: title, path: urlPath });
   }
+  const crumbs = breadcrumbsProp ?? autoCrumbs;
 
   return (
     <div className="container max-w-3xl py-10">

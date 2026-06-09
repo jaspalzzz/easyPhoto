@@ -48,6 +48,18 @@ export function FormatConverterTool({
     };
   }, []);
 
+  // Fix 2: When targetFormat changes, revoke stale object URLs and reset completed
+  // items back to pending so they are re-converted with the new format.
+  React.useEffect(() => {
+    setItems((prev) =>
+      prev.map((it) => {
+        if (it.status !== "completed") return it;
+        if (it.resultUrl) URL.revokeObjectURL(it.resultUrl);
+        return { ...it, status: "pending", resultBlob: undefined, resultUrl: undefined };
+      })
+    );
+  }, [targetFormat]);
+
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       addFiles(Array.from(e.target.files));
@@ -105,12 +117,15 @@ export function FormatConverterTool({
   };
 
   const convertBatch = async () => {
+    // Fix 3: Guard against double-invocation — if a conversion is already running,
+    // exit early. Also read current item state from itemsRef to avoid stale closure.
+    if (busy) return;
     if (items.length === 0) return;
     setBusy(true);
     setError(null);
 
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
+    for (let i = 0; i < itemsRef.current.length; i++) {
+      const item = itemsRef.current[i];
       if (item.status === "completed") continue;
 
       setItems((prev) =>
@@ -278,7 +293,7 @@ export function FormatConverterTool({
         )}
 
         {items.length > 0 && (
-          <div className="grid gap-6 md:grid-cols-[1fr_280px]">
+          <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
             {/* Left Column: Queue List */}
             <div className="space-y-3">
               <div className="flex items-center justify-between border-b border-hairline pb-2">
@@ -340,9 +355,16 @@ export function FormatConverterTool({
                         </span>
                       )}
                       {item.status === "failed" && (
-                        <span className="text-destructive flex items-center gap-1 text-xs font-medium" title={item.error}>
-                          <AlertCircle className="h-4 w-4" />
-                          Failed
+                        <span className="text-destructive flex flex-col items-end gap-0.5 text-xs font-medium">
+                          <span className="flex items-center gap-1">
+                            <AlertCircle className="h-4 w-4 shrink-0" />
+                            Failed
+                          </span>
+                          {item.error && (
+                            <span className="text-[10px] font-normal text-destructive/80 max-w-[140px] text-right leading-tight">
+                              {item.error}
+                            </span>
+                          )}
                         </span>
                       )}
 
@@ -388,12 +410,13 @@ export function FormatConverterTool({
                 {/* Target Format */}
                 <div className="space-y-2">
                   <span className="text-xs font-medium text-muted-foreground block">Format</span>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2" role="group" aria-label="Output format">
                     {(["image/jpeg", "image/png", "image/webp"] as const).map((fmt) => (
                       <button
                         id={`converter-fmt-btn-${getFormatLabel(fmt).toLowerCase()}`}
                         key={fmt}
                         type="button"
+                        aria-pressed={targetFormat === fmt}
                         onClick={() => setTargetFormat(fmt)}
                         className={`rounded-md border py-2 text-xs font-semibold transition-colors ${
                           targetFormat === fmt
