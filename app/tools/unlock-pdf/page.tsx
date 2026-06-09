@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { UnlockPdfTool } from "@/components/tools/UnlockPdfTool";
@@ -20,6 +21,14 @@ export default function Page() {
       footnote="Your PDF and its password stay on your device and are never uploaded."
     >
       <UnlockPdfTool />
+
+      <p className="mt-4 text-sm text-muted-foreground">
+        Unlocking your e-Aadhaar? See the{" "}
+        <Link href="/unlock-aadhaar-pdf/" className="text-brand hover:underline">
+          step-by-step e-Aadhaar guide
+        </Link>{" "}
+        — it explains the password (first 4 letters of your name + birth year).
+      </p>
     </ToolPage>
   );
 }
