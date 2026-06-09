@@ -439,7 +439,9 @@ function Body({
                 ref={imgRef}
                 src={out.url}
                 alt="Processed signature preview"
-                className={`max-h-[260px] w-auto object-contain select-none bg-white ${
+                className={`max-h-[260px] w-auto object-contain select-none ${
+                  bgFormat === "jpeg" ? "bg-white" : ""
+                } ${
                   eraserEnabled ? "cursor-crosshair border border-dashed border-brand/40" : ""
                 }`}
                 draggable={false}

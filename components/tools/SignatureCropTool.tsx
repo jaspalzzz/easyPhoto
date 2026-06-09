@@ -43,10 +43,26 @@ function Body({ source }: { source: ToolSource }) {
 
   return (
     <div className="space-y-4">
-      <PreviewFrame>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={out?.url ?? source.url} alt="Cropped signature" className="max-h-[280px] w-auto rounded" />
-      </PreviewFrame>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <figure className="space-y-1.5">
+          <PreviewFrame>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={source.url} alt="Original signature" className="max-h-[220px] w-auto rounded" />
+          </PreviewFrame>
+          <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+            Before · {source.size.width}×{source.size.height}px
+          </figcaption>
+        </figure>
+        <figure className="space-y-1.5">
+          <PreviewFrame>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={out?.url ?? source.url} alt="Cropped signature" className="max-h-[220px] w-auto rounded" />
+          </PreviewFrame>
+          <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+            {out ? `After · ${out.w}×${out.h}px` : "After"}
+          </figcaption>
+        </figure>
+      </div>
 
       {empty && (
         <p className="border-l-2 border-amber-500 pl-3 text-sm text-amber-700">

@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   Check,
   ChevronRight,
+  ChevronLeft,
   RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -79,7 +80,16 @@ export function ExamPackageTool() {
   };
 
   const chooseExam = (id: string) => {
+    // Switching to a DIFFERENT exam invalidates already-processed assets — they
+    // were sized/compressed to the previous spec's limits — so clear them.
+    if (id !== examId) {
+      if (photo?.url) URL.revokeObjectURL(photo.url);
+      if (signature?.url) URL.revokeObjectURL(signature.url);
+      setPhoto(null);
+      setSignature(null);
+    }
     setExamId(id);
+    setError(null);
     setStep("photo");
     track({ name: "tool_start", tool: "exam-package", device: deviceClass() });
   };
@@ -131,7 +141,10 @@ export function ExamPackageTool() {
         padding: 8,
       });
       if (!bbox) throw new Error("No signature detected.");
-      const res = await pngUnderKb(trimmed, spec.sigLimitKb);
+      // Auto-reduce to fit the KB cap. A signature is simple line-art, so allow a
+      // much lower scale floor than the default 0.2 — this lets tight limits
+      // (e.g. SSC's 20 KB) be met automatically instead of surfacing a size error.
+      const res = await pngUnderKb(trimmed, spec.sigLimitKb, 0.05);
       if (signature?.url) URL.revokeObjectURL(signature.url);
       setSignature({
         url: URL.createObjectURL(res.blob),
@@ -257,6 +270,7 @@ export function ExamPackageTool() {
             busy={busy}
             onFile={processPhoto}
             onNext={() => setStep(needsSignature ? "signature" : "done")}
+            onBack={() => setStep("exam")}
             nextLabel={needsSignature ? "Next: signature" : "Finish"}
             targetKb={spec.photoLimitKb}
           />
@@ -271,6 +285,7 @@ export function ExamPackageTool() {
             busy={busy}
             onFile={processSignature}
             onNext={finish}
+            onBack={() => setStep("photo")}
             nextLabel="Finish"
             targetKb={spec.sigLimitKb!}
           />
@@ -309,6 +324,7 @@ function StepUpload({
   busy,
   onFile,
   onNext,
+  onBack,
   nextLabel,
   targetKb,
 }: {
@@ -318,12 +334,21 @@ function StepUpload({
   busy: boolean;
   onFile: (f: File) => void;
   onNext: () => void;
+  onBack: () => void;
   nextLabel: string;
   targetKb: number;
 }) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   return (
     <div className="space-y-4">
+      <button
+        type="button"
+        onClick={onBack}
+        className="inline-flex items-center gap-1 text-xs font-medium text-ink-soft transition-colors hover:text-brand"
+      >
+        <ChevronLeft className="h-3.5 w-3.5" /> Back
+      </button>
+
       {!asset && (
         <div
           role="button"
@@ -359,11 +384,26 @@ function StepUpload({
       {asset && (
         <>
           <AssetCard asset={asset} />
+          {!asset.compliant && (
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-xs leading-relaxed text-amber-800">
+              Still over the {targetKb} KB limit even after automatic resizing.
+              Replace it with a tighter, higher-contrast{" "}
+              {kind === "signature"
+                ? "signature scan (dark ink on plain white paper)"
+                : "photo"}{" "}
+              to continue.
+            </p>
+          )}
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={() => inputRef.current?.click()}>
               Replace
             </Button>
-            <Button variant="cta" size="sm" onClick={onNext}>
+            <Button
+              variant="cta"
+              size="sm"
+              onClick={onNext}
+              disabled={!asset.compliant}
+            >
               {nextLabel} <ChevronRight className="h-4 w-4" />
             </Button>
             <input
