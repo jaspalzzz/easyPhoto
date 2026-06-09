@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { PortalResizer } from "@/components/tools/PortalResizer";
 import { portalFaqItems } from "@/lib/faqs";
+import { dedicatedResizerLinks } from "@/lib/examResizers";
 
 export function generateStaticParams() {
   return PORTAL_KEYS.map((portal) => ({ portal }));
@@ -20,11 +22,16 @@ export async function generateMetadata({
   const { portal } = await params;
   const spec = PORTAL_PRESETS[portal];
   if (!spec) return {};
-  
-  const sigText = spec.sigLimitKb ? ` and signature under ${spec.sigLimitKb} KB` : "";
+
+  const hasSignature = spec.sigLimitKb !== undefined;
+  const sigText = hasSignature ? ` and signature under ${spec.sigLimitKb} KB` : "";
   return pageMetadata({
-    title: `Resize Photo & Signature for ${spec.name}`,
-    description: `Free online tool to compress your photo under ${spec.photoLimitKb} KB${sigText} for ${spec.name} application forms. 100% private, no upload.`,
+    // Combined-intent title — distinct from the single-document /{exam}-photo-resizer/
+    // pages so the two don't compete for the same keyword.
+    title: hasSignature
+      ? `Resize ${spec.name} Photo & Signature Together`
+      : `Resize Photo for ${spec.name}`,
+    description: `Free all-in-one tool to compress your photo under ${spec.photoLimitKb} KB${sigText} for ${spec.name} application forms — both documents in one place. 100% private, no upload.`,
     path: `/tools/form-resizer/${portal}/`,
   });
 }
@@ -38,15 +45,57 @@ export default async function Page({
   const spec = PORTAL_PRESETS[portal];
   if (!spec) notFound();
 
+  const hasSignature = spec.sigLimitKb !== undefined;
+  const dedicated = dedicatedResizerLinks(portal);
+
   return (
     <ToolPage
-      title={`Form Resizer for ${spec.name}`}
+      title={
+        hasSignature
+          ? `${spec.name} Photo & Signature Resizer`
+          : `${spec.name} Photo Resizer`
+      }
       slug={`form-resizer/${portal}`}
       path={`/tools/form-resizer/${portal}/`}
-      blurb={`Resize and compress your documents to meet the official requirements for ${spec.name} registration forms.`}
+      blurb={
+        hasSignature
+          ? `Compress your photo and signature to the exact size and KB the ${spec.name} form needs — both documents in one place.`
+          : `Compress your photo to the exact size and KB the ${spec.name} form needs.`
+      }
       faqItems={portalFaqItems(spec)}
     >
       <PortalResizer portalId={portal} />
+
+      <p className="mt-4 text-sm text-muted-foreground">
+        See the full{" "}
+        <Link href={`/exam-requirements/${portal}/`} className="text-brand hover:underline">
+          {spec.name.split(" (")[0]} photo &amp; signature requirements
+        </Link>{" "}
+        — official size, dimensions &amp; source.
+      </p>
+
+      {dedicated.length > 0 && (
+        <section className="mt-8 rounded-lg border border-hairline bg-paper p-5">
+          <h2 className="text-base font-semibold tracking-tight">
+            Need just one document?
+          </h2>
+          <p className="mt-1 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            These dedicated tools focus on a single document, with the exact{" "}
+            {spec.name} specs and a verified-source check.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {dedicated.map((d) => (
+              <Link
+                key={d.path}
+                href={d.path}
+                className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
+              >
+                {d.kind === "photo" ? "Photo resizer" : "Signature resizer"}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </ToolPage>
   );
 }
