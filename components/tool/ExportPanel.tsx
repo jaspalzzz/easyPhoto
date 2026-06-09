@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Download, Printer, Globe, LayoutGrid } from "lucide-react";
+import { Download, Printer, Globe, LayoutGrid, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
 import type { Preset } from "@/store/useToolStore";
@@ -115,8 +115,8 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             {print.dpi} dpi · {photoMm.width}×{photoMm.height}mm
           </p>
           <div className="flex flex-wrap gap-2">
-            <Button id="print-jpg-download-btn" size="sm" onClick={onPrintJpg} disabled={busy !== null}>
-              <Download className="h-4 w-4" /> JPG
+            <Button id="print-jpg-download-btn" size="sm" variant="outline" onClick={onPrintJpg} disabled={busy !== null}>
+              {busy === "print-jpg" ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : <Download className="h-4 w-4" strokeWidth={1.75} />} JPG
             </Button>
             <Button
               id="print-png-download-btn"
@@ -125,14 +125,14 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               onClick={onPrintPng}
               disabled={busy !== null}
             >
-              <Download className="h-4 w-4" /> PNG
+              {busy === "print-png" ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : <Download className="h-4 w-4" strokeWidth={1.75} />} PNG
             </Button>
           </div>
         </div>
 
         {/* Printable sheet customizer settings */}
-        <div className="mt-4 pt-3.5 border-t border-hairline space-y-3">
-          <span className="text-[11px] font-semibold eyebrow uppercase tracking-wider text-brand block">
+        <div className="pt-3.5 pb-4 px-3 border-t border-hairline space-y-3">
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-soft block">
             PDF Print Sheet Layout
           </span>
           <div className="grid grid-cols-2 gap-2.5 text-xs">
@@ -196,12 +196,16 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             <Button
               id="print-sheet-pdf-download-btn"
               size="sm"
-              variant="outline"
-              className="w-full mt-2 flex items-center justify-center gap-1.5"
+              className="w-full flex items-center justify-center gap-1.5"
               onClick={onSheet}
               disabled={busy !== null}
             >
-              <LayoutGrid className="h-3.5 w-3.5" /> Download PDF Print Sheet ({copies} copies)
+              {busy === "sheet" ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" strokeWidth={1.75} />
+              ) : (
+                <LayoutGrid className="h-3.5 w-3.5" strokeWidth={1.75} />
+              )}
+              Download PDF Print Sheet ({copies} copies)
             </Button>
           )}
         </div>
@@ -218,7 +222,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             {digital.dpi} dpi{capKb ? ` · ≤ ${capKb} KB` : ""}
           </p>
           <Button id="digital-jpg-download-btn" size="sm" onClick={onDigital} disabled={busy !== null}>
-            <Download className="h-4 w-4" /> JPG for upload
+            {busy === "digital" ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : <Download className="h-4 w-4" strokeWidth={1.75} />} JPG for upload
           </Button>
           {digitalInfo && (
             <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
