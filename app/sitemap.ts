@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/tools/",
     "/passport-photo/",
     "/baby-passport-photo/",
+    "/unlock-aadhaar-pdf/",
     "/visa-photo/",
     "/signature-resize-to-10kb/",
     "/signature-resize-to-20kb/",
