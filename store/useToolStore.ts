@@ -291,12 +291,37 @@ export const useToolStore = create<ToolState>((set, get) => ({
           }
           if (!cutout) throw lastErr ?? new Error("All segmentation engines failed.");
         } else {
-          cutout = await withTimeout(
-            removeBg(decodable, size),
-            SEGMENTATION_TIMEOUT_MS,
-            "Background removal timed out."
-          );
-          usedEngine = "isnet";
+          // Desktop: isnet (@imgly, onnxruntime WASM) is the proven primary —
+          // unchanged. But a single attempt with no fallback meant any isnet
+          // hiccup (a transient staticimgly.com model-CDN stall, or a flaky
+          // desktop GPU/WASM failure) dropped the user straight to the original
+          // background ("background not removed"). So if isnet fails, fall back
+          // to the RMBG-1.4 runtime before giving up. Crucially, RMBG's model is
+          // hosted on a DIFFERENT CDN (huggingface.co), so a staticimgly.com-only
+          // outage is fully recoverable. This does NOT touch the mobile branch
+          // above (the iOS/Android engine matrix).
+          try {
+            cutout = await withTimeout(
+              removeBg(decodable, size),
+              SEGMENTATION_TIMEOUT_MS,
+              "Background removal timed out."
+            );
+            usedEngine = "isnet";
+          } catch (isnetErr) {
+            console.warn(
+              "Desktop isnet segmentation failed; falling back to RMBG-1.4.",
+              isnetErr
+            );
+            const fallback: SegEngine = (await webgpuSupportsF16())
+              ? { device: "webgpu", dtype: "fp16", inputSize: 1024 }
+              : { device: "wasm", dtype: "fp32", inputSize: 1024 };
+            cutout = await withTimeout(
+              removeBgWebGPU(image, size, fallback),
+              SEGMENTATION_TIMEOUT_MS,
+              "Background removal timed out."
+            );
+            usedEngine = engineToLabel(fallback);
+          }
         }
         const crownY = findCrownY(cutout, measurements.faceXSpan);
         if (crownY != null && crownY < measurements.chinY) {
