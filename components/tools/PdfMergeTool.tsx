@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, FileUp, ShieldCheck, ArrowUp, ArrowDown, Trash2, FileText } from "lucide-react";
+import { Loader2, Download, FileUp, ShieldCheck, ArrowUp, ArrowDown, Trash2, FileText, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { mergePdfs } from "@/lib/pdfMergeSplit";
 import { downloadBlob } from "@/lib/download";
+import { formatKb } from "@/lib/utils";
 
 interface PdfFileItem {
   id: string;
@@ -19,6 +20,8 @@ export function PdfMergeTool() {
   const [busy, setBusy] = React.useState(false);
   const [progress, setProgress] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  const [mergedBlob, setMergedBlob] = React.useState<Blob | null>(null);
+  const [duplicateWarning, setDuplicateWarning] = React.useState<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,13 +37,32 @@ export function PdfMergeTool() {
       return;
     }
     setError(null);
-    const items: PdfFileItem[] = pdfs.map((file) => ({
-      id: Math.random().toString(36).substring(2, 9),
-      file,
-      name: file.name,
-      size: file.size,
-    }));
-    setFiles((prev) => [...prev, ...items]);
+    setDuplicateWarning(null);
+    setFiles((prev) => {
+      let skipped = 0;
+      const toAdd: PdfFileItem[] = [];
+      for (const file of pdfs) {
+        const isDuplicate = prev.some(
+          (item) => item.name === file.name && item.size === file.size
+        );
+        if (isDuplicate) {
+          skipped++;
+        } else {
+          toAdd.push({
+            id: Math.random().toString(36).substring(2, 9),
+            file,
+            name: file.name,
+            size: file.size,
+          });
+        }
+      }
+      if (skipped > 0) {
+        setDuplicateWarning(
+          `${skipped} duplicate${skipped > 1 ? "s" : ""} skipped`
+        );
+      }
+      return [...prev, ...toAdd];
+    });
   };
 
   const moveFile = (index: number, direction: "up" | "down") => {
@@ -65,12 +87,14 @@ export function PdfMergeTool() {
     }
     setBusy(true);
     setError(null);
+    setMergedBlob(null);
     try {
-      const mergedBlob = await mergePdfs(
+      const blob = await mergePdfs(
         files.map((item) => item.file),
         (msg) => setProgress(msg)
       );
-      downloadBlob(mergedBlob, "merged-document.pdf");
+      downloadBlob(blob, "merged-document.pdf");
+      setMergedBlob(blob);
     } catch (err) {
       console.error(err);
       setError("Could not merge the PDFs. Ensure none are encrypted or corrupted.");
@@ -80,13 +104,17 @@ export function PdfMergeTool() {
     }
   };
 
-  const formatSize = (bytes: number) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const dm = 2;
-    const sizes = ["Bytes", "KB", "MB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  const handleReDownload = () => {
+    if (mergedBlob) {
+      downloadBlob(mergedBlob, "merged-document.pdf");
+    }
+  };
+
+  const handleStartOver = () => {
+    setFiles([]);
+    setMergedBlob(null);
+    setError(null);
+    setDuplicateWarning(null);
   };
 
   return (
@@ -95,17 +123,17 @@ export function PdfMergeTool() {
         {/* Upload Zone */}
         <div
           role="button"
-          tabIndex={0}
-          onClick={() => inputRef.current?.click()}
-          onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
-          onDragOver={(e) => e.preventDefault()}
+          tabIndex={busy ? -1 : 0}
+          onClick={() => !busy && inputRef.current?.click()}
+          onKeyDown={(e) => !busy && (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
+          onDragOver={(e) => { if (!busy) e.preventDefault(); }}
           onDrop={(e) => {
             e.preventDefault();
-            if (e.dataTransfer.files) {
+            if (!busy && e.dataTransfer.files) {
               addFiles(Array.from(e.dataTransfer.files));
             }
           }}
-          className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
+          className={`flex flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors${busy ? " pointer-events-none opacity-50 cursor-default" : " cursor-pointer hover:bg-accent/40"}`}
         >
           <FileUp className="h-8 w-8 text-brand" strokeWidth={1.75} />
           <p className="font-semibold tracking-tight">Select PDF files, or drop them here</p>
@@ -130,6 +158,34 @@ export function PdfMergeTool() {
           </p>
         )}
 
+        {/* Duplicate warning */}
+        {duplicateWarning && (
+          <p className="border-l-2 border-amber-400 bg-amber-50 py-2 pl-3 pr-2 text-sm text-amber-700">
+            {duplicateWarning}
+          </p>
+        )}
+
+        {/* Success banner */}
+        {mergedBlob && (
+          <div className="flex flex-col gap-3 rounded-md border border-green-200 bg-green-50 p-4">
+            <div className="flex items-center gap-2 text-green-700">
+              <CheckCircle2 className="h-5 w-5 shrink-0" strokeWidth={1.75} />
+              <span className="font-semibold text-sm">Merge complete!</span>
+            </div>
+            <p className="text-xs text-green-600">
+              Your merged PDF has been downloaded. If the download was blocked, use the button below.
+            </p>
+            <div className="flex gap-2">
+              <Button variant="cta" size="sm" onClick={handleReDownload}>
+                <Download className="h-4 w-4" /> Download again
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleStartOver}>
+                Start over
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* File List */}
         {files.length > 0 && (
           <div className="space-y-3">
@@ -152,7 +208,7 @@ export function PdfMergeTool() {
                     <FileText className="h-5 w-5 text-brand shrink-0" />
                     <div className="min-w-0">
                       <span className="block text-sm font-semibold truncate leading-tight">{item.name}</span>
-                      <span className="text-[10px] text-muted-foreground">{formatSize(item.size)}</span>
+                      <span className="text-[10px] text-muted-foreground">{formatKb(item.size)}</span>
                     </div>
                   </div>
 

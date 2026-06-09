@@ -4,7 +4,7 @@ import * as React from "react";
 import { Loader2, Download, FileUp, ShieldCheck, ChevronLeft, ChevronRight, PenLine, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { pdfToCanvases } from "@/lib/pdfToImages";
+import { pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
 import { downloadBlob } from "@/lib/download";
 import { SignaturePad } from "./SignaturePad";
 import { SignatureOverlay, type Placement } from "./SignatureOverlay";
@@ -18,7 +18,10 @@ interface PlacedSignature {
 
 export function SignPdfTool() {
   const [pdfFile, setPdfFile] = React.useState<File | null>(null);
-  const [preRenderedCanvases, setPreRenderedCanvases] = React.useState<HTMLCanvasElement[]>([]);
+  // Fix #1: hold canvases in a ref (not state) so we can null them on reset/unmount
+  const canvasesRef = React.useRef<HTMLCanvasElement[]>([]);
+  // Derived page count drives re-renders without keeping bitmaps in React state
+  const [pageCount, setPageCount] = React.useState<number>(0);
   const [activePageIndex, setActivePageIndex] = React.useState<number>(0);
   
   // Placed signatures state: map of page index -> array of signatures placed
@@ -37,6 +40,13 @@ export function SignPdfTool() {
   const localCanvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
+  // Fix #1: cleanup canvases on unmount
+  React.useEffect(() => {
+    return () => {
+      canvasesRef.current = [];
+    };
+  }, []);
+
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       loadPdf(e.target.files[0]);
@@ -50,12 +60,33 @@ export function SignPdfTool() {
     }
     setError(null);
     setBusy(true);
-    setPreRenderedCanvases([]);
+    // Fix #1: clear the ref before loading a new file
+    canvasesRef.current = [];
+    setPageCount(0);
     setSignaturesPerPage({});
     setPdfFile(file);
     setActivePageIndex(0);
     setProgress("Loading PDF pages...");
     try {
+      // Fix #3: detect password-protected PDFs before attempting to render
+      const pdfjs = await import("pdfjs-dist");
+      pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+        "pdfjs-dist/build/pdf.worker.min.mjs",
+        import.meta.url
+      ).toString();
+      const data = await file.arrayBuffer();
+      try {
+        const probe = await pdfjs.getDocument({ data }).promise;
+        await probe.destroy();
+      } catch (encErr: any) {
+        if (encErr?.name === "PasswordException") {
+          setError("encrypted");
+          setPdfFile(null);
+          return;
+        }
+        throw encErr;
+      }
+
       const canvases = await pdfToCanvases(file, {
         scale: 1.5, // 150 DPI is highly readable and fits on screen
         maxPages: 50,
@@ -63,10 +94,15 @@ export function SignPdfTool() {
           setProgress(`Rendering page ${current} of ${total}...`);
         },
       });
-      setPreRenderedCanvases(canvases);
-    } catch (err: any) {
+      canvasesRef.current = canvases;
+      setPageCount(canvases.length);
+    } catch (err: unknown) {
       console.error(err);
-      setError(err?.message || "Could not load the PDF. Make sure it is not encrypted.");
+      if (err instanceof PdfEncryptedError) {
+        setError("encrypted");
+      } else {
+        setError((err instanceof Error && err.message) || "Could not load the PDF. Make sure it is not encrypted.");
+      }
       setPdfFile(null);
     } finally {
       setBusy(false);
@@ -77,7 +113,7 @@ export function SignPdfTool() {
   // Draw pre-rendered page onto display canvas when active page changes
   React.useEffect(() => {
     const canvas = localCanvasRef.current;
-    const source = preRenderedCanvases[activePageIndex];
+    const source = canvasesRef.current[activePageIndex];
     if (canvas && source) {
       canvas.width = source.width;
       canvas.height = source.height;
@@ -86,7 +122,7 @@ export function SignPdfTool() {
         ctx.drawImage(source, 0, 0);
       }
     }
-  }, [activePageIndex, preRenderedCanvases]);
+  }, [activePageIndex, pageCount]);
 
   const addSignatureToPage = () => {
     if (!activeSignature) return;
@@ -132,7 +168,7 @@ export function SignPdfTool() {
   };
 
   const runExport = async () => {
-    if (!pdfFile || preRenderedCanvases.length === 0) return;
+    if (!pdfFile || canvasesRef.current.length === 0) return;
     setBusy(true);
     setProgress("Applying signatures to PDF...");
     setError(null);
@@ -167,13 +203,17 @@ export function SignPdfTool() {
 
   const reset = () => {
     setPdfFile(null);
-    setPreRenderedCanvases([]);
+    // Fix #1: explicitly clear the canvas ref so bitmaps can be GC'd
+    canvasesRef.current = [];
+    setPageCount(0);
     setSignaturesPerPage({});
     setActivePageIndex(0);
     setError(null);
   };
 
   const activePageSignatures = signaturesPerPage[activePageIndex] || [];
+  // Fix #2: gate Save PDF on at least one placed signature
+  const totalSignatures = Object.values(signaturesPerPage).reduce((s, a) => s + a.length, 0);
 
   return (
     <Card>
@@ -214,11 +254,16 @@ export function SignPdfTool() {
 
         {error && (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
-            {error}
+            {error === "encrypted" ? (
+              <>
+                This PDF is password-protected. Please unlock it first using the{" "}
+                <a href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</a>.
+              </>
+            ) : error}
           </p>
         )}
 
-        {pdfFile && preRenderedCanvases.length > 0 && (
+        {pdfFile && pageCount > 0 && (
           <div className="grid gap-6 md:grid-cols-[1fr_280px]">
             {/* Left Column: Interactive Page Display */}
             <div className="space-y-4">
@@ -228,7 +273,7 @@ export function SignPdfTool() {
                     {pdfFile.name}
                   </h4>
                   <div className="flex items-center gap-3 mt-0.5 text-xs text-muted-foreground">
-                    <span>Page {activePageIndex + 1} of {preRenderedCanvases.length}</span>
+                    <span>Page {activePageIndex + 1} of {pageCount}</span>
                     <span>·</span>
                     <span>{signaturesPerPage[activePageIndex]?.length || 0} signatures on page</span>
                   </div>
@@ -250,7 +295,7 @@ export function SignPdfTool() {
                     variant="outline"
                     size="icon"
                     className="h-8 w-8"
-                    disabled={activePageIndex === preRenderedCanvases.length - 1}
+                    disabled={activePageIndex === pageCount - 1}
                     onClick={() => setActivePageIndex((i) => i + 1)}
                   >
                     <ChevronRight className="h-4 w-4" />
@@ -289,7 +334,15 @@ export function SignPdfTool() {
                 <Button id="pdf-signer-reset-btn" variant="outline" size="sm" className="flex-1" onClick={reset} disabled={busy}>
                   Reset
                 </Button>
-                <Button id="pdf-signer-save-btn" variant="cta" size="sm" className="flex-1" onClick={runExport} disabled={busy}>
+                <Button
+                  id="pdf-signer-save-btn"
+                  variant="cta"
+                  size="sm"
+                  className="flex-1"
+                  onClick={runExport}
+                  disabled={busy || totalSignatures === 0}
+                  title={totalSignatures === 0 ? "Place at least one signature before saving" : undefined}
+                >
                   <Download className="h-4 w-4" /> Save PDF
                 </Button>
               </div>

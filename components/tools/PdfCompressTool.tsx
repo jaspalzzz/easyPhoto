@@ -5,6 +5,7 @@ import { Loader2, Download, FileUp, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { compressPdfToTarget, type PdfCompressResult } from "@/lib/pdfCompress";
+import { PdfEncryptedError } from "@/lib/pdfToImages";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
@@ -18,6 +19,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
   const [progress, setProgress] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<PdfCompressResult | null>(null);
+  const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -31,6 +33,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
     }
     setError(null);
     setResult(null);
+    setResultBlob(null);
     setFile(f);
   };
 
@@ -39,22 +42,31 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
     setBusy(true);
     setError(null);
     setResult(null);
+    setResultBlob(null);
     track({ name: "tool_start", tool: "pdf-compress", device: deviceClass() });
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
     try {
       const res = await compressPdfToTarget(file, targetKb, setProgress);
       setResult(res);
-      downloadBlob(res.blob, `${file.name.replace(/\.[^/.]+$/, "")}-compressed.pdf`);
+      setResultBlob(res.blob);
+      // Fix 3: only auto-download when the compressed file is actually smaller
+      if (res.bytes < file.size) {
+        downloadBlob(res.blob, `${file.name.replace(/\.[^/.]+$/, "")}-compressed.pdf`);
+        track({ name: "download", tool: "pdf-compress", format: "pdf" });
+      }
       track({
         name: "tool_success",
         tool: "pdf-compress",
         device: deviceClass(),
         ms: typeof performance !== "undefined" ? Math.round(performance.now() - t0) : undefined,
       });
-      track({ name: "download", tool: "pdf-compress", format: "pdf" });
     } catch (e) {
       console.error(e);
-      setError("Could not compress this PDF. Try a different file.");
+      if (e instanceof PdfEncryptedError) {
+        setError("encrypted");
+      } else {
+        setError("Could not compress this PDF. Try a different file.");
+      }
       track({ name: "tool_failure", tool: "pdf-compress", device: deviceClass(), reason: "compress-error" });
     } finally {
       setBusy(false);
@@ -97,14 +109,23 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
         )}
 
         {error && (
-          <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">{error}</p>
+          <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
+            {error === "encrypted" ? (
+              <>
+                This PDF is password-protected. Please unlock it first using the{" "}
+                <a href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</a>.
+              </>
+            ) : error}
+          </p>
         )}
 
         {file && !busy && (
           <div className="space-y-5">
             <div className="flex items-center justify-between border-b border-hairline pb-2.5">
-              <h4 className="font-semibold text-sm truncate max-w-xs" title={file.name}>{file.name}</h4>
-              <Button variant="ghost" size="sm" onClick={() => { setFile(null); setResult(null); }}>Choose another file</Button>
+              <h4 className="font-semibold text-sm truncate max-w-xs" title={file.name}>
+                {file.name} <span className="text-muted-foreground font-normal">· {formatKb(file.size)}</span>
+              </h4>
+              <Button variant="ghost" size="sm" onClick={() => { setFile(null); setResult(null); setResultBlob(null); }}>Choose another file</Button>
             </div>
 
             <div>
@@ -155,6 +176,22 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
                   : `⚠️ Couldn't reach ${targetKb} KB — ${formatKb(result.bytes)} is the smallest achievable. This PDF is likely already optimised or contains high-resolution scans.`}
               </li>
             </ul>
+            {result.bytes >= file.size ? (
+              <p className="mt-2 text-xs text-amber-700 border-l-2 border-amber-400 pl-2">
+                This PDF is already well-optimised — compressing it would not reduce its size. No file was downloaded.
+              </p>
+            ) : (
+              resultBlob && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-2 w-full"
+                  onClick={() => downloadBlob(resultBlob, `${file.name.replace(/\.[^/.]+$/, "")}-compressed.pdf`)}
+                >
+                  <Download className="h-3.5 w-3.5" /> Download compressed PDF
+                </Button>
+              )
+            )}
           </div>
         )}
 

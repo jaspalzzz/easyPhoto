@@ -16,6 +16,8 @@ interface Item {
 export function JpgToPdfTool() {
   const [items, setItems] = React.useState<Item[]>([]);
   const [busy, setBusy] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [addWarning, setAddWarning] = React.useState<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   // Track latest items so the unmount cleanup can revoke every thumbnail URL.
@@ -32,13 +34,20 @@ export function JpgToPdfTool() {
       (f) => f.type.startsWith("image/") || /\.(heic|heif)$/i.test(f.name)
     );
     const next: Item[] = [];
+    const failed: string[] = [];
     for (const f of imgs) {
       try {
         const decodable = await ensureDecodable(f); // iPhone HEIC → JPEG
         next.push({ file: decodable, url: URL.createObjectURL(decodable) });
       } catch {
         // Skip files that can't be decoded rather than failing the whole batch.
+        failed.push(f.name);
       }
+    }
+    if (failed.length) {
+      setAddWarning(
+        `${failed.length} ${failed.length === 1 ? "file" : "files"} could not be added (HEIC decoding failed): ${failed.join(", ")}`
+      );
     }
     if (next.length) setItems((prev) => [...prev, ...next]);
   };
@@ -52,9 +61,12 @@ export function JpgToPdfTool() {
 
   const generate = async () => {
     setBusy(true);
+    setError(null);
     try {
       const blob = await imagesToPdf(items.map((it) => it.file));
       downloadBlob(blob, "images.pdf");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create PDF. Please try again.");
     } finally {
       setBusy(false);
     }
@@ -121,6 +133,32 @@ export function JpgToPdfTool() {
                 </button>
               </div>
             ))}
+          </div>
+        )}
+
+        {addWarning && (
+          <div className="flex items-start justify-between gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            <span>{addWarning}</span>
+            <button
+              onClick={() => setAddWarning(null)}
+              aria-label="Dismiss warning"
+              className="mt-0.5 shrink-0 text-amber-600 hover:text-amber-900"
+            >
+              <X className="h-3.5 w-3.5" strokeWidth={1.75} />
+            </button>
+          </div>
+        )}
+
+        {error && (
+          <div className="flex items-start justify-between gap-2 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800">
+            <span>{error}</span>
+            <button
+              onClick={() => setError(null)}
+              aria-label="Dismiss error"
+              className="mt-0.5 shrink-0 text-red-600 hover:text-red-900"
+            >
+              <X className="h-3.5 w-3.5" strokeWidth={1.75} />
+            </button>
           </div>
         )}
 

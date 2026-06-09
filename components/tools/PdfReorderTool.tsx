@@ -12,16 +12,17 @@ import {
   RotateCcw,
   Trash2,
   RefreshCw,
+  Undo2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { pdfToCanvases } from "@/lib/pdfToImages";
+import { pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
 import { downloadBlob } from "@/lib/download";
 
+// Fix 1: originalCanvas removed — canvases live in canvasesRef, not in state.
 interface PageItem {
   id: string;
   originalIndex: number; // 0-based index of the page in the original PDF
-  originalCanvas: HTMLCanvasElement; // High-res canvas of the original unrotated page
   thumbnailUrl: string; // low-res thumbnail data URL of the page with current rotation applied
   rotation: number; // 0, 90, 180, 270
 }
@@ -66,6 +67,19 @@ export function PdfReorderTool() {
   const [error, setError] = React.useState<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  // Fix 1: canvases stored in a ref — keyed by originalIndex — never in state.
+  const canvasesRef = React.useRef<HTMLCanvasElement[]>([]);
+
+  // Fix 2: soft-delete — set of page ids pending confirmation.
+  const [pendingDelete, setPendingDelete] = React.useState<Set<string>>(new Set());
+
+  // Cleanup canvases on unmount.
+  React.useEffect(() => {
+    return () => {
+      canvasesRef.current = [];
+    };
+  }, []);
+
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       loadPdf(e.target.files[0]);
@@ -80,6 +94,9 @@ export function PdfReorderTool() {
     setError(null);
     setBusy(true);
     setPages([]);
+    // Fix 1: clear canvasesRef on reload.
+    canvasesRef.current = [];
+    setPendingDelete(new Set());
     setSrcFile(file);
     setFileName(file.name);
     setProgress("Loading PDF pages...");
@@ -92,21 +109,27 @@ export function PdfReorderTool() {
         },
       });
 
+      // Fix 1: store canvases in ref, not in state.
+      canvasesRef.current = canvases;
+
       const items: PageItem[] = canvases.map((canvas, index) => {
         const thumbUrl = makeThumbnail(canvas);
         return {
           id: Math.random().toString(36).substring(2, 9),
           originalIndex: index,
-          originalCanvas: canvas,
           thumbnailUrl: thumbUrl,
           rotation: 0,
         };
       });
 
       setPages(items);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err?.message || "Could not load the PDF. Ensure it is not encrypted or corrupted.");
+      if (err instanceof PdfEncryptedError) {
+        setError("encrypted");
+      } else {
+        setError((err instanceof Error && err.message) || "Could not load the PDF. Ensure it is not encrypted or corrupted.");
+      }
       setFileName("");
     } finally {
       setBusy(false);
@@ -121,7 +144,9 @@ export function PdfReorderTool() {
     let newRotation = (item.rotation + change) % 360;
     if (newRotation < 0) newRotation += 360;
 
-    const rotatedCanvas = rotateCanvas(item.originalCanvas, newRotation);
+    // Fix 1: read original canvas from ref by originalIndex.
+    const originalCanvas = canvasesRef.current[item.originalIndex];
+    const rotatedCanvas = rotateCanvas(originalCanvas, newRotation);
     const newThumbUrl = makeThumbnail(rotatedCanvas);
 
     updated[index] = {
@@ -143,8 +168,28 @@ export function PdfReorderTool() {
     setPages(updated);
   };
 
-  const removePage = (index: number) => {
-    setPages((prev) => prev.filter((_, idx) => idx !== index));
+  // Fix 2: two-step soft delete — first click marks pending, second click removes.
+  const removePage = (id: string) => {
+    if (pendingDelete.has(id)) {
+      // Confirmed — actually remove the page.
+      setPages((prev) => prev.filter((p) => p.id !== id));
+      setPendingDelete((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    } else {
+      // First click — mark as pending, asking for confirmation.
+      setPendingDelete((prev) => new Set(prev).add(id));
+    }
+  };
+
+  const cancelDelete = (id: string) => {
+    setPendingDelete((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
   };
 
   const runExport = async () => {
@@ -178,6 +223,9 @@ export function PdfReorderTool() {
 
   const reset = () => {
     setPages([]);
+    // Fix 1: clear canvasesRef on reset.
+    canvasesRef.current = [];
+    setPendingDelete(new Set());
     setSrcFile(null);
     setFileName("");
     setError(null);
@@ -221,7 +269,12 @@ export function PdfReorderTool() {
 
         {error && (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
-            {error}
+            {error === "encrypted" ? (
+              <>
+                This PDF is password-protected. Please unlock it first using the{" "}
+                <a href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</a>.
+              </>
+            ) : error}
           </p>
         )}
 
@@ -238,110 +291,173 @@ export function PdfReorderTool() {
                 <Button id="pdf-reorder-reset-btn" variant="outline" size="sm" onClick={reset} disabled={busy}>
                   Reset
                 </Button>
-                <Button id="pdf-reorder-save-btn" variant="cta" size="sm" onClick={runExport} disabled={busy} className="flex-1 sm:flex-none">
+                {/* Fix 3: disable Save PDF when no pages remain. */}
+                <Button
+                  id="pdf-reorder-save-btn"
+                  variant="cta"
+                  size="sm"
+                  onClick={runExport}
+                  disabled={busy || pages.length === 0}
+                  className="flex-1 sm:flex-none"
+                >
                   <Download className="h-4 w-4" /> Save PDF
                 </Button>
               </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {pages.map((item, index) => (
-                <div
-                  key={item.id}
-                  className="group relative flex flex-col border border-hairline rounded-md bg-paper overflow-hidden hover:shadow-md transition-shadow"
-                >
-                  {/* Thumbnail area */}
-                  <div className="relative flex items-center justify-center p-3 bg-accent/5 aspect-[3/4]">
-                    <img
-                      src={item.thumbnailUrl}
-                      alt={`Page ${index + 1}`}
-                      className="max-h-full max-w-full object-contain shadow-sm border border-hairline/50 rounded"
-                    />
-                    <div className="absolute top-2 left-2 bg-background/90 text-[10px] font-mono px-1.5 py-0.5 rounded border border-hairline font-semibold">
-                      #{index + 1}
-                    </div>
-                    {item.rotation !== 0 && (
-                      <div className="absolute top-2 right-2 bg-brand/90 text-white text-[9px] font-mono px-1.5 py-0.5 rounded font-semibold flex items-center gap-1">
-                        <RefreshCw className="h-2.5 w-2.5 animate-spin-slow" /> {item.rotation}°
+              {pages.map((item, index) => {
+                const isPendingDelete = pendingDelete.has(item.id);
+                return (
+                  <div
+                    key={item.id}
+                    className={`group relative flex flex-col border rounded-md bg-paper overflow-hidden hover:shadow-md transition-shadow ${
+                      isPendingDelete
+                        ? "border-destructive ring-1 ring-destructive/40"
+                        : "border-hairline"
+                    }`}
+                  >
+                    {/* Thumbnail area */}
+                    <div className="relative flex items-center justify-center p-3 bg-accent/5 aspect-[3/4]">
+                      <img
+                        src={item.thumbnailUrl}
+                        alt={`Page ${index + 1}`}
+                        className={`max-h-full max-w-full object-contain shadow-sm border border-hairline/50 rounded transition-opacity ${
+                          isPendingDelete ? "opacity-40" : ""
+                        }`}
+                      />
+                      <div className="absolute top-2 left-2 bg-background/90 text-[10px] font-mono px-1.5 py-0.5 rounded border border-hairline font-semibold">
+                        #{index + 1}
                       </div>
-                    )}
-                  </div>
+                      {item.rotation !== 0 && (
+                        <div className="absolute top-2 right-2 bg-brand/90 text-white text-[9px] font-mono px-1.5 py-0.5 rounded font-semibold flex items-center gap-1">
+                          <RefreshCw className="h-2.5 w-2.5 animate-spin-slow" /> {item.rotation}°
+                        </div>
+                      )}
+                      {/* Fix 2: pending-delete overlay with undo affordance. */}
+                      {isPendingDelete && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-destructive/10 gap-1">
+                          <p className="text-[10px] font-semibold text-destructive text-center px-2">
+                            Delete page {index + 1}?
+                          </p>
+                          <button
+                            type="button"
+                            className="text-[10px] underline text-destructive font-bold"
+                            onClick={() => removePage(item.id)}
+                            aria-label={`Confirm delete page ${index + 1}`}
+                          >
+                            Confirm
+                          </button>
+                        </div>
+                      )}
+                    </div>
 
-                  {/* Actions area */}
-                  <div className="flex flex-col border-t border-hairline p-2 gap-2 bg-background">
-                    <div className="flex items-center justify-between gap-1">
-                      <div className="flex items-center gap-1">
+                    {/* Actions area */}
+                    <div className="flex flex-col border-t border-hairline p-2 gap-2 bg-background">
+                      <div className="flex items-center justify-between gap-1">
+                        <div className="flex items-center gap-1">
+                          {/* Fix 4: aria-label with page number context. */}
+                          <Button
+                            id={`pdf-reorder-ccw-btn-${index}`}
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-ink-soft hover:bg-accent/40"
+                            onClick={() => rotatePage(index, "ccw")}
+                            title="Rotate CCW (90° Left)"
+                            aria-label={`Rotate page ${index + 1} counter-clockwise`}
+                          >
+                            <RotateCcw className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            id={`pdf-reorder-cw-btn-${index}`}
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-ink-soft hover:bg-accent/40"
+                            onClick={() => rotatePage(index, "cw")}
+                            title="Rotate CW (90° Right)"
+                            aria-label={`Rotate page ${index + 1} clockwise`}
+                          >
+                            <RotateCw className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+
+                        {/* Fix 2 + Fix 4: delete button toggles pending; undo cancels it. */}
+                        {isPendingDelete ? (
+                          <Button
+                            id={`pdf-reorder-undo-delete-btn-${index}`}
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-ink-soft hover:bg-accent/40"
+                            onClick={() => cancelDelete(item.id)}
+                            title="Undo Delete"
+                            aria-label={`Undo delete page ${index + 1}`}
+                          >
+                            <Undo2 className="h-3.5 w-3.5" />
+                          </Button>
+                        ) : (
+                          <Button
+                            id={`pdf-reorder-delete-btn-${index}`}
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-destructive hover:bg-destructive/10"
+                            onClick={() => removePage(item.id)}
+                            title="Delete Page"
+                            aria-label={`Delete page ${index + 1}`}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between border-t border-hairline/40 pt-1.5 gap-1">
+                        {/* Fix 4: aria-label with page number context on move buttons. */}
                         <Button
-                          id={`pdf-reorder-ccw-btn-${index}`}
+                          id={`pdf-reorder-left-btn-${index}`}
                           type="button"
                           variant="ghost"
                           size="icon"
-                          className="h-7 w-7 text-ink-soft hover:bg-accent/40"
-                          onClick={() => rotatePage(index, "ccw")}
-                          title="Rotate CCW (90° Left)"
+                          className="h-7 w-7 text-ink-soft hover:bg-accent/40 flex-1"
+                          disabled={index === 0}
+                          onClick={() => movePage(index, "left")}
+                          title="Move Left"
+                          aria-label={`Move page ${index + 1} left`}
                         >
-                          <RotateCcw className="h-3.5 w-3.5" />
+                          <ArrowLeft className="h-3.5 w-3.5" />
                         </Button>
+                        <span className="text-[10px] text-muted-foreground px-1 font-mono select-none font-semibold">
+                          Orig: #{item.originalIndex + 1}
+                        </span>
                         <Button
-                          id={`pdf-reorder-cw-btn-${index}`}
+                          id={`pdf-reorder-right-btn-${index}`}
                           type="button"
                           variant="ghost"
                           size="icon"
-                          className="h-7 w-7 text-ink-soft hover:bg-accent/40"
-                          onClick={() => rotatePage(index, "cw")}
-                          title="Rotate CW (90° Right)"
+                          className="h-7 w-7 text-ink-soft hover:bg-accent/40 flex-1"
+                          disabled={index === pages.length - 1}
+                          onClick={() => movePage(index, "right")}
+                          title="Move Right"
+                          aria-label={`Move page ${index + 1} right`}
                         >
-                          <RotateCw className="h-3.5 w-3.5" />
+                          <ArrowRight className="h-3.5 w-3.5" />
                         </Button>
                       </div>
-
-                      <Button
-                        id={`pdf-reorder-delete-btn-${index}`}
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7 text-destructive hover:bg-destructive/10"
-                        onClick={() => removePage(index)}
-                        title="Delete Page"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-
-                    <div className="flex items-center justify-between border-t border-hairline/40 pt-1.5 gap-1">
-                      <Button
-                        id={`pdf-reorder-left-btn-${index}`}
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7 text-ink-soft hover:bg-accent/40 flex-1"
-                        disabled={index === 0}
-                        onClick={() => movePage(index, "left")}
-                        title="Move Left"
-                      >
-                        <ArrowLeft className="h-3.5 w-3.5" />
-                      </Button>
-                      <span className="text-[10px] text-muted-foreground px-1 font-mono select-none font-semibold">
-                        Orig: #{item.originalIndex + 1}
-                      </span>
-                      <Button
-                        id={`pdf-reorder-right-btn-${index}`}
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="h-7 w-7 text-ink-soft hover:bg-accent/40 flex-1"
-                        disabled={index === pages.length - 1}
-                        onClick={() => movePage(index, "right")}
-                        title="Move Right"
-                      >
-                        <ArrowRight className="h-3.5 w-3.5" />
-                      </Button>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
+        )}
+
+        {/* Fix 3: contextual message when all pages have been removed. */}
+        {pages.length === 0 && !busy && srcFile && (
+          <p className="text-sm text-muted-foreground text-center py-3">
+            All pages have been removed — reset to start over.
+          </p>
         )}
 
         {busy && (

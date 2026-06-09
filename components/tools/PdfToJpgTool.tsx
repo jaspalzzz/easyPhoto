@@ -4,7 +4,7 @@ import * as React from "react";
 import { Loader2, Download, FileUp, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { pdfToCanvases, PdfTooLargeError } from "@/lib/pdfToImages";
+import { pdfToCanvases, PdfTooLargeError, PdfEncryptedError } from "@/lib/pdfToImages";
 import { canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
 
@@ -18,6 +18,7 @@ export function PdfToJpgTool() {
   const [busy, setBusy] = React.useState(false);
   const [progress, setProgress] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  const [sourceFileName, setSourceFileName] = React.useState<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   // Track object URLs so we can revoke them (freeing the underlying Blobs) when a
@@ -35,9 +36,10 @@ export function PdfToJpgTool() {
   );
 
   const onFile = async (file: File | undefined) => {
-    if (!file) return;
+    if (!file || busy) return;
     setBusy(true);
     setError(null);
+    setSourceFileName(file.name);
     replacePages([]);
     try {
       const canvases = await pdfToCanvases(file, {
@@ -54,11 +56,13 @@ export function PdfToJpgTool() {
       );
       replacePages(built);
     } catch (e) {
-      setError(
-        e instanceof PdfTooLargeError
-          ? e.message
-          : "Could not read that PDF. Make sure it's a valid, unencrypted file."
-      );
+      if (e instanceof PdfTooLargeError) {
+        setError(e.message);
+      } else if (e instanceof PdfEncryptedError) {
+        setError("encrypted");
+      } else {
+        setError("Could not read that PDF. Make sure it's a valid, unencrypted file.");
+      }
     } finally {
       setBusy(false);
       setProgress(null);
@@ -77,6 +81,20 @@ export function PdfToJpgTool() {
     }
   };
 
+  const reset = () => {
+    replacePages([]);
+    setSourceFileName(null);
+    setError(null);
+    // Reset the file input so the same file can be re-selected.
+    if (inputRef.current) inputRef.current.value = "";
+  };
+
+  const formatBytes = (bytes: number): string => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  };
+
   return (
     <Card>
       <CardContent className="space-y-5 p-6">
@@ -92,7 +110,7 @@ export function PdfToJpgTool() {
             e.preventDefault();
             onFile(e.dataTransfer.files?.[0]);
           }}
-          className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
+          className={`flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40${busy ? " pointer-events-none opacity-50" : ""}`}
         >
           <FileUp className="h-8 w-8 text-brand" strokeWidth={1.75} />
           <p className="font-semibold tracking-tight">Choose a PDF, or drop it here</p>
@@ -118,19 +136,34 @@ export function PdfToJpgTool() {
 
         {error && (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
-            {error}
+            {error === "encrypted" ? (
+              <>
+                This PDF is password-protected. Please unlock it first using the{" "}
+                <a href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</a>.
+              </>
+            ) : error}
           </p>
         )}
 
         {pages.length > 0 && (
           <>
+            {sourceFileName && (
+              <p className="truncate text-sm text-ink-soft" title={sourceFileName}>
+                {sourceFileName}
+              </p>
+            )}
             <div className="flex items-center justify-between">
               <p className="spec">
                 {pages.length} {pages.length === 1 ? "page" : "pages"}
               </p>
-              <Button variant="cta" size="sm" onClick={downloadAll}>
-                <Download className="h-4 w-4" strokeWidth={1.75} /> Download all
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={reset}>
+                  Convert another PDF
+                </Button>
+                <Button variant="cta" size="sm" onClick={downloadAll}>
+                  <Download className="h-4 w-4" strokeWidth={1.75} /> Download all
+                </Button>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {pages.map((page, i) => (
@@ -139,6 +172,7 @@ export function PdfToJpgTool() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={page.url} alt={`Page ${i + 1}`} className="w-full" />
                   </div>
+                  <p className="text-center text-xs text-ink-soft">{formatBytes(page.blob.size)}</p>
                   <Button
                     size="sm"
                     variant="outline"

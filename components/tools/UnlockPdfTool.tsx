@@ -17,6 +17,7 @@ export function UnlockPdfTool() {
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
   const [done, setDone] = React.useState(false);
+  const [unlockedBlob, setUnlockedBlob] = React.useState<{ blob: Blob; name: string } | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -30,6 +31,7 @@ export function UnlockPdfTool() {
     setPassword("");
     setError(null);
     setDone(false);
+    setUnlockedBlob(null);
   };
 
   const attempt = async (f: File, pwd?: string) => {
@@ -40,7 +42,9 @@ export function UnlockPdfTool() {
       const { blob } = await unlockPdf(f, pwd, (p, t) =>
         setProgress(`Unlocking page ${p} of ${t}…`)
       );
-      downloadBlob(blob, f.name.replace(/\.pdf$/i, "") + "-unlocked.pdf");
+      const unlockedName = f.name.replace(/\.pdf$/i, "") + "-unlocked.pdf";
+      downloadBlob(blob, unlockedName);
+      setUnlockedBlob({ blob, name: unlockedName });
       setNeedsPassword(false);
       setWrong(false);
       setDone(true);
@@ -159,7 +163,18 @@ export function UnlockPdfTool() {
             <p className="flex items-center gap-2 rounded-md border border-green-200 bg-green-50 p-3 text-sm font-medium text-green-800">
               <LockOpen className="h-4 w-4" strokeWidth={1.75} /> Unlocked — your unprotected PDF has downloaded.
             </p>
-            <Button variant="outline" size="sm" onClick={reset}>Unlock another PDF</Button>
+            <div className="flex flex-wrap items-center gap-2">
+              {unlockedBlob && (
+                <Button
+                  variant="cta"
+                  size="sm"
+                  onClick={() => downloadBlob(unlockedBlob.blob, unlockedBlob.name)}
+                >
+                  <Download className="h-4 w-4" strokeWidth={1.75} /> Download again
+                </Button>
+              )}
+              <Button variant="outline" size="sm" onClick={reset}>Unlock another PDF</Button>
+            </div>
           </div>
         )}
 
