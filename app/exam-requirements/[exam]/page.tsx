@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ExternalLink, ShieldCheck, AlertTriangle, ArrowRight } from "lucide-react";
 import { PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
-import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { getPortalSpec, specProvenance, allPortalSpecs } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
+import { dedicatedResizerLinks } from "@/lib/examResizers";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -71,6 +72,8 @@ export default async function Page({
   const sig = sigKb(spec);
   const path = `/exam-requirements/${exam}/`;
   const faqItems = portalFaqItems(spec);
+  const dedicated = dedicatedResizerLinks(exam);
+  const related = allPortalSpecs().filter((s) => s.id !== exam).slice(0, 6);
 
   return (
     <div className="container max-w-3xl space-y-8 py-10">
@@ -163,6 +166,15 @@ export default async function Page({
           <Link href="/tools/exam-package/" className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50">
             Photo + signature kit
           </Link>
+          {dedicated.map((d) => (
+            <Link
+              key={d.path}
+              href={d.path}
+              className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50"
+            >
+              {d.kind === "photo" ? "Photo only" : "Signature only"}
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -181,6 +193,27 @@ export default async function Page({
           Specs can change between notification cycles — always confirm the current limit on the official
           portal before submitting.
         </p>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="eyebrow">Other exam requirements</h2>
+        <div className="flex flex-wrap gap-1.5">
+          {related.map((s) => (
+            <Link
+              key={s.id}
+              href={`/exam-requirements/${s.id}/`}
+              className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground"
+            >
+              {s.name.split(" (")[0]}
+            </Link>
+          ))}
+          <Link
+            href="/exam-requirements/"
+            className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-accent/50"
+          >
+            All exams
+          </Link>
+        </div>
       </section>
 
       <section>
