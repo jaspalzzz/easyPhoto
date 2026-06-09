@@ -11,6 +11,7 @@ import {
   convertPairFaqs,
   relatedConvertPairs,
 } from "@/lib/convertPairs";
+import type { Crumb } from "@/lib/schema";
 
 // Static export: one page per conversion pair (/convert/heic-to-jpg/, …).
 export function generateStaticParams() {
@@ -45,15 +46,25 @@ export default async function Page({
   if (!p) notFound();
   const related = relatedConvertPairs(p.slug);
 
+  const pageTitle = `${p.from} to ${p.to} Converter`;
+  const pagePath = convertPath(p.slug);
+  const breadcrumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Tools", path: "/tools/" },
+    { name: "Image Format Converter", path: "/tools/format-converter/" },
+    { name: pageTitle, path: pagePath },
+  ];
+
   return (
     <ToolPage
-      title={`${p.from} to ${p.to} Converter`}
-      path={convertPath(p.slug)}
+      title={pageTitle}
+      path={pagePath}
       blurb={`Convert ${p.from} images to ${p.to} in your browser — free, batch-ready, and 100% private. ${p.reason}`}
       faqItems={convertPairFaqs(p)}
       footnote={`Your ${p.from} files are converted entirely on your device and never uploaded to a server.`}
+      breadcrumbs={breadcrumbs}
     >
-      <FormatConverterTool defaultTarget={p.target} />
+      <FormatConverterTool key={p.target} defaultTarget={p.target} />
 
       {related.length > 0 && (
         <section className="mt-10">

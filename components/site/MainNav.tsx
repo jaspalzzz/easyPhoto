@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { ToolIcon } from "@/components/site/ToolIcon";
@@ -10,6 +11,7 @@ import { cn } from "@/lib/utils";
 /** Header nav with a Tools mega-menu (every tool one click away, anywhere). */
 export function MainNav() {
   const [open, setOpen] = React.useState(false);
+  const pathname = usePathname();
   const wrapRef = React.useRef<HTMLDivElement>(null);
   const closeTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -50,21 +52,33 @@ export function MainNav() {
     <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
       <Link
         href="/"
-        className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        aria-current={pathname === "/" ? "page" : undefined}
+        className={cn(
+          "rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground",
+          pathname === "/" ? "text-foreground font-medium" : "text-muted-foreground"
+        )}
       >
         Passport
       </Link>
 
       <Link
         href="/tools/exam-package/"
-        className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        aria-current={pathname === "/tools/exam-package/" ? "page" : undefined}
+        className={cn(
+          "rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground",
+          pathname === "/tools/exam-package/" ? "text-foreground font-medium" : "text-muted-foreground"
+        )}
       >
         Exams
       </Link>
 
       <Link
         href="/blog/"
-        className="rounded-md px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        aria-current={pathname === "/blog/" || pathname.startsWith("/blog/") ? "page" : undefined}
+        className={cn(
+          "rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground",
+          pathname === "/blog/" || pathname.startsWith("/blog/") ? "text-foreground font-medium" : "text-muted-foreground"
+        )}
       >
         Blog
       </Link>
@@ -79,7 +93,8 @@ export function MainNav() {
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          aria-haspopup="true"
+          aria-haspopup="menu"
+          aria-controls="tools-mega-menu"
           className={cn(
             "inline-flex items-center gap-1 rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground",
             open ? "text-foreground" : "text-muted-foreground"
@@ -92,7 +107,7 @@ export function MainNav() {
         </button>
 
         {open && (
-          <div className="absolute right-0 z-50 mt-2 flex w-[min(92vw,680px)] flex-col overflow-hidden rounded-lg border border-hairline bg-paper shadow-pop">
+          <div id="tools-mega-menu" role="menu" className="absolute right-0 z-50 mt-2 flex w-[min(92vw,680px)] flex-col overflow-hidden rounded-lg border border-hairline bg-paper shadow-pop">
             {/* Scrollable content — never taller than the viewport */}
             <div className="overflow-y-auto p-4" style={{ maxHeight: "min(calc(100vh - 5.5rem), 420px)" }}>
               <div className="space-y-4">
@@ -117,6 +132,7 @@ export function MainNav() {
                             <Link
                               href={`/tools/${t.slug}/`}
                               onClick={() => setOpen(false)}
+                              role="menuitem"
                               className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-foreground transition-colors hover:bg-accent/60"
                             >
                               <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border border-hairline bg-card text-ink-soft">

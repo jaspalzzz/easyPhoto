@@ -48,12 +48,14 @@ export function HeroStarter({
           path: `/${m.slug}/`,
         }));
 
-  const [sel, setSel] = React.useState(opts[0].path);
+  const [sel, setSel] = React.useState(opts[0]?.path ?? "");
 
   const start = (file: File) => {
     setPendingFile(file);
     router.push(sel);
   };
+
+  if (opts.length === 0) return null;
 
   return (
     <div className="panel overflow-hidden">

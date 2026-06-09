@@ -30,7 +30,7 @@ export function Footer() {
         </div>
 
         {/* Four link groups divide evenly: 2×2 on phones, 1×4 on wider screens. */}
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
           <div className="space-y-3">
             <h3 className="eyebrow">Passport &amp; visa</h3>
             <ul className="space-y-2 text-sm">
@@ -92,7 +92,7 @@ export function Footer() {
       <div className="border-t border-hairline">
         <div className="container flex flex-col gap-3 py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {2026} easyPhoto. Processed in your browser, never uploaded.
+            © {new Date().getFullYear()} easyPhoto. Processed in your browser, never uploaded.
             Always verify against official requirements before submitting.
           </p>
           <nav className="flex flex-wrap items-center gap-4">

@@ -9,7 +9,7 @@ const spec = getPortalSpec("upsc")!;
 const prov = specProvenance(spec);
 
 export const metadata = pageMetadata({
-  title: "UPSC Signature Resizer — Compress Signature to 20–300 KB",
+  title: `UPSC Signature Resizer — Compress Signature to ${spec.sigMinKb}–${spec.sigLimitKb} KB`,
   description: `Crop and compress your signature scan to under ${spec.sigLimitKb} KB (${spec.sigMinKb}–${spec.sigLimitKb} KB) and exact specs (${spec.sigWidthPx}x${spec.sigHeightPx}px) for the UPSC application form. 100% private.`,
   path: "/upsc-signature-resizer/",
 });

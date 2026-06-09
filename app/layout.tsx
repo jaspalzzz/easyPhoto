@@ -104,6 +104,12 @@ export default function RootLayout({
       className={`${display.variable} ${sans.variable} ${mono.variable}`}
     >
       <body className="flex min-h-screen flex-col antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-2 focus:bg-paper focus:text-brand"
+        >
+          Skip to main content
+        </a>
         {/* Site-wide structured data: brand + website */}
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
         {/* Solid paper header on a hairline — no glass/blur. */}
@@ -124,7 +130,7 @@ export default function RootLayout({
           </div>
         </header>
 
-        <main className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1">{children}</main>
 
         <Footer />
         <AnalyticsBeacon />

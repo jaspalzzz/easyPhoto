@@ -133,14 +133,14 @@ export default function ToolsHubPage() {
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">UPSC Signature Resizer</span>
-            <span className="text-muted-foreground leading-normal">Compress to under 300 KB</span>
+            <span className="text-muted-foreground leading-normal">Compress to under 100 KB</span>
           </Link>
           <Link
             href="/railway-photo-resizer/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">Railway Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">RRB photo under 70 KB</span>
+            <span className="text-muted-foreground leading-normal">RRB photo under 100 KB</span>
           </Link>
           <Link
             href="/ibps-photo-resizer/"

@@ -34,7 +34,7 @@ export function TrustStrip() {
       {SIGNALS.map((s) => (
         <div
           key={s.title}
-          className="border-hairline p-6 [&:not(:last-child)]:border-b lg:[&:not(:last-child)]:border-b-0 lg:[&:not(:last-child)]:border-r"
+          className="border-hairline p-6 [&:not(:last-child)]:border-b sm:[&:nth-last-child(-n+2)]:border-b-0 lg:[&:not(:last-child)]:border-b-0 lg:[&:not(:last-child)]:border-r"
         >
           <s.icon className="h-5 w-5 text-brand" strokeWidth={1.75} />
           <h3 className="mt-4 text-[15px] font-semibold tracking-tight">

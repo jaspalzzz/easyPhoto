@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { ToolIcon } from "@/components/site/ToolIcon";
@@ -13,24 +14,66 @@ const PRIMARY_LINKS: { href: string; label: string }[] = [
   { href: "/blog/", label: "Blog" },
 ];
 
-/**
- * Mobile navigation drawer.
- * ------------------------
- * The desktop header is a hover/click mega-menu that overflows off-screen on
- * phones — leaving the entire tool library unreachable except via the footer.
- * This hamburger → slide-in drawer exposes every tool (grouped) plus the
- * primary links, so all 20 tools are one tap away on mobile. Shown only below
- * the `md` breakpoint; the inline MainNav handles wider screens.
- */
+/** Selectors for all naturally focusable elements (used by focus trap). */
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
+  const pathname = usePathname();
+
+  /** Ref for the hamburger trigger so focus can return to it on close. */
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  /** Ref for the close button inside the panel — receives focus on open. */
+  const closeButtonRef = React.useRef<HTMLButtonElement>(null);
+  /** Ref for the panel div used to scope the focus trap. */
+  const panelRef = React.useRef<HTMLDivElement>(null);
 
   // Lock body scroll + close on Escape while the drawer is open.
+  // Also moves initial focus into the panel and returns it on close.
   React.useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
+    // Move focus into the drawer.
+    closeButtonRef.current?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+
+      // Focus trap: keep Tab/Shift+Tab inside the panel.
+      if (e.key === "Tab" && panelRef.current) {
+        const focusable = Array.from(
+          panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE)
+        ).filter((el) => el.offsetParent !== null); // exclude hidden elements
+
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    };
+
     document.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prevOverflow;
@@ -38,11 +81,16 @@ export function MobileNav() {
     };
   }, [open]);
 
-  const close = () => setOpen(false);
+  const close = () => {
+    setOpen(false);
+    // Return focus to the hamburger button that opened the drawer.
+    triggerRef.current?.focus();
+  };
 
   return (
     <div className="md:hidden">
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Open menu"
@@ -65,10 +113,11 @@ export function MobileNav() {
           />
 
           {/* Panel */}
-          <div className="absolute right-0 top-0 flex h-full w-[min(86vw,360px)] flex-col bg-paper shadow-pop">
+          <div ref={panelRef} className="absolute right-0 top-0 flex h-full w-[min(86vw,360px)] flex-col bg-paper shadow-pop">
             <div className="flex h-14 shrink-0 items-center justify-between border-b border-hairline px-4">
               <span className="text-sm font-semibold tracking-tight">Menu</span>
               <button
+                ref={closeButtonRef}
                 type="button"
                 onClick={close}
                 aria-label="Close menu"
@@ -80,17 +129,28 @@ export function MobileNav() {
 
             <nav className="flex-1 overflow-y-auto px-4 py-4">
               <ul className="space-y-0.5">
-                {PRIMARY_LINKS.map((l) => (
-                  <li key={l.href}>
-                    <Link
-                      href={l.href}
-                      onClick={close}
-                      className="block rounded-md px-2 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
+                {PRIMARY_LINKS.map((l) => {
+                  const isActive =
+                    l.href === "/"
+                      ? pathname === "/"
+                      : pathname === l.href || pathname.startsWith(l.href);
+                  return (
+                    <li key={l.href}>
+                      <Link
+                        href={l.href}
+                        onClick={close}
+                        aria-current={isActive ? "page" : undefined}
+                        className={`block rounded-md px-2 py-2.5 text-base font-medium transition-colors hover:bg-accent ${
+                          isActive
+                            ? "bg-accent text-brand font-semibold"
+                            : "text-foreground"
+                        }`}
+                      >
+                        {l.label}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
 
               <Link

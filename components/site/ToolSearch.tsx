@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, ArrowRight, ExternalLink } from "lucide-react";
+import { Search, ArrowRight } from "lucide-react";
 import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { MAKER_PAGES } from "@/lib/makerPages";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
@@ -20,6 +20,7 @@ export function ToolSearch() {
   const router = useRouter();
   const [query, setQuery] = React.useState("");
   const [results, setResults] = React.useState<SearchItem[]>([]);
+  const [totalMatches, setTotalMatches] = React.useState(0);
   const [isOpen, setIsOpen] = React.useState(false);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
@@ -59,7 +60,7 @@ export function ToolSearch() {
         title: `${spec.name} Form Resizer`,
         category: "Government Portals",
         path: `/tools/form-resizer/${key}/`,
-        keywords: [spec.name.toLowerCase(), "ssc", "upsc", "ds160", "form", "portal", "resizer", key],
+        keywords: [spec.name.toLowerCase(), key, "form", "portal", "resizer"],
       });
     });
 
@@ -89,6 +90,7 @@ export function ToolSearch() {
   React.useEffect(() => {
     if (!query.trim()) {
       setResults([]);
+      setTotalMatches(0);
       return;
     }
     const q = query.toLowerCase();
@@ -97,8 +99,22 @@ export function ToolSearch() {
       item.keywords.some((kw) => kw.includes(q)) ||
       item.category.toLowerCase().includes(q)
     );
+    setTotalMatches(filtered.length);
     setResults(filtered.slice(0, 5)); // Limit to 5 results
   }, [query, searchIndex]);
+
+  // Keyboard navigation handler
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Escape") {
+      setIsOpen(false);
+      setQuery("");
+    } else if (e.key === "ArrowDown" && isOpen && results.length > 0) {
+      e.preventDefault();
+      const listbox = document.getElementById("tool-search-listbox");
+      const first = listbox?.querySelector<HTMLAnchorElement>("a");
+      first?.focus();
+    }
+  }
 
   // Click outside to close dropdown
   React.useEffect(() => {
@@ -117,12 +133,17 @@ export function ToolSearch() {
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft opacity-60" strokeWidth={2} />
         <input
           type="text"
+          role="combobox"
+          aria-expanded={isOpen && results.length > 0}
+          aria-haspopup="listbox"
+          aria-controls="tool-search-listbox"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
+          onKeyDown={handleKeyDown}
           placeholder="Search tools: '20kb', 'signature', 'SSC'..."
           className="h-11 w-full rounded-full border border-hairline-strong bg-paper pl-10 pr-4 text-sm font-medium placeholder:text-muted-foreground focus:border-brand focus:ring-2 focus:ring-brand-soft/20 focus:outline-none shadow-sm transition-all"
         />
@@ -130,9 +151,9 @@ export function ToolSearch() {
 
       {isOpen && results.length > 0 && (
         <div className="absolute left-0 right-0 z-50 mt-2 rounded-lg border border-hairline bg-paper p-1.5 shadow-pop overflow-hidden">
-          <ul className="divide-y divide-hairline">
-            {results.map((item, i) => (
-              <li key={i}>
+          <ul role="listbox" id="tool-search-listbox" className="divide-y divide-hairline">
+            {results.map((item) => (
+              <li key={item.path} role="option" aria-selected={false}>
                 <Link
                   href={item.path}
                   onClick={() => {
@@ -150,6 +171,11 @@ export function ToolSearch() {
               </li>
             ))}
           </ul>
+          {totalMatches > 5 && (
+            <p className="px-3 py-1.5 text-[11px] text-muted-foreground text-center border-t border-hairline mt-1">
+              Showing 5 of {totalMatches} results — refine your search
+            </p>
+          )}
         </div>
       )}
     </div>

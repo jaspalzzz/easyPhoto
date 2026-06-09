@@ -86,8 +86,20 @@ export function ScanProgress({
         {hint && <p className="spec normal-case tracking-[0.04em]">{hint}</p>}
       </div>
 
+      {/* Visually-hidden live region: announces the active step name on every change,
+          even when the top-level label prop stays constant between steps. */}
+      {steps && steps.length > 0 && activeKey && (
+        <span
+          aria-live="polite"
+          aria-atomic="true"
+          className="sr-only"
+        >
+          {steps.find((s) => s.key === activeKey)?.label ?? ""}
+        </span>
+      )}
+
       {steps && steps.length > 0 && (
-        <ol className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2" aria-hidden>
+        <ol className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2">
           {steps.map((s, i) => {
             const done = activeIdx > i;
             const active = activeIdx === i;
