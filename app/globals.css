@@ -136,17 +136,78 @@
   }
 }
 
-/* Document-scanner progress — a brand scan-line sweeping over the photo, with a
-   pulsing stage dot. Evokes a passport/biometric scan; reads as "working", not
-   "stuck". Motion is disabled for users who prefer reduced motion. */
-@keyframes ep-scan {
-  0% { top: 0; opacity: 0; }
-  12% { opacity: 1; }
-  88% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+/* Document-scanner progress — a brand scan-line that sweeps over the photo with
+   a soft glow halo and twinkling "glitter", plus a pulsing stage dot. Evokes a
+   biometric scan; reads as "working", not "stuck".
+   PERF: every moving part animates ONLY transform/opacity, so the whole effect
+   runs on the COMPOSITOR thread and stays smooth even while the ML model
+   saturates the main thread. (The previous version animated `top`, forcing a
+   main-thread layout every frame — that's exactly what janked in Safari during
+   segmentation.) Motion is disabled for users who prefer reduced motion. */
+@keyframes ep-sweep {
+  0%   { transform: translate3d(0, -12%, 0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translate3d(0, 100%, 0); opacity: 0; }
 }
-.ep-scanline {
-  animation: ep-scan 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+/* A full-height layer: translating it by 100% of its OWN height carries the band
+   from the top edge to the bottom edge of the frame — pure transform, no layout. */
+.ep-scan-sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  animation: ep-sweep 2.1s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+/* The crisp line, with a layered box-shadow bloom (the soft "blur" around it). */
+.ep-scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: hsl(var(--brand));
+  box-shadow:
+    0 0 6px 1px hsl(var(--brand) / 0.75),
+    0 0 16px 4px hsl(var(--brand) / 0.45),
+    0 0 30px 8px hsl(var(--brand) / 0.22);
+}
+/* A wider gradient halo above/below the line for a soft, blurred bloom that
+   reads as the scanner's "depth of field" (gradient, not filter → cheap). */
+.ep-scan-glow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -26px;
+  height: 54px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    hsl(var(--brand) / 0.14) 42%,
+    hsl(var(--brand) / 0.30) 50%,
+    hsl(var(--brand) / 0.14) 58%,
+    transparent 100%
+  );
+}
+/* Magical glitter — tiny sparkles riding the line, twinkling in and out. The
+   45° rotation on a near-square turns each into a little diamond/spark. */
+@keyframes ep-twinkle {
+  0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50%      { transform: scale(1) rotate(45deg); opacity: 1; }
+}
+.ep-spark {
+  position: absolute;
+  top: -1px;
+  border-radius: 1px;
+  background: hsl(40 33% 99%);
+  box-shadow: 0 0 6px 1px hsl(var(--brand) / 0.9);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: ep-twinkle 1.25s ease-in-out infinite;
 }
 @keyframes ep-pulse {
   0%, 100% { transform: scale(1); opacity: 1; }
@@ -156,9 +217,15 @@
   animation: ep-pulse 1.2s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  .ep-scanline,
+  .ep-scan-sweep,
+  .ep-spark,
   .ep-pulse {
     animation: none;
+  }
+  /* Park the band mid-frame, faint, so the still state still reads as a scanner. */
+  .ep-scan-sweep {
+    transform: translate3d(0, 50%, 0);
+    opacity: 0.5;
   }
 }
 

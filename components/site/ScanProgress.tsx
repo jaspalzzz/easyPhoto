@@ -1,6 +1,18 @@
 import * as React from "react";
 import { CropMarks } from "@/components/site/CropMarks";
 
+/** Glitter riding the scan-line: varied positions/sizes/delays so it twinkles
+ *  organically rather than in lockstep. Purely decorative. */
+const SPARKS = [
+  { left: "9%", size: 5, delay: "0s" },
+  { left: "23%", size: 3, delay: "0.55s" },
+  { left: "38%", size: 6, delay: "0.2s" },
+  { left: "52%", size: 4, delay: "0.8s" },
+  { left: "66%", size: 5, delay: "0.35s" },
+  { left: "80%", size: 3, delay: "0.65s" },
+  { left: "93%", size: 5, delay: "0.15s" },
+] as const;
+
 export interface ScanStep {
   /** Matches the tool's status key. */
   key: string;
@@ -46,12 +58,24 @@ export function ScanProgress({
         )}
         {/* faint dim so the scan-line reads on bright photos */}
         <span aria-hidden className="pointer-events-none absolute inset-0 bg-ink/[0.06]" />
-        {/* the sweeping scan-line */}
-        <span
-          aria-hidden
-          className="ep-scanline pointer-events-none absolute inset-x-0 h-[2px] bg-brand"
-          style={{ boxShadow: "0 0 14px 2px hsl(var(--brand) / 0.55)" }}
-        />
+        {/* the sweeping scan band: glow halo + crisp line + twinkling glitter.
+            One compositor layer (transform/opacity only) → smooth under load. */}
+        <span aria-hidden className="ep-scan-sweep">
+          <span className="ep-scan-glow" />
+          <span className="ep-scan-line" />
+          {SPARKS.map((s, i) => (
+            <span
+              key={i}
+              className="ep-spark"
+              style={{
+                left: s.left,
+                width: s.size,
+                height: s.size,
+                animationDelay: s.delay,
+              }}
+            />
+          ))}
+        </span>
         <CropMarks size={16} inset={8} />
       </div>
 
