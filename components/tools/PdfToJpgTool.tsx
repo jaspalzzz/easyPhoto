@@ -10,7 +10,7 @@ import { downloadBlob } from "@/lib/download";
 
 interface Page {
   url: string;
-  canvas: HTMLCanvasElement;
+  blob: Blob;
 }
 
 export function PdfToJpgTool() {
@@ -20,19 +20,39 @@ export function PdfToJpgTool() {
   const [error, setError] = React.useState<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  // Track object URLs so we can revoke them (freeing the underlying Blobs) when a
+  // new PDF is loaded or the component unmounts — otherwise memory leaks across
+  // conversions, which adds up fast on low-end mobile.
+  const pagesRef = React.useRef<Page[]>([]);
+  const replacePages = React.useCallback((next: Page[]) => {
+    pagesRef.current.forEach((p) => URL.revokeObjectURL(p.url));
+    pagesRef.current = next;
+    setPages(next);
+  }, []);
+  React.useEffect(
+    () => () => pagesRef.current.forEach((p) => URL.revokeObjectURL(p.url)),
+    []
+  );
+
   const onFile = async (file: File | undefined) => {
     if (!file) return;
     setBusy(true);
     setError(null);
-    setPages([]);
+    replacePages([]);
     try {
       const canvases = await pdfToCanvases(file, {
         scale: 2,
         onProgress: (p, t) => setProgress(`Rendering page ${p} of ${t}…`),
       });
-      setPages(
-        canvases.map((canvas) => ({ canvas, url: canvas.toDataURL("image/jpeg", 0.92) }))
+      // Encode each page to a JPEG Blob + object URL, then drop the canvases
+      // (the heavy part) — only the compressed blobs are retained.
+      const built = await Promise.all(
+        canvases.map(async (canvas) => {
+          const blob = await canvasToBlob(canvas, "image/jpeg", 0.92);
+          return { blob, url: URL.createObjectURL(blob) };
+        })
       );
+      replacePages(built);
     } catch (e) {
       setError(
         e instanceof PdfTooLargeError
@@ -45,14 +65,13 @@ export function PdfToJpgTool() {
     }
   };
 
-  const downloadOne = async (page: Page, i: number) => {
-    const blob = await canvasToBlob(page.canvas, "image/jpeg", 0.92);
-    downloadBlob(blob, `page-${i + 1}.jpg`);
+  const downloadOne = (page: Page, i: number) => {
+    downloadBlob(page.blob, `page-${i + 1}.jpg`);
   };
 
   const downloadAll = async () => {
     for (let i = 0; i < pages.length; i++) {
-      await downloadOne(pages[i], i);
+      downloadOne(pages[i], i);
       // Small gap so browsers don't drop rapid sequential downloads.
       await new Promise((r) => setTimeout(r, 250));
     }
