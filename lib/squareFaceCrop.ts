@@ -52,6 +52,9 @@ export function computeSquareFaceCrop(
   source: { width: number; height: number },
   opts: SquareCropOpts
 ): SquareCropResult {
+  if (source.width <= 0 || source.height <= 0)
+    throw new Error("Source image has zero dimensions.");
+
   const side = opts.side;
   const headRatio = opts.headRatio ?? 0.62;
   const eyeFromTop = opts.eyeFromTop ?? 0.42;
@@ -112,6 +115,9 @@ export function centerSquareCrop(source: {
   width: number;
   height: number;
 }): SquareCropRect {
+  if (source.width <= 0 || source.height <= 0)
+    throw new Error("Source image has zero dimensions.");
+
   const s = Math.min(source.width, source.height);
   return {
     sx: Math.round((source.width - s) / 2),

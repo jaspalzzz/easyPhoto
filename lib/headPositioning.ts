@@ -73,6 +73,7 @@ export const targetHeadMm = (spec: CountrySpec): number =>
 export function recommendedDigitalDpi(spec: CountrySpec, baseDpi = 300): number {
   const min = spec.digital?.pxMin;
   if (!min) return baseDpi;
+  if (!spec.printMm.width || !spec.printMm.height) return baseDpi;
   const needW = (min.width * 25.4) / spec.printMm.width;
   const needH = (min.height * 25.4) / spec.printMm.height;
   return Math.ceil(Math.max(baseDpi, needW, needH));
@@ -105,6 +106,14 @@ export function computeCrop(
     throw new Error("crownY must sit above chinY (a smaller Y value).");
 
   const tgtHeadPx = mmToPx(targetHeadMm(spec), dpi);
+  if (tgtHeadPx <= 0)
+    throw new Error(
+      "Spec head height resolves to 0 px — check headHeightMm values."
+    );
+  if (outH <= 0)
+    throw new Error(
+      "Spec print height resolves to 0 px — check spec.printMm.height."
+    );
 
   // Source-space crop height so the head fills the right fraction of OUTPUT.
   const cropH = (srcHeadPx * outH) / tgtHeadPx;

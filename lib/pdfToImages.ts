@@ -27,6 +27,16 @@ export class PdfTooLargeError extends Error {
   }
 }
 
+/** Thrown when a PDF is password-protected and cannot be read without a password. */
+export class PdfEncryptedError extends Error {
+  constructor() {
+    super(
+      "This PDF is password-protected. Use the Unlock PDF tool first."
+    );
+    this.name = "PdfEncryptedError";
+  }
+}
+
 export async function pdfToCanvases(
   file: File,
   opts: PdfRenderOptions = {}
@@ -42,7 +52,18 @@ export async function pdfToCanvases(
   ).toString();
 
   const data = await file.arrayBuffer();
-  const pdf = await pdfjs.getDocument({ data }).promise;
+  let pdf: Awaited<ReturnType<typeof pdfjs.getDocument>["promise"]>;
+  try {
+    pdf = await pdfjs.getDocument({ data }).promise;
+  } catch (err: unknown) {
+    // pdfjs throws a PasswordException (name === "PasswordException") for
+    // password-protected PDFs. It is not exported from pdfjs-dist's public
+    // entry, so we detect it by the error name.
+    if (err instanceof Error && err.name === "PasswordException") {
+      throw new PdfEncryptedError();
+    }
+    throw err;
+  }
 
   // Bound work up front so a huge/zip-bomb PDF can't exhaust tab memory.
   if (pdf.numPages > maxPages) {

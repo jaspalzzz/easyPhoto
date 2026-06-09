@@ -115,7 +115,7 @@ export async function generatePrintSheet(
     throw new Error("Photo is too large to fit on the selected sheet size.");
   }
 
-  const copies = Math.min(opts.copies ?? layout.capacity, layout.capacity);
+  const copies = Math.min(Math.max(0, opts.copies ?? layout.capacity), layout.capacity);
   const pw = photoMm.width;
   const ph = photoMm.height;
 

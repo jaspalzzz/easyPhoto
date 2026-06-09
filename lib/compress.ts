@@ -79,7 +79,7 @@ export async function searchUnderCap<T>(
   const maxQ = opts.maxQuality ?? 0.95;
   const steps = opts.qualitySteps ?? 7;
   const minScale = Math.min(1, Math.max(0.01, opts.minScale ?? 1));
-  const step = opts.scaleStep ?? 0.85;
+  const step = Math.min(0.99, Math.max(0.01, opts.scaleStep ?? 0.85));
   const scales = buildScales(minScale, step);
 
   let smallest: Measured<T> & { quality: number; scale: number } | null = null;

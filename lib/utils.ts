@@ -6,7 +6,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatKb(bytes: number): string {
-  return `${Math.round(bytes / 1024)} KB`;
+  if (bytes === 0) return "0 Bytes";
+  if (bytes < 1024) return `${bytes} Bytes`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
 export function generateBatchFilename(template: string, index: number, ext: string): string {

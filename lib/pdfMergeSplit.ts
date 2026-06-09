@@ -50,7 +50,10 @@ export async function splitPdf(
 
   const out = await PDFDocument.create();
   const copied = await out.copyPages(src, valid);
-  copied.forEach((p) => out.addPage(p));
+  copied.forEach((p, idx) => {
+    onProgress?.(`Extracting page ${idx + 1} of ${valid.length}…`);
+    out.addPage(p);
+  });
 
   const bytes = await out.save();
   return new Blob([bytes as BlobPart], { type: "application/pdf" });

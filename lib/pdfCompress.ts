@@ -119,21 +119,43 @@ export async function compressPdfToTarget(
   const budget = targetBytes * 0.92;
 
   onProgress?.("Rendering PDF pages…");
-  const base = await pdfToCanvases(file, { scale: RENDER_SCALE, maxPages: 30 });
+  let base = await pdfToCanvases(file, { scale: RENDER_SCALE, maxPages: 30 });
   if (base.length === 0) throw new Error("Could not read the PDF.");
 
-  let best: { pages: EncodedPage[]; total: number } | null = null;
+  // Track only the best total (bytes) and which ladder index produced it.
+  // Holding only a number — not a full EncodedPage[] — means we never keep two
+  // full sets of base64 data URL strings alive simultaneously.
+  let bestTotal = Infinity;
+  let bestLevelIndex = 0;
+  const pageCount = base.length;
+
   for (let i = 0; i < LEVELS.length; i++) {
     onProgress?.(`Optimising… (pass ${i + 1})`);
     const { scale, quality } = LEVELS[i];
     const enc = await encodeLevel(base, scale, quality);
-    if (!best || enc.total < best.total) best = enc;
-    if (enc.total <= budget) {
-      const blob = await buildPdf(enc.pages);
-      return { blob, bytes: blob.size, underTarget: blob.size <= targetBytes, pages: base.length };
+    if (enc.total < bestTotal) {
+      bestTotal = enc.total;
+      bestLevelIndex = i;
     }
+    if (enc.total <= budget) {
+      // First level that fits — build the PDF immediately and return.
+      // enc.pages is discarded after buildPdf; base[] will be GC'd by the caller.
+      const blob = await buildPdf(enc.pages);
+      return { blob, bytes: blob.size, underTarget: blob.size <= targetBytes, pages: pageCount };
+    }
+    // enc.pages is not stored — let GC reclaim the data URL strings now.
   }
-  // Nothing fit — return the smallest we managed.
-  const blob = await buildPdf(best!.pages);
-  return { blob, bytes: blob.size, underTarget: blob.size <= targetBytes, pages: base.length };
+
+  // Nothing fit — re-encode at the best level found and build once.
+  // Release source canvases first so the GC can reclaim them before buildPdf
+  // allocates the output blob.
+  const { scale: bs, quality: bq } = LEVELS[bestLevelIndex];
+  base = [];
+  const bestEnc = await encodeLevel(
+    await pdfToCanvases(file, { scale: RENDER_SCALE, maxPages: 30 }),
+    bs,
+    bq
+  );
+  const blob = await buildPdf(bestEnc.pages);
+  return { blob, bytes: blob.size, underTarget: blob.size <= targetBytes, pages: pageCount };
 }

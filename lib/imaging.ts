@@ -67,6 +67,8 @@ export async function pngUnderKb(
   maxKb: number,
   minScale = 0.2
 ): Promise<{ canvas: HTMLCanvasElement; blob: Blob; bytes: number; scale: number; underCap: boolean }> {
+  // Fix 1: clamp minScale to prevent an infinite loop when caller passes 0 or negative.
+  minScale = Math.max(0.01, minScale);
   const maxBytes = maxKb * 1024;
   let scale = 1;
   let smallest: { canvas: HTMLCanvasElement; blob: Blob; bytes: number; scale: number } | null = null;
@@ -82,6 +84,19 @@ export async function pngUnderKb(
       return { canvas: c, blob, bytes: blob.size, scale, underCap: true };
     scale *= 0.82;
   }
+
+  // Fix 2: always test the exact minScale floor (the loop exits before reaching it).
+  {
+    const w = Math.max(1, Math.round(source.width * minScale));
+    const h = Math.max(1, Math.round(source.height * minScale));
+    const c = imageToCanvas(source, w, h);
+    const blob = await canvasToBlob(c, "image/png");
+    if (!smallest || blob.size < smallest.bytes)
+      smallest = { canvas: c, blob, bytes: blob.size, scale: minScale };
+    if (blob.size <= maxBytes)
+      return { canvas: c, blob, bytes: blob.size, scale: minScale, underCap: true };
+  }
+
   return { ...smallest!, underCap: false };
 }
 
