@@ -56,11 +56,20 @@ async function getLandmarker() {
         "@mediapipe/tasks-vision"
       );
       const fileset = await FilesetResolver.forVisionTasks(WASM_BASE);
-      return FaceLandmarker.createFromOptions(fileset, {
-        baseOptions: { modelAssetPath: MODEL_URL, delegate: "GPU" },
-        runningMode: "IMAGE",
-        numFaces: 1,
-      });
+      const create = (delegate: "GPU" | "CPU") =>
+        FaceLandmarker.createFromOptions(fileset, {
+          baseOptions: { modelAssetPath: MODEL_URL, delegate },
+          runningMode: "IMAGE",
+          numFaces: 1,
+        });
+      // GPU is faster, but its delegate fails to init on some browsers/older
+      // Android (no WebGL2, blocked GPU). Fall back to CPU so detection still
+      // works instead of throwing and failing the whole photo flow.
+      try {
+        return await create("GPU");
+      } catch {
+        return await create("CPU");
+      }
     })();
   }
   return landmarkerPromise;

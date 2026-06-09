@@ -47,6 +47,19 @@ export const onRequestPost = async (context: {
 }): Promise<Response> => {
   const { request, env } = context;
   try {
+    // Same-origin only: drop cross-site POSTs (cheap abuse guard). The beacon is
+    // always same-origin; requests with no Origin header (some clients) pass.
+    const origin = request.headers.get("Origin");
+    if (origin) {
+      try {
+        if (new URL(origin).host !== new URL(request.url).host) {
+          return new Response(null, { status: 204 });
+        }
+      } catch {
+        /* malformed Origin — ignore and continue */
+      }
+    }
+
     const event = (await request.json()) as Record<string, unknown>;
 
     // Allow-list the event name; anything else is dropped.
