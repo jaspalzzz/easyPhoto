@@ -80,6 +80,17 @@
   ::selection {
     background: hsl(var(--cta) / 0.18);
   }
+  /* Native <details> disclosure markers: we always render our own chevron, so
+     suppress them everywhere. iOS/Safari shows a ▶ triangle that `list-style:none`
+     alone does NOT remove — and, because <summary> is display:flex, that marker
+     becomes a flex item and pushes the label to the centre. Killing the marker
+     fixes both the stray triangle and the mis-centred text. */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::marker {
+    content: "";
+  }
   /* Crisp, single focus treatment everywhere */
   :focus-visible {
     outline: 2px solid hsl(var(--brand));
