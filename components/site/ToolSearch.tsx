@@ -8,8 +8,6 @@ import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { MAKER_PAGES } from "@/lib/makerPages";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
-import { kbPath } from "@/lib/kbTargets";
-import { sigKbPath } from "@/lib/kbTargets"; // Wait, sigKbPath is not defined yet, we'll define it or use custom mapping
 
 interface SearchItem {
   title: string;

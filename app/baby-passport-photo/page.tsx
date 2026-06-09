@@ -24,9 +24,9 @@ const mm = effectivePrintMm(spec);
 export const metadata = pageMetadata({
   title: "Baby & Infant Passport Photo Maker — Free, At Home",
   description:
-    "Make a compliant baby or infant passport photo at home for free. Lay your " +
-    "baby on a white sheet, upload the shot, and we crop to size and clean the " +
-    "background. 100% in your browser — nothing is uploaded.",
+    "Make a compliant baby passport photo at home, free. Lay baby on a white " +
+    "sheet, upload, and we crop to size and clean the background — nothing is " +
+    "uploaded.",
   path: "/baby-passport-photo/",
 });
 

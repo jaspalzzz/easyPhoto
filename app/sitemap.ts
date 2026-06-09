@@ -6,6 +6,7 @@ import { KB_TARGETS, kbPath, PDF_KB_TARGETS, pdfKbPath } from "@/lib/kbTargets";
 import { BLOG_POSTS } from "@/lib/blog";
 import { PORTAL_KEYS } from "@/lib/portalPresets";
 import { HINGLISH_SLUGS } from "@/lib/hinglishPages";
+import { CONVERT_SLUGS, convertPath } from "@/lib/convertPairs";
 
 export const dynamic = "force-static";
 
@@ -44,6 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...KB_TARGETS.map((kb) => kbPath(kb)),
     ...PDF_KB_TARGETS.map((kb) => pdfKbPath(kb)),
     ...HINGLISH_SLUGS.map((s) => `/${s}/`),
+    ...CONVERT_SLUGS.map((slug) => convertPath(slug)),
     ...BLOG_POSTS.map((p) => `/blog/${p.slug}/`),
   ];
 

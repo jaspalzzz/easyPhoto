@@ -49,7 +49,7 @@ export async function generateMetadata({
   const doc = page.kind === "visa" ? "visa" : "passport";
   return pageMetadata({
     title: `${spec.label} ${doc === "visa" ? "Visa" : "Passport"} Photo Size & Maker`,
-    description: `Exact ${spec.label} ${doc} photo requirements: ${mm.width}×${mm.height}mm, ${spec.background.description}. Make a compliant ${doc} photo free, in your browser — nothing is uploaded.`,
+    description: `Exact ${spec.label} ${doc} photo requirements: ${mm.width}×${mm.height}mm, ${spec.background.description}. Make one free in your browser — nothing uploaded.`,
     path: `/${maker}/`,
   });
 }

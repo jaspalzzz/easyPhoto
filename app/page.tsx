@@ -21,9 +21,9 @@ import { ToolSearch } from "@/components/site/ToolSearch";
 export const metadata = pageMetadata({
   title: "Free Passport & Visa Photo Maker",
   description:
-    "Create a compliant passport or visa photo for free. Pick your country and " +
-    "drop a photo. We auto-crop to the exact head-size and background rules, " +
-    "then check compliance. 100% in your browser; nothing is uploaded.",
+    "Create a compliant passport or visa photo free. Pick your country, drop a " +
+    "photo — we auto-crop to the exact head size and background and check " +
+    "compliance.",
   path: "/",
 });
 
@@ -53,6 +53,11 @@ const EXAM_LINKS: { label: string; href: string }[] = [
   { label: "NEET / JEE", href: "/tools/form-resizer/nta/" },
   { label: "RBI", href: "/tools/form-resizer/rbi/" },
   { label: "CTET", href: "/tools/form-resizer/ctet/" },
+  { label: "UPPSC", href: "/tools/form-resizer/uppsc/" },
+  { label: "BPSC", href: "/tools/form-resizer/bpsc/" },
+  { label: "MPSC", href: "/tools/form-resizer/mpsc/" },
+  { label: "US Visa (DS-160)", href: "/tools/form-resizer/ds160/" },
+  { label: "OCI", href: "/tools/form-resizer/oci/" },
 ];
 
 export default function HomePage() {

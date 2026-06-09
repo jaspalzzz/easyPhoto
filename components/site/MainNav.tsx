@@ -29,6 +29,15 @@ export function MainNav() {
     };
   }, [open]);
 
+  // Clear any pending close timer when the nav unmounts (avoid a setState
+  // firing on an unmounted component during a route change).
+  React.useEffect(
+    () => () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    },
+    []
+  );
+
   const openNow = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     setOpen(true);

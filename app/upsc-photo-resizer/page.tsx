@@ -9,7 +9,7 @@ const spec = getPortalSpec("upsc")!;
 const prov = specProvenance(spec);
 
 export const metadata = pageMetadata({
-  title: "UPSC Photo Resizer — Compress Photo for Union Public Service Commission",
+  title: `UPSC Photo Resizer — Compress to ${spec.photoLimitKb} KB`,
   description: `Compress your passport photo to under ${spec.photoLimitKb} KB and exact specs (${spec.photoWidthPx}x${spec.photoHeightPx}px) for the UPSC application form. 100% private, client-side only.`,
   path: "/upsc-photo-resizer/",
 });

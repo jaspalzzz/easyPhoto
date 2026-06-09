@@ -195,6 +195,14 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     track({ name: "tool_start", tool: "photo-with-name-date", device: deviceClass() });
   }, []);
 
+  // Revoke the download blob's object URL when replaced or on unmount.
+  React.useEffect(() => {
+    const url = result?.url;
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [result?.url]);
+
   // Load portal spec for provenance display
   const spec = activePreset.specId ? getPortalSpec(activePreset.specId) : undefined;
   const provenance = spec ? specProvenance(spec) : undefined;
@@ -274,8 +282,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
         minScale: 0.1,
       });
 
-      if (result?.url) URL.revokeObjectURL(result.url);
-
+      // Previous result URL is revoked by the cleanup effect on result change.
       const downloadUrl = URL.createObjectURL(res.blob);
       setResult({
         url: downloadUrl,

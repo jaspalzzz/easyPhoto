@@ -10,11 +10,10 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolSearch } from "@/components/site/ToolSearch";
 
 export const metadata = pageMetadata({
-  title: "Free Image, PDF & Signature Tools — Private, In Your Browser",
+  title: "Free Image, PDF & Signature Tools",
   description:
-    "Free online tools that run entirely in your browser: background remover, " +
-    "compress image to KB, resize images, JPG to PDF, PDF to JPG, and signature " +
-    "tools. Nothing is uploaded — everything stays on your device.",
+    "Free in-browser tools: background remover, compress image to KB, resize " +
+    "photos, JPG to PDF, PDF to JPG and signature tools. Nothing is uploaded.",
   path: "/tools/",
 });
 

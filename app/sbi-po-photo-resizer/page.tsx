@@ -9,7 +9,7 @@ const spec = getPortalSpec("sbi")!;
 const prov = specProvenance(spec);
 
 export const metadata = pageMetadata({
-  title: "SBI PO Photo Resizer — Compress Photo for State Bank of India",
+  title: `SBI PO Photo Resizer — Compress to ${spec.photoLimitKb} KB`,
   description: `Compress your passport photo to under ${spec.photoLimitKb} KB and exact specs (${spec.photoWidthPx}x${spec.photoHeightPx}px) for the SBI PO application forms. 100% private, client-side.`,
   path: "/sbi-po-photo-resizer/",
 });

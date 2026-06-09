@@ -9,7 +9,7 @@ const spec = getPortalSpec("ssc")!;
 const prov = specProvenance(spec);
 
 export const metadata = pageMetadata({
-  title: "SSC Photo Resizer — Compress Photo for Staff Selection Commission",
+  title: `SSC Photo Resizer — Compress to ${spec.photoLimitKb} KB`,
   description: `Compress your passport photo to under ${spec.photoLimitKb} KB and exact specs (${spec.photoWidthPx}x${spec.photoHeightPx}px) for the SSC application form. 100% private, client-side only.`,
   path: "/ssc-photo-resizer/",
 });

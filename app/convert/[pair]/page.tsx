@@ -1,0 +1,82 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { pageMetadata } from "@/lib/seo";
+import { ToolPage } from "@/components/tools/ToolPage";
+import { FormatConverterTool } from "@/components/tools/FormatConverterTool";
+import {
+  CONVERT_PAIRS,
+  getConvertPair,
+  convertPath,
+  convertPairFaqs,
+  relatedConvertPairs,
+} from "@/lib/convertPairs";
+
+// Static export: one page per conversion pair (/convert/heic-to-jpg/, …).
+export function generateStaticParams() {
+  return CONVERT_PAIRS.map((p) => ({ pair: p.slug }));
+}
+
+export const dynamicParams = false;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ pair: string }>;
+}): Promise<Metadata> {
+  const { pair } = await params;
+  const p = getConvertPair(pair);
+  if (!p) return {};
+  return pageMetadata({
+    title: `Convert ${p.from} to ${p.to} — Free Online, No Upload`,
+    titleAbsolute: true,
+    description: `Convert ${p.from} images to ${p.to} online for free, right in your browser. Batch convert, no watermark, no sign-up — your files are never uploaded.`,
+    path: convertPath(p.slug),
+  });
+}
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ pair: string }>;
+}) {
+  const { pair } = await params;
+  const p = getConvertPair(pair);
+  if (!p) notFound();
+  const related = relatedConvertPairs(p.slug);
+
+  return (
+    <ToolPage
+      title={`${p.from} to ${p.to} Converter`}
+      path={convertPath(p.slug)}
+      blurb={`Convert ${p.from} images to ${p.to} in your browser — free, batch-ready, and 100% private. ${p.reason}`}
+      faqItems={convertPairFaqs(p)}
+      footnote={`Your ${p.from} files are converted entirely on your device and never uploaded to a server.`}
+    >
+      <FormatConverterTool defaultTarget={p.target} />
+
+      {related.length > 0 && (
+        <section className="mt-10">
+          <h2 className="eyebrow mb-3">Other conversions</h2>
+          <div className="flex flex-wrap gap-1.5">
+            {related.map((r) => (
+              <Link
+                key={r.slug}
+                href={convertPath(r.slug)}
+                className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
+              >
+                {r.from} to {r.to}
+              </Link>
+            ))}
+            <Link
+              href="/tools/format-converter/"
+              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
+            >
+              All formats
+            </Link>
+          </div>
+        </section>
+      )}
+    </ToolPage>
+  );
+}

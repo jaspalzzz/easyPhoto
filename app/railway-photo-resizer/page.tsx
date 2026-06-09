@@ -9,7 +9,7 @@ const spec = getPortalSpec("rrb")!;
 const prov = specProvenance(spec);
 
 export const metadata = pageMetadata({
-  title: "Railway Photo Resizer — Compress Photo for RRB Application Forms",
+  title: `Railway RRB Photo Resizer — Compress to ${spec.photoLimitKb} KB`,
   description: `Compress your passport photo to under ${spec.photoLimitKb} KB and exact specs (${spec.photoWidthPx}x${spec.photoHeightPx}px) for the RRB Railway application form. 100% private, client-side only.`,
   path: "/railway-photo-resizer/",
 });

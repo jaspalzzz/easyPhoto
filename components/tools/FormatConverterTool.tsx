@@ -22,9 +22,14 @@ interface BatchItem {
   resultUrl?: string;
 }
 
-export function FormatConverterTool() {
+export function FormatConverterTool({
+  defaultTarget = "image/jpeg",
+}: {
+  /** Pre-selected output format — set by per-pair landing pages (e.g. /convert/heic-to-jpg/). */
+  defaultTarget?: ImageFormat;
+} = {}) {
   const [items, setItems] = React.useState<BatchItem[]>([]);
-  const [targetFormat, setTargetFormat] = React.useState<ImageFormat>("image/jpeg");
+  const [targetFormat, setTargetFormat] = React.useState<ImageFormat>(defaultTarget);
   const [quality, setQuality] = React.useState(0.92);
   const [namingTemplate, setNamingTemplate] = React.useState("");
   const [busy, setBusy] = React.useState(false);

@@ -37,6 +37,15 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
     track({ name: "tool_start", tool: toolName, device: deviceClass() });
   }, [toolName]);
 
+  // Revoke the result's object URL when it's replaced or the tool unmounts,
+  // so compressed-image blobs don't leak across runs / navigation.
+  React.useEffect(() => {
+    const url = result?.url;
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [result?.url]);
+
   const run = async () => {
     setBusy(true);
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
@@ -55,8 +64,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
         minScale: 0.1,
         minDimensions,
       });
-      // Revoke the previous result URL before replacing it (avoid blob leaks).
-      if (result?.url) URL.revokeObjectURL(result.url);
+      // Previous result URL is revoked by the cleanup effect on result change.
       setResult({
         url: URL.createObjectURL(res.blob),
         bytes: res.bytes,
