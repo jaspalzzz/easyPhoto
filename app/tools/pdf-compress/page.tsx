@@ -7,19 +7,20 @@ import { PDF_COMPRESS_FAQ } from "@/lib/faqs";
 const tool = getTool("pdf-compress")!;
 
 export const metadata = pageMetadata({
-  title: "Compress PDF to 100KB, 200KB or 500KB — Free, Client-Side",
+  title: "Compress PDF — Reduce PDF File Size Online Free (100/200/500 KB)",
   description:
-    "Reduce PDF file size to fit form upload limits — compress marksheets, certificates " +
-    "and documents to under 100 KB, 200 KB or 500 KB. 100% private, nothing uploaded.",
+    "Compress PDF and reduce PDF file size online, free and private. Shrink marksheets, " +
+    "certificates and documents to a target — under 100 KB, 200 KB or 500 KB, or a custom " +
+    "size. Nothing is uploaded; it all runs in your browser.",
   path: `/tools/${tool.slug}/`,
 });
 
 export default function Page() {
   return (
     <ToolPage
-      title="Compress PDF to a Size Limit"
+      title="Compress PDF — Reduce File Size"
       slug={tool.slug}
-      blurb={tool.blurb}
+      blurb="Compress a PDF and reduce its file size to fit form upload limits — to 100 KB, 200 KB, 500 KB, or a custom target. Everything runs in your browser; your PDF is never uploaded."
       faqItems={PDF_COMPRESS_FAQ}
       footnote="Compression runs entirely on your device. Your PDF is never uploaded to any server."
     >
