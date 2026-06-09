@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import {
-  Loader2,
   RotateCcw,
   AlertCircle,
   SlidersHorizontal,
@@ -11,6 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CropMarks } from "@/components/site/CropMarks";
+import { ScanProgress, type ScanStep } from "@/components/site/ScanProgress";
 import { Uploader } from "./Uploader";
 import { Editor } from "./Editor";
 import { CompliancePanel } from "./CompliancePanel";
@@ -28,6 +28,13 @@ const STATUS_LABEL: Record<string, string> = {
   segmenting: "Removing background…",
   rendering: "Cropping and scaling…",
 };
+
+const MAKER_STEPS: ScanStep[] = [
+  { key: "loading", label: "Read" },
+  { key: "detecting", label: "Detect face" },
+  { key: "segmenting", label: "Remove bg" },
+  { key: "rendering", label: "Crop & size" },
+];
 
 /**
  * The embeddable tool, pre-set to one country. Used on each /[country] page.
@@ -111,15 +118,13 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
         {status === "idle" && <Uploader onFile={processFile} disabled={busy} />}
 
         {busy && (
-          <div className="flex flex-col items-center justify-center gap-3 py-14 text-muted-foreground">
-            <Loader2 className="h-7 w-7 animate-spin text-ink-soft" />
-            <p className="text-sm font-medium text-foreground">
-              {STATUS_LABEL[status]}
-            </p>
-            <p className="spec normal-case tracking-[0.04em]">
-              First run downloads the AI models. This can take a moment.
-            </p>
-          </div>
+          <ScanProgress
+            label={STATUS_LABEL[status] ?? "Processing…"}
+            hint="First run downloads the AI models — this can take a moment."
+            thumbnailUrl={sourceUrl}
+            steps={MAKER_STEPS}
+            activeKey={status}
+          />
         )}
 
         {status === "error" && (

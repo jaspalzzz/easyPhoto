@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download } from "lucide-react";
+import { Download } from "lucide-react";
+import { ScanProgress } from "@/components/site/ScanProgress";
 import { Button } from "@/components/ui/button";
 import { CropMarks } from "@/components/site/CropMarks";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
@@ -49,11 +50,11 @@ function Body({ source }: { source: ToolSource }) {
 
   if (busy)
     return (
-      <div className="flex flex-col items-center justify-center gap-3 py-12 text-ink-soft">
-        <Loader2 className="h-8 w-8 animate-spin text-brand" strokeWidth={1.75} />
-        <p className="text-sm">Removing background…</p>
-        <p className="text-xs">First run downloads the AI model. One moment.</p>
-      </div>
+      <ScanProgress
+        label="Removing background…"
+        hint="First run downloads the AI model — one moment."
+        thumbnailUrl={source.url}
+      />
     );
 
   if (error)

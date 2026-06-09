@@ -136,6 +136,32 @@
   }
 }
 
+/* Document-scanner progress — a brand scan-line sweeping over the photo, with a
+   pulsing stage dot. Evokes a passport/biometric scan; reads as "working", not
+   "stuck". Motion is disabled for users who prefer reduced motion. */
+@keyframes ep-scan {
+  0% { top: 0; opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.ep-scanline {
+  animation: ep-scan 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes ep-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.45; }
+}
+.ep-pulse {
+  animation: ep-pulse 1.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ep-scanline,
+  .ep-pulse {
+    animation: none;
+  }
+}
+
 /* Checkerboard for transparent/preview areas. */
 .checkerboard {
   background-image:
