@@ -92,45 +92,56 @@ export function MainNav() {
         </button>
 
         {open && (
-          <div className="absolute right-0 z-50 mt-2 w-[min(92vw,560px)] rounded-lg border border-hairline bg-paper p-4 shadow-pop">
-            <div className="grid gap-x-6 gap-y-4 sm:grid-cols-3">
-              {TOOLS_CATALOG.map((group) => (
-                <div key={group.group}>
-                  <Link
-                    href={`/tools/${group.slug}/`}
-                    onClick={() => setOpen(false)}
-                    className="mb-2 block text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-brand"
-                  >
-                    {group.group}
-                  </Link>
-                  <ul className="space-y-1">
-                    {group.tools
-                      .filter((t) => t.ready)
-                      .map((t) => (
-                        <li key={t.slug}>
-                          <Link
-                            href={`/tools/${t.slug}/`}
-                            onClick={() => setOpen(false)}
-                            className="flex items-center gap-2.5 rounded-md px-2 py-1.5 text-sm text-foreground transition-colors hover:bg-accent/60"
-                          >
-                            <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded border border-hairline bg-card text-ink-soft">
-                              <ToolIcon name={t.icon} className="h-3.5 w-3.5" />
-                            </span>
-                            {t.title}
-                          </Link>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              ))}
+          <div className="absolute right-0 z-50 mt-2 flex w-[min(92vw,680px)] flex-col overflow-hidden rounded-lg border border-hairline bg-paper shadow-pop">
+            {/* Scrollable content — never taller than the viewport */}
+            <div className="overflow-y-auto p-4" style={{ maxHeight: "min(calc(100vh - 5.5rem), 420px)" }}>
+              <div className="space-y-4">
+                {TOOLS_CATALOG.map((group) => (
+                  <div key={group.group}>
+                    {/* Group header — acts as a link to the category page */}
+                    <Link
+                      href={`/tools/${group.slug}/`}
+                      onClick={() => setOpen(false)}
+                      className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground hover:text-brand"
+                    >
+                      {group.group}
+                      <span className="flex-1 border-t border-hairline" />
+                    </Link>
+
+                    {/* Tools grid — flows across the full panel width */}
+                    <ul className="grid grid-cols-2 gap-0.5 sm:grid-cols-3">
+                      {group.tools
+                        .filter((t) => t.ready)
+                        .map((t) => (
+                          <li key={t.slug}>
+                            <Link
+                              href={`/tools/${t.slug}/`}
+                              onClick={() => setOpen(false)}
+                              className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-foreground transition-colors hover:bg-accent/60"
+                            >
+                              <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border border-hairline bg-card text-ink-soft">
+                                <ToolIcon name={t.icon} className="h-3 w-3" />
+                              </span>
+                              <span className="truncate">{t.title}</span>
+                            </Link>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
             </div>
-            <Link
-              href="/tools/"
-              onClick={() => setOpen(false)}
-              className="mt-3 inline-flex items-center gap-1 border-t pt-3 text-sm font-medium text-brand hover:underline"
-            >
-              View all tools <ArrowRight className="h-4 w-4" />
-            </Link>
+
+            {/* Footer always visible — never scrolled away */}
+            <div className="shrink-0 border-t border-hairline bg-paper px-4 py-2.5">
+              <Link
+                href="/tools/"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline"
+              >
+                View all tools <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
         )}
       </div>
