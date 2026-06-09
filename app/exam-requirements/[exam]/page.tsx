@@ -59,6 +59,19 @@ const REJECTIONS = [
   "Old, blurry, or low-contrast photo, or wrong (non-white) background.",
 ];
 
+// Sub-exams that share the parent's ONE common photo/signature spec (e.g. SSC's
+// One-Time-Registration). Listing them captures the long-tail "ssc cgl photo
+// size" / "upsc nda photo size" queries on this verified page — no separate
+// pages, no fabricated specs (they inherit the parent's exact numbers).
+const SUB_EXAMS: Record<string, string[]> = {
+  ssc: ["SSC CGL", "SSC CHSL", "SSC GD Constable", "SSC MTS", "SSC CPO", "SSC JE", "SSC Stenographer", "SSC Selection Post"],
+  upsc: ["UPSC CSE (IAS/IPS)", "UPSC NDA", "UPSC CDS", "UPSC CAPF", "UPSC IFS", "UPSC EPFO", "UPSC CMS"],
+  ibps: ["IBPS PO", "IBPS Clerk", "IBPS SO", "IBPS RRB"],
+  sbi: ["SBI PO", "SBI Clerk", "SBI SO"],
+  rrb: ["RRB NTPC", "RRB Group D", "RRB ALP", "RRB JE"],
+  nta: ["NEET UG", "JEE Main"],
+};
+
 export default async function Page({
   params,
 }: {
@@ -147,6 +160,26 @@ export default async function Page({
           )}
         </div>
       </section>
+
+      {SUB_EXAMS[exam] && (
+        <section className="space-y-3">
+          <h2 className="eyebrow">Covers these {spec.name.split(" (")[0]} exams</h2>
+          <p className="text-sm text-muted-foreground">
+            {spec.name.split(" (")[0]} uses one common photo &amp; signature specification
+            across its exams, so the same sizes apply to:
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {SUB_EXAMS[exam].map((e) => (
+              <span
+                key={e}
+                className="rounded-md border border-hairline bg-card px-3 py-1.5 text-[13px] font-medium text-foreground"
+              >
+                {e}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Transactional CTAs — AI Overviews answer "what size"; we win "do it". */}
       <section className="rounded-lg border border-brand/25 bg-brand-soft/20 p-5 sm:p-6">
