@@ -63,8 +63,14 @@ export function SignImageTool() {
       const img = await new Promise<HTMLImageElement>((resolve, reject) => {
         const image = new Image();
         image.src = URL.createObjectURL(decodable);
-        image.onload = () => resolve(image);
-        image.onerror = (err) => reject(err);
+        image.onload = () => {
+          URL.revokeObjectURL(image.src);
+          resolve(image);
+        };
+        image.onerror = (err) => {
+          URL.revokeObjectURL(image.src);
+          reject(err);
+        };
       });
       
       setBaseImage(img);

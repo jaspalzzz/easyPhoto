@@ -99,7 +99,7 @@ function Body({ source, kb, toolName }: BodyProps) {
           </div>
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={out.url} alt="Transparent signature" className="max-h-[240px].w-auto" />
+          <img src={out.url} alt="Transparent signature" className="max-h-[240px] w-auto" />
         )}
       </PreviewFrame>
 
