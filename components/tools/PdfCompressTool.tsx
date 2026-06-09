@@ -137,12 +137,23 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
           </div>
         )}
 
-        {result && (
+        {result && file && (
           <div className="rounded-md border border-hairline bg-paper p-4 text-xs space-y-1.5">
             <p className="font-semibold text-ink">Result</p>
             <ul className="space-y-1 text-ink-soft font-mono">
-              <li>· Size: {formatKb(result.bytes)} ({result.pages} page{result.pages > 1 ? "s" : ""})</li>
-              <li>· Status: {result.underTarget ? `🟢 Under ${targetKb} KB` : `⚠️ Smallest achievable: ${formatKb(result.bytes)}`}</li>
+              <li>
+                · Before: {formatKb(file.size)} → After: {formatKb(result.bytes)}
+                {result.bytes < file.size
+                  ? ` (${Math.round((1 - result.bytes / file.size) * 100)}% smaller`
+                  : ` (already optimised`}
+                , {result.pages} page{result.pages > 1 ? "s" : ""})
+              </li>
+              <li>
+                · Status:{" "}
+                {result.underTarget
+                  ? `🟢 Under ${targetKb} KB`
+                  : `⚠️ Couldn't reach ${targetKb} KB — ${formatKb(result.bytes)} is the smallest achievable. This PDF is likely already optimised or contains high-resolution scans.`}
+              </li>
             </ul>
           </div>
         )}

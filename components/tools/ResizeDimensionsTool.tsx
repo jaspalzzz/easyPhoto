@@ -44,14 +44,26 @@ function Body({ source }: { source: ToolSource }) {
 
   return (
     <div className="space-y-4">
-      <PreviewFrame>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={out?.url ?? source.url}
-          alt="To resize"
-          className="max-h-[320px] w-auto rounded-md"
-        />
-      </PreviewFrame>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <figure className="space-y-1.5">
+          <PreviewFrame>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={source.url} alt="Original" className="max-h-[260px] w-auto rounded-md" />
+          </PreviewFrame>
+          <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+            Before · {source.size.width}×{source.size.height}px
+          </figcaption>
+        </figure>
+        <figure className="space-y-1.5">
+          <PreviewFrame>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={out?.url ?? source.url} alt="Resized" className="max-h-[260px] w-auto rounded-md" />
+          </PreviewFrame>
+          <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+            {out ? `After · ${width}×${height}px` : "After"}
+          </figcaption>
+        </figure>
+      </div>
 
       <div className="flex flex-wrap items-end gap-3">
         <label className="text-sm">
