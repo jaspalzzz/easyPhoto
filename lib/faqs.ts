@@ -300,6 +300,14 @@ export const COMPLIANCE_CHECKER_FAQ: FaqItem[] = [
   { q: "How do I fix a failing check?", a: "When something fails, the result links straight to the resizer for your exam, which compresses and resizes your file to the exact required spec." },
 ];
 
+export const UNLOCK_PDF_FAQ: FaqItem[] = [
+  { q: "How do I remove the password from a PDF?", a: "Upload the protected PDF, enter its password when asked, and download an unprotected copy. It all happens in your browser — the PDF and password are never uploaded." },
+  { q: "What is the e-Aadhaar PDF password?", a: "The e-Aadhaar PDF opens with the first 4 letters of your name in CAPITALS followed by your year of birth — for example RAVI1998. Enter that as the password to unlock it." },
+  { q: "Is it safe to unlock my Aadhaar PDF here?", a: "Yes. Your Aadhaar PDF and its password are processed entirely on your device and are never uploaded to any server — nothing leaves your browser." },
+  { q: "Why is the unlocked PDF slightly different?", a: "The unprotected copy is rebuilt from the rendered pages, so it looks identical and the password is gone, but the text is no longer selectable. That's the trade-off of removing the password fully in-browser." },
+  { q: "Is the PDF password remover free?", a: "Yes — completely free, no watermark and no sign-up." },
+];
+
 /**
  * Per-country passport FAQ — built from the verified spec so every country's
  * set is genuinely different (sizes, background, head height, rules all differ).

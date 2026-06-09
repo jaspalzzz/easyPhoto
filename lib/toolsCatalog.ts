@@ -157,6 +157,14 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         icon: "FileDown",
       },
       {
+        slug: "unlock-pdf",
+        title: "Unlock PDF (Remove Password)",
+        blurb: "Remove the password from a protected PDF — like the e-Aadhaar — and download an unprotected copy.",
+        ready: true,
+        popular: true,
+        icon: "LockOpen",
+      },
+      {
         slug: "pdf-reorder",
         title: "Reorder & Rotate PDF",
         blurb: "Rearrange, rotate, or delete pages of a PDF visually.",

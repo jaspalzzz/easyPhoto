@@ -16,6 +16,7 @@ import {
   UserSquare,
   IdCard,
   BadgeCheck,
+  LockOpen,
   type LucideIcon,
 } from "lucide-react";
 
@@ -36,6 +37,7 @@ const MAP: Record<string, LucideIcon> = {
   UserSquare,
   IdCard,
   BadgeCheck,
+  LockOpen,
 };
 
 export function ToolIcon({ name, className }: { name: string; className?: string }) {
