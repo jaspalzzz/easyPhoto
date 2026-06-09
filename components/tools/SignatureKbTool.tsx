@@ -29,6 +29,7 @@ function Body({ source, kb, toolName }: BodyProps) {
   const [threshold, setThreshold] = React.useState(200);
   const [busy, setBusy] = React.useState(false);
   const [out, setOut] = React.useState<Out | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     track({ name: "tool_start", tool: toolName, device: deviceClass() });
@@ -39,6 +40,7 @@ function Body({ source, kb, toolName }: BodyProps) {
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
     (async () => {
       setBusy(true);
+      setError(null);
       try {
         const base = imageToCanvas(source.image, source.size.width, source.size.height);
         const transparent = whiteToTransparent(base, { threshold, softness: 40 });
@@ -64,6 +66,7 @@ function Body({ source, kb, toolName }: BodyProps) {
       } catch (e) {
         console.error(e);
         if (!cancelled) {
+          setError("Something went wrong while processing your image. Please try a different file.");
           track({
             name: "tool_failure",
             tool: toolName,
@@ -102,6 +105,12 @@ function Body({ source, kb, toolName }: BodyProps) {
           <img src={out.url} alt="Transparent signature" className="max-h-[240px] w-auto" />
         )}
       </PreviewFrame>
+
+      {error && (
+        <p className="rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+          {error}
+        </p>
+      )}
 
       <label className="block text-sm">
         <span className="mb-1 flex items-center justify-between">

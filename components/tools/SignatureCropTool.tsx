@@ -13,26 +13,38 @@ function Body({ source }: { source: ToolSource }) {
   const [threshold, setThreshold] = React.useState(200);
   const [out, setOut] = React.useState<{ url: string; canvas: HTMLCanvasElement; w: number; h: number } | null>(null);
   const [empty, setEmpty] = React.useState(false);
+  const [busy, setBusy] = React.useState(false);
 
   React.useEffect(() => {
-    const canvas = imageToCanvas(source.image, source.size.width, source.size.height);
-    const { canvas: cropped, bbox } = trimToContent(canvas, {
-      mode: "luma",
-      threshold,
-      padding,
-    });
-    if (!bbox) {
-      setEmpty(true);
-      setOut(null);
-      return;
+    let cancelled = false;
+    async function run() {
+      setBusy(true);
+      // Yield to the browser so the spinner can paint before heavy work begins
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      if (cancelled) return;
+      const canvas = imageToCanvas(source.image, source.size.width, source.size.height);
+      const { canvas: cropped, bbox } = trimToContent(canvas, {
+        mode: "luma",
+        threshold,
+        padding,
+      });
+      if (cancelled) return;
+      if (!bbox) {
+        setEmpty(true);
+        setOut(null);
+      } else {
+        setEmpty(false);
+        setOut({
+          url: cropped.toDataURL("image/png"),
+          canvas: cropped,
+          w: cropped.width,
+          h: cropped.height,
+        });
+      }
+      setBusy(false);
     }
-    setEmpty(false);
-    setOut({
-      url: cropped.toDataURL("image/png"),
-      canvas: cropped,
-      w: cropped.width,
-      h: cropped.height,
-    });
+    run();
+    return () => { cancelled = true; };
   }, [source, padding, threshold]);
 
   const onDownload = async (type: "image/png" | "image/jpeg") => {
@@ -55,8 +67,24 @@ function Body({ source }: { source: ToolSource }) {
         </figure>
         <figure className="space-y-1.5">
           <PreviewFrame>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={out?.url ?? source.url} alt="Cropped signature" className="max-h-[220px] w-auto rounded" />
+            <div className="relative inline-flex">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={out?.url ?? source.url} alt="Cropped signature" className="max-h-[220px] w-auto rounded" />
+              {busy && (
+                <div className="absolute inset-0 flex items-center justify-center rounded bg-white/70">
+                  <svg
+                    className="h-6 w-6 animate-spin text-ink-soft"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    aria-label="Processing"
+                  >
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                  </svg>
+                </div>
+              )}
+            </div>
           </PreviewFrame>
           <figcaption className="text-center font-mono text-[11px] text-ink-soft">
             {out ? `After · ${out.w}×${out.h}px` : "After"}
@@ -104,10 +132,10 @@ function Body({ source }: { source: ToolSource }) {
 
       {out && (
         <div className="flex items-center gap-2">
-          <Button variant="cta" size="sm" onClick={() => onDownload("image/png")}>
+          <Button variant="cta" size="sm" disabled={busy} onClick={() => onDownload("image/png")}>
             <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
           </Button>
-          <Button size="sm" variant="outline" onClick={() => onDownload("image/jpeg")}>
+          <Button size="sm" variant="outline" disabled={busy} onClick={() => onDownload("image/jpeg")}>
             <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
           </Button>
           <span className="font-mono text-[13px] text-ink-soft">

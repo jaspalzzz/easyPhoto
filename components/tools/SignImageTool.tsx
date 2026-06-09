@@ -31,15 +31,18 @@ export function SignImageTool() {
 
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
+  // Tracks the current base-image object URL so it can be revoked at the right time
+  const baseObjectUrlRef = React.useRef<string | null>(null);
 
-  // Clean up ObjectURLs on unmount
+  // Clean up object URL on unmount
   React.useEffect(() => {
     return () => {
-      if (baseImage?.src) {
-        URL.revokeObjectURL(baseImage.src);
+      if (baseObjectUrlRef.current) {
+        URL.revokeObjectURL(baseObjectUrlRef.current);
+        baseObjectUrlRef.current = null;
       }
     };
-  }, [baseImage]);
+  }, []);
 
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -60,15 +63,23 @@ export function SignImageTool() {
     try {
       const decodable = await ensureDecodable(file);
       
+      // Revoke any previous base image object URL before creating a new one
+      if (baseObjectUrlRef.current) {
+        URL.revokeObjectURL(baseObjectUrlRef.current);
+        baseObjectUrlRef.current = null;
+      }
+      const objectUrl = URL.createObjectURL(decodable);
+      baseObjectUrlRef.current = objectUrl;
+
       const img = await new Promise<HTMLImageElement>((resolve, reject) => {
         const image = new Image();
-        image.src = URL.createObjectURL(decodable);
+        image.src = objectUrl;
         image.onload = () => {
-          URL.revokeObjectURL(image.src);
           resolve(image);
         };
         image.onerror = (err) => {
-          URL.revokeObjectURL(image.src);
+          URL.revokeObjectURL(objectUrl);
+          baseObjectUrlRef.current = null;
           reject(err);
         };
       });
@@ -153,8 +164,9 @@ export function SignImageTool() {
   };
 
   const reset = () => {
-    if (baseImage?.src) {
-      URL.revokeObjectURL(baseImage.src);
+    if (baseObjectUrlRef.current) {
+      URL.revokeObjectURL(baseObjectUrlRef.current);
+      baseObjectUrlRef.current = null;
     }
     setBaseFile(null);
     setBaseImage(null);
@@ -254,10 +266,15 @@ export function SignImageTool() {
                 <Button id="image-signer-reset-btn" variant="outline" size="sm" className="flex-1" onClick={reset} disabled={busy}>
                   Reset
                 </Button>
-                <Button id="image-signer-save-btn" variant="cta" size="sm" className="flex-1" onClick={runExport} disabled={busy}>
+                <Button id="image-signer-save-btn" variant="cta" size="sm" className="flex-1" onClick={runExport} disabled={busy || placements.length === 0}>
                   <Download className="h-4 w-4" /> Save Image
                 </Button>
               </div>
+              {placements.length === 0 && (
+                <p className="text-[11px] text-muted-foreground text-center">
+                  Place at least one signature before saving.
+                </p>
+              )}
 
               {/* Signature Creator Panel */}
               <div className="bg-paper border border-hairline rounded-md p-4 space-y-4">

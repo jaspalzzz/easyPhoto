@@ -35,27 +35,53 @@ export function SignatureOverlay({
   // Aspect ratio of the signature image (width / height)
   const [aspectRatio, setAspectRatio] = React.useState<number | null>(null);
 
+  // Ref to ensure the height-initialization side-effect runs only once per
+  // signatureUrl change (guards against stale-closure loops that would occur
+  // if placement / onPlacementChange were added to the dependency array).
+  const hasInitializedRef = React.useRef(false);
+
+  // Stable refs so the image-load callback always reads the latest placement
+  // and callback without them appearing in the effect dependency array.
+  const placementRef = React.useRef(placement);
+  const onPlacementChangeRef = React.useRef(onPlacementChange);
+  React.useLayoutEffect(() => {
+    placementRef.current = placement;
+    onPlacementChangeRef.current = onPlacementChange;
+  });
+
   // Load image to determine aspect ratio
   React.useEffect(() => {
+    // Reset the guard whenever the signature URL changes so a fresh image
+    // always gets its height initialised.
+    hasInitializedRef.current = false;
+
     const img = new Image();
     img.src = signatureUrl;
     img.onload = () => {
       setAspectRatio(img.width / img.height);
-      
-      // Initialize relative height based on signature aspect ratio
-      if (parentRef.current) {
+
+      // Initialise relative height based on signature aspect ratio — only
+      // once per URL so we never enter an infinite update cycle.
+      if (!hasInitializedRef.current && parentRef.current) {
+        hasInitializedRef.current = true;
         const parentRect = parentRef.current.getBoundingClientRect();
         const parentAspect = parentRect.width / parentRect.height;
-        
+
+        // Capture current placement values at the moment the image loads via
+        // the ref to avoid adding `placement` to the dependency array.
+        const currentPlacement = placementRef.current;
+
         // Calculate new height percent to match aspect ratio:
         // width% / height% = imgW / imgH * parentH / parentW
-        const desiredHeight = placement.width / (img.width / img.height) * parentAspect;
-        onPlacementChange({
-          ...placement,
-          height: Math.min(100 - placement.y, desiredHeight),
+        const desiredHeight =
+          currentPlacement.width / (img.width / img.height) * parentAspect;
+        onPlacementChangeRef.current({
+          ...currentPlacement,
+          height: Math.min(100 - currentPlacement.y, desiredHeight),
         });
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signatureUrl]);
 
   const handlePointerDown = (
@@ -178,7 +204,6 @@ export function SignatureOverlay({
 
   return (
     <div
-      id="signature-overlay-box"
       style={{
         position: "absolute",
         left: `${placement.x}%`,
@@ -192,6 +217,20 @@ export function SignatureOverlay({
       }}
       onMouseDown={(e) => handlePointerDown(e, "drag")}
       onTouchStart={(e) => handlePointerDown(e, "drag")}
+      tabIndex={0}
+      role="group"
+      aria-label="Signature overlay — use arrow keys to reposition"
+      onKeyDown={(e) => {
+        const STEP = 1; // 1% per key press
+        let newX = placement.x;
+        let newY = placement.y;
+        if (e.key === "ArrowLeft") { e.preventDefault(); newX = Math.max(0, placement.x - STEP); }
+        else if (e.key === "ArrowRight") { e.preventDefault(); newX = Math.min(100 - placement.width, placement.x + STEP); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); newY = Math.max(0, placement.y - STEP); }
+        else if (e.key === "ArrowDown") { e.preventDefault(); newY = Math.min(100 - placement.height, placement.y + STEP); }
+        else return;
+        onPlacementChange({ ...placement, x: newX, y: newY });
+      }}
     >
       <img
         src={signatureUrl}
@@ -202,7 +241,6 @@ export function SignatureOverlay({
 
       {/* Resize Handle: Bottom Right */}
       <div
-        id="signature-overlay-resize-handle"
         className="absolute -bottom-1.5 -right-1.5 h-3.5 w-3.5 bg-brand border border-white cursor-se-resize rounded-full shadow-sm"
         onMouseDown={(e) => handlePointerDown(e, "resize")}
         onTouchStart={(e) => handlePointerDown(e, "resize")}
@@ -210,7 +248,6 @@ export function SignatureOverlay({
 
       {/* Delete button: Top Right */}
       <button
-        id="signature-overlay-delete-btn"
         type="button"
         onClick={(e) => {
           e.stopPropagation();

@@ -27,21 +27,48 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
   const [uploadError, setUploadError] = React.useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  // Initialize drawing canvas resolution
+  // Store DPR in a ref so drawing callbacks always use the value set during init
+  const dprRef = React.useRef<number>(1);
+
+  // Initialize drawing canvas resolution using ResizeObserver so sizing
+  // fires after layout is complete (handles off-screen / collapsed containers).
   React.useEffect(() => {
-    if (activeTab === "draw" && canvasRef.current) {
-      const canvas = canvasRef.current;
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * 2; // high DPI scale
-      canvas.height = rect.height * 2;
-      
+    if (activeTab !== "draw" || !canvasRef.current) return;
+    const canvas = canvasRef.current;
+
+    const initCanvas = (cssWidth: number, cssHeight: number) => {
+      const dpr = window.devicePixelRatio || 1;
+      dprRef.current = dpr;
+      // Use minimum dimensions so a zero-size layout never produces a 0×0 canvas
+      const w = Math.max(cssWidth, 640);
+      const h = Math.max(cssHeight, 240);
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      // No ctx.scale — drawing code will multiply by dpr directly
       const ctx = canvas.getContext("2d");
       if (ctx) {
-        ctx.scale(2, 2);
         ctx.fillStyle = "rgba(0,0,0,0)";
-        ctx.fillRect(0, 0, rect.width, rect.height);
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
+    };
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      const { width, height } = entry.contentRect;
+      initCanvas(width, height);
+    });
+
+    observer.observe(canvas);
+
+    // Eagerly init with whatever size is already available (may be 0 if
+    // off-screen — the observer will fire again once layout is complete)
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0) {
+      initCanvas(rect.width, rect.height);
     }
+
+    return () => observer.disconnect();
   }, [activeTab]);
 
   const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
@@ -61,10 +88,13 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
       clientY = e.clientY;
     }
     
-    // Coordinate relative to CSS rect bounds
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
-    
+    // Multiply by DPR to convert CSS-pixel coordinates to physical canvas pixels.
+    // dprRef.current is set during canvas initialisation and matches the scale
+    // factor used for canvas.width / canvas.height.
+    const dpr = dprRef.current;
+    const x = (clientX - rect.left) * dpr;
+    const y = (clientY - rect.top) * dpr;
+
     return { x, y };
   };
 

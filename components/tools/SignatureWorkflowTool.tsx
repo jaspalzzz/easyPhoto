@@ -42,7 +42,7 @@ function smoothCanvas(canvas: HTMLCanvasElement, radius: number): HTMLCanvasElem
   
   for (let i = 0; i < data.length; i += 4) {
     const alpha = data[i + 3];
-    let newAlpha = (alpha - 110) * 8;
+    let newAlpha = (alpha - 64) * 4;
     if (newAlpha < 0) newAlpha = 0;
     if (newAlpha > 255) newAlpha = 255;
     data[i + 3] = newAlpha;
@@ -90,6 +90,11 @@ function Body({
   const [width, setWidth] = React.useState<number>(0);
   const [height, setHeight] = React.useState<number>(0);
   const [lock, setLock] = React.useState(true);
+  // Stable aspect ratio derived from source on first pipeline output — not from stale `out`
+  const lockedAspectRef = React.useRef<number | null>(null);
+
+  // Before/After comparison toggle
+  const [showOriginal, setShowOriginal] = React.useState(false);
 
   // Eraser Settings
   const [eraserEnabled, setEraserEnabled] = React.useState(false);
@@ -102,6 +107,10 @@ function Body({
 
   // Output Result State
   const [busy, setBusy] = React.useState(false);
+  const [processingError, setProcessingError] = React.useState<string | null>(null);
+  const [cropWarning, setCropWarning] = React.useState(false);
+  // Pre-crop cleaned canvas URL — used as eraser drawing surface so coordinates stay in source space
+  const [cleanedUrl, setCleanedUrl] = React.useState<string | null>(null);
   const [out, setOut] = React.useState<{
     url: string;
     blob: Blob;
@@ -128,6 +137,8 @@ function Body({
       }
       eraserCanvasRef.current = canvas;
       setEraserVersion(0);
+      // Reset stored aspect ratio so it is re-derived from the new source
+      lockedAspectRef.current = null;
     }
   }, [source]);
 
@@ -216,6 +227,8 @@ function Body({
 
     const processCanvas = async () => {
       setBusy(true);
+      setProcessingError(null);
+      setCropWarning(false);
       try {
         // Step 1: Initialize canvas
         const base = imageToCanvas(source.image, source.size.width, source.size.height);
@@ -245,6 +258,11 @@ function Body({
           finalCleaned = smoothCanvas(cleaned, dSmoothing);
         }
 
+        // Capture pre-crop cleaned URL for eraser coordinate alignment
+        if (!cancelled) {
+          setCleanedUrl(finalCleaned.toDataURL("image/png"));
+        }
+
         // Step 3: Trim / Crop
         let finalCanvas = finalCleaned;
         let cropOk = true;
@@ -257,6 +275,7 @@ function Body({
             finalCanvas = trimmed;
           } else {
             cropOk = false;
+            if (!cancelled) setCropWarning(true);
           }
         }
 
@@ -318,6 +337,11 @@ function Body({
 
         if (cancelled) return;
 
+        // Capture a stable aspect ratio from the source on the first run
+        if (lockedAspectRef.current === null && source.size.height > 0) {
+          lockedAspectRef.current = source.size.width / source.size.height;
+        }
+
         setOut({
           url: resultCanvas.toDataURL(bgFormat === "jpeg" ? "image/jpeg" : "image/png"),
           blob: resultBlob,
@@ -337,6 +361,7 @@ function Body({
       } catch (err) {
         console.error("Signature processing error:", err);
         if (!cancelled) {
+          setProcessingError("Processing failed — try a different image or adjust the settings.");
           track({
             name: "tool_failure",
             tool: toolName,
@@ -398,17 +423,17 @@ function Body({
 
   const handleWidthChange = (val: number) => {
     setWidth(val);
-    if (lock && out) {
-      const aspect = out.w / out.h;
-      setHeight(Math.max(1, Math.round(val / aspect)));
+    if (lock) {
+      const aspect = lockedAspectRef.current ?? (out ? out.w / out.h : null);
+      if (aspect) setHeight(Math.max(1, Math.round(val / aspect)));
     }
   };
 
   const handleHeightChange = (val: number) => {
     setHeight(val);
-    if (lock && out) {
-      const aspect = out.w / out.h;
-      setWidth(Math.max(1, Math.round(val * aspect)));
+    if (lock) {
+      const aspect = lockedAspectRef.current ?? (out ? out.w / out.h : null);
+      if (aspect) setWidth(Math.max(1, Math.round(val * aspect)));
     }
   };
 
@@ -434,26 +459,54 @@ function Body({
               <p className="mt-2">Processing signature...</p>
             </div>
           ) : out ? (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center gap-2">
+              {out && (
+                <div className="flex gap-1 self-end">
+                  <button
+                    type="button"
+                    onClick={() => setShowOriginal(false)}
+                    className={`px-2 py-0.5 rounded text-[10px] font-medium border transition-colors ${
+                      !showOriginal ? "bg-brand/10 border-brand text-brand" : "border-hairline text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    After
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowOriginal(true)}
+                    className={`px-2 py-0.5 rounded text-[10px] font-medium border transition-colors ${
+                      showOriginal ? "bg-brand/10 border-brand text-brand" : "border-hairline text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Before
+                  </button>
+                </div>
+              )}
               <img
                 ref={imgRef}
-                src={out.url}
-                alt="Processed signature preview"
+                src={
+                  showOriginal
+                    ? source.url
+                    : eraserEnabled && cleanedUrl
+                    ? cleanedUrl
+                    : out.url
+                }
+                alt={showOriginal ? "Original signature" : "Processed signature preview"}
                 className={`max-h-[260px] w-auto object-contain select-none ${
-                  bgFormat === "jpeg" ? "bg-white" : ""
+                  bgFormat === "jpeg" && !showOriginal ? "bg-white" : ""
                 } ${
-                  eraserEnabled ? "cursor-crosshair border border-dashed border-brand/40" : ""
+                  eraserEnabled && !showOriginal ? "cursor-crosshair border border-dashed border-brand/40" : ""
                 }`}
                 draggable={false}
-                onMouseDown={handleStart}
-                onMouseMove={handleMove}
-                onMouseUp={handleEnd}
-                onMouseLeave={handleEnd}
-                onTouchStart={handleStart}
-                onTouchMove={handleMove}
-                onTouchEnd={handleEnd}
+                onMouseDown={!showOriginal ? handleStart : undefined}
+                onMouseMove={!showOriginal ? handleMove : undefined}
+                onMouseUp={!showOriginal ? handleEnd : undefined}
+                onMouseLeave={!showOriginal ? handleEnd : undefined}
+                onTouchStart={!showOriginal ? handleStart : undefined}
+                onTouchMove={!showOriginal ? handleMove : undefined}
+                onTouchEnd={!showOriginal ? handleEnd : undefined}
               />
-              {eraserEnabled && (
+              {eraserEnabled && !showOriginal && (
                 <p className="text-[11px] text-brand font-medium mt-2 text-center">
                   Drag on the image above to erase unwanted parts.
                 </p>
@@ -463,6 +516,18 @@ function Body({
             <div className="py-20 text-sm text-muted-foreground">No preview available</div>
           )}
         </PreviewFrame>
+
+        {processingError && (
+          <p className="border-l-2 border-red-500 bg-red-50/60 p-2 text-xs text-red-900 leading-normal">
+            {processingError}
+          </p>
+        )}
+
+        {cropWarning && autoCrop && (
+          <p className="border-l-2 border-amber-500 bg-amber-50/60 p-2 text-xs text-amber-900 leading-normal">
+            Auto-crop found no ink content — check your threshold settings.
+          </p>
+        )}
 
         {out && !busy && (
           <div className="rounded-md border border-hairline bg-paper p-4 space-y-3">
@@ -487,9 +552,9 @@ function Body({
       </div>
 
       {/* Right: Controls Panel with Tabs */}
-      <div className="space-y-4">
+      <div className={`space-y-4 ${busy ? "pointer-events-none opacity-50" : ""}`}>
         {/* Navigation Tabs */}
-        <div className="flex border-b border-hairline">
+        <div className="flex overflow-x-auto border-b border-hairline">
           <button
             id="sig-tab-clean"
             type="button"
@@ -524,7 +589,7 @@ function Body({
                 : "border-transparent text-muted-foreground hover:text-foreground"
             }`}
           >
-            <Maximize2 className="h-4 w-4" /> Resize &amp; Presets
+            <Maximize2 className="h-4 w-4" /> <span className="whitespace-nowrap">Resize<span className="hidden sm:inline"> &amp; Presets</span></span>
           </button>
         </div>
 

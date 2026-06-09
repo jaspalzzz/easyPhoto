@@ -21,20 +21,27 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
   const [threshold, setThreshold] = React.useState(200);
   const [darken, setDarken] = React.useState(false);
   const [out, setOut] = React.useState<{ url: string; canvas: HTMLCanvasElement } | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
   // Debounce the slider so the full-res pass runs when dragging pauses, not per tick.
   const debouncedThreshold = useDebouncedValue(threshold, 150);
 
   React.useEffect(() => {
-    const base = imageToCanvas(source.image, source.size.width, source.size.height);
-    let result = whiteToTransparent(base, {
-      threshold: debouncedThreshold,
-      softness: 40,
-      darkenInk: options.allowDarken && darken,
-    });
-    if (options.autoCrop) {
-      result = trimToContent(result, { mode: "alpha", padding: 12 }).canvas;
+    try {
+      setError(null);
+      const base = imageToCanvas(source.image, source.size.width, source.size.height);
+      let result = whiteToTransparent(base, {
+        threshold: debouncedThreshold,
+        softness: 40,
+        darkenInk: options.allowDarken && darken,
+      });
+      if (options.autoCrop) {
+        result = trimToContent(result, { mode: "alpha", padding: 12 }).canvas;
+      }
+      setOut({ url: result.toDataURL("image/png"), canvas: result });
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Failed to process image. Please try again.");
     }
-    setOut({ url: result.toDataURL("image/png"), canvas: result });
   }, [source, debouncedThreshold, darken, options.autoCrop, options.allowDarken]);
 
   const onDownload = async () => {
@@ -49,6 +56,12 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={out?.url} alt="Transparent signature" className="max-h-[280px] w-auto" />
       </PreviewFrame>
+
+      {error && (
+        <p className="text-sm text-destructive" role="alert">
+          {error}
+        </p>
+      )}
 
       <label className="block text-sm">
         <span className="mb-1 flex items-center justify-between">
