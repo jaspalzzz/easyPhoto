@@ -162,6 +162,13 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
               is the smallest achievable. Try a lower target or smaller image.
             </p>
           )}
+          {minWidth && minHeight && (result.width < minWidth || result.height < minHeight) && (
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-amber-900">
+              Below the required {minWidth}×{minHeight}px minimum — your source
+              image is too small for this portal, so it may be rejected. Upload a
+              higher-resolution photo.
+            </p>
+          )}
           <Button
             size="sm"
             onClick={handleDownload}

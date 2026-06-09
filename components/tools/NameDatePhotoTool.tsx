@@ -293,8 +293,6 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
         blob: res.blob,
       });
 
-      downloadBlob(res.blob, `photo-with-name-date.jpg`);
-
       const duration = typeof performance !== "undefined" ? performance.now() - t0 : 0;
       track({
         name: "tool_success",
@@ -302,11 +300,15 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
         device: deviceClass(),
         ms: Math.round(duration),
       });
-      track({
-        name: "download",
-        tool: "photo-with-name-date",
-        format: "jpg",
-      });
+
+      // Only hand over the file automatically when it meets the KB cap. If it's
+      // still over after auto-compression, hold the download — the result panel
+      // surfaces the overage with an explicit "Download anyway" — so a
+      // non-compliant file is never delivered silently.
+      if (res.underCap) {
+        downloadBlob(res.blob, `photo-with-name-date.jpg`);
+        track({ name: "download", tool: "photo-with-name-date", format: "jpg" });
+      }
     } catch (e) {
       // Analytics reason must be a stable CODE, not a free-form message (no PII).
       console.error(e);
@@ -494,13 +496,32 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
 
         {/* Compression statistics */}
         {result && (
-          <div className="rounded-md border border-hairline bg-paper p-4 text-xs space-y-1.5">
+          <div className="rounded-md border border-hairline bg-paper p-4 text-xs space-y-2">
             <p className="font-semibold text-ink">Export Summary:</p>
             <ul className="space-y-1 text-ink-soft font-mono">
               <li>· Actual Size: {formatKb(result.bytes)}</li>
               <li>· Dimensions: {result.width}×{result.height}px</li>
-              <li>· Status: {result.underCap ? "🟢 Compliant size" : "⚠️ Size target exceeded"}</li>
+              <li>· Status: {result.underCap ? "🟢 Compliant size" : `⚠️ Over the ${targetKb} KB limit`}</li>
             </ul>
+            {!result.underCap && (
+              <div className="space-y-2 border-t border-hairline pt-2">
+                <p className="leading-relaxed text-amber-700">
+                  Still above the {targetKb} KB limit even after compression — your
+                  portal may reject it. Try a smaller strip height or a higher
+                  target, or download it anyway.
+                </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    downloadBlob(result.blob, "photo-with-name-date.jpg");
+                    track({ name: "download", tool: "photo-with-name-date", format: "jpg" });
+                  }}
+                >
+                  <Download className="h-4 w-4" /> Download anyway (over limit)
+                </Button>
+              </div>
+            )}
           </div>
         )}
 

@@ -405,6 +405,12 @@ export function FormatConverterTool({
                       </button>
                     ))}
                   </div>
+                  {targetFormat === "image/jpeg" && (
+                    <p className="text-[10px] leading-normal text-amber-700">
+                      JPG has no transparency — transparent areas (from PNG/WebP)
+                      are filled with white. Pick PNG or WebP to keep transparency.
+                    </p>
+                  )}
                 </div>
 
                 {/* Quality */}
