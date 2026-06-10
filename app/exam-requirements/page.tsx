@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { allPortalSpecs } from "@/lib/specRegistry";
+import {
+  allPortalSpecs,
+  portalCategory,
+  PORTAL_CATEGORY_LABEL,
+  type PortalCategory,
+} from "@/lib/specRegistry";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -9,15 +14,30 @@ export const metadata = pageMetadata({
   title: "Exam Photo & Signature Size Requirements (Official, India)",
   titleAbsolute: true,
   description:
-    "Official photo and signature size, dimensions and file-size limits for Indian exam & recruitment forms — SSC, UPSC, IBPS, SBI, RRB, NTA (NEET/JEE), RBI, CTET, State PSCs and more. Each with its source. Resize free in your browser.",
+    "Official photo and signature size, dimensions and file-size limits for 30+ Indian exam & recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA (NEET/JEE), RBI, NABARD, LIC, and State PSCs (RPSC, TNPSC, KPSC, UPPSC, BPSC and more). Each with its official source. Resize free in your browser.",
   path: "/exam-requirements/",
 });
 
 const photoKb = (min: number | undefined, max: number) =>
   min ? `${min}–${max} KB` : `≤ ${max} KB`;
 
+/** Display order of the topical categories on the directory. */
+const CATEGORY_ORDER: PortalCategory[] = [
+  "central",
+  "banking",
+  "state-psc",
+  "national",
+  "defence",
+  "visa",
+];
+
 export default function Page() {
   const specs = allPortalSpecs();
+  const grouped = CATEGORY_ORDER.map((cat) => ({
+    cat,
+    label: PORTAL_CATEGORY_LABEL[cat],
+    items: specs.filter((s) => portalCategory(s.id) === cat),
+  })).filter((g) => g.items.length > 0);
 
   return (
     <div className="container max-w-4xl space-y-8 py-10">
@@ -39,28 +59,33 @@ export default function Page() {
         </p>
       </header>
 
-      <section className="register sm:grid-cols-2">
-        {specs.map((s) => (
-          <Link
-            key={s.id}
-            href={`/exam-requirements/${s.id}/`}
-            className="group flex items-start gap-3 bg-card p-4 transition-colors hover:bg-accent/40"
-          >
-            <span className="min-w-0">
-              <span className="block truncate font-medium leading-tight">
-                {s.name.split(" (")[0]}
-              </span>
-              <span className="spec mt-1 block normal-case tracking-[0.06em]">
-                Photo {photoKb(s.photoMinKb, s.photoLimitKb)}
-                {s.sigLimitKb
-                  ? ` · Sign ${photoKb(s.sigMinKb, s.sigLimitKb)}`
-                  : ""}
-              </span>
-            </span>
-            <ArrowRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
-          </Link>
-        ))}
-      </section>
+      {grouped.map((group) => (
+        <section key={group.cat} className="space-y-3">
+          <h2 className="eyebrow">{group.label}</h2>
+          <div className="register sm:grid-cols-2">
+            {group.items.map((s) => (
+              <Link
+                key={s.id}
+                href={`/exam-requirements/${s.id}/`}
+                className="group flex items-start gap-3 bg-card p-4 transition-colors hover:bg-accent/40"
+              >
+                <span className="min-w-0">
+                  <span className="block truncate font-medium leading-tight">
+                    {s.name.split(" (")[0]}
+                  </span>
+                  <span className="spec mt-1 block normal-case tracking-[0.06em]">
+                    Photo {photoKb(s.photoMinKb, s.photoLimitKb)}
+                    {s.sigLimitKb
+                      ? ` · Sign ${photoKb(s.sigMinKb, s.sigLimitKb)}`
+                      : ""}
+                  </span>
+                </span>
+                <ArrowRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
+              </Link>
+            ))}
+          </div>
+        </section>
+      ))}
 
       <section className="rounded-lg border border-hairline bg-paper p-5 sm:p-6">
         <h2 className="text-base font-semibold tracking-tight">Need to resize now?</h2>
