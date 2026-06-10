@@ -15,7 +15,7 @@ export interface HinglishPage {
   description: string; // meta description
   h1: string; // on-page heading
   blurb: string; // intro line
-  tool: "photo-kb" | "signature-kb" | "white-bg";
+  tool: "photo-kb" | "signature-kb" | "white-bg" | "pdf-compress";
   kb: number; // KB target (ignored for white-bg)
   faqs: FaqItem[];
 }
@@ -207,6 +207,64 @@ export const HINGLISH_PAGES: HinglishPage[] = [
       {
         q: "Kya signature kahin upload hota hai?",
         a: "Nahi. Signature aapke browser me hi process hota hai, kabhi server par upload nahi hota.",
+      },
+    ],
+  },
+  {
+    slug: "pdf-ka-size-kaise-kam-kare",
+    title: "PDF Ka Size Kaise Kam Kare — Free Online PDF Compressor",
+    description:
+      "PDF ka size kaise kam kare online free me? Marksheet, certificate ya koi bhi PDF ko 50-200 KB me compress kare — exam aur sarkari form ke liye. Private, koi upload nahi.",
+    h1: "PDF Ka Size Kaise Kam Kare",
+    blurb:
+      "Apna PDF upload kare, target KB set kare — marksheet ya certificate seconds me compress ho jata hai. Sab kuch browser me, koi upload nahi.",
+    tool: "pdf-compress",
+    kb: 100,
+    faqs: [
+      {
+        q: "PDF ka size kaise kam kare?",
+        a: "PDF upload kare, target size (jaise 50 KB ya 100 KB) set kare, aur compress button dabaye. Tool PDF ko automatically us size me compress kar deta hai. Phir download kar lijiye.",
+      },
+      {
+        q: "Exam form ke liye PDF kitne KB ka chahiye?",
+        a: "Zyaadatar exam portals (UPSC, IBPS, SSC) marksheet aur certificate ke liye 50-100 KB maangte hain. Apne form ki instruction zaroor padhein — kuch portals 200 KB tak allow karte hain.",
+      },
+      {
+        q: "Kya PDF compress karne se quality kharab hoti hai?",
+        a: "Scanned documents (marksheet, certificate, Aadhaar) bahut achhe se compress hote hain — text readable rehta hai. Bahut tight target (jaise 50 KB 4-page document ke liye) pe thodi quality kam ho sakti hai.",
+      },
+      {
+        q: "Kya PDF private rehta hai? Kahin upload hota hai?",
+        a: "Nahi. Aapka PDF kabhi server par upload nahi hota — poora compression aapke browser me hota hai.",
+      },
+    ],
+  },
+  {
+    slug: "pdf-compress-kaise-kare",
+    title: "PDF Compress Kaise Kare — Online Free PDF Size Reducer",
+    description:
+      "PDF compress kaise kare? Certificate, marksheet ya koi bhi PDF ko online free me small kare — exam portal upload ke liye. 100% private, koi upload nahi.",
+    h1: "PDF Compress Kaise Kare",
+    blurb:
+      "Kisi bhi PDF ko online compress kare — marksheet, certificate, Aadhaar — bilkul free, browser me.",
+    tool: "pdf-compress",
+    kb: 100,
+    faqs: [
+      {
+        q: "PDF compress karne ka sabse aasaan tarika kya hai?",
+        a: "PDF upload kare, target KB select kare (jaise 100 KB), aur 'Compress' dabaye. Tool apne aap best quality rakhte hue size ghatata hai. Download ho jata hai.",
+      },
+      {
+        q: "Marksheet ya certificate ka PDF size kaise kam kare?",
+        a: "Scanned marksheet ya certificate ka PDF upload kare, target 50 KB ya 100 KB set kare, aur compress kar lijiye. Scanned pages bahut achhe compress hote hain kyunki unme zyaadatar white space hota hai.",
+      },
+      {
+        q: "Kya compressed PDF me se text selectable rehega?",
+        a: "PDF compression pages ko images me convert karta hai, isliye text selectable nahi rehta. Lekin exam portal uploads ke liye yeh zaruri nahi hota — document dikhne me sahi rehta hai.",
+      },
+      {
+        q: "Kya yeh mobile se bhi kaam karta hai?",
+        a: "Haan. Mobile browser me yeh page kholen, PDF upload karen aur compress kar len. Alag app ki zaroorat nahi.",
       },
     ],
   },
