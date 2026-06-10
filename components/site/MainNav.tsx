@@ -4,8 +4,8 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, ArrowRight } from "lucide-react";
-import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
-import { ToolIcon } from "@/components/site/ToolIcon";
+import { TOOLS_CATALOG, toolColorCategory } from "@/lib/toolsCatalog";
+import { ToolIconTile } from "@/components/site/ToolIcon";
 import { cn } from "@/lib/utils";
 
 /** Header nav with a Tools mega-menu (every tool one click away, anywhere). */
@@ -110,7 +110,7 @@ export function MainNav() {
           <div
             id="tools-mega-menu"
             role="menu"
-            className="absolute right-0 z-50 mt-2 w-[min(95vw,760px)] overflow-hidden rounded-xl border border-hairline bg-paper shadow-pop"
+            className="absolute right-0 z-50 mt-2 w-[min(95vw,780px)] overflow-hidden rounded-2xl border border-hairline bg-surface shadow-pop"
           >
             {/* One column per category — every tool visible at a glance, no scroll */}
             <div className="grid grid-cols-3 divide-x divide-hairline">
@@ -138,11 +138,13 @@ export function MainNav() {
                             href={`/tools/${t.slug}/`}
                             onClick={() => setOpen(false)}
                             role="menuitem"
-                            className="group/item flex items-start gap-2 rounded-md px-2 py-1.5 text-[13px] leading-snug text-foreground transition-colors hover:bg-accent/60"
+                            className="group/item flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-[13px] font-medium leading-snug text-foreground transition-colors hover:bg-accent/60"
                           >
-                            <span className="mt-px inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border border-hairline bg-card text-ink-soft transition-colors group-hover/item:border-brand/40 group-hover/item:text-brand">
-                              <ToolIcon name={t.icon} className="h-3 w-3" />
-                            </span>
+                            <ToolIconTile
+                              name={t.icon}
+                              category={toolColorCategory(t.slug)}
+                              size="sm"
+                            />
                             <span>{t.title}</span>
                           </Link>
                         </li>

@@ -112,16 +112,16 @@ export default function RootLayout({
         </a>
         {/* Site-wide structured data: brand + website */}
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
-        {/* Solid paper header on a hairline — no glass/blur. */}
-        <header className="sticky top-0 z-40 border-b border-hairline bg-paper">
-          <div className="container flex h-14 items-center justify-between">
+        {/* Crisp white header with a whisper of elevation — brand-forward. */}
+        <header className="sticky top-0 z-40 border-b border-hairline bg-surface shadow-[0_1px_3px_rgb(0_0_0/0.04)]">
+          <div className="container flex h-16 items-center justify-between">
             <Link
               href="/"
-              className="flex items-center gap-2.5"
+              className="flex items-center gap-2.5 transition-opacity hover:opacity-90"
               aria-label="easyPhoto home"
             >
-              <LogoMark className="h-8 w-8" />
-              <Wordmark className="text-lg" />
+              <LogoMark className="h-9 w-9" />
+              <Wordmark className="text-[1.35rem]" />
             </Link>
             <div className="flex items-center">
               <MainNav />

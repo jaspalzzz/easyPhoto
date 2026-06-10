@@ -76,22 +76,27 @@ const TILE_COLORS: Record<ToolColorCategory, string> = {
 export function ToolIconTile({
   name,
   category,
+  size = "md",
   className,
 }: {
   name: string;
   category: ToolColorCategory;
+  size?: "sm" | "md";
   className?: string;
 }) {
   const Icon = MAP[name] ?? Wrench;
+  const tile = size === "sm" ? "h-8 w-8 rounded-lg" : "h-11 w-11 rounded-xl";
+  const glyph = size === "sm" ? "h-4 w-4" : "h-[22px] w-[22px]";
   return (
     <span
       className={cn(
-        "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-150",
+        "inline-flex shrink-0 items-center justify-center transition-colors duration-150",
+        tile,
         TILE_COLORS[category],
         className
       )}
     >
-      <Icon className="h-[22px] w-[22px]" strokeWidth={1.9} />
+      <Icon className={glyph} strokeWidth={1.9} />
     </span>
   );
 }
