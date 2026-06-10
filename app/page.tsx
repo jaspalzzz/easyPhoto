@@ -5,7 +5,8 @@ import {
   LAUNCH_ORDER,
   effectivePrintMm,
 } from "@/lib/countrySpecs";
-import { POPULAR_TOOLS, getTool, toolColorCategory } from "@/lib/toolsCatalog";
+import { POPULAR_TOOLS, getTool, toolColorCategory, READY_TOOLS } from "@/lib/toolsCatalog";
+import { PORTAL_KEYS } from "@/lib/portalPresets";
 import { primaryMakerPath } from "@/lib/makerPages";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
 import { HowItWorks, HOW_IT_WORKS_STEPS } from "@/components/site/HowItWorks";
@@ -73,40 +74,52 @@ export default function HomePage() {
         })}
       />
 
-      {/* Hero — paper, tool-first, no gradients */}
-      <section className="border-b border-hairline">
-        <div className="container py-14 sm:py-20">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="eyebrow">Passport, exam &amp; document tools</span>
-            <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.05] tracking-tightest sm:text-[3.25rem]">
-              Document photos, exact{" "}
-              <span className="text-brand">to the millimetre</span>
-            </h1>
-            <p className="mx-auto mt-4 max-w-xl text-pretty text-[15px] leading-relaxed text-muted-foreground">
-              Pick your country and drop a photo. We crop to the exact head size
-              and apply the background your government requires, then check it.
-              It&apos;s free and runs entirely in your browser.
-            </p>
-            
-            <div className="mt-6">
-              <ToolSearch />
+      {/* Hero — two columns: value proposition + live passport starter */}
+      <section className="border-b border-hairline bg-paper">
+        <div className="container py-12 sm:py-16 lg:py-20">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+            {/* Left: value proposition */}
+            <div className="max-w-xl">
+              <span className="eyebrow">Passport, exam &amp; document tools</span>
+              <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
+                Document photos, exact{" "}
+                <span className="text-brand">to the millimetre</span>
+              </h1>
+              <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+                Pick your country and drop a photo — we crop to the exact head
+                size, apply the background your government requires, and check it.
+                Free, and entirely in your browser.
+              </p>
+
+              {/* Credibility stats — real, dynamic counts */}
+              <dl className="mt-7 flex flex-wrap gap-x-8 gap-y-3">
+                {[
+                  { v: `${LAUNCH_ORDER.length}`, l: "country specs" },
+                  { v: `${PORTAL_KEYS.length}`, l: "exam & form specs" },
+                  { v: `${READY_TOOLS.length}`, l: "free tools" },
+                ].map((s) => (
+                  <div key={s.l}>
+                    <dt className="text-2xl font-bold tracking-tight text-ink">
+                      {s.v}
+                    </dt>
+                    <dd className="text-xs text-muted-foreground">{s.l}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="mt-6 max-w-md">
+                <ToolSearch />
+              </div>
+
+              <div className="mt-6">
+                <TrustPills />
+              </div>
             </div>
 
-            <div className="spec mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-              <span>Exact size</span>
-              <span className="text-ink-faint">/</span>
-              <span>Correct background</span>
-              <span className="text-ink-faint">/</span>
-              <span>Compliance-checked</span>
+            {/* Right: live passport starter */}
+            <div className="lg:pl-2">
+              <HeroStarter />
             </div>
-          </div>
-
-          <div className="mx-auto mt-9 max-w-2xl text-left">
-            <HeroStarter />
-          </div>
-
-          <div className="mt-7">
-            <TrustPills />
           </div>
         </div>
       </section>
