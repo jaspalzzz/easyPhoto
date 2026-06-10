@@ -18,7 +18,26 @@ export function organizationSchema() {
     "@type": "Organization",
     "@id": ORG_ID,
     name: SITE_NAME,
+    alternateName: "easyphoto.in",
     url: SITE_URL,
+    // Canonical brand description — this is what AI assistants (ChatGPT, Gemini,
+    // Perplexity) and Google surface when asked "what is easyPhoto?".
+    description:
+      "easyPhoto is a free, privacy-first web app for creating compliant passport " +
+      "and visa photos and preparing application documents. It auto-crops photos to " +
+      "each country's official head-size and background rules, resizes photos and " +
+      "signatures to exact KB and pixel limits for exam and government forms, and " +
+      "offers image and PDF utilities — all running entirely in the user's browser, " +
+      "with no upload, no sign-up and no watermark.",
+    slogan: "Document photos, exact to the millimetre.",
+    knowsAbout: [
+      "Passport photo requirements",
+      "Visa photo specifications",
+      "Indian government exam photo and signature size limits",
+      "Image compression and resizing to KB",
+      "Background removal and white-background photos",
+      "PDF compression, merging and conversion",
+    ],
     logo: {
       "@type": "ImageObject",
       url: absoluteUrl("/icon-512.png"),
