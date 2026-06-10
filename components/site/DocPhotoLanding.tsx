@@ -4,6 +4,7 @@ import { makerPagesByKind, makerSpec } from "@/lib/makerPages";
 import { HeroStarter } from "@/components/site/HeroStarter";
 import { Flag } from "@/components/site/Flag";
 import { TrustStrip } from "@/components/site/TrustStrip";
+import { ExploreTools } from "@/components/site/ExploreTools";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -100,6 +101,12 @@ export function DocPhotoLanding({
         </div>
         <TrustStrip />
       </section>
+
+      <ExploreTools
+        className="mt-14"
+        heading="More free tools"
+        subtitle="Resize, compress, sign and convert — all on-device, no sign-up."
+      />
 
       <section className="mt-12">
         <Faq items={faqItems} />

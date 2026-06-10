@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { ArrowLeft, Mail, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, Mail, ShieldCheck } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, ORG_ID } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { ExploreTools } from "@/components/site/ExploreTools";
 
 // Change this to your real inbox before launch.
 const EMAIL = "hello@easyphoto.in";
@@ -36,32 +37,37 @@ export default function ContactPage() {
 
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
       >
-        <ArrowLeft className="h-4 w-4" /> Home
+        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> Home
       </Link>
 
-      <article className="mt-6 space-y-8">
-        <header className="space-y-2">
-          <h1 className="text-3xl font-semibold tracking-tight">Contact us</h1>
-          <p className="leading-relaxed text-muted-foreground">
-            Got a question, a bug report, or a photo specification that needs
+      <article className="mt-5 space-y-8">
+        <header className="space-y-3 border-b border-hairline pb-7">
+          <span className="eyebrow text-brand">Contact</span>
+          <h1 className="text-[2rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2.4rem]">
+            We read every message
+          </h1>
+          <p className="max-w-xl text-[17px] leading-relaxed text-muted-foreground">
+            A question, a bug report, or a photo specification that needs
             updating? We&apos;d like to hear from you.
           </p>
         </header>
 
-        <div className="rounded-lg border border-hairline bg-card p-6">
-          <Mail className="h-5 w-5 text-brand" strokeWidth={1.75} />
-          <h2 className="mt-4 text-base font-semibold tracking-tight">Email</h2>
+        <div className="ep-card p-6 sm:p-7">
+          <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand/10 text-brand">
+            <Mail className="h-5 w-5" strokeWidth={1.75} />
+          </span>
+          <h2 className="mt-4 text-base font-semibold tracking-tight text-ink">Email us</h2>
           <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
             The fastest way to reach us. We aim to reply within a couple of
             business days.
           </p>
           <a
             href={`mailto:${EMAIL}`}
-            className="mt-3 inline-block text-sm font-medium text-brand hover:underline"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-cta px-4 py-2.5 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
           >
-            {EMAIL}
+            {EMAIL} <ArrowRight className="h-4 w-4" strokeWidth={2} />
           </a>
         </div>
 
@@ -80,6 +86,12 @@ export default function ContactPage() {
           We don&apos;t collect your photos. There&apos;s nothing to ask about
           your images, because they never leave your device.
         </p>
+
+        <ExploreTools
+          className="border-t border-hairline pt-10"
+          heading="While you're here"
+          subtitle="The most-used free tools — no sign-up, nothing uploaded."
+        />
       </article>
     </div>
   );
