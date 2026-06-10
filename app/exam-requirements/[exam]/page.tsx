@@ -39,7 +39,9 @@ export async function generateMetadata({
   if (!spec) return {};
   const sig = sigKb(spec);
   return pageMetadata({
-    title: `${spec.name} Photo & Signature Size — Official Requirements`,
+    // Short exam name keeps the SERP title under ~60 chars and matches how
+    // people actually search ("SSC photo size", not the full commission name).
+    title: `${spec.name.split(" (")[0]} Photo & Signature Size (Official)`,
     description:
       `${spec.name}: photo ${photoKb(spec)} (${px(spec.photoWidthPx, spec.photoHeightPx)})` +
       (sig ? `, signature ${sig} (${px(spec.sigWidthPx, spec.sigHeightPx)})` : "") +

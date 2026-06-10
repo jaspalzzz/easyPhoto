@@ -34,8 +34,8 @@ export async function generateMetadata({
     // Combined-intent title — distinct from the single-document /{exam}-photo-resizer/
     // pages so the two don't compete for the same keyword.
     title: hasSignature
-      ? `Resize ${spec.name} Photo & Signature Together`
-      : `Resize Photo for ${spec.name}`,
+      ? `${spec.name.split(" (")[0]} Photo & Signature Resizer`
+      : `${spec.name.split(" (")[0]} Photo Resizer`,
     description: `Free all-in-one tool to compress your photo under ${spec.photoLimitKb} KB${sigText} for ${spec.name} application forms — both documents in one place. 100% private, no upload.`,
     path: `/tools/form-resizer/${portal}/`,
   });
