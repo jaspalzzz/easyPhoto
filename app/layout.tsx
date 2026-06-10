@@ -90,7 +90,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#faf6ee",
+  // Brand teal — gives easyPhoto a branded mobile browser/PWA chrome.
+  themeColor: "#157F75",
 };
 
 export default function RootLayout({

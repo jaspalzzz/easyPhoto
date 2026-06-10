@@ -1,8 +1,14 @@
 # Brand assets
 
 The logo lives as editable vector source:
-- `public/icon.svg` — the camera + ID-photo mark (also `components/site/LogoMark.tsx`)
+- `public/icon.svg` — the crop-mark logo (corner crop marks framing a head; the
+  precision/scan motif). Keep in sync with `components/site/LogoMark.tsx`.
 - `public/logo.svg` — full logo (mark + "easyPhoto" wordmark)
+
+Brand palette: document teal `#157F75` (primary), stamp orange `#F57819` (CTA).
+The mobile/PWA `theme_color` is the brand teal (`app/layout.tsx` viewport +
+`public/site.webmanifest`). Social-share OG cards are generated from
+`lib/og.tsx` (logo + teal accent), with `public/og.png` as the static fallback.
 
 ## Generated raster assets
 
