@@ -68,7 +68,7 @@ export default function ConvertHubPage() {
                 href={convertPath(p.slug)}
                 className="ep-card group flex h-full items-start gap-4 p-5"
               >
-                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[hsl(212_80%_42%/0.12)] text-[hsl(212_80%_42%)] transition-colors group-hover:bg-[hsl(212_80%_42%/0.18)]">
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[hsl(212_88%_48%/0.18)] text-[hsl(212_90%_44%)] transition-colors group-hover:bg-[hsl(212_88%_48%/0.28)]">
                   <RefreshCw className="h-[22px] w-[22px]" strokeWidth={1.9} />
                 </span>
                 <div className="min-w-0">

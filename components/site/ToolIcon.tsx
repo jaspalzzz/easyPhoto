@@ -60,17 +60,17 @@ export function ToolIcon({ name, className }: { name: string; className?: string
  */
 const TILE_COLORS: Record<ToolColorCategory, string> = {
   photo:
-    "bg-[hsl(174_72%_30%/0.12)] text-[hsl(174_72%_30%)] group-hover:bg-[hsl(174_72%_30%/0.18)]",
+    "bg-[hsl(174_78%_32%/0.18)] text-[hsl(174_82%_28%)] group-hover:bg-[hsl(174_78%_32%/0.28)]",
   pdf:
-    "bg-[hsl(8_75%_45%/0.12)] text-[hsl(8_75%_45%)] group-hover:bg-[hsl(8_75%_45%/0.18)]",
+    "bg-[hsl(8_85%_50%/0.18)] text-[hsl(8_88%_46%)] group-hover:bg-[hsl(8_85%_50%/0.28)]",
   signature:
-    "bg-[hsl(245_60%_52%/0.12)] text-[hsl(245_60%_52%)] group-hover:bg-[hsl(245_60%_52%/0.18)]",
+    "bg-[hsl(248_75%_58%/0.18)] text-[hsl(248_78%_56%)] group-hover:bg-[hsl(248_75%_58%/0.28)]",
   privacy:
-    "bg-[hsl(150_60%_32%/0.12)] text-[hsl(150_60%_32%)] group-hover:bg-[hsl(150_60%_32%/0.18)]",
+    "bg-[hsl(150_70%_36%/0.18)] text-[hsl(150_76%_30%)] group-hover:bg-[hsl(150_70%_36%/0.28)]",
   convert:
-    "bg-[hsl(212_80%_42%/0.12)] text-[hsl(212_80%_42%)] group-hover:bg-[hsl(212_80%_42%/0.18)]",
+    "bg-[hsl(212_88%_48%/0.18)] text-[hsl(212_90%_44%)] group-hover:bg-[hsl(212_88%_48%/0.28)]",
   exam:
-    "bg-[hsl(30_85%_38%/0.12)] text-[hsl(30_85%_38%)] group-hover:bg-[hsl(30_85%_38%/0.18)]",
+    "bg-[hsl(33_92%_46%/0.18)] text-[hsl(30_92%_40%)] group-hover:bg-[hsl(33_92%_46%/0.28)]",
 };
 
 export function ToolIconTile({
