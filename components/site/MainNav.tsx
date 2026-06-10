@@ -107,52 +107,61 @@ export function MainNav() {
         </button>
 
         {open && (
-          <div id="tools-mega-menu" role="menu" className="absolute right-0 z-50 mt-2 flex w-[min(92vw,680px)] flex-col overflow-hidden rounded-lg border border-hairline bg-paper shadow-pop">
-            {/* Scrollable content — never taller than the viewport */}
-            <div className="overflow-y-auto p-4" style={{ maxHeight: "min(calc(100vh - 5.5rem), 420px)" }}>
-              <div className="space-y-4">
-                {TOOLS_CATALOG.map((group) => (
-                  <div key={group.group}>
-                    {/* Group header — acts as a link to the category page */}
+          <div
+            id="tools-mega-menu"
+            role="menu"
+            className="absolute right-0 z-50 mt-2 w-[min(95vw,760px)] overflow-hidden rounded-xl border border-hairline bg-paper shadow-pop"
+          >
+            {/* One column per category — every tool visible at a glance, no scroll */}
+            <div className="grid grid-cols-3 divide-x divide-hairline">
+              {TOOLS_CATALOG.map((group) => {
+                const tools = group.tools.filter((t) => t.ready);
+                return (
+                  <div key={group.group} className="p-2.5">
+                    {/* Category header — links to the category landing page */}
                     <Link
                       href={`/tools/${group.slug}/`}
                       onClick={() => setOpen(false)}
-                      className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground hover:text-brand"
+                      role="menuitem"
+                      className="group/head mb-1.5 flex items-center justify-between gap-2 rounded-md px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-brand transition-colors hover:bg-brand/5"
                     >
-                      {group.group}
-                      <span className="flex-1 border-t border-hairline" />
+                      <span>{group.group}</span>
+                      <span className="text-[10px] font-normal tabular-nums text-muted-foreground transition-colors group-hover/head:text-brand">
+                        {tools.length}
+                      </span>
                     </Link>
 
-                    {/* Tools grid — flows across the full panel width */}
-                    <ul className="grid grid-cols-2 gap-0.5 sm:grid-cols-3">
-                      {group.tools
-                        .filter((t) => t.ready)
-                        .map((t) => (
-                          <li key={t.slug}>
-                            <Link
-                              href={`/tools/${t.slug}/`}
-                              onClick={() => setOpen(false)}
-                              role="menuitem"
-                              className="flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-foreground transition-colors hover:bg-accent/60"
-                            >
-                              <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border border-hairline bg-card text-ink-soft">
-                                <ToolIcon name={t.icon} className="h-3 w-3" />
-                              </span>
-                              <span className="truncate">{t.title}</span>
-                            </Link>
-                          </li>
-                        ))}
+                    <ul className="space-y-0.5">
+                      {tools.map((t) => (
+                        <li key={t.slug}>
+                          <Link
+                            href={`/tools/${t.slug}/`}
+                            onClick={() => setOpen(false)}
+                            role="menuitem"
+                            className="group/item flex items-start gap-2 rounded-md px-2 py-1.5 text-[13px] leading-snug text-foreground transition-colors hover:bg-accent/60"
+                          >
+                            <span className="mt-px inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border border-hairline bg-card text-ink-soft transition-colors group-hover/item:border-brand/40 group-hover/item:text-brand">
+                              <ToolIcon name={t.icon} className="h-3 w-3" />
+                            </span>
+                            <span>{t.title}</span>
+                          </Link>
+                        </li>
+                      ))}
                     </ul>
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
 
-            {/* Footer always visible — never scrolled away */}
-            <div className="shrink-0 border-t border-hairline bg-paper px-4 py-2.5">
+            {/* Footer */}
+            <div className="flex items-center justify-between border-t border-hairline bg-surface/40 px-4 py-2.5">
+              <span className="text-[11px] text-muted-foreground">
+                100% free · works in your browser · no upload
+              </span>
               <Link
                 href="/tools/"
                 onClick={() => setOpen(false)}
+                role="menuitem"
                 className="inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline"
               >
                 View all tools <ArrowRight className="h-4 w-4" />
