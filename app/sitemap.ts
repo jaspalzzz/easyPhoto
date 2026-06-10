@@ -45,6 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...KB_TARGETS.map((kb) => kbPath(kb)),
     ...PDF_KB_TARGETS.map((kb) => pdfKbPath(kb)),
     ...HINGLISH_SLUGS.map((s) => `/${s}/`),
+    "/convert/",
     ...CONVERT_SLUGS.map((slug) => convertPath(slug)),
     ...BLOG_POSTS.map((p) => `/blog/${p.slug}/`),
   ];
