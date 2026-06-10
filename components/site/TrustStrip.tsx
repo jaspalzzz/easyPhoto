@@ -11,37 +11,48 @@ const SIGNALS = [
     icon: ShieldCheck,
     title: "Your photo never leaves your device",
     body: "All processing runs in your browser. Nothing is uploaded or stored.",
+    tile: "bg-[hsl(150_70%_36%/0.14)] text-[hsl(150_62%_30%)]",
   },
   {
     icon: Landmark,
     title: "Built on official requirements",
     body: "Sizes and rules come from each country's government source, linked on every page.",
+    tile: "bg-[hsl(174_72%_30%/0.14)] text-[hsl(174_72%_28%)]",
   },
   {
     icon: BadgeCheck,
     title: "Automatic compliance check",
     body: "Head size, framing and resolution are checked against the spec before you download.",
+    tile: "bg-[hsl(212_88%_48%/0.14)] text-[hsl(212_90%_44%)]",
   },
   {
     icon: Gift,
     title: "Free, no watermark",
     body: "No sign-up, no payment, no watermark on your photo. Ever.",
+    tile: "bg-[hsl(22_89%_50%/0.14)] text-[hsl(22_89%_46%)]",
   },
 ];
 
 export function TrustStrip() {
   return (
-    <div className="grid border-y border-hairline sm:grid-cols-2 lg:grid-cols-4 lg:border-x">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {SIGNALS.map((s) => (
         <div
           key={s.title}
-          className="border-hairline p-6 [&:not(:last-child)]:border-b sm:[&:nth-last-child(-n+2)]:border-b-0 lg:[&:not(:last-child)]:border-b-0 lg:[&:not(:last-child)]:border-r"
+          className="flex flex-col gap-3.5 rounded-xl border border-hairline bg-card p-5 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_2px_8px_rgb(0_0_0/0.04)]"
         >
-          <s.icon className="h-5 w-5 text-brand" strokeWidth={1.75} />
-          <h3 className="mt-4 text-[15px] font-semibold tracking-tight">
+          <span
+            className={cn(
+              "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl",
+              s.tile
+            )}
+          >
+            <s.icon className="h-[22px] w-[22px]" strokeWidth={1.9} />
+          </span>
+          <h3 className="text-[15px] font-semibold leading-snug tracking-tight text-ink">
             {s.title}
           </h3>
-          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {s.body}
           </p>
         </div>

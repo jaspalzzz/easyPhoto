@@ -12,32 +12,32 @@ import { LogoMark } from "@/components/site/LogoMark";
  */
 export function Footer() {
   return (
-    <footer className="mt-20 border-t border-hairline bg-paper">
-      <div className="container grid gap-10 py-12 lg:grid-cols-[1.6fr_3fr]">
-        <div className="space-y-3">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <LogoMark className="h-8 w-8" />
-            <Wordmark className="text-lg" />
+    <footer className="mt-20 border-t-2 border-brand/70 bg-paper">
+      <div className="container grid gap-10 py-14 lg:grid-cols-[1.6fr_3fr]">
+        <div className="space-y-4">
+          <Link href="/" className="inline-flex items-center gap-2.5">
+            <LogoMark className="h-9 w-9" />
+            <Wordmark className="text-[1.35rem]" />
           </Link>
           <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-            Free, private passport &amp; visa photos and everyday image tools,
-            made entirely in your browser.
+            Free, private passport &amp; visa photos and everyday image &amp; PDF
+            tools, made entirely in your browser.
           </p>
-          <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-            <ShieldCheck className="h-3.5 w-3.5 text-brand" strokeWidth={1.75} />
-            Your files never leave your device.
+          <p className="inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-3 py-1.5 text-xs font-medium text-ink-soft">
+            <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
+            Your files never leave your device
           </p>
         </div>
 
         {/* Four link groups divide evenly: 2×2 on phones, 1×4 on wider screens. */}
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
           <div className="space-y-3">
-            <h3 className="eyebrow">Passport &amp; visa</h3>
+            <h3 className="eyebrow text-ink">Passport &amp; visa</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   href="/passport-photo/"
-                  className="text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground transition-colors hover:text-brand"
                 >
                   Passport photo maker
                 </Link>
@@ -45,7 +45,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/visa-photo/"
-                  className="text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground transition-colors hover:text-brand"
                 >
                   Visa photo maker
                 </Link>
@@ -54,7 +54,7 @@ export function Footer() {
                 <li key={id}>
                   <Link
                     href={primaryMakerPath(id)}
-                    className="text-muted-foreground hover:text-foreground"
+                    className="text-muted-foreground transition-colors hover:text-brand"
                   >
                     {COUNTRY_SPECS[id].label}{" "}
                     {(PASSPORT_COUNTRIES as readonly string[]).includes(id)
@@ -69,7 +69,7 @@ export function Footer() {
 
           {TOOLS_CATALOG.map((group) => (
             <div key={group.group} className="space-y-3">
-              <h3 className="eyebrow">{group.group}</h3>
+              <h3 className="eyebrow text-ink">{group.group}</h3>
               <ul className="space-y-2 text-sm">
                 {group.tools
                   .filter((t) => t.ready)
@@ -77,7 +77,7 @@ export function Footer() {
                     <li key={t.slug}>
                       <Link
                         href={`/tools/${t.slug}/`}
-                        className="text-muted-foreground hover:text-foreground"
+                        className="text-muted-foreground transition-colors hover:text-brand"
                       >
                         {t.title}
                       </Link>
@@ -96,19 +96,19 @@ export function Footer() {
             Always verify against official requirements before submitting.
           </p>
           <nav className="flex flex-wrap items-center gap-4">
-            <Link href="/blog/" className="hover:text-foreground">
+            <Link href="/blog/" className="transition-colors hover:text-brand">
               Blog
             </Link>
-            <Link href="/about/" className="hover:text-foreground">
+            <Link href="/about/" className="transition-colors hover:text-brand">
               About
             </Link>
-            <Link href="/contact/" className="hover:text-foreground">
+            <Link href="/contact/" className="transition-colors hover:text-brand">
               Contact
             </Link>
-            <Link href="/privacy/" className="hover:text-foreground">
+            <Link href="/privacy/" className="transition-colors hover:text-brand">
               Privacy
             </Link>
-            <Link href="/terms/" className="hover:text-foreground">
+            <Link href="/terms/" className="transition-colors hover:text-brand">
               Terms
             </Link>
           </nav>
