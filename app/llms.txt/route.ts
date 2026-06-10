@@ -36,6 +36,33 @@ export function GET() {
   );
   lines.push("");
 
+  // About & key entry points — so an assistant can answer "what is easyPhoto?"
+  // and point users to the main starting pages.
+  lines.push("## About & key pages");
+  lines.push("");
+  lines.push(
+    `- [About easyPhoto](${u("/about/")}): who we are, why we built it, how we ` +
+      "keep the specs accurate, and our privacy-first approach (nothing is uploaded)."
+  );
+  lines.push(
+    `- [Passport Photo Maker](${u("/passport-photo/")}): make a compliant passport ` +
+      "photo for India, the US, UK, Canada, Australia and Schengen — exact head " +
+      "size and background, checked automatically."
+  );
+  lines.push(
+    `- [Visa Photo Maker](${u("/visa-photo/")}): country-specific visa photo sizes ` +
+      "and backgrounds."
+  );
+  lines.push(
+    `- [Exam photo & signature requirements](${u("/exam-requirements/")}): the ` +
+      "official, dated size specs for 30+ Indian exam and recruitment portals."
+  );
+  lines.push(
+    `- [Exam Application Kit](${u("/tools/exam-package/")}): produce a photo + ` +
+      "signature in the correct size for a chosen exam, in one guided flow."
+  );
+  lines.push("");
+
   // Tools, grouped as in the catalog.
   for (const group of TOOLS_CATALOG) {
     const tools = group.tools.filter((t) => t.ready);
