@@ -98,7 +98,7 @@ export default async function Page({
   const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(exam)];
 
   return (
-    <div className="container max-w-3xl space-y-8 py-10">
+    <div className="container max-w-4xl space-y-8 py-10">
       <JsonLd
         schema={breadcrumbSchema([
           { name: "Home", path: "/" },

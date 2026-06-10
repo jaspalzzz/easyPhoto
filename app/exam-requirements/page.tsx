@@ -40,7 +40,7 @@ export default function Page() {
   })).filter((g) => g.items.length > 0);
 
   return (
-    <div className="container max-w-4xl space-y-8 py-10">
+    <div className="container max-w-5xl space-y-8 py-10">
       <JsonLd
         schema={breadcrumbSchema([
           { name: "Home", path: "/" },
