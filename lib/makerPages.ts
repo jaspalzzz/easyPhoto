@@ -35,7 +35,18 @@ export const PASSPORT_COUNTRIES = [
 ] as const;
 
 /** Countries that get a visa-photo maker page (ordered by demand). */
-export const VISA_COUNTRIES = ["us", "canada", "uk", "australia", "schengen"] as const;
+export const VISA_COUNTRIES = [
+  "us",
+  "canada",
+  "uk",
+  "australia",
+  "schengen",
+  "germany",
+  "france",
+  "italy",
+  "netherlands",
+  "ireland",
+] as const;
 
 export const passportSlug = (id: string) => `${id}-passport-photo-maker`;
 export const visaSlug = (id: string) => `${id}-visa-photo-maker`;

@@ -8,6 +8,11 @@ const CODE: Record<string, string> = {
   uk: "gb",
   india: "in",
   australia: "au",
+  germany: "de",
+  france: "fr",
+  italy: "it",
+  netherlands: "nl",
+  ireland: "ie",
 };
 
 /** Genuine SVG flag, rounded with a hairline ring for a premium look. */

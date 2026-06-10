@@ -356,6 +356,159 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "and also sign section 11 of the form. This tool produces the compliant " +
       "image; the endorsement is added by hand after printing.",
   },
+
+  // ─────────────────────────────────────────────────────────────
+  // Study-abroad / Schengen destinations (O4). All ICAO 35x45mm; the
+  // load-bearing per-country difference is background colour.
+  // ─────────────────────────────────────────────────────────────
+  germany: {
+    id: "germany",
+    label: "Germany",
+    documents: ["Germany Schengen Visa", "National (D) Visa", "Residence permit"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description:
+        "Neutral / light grey — Germany requires a single-colour light grey background and rejects white",
+      hex: "#D3D3D3",
+      acceptableHex: ["#D3D3D3", "#DCDCDC", "#C8C8C8"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 600,
+    glasses: "not permitted unless medically required",
+    smileAllowed: "neutral only (biometric)",
+    notes:
+      "ICAO biometric photo, 35x45mm, face 70-80% of the height (≈32-36mm chin to " +
+      "crown). Germany is strict on the background: it must be a neutral / light " +
+      "grey — pure white is commonly rejected. From the German Missions sample-photo " +
+      "template (Auswärtiges Amt / Bundesdruckerei).",
+    source:
+      "https://www.germany.info/resource/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf",
+    verified: "gov",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  france: {
+    id: "france",
+    label: "France",
+    documents: ["France Schengen Visa", "Long-stay (VLS-TS) Visa"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description:
+        "Plain light-coloured background; light grey is strongly preferred (pure white is often rejected in practice)",
+      hex: "#D3D3D3",
+      acceptableHex: ["#D3D3D3", "#DCDCDC", "#FFFFFF"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "strongly discouraged",
+    smileAllowed: "neutral only (biometric)",
+    notes:
+      "ICAO biometric photo per France-Visas: 35x45mm (official width given as " +
+      "35-40mm), face 32-36mm (70-80% of height), max 6 months old, plain " +
+      "light-coloured background. Light grey is the safe choice.",
+    source:
+      "https://france-visas.gouv.fr/documents/d/france-visas/iso_iec_fv_visa_photograph_requirements_en",
+    verified: "gov",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  italy: {
+    id: "italy",
+    label: "Italy",
+    documents: ["Italy Schengen Visa", "National (D) Visa"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white background, colour photo, no frames",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAF7"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "not permitted unless medically required",
+    smileAllowed: "neutral only (biometric)",
+    notes:
+      "Per the official Italy Visa Management Service: colour photo, 30x40mm or " +
+      "35x45mm (we use 35x45mm), face 70-80% of the frame, on a WHITE background " +
+      "with no frames, taken within the last 6 months.",
+    source: "https://italyvms.com/photo-requirements/",
+    verified: "gov",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  netherlands: {
+    id: "netherlands",
+    label: "Netherlands",
+    documents: ["Netherlands Schengen Visa", "MVV / residence", "Dutch passport"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 26, max: 30 }, // chin to crown, ages 11+ (official)
+    headPercentOfFrame: { min: 58, max: 67 },
+    background: {
+      description: "Plain, uniform light grey, light blue or white; no shadows",
+      hex: "#D3D3D3",
+      acceptableHex: ["#D3D3D3", "#DCDCDC", "#FFFFFF"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 400,
+    glasses: "not permitted unless medically required",
+    smileAllowed: "neutral only (biometric)",
+    notes:
+      "Per the official Dutch government portal: 35x45mm, colour, face 26-30mm " +
+      "chin-to-crown (ages 11+), face width 16-20mm, plain light grey / light blue " +
+      "/ white background, max 6 months old, min 400 DPI for prints.",
+    source: "https://www.netherlandsworldwide.nl/passport-id-card/photo-requirements",
+    verified: "gov",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  ireland: {
+    id: "ireland",
+    label: "Ireland",
+    documents: ["Irish passport (DFA)", "Ireland visa / study"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Completely plain light grey, cream or white; no shadows",
+      hex: "#F5F5F0",
+      acceptableHex: ["#F5F5F0", "#DCDCDC", "#FFFFFF"],
+    },
+    digital: {
+      pxMin: { width: 715, height: 951 },
+      fileSizeKb: null, // online: JPEG up to 9 MB, no published minimum
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "remove if possible",
+    smileAllowed: "neutral only (biometric)",
+    notes:
+      "Per the Irish DFA Passport Service: print size 35x45mm up to 38x50mm, face " +
+      "70-80% of the frame, plain light grey / cream / white background. Online " +
+      "photo: JPEG, minimum 715x951 px, up to 9 MB; max 6 months old, no selfies.",
+    source: "https://www.dfa.ie/passports/photo-guidelines/",
+    verified: "gov",
+  },
 };
 
 /**
@@ -378,6 +531,11 @@ export const LAUNCH_ORDER = [
   "uk",
   "australia",
   "schengen",
+  "germany",
+  "france",
+  "italy",
+  "netherlands",
+  "ireland",
 ];
 
 /**
