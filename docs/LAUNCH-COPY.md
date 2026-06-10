@@ -124,3 +124,39 @@ Everything runs client-side — no upload, no sign-up, no watermark.
 
 Use this exact wording in bios, directory listings, and your About page so every
 mention reinforces the same entity description (which is what AI tools learn from).
+
+---
+
+## 7. Week-1 execution checklist (ordered, ~3–4 hrs total)
+
+Do these in order. Each links to the copy above. None requires payment.
+
+- [ ] **GSC → Request indexing** for the homepage + 3 money pages
+      (`/tools/`, `/exam-photo-size/`, `/passport-photo/`). (5 min)
+- [ ] **AlternativeTo.net** — add easyPhoto as an alternative to *remove.bg, iLoveIMG,
+      Smallpdf, PhotoAiD*. Use the §3 short + long description. (15 min) → backlink
+- [ ] **SaaSHub** — submit with the §3 long description + features. (15 min) → backlink
+- [ ] **Product Hunt** — schedule a launch: §2 name/tagline/description + the maker's
+      comment. Add 3–4 screenshots (homepage, /tools/ grid, a result). Launch 12:01 AM PT
+      on a Tue–Thu. (45 min prep) → biggest spike + strong backlink
+- [ ] **Toolify.ai / There's An AI For That** — submit (privacy/in-browser angle). (15 min)
+- [ ] **3 genuine forum answers** (r/UPSC, r/SSC, exam Telegram groups) using the §4
+      snippets — answer the question first, mention the tool as one option. Drop the
+      link magnet `easyphoto.in/exam-photo-size/` where a size list is asked for. (60 min)
+- [ ] **Outreach: 3 "best free passport photo tools" / "exam photo resizer" article
+      authors** — short email offering easyPhoto as a free, private addition. (30 min)
+- [ ] **Your socials** — post the launch with the §1 bio + a screenshot; pin it.
+
+## 8. Best links to share (already built — just drop them)
+- **Link magnet (reference):** `easyphoto.in/exam-photo-size/` — the full exam size table
+- **Flagship tool:** `easyphoto.in/tools/exam-package/`
+- **Privacy hook:** `easyphoto.in/tools/mask-aadhaar/`
+- **Country intent:** `easyphoto.in/visa-photo/` (Germany/France/Italy/NL/Ireland live)
+
+## 9. What moves the needle (in order of impact)
+1. **A few quality backlinks** (AlternativeTo, SaaSHub, a roundup article, Product Hunt)
+   — domain authority is the #1 gap vs Smallpdf/iLovePDF.
+2. **Genuine forum/community presence** where exam aspirants already are.
+3. **Time** — give GSC 2–4 weeks; check the Pages report weekly for indexed count.
+
+Avoid: paid links, spammy mass-posting, fake reviews — they backfire and you don't need them.
