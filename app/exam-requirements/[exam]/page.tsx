@@ -3,7 +3,13 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ExternalLink, ShieldCheck, AlertTriangle, ArrowRight } from "lucide-react";
 import { PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
-import { getPortalSpec, specProvenance, allPortalSpecs } from "@/lib/specRegistry";
+import {
+  getPortalSpec,
+  specProvenance,
+  relatedPortals,
+  portalCategory,
+  PORTAL_CATEGORY_LABEL,
+} from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { dedicatedResizerLinks } from "@/lib/examResizers";
 import { pageMetadata } from "@/lib/seo";
@@ -86,7 +92,8 @@ export default async function Page({
   const path = `/exam-requirements/${exam}/`;
   const faqItems = portalFaqItems(spec);
   const dedicated = dedicatedResizerLinks(exam);
-  const related = allPortalSpecs().filter((s) => s.id !== exam).slice(0, 6);
+  const related = relatedPortals(exam, 6);
+  const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(exam)];
 
   return (
     <div className="container max-w-3xl space-y-8 py-10">
@@ -229,7 +236,7 @@ export default async function Page({
       </section>
 
       <section className="space-y-3">
-        <h2 className="eyebrow">Other exam requirements</h2>
+        <h2 className="eyebrow">{categoryLabel} &amp; more</h2>
         <div className="flex flex-wrap gap-1.5">
           {related.map((s) => (
             <Link

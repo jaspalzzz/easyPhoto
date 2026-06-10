@@ -7,6 +7,11 @@ import { ToolPage } from "@/components/tools/ToolPage";
 import { PortalResizer } from "@/components/tools/PortalResizer";
 import { portalFaqItems } from "@/lib/faqs";
 import { dedicatedResizerLinks } from "@/lib/examResizers";
+import {
+  relatedPortals,
+  portalCategory,
+  PORTAL_CATEGORY_LABEL,
+} from "@/lib/specRegistry";
 
 export function generateStaticParams() {
   return PORTAL_KEYS.map((portal) => ({ portal }));
@@ -47,6 +52,8 @@ export default async function Page({
 
   const hasSignature = spec.sigLimitKb !== undefined;
   const dedicated = dedicatedResizerLinks(portal);
+  const related = relatedPortals(portal, 6);
+  const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(portal)];
 
   return (
     <ToolPage
@@ -96,6 +103,28 @@ export default async function Page({
           </div>
         </section>
       )}
+
+      {/* Cluster the matrix: link to topically related exam resizers. */}
+      <section className="mt-8">
+        <h2 className="eyebrow mb-3">{categoryLabel} &amp; more</h2>
+        <div className="flex flex-wrap gap-1.5">
+          {related.map((s) => (
+            <Link
+              key={s.id}
+              href={`/tools/form-resizer/${s.id}/`}
+              className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground"
+            >
+              {s.name.split(" (")[0]}
+            </Link>
+          ))}
+          <Link
+            href="/exam-requirements/"
+            className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-accent/50"
+          >
+            All exam specs
+          </Link>
+        </div>
+      </section>
     </ToolPage>
   );
 }

@@ -27,6 +27,60 @@ export function allPortalSpecs(): PortalSpec[] {
   return PORTAL_KEYS.map((k) => PORTAL_PRESETS[k]);
 }
 
+/** Topical grouping — drives "related exams" interlinking (cluster the matrix). */
+export type PortalCategory =
+  | "national"
+  | "defence"
+  | "banking"
+  | "state-psc"
+  | "central"
+  | "visa";
+
+export const PORTAL_CATEGORY_LABEL: Record<PortalCategory, string> = {
+  national: "National entrance & eligibility exams",
+  defence: "Defence recruitment",
+  banking: "Banking & insurance",
+  "state-psc": "State Public Service Commissions",
+  central: "Central government recruitment",
+  visa: "Visa & identity documents",
+};
+
+const CATEGORY_OF: Record<string, PortalCategory> = {
+  // National entrance / eligibility
+  gate: "national", "ugc-net": "national", "csir-net": "national", nta: "national",
+  // Defence
+  nda: "defence", cds: "defence", afcat: "defence",
+  // Banking & insurance
+  ibps: "banking", sbi: "banking", rbi: "banking", nabard: "banking",
+  lic: "banking", niacl: "banking", irdai: "banking",
+  // State PSCs
+  uppsc: "state-psc", bpsc: "state-psc", mpsc: "state-psc", rpsc: "state-psc",
+  tnpsc: "state-psc", kpsc: "state-psc", appsc: "state-psc", tgpsc: "state-psc",
+  wbpsc: "state-psc", gpsc: "state-psc", hpsc: "state-psc",
+  // Central government recruitment
+  ssc: "central", rrb: "central", ctet: "central", upsc: "central",
+  // Visa & identity
+  ds160: "visa", "passport-seva": "visa", oci: "visa",
+};
+
+/** The topical category for a portal id (defaults to "central"). */
+export function portalCategory(id: string): PortalCategory {
+  return CATEGORY_OF[id] ?? "central";
+}
+
+/**
+ * Related portals for cross-linking: same-category siblings first, then a few
+ * from other categories to fill — so every exam page links to a topically
+ * relevant cluster instead of the same fixed list.
+ */
+export function relatedPortals(id: string, limit = 6): PortalSpec[] {
+  const cat = portalCategory(id);
+  const all = allPortalSpecs().filter((s) => s.id !== id);
+  const same = all.filter((s) => portalCategory(s.id) === cat);
+  const rest = all.filter((s) => portalCategory(s.id) !== cat);
+  return [...same, ...rest].slice(0, limit);
+}
+
 /** UI-ready trust descriptor for a spec's provenance. */
 export interface SpecProvenance {
   /** True only when confirmed against the official source. */
