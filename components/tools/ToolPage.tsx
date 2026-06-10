@@ -64,13 +64,27 @@ export function ToolPage({
       )}
       <Link
         href="/tools/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
       >
         <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All tools
       </Link>
-      <header className="mt-4 space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{title}</h1>
-        <p className="text-muted-foreground">{blurb}</p>
+      <header className="mt-4 flex items-start gap-4">
+        {entry && (
+          <ToolIconTile
+            name={entry.icon}
+            category={slug ? toolColorCategory(slug) : "photo"}
+            className="hidden shrink-0 sm:flex"
+          />
+        )}
+        <div className="space-y-2">
+          {category && (
+            <span className="eyebrow block text-brand">{category.group}</span>
+          )}
+          <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
+            {title}
+          </h1>
+          <p className="text-[15px] leading-relaxed text-muted-foreground">{blurb}</p>
+        </div>
       </header>
 
       <div className="mt-6">{children}</div>
