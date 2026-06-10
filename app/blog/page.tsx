@@ -39,12 +39,12 @@ export default function BlogIndex() {
         </p>
       </header>
 
-      <div className="register mt-8">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {BLOG_POSTS.map((post) => (
           <Link
             key={post.slug}
             href={`/blog/${post.slug}/`}
-            className="group block bg-card p-5 transition-colors hover:bg-accent/40"
+            className="ep-card group block p-5"
           >
             <p className="spec normal-case tracking-[0.08em]">
               <time dateTime={post.dateISO}>{post.date}</time> ·{" "}

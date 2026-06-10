@@ -71,7 +71,7 @@ export function DocPhotoLanding({
           </h2>
           <span className="eyebrow hidden sm:block">Official specifications</span>
         </div>
-        <div className="mt-6 register sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {pages.map((m) => {
             const spec = makerSpec(m.slug)!;
             const mm = effectivePrintMm(spec);
@@ -79,10 +79,10 @@ export function DocPhotoLanding({
               <Link
                 key={m.slug}
                 href={`/${m.slug}/`}
-                className="flex items-center gap-3 bg-card p-4 transition-colors hover:bg-accent/40"
+                className="ep-card flex items-center gap-3 p-4"
               >
-                <Flag country={m.flag} className="h-5 w-7 shrink-0" />
-                <span className="text-sm font-medium">{spec.label}</span>
+                <Flag country={m.flag} className="h-7 w-10 shrink-0 rounded-[3px] ring-1 ring-hairline" />
+                <span className="text-sm font-semibold text-ink">{spec.label}</span>
                 <span className="spec ml-auto normal-case tracking-[0.08em]">
                   {mm.width}×{mm.height}mm
                 </span>

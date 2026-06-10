@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
-import { relatedTools, getTool, categoryOf } from "@/lib/toolsCatalog";
-import { ToolIcon } from "@/components/site/ToolIcon";
+import { relatedTools, getTool, categoryOf, toolColorCategory } from "@/lib/toolsCatalog";
+import { ToolIconTile } from "@/components/site/ToolIcon";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { breadcrumbSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
@@ -84,18 +84,18 @@ export function ToolPage({
       {related.length > 0 && (
         <section className="mt-12">
           <h2 className="eyebrow mb-4">Related tools</h2>
-          <div className="register sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-3">
             {related.map((t) => (
               <Link
                 key={t.slug}
                 href={`/tools/${t.slug}/`}
-                className="group flex items-center gap-3 bg-card p-4 transition-colors hover:bg-accent/40"
+                className="ep-card group flex items-center gap-3 p-4"
               >
-                <ToolIcon name={t.icon} className="h-4 w-4 shrink-0 text-brand" />
-                <span className="text-sm font-medium leading-tight">
+                <ToolIconTile name={t.icon} category={toolColorCategory(t.slug)} size="sm" />
+                <span className="text-sm font-semibold leading-tight text-ink">
                   {t.title}
                 </span>
-                <ArrowRight className="ml-auto h-3.5 w-3.5 shrink-0 text-brand opacity-0 transition-opacity group-hover:opacity-100" strokeWidth={1.75} />
+                <ArrowRight className="ml-auto h-3.5 w-3.5 shrink-0 text-ink-faint opacity-0 transition-opacity group-hover:text-brand group-hover:opacity-100" strokeWidth={1.75} />
               </Link>
             ))}
           </div>

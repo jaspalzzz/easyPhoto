@@ -62,15 +62,15 @@ export default function Page() {
       {grouped.map((group) => (
         <section key={group.cat} className="space-y-3">
           <h2 className="eyebrow">{group.label}</h2>
-          <div className="register sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {group.items.map((s) => (
               <Link
                 key={s.id}
                 href={`/exam-requirements/${s.id}/`}
-                className="group flex items-start gap-3 bg-card p-4 transition-colors hover:bg-accent/40"
+                className="ep-card group flex items-start gap-3 p-4"
               >
                 <span className="min-w-0">
-                  <span className="block truncate font-medium leading-tight">
+                  <span className="block truncate font-semibold leading-tight text-ink">
                     {s.name.split(" (")[0]}
                   </span>
                   <span className="spec mt-1 block normal-case tracking-[0.06em]">

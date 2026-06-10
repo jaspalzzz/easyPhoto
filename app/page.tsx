@@ -13,7 +13,8 @@ import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { howToSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
-import { ToolIcon, ToolIconTile } from "@/components/site/ToolIcon";
+import { ToolIconTile } from "@/components/site/ToolIcon";
+import { ToolCard } from "@/components/site/ToolCard";
 import { HeroStarter } from "@/components/site/HeroStarter";
 import { Flag } from "@/components/site/Flag";
 import { ToolSearch } from "@/components/site/ToolSearch";
@@ -159,7 +160,7 @@ export default function HomePage() {
           </h2>
           <span className="eyebrow hidden sm:block">Official specifications</span>
         </div>
-        <div className="mt-6 register sm:grid-cols-2 lg:grid-cols-3">
+        <div className="ep-card-grid mt-6">
           {LAUNCH_ORDER.map((id) => {
             const spec = COUNTRY_SPECS[id];
             const mm = effectivePrintMm(spec);
@@ -167,11 +168,11 @@ export default function HomePage() {
               <Link
                 key={id}
                 href={primaryMakerPath(id)}
-                className="group flex items-center gap-3.5 bg-card p-4 transition-colors hover:bg-accent/40"
+                className="ep-card group flex items-center gap-3.5 p-4"
               >
-                <Flag country={id} className="h-5 w-7 shrink-0 rounded-[2px]" />
+                <Flag country={id} className="h-8 w-11 shrink-0 rounded-[3px] ring-1 ring-hairline" />
                 <span className="min-w-0">
-                  <span className="block truncate font-medium leading-tight">
+                  <span className="block truncate font-semibold leading-tight text-ink">
                     {spec.label}
                   </span>
                   <span className="spec mt-1 block normal-case tracking-[0.08em]">
@@ -201,11 +202,11 @@ export default function HomePage() {
           {/* Featured: the guided wizard */}
           <Link
             href="/tools/exam-package/"
-            className="group mt-6 flex items-center gap-4 rounded-md border border-brand/25 bg-brand-soft/20 p-5 transition-colors hover:bg-brand-soft/40"
+            className="ep-card group mt-6 flex items-center gap-4 border-brand/25 bg-brand-soft/20 p-5 hover:bg-brand-soft/30"
           >
-            <ToolIcon name="FileStack" className="h-7 w-7 shrink-0 text-brand" />
+            <ToolIconTile name="FileStack" category="exam" />
             <span className="min-w-0">
-              <span className="block font-semibold leading-tight">
+              <span className="block font-semibold leading-tight text-ink">
                 Exam Application Kit
               </span>
               <span className="mt-0.5 block text-sm text-muted-foreground">
@@ -217,12 +218,12 @@ export default function HomePage() {
           </Link>
 
           {/* Per-exam resizers */}
-          <div className="mt-4 register sm:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {EXAM_LINKS.map((e) => (
               <Link
                 key={e.href}
                 href={e.href}
-                className="group flex items-center gap-2 bg-card p-4 text-sm font-medium transition-colors hover:bg-accent/40"
+                className="ep-card group flex items-center gap-2 px-4 py-3 text-sm font-semibold text-ink"
               >
                 {e.label}
                 <ArrowRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
@@ -248,8 +249,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trust — ruled blocks */}
-      <section className="bg-paper">
+      {/* Free image & PDF tools — surfaced above trust, premium cards */}
+      <section className="border-t border-hairline scroll-mt-16">
+        <div className="container py-14 sm:py-16">
+          <div className="flex items-baseline justify-between border-b border-hairline pb-4">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Free image &amp; PDF tools
+            </h2>
+            <Link
+              href="/tools/"
+              className="hidden items-center gap-1 text-sm font-medium text-brand hover:underline sm:inline-flex"
+            >
+              All tools <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="ep-card-grid mt-6">
+            {POPULAR_TOOLS.map((tool) => (
+              <ToolCard
+                key={tool.slug}
+                slug={tool.slug}
+                title={tool.title}
+                blurb={tool.blurb}
+                icon={tool.icon}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust */}
+      <section className="border-t border-hairline bg-paper">
         <div className="container py-14 sm:py-16">
           <div className="mb-8">
             <h2 className="text-2xl font-semibold tracking-tight">
@@ -265,46 +294,8 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="container py-14 sm:py-16">
+      <section className="container border-t border-hairline py-14 sm:py-16">
         <HowItWorks />
-      </section>
-
-      {/* Tools — same ruled register treatment */}
-      <section className="border-t border-hairline bg-paper">
-        <div className="container py-14 sm:py-16">
-          <div className="flex items-baseline justify-between border-b border-hairline pb-4">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Free image &amp; PDF tools
-            </h2>
-            <Link
-              href="/tools/"
-              className="hidden items-center gap-1 text-sm font-medium text-brand hover:underline sm:inline-flex"
-            >
-              All tools <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <div className="mt-6 register sm:grid-cols-2 lg:grid-cols-3">
-            {POPULAR_TOOLS.map((tool) => (
-              <Link
-                key={tool.slug}
-                href={`/tools/${tool.slug}/`}
-                className="group flex items-start gap-3.5 bg-card p-5 transition-colors hover:bg-accent/40"
-              >
-                <span className="mt-0.5 text-ink-soft transition-colors group-hover:text-brand">
-                  <ToolIcon name={tool.icon} className="h-5 w-5" />
-                </span>
-                <span>
-                  <span className="block font-medium leading-tight">
-                    {tool.title}
-                  </span>
-                  <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
-                    {tool.blurb}
-                  </span>
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* FAQ */}
