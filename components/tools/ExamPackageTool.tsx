@@ -10,12 +10,19 @@ import {
   AlertTriangle,
   ChevronRight,
   ChevronLeft,
+  ArrowRight,
   RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { PORTAL_PRESETS, PORTAL_KEYS } from "@/lib/portalPresets";
-import { specProvenance } from "@/lib/specRegistry";
+import { ToolIconTile } from "@/components/site/ToolIcon";
+import { PORTAL_PRESETS, PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
+import {
+  specProvenance,
+  portalCategory,
+  PORTAL_CATEGORY_LABEL,
+  type PortalCategory,
+} from "@/lib/specRegistry";
 import { ensureDecodable } from "@/lib/heic";
 import { imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
@@ -25,6 +32,33 @@ import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
 
 type Step = "exam" | "photo" | "signature" | "done";
+
+const photoKbText = (s: PortalSpec) =>
+  s.photoMinKb ? `${s.photoMinKb}–${s.photoLimitKb} KB` : `≤ ${s.photoLimitKb} KB`;
+const sigKbText = (s: PortalSpec) =>
+  s.sigLimitKb
+    ? s.sigMinKb
+      ? `${s.sigMinKb}–${s.sigLimitKb} KB`
+      : `≤ ${s.sigLimitKb} KB`
+    : null;
+
+/** Display order of exam categories in the picker. */
+const CATEGORY_ORDER: PortalCategory[] = [
+  "central",
+  "banking",
+  "state-psc",
+  "national",
+  "defence",
+  "visa",
+];
+
+const GROUPED_EXAMS = CATEGORY_ORDER.map((cat) => ({
+  cat,
+  label: PORTAL_CATEGORY_LABEL[cat],
+  items: PORTAL_KEYS.map((k) => PORTAL_PRESETS[k]).filter(
+    (s) => portalCategory(s.id) === cat
+  ),
+})).filter((g) => g.items.length > 0);
 
 interface AssetResult {
   url: string;
@@ -241,32 +275,41 @@ export function ExamPackageTool() {
   return (
     <Card>
       <CardContent className="space-y-6 p-6">
-        {/* Stepper */}
+        {/* Stepper — premium progress bar with connecting fill */}
         <nav aria-label="Progress">
-          <ol role="list" className="flex items-center gap-2 text-xs font-semibold">
+          <ol role="list" className="flex items-center">
             {STEPS.map((s, i) => (
               <React.Fragment key={s.id}>
                 <li
                   aria-current={i === stepIndex ? "step" : undefined}
-                  className={`flex items-center gap-1.5 ${
-                    i <= stepIndex ? "text-brand" : "text-muted-foreground"
-                  }`}
+                  className="flex shrink-0 items-center gap-2"
                 >
                   <span
-                    className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
+                    className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors ${
                       i < stepIndex
                         ? "bg-brand text-white"
                         : i === stepIndex
-                          ? "border-2 border-brand text-brand"
-                          : "border border-hairline-strong"
+                          ? "bg-brand/10 text-brand ring-2 ring-brand"
+                          : "bg-muted text-ink-faint"
                     }`}
                   >
-                    {i < stepIndex ? <Check className="h-3 w-3" /> : i + 1}
+                    {i < stepIndex ? <Check className="h-4 w-4" strokeWidth={2.5} /> : i + 1}
                   </span>
-                  {s.label}
+                  <span
+                    className={`hidden text-sm font-semibold sm:inline ${
+                      i <= stepIndex ? "text-ink" : "text-muted-foreground"
+                    }`}
+                  >
+                    {s.label}
+                  </span>
                 </li>
                 {i < STEPS.length - 1 && (
-                  <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
+                  <span
+                    aria-hidden="true"
+                    className={`mx-2 h-0.5 flex-1 rounded-full transition-colors ${
+                      i < stepIndex ? "bg-brand" : "bg-hairline"
+                    }`}
+                  />
                 )}
               </React.Fragment>
             ))}
@@ -282,43 +325,82 @@ export function ExamPackageTool() {
           </p>
         )}
 
-        {/* Step 1: pick exam */}
+        {/* Step 1: pick exam — grouped premium cards with the spec preview */}
         {step === "exam" && (
-          <div className="space-y-3">
-            <h3 className="text-sm font-semibold">Which exam or form are you applying for?</h3>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {PORTAL_KEYS.map((id) => (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => chooseExam(id)}
-                  className="rounded-md border border-hairline-strong bg-paper px-3 py-2.5 text-left text-sm font-medium transition-colors hover:border-brand hover:bg-brand-soft/30"
-                >
-                  {PORTAL_PRESETS[id].name}
-                </button>
-              ))}
+          <div className="space-y-6">
+            <div className="flex items-start gap-3">
+              <ToolIconTile name="FileStack" category="exam" />
+              <div>
+                <h3 className="text-base font-semibold text-ink">
+                  Which exam or form are you applying for?
+                </h3>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  Pick your exam — we&apos;ll size your photo &amp; signature to its
+                  exact official spec, then bundle them for upload.
+                </p>
+              </div>
             </div>
+
+            {GROUPED_EXAMS.map((group) => (
+              <div key={group.cat} className="space-y-2.5">
+                <h4 className="eyebrow text-ink-soft">{group.label}</h4>
+                <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.items.map((s) => {
+                    const sig = sigKbText(s);
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => chooseExam(s.id)}
+                        className="ep-card group flex flex-col gap-2 p-3.5 text-left"
+                      >
+                        <span className="flex items-center justify-between gap-2">
+                          <span className="truncate font-semibold text-ink">
+                            {s.name.split(" (")[0]}
+                          </span>
+                          <ArrowRight className="h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
+                        </span>
+                        <span className="flex flex-wrap gap-1.5">
+                          <span className="rounded-md bg-[hsl(174_72%_30%/0.10)] px-2 py-0.5 font-mono text-[11px] font-medium text-[hsl(174_72%_28%)]">
+                            Photo {photoKbText(s)}
+                          </span>
+                          {sig && (
+                            <span className="rounded-md bg-[hsl(8_75%_45%/0.10)] px-2 py-0.5 font-mono text-[11px] font-medium text-[hsl(8_75%_45%)]">
+                              Sign {sig}
+                            </span>
+                          )}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
-        {/* Spec banner (steps 2+) */}
+        {/* Spec banner (steps 2+) — premium amber-accented card */}
         {spec && step !== "exam" && (
-          <div className="rounded-md border border-brand/15 bg-brand-soft/20 p-3 text-xs text-ink-soft">
-            <strong className="text-brand">{spec.name}</strong> — Photo{" "}
-            {spec.photoMinKb ? `${spec.photoMinKb}–` : "≤"}
-            {spec.photoLimitKb} KB
-            {spec.photoWidthPx ? ` (${spec.photoWidthPx}×${spec.photoHeightPx}px)` : ""}
-            {needsSignature
-              ? ` · Signature ${spec.sigMinKb ? `${spec.sigMinKb}–` : "≤"}${spec.sigLimitKb} KB`
-              : ""}
-            {prov && !prov.verified && prov.url ? (
-              <>
-                {" · "}
-                <a href={prov.url} target="_blank" rel="noopener noreferrer" className="text-brand underline">
-                  confirm on official source
+          <div className="flex items-start gap-3 rounded-xl border border-[hsl(33_85%_45%/0.25)] bg-[hsl(33_92%_46%/0.06)] p-3.5">
+            <ToolIconTile name="FileStack" category="exam" size="sm" />
+            <div className="min-w-0 text-sm">
+              <p className="font-semibold text-ink">{spec.name.split(" (")[0]}</p>
+              <p className="mt-0.5 font-mono text-[12px] leading-relaxed text-ink-soft">
+                Photo {photoKbText(spec)}
+                {spec.photoWidthPx ? ` · ${spec.photoWidthPx}×${spec.photoHeightPx}px` : ""}
+                {needsSignature && sigKbText(spec) ? ` · Signature ${sigKbText(spec)}` : ""}
+              </p>
+              {prov && !prov.verified && prov.url ? (
+                <a
+                  href={prov.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 inline-block text-[12px] font-medium text-brand underline"
+                >
+                  Confirm on the official source
                 </a>
-              </>
-            ) : null}
+              ) : null}
+            </div>
           </div>
         )}
 
