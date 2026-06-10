@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, AlertTriangle } from "lucide-react";
 
 export const metadata = pageMetadata({
   title: "Terms of Use",
@@ -15,17 +15,31 @@ export default function TermsPage() {
     <div className="container max-w-3xl py-12">
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
       >
-        <ArrowLeft className="h-4 w-4" /> Home
+        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> Home
       </Link>
 
-      <article className="mt-6 divide-y divide-hairline [&>section]:py-8">
-        <header className="space-y-1 pb-8">
-          <h1 className="text-3xl font-semibold tracking-tight">Terms of Use</h1>
-          <p className="text-sm text-muted-foreground">Last updated: June 6, 2026</p>
-        </header>
+      <header className="mt-5 space-y-2.5">
+        <span className="eyebrow block text-brand">Legal</span>
+        <h1 className="text-[2rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2.4rem]">
+          Terms of Use
+        </h1>
+        <p className="text-sm text-muted-foreground">Last updated: June 6, 2026</p>
+      </header>
 
+      {/* The one that matters most, surfaced up top */}
+      <div className="mt-6 flex items-start gap-3 rounded-xl border border-[hsl(38_92%_50%/0.35)] bg-[hsl(38_92%_50%/0.08)] p-5">
+        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-[hsl(32_80%_42%)]" strokeWidth={1.9} />
+        <p className="text-[15px] leading-relaxed text-ink">
+          <strong className="font-semibold">Always check your final photo against the current
+          official requirements before you submit.</strong>{" "}
+          We follow each country&apos;s published spec, but rules change and can vary by office —
+          so the last check is yours.
+        </p>
+      </div>
+
+      <article className="mt-2 divide-y divide-hairline [&>section]:py-8">
         <Section title="The service">
           easyPhoto is a free tool that helps you prepare passport, visa, and
           general-purpose photos and documents in your browser. By using it, you

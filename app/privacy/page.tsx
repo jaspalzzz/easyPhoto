@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 export const metadata = pageMetadata({
   title: "Privacy Policy",
@@ -15,23 +15,32 @@ export default function PrivacyPage() {
     <div className="container max-w-3xl py-12">
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
       >
-        <ArrowLeft className="h-4 w-4" /> Home
+        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> Home
       </Link>
 
-      <article className="mt-6 divide-y divide-hairline [&>section]:py-8">
-        <header className="space-y-1 pb-8">
-          <h1 className="text-3xl font-semibold tracking-tight">Privacy Policy</h1>
-          <p className="text-sm text-muted-foreground">Last updated: June 6, 2026</p>
-        </header>
+      <header className="mt-5 space-y-2.5">
+        <span className="eyebrow block text-brand">Privacy</span>
+        <h1 className="text-[2rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2.4rem]">
+          Privacy Policy
+        </h1>
+        <p className="text-sm text-muted-foreground">Last updated: June 6, 2026</p>
+      </header>
 
-        <p className="pb-8 leading-relaxed text-muted-foreground">
-          easyPhoto is built privacy-first. The short version:{" "}
-          <strong className="text-foreground">
+      {/* The short version — highlighted so it's the first thing read */}
+      <div className="mt-6 flex items-start gap-3 rounded-xl border border-brand/25 bg-brand-soft/20 p-5">
+        <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-brand" strokeWidth={1.9} />
+        <p className="text-[15px] leading-relaxed text-ink">
+          Built privacy-first. The short version:{" "}
+          <strong className="font-semibold">
             your photos and PDFs never leave your device.
-          </strong>
+          </strong>{" "}
+          Everything below is just the detail.
         </p>
+      </div>
+
+      <article className="mt-2 divide-y divide-hairline [&>section]:py-8">
 
         <Section title="Your images and files">
           Every operation (face detection, background removal, cropping,
