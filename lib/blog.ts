@@ -17,6 +17,28 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "how-to-compress-pdf",
+    title: "How to Compress a PDF to 50, 100 or 200 KB (Free, No Upload)",
+    description:
+      "Exam and government portals often cap supporting documents at 50–200 KB. Here's how to compress a PDF to any KB target — marksheets, certificates, Aadhaar — free, in your browser, without any quality loss beyond what the limit requires.",
+    date: "June 10, 2026",
+    dateISO: "2026-06-10",
+    excerpt:
+      "Many portals reject PDFs that are too large. Here's the fastest way to hit exactly 50, 100 or 200 KB, what happens to quality, and the one thing to avoid.",
+    readMins: 5,
+  },
+  {
+    slug: "how-to-merge-pdf-free",
+    title: "How to Merge PDF Files Free (No Sign-Up, No Upload)",
+    description:
+      "Combine multiple PDF files into one online for free. No sign-up, no upload, no watermark — everything runs in your browser. Covers documents, marksheets, certificates and multi-page forms.",
+    date: "June 10, 2026",
+    dateISO: "2026-06-10",
+    excerpt:
+      "Need one PDF from many? Drop your files, reorder if needed, and download the merged result in seconds. Nothing leaves your device.",
+    readMins: 4,
+  },
+  {
     slug: "exam-photo-signature-size-guide",
     title: "Photo & Signature Size for Government Exam Forms (SSC, UPSC, IBPS)",
     description:
