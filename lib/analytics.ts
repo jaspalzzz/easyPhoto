@@ -46,7 +46,8 @@ export type AnalyticsEvent =
       /** Short, non-PII reason code only (e.g. "oom", "no-face", "decode"). */
       reason?: string;
     }
-  | { name: "download"; tool: string; format?: string };
+  | { name: "download"; tool: string; format?: string }
+  | { name: "compliance_share"; tool: string; method: "native" | "download" };
 
 export type AnalyticsSink = (event: AnalyticsEvent) => void;
 

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { CheckCircle2, AlertTriangle, XCircle, Loader2, ArrowRight } from "lucide-react";
+import { CheckCircle2, AlertTriangle, XCircle, Loader2, ArrowRight, Share2 } from "lucide-react";
 import { Uploader } from "@/components/tool/Uploader";
 import { allPortalSpecs, getPortalSpec } from "@/lib/specRegistry";
 import {
@@ -11,6 +11,8 @@ import {
   type DocKind,
   type FileFacts,
 } from "@/lib/compliance";
+import { buildComplianceCard } from "@/lib/complianceCard";
+import { downloadBlob } from "@/lib/download";
 import { track, deviceClass } from "@/lib/analytics";
 
 const SPECS = allPortalSpecs();
@@ -64,6 +66,7 @@ export function ComplianceCheckerTool() {
   const [busy, setBusy] = React.useState(false);
   const [report, setReport] = React.useState<ComplianceReport | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  const [sharing, setSharing] = React.useState(false);
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "compliance-checker" });
@@ -99,6 +102,43 @@ export function ComplianceCheckerTool() {
       track({ name: "tool_failure", tool: "compliance-checker", device: deviceClass(), reason: "decode" });
     } finally {
       setBusy(false);
+    }
+  };
+
+  const shareResult = async () => {
+    if (!report || !spec) return;
+    setSharing(true);
+    try {
+      const examName = spec.name.split(" (")[0];
+      const blob = await buildComplianceCard({ examName, kind, report });
+      const file = new File([blob], `easyphoto-${spec.id}-${kind}-check.png`, {
+        type: "image/png",
+      });
+      const verdictWord =
+        report.verdict === "pass"
+          ? "looks good"
+          : report.verdict === "warn"
+            ? "needs a check"
+            : "needs fixing";
+      const shareData: ShareData = {
+        title: "easyPhoto compliance check",
+        text: `My ${examName} ${kind} ${verdictWord} — checked free at easyphoto.in`,
+      };
+      // Prefer native share-with-image where supported (mobile); else download.
+      if (
+        typeof navigator !== "undefined" &&
+        navigator.canShare?.({ files: [file] })
+      ) {
+        await navigator.share({ ...shareData, files: [file] });
+        track({ name: "compliance_share", tool: "compliance-checker", method: "native" });
+      } else {
+        downloadBlob(blob, file.name);
+        track({ name: "compliance_share", tool: "compliance-checker", method: "download" });
+      }
+    } catch {
+      // User cancelled the share sheet, or an error — no-op (non-blocking).
+    } finally {
+      setSharing(false);
     }
   };
 
@@ -179,22 +219,37 @@ export function ComplianceCheckerTool() {
               </li>
             ))}
           </ul>
-          {report.verdict !== "pass" && spec && (
-            <div className="flex flex-wrap gap-1.5 pt-1">
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {report.verdict !== "pass" && spec && (
               <Link
                 href={`/tools/form-resizer/${spec.id}/`}
                 className="inline-flex items-center gap-1 rounded-md bg-cta px-3.5 py-2 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
               >
                 Fix it — resize for {spec.name.split(" (")[0]} <ArrowRight className="h-4 w-4" />
               </Link>
+            )}
+            <button
+              type="button"
+              onClick={shareResult}
+              disabled={sharing}
+              className="inline-flex items-center gap-1.5 rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50 disabled:opacity-60"
+            >
+              {sharing ? (
+                <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+              ) : (
+                <Share2 className="h-4 w-4" strokeWidth={1.75} />
+              )}
+              Save / share result
+            </button>
+            {spec && (
               <Link
                 href={`/exam-requirements/${spec.id}/`}
                 className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50"
               >
                 See the full spec
               </Link>
-            </div>
-          )}
+            )}
+          </div>
           <p className="text-xs text-ink-faint">
             Deterministic checks (size, dimensions, format) are exact; the background check is a guide.
             Always confirm against the official portal before submitting.
