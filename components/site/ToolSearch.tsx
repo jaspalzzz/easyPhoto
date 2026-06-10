@@ -130,13 +130,14 @@ export function ToolSearch() {
   return (
     <div ref={wrapperRef} className="relative w-full max-w-md mx-auto">
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft opacity-60" strokeWidth={2} />
+        <Search className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-ink-soft" strokeWidth={2} />
         <input
           type="text"
           role="combobox"
           aria-expanded={isOpen && results.length > 0}
           aria-haspopup="listbox"
           aria-controls="tool-search-listbox"
+          aria-label="Search tools"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -144,14 +145,14 @@ export function ToolSearch() {
           }}
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
-          placeholder="Search tools: '20kb', 'signature', 'SSC'..."
-          className="h-11 w-full rounded-full border border-hairline-strong bg-paper pl-10 pr-4 text-sm font-medium placeholder:text-muted-foreground focus:border-brand focus:ring-2 focus:ring-brand-soft/20 focus:outline-none shadow-sm transition-all"
+          placeholder="Search tools — try '20kb', 'signature', 'SSC'"
+          className="h-12 w-full rounded-xl border border-hairline bg-card pl-11 pr-4 text-[15px] font-medium text-ink shadow-[0_1px_2px_rgb(0_0_0/0.04),0_2px_10px_rgb(0_0_0/0.05)] outline-none transition-shadow placeholder:font-normal placeholder:text-muted-foreground focus:border-brand focus:shadow-[0_0_0_3px_hsl(174_72%_29%/0.14)]"
         />
       </div>
 
       {isOpen && results.length > 0 && (
-        <div className="absolute left-0 right-0 z-50 mt-2 rounded-lg border border-hairline bg-paper p-1.5 shadow-pop overflow-hidden">
-          <ul role="listbox" id="tool-search-listbox" className="divide-y divide-hairline">
+        <div className="absolute left-0 right-0 z-50 mt-2 overflow-hidden rounded-xl border border-hairline bg-card p-1.5 shadow-pop">
+          <ul role="listbox" id="tool-search-listbox" className="space-y-0.5">
             {results.map((item) => (
               <li key={item.path} role="option" aria-selected={false}>
                 <Link
@@ -160,20 +161,20 @@ export function ToolSearch() {
                     setQuery("");
                     setIsOpen(false);
                   }}
-                  className="flex items-center justify-between rounded px-3 py-2 text-sm transition-colors hover:bg-accent/40 group"
+                  className="group flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-accent/50"
                 >
-                  <div>
-                    <span className="font-medium text-foreground block leading-tight">{item.title}</span>
-                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5 block">{item.category}</span>
-                  </div>
-                  <ArrowRight className="h-3.5 w-3.5 text-brand opacity-0 -translate-x-1 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
+                  <span className="min-w-0">
+                    <span className="block truncate font-semibold leading-tight text-ink">{item.title}</span>
+                    <span className="mt-0.5 block text-[11px] text-muted-foreground">{item.category}</span>
+                  </span>
+                  <ArrowRight className="h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
                 </Link>
               </li>
             ))}
           </ul>
           {totalMatches > 5 && (
-            <p className="px-3 py-1.5 text-[11px] text-muted-foreground text-center border-t border-hairline mt-1">
-              Showing 5 of {totalMatches} results — refine your search
+            <p className="mt-1 border-t border-hairline px-3 py-2 text-center text-[11px] text-muted-foreground">
+              Showing 5 of {totalMatches} — keep typing to refine
             </p>
           )}
         </div>
