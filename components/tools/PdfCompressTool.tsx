@@ -10,7 +10,7 @@ import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
 
-const TARGETS = [100, 200, 500] as const;
+const TARGETS = [50, 100, 200, 500] as const;
 
 export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}) {
   const [file, setFile] = React.useState<File | null>(null);
