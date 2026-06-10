@@ -57,6 +57,12 @@ export default function Page() {
           and recruitment portal requires — with a link to the official source on every
           page. Match these to avoid form rejection, then resize free in your browser.
         </p>
+        <p className="text-sm">
+          <Link href="/exam-photo-size/" className="font-medium text-brand hover:underline">
+            See the full size comparison table →
+          </Link>{" "}
+          <span className="text-muted-foreground">— all exams&apos; KB &amp; pixel limits in one view.</span>
+        </p>
       </header>
 
       {grouped.map((group) => (
