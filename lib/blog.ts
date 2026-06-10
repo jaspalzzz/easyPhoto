@@ -17,6 +17,28 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "schengen-europe-visa-photo-size",
+    title: "Schengen & Europe Visa Photo Size (Germany, France, Italy & More)",
+    description:
+      "The exact photo size and background for Schengen and European visas — 35×45 mm, ICAO biometric, with the key per-country background differences (Germany needs grey, Italy white). Make one free in your browser.",
+    date: "June 10, 2026",
+    dateISO: "2026-06-10",
+    excerpt:
+      "Every Schengen visa photo is 35×45 mm and ICAO-biometric — but the background rule differs by country. Here's the exact spec for Germany, France, Italy and more, and how to make one free.",
+    readMins: 5,
+  },
+  {
+    slug: "how-to-mask-aadhaar-before-sharing",
+    title: "How to Mask Your Aadhaar Number Before Sharing It (Free)",
+    description:
+      "UIDAI recommends sharing a masked Aadhaar that hides the first 8 digits. Here's why, when masked Aadhaar is accepted, and how to mask yours free in your browser — without uploading it anywhere.",
+    date: "June 10, 2026",
+    dateISO: "2026-06-10",
+    excerpt:
+      "Sharing your full Aadhaar number is risky. UIDAI says to share a masked copy showing only the last 4 digits. Here's how to do it safely and free, entirely on your device.",
+    readMins: 4,
+  },
+  {
     slug: "how-to-compress-pdf",
     title: "How to Compress a PDF to 50, 100 or 200 KB (Free, No Upload)",
     description:
