@@ -180,6 +180,56 @@ export function ExamPackageTool() {
     track({ name: "download", tool: "exam-package", format: ext });
   };
 
+  const [zipping, setZipping] = React.useState(false);
+
+  /** Bundle every processed asset into one portal-named ZIP, with a README that
+   *  documents the spec each file was sized to — the "ready to upload" kit. */
+  const downloadKit = async () => {
+    if (!spec || !photo) return;
+    setZipping(true);
+    try {
+      const JSZip = (await import("jszip")).default;
+      const zip = new JSZip();
+      const base = examId;
+      zip.file(`${base}-photo.jpg`, photo.blob);
+      if (signature) zip.file(`${base}-signature.png`, signature.blob);
+
+      const examName = spec.name;
+      const readme = [
+        `${examName} — application photo & signature kit`,
+        `Generated free at easyphoto.in — nothing was uploaded; everything was`,
+        `processed in your browser.`,
+        ``,
+        `Files in this kit:`,
+        `  • ${base}-photo.jpg   — ${photo.width}x${photo.height}px, ${formatKb(photo.bytes)}`,
+        signature
+          ? `  • ${base}-signature.png — ${signature.width}x${signature.height}px, ${formatKb(signature.bytes)}`
+          : null,
+        ``,
+        `Spec this kit was sized to:`,
+        `  • Photo limit: ${spec.photoMinKb ? `${spec.photoMinKb}–` : "≤ "}${spec.photoLimitKb} KB`,
+        spec.sigLimitKb
+          ? `  • Signature limit: ${spec.sigMinKb ? `${spec.sigMinKb}–` : "≤ "}${spec.sigLimitKb} KB`
+          : null,
+        prov?.url ? `  • Official source: ${prov.url}` : null,
+        ``,
+        `Always confirm against the official portal before you submit.`,
+      ]
+        .filter((l) => l !== null)
+        .join("\n");
+      zip.file(`${base}-README.txt`, readme);
+
+      const blob = await zip.generateAsync({ type: "blob" });
+      downloadBlob(blob, `${base}-application-kit.zip`);
+      track({ name: "download", tool: "exam-package", format: "zip" });
+    } catch (e) {
+      console.error(e);
+      setError("Could not build the ZIP. Download the files individually below.");
+    } finally {
+      setZipping(false);
+    }
+  };
+
   const STEPS: { id: Step; label: string }[] = [
     { id: "exam", label: "Exam" },
     { id: "photo", label: "Photo" },
@@ -326,6 +376,23 @@ export function ExamPackageTool() {
                     <AssetCard asset={signature} onDownload={() => download(signature)} />
                   )}
                 </div>
+
+                {/* Primary action: one portal-named ZIP with every file + a README */}
+                <Button
+                  variant="cta"
+                  className="w-full"
+                  onClick={downloadKit}
+                  disabled={zipping}
+                >
+                  {zipping ? (
+                    <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+                  ) : (
+                    <Download className="h-4 w-4" strokeWidth={1.75} />
+                  )}
+                  Download all as ZIP
+                  {signature ? " (photo + signature)" : ""}
+                </Button>
+
                 <Button variant="outline" size="sm" onClick={reset}>
                   <RotateCcw className="h-4 w-4" /> Start over
                 </Button>
