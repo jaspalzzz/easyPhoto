@@ -187,6 +187,20 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         popular: true,
         icon: "PenLine",
       },
+      {
+        slug: "watermark-pdf",
+        title: "Watermark PDF",
+        blurb: "Stamp a text watermark (CONFIDENTIAL, DRAFT…) across every page.",
+        ready: true,
+        icon: "Stamp",
+      },
+      {
+        slug: "pdf-page-numbers",
+        title: "Add Page Numbers to PDF",
+        blurb: "Number every page — choose the position, format and start value.",
+        ready: true,
+        icon: "Hash",
+      },
     ],
   },
   {

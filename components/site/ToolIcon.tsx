@@ -19,6 +19,8 @@ import {
   LockOpen,
   EyeOff,
   Calendar,
+  Stamp,
+  Hash,
   type LucideIcon,
 } from "lucide-react";
 import type { ToolColorCategory } from "@/lib/toolsCatalog";
@@ -44,6 +46,8 @@ const MAP: Record<string, LucideIcon> = {
   LockOpen,
   EyeOff,
   Calendar,
+  Stamp,
+  Hash,
 };
 
 /** Plain icon glyph (no tile). */
