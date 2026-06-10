@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, X } from "lucide-react";
 
 export interface Placement {
   x: number; // percentage (0-100) relative to parent width
@@ -253,10 +253,11 @@ export function SignatureOverlay({
           e.stopPropagation();
           onDelete();
         }}
-        className="absolute -top-3 -right-3 h-5 w-5 bg-destructive hover:bg-red-700 text-white rounded-full flex items-center justify-center text-[10px] font-bold border border-white shadow shadow-black/25 transition-colors"
+        className="absolute -top-3 -right-3 h-5 w-5 bg-destructive hover:bg-red-700 text-white rounded-full flex items-center justify-center border border-white shadow shadow-black/25 transition-colors"
         title="Remove signature"
+        aria-label="Remove signature"
       >
-        ✕
+        <X className="h-3 w-3" strokeWidth={2.5} />
       </button>
     </div>
   );

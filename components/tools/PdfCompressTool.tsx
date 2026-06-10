@@ -171,9 +171,15 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
               </li>
               <li>
                 · Status:{" "}
-                {result.underTarget
-                  ? `🟢 Under ${targetKb} KB`
-                  : `⚠️ Couldn't reach ${targetKb} KB — ${formatKb(result.bytes)} is the smallest achievable. This PDF is likely already optimised or contains high-resolution scans.`}
+                {result.underTarget ? (
+                  <span className="text-emerald-700">Under {targetKb} KB</span>
+                ) : (
+                  <span className="text-amber-700">
+                    Couldn&apos;t reach {targetKb} KB — {formatKb(result.bytes)} is
+                    the smallest achievable. This PDF is likely already optimised
+                    or contains high-resolution scans.
+                  </span>
+                )}
               </li>
             </ul>
             {result.bytes >= file.size ? (

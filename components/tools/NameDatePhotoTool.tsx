@@ -529,7 +529,14 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
             <ul className="space-y-1 text-ink-soft font-mono">
               <li>· Actual Size: {formatKb(result.bytes)}</li>
               <li>· Dimensions: {result.width}×{result.height}px</li>
-              <li>· Status: {result.underCap ? "🟢 Compliant size" : `⚠️ Over the ${targetKb} KB limit`}</li>
+              <li>
+                · Status:{" "}
+                {result.underCap ? (
+                  <span className="text-emerald-700">Compliant size</span>
+                ) : (
+                  <span className="text-amber-700">Over the {targetKb} KB limit</span>
+                )}
+              </li>
             </ul>
             {!result.underCap && (
               <div className="space-y-2 border-t border-hairline pt-2">

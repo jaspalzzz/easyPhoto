@@ -5,7 +5,7 @@ import { PORTAL_PRESETS } from "@/lib/portalPresets";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
 import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle, ShieldCheck } from "lucide-react";
+import { AlertCircle, ShieldCheck, Camera, PenLine } from "lucide-react";
 
 export function PortalResizer({ portalId }: { portalId: string }) {
   const spec = PORTAL_PRESETS[portalId];
@@ -34,13 +34,15 @@ export function PortalResizer({ portalId }: { portalId: string }) {
         <h3 className="font-semibold text-brand text-base mb-1.5">{spec.name} Requirements</h3>
         <p className="text-sm text-muted-foreground leading-relaxed mb-3">{spec.description}</p>
         <div className="flex flex-wrap gap-4 text-xs font-mono">
-          <div className="bg-card px-2.5 py-1 rounded border border-hairline">
-            📷 Photo: {spec.photoMinKb ? `${spec.photoMinKb}–` : ""}{spec.photoLimitKb} KB
+          <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
+            <Camera className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
+            Photo: {spec.photoMinKb ? `${spec.photoMinKb}–` : ""}{spec.photoLimitKb} KB
             {spec.photoWidthPx && ` · Min ${spec.photoWidthPx}×${spec.photoHeightPx}px`}
           </div>
           {hasSignature && (
-            <div className="bg-card px-2.5 py-1 rounded border border-hairline">
-              ✍️ Signature: {spec.sigMinKb ? `${spec.sigMinKb}–` : ""}{spec.sigLimitKb} KB
+            <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
+              <PenLine className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
+              Signature: {spec.sigMinKb ? `${spec.sigMinKb}–` : ""}{spec.sigLimitKb} KB
               {spec.sigWidthPx && ` · Min ${spec.sigWidthPx}×${spec.sigHeightPx}px`}
             </div>
           )}

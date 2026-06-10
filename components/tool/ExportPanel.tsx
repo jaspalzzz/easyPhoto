@@ -18,7 +18,9 @@ interface ExportPanelProps {
 
 export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
   const [busy, setBusy] = React.useState<string | null>(null);
-  const [digitalInfo, setDigitalInfo] = React.useState<string | null>(null);
+  const [digitalInfo, setDigitalInfo] = React.useState<
+    { text: string; warn: boolean } | null
+  >(null);
 
   // Print Sheet Customizer States
   const [paperSize, setPaperSize] = React.useState<"4x6" | "5x7" | "a4" | "letter">("4x6");
@@ -89,13 +91,22 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
           res.scale < 1 ? `, resized to ${res.width}×${res.height}px` : "";
         setDigitalInfo(
           res.underCap
-            ? `${formatKb(res.bytes)} (under ${capKb} KB cap, quality ${res.quality.toFixed(2)}${downscaled})`
-            : `⚠ ${formatKb(res.bytes)}. Can't get under the ${capKb} KB cap without going below the required ${spec.digital.pxMin?.width}×${spec.digital.pxMin?.height}px minimum. Use a simpler background or check the portal's limits.`
+            ? {
+                text: `${formatKb(res.bytes)} (under ${capKb} KB cap, quality ${res.quality.toFixed(2)}${downscaled})`,
+                warn: false,
+              }
+            : {
+                text: `${formatKb(res.bytes)}. Can't get under the ${capKb} KB cap without going below the required ${spec.digital.pxMin?.width}×${spec.digital.pxMin?.height}px minimum. Use a simpler background or check the portal's limits.`,
+                warn: true,
+              }
         );
       } else {
         const blob = await encode(digital.canvas, "image/jpeg", 0.92);
         download(blob, `${base}-passport-digital.jpg`);
-        setDigitalInfo(`${formatKb(blob.size)} (no portal size cap on record)`);
+        setDigitalInfo({
+          text: `${formatKb(blob.size)} (no portal size cap on record)`,
+          warn: false,
+        });
       }
     } finally {
       setBusy(null);
@@ -245,8 +256,12 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             {busy === "digital" ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : <Download className="h-4 w-4" strokeWidth={1.75} />} JPG for upload
           </Button>
           {digitalInfo && (
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-              {digitalInfo}
+            <p
+              className={`mt-2 text-xs leading-relaxed ${
+                digitalInfo.warn ? "text-amber-700" : "text-muted-foreground"
+              }`}
+            >
+              {digitalInfo.text}
             </p>
           )}
         </div>

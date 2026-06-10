@@ -1,4 +1,4 @@
-import { Upload, Wand2, Download } from "lucide-react";
+import { Upload, ScanFace, Download } from "lucide-react";
 
 export const HOW_IT_WORKS_STEPS = [
   {
@@ -7,7 +7,7 @@ export const HOW_IT_WORKS_STEPS = [
     body: "Drop in any clear, front-facing photo. It stays on your device.",
   },
   {
-    icon: Wand2,
+    icon: ScanFace,
     title: "We do the work",
     body: "We detect the face, size the head to the spec, and set the correct background.",
   },

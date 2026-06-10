@@ -5,7 +5,7 @@ import {
   RotateCcw,
   AlertCircle,
   SlidersHorizontal,
-  Wand2,
+  Crop,
   Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -242,7 +242,7 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                             size="sm"
                             onClick={handleResetAuto}
                           >
-                            <Wand2 className="h-4 w-4" /> Auto
+                            <Crop className="h-4 w-4" /> Auto
                           </Button>
                         )}
                         <Button

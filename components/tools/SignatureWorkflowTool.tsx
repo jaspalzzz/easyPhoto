@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, ShieldCheck, Sparkles, Crop, Maximize2, Info } from "lucide-react";
+import { Loader2, Download, ShieldCheck, Eraser, Crop, Maximize2, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, canvasToBlob, pngUnderKb, picaResizeTo } from "@/lib/imaging";
@@ -565,7 +565,7 @@ function Body({
                 : "border-transparent text-muted-foreground hover:text-foreground"
             }`}
           >
-            <Sparkles className="h-4 w-4" /> Clean
+            <Eraser className="h-4 w-4" /> Clean
           </button>
           <button
             id="sig-tab-crop"
@@ -627,9 +627,9 @@ function Body({
                   </button>
                 </div>
                 <span className="text-[10px] text-muted-foreground block leading-relaxed">
-                  {bgFormat === "jpeg" 
-                    ? "🟢 Recommended for SSC, UPSC, and most Indian government forms." 
-                    : "ℹ️ Transparent background, ideal for document overlays."}
+                  {bgFormat === "jpeg"
+                    ? "Recommended for SSC, UPSC, and most Indian government forms."
+                    : "Transparent background, ideal for document overlays."}
                 </span>
               </div>
 

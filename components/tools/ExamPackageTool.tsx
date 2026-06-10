@@ -7,6 +7,7 @@ import {
   FileUp,
   ShieldCheck,
   Check,
+  AlertTriangle,
   ChevronRight,
   ChevronLeft,
   RotateCcw,
@@ -486,9 +487,13 @@ function AssetCard({ asset, onDownload }: { asset: AssetResult; onDownload?: () 
       <p className="text-xs font-mono text-ink-soft">
         {asset.kind} · {formatKb(asset.bytes)} · {asset.width}×{asset.height}px{" "}
         {asset.compliant ? (
-          <span className="text-emerald-600">✓ compliant</span>
+          <span className="inline-flex items-center gap-1 text-emerald-600">
+            <Check className="h-3 w-3" strokeWidth={2.25} /> compliant
+          </span>
         ) : (
-          <span className="text-amber-600">⚠ check size</span>
+          <span className="inline-flex items-center gap-1 text-amber-600">
+            <AlertTriangle className="h-3 w-3" strokeWidth={2.25} /> check size
+          </span>
         )}
       </p>
       {onDownload && (
