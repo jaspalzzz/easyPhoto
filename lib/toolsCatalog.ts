@@ -108,6 +108,13 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         popular: true,
         icon: "Calendar",
       },
+      {
+        slug: "mask-aadhaar",
+        title: "Mask Aadhaar / Document",
+        blurb: "Hide the first 8 digits of your Aadhaar (or any sensitive detail) with a permanent black redaction — fully in your browser.",
+        ready: true,
+        icon: "EyeOff",
+      },
     ],
   },
   {
