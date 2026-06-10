@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getCategory, TOOLS_CATALOG } from "@/lib/toolsCatalog";
-import { ToolIcon } from "@/components/site/ToolIcon";
+import { ToolCard } from "@/components/site/ToolCard";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
 
@@ -43,24 +43,15 @@ export function CategoryPage({ slug }: { slug: string }) {
         <p className="text-muted-foreground">{cat.tagline}</p>
       </header>
 
-      <div className="mt-8 register sm:grid-cols-2">
+      <div className="ep-card-grid mt-8 sm:!grid-cols-2 lg:!grid-cols-3">
         {tools.map((tool) => (
-          <Link
+          <ToolCard
             key={tool.slug}
-            href={`/tools/${tool.slug}/`}
-            className="group flex items-start gap-4 bg-card p-5 transition-colors hover:bg-accent/40"
-          >
-            <ToolIcon name={tool.icon} className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-            <div>
-              <span className="flex items-center gap-1 font-medium">
-                {tool.title}
-                <ArrowRight className="h-3.5 w-3.5 -translate-x-1 text-brand opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" strokeWidth={1.75} />
-              </span>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {tool.blurb}
-              </p>
-            </div>
-          </Link>
+            slug={tool.slug}
+            title={tool.title}
+            blurb={tool.blurb}
+            icon={tool.icon}
+          />
         ))}
       </div>
 

@@ -61,26 +61,25 @@ export default function ConvertHubPage() {
           <p className="mb-4 text-sm text-muted-foreground">
             {SOURCE_BLURB[group.source]}
           </p>
-          <div className="register sm:grid-cols-2 lg:grid-cols-3">
+          <div className="ep-card-grid">
             {group.pairs.map((p) => (
               <Link
                 key={p.slug}
                 href={convertPath(p.slug)}
-                className="group flex h-full items-start gap-4 bg-card p-5 transition-colors hover:bg-accent/40"
+                className="ep-card group flex h-full items-start gap-4 p-5"
               >
-                <RefreshCw
-                  className="mt-0.5 h-5 w-5 shrink-0 text-brand"
-                  strokeWidth={1.75}
-                />
-                <div>
-                  <span className="flex items-center gap-1 font-semibold">
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[hsl(212_80%_42%/0.12)] text-[hsl(212_80%_42%)] transition-colors group-hover:bg-[hsl(212_80%_42%/0.18)]">
+                  <RefreshCw className="h-[22px] w-[22px]" strokeWidth={1.9} />
+                </span>
+                <div className="min-w-0">
+                  <span className="flex items-center gap-1 font-semibold text-ink">
                     {p.from} to {p.to}
                     <ArrowRight
-                      className="h-3.5 w-3.5 -translate-x-1 text-brand opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
+                      className="h-3.5 w-3.5 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100"
                       strokeWidth={1.75}
                     />
                   </span>
-                  <p className="mt-1 text-sm text-muted-foreground">{p.reason}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{p.reason}</p>
                 </div>
               </Link>
             ))}

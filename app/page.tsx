@@ -5,7 +5,7 @@ import {
   LAUNCH_ORDER,
   effectivePrintMm,
 } from "@/lib/countrySpecs";
-import { POPULAR_TOOLS, getTool } from "@/lib/toolsCatalog";
+import { POPULAR_TOOLS, getTool, toolColorCategory } from "@/lib/toolsCatalog";
 import { primaryMakerPath } from "@/lib/makerPages";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
 import { HowItWorks, HOW_IT_WORKS_STEPS } from "@/components/site/HowItWorks";
@@ -13,7 +13,7 @@ import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { howToSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
-import { ToolIcon } from "@/components/site/ToolIcon";
+import { ToolIcon, ToolIconTile } from "@/components/site/ToolIcon";
 import { HeroStarter } from "@/components/site/HeroStarter";
 import { Flag } from "@/components/site/Flag";
 import { ToolSearch } from "@/components/site/ToolSearch";
@@ -124,17 +124,19 @@ export default function HomePage() {
               All tools <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {QUICK_TOOLS.map((tool) => (
               <Link
                 key={tool.slug}
                 href={`/tools/${tool.slug}/`}
-                className="group flex items-center gap-2.5 rounded-md border border-hairline bg-card px-3.5 py-3 transition-colors hover:bg-accent/40"
+                className="ep-card group flex items-center gap-3 px-4 py-3.5"
               >
-                <span className="text-ink-soft transition-colors group-hover:text-brand">
-                  <ToolIcon name={tool.icon} className="h-4 w-4" />
-                </span>
-                <span className="text-sm font-medium leading-tight">
+                <ToolIconTile
+                  name={tool.icon}
+                  category={toolColorCategory(tool.slug)}
+                  className="!h-9 !w-9"
+                />
+                <span className="text-sm font-semibold leading-tight text-ink">
                   {tool.title}
                 </span>
               </Link>

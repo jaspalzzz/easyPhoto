@@ -263,6 +263,36 @@ export function categoryOf(toolSlug: string): ToolGroup | undefined {
   return TOOLS_CATALOG.find((g) => g.tools.some((t) => t.slug === toolSlug));
 }
 
+/**
+ * Color category for a tool — drives the vibrant icon-tile wayfinding colors.
+ * Maps the 3 catalog groups (photo/pdf/signature) plus a few semantic overrides
+ * so privacy / convert / exam tools get their own hue.
+ */
+export type ToolColorCategory =
+  | "photo"
+  | "pdf"
+  | "signature"
+  | "privacy"
+  | "convert"
+  | "exam";
+
+const COLOR_OVERRIDE: Record<string, ToolColorCategory> = {
+  "mask-aadhaar": "privacy",
+  "unlock-pdf": "privacy",
+  "format-converter": "convert",
+  "exam-package": "exam",
+  "compliance-checker": "exam",
+};
+
+export function toolColorCategory(toolSlug: string): ToolColorCategory {
+  const override = COLOR_OVERRIDE[toolSlug];
+  if (override) return override;
+  const g = categoryOf(toolSlug)?.slug;
+  if (g === "pdf") return "pdf";
+  if (g === "signature") return "signature";
+  return "photo";
+}
+
 /** Other ready tools from the same group — for on-page "related" cross-links. */
 export function relatedTools(slug: string, limit = 3): ToolEntry[] {
   const group = TOOLS_CATALOG.find((g) => g.tools.some((t) => t.slug === slug));

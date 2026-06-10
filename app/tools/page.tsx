@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { TOOLS_CATALOG, POPULAR_TOOLS } from "@/lib/toolsCatalog";
 import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
 import { ToolIcon } from "@/components/site/ToolIcon";
+import { ToolCard } from "@/components/site/ToolCard";
 import { TrustPills } from "@/components/site/TrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -48,24 +49,15 @@ export default function ToolsHubPage() {
         <h2 className="eyebrow mb-4">
           Most popular
         </h2>
-        <div className="register sm:grid-cols-2 lg:grid-cols-3">
+        <div className="ep-card-grid">
           {POPULAR_TOOLS.map((tool) => (
-            <Link
+            <ToolCard
               key={tool.slug}
-              href={`/tools/${tool.slug}/`}
-              className="group flex h-full items-start gap-4 bg-card p-5 transition-colors hover:bg-accent/40"
-            >
-              <ToolIcon name={tool.icon} className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-              <div>
-                <span className="flex items-center gap-1 font-semibold">
-                  {tool.title}
-                  <ArrowRight className="h-3.5 w-3.5 -translate-x-1 text-brand opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" strokeWidth={1.75} />
-                </span>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {tool.blurb}
-                </p>
-              </div>
-            </Link>
+              slug={tool.slug}
+              title={tool.title}
+              blurb={tool.blurb}
+              icon={tool.icon}
+            />
           ))}
         </div>
       </section>
@@ -169,28 +161,27 @@ export default function ToolsHubPage() {
             {group.group}
             <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
           </Link>
-          <div className="register sm:grid-cols-2">
+          <div className="ep-card-grid sm:!grid-cols-2 lg:!grid-cols-3">
             {group.tools.map((tool) =>
               tool.ready ? (
-                <Link
+                <ToolCard
                   key={tool.slug}
-                  href={`/tools/${tool.slug}/`}
-                  className="group flex items-start gap-4 bg-card p-5 transition-colors hover:bg-accent/40"
-                >
-                  <ToolIcon name={tool.icon} className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                  <div>
-                    <span className="font-medium">{tool.title}</span>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {tool.blurb}
-                    </p>
-                  </div>
-                </Link>
+                  slug={tool.slug}
+                  title={tool.title}
+                  blurb={tool.blurb}
+                  icon={tool.icon}
+                />
               ) : (
-                <div key={tool.slug} className="flex items-start gap-4 bg-card p-5 opacity-60">
-                  <ToolIcon name={tool.icon} className="mt-0.5 h-5 w-5 shrink-0 text-ink-soft" />
+                <div
+                  key={tool.slug}
+                  className="flex h-full items-start gap-4 rounded-xl border border-hairline bg-card p-5 opacity-70"
+                >
+                  <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-muted text-ink-faint">
+                    <ToolIcon name={tool.icon} className="h-[22px] w-[22px]" />
+                  </span>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">{tool.title}</span>
+                      <span className="font-semibold text-ink">{tool.title}</span>
                       <span className="rounded-md border border-hairline px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                         Coming soon
                       </span>

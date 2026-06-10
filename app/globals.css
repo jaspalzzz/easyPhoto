@@ -14,8 +14,8 @@
 @layer base {
   :root {
     /* Surfaces */
-    --paper: 40 33% 97%;            /* warm document paper — page background */
-    --surface: 0 0% 100%;          /* true white — only for photo canvas/result */
+    --paper: 40 30% 98.5%;         /* near-white warm canvas — lets white cards pop */
+    --surface: 0 0% 100%;          /* true white — cards, photo canvas, result */
     --ink: 30 12% 12%;             /* warm near-black — primary text */
     --ink-soft: 32 7% 40%;         /* secondary text / labels */
     --ink-faint: 33 8% 56%;        /* tertiary / placeholder */
@@ -104,9 +104,29 @@
     @apply font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground;
   }
 
-  /* Section eyebrow label */
+  /* Section eyebrow label — friendlier than the old monospace specimen style */
   .eyebrow {
-    @apply font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-ink-soft;
+    @apply text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-soft;
+  }
+
+  /* Premium tool card — white surface, soft shadow, hover lift. The building
+     block of the tool grids (replaces flat hairline lists). */
+  .ep-card {
+    @apply rounded-xl border bg-card transition-all duration-150;
+    border-color: hsl(36 18% 90%);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 2px 8px rgb(0 0 0 / 0.05);
+  }
+  .ep-card:hover {
+    transform: translateY(-2px);
+    border-color: hsl(33 14% 80%);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.09);
+  }
+  .ep-card-grid {
+    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ep-card { transition: none; }
+    .ep-card:hover { transform: none; }
   }
 
   /* Hairline-framed working surface (the live tool / result). The ONLY place
