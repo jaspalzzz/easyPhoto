@@ -200,6 +200,7 @@ export default async function MakerPage({
       </nav>
 
       <header className="space-y-3 border-b border-hairline pb-7">
+        <span className="eyebrow block text-brand">{Doc} photo bureau</span>
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
           {spec.label} {Doc} Photo Maker
         </h1>

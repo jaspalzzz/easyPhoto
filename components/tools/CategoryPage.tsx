@@ -31,16 +31,17 @@ export function CategoryPage({ slug }: { slug: string }) {
       />
       <Link
         href="/tools/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
       >
         <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All tools
       </Link>
 
-      <header className="mt-4 max-w-2xl space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+      <header className="mt-5 max-w-2xl space-y-2.5 border-b border-hairline pb-7">
+        <span className="eyebrow block text-brand">{tools.length} free tools · nothing uploaded</span>
+        <h1 className="text-[1.8rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2.25rem]">
           Free {cat.group}
         </h1>
-        <p className="text-muted-foreground">{cat.tagline}</p>
+        <p className="text-[15px] leading-relaxed text-muted-foreground">{cat.tagline}</p>
       </header>
 
       <div className="ep-card-grid mt-8 sm:!grid-cols-2 lg:!grid-cols-3">

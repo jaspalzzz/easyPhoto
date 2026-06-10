@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { PdfCompressTool } from "@/components/tools/PdfCompressTool";
+import { ToolIconTile } from "@/components/site/ToolIcon";
+import { ExploreTools } from "@/components/site/ExploreTools";
 import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -61,20 +63,24 @@ export function PdfKbLanding({ kb }: { kb: number }) {
 
       <Link
         href="/tools/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
       >
         <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All tools
       </Link>
 
-      <header className="mt-4 space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          Compress PDF to {kb} KB
-        </h1>
-        <p className="text-muted-foreground">
-          Shrink a PDF to under {kb} KB for exam, government and online form
-          uploads — marksheets, certificates and documents — free, and entirely
-          in your browser.
-        </p>
+      <header className="mt-4 flex items-start gap-4">
+        <ToolIconTile name="FileDown" category="pdf" className="hidden shrink-0 sm:flex" />
+        <div className="space-y-2">
+          <span className="eyebrow block text-brand">PDF Tools</span>
+          <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
+            Compress PDF to {kb} KB
+          </h1>
+          <p className="text-[15px] leading-relaxed text-muted-foreground">
+            Shrink a PDF to under {kb} KB for exam, government and online form
+            uploads — marksheets, certificates and documents — free, and entirely
+            in your browser.
+          </p>
+        </div>
       </header>
 
       <div className="mt-6">
@@ -142,6 +148,12 @@ export function PdfKbLanding({ kb }: { kb: number }) {
           </Link>
         </div>
       </section>
+
+      <ExploreTools
+        className="mt-12 border-t border-hairline pt-10"
+        heading="More free tools"
+        subtitle="Photos, signatures, conversions — all on-device, no sign-up."
+      />
 
       <section className="mt-12">
         <Faq items={faqItems} />
