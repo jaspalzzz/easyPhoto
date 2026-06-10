@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, RotateCcw, AlertCircle } from "lucide-react";
+import { RotateCcw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Uploader } from "@/components/tool/Uploader";
+import { ProcessingState } from "@/components/site/ProcessingState";
 import { CropMarks } from "@/components/site/CropMarks";
 import { loadImageFromFile, type LoadedImage } from "@/lib/pipeline";
 import { ensureDecodable } from "@/lib/heic";
@@ -62,12 +63,7 @@ export function ImageToolShell({
 
         {!source && !loading && <Uploader onFile={onFile} />}
 
-        {loading && (
-          <div className="flex flex-col items-center justify-center gap-3 py-12 text-muted-foreground">
-            <Loader2 className="h-8 w-8 animate-spin" />
-            <p className="text-sm">Reading your image…</p>
-          </div>
-        )}
+        {loading && <ProcessingState label="Reading your image…" />}
 
         {source && (
           <div className="space-y-6">

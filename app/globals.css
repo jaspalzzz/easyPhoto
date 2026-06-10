@@ -240,6 +240,60 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Processing indicator (document/PDF tools)
+   ---------------------------------------------------------------------------
+   The bureau alternative to a bare spinning loader: a brand scan-line sweeps a
+   small framed "document", an indeterminate bar tracks below, and the page's
+   faux text-lines breathe. Every animated layer is transform/opacity ONLY, so
+   the whole effect lives on the compositor thread and stays smooth while the
+   main thread is saturated by PDF rendering / image compression.
+   --------------------------------------------------------------------------- */
+
+/* Indeterminate track: a brand segment sweeps left→right under a hairline rail. */
+@keyframes ep-indeterminate {
+  0%   { transform: translateX(-110%); }
+  100% { transform: translateX(360%); }
+}
+.ep-track {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: hsl(var(--hairline));
+}
+.ep-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 28%;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--brand) / 0.85),
+    transparent
+  );
+  will-change: transform;
+  animation: ep-indeterminate 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* The faux page lines pulse gently in sequence — a subtle "being read" cue. */
+@keyframes ep-line-breathe {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 0.9; }
+}
+.ep-doc-line {
+  border-radius: 9999px;
+  background: hsl(var(--hairline-strong));
+  animation: ep-line-breathe 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ep-track::after { animation: none; transform: translateX(140%); }
+  .ep-doc-line { animation: none; }
+}
+
 /* Checkerboard for transparent/preview areas. */
 .checkerboard {
   background-image:

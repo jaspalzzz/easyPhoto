@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, FileUp, ShieldCheck, LockOpen } from "lucide-react";
+import { Download, FileUp, ShieldCheck, LockOpen } from "lucide-react";
+import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { unlockPdf, PdfPasswordError } from "@/lib/pdfUnlock";
@@ -115,12 +116,7 @@ export function UnlockPdfTool() {
           </div>
         )}
 
-        {busy && (
-          <div className="flex flex-col items-center justify-center gap-3 py-8 text-ink-soft">
-            <Loader2 className="h-7 w-7 animate-spin text-brand" strokeWidth={1.75} />
-            <p className="text-sm">{progress ?? "Working…"}</p>
-          </div>
-        )}
+        {busy && <ProcessingState label={progress ?? "Working…"} />}
 
         {file && needsPassword && !busy && (
           <div className="space-y-3">

@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, FileUp, ShieldCheck } from "lucide-react";
+import { Download, FileUp, ShieldCheck } from "lucide-react";
+import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { pdfToCanvases, PdfTooLargeError, PdfEncryptedError } from "@/lib/pdfToImages";
@@ -136,12 +137,7 @@ export function PdfSplitTool() {
         )}
 
         {/* Loading/Processing State */}
-        {busy && (
-          <div className="flex flex-col items-center justify-center gap-3 py-10 text-ink-soft">
-            <Loader2 className="h-8 w-8 animate-spin text-brand" strokeWidth={1.75} />
-            <p className="text-sm font-medium">{progress ?? "Loading PDF details…"}</p>
-          </div>
-        )}
+        {busy && <ProcessingState label={progress ?? "Loading PDF details…"} />}
 
         {/* Error message */}
         {error && (

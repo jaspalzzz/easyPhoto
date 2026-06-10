@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, ShieldCheck, Eraser, Crop, Maximize2, Info } from "lucide-react";
+import { Download, ShieldCheck, Eraser, Crop, Maximize2, Info } from "lucide-react";
+import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, canvasToBlob, pngUnderKb, picaResizeTo } from "@/lib/imaging";
@@ -454,10 +455,7 @@ function Body({
       <div className="space-y-4">
         <PreviewFrame checker={bgFormat === "png"}>
           {busy ? (
-            <div className="flex flex-col items-center justify-center py-20 text-sm text-muted-foreground">
-              <Loader2 className="h-7 w-7 animate-spin text-brand" strokeWidth={1.75} />
-              <p className="mt-2">Processing signature...</p>
-            </div>
+            <ProcessingState bare label="Processing signature…" />
           ) : out ? (
             <div className="flex flex-col items-center gap-2">
               {out && (

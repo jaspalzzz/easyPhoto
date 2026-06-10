@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, FileUp, ShieldCheck, PenLine } from "lucide-react";
+import { Download, FileUp, ShieldCheck, PenLine } from "lucide-react";
+import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { canvasToBlob } from "@/lib/imaging";
@@ -340,12 +341,7 @@ export function SignImageTool() {
           </div>
         )}
 
-        {busy && (
-          <div className="flex flex-col items-center justify-center gap-3 py-8 text-ink-soft border border-hairline rounded-md bg-accent/5">
-            <Loader2 className="h-7 w-7 animate-spin text-brand" strokeWidth={1.75} />
-            <p className="text-sm font-medium">Loading...</p>
-          </div>
-        )}
+        {busy && <ProcessingState label="Loading…" />}
       </CardContent>
     </Card>
   );

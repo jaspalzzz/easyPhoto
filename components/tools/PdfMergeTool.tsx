@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, FileUp, ShieldCheck, ArrowUp, ArrowDown, Trash2, FileText, CheckCircle2 } from "lucide-react";
+import { Download, FileUp, ShieldCheck, ArrowUp, ArrowDown, Trash2, FileText, CheckCircle2 } from "lucide-react";
+import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { mergePdfs } from "@/lib/pdfMergeSplit";
@@ -251,12 +252,7 @@ export function PdfMergeTool() {
         )}
 
         {/* Processing State */}
-        {busy && (
-          <div className="flex flex-col items-center justify-center gap-3 py-8 text-ink-soft border border-hairline rounded-md bg-accent/5">
-            <Loader2 className="h-7 w-7 animate-spin text-brand" strokeWidth={1.75} />
-            <p className="text-sm font-medium">{progress ?? "Processing PDFs…"}</p>
-          </div>
-        )}
+        {busy && <ProcessingState label={progress ?? "Processing PDFs…"} />}
       </CardContent>
     </Card>
   );

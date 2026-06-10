@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, FileUp, ShieldCheck } from "lucide-react";
+import { Download, FileUp, ShieldCheck } from "lucide-react";
+import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { pdfToCanvases, PdfTooLargeError, PdfEncryptedError } from "@/lib/pdfToImages";
@@ -127,12 +128,7 @@ export function PdfToJpgTool() {
           />
         </div>
 
-        {busy && (
-          <div className="flex flex-col items-center justify-center gap-3 py-8 text-ink-soft">
-            <Loader2 className="h-7 w-7 animate-spin text-brand" strokeWidth={1.75} />
-            <p className="text-sm">{progress ?? "Loading PDF…"}</p>
-          </div>
-        )}
+        {busy && <ProcessingState label={progress ?? "Loading PDF…"} />}
 
         {error && (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">

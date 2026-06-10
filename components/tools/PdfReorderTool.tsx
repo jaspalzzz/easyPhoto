@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import {
-  Loader2,
   Download,
   FileUp,
   ShieldCheck,
@@ -14,6 +13,7 @@ import {
   RefreshCw,
   Undo2,
 } from "lucide-react";
+import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
@@ -460,12 +460,7 @@ export function PdfReorderTool() {
           </p>
         )}
 
-        {busy && (
-          <div className="flex flex-col items-center justify-center gap-3 py-8 text-ink-soft border border-hairline rounded-md bg-accent/5">
-            <Loader2 className="h-7 w-7 animate-spin text-brand" strokeWidth={1.75} />
-            <p className="text-sm font-medium">{progress ?? "Processing PDF…"}</p>
-          </div>
-        )}
+        {busy && <ProcessingState label={progress ?? "Processing PDF…"} />}
       </CardContent>
     </Card>
   );
