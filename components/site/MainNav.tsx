@@ -138,12 +138,13 @@ export function MainNav() {
                             href={`/tools/${t.slug}/`}
                             onClick={() => setOpen(false)}
                             role="menuitem"
-                            className="group/item flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-[13px] font-medium leading-snug text-foreground transition-colors hover:bg-accent/60"
+                            className="group/item flex items-center gap-2.5 rounded-lg px-2 py-1 text-[13px] font-medium leading-snug text-foreground transition-colors hover:bg-accent/60"
                           >
                             <ToolIconTile
                               name={t.icon}
                               category={toolColorCategory(t.slug)}
                               size="sm"
+                              className="!h-7 !w-7"
                             />
                             <span>{t.title}</span>
                           </Link>
