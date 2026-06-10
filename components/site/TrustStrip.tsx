@@ -1,4 +1,5 @@
 import { ShieldCheck, BadgeCheck, Landmark, Gift } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 /**
  * Authentic trust signals. Every claim is verifiable from how the app actually
@@ -49,8 +50,8 @@ export function TrustStrip() {
   );
 }
 
-/** Compact inline trust row for hero areas. */
-export function TrustPills() {
+/** Trust signals as compact bordered chips. `className` controls alignment. */
+export function TrustPills({ className }: { className?: string }) {
   const pills = [
     { icon: ShieldCheck, label: "100% private" },
     { icon: Gift, label: "Free · no watermark" },
@@ -58,10 +59,13 @@ export function TrustPills() {
     { icon: Landmark, label: "Official sources" },
   ];
   return (
-    <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-ink-soft">
+    <div className={cn("flex flex-wrap items-center justify-center gap-2", className)}>
       {pills.map((p) => (
-        <span key={p.label} className="inline-flex items-center gap-1.5">
-          <p.icon className="h-3.5 w-3.5 text-brand" strokeWidth={1.75} />
+        <span
+          key={p.label}
+          className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-3 py-1.5 text-[13px] font-medium text-ink-soft"
+        >
+          <p.icon className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
           {p.label}
         </span>
       ))}

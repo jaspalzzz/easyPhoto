@@ -91,18 +91,20 @@ export default function HomePage() {
                 Free, and entirely in your browser.
               </p>
 
-              {/* Credibility stats — real, dynamic counts */}
-              <dl className="mt-7 flex flex-wrap gap-x-8 gap-y-3">
+              {/* Credibility stats — real, dynamic counts, in a clean strip */}
+              <dl className="mt-7 flex max-w-md divide-x divide-hairline overflow-hidden rounded-xl border border-hairline bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04)]">
                 {[
                   { v: `${LAUNCH_ORDER.length}`, l: "country specs" },
                   { v: `${PORTAL_KEYS.length}`, l: "exam & form specs" },
                   { v: `${READY_TOOLS.length}`, l: "free tools" },
                 ].map((s) => (
-                  <div key={s.l}>
-                    <dt className="text-2xl font-bold tracking-tight text-ink">
+                  <div key={s.l} className="flex-1 px-4 py-3.5">
+                    <dt className="text-[1.65rem] font-bold leading-none tracking-tight text-brand">
                       {s.v}
                     </dt>
-                    <dd className="text-xs text-muted-foreground">{s.l}</dd>
+                    <dd className="mt-1 text-xs leading-tight text-muted-foreground">
+                      {s.l}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -111,9 +113,7 @@ export default function HomePage() {
                 <ToolSearch />
               </div>
 
-              <div className="mt-6">
-                <TrustPills />
-              </div>
+              <TrustPills className="mt-6 justify-start" />
             </div>
 
             {/* Right: live passport starter */}
