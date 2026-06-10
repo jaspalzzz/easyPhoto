@@ -25,7 +25,11 @@ export function organizationSchema() {
       width: 512,
       height: 512,
     },
-    // sameAs: ["https://twitter.com/...", "https://www.linkedin.com/company/..."],
+    // Verified brand profiles — ties easyPhoto together as an entity for Google.
+    // Add more (Instagram, X, YouTube, Facebook, LinkedIn) here as they go live.
+    sameAs: [
+      "https://www.pinterest.com/easyphoto0604/",
+    ],
   };
 }
 
