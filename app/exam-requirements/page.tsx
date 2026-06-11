@@ -26,6 +26,7 @@ const CATEGORY_ORDER: PortalCategory[] = [
   "central",
   "banking",
   "state-psc",
+  "police",
   "national",
   "defence",
   "visa",

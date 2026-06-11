@@ -33,6 +33,7 @@ export type PortalCategory =
   | "defence"
   | "banking"
   | "state-psc"
+  | "police"
   | "central"
   | "visa";
 
@@ -41,6 +42,7 @@ export const PORTAL_CATEGORY_LABEL: Record<PortalCategory, string> = {
   defence: "Defence recruitment",
   banking: "Banking & insurance",
   "state-psc": "State Public Service Commissions",
+  police: "State police recruitment",
   central: "Central government recruitment",
   visa: "Visa & identity documents",
 };
@@ -48,8 +50,12 @@ export const PORTAL_CATEGORY_LABEL: Record<PortalCategory, string> = {
 const CATEGORY_OF: Record<string, PortalCategory> = {
   // National entrance / eligibility
   gate: "national", "ugc-net": "national", "csir-net": "national", nta: "national",
+  cat: "national", clat: "national",
   // Defence
   nda: "defence", cds: "defence", afcat: "defence",
+  "army-agniveer": "defence", "airforce-agniveer": "defence",
+  // State police recruitment
+  "up-police": "police",
   // Banking & insurance
   ibps: "banking", sbi: "banking", rbi: "banking", nabard: "banking",
   lic: "banking", niacl: "banking", irdai: "banking",
