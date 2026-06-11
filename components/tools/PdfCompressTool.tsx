@@ -66,7 +66,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
       if (e instanceof PdfEncryptedError) {
         setError("encrypted");
       } else {
-        setError("Could not compress this PDF. Try a different file.");
+        setError("Couldn't compress this PDF. If it's password-protected, unlock it first; otherwise re-saving it from the original source as a plain PDF usually fixes it.");
       }
       track({ name: "tool_failure", tool: "pdf-compress", device: deviceClass(), reason: "compress-error" });
     } finally {

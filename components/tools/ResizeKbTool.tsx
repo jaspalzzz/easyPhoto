@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
+import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
@@ -21,9 +22,11 @@ interface BodyProps {
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
   densityDpi?: number;
+  /** Named requirement for the compliance receipt, e.g. "SSC (Staff Selection Commission)". */
+  requirementLabel?: string;
 }
 
-function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, densityDpi }: BodyProps) {
+function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, densityDpi, requirementLabel }: BodyProps) {
   const [targetKb, setTargetKb] = React.useState(defaultKb);
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -104,7 +107,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
         device: deviceClass(),
         reason: "compress-error",
       });
-      setError("Compression failed. Try a smaller target or a different image.");
+      setError("Couldn't compress this image — it may be corrupted. Re-exporting it as a plain JPG from your gallery usually fixes it.");
     } finally {
       setBusy(false);
     }
@@ -183,41 +186,56 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
       )}
 
       {result && (
-        <div className="space-y-2 rounded-md border border-hairline bg-paper p-3 text-sm">
-          <p>
-            Original:{" "}
-            <strong className="spec text-ink">{formatKb(source.file.size)}</strong>
-            {" "}·{" "}
-            Result:{" "}
-            <strong className="spec text-ink">{formatKb(result.bytes)}</strong> ·{" "}
-            <span className="font-mono text-[13px]">
-              {result.width}×{result.height}px
-            </span>{" "}
-            · quality{" "}
-            <span className="font-mono text-[13px]">
-              {result.quality.toFixed(2)}
-            </span>
-            {result.scale < 1 ? ` · resized to fit` : ""}
-          </p>
+        <div className="space-y-3">
+          {/* The compliance receipt — the verdict an applicant actually needs. */}
+          <ComplianceReceipt
+            requirement={requirementLabel ?? `${targetKb} KB target`}
+            checks={[
+              {
+                label: "File size",
+                value: minKb
+                  ? `${formatKb(result.bytes)} (needs ${minKb}–${targetKb} KB)`
+                  : `${formatKb(result.bytes)} (needs ≤ ${targetKb} KB)`,
+                ok:
+                  result.underCap &&
+                  (!minKb || result.bytes >= minKb * 1024),
+              },
+              ...(minWidth && minHeight
+                ? [
+                    {
+                      label: "Dimensions",
+                      value: `${result.width}×${result.height}px (min ${minWidth}×${minHeight})`,
+                      ok:
+                        result.width >= minWidth && result.height >= minHeight,
+                    },
+                  ]
+                : []),
+              { label: "Format", value: "JPG", ok: true },
+            ]}
+          />
           {!result.underCap && (
-            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-amber-900">
-              Couldn&apos;t get under {targetKb} KB even at minimum quality. This
-              is the smallest achievable. Try a lower target or smaller image.
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900">
+              {formatKb(result.bytes)} is the smallest this image can go without
+              turning blurry. Cropping closer to the subject usually fixes it —
+              or use a slightly higher target if your form allows one.
             </p>
           )}
           {minWidth && minHeight && (result.width < minWidth || result.height < minHeight) && (
-            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-amber-900">
-              Below the required {minWidth}×{minHeight}px minimum — your source
-              image is too small for this portal, so it may be rejected. Upload a
-              higher-resolution photo.
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900">
+              Your original photo doesn&apos;t have enough pixels for this
+              portal&apos;s {minWidth}×{minHeight}px minimum. Retake with your
+              phone&apos;s main (back) camera, or use a less-cropped original.
             </p>
           )}
-          <Button
-            size="sm"
-            onClick={handleDownload}
-          >
-            <Download className="h-4 w-4" strokeWidth={1.75} /> Download JPG
-          </Button>
+          <div className="flex flex-wrap items-center gap-3">
+            <Button variant="cta" size="sm" onClick={handleDownload}>
+              <Download className="h-4 w-4" strokeWidth={1.75} /> Download JPG ·{" "}
+              {formatKb(result.bytes)}
+            </Button>
+            <span className="spec normal-case tracking-[0.06em] text-ink-faint">
+              was {formatKb(source.file.size)} · quality {result.quality.toFixed(2)}
+            </span>
+          </div>
         </div>
       )}
     </div>
@@ -231,6 +249,7 @@ export function ResizeKbTool({
   minHeight,
   minKb,
   densityDpi,
+  requirementLabel,
 }: {
   defaultKb?: number;
   toolName?: string;
@@ -240,6 +259,8 @@ export function ResizeKbTool({
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
   densityDpi?: number;
+  /** Named requirement for the compliance receipt, e.g. "SSC (Staff Selection Commission)". */
+  requirementLabel?: string;
 }) {
   React.useEffect(() => {
     track({ name: "tool_view", tool: toolName });
@@ -256,6 +277,7 @@ export function ResizeKbTool({
           minHeight={minHeight}
           minKb={minKb}
           densityDpi={densityDpi}
+          requirementLabel={requirementLabel}
         />
       )}
     </ImageToolShell>

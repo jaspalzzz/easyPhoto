@@ -27,6 +27,7 @@ import { ensureDecodable } from "@/lib/heic";
 import { imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
 import { padBlobToMin } from "@/lib/padBytes";
+import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
@@ -462,6 +463,35 @@ export function ExamPackageTool() {
                 <h3 className="text-sm font-semibold flex items-center gap-2">
                   <Check className="h-4 w-4 text-brand" /> Your {spec?.name} package is ready
                 </h3>
+
+                {/* The compliance receipt — the verdict the applicant came for. */}
+                {spec && (
+                  <ComplianceReceipt
+                    requirement={spec.name.split(" (")[0]}
+                    checks={[
+                      {
+                        label: "Photo size",
+                        value: spec.photoMinKb
+                          ? `${formatKb(photo.bytes)} (needs ${spec.photoMinKb}–${spec.photoLimitKb} KB)`
+                          : `${formatKb(photo.bytes)} (needs ≤ ${spec.photoLimitKb} KB)`,
+                        ok: photo.compliant,
+                      },
+                      ...(signature && spec.sigLimitKb
+                        ? [
+                            {
+                              label: "Signature size",
+                              value: spec.sigMinKb
+                                ? `${formatKb(signature.bytes)} (needs ${spec.sigMinKb}–${spec.sigLimitKb} KB)`
+                                : `${formatKb(signature.bytes)} (needs ≤ ${spec.sigLimitKb} KB)`,
+                              ok: signature.compliant,
+                            },
+                          ]
+                        : []),
+                      { label: "Format", value: signature ? "JPG + PNG" : "JPG", ok: true },
+                    ]}
+                  />
+                )}
+
                 <div className="grid gap-4 sm:grid-cols-2">
                   <AssetCard asset={photo} onDownload={() => download(photo)} />
                   {signature && (
@@ -485,8 +515,23 @@ export function ExamPackageTool() {
                   {signature ? " (photo + signature)" : ""}
                 </Button>
 
+                {/* What now — the moment after download is where applicants
+                    feel most alone; walk them to the portal. */}
+                <div className="rounded-lg border border-hairline bg-paper p-4 text-sm">
+                  <p className="font-semibold text-ink">Next steps</p>
+                  <ol className="mt-1.5 list-decimal space-y-1 pl-4 text-muted-foreground">
+                    <li>Log in to the {spec?.name.split(" (")[0]} application portal.</li>
+                    <li>Upload these files where the form asks for photo{signature ? " and signature" : ""}.</li>
+                    <li>
+                      Double-check the live form&apos;s stated limits match{" "}
+                      <span className="font-mono text-[13px]">{photoKbText(spec!)}</span> — portals
+                      occasionally change them between cycles.
+                    </li>
+                  </ol>
+                </div>
+
                 <Button variant="outline" size="sm" onClick={reset}>
-                  <RotateCcw className="h-4 w-4" /> Start over
+                  <RotateCcw className="h-4 w-4" /> Prepare another exam
                 </Button>
                 <p className="flex items-start gap-2 text-xs text-muted-foreground">
                   <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />

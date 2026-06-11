@@ -342,7 +342,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     } catch (e) {
       // Analytics reason must be a stable CODE, not a free-form message (no PII).
       console.error(e);
-      setExportError("Export failed. Please try again.");
+      setExportError("Export didn't complete. Closing other browser tabs frees up memory, which usually fixes this — then try again.");
       track({
         name: "tool_failure",
         tool: "photo-with-name-date",

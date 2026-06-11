@@ -84,7 +84,7 @@ function Body({ source }: { source: ToolSource }) {
         setNote(warn);
         track({ name: "tool_success", tool: "linkedin-photo", device: deviceClass() });
       } catch {
-        setError("Something went wrong processing this photo. Try another image.");
+        setError("Couldn't process this photo. Re-exporting it as a plain JPG (or taking a fresh one with your camera app) usually fixes it.");
         track({
           name: "tool_failure",
           tool: "linkedin-photo",

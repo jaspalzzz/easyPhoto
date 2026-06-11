@@ -212,7 +212,7 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
       onSignatureReady(trimmed.toDataURL("image/png"));
     } catch (err: any) {
       console.error(err);
-      setUploadError(err?.message || "Could not extract signature from image. Try a clearer scan.");
+      setUploadError(err?.message || "Couldn't find a signature in this image. Dark ink on plain white paper, photographed straight-on in good light, works best.");
     } finally {
       setUploadLoading(false);
     }

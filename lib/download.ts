@@ -1,5 +1,9 @@
 /**
  * Trigger a browser download for an in-memory Blob. No server round-trip.
+ *
+ * Also dispatches an "ep:download" CustomEvent so the global DownloadToast
+ * (mounted in the layout) can confirm the save — downloads are otherwise
+ * silent, and on mobile users genuinely can't tell whether they worked.
  */
 export function downloadBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
@@ -17,4 +21,10 @@ export function downloadBlob(blob: Blob, filename: string): void {
     typeof navigator !== "undefined" &&
     /iPhone|iPad|iPod/i.test(navigator.userAgent);
   setTimeout(() => URL.revokeObjectURL(url), isIOS ? 10_000 : 1500);
+
+  window.dispatchEvent(
+    new CustomEvent("ep:download", {
+      detail: { filename, bytes: blob.size },
+    })
+  );
 }

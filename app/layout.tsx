@@ -27,6 +27,7 @@ import { LogoMark } from "@/components/site/LogoMark";
 import { MainNav } from "@/components/site/MainNav";
 import { MobileNav } from "@/components/site/MobileNav";
 import { AnalyticsBeacon } from "@/components/site/AnalyticsBeacon";
+import { DownloadToast } from "@/components/site/DownloadToast";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import {
@@ -139,6 +140,7 @@ export default function RootLayout({
 
         <Footer />
         <AnalyticsBeacon />
+        <DownloadToast />
         {/* AdSense site verification. Rendered into the static HTML so the
             AdSense crawler sees it without executing JS. No ad units exist and
             Auto ads stay OFF in the AdSense console — nothing visible renders

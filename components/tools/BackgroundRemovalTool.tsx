@@ -43,7 +43,7 @@ function Body({ source }: { source: ToolSource }) {
         if (cancelled) return;
         setUrl(URL.createObjectURL(blob));
       } catch {
-        if (!cancelled) setError("Background removal failed. Try another image.");
+        if (!cancelled) setError("Background removal didn't finish — on first use the AI model has to download, which can take a minute on slow connections. Wait a moment and try again; your photo is fine.");
       } finally {
         if (!cancelled) setBusy(false);
       }

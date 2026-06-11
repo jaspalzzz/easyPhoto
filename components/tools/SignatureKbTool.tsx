@@ -80,7 +80,7 @@ function Body({ source, kb, toolName }: BodyProps) {
       } catch (e) {
         console.error(e);
         if (!cancelled) {
-          setError("Something went wrong while processing your image. Please try a different file.");
+          setError("Couldn't clean this signature. A clearer photo usually fixes it: dark ink on plain white paper, taken in good light without shadows.");
           track({
             name: "tool_failure",
             tool: toolName,

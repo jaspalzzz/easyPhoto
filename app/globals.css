@@ -260,6 +260,20 @@
   }
 }
 
+/* Download-confirmation toast: gentle rise + fade. */
+@keyframes ep-toast-in {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.ep-toast-in {
+  animation: ep-toast-in 0.25s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ep-toast-in {
+    animation: none;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Processing indicator (document/PDF tools)
    ---------------------------------------------------------------------------

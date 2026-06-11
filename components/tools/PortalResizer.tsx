@@ -91,6 +91,7 @@ export function PortalResizer({ portalId }: { portalId: string }) {
               minHeight={spec.photoHeightPx}
               minKb={spec.photoMinKb}
               densityDpi={spec.dpi}
+              requirementLabel={spec.name.split(" (")[0]}
               toolName={`form-resizer-${portalId}`}
             />
           </div>
