@@ -39,13 +39,13 @@ import {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Passport & Visa Photo Maker — Free, Private, In-Browser",
+    default: "Passport, Visa & Exam Photo Maker — Free, In-Browser",
     template: `%s — ${SITE_NAME}`,
   },
   description:
-    "Create a compliant passport or visa photo for free. Auto-crops to your " +
-    "country's exact head-size and background rules. 100% in your browser — " +
-    "your photo never leaves your device.",
+    "Create a compliant passport or visa photo for free, or resize photos & " +
+    "signatures to exact exam-form limits. 100% in your browser — your photo " +
+    "never leaves your device.",
   applicationName: SITE_NAME,
   // These reference files you drop into /public (see public/site.webmanifest).
   icons: {

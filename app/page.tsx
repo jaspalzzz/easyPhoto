@@ -24,11 +24,11 @@ export const metadata = pageMetadata({
   // The layout's "%s — easyPhoto" template does NOT apply to the root segment
   // (Next.js scoping), so the brand must be written here explicitly — it's the
   // homepage's strongest signal for the "easyphoto" brand query.
-  title: "easyPhoto — Free Passport & Visa Photo Maker",
+  title: "easyPhoto — Free Passport, Visa & Exam Photo Maker",
   description:
-    "Create a compliant passport or visa photo free. Pick your country, drop a " +
-    "photo — we auto-crop to the exact head size and background and check " +
-    "compliance.",
+    "Create a compliant passport or visa photo free, or resize your photo & " +
+    "signature to the exact KB for SSC, UPSC and 30+ exam forms. Everything " +
+    "runs in your browser — nothing is uploaded.",
   path: "/",
 });
 
