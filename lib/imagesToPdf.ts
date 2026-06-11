@@ -17,15 +17,19 @@ async function toJpegDataUrl(
   file: File
 ): Promise<{ dataUrl: string; w: number; h: number }> {
   const { image, size, url } = await loadImageFromFile(file);
-  const canvas = imageToCanvas(image, size.width, size.height);
-  // Flatten transparency onto white so it doesn't render black in the PDF.
-  const ctx = canvas.getContext("2d")!;
-  ctx.globalCompositeOperation = "destination-over";
-  ctx.fillStyle = "#FFFFFF";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
-  URL.revokeObjectURL(url);
-  return { dataUrl, w: size.width, h: size.height };
+  try {
+    const canvas = imageToCanvas(image, size.width, size.height);
+    // Flatten transparency onto white so it doesn't render black in the PDF.
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Could not acquire 2D canvas context.");
+    ctx.globalCompositeOperation = "destination-over";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
+    return { dataUrl, w: size.width, h: size.height };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
 }
 
 export async function imagesToPdf(files: File[]): Promise<Blob> {
@@ -35,7 +39,17 @@ export async function imagesToPdf(files: File[]): Promise<Blob> {
   let doc: import("jspdf").jsPDF | null = null;
 
   for (const file of files) {
-    const { dataUrl, w, h } = await toJpegDataUrl(file);
+    // Name the failing file: in a batch, "image 3 (scan.png)" beats a generic
+    // failure that makes the user re-try the whole set blind.
+    let converted: { dataUrl: string; w: number; h: number };
+    try {
+      converted = await toJpegDataUrl(file);
+    } catch {
+      throw new Error(
+        `Couldn't read "${file.name}" (image ${files.indexOf(file) + 1} of ${files.length}). Remove it or re-export it as JPG/PNG, then try again.`
+      );
+    }
+    const { dataUrl, w, h } = converted;
     const orientation: "p" | "l" = w >= h ? "l" : "p";
     const page = orientation === "l" ? { w: A4.h, h: A4.w } : A4;
 

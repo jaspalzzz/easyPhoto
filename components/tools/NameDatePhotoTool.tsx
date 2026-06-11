@@ -258,8 +258,15 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
         stripHeightPercent: dStripHeight,
       });
 
-      const url = annotCanvas.toDataURL("image/jpeg", 0.9);
-      setPreviewUrl(url);
+      // Object URL, not a base64 data URI: each data URI held a ~1.37× copy
+      // of the JPEG as a JS string, re-created on every debounced keystroke.
+      annotCanvas.toBlob(
+        (b) => {
+          if (b) setPreviewUrl(URL.createObjectURL(b));
+        },
+        "image/jpeg",
+        0.9
+      );
     } catch (e) {
       console.error("Preview render failed:", e);
     }
@@ -268,6 +275,14 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
   React.useEffect(() => {
     updatePreview();
   }, [updatePreview]);
+
+  // Revoke each preview's object URL when replaced or on unmount.
+  React.useEffect(() => {
+    const url = previewUrl;
+    return () => {
+      if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
+    };
+  }, [previewUrl]);
 
   const onDownload = async () => {
     const cropper = cropperRef.current?.cropper;

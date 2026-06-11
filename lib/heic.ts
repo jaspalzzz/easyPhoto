@@ -42,9 +42,20 @@ export function assertValidImageFile(file: File): void {
 export async function ensureDecodable(file: File): Promise<File> {
   assertValidImageFile(file);
   if (!isHeic(file)) return file;
+
+  // Load the converter first: an import failure is a NETWORK problem (offline,
+  // blocked CDN), not a broken photo — tell the user the right thing to fix.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let heic2any: any;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const heic2any = (await import("heic2any")).default as any;
+    heic2any = (await import("heic2any")).default;
+  } catch {
+    throw new Error(
+      "Couldn't load the HEIC converter — your connection may be offline or blocked. Check your internet and try again, or export the photo as JPG first."
+    );
+  }
+
+  try {
     const result = await heic2any({
       blob: file,
       toType: "image/jpeg",
@@ -55,7 +66,7 @@ export async function ensureDecodable(file: File): Promise<File> {
     return new File([blob], name || "photo.jpg", { type: "image/jpeg" });
   } catch {
     throw new Error(
-      "Couldn't read that HEIC photo. Try exporting it as JPG (on iPhone: Settings → Camera → Formats → Most Compatible), then upload again."
+      "Couldn't read that HEIC photo — the file may be damaged. Try exporting it as JPG (on iPhone: Settings → Camera → Formats → Most Compatible), then upload again."
     );
   }
 }

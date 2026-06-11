@@ -87,10 +87,14 @@ export function ComplianceCheckerTool() {
       let backgroundLight: boolean | undefined;
       const bmp = await createImageBitmap(file).catch(() => null);
       if (bmp) {
-        width = bmp.width;
-        height = bmp.height;
-        if (kind === "photo") backgroundLight = cornersLookWhite(bmp);
-        bmp.close?.();
+        try {
+          width = bmp.width;
+          height = bmp.height;
+          if (kind === "photo") backgroundLight = cornersLookWhite(bmp);
+        } finally {
+          // Always release the bitmap's GPU memory, even if analysis throws.
+          bmp.close?.();
+        }
       }
       const type = (file.type || file.name.split(".").pop() || "").toLowerCase();
       const facts: FileFacts = { bytes: file.size, width, height, type, backgroundLight };

@@ -39,8 +39,12 @@ function Body({ source }: { source: ToolSource }) {
         setOut(null);
       } else {
         setEmpty(false);
+        // Object URL, not a base64 data URI — a data URI holds a ~1.37×
+        // copy of the image as a JS string for every preview.
+        const blob = await canvasToBlob(cropped, "image/png");
+        if (cancelled) return;
         setOut({
-          url: cropped.toDataURL("image/png"),
+          url: URL.createObjectURL(blob),
           canvas: cropped,
           w: cropped.width,
           h: cropped.height,
@@ -51,6 +55,14 @@ function Body({ source }: { source: ToolSource }) {
     run();
     return () => { cancelled = true; };
   }, [source, dPadding, dThreshold]);
+
+  // Revoke the preview's object URL when replaced or on unmount.
+  React.useEffect(() => {
+    const url = out?.url;
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [out?.url]);
 
   const onDownload = async (type: "image/png" | "image/jpeg") => {
     if (!out) return;

@@ -39,6 +39,14 @@ function Body({ source, kb, toolName }: BodyProps) {
     track({ name: "tool_start", tool: toolName, device: deviceClass() });
   }, [toolName]);
 
+  // Revoke the preview's object URL when replaced or on unmount.
+  React.useEffect(() => {
+    const url = out?.url;
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [out?.url]);
+
   React.useEffect(() => {
     let cancelled = false;
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
@@ -52,7 +60,9 @@ function Body({ source, kb, toolName }: BodyProps) {
         const res = await pngUnderKb(trimmed, kb);
         if (cancelled) return;
         setOut({
-          url: res.canvas.toDataURL("image/png"),
+          // Object URL, not a base64 data URI — a data URI holds a ~1.37×
+          // copy of the image as a JS string for every preview.
+          url: URL.createObjectURL(res.blob),
           blob: res.blob,
           bytes: res.bytes,
           width: res.canvas.width,

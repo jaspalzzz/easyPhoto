@@ -315,8 +315,12 @@ function Body({
             const tempCtx = resultCanvas.getContext("2d");
             if (tempCtx) {
               const bmp = await createImageBitmap(compressed.blob);
-              tempCtx.drawImage(bmp, 0, 0);
-              bmp.close?.();
+              try {
+                tempCtx.drawImage(bmp, 0, 0);
+              } finally {
+                // Always release the bitmap's GPU memory, even if draw throws.
+                bmp.close?.();
+              }
             }
             isUnderCap = compressed.underCap;
           } else {

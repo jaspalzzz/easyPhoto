@@ -74,6 +74,8 @@ export async function pngUnderKb(
   let smallest: { canvas: HTMLCanvasElement; blob: Blob; bytes: number; scale: number } | null = null;
 
   while (scale >= minScale) {
+    // Yield so the spinner can paint between expensive PNG encodes.
+    await new Promise<void>((r) => setTimeout(r, 0));
     const w = Math.max(1, Math.round(source.width * scale));
     const h = Math.max(1, Math.round(source.height * scale));
     const c = scale === 1 ? source : imageToCanvas(source, w, h);
