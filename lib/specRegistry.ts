@@ -61,6 +61,7 @@ const CATEGORY_OF: Record<string, PortalCategory> = {
   ssc: "central", rrb: "central", ctet: "central", upsc: "central",
   // Visa & identity
   ds160: "visa", "passport-seva": "visa", oci: "visa",
+  pan: "visa", "driving-licence": "visa", "voter-id": "visa",
 };
 
 /** The topical category for a portal id (defaults to "central"). */

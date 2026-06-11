@@ -545,6 +545,59 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "official",
     verifiedOn: "2026-06-10",
   },
+  // ---- Indian identity documents ----
+  pan: {
+    id: "pan",
+    name: "PAN Card (NSDL / Protean & UTIITSL)",
+    photoLimitKb: 20,
+    sigLimitKb: 10,
+    // 3.5 cm (h) × 2.5 cm (w) at the mandated 200 DPI → ~197×276 px.
+    photoWidthPx: 197,
+    photoHeightPx: 276,
+    // Signature 2 cm (h) × 4.5 cm (w) at 200 DPI → ~354×157 px.
+    sigWidthPx: 354,
+    sigHeightPx: 157,
+    photoAspectRatio: 2.5 / 3.5,
+    sigAspectRatio: 4.5 / 2,
+    description:
+      "Online PAN application (Form 49A/49AA via Protean-NSDL or UTIITSL). Photo 3.5×2.5 cm colour JPEG at 200 DPI, max 20 KB; signature 2×4.5 cm JPEG at 200 DPI, max 10 KB. These are the strictest official caps — a file that meets them is accepted in every application mode.",
+    source: {
+      url: "https://tin.tin.proteantech.in/pan/InstructionDSC.html",
+      label: "Protean (NSDL e-Gov) PAN instructions",
+    },
+    verification: "official",
+    verifiedOn: "2026-06-11",
+  },
+  "driving-licence": {
+    id: "driving-licence",
+    name: "Driving Licence (Sarathi Parivahan)",
+    photoLimitKb: 20,
+    sigLimitKb: 20,
+    sigMinKb: 10,
+    photoWidthPx: 420,
+    photoHeightPx: 525,
+    photoAspectRatio: 35 / 45,
+    description:
+      "Driving licence / learner's licence application on the Sarathi Parivahan portal (sarathi.parivahan.gov.in). Photo 35×45 mm JPEG under 20 KB (commonly accepted at 420×525 px); signature JPEG 10-20 KB, black or blue ink on white paper. Some states enforce slightly different limits — the portal validates at upload, so check the message your state's portal shows.",
+    source: {
+      url: "https://sarathi.parivahan.gov.in",
+      label: "Sarathi Parivahan (sarathi.parivahan.gov.in)",
+    },
+    verification: "needs-review",
+  },
+  "voter-id": {
+    id: "voter-id",
+    name: "Voter ID (ECI Form 6)",
+    photoLimitKb: 2048,
+    photoAspectRatio: 3.5 / 4.5,
+    description:
+      "New voter registration (Form 6) on the ECI Voters' Service Portal (voters.eci.gov.in). The ECI specifies a recent passport-size colour photo, 4.5×3.5 cm, white background, full frontal face, eyes open. The portal accepts a generous file size (about 2 MB) — a clear photo around 100-300 KB uploads fastest and is well within the cap. No separate signature upload for Form 6.",
+    source: {
+      url: "https://voters.eci.gov.in/guidelines/Form-6_en.pdf",
+      label: "ECI Form 6 guidelines (voters.eci.gov.in)",
+    },
+    verification: "needs-review",
+  },
 };
 
 export const PORTAL_KEYS = Object.keys(PORTAL_PRESETS) as Array<keyof typeof PORTAL_PRESETS>;

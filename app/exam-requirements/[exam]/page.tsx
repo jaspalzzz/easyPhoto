@@ -29,6 +29,18 @@ const sigKb = (s: PortalSpec) =>
   s.sigLimitKb ? (s.sigMinKb ? `${s.sigMinKb}–${s.sigLimitKb} KB` : `under ${s.sigLimitKb} KB`) : null;
 const px = (w?: number, h?: number) => (w && h ? `${w} × ${h} px` : "—");
 
+/** Human label for a photo aspect ratio (width / height). */
+function aspectLabel(r: number): string {
+  if (r === 1) return "Square (1:1)";
+  const KNOWN: Array<[number, string]> = [
+    [3.5 / 4.5, "3.5 : 4.5"],
+    [2.5 / 3.5, "2.5 : 3.5"],
+    [20 / 23, "20 : 23"],
+  ];
+  for (const [v, label] of KNOWN) if (Math.abs(r - v) < 0.01) return label;
+  return `${r.toFixed(2)} : 1`;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -41,7 +53,7 @@ export async function generateMetadata({
   return pageMetadata({
     // Short exam name keeps the SERP title under ~60 chars and matches how
     // people actually search ("SSC photo size", not the full commission name).
-    title: `${spec.name.split(" (")[0]} Photo & Signature Size (Official)`,
+    title: `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Size (Official)`,
     description:
       `${spec.name}: photo ${photoKb(spec)} (${px(spec.photoWidthPx, spec.photoHeightPx)})` +
       (sig ? `, signature ${sig} (${px(spec.sigWidthPx, spec.sigHeightPx)})` : "") +
@@ -117,7 +129,7 @@ export default async function Page({
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
-          {spec.name} Photo &amp; Signature Size
+          {spec.name} Photo{sig ? <> &amp; Signature</> : null} Size
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           {spec.description}
@@ -147,7 +159,7 @@ export default async function Page({
             <Row label="File size" value={photoKb(spec)} />
             <Row label="Dimensions" value={px(spec.photoWidthPx, spec.photoHeightPx)} />
             {spec.photoAspectRatio && (
-              <Row label="Aspect" value={spec.photoAspectRatio === 1 ? "Square (1:1)" : "3.5 : 4.5"} />
+              <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
             )}
             <Row label="Format" value="JPG / JPEG" />
             <Row label="Background" value="Plain white" />
@@ -193,7 +205,7 @@ export default async function Page({
       {/* Transactional CTAs — AI Overviews answer "what size"; we win "do it". */}
       <section className="rounded-lg border border-brand/25 bg-brand-soft/20 p-5 sm:p-6">
         <h2 className="text-base font-semibold tracking-tight">
-          Make a {spec.name.split(" (")[0]}-ready photo &amp; signature
+          Make a {spec.name.split(" (")[0]}-ready photo{sig ? <> &amp; signature</> : null}
         </h2>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Resize and compress to these exact limits, free and in your browser — nothing is uploaded.
@@ -205,9 +217,11 @@ export default async function Page({
           >
             Open the {spec.name.split(" (")[0]} resizer <ArrowRight className="h-4 w-4" />
           </Link>
-          <Link href="/tools/exam-package/" className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50">
-            Photo + signature kit
-          </Link>
+          {sig && (
+            <Link href="/tools/exam-package/" className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50">
+              Photo + signature kit
+            </Link>
+          )}
           {dedicated.map((d) => (
             <Link
               key={d.path}
