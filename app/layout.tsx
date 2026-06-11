@@ -139,6 +139,16 @@ export default function RootLayout({
 
         <Footer />
         <AnalyticsBeacon />
+        {/* AdSense site verification. Rendered into the static HTML so the
+            AdSense crawler sees it without executing JS. No ad units exist and
+            Auto ads stay OFF in the AdSense console — nothing visible renders
+            until we deliberately flip ads on (at the agreed traffic threshold,
+            with the privacy-policy update shipped the same day). */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8825078307302402"
+          crossOrigin="anonymous"
+        />
       </body>
     </html>
   );
