@@ -2,6 +2,8 @@ import { SITE_URL } from "@/lib/site";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { allPortalSpecs } from "@/lib/specRegistry";
 import { BLOG_POSTS } from "@/lib/blog";
+import { MAKER_PAGES, makerPath } from "@/lib/makerPages";
+import { COUNTRY_SPECS, effectivePrintMm } from "@/lib/countrySpecs";
 
 // Static export: emit /llms.txt at build time.
 export const dynamic = "force-static";
@@ -61,6 +63,24 @@ export function GET() {
     `- [Exam Application Kit](${u("/tools/exam-package/")}): produce a photo + ` +
       "signature in the correct size for a chosen exam, in one guided flow."
   );
+  lines.push("");
+
+  // Country passport/visa maker pages — the core product. Generated from the
+  // maker registry so new countries appear here automatically.
+  lines.push("## Passport & visa photo makers by country");
+  lines.push("");
+  for (const m of MAKER_PAGES) {
+    const spec = COUNTRY_SPECS[m.countryId];
+    if (!spec) continue;
+    const mm = effectivePrintMm(spec);
+    const docLabel = m.kind === "visa" ? "visa" : "passport";
+    // "Schengen Visa" + "visa photo" would double the word — strip it.
+    const name = spec.label.replace(/\s+visa$/i, "");
+    lines.push(
+      `- [${name} ${docLabel} photo](${u(`/${m.slug}/`)}): ` +
+        `${mm.width}x${mm.height}mm, ${spec.background.description.split(",")[0].toLowerCase()}.`
+    );
+  }
   lines.push("");
 
   // Tools, grouped as in the catalog.
