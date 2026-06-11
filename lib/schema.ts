@@ -56,7 +56,11 @@ export function websiteSchema() {
   return {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
+    // Google's "site name in search results" feature reads exactly this pair
+    // from the homepage's WebSite JSON-LD — name shown, alternateName as the
+    // fallback/disambiguation (instead of the bare domain).
     name: SITE_NAME,
+    alternateName: ["easyPhoto", "easyphoto.in"],
     url: SITE_URL,
     publisher: { "@id": ORG_ID },
     inLanguage: "en",

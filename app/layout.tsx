@@ -50,6 +50,10 @@ export const metadata: Metadata = {
   // These reference files you drop into /public (see public/site.webmanifest).
   icons: {
     icon: [
+      // Google Search's favicon picker only accepts icons ≥ 48×48 (a multiple
+      // of 48) declared ON the page — the 192px PNG is what gets the brand
+      // mark shown in search results instead of the generic globe.
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/icon.svg", type: "image/svg+xml" },
