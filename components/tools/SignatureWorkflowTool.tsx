@@ -11,6 +11,7 @@ import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
 import { compressToCap } from "@/lib/compress";
+import { padBlobToMin } from "@/lib/padBytes";
 import { track, deviceClass } from "@/lib/analytics";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
 
@@ -21,6 +22,8 @@ interface SignatureWorkflowProps {
   defaultKb?: number;
   autoCropDefault?: boolean;
   toolName?: string;
+  /** Portal minimum file size (KB band floor) — output is padded up to it. */
+  minKb?: number;
 }
 
 function smoothCanvas(canvas: HTMLCanvasElement, radius: number): HTMLCanvasElement {
@@ -59,12 +62,14 @@ function Body({
   defaultKb = 20,
   autoCropDefault = true,
   toolName = "signature-workflow",
+  minKb,
 }: {
   source: ToolSource;
   defaultTab?: Tab;
   defaultKb?: number;
   autoCropDefault?: boolean;
   toolName?: string;
+  minKb?: number;
 }) {
   // Tabs & Navigation
   const [activeTab, setActiveTab] = React.useState<Tab>(defaultTab);
@@ -321,6 +326,11 @@ function Body({
             resultCanvas = compressed.canvas;
             isUnderCap = compressed.underCap;
           }
+          // Portals reject signatures below the band's floor (e.g. 10–20 KB)
+          // too — pad up with inert metadata; the drawn pixels are untouched.
+          if (minKb && isUnderCap && resultBlob.size < minKb * 1024) {
+            resultBlob = await padBlobToMin(resultBlob, minKb * 1024);
+          }
         } else {
           // Custom pixels resizing
           const resized = await picaResizeTo(
@@ -396,6 +406,7 @@ function Body({
     dSmoothing,
     bgFormat,
     toolName,
+    minKb,
   ]);
 
   // Handle preset selections
@@ -963,6 +974,7 @@ export function SignatureWorkflowTool({
   defaultKb = 20,
   autoCropDefault = true,
   toolName = "signature-workflow",
+  minKb,
 }: SignatureWorkflowProps) {
   React.useEffect(() => {
     track({ name: "tool_view", tool: toolName });
@@ -977,6 +989,7 @@ export function SignatureWorkflowTool({
           defaultKb={defaultKb}
           autoCropDefault={autoCropDefault}
           toolName={toolName}
+          minKb={minKb}
         />
       )}
     </ImageToolShell>

@@ -35,8 +35,9 @@ export function ImageToolShell({
       const loaded = await loadImageFromFile(decodable);
       setSource({ ...loaded, file: decodable });
     } catch (e) {
+      // Pipeline errors (validation, HEIC, decode) carry user-facing messages.
       setError(
-        e instanceof Error && /HEIC/i.test(e.message)
+        e instanceof Error && e.message
           ? e.message
           : "Could not read that image file. Try a JPG, PNG or WebP."
       );

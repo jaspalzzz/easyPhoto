@@ -11,6 +11,8 @@
  * `compressToCap` is the thin browser wrapper that plugs a canvas encoder in.
  */
 
+import { padBlobToMin } from "@/lib/padBytes";
+
 // ── Pure, testable search ────────────────────────────────────────────────
 
 /** An encoder's measured output: encoded size in bytes + the opaque payload. */
@@ -203,6 +205,13 @@ export async function compressToCap(
      * to let dimensions shrink in order to hit a small KB target.
      */
     minScale?: number;
+    /**
+     * Portal's MINIMUM file size in KB (e.g. SSC photo is a 20–50 KB band —
+     * below 20 KB is rejected too). When the best result lands under this,
+     * the JPEG is padded with inert COM segments up to the floor. Pixels and
+     * quality are untouched; every JPEG reader skips the padding.
+     */
+    minKb?: number;
   } = {}
 ): Promise<CompressResult> {
   // Scale floor: the most restrictive of an explicit minScale and the pixel
@@ -236,11 +245,17 @@ export async function compressToCap(
     minScale,
   });
 
+  // Portal minimum-KB floor: pad up when the best encoding is below the band.
+  let blob = res.payload.blob;
+  if (opts.minKb && res.underCap && blob.size < opts.minKb * 1024) {
+    blob = await padBlobToMin(blob, opts.minKb * 1024);
+  }
+
   return {
-    blob: res.payload.blob,
+    blob,
     quality: res.quality,
     scale: res.scale,
-    bytes: res.bytes,
+    bytes: blob.size,
     width: res.payload.width,
     height: res.payload.height,
     underCap: res.underCap,

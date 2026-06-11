@@ -31,6 +31,23 @@ export function FormatConverterTool({
   const [items, setItems] = React.useState<BatchItem[]>([]);
   const [targetFormat, setTargetFormat] = React.useState<ImageFormat>(defaultTarget);
   const [quality, setQuality] = React.useState(0.92);
+  // Safari can DECODE WebP but cannot ENCODE it — canvas.toBlob("image/webp")
+  // returns null (or a PNG). Probe once and disable the option there, instead
+  // of letting the conversion fail with a cryptic error.
+  const [webpEncodable, setWebpEncodable] = React.useState(true);
+  React.useEffect(() => {
+    const c = document.createElement("canvas");
+    c.width = 1;
+    c.height = 1;
+    c.toBlob((b) => {
+      const ok = !!b && b.type === "image/webp";
+      setWebpEncodable(ok);
+      if (!ok) {
+        // If WebP was preselected (e.g. /convert/png-to-webp/), fall back.
+        setTargetFormat((t) => (t === "image/webp" ? "image/jpeg" : t));
+      }
+    }, "image/webp");
+  }, []);
   const [namingTemplate, setNamingTemplate] = React.useState("");
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -411,23 +428,35 @@ export function FormatConverterTool({
                 <div className="space-y-2">
                   <span className="text-xs font-medium text-muted-foreground block">Format</span>
                   <div className="grid grid-cols-3 gap-2" role="group" aria-label="Output format">
-                    {(["image/jpeg", "image/png", "image/webp"] as const).map((fmt) => (
-                      <button
-                        id={`converter-fmt-btn-${getFormatLabel(fmt).toLowerCase()}`}
-                        key={fmt}
-                        type="button"
-                        aria-pressed={targetFormat === fmt}
-                        onClick={() => setTargetFormat(fmt)}
-                        className={`rounded-md border py-2 text-xs font-semibold transition-colors ${
-                          targetFormat === fmt
-                            ? "bg-brand/10 border-brand text-brand"
-                            : "bg-background border-hairline hover:bg-accent/40"
-                        }`}
-                      >
-                        {getFormatLabel(fmt)}
-                      </button>
-                    ))}
+                    {(["image/jpeg", "image/png", "image/webp"] as const).map((fmt) => {
+                      const disabled = fmt === "image/webp" && !webpEncodable;
+                      return (
+                        <button
+                          id={`converter-fmt-btn-${getFormatLabel(fmt).toLowerCase()}`}
+                          key={fmt}
+                          type="button"
+                          disabled={disabled}
+                          aria-pressed={targetFormat === fmt}
+                          onClick={() => setTargetFormat(fmt)}
+                          className={`rounded-md border py-2 text-xs font-semibold transition-colors ${
+                            targetFormat === fmt
+                              ? "bg-brand/10 border-brand text-brand"
+                              : disabled
+                                ? "cursor-not-allowed border-hairline bg-background opacity-40"
+                                : "bg-background border-hairline hover:bg-accent/40"
+                          }`}
+                        >
+                          {getFormatLabel(fmt)}
+                        </button>
+                      );
+                    })}
                   </div>
+                  {!webpEncodable && (
+                    <p className="text-[10px] leading-normal text-muted-foreground">
+                      Your browser (Safari) can&apos;t create WebP files — choose
+                      JPG or PNG, or use Chrome/Firefox for WebP output.
+                    </p>
+                  )}
                   {targetFormat === "image/jpeg" && (
                     <p className="text-[10px] leading-normal text-amber-700">
                       JPG has no transparency — transparent areas (from PNG/WebP)

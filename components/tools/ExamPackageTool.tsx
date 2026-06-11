@@ -26,6 +26,7 @@ import {
 import { ensureDecodable } from "@/lib/heic";
 import { imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
+import { padBlobToMin } from "@/lib/padBytes";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
@@ -140,6 +141,8 @@ export function ExamPackageTool() {
           spec.photoWidthPx && spec.photoHeightPx
             ? { width: spec.photoWidthPx, height: spec.photoHeightPx }
             : undefined,
+        // Portals reject files below the band's floor too — pad up to it.
+        minKb: spec.photoMinKb,
       });
       if (photo?.url) URL.revokeObjectURL(photo.url);
       const photoCompliant =
@@ -182,13 +185,19 @@ export function ExamPackageTool() {
       // much lower scale floor than the default 0.2 — this lets tight limits
       // (e.g. SSC's 20 KB) be met automatically instead of surfacing a size error.
       const res = await pngUnderKb(trimmed, spec.sigLimitKb, 0.05);
+      // Portals reject signatures below the band's floor too — pad up to it
+      // (inert PNG chunk; the drawn pixels are untouched).
+      const sigBlob =
+        spec.sigMinKb && res.underCap && res.blob.size < spec.sigMinKb * 1024
+          ? await padBlobToMin(res.blob, spec.sigMinKb * 1024)
+          : res.blob;
       if (signature?.url) URL.revokeObjectURL(signature.url);
       const sigCompliant =
-        res.underCap && (!spec.sigMinKb || res.bytes >= spec.sigMinKb * 1024);
+        res.underCap && (!spec.sigMinKb || sigBlob.size >= spec.sigMinKb * 1024);
       setSignature({
-        url: URL.createObjectURL(res.blob),
-        blob: res.blob,
-        bytes: res.bytes,
+        url: URL.createObjectURL(sigBlob),
+        blob: sigBlob,
+        bytes: sigBlob.size,
         width: res.canvas.width,
         height: res.canvas.height,
         compliant: sigCompliant,

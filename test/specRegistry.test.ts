@@ -62,8 +62,9 @@ describe("specRegistry — staleness", () => {
     expect(review).not.toContain("ibps");
     expect(review).not.toContain("sbi");
     // Still pending re-confirmation (conflicting/variable sources):
-    expect(review).toContain("upsc");
-    expect(review).toContain("rrb");
+    // (upsc/rrb were verified on 2026-06-08; these two are needs-review.)
+    expect(review).toContain("driving-licence");
+    expect(review).toContain("voter-id");
     // Not all are verified yet — the review list must be non-empty.
     expect(review.length).toBeGreaterThan(0);
     expect(review.length).toBeLessThan(allPortalSpecs().length);

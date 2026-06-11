@@ -17,9 +17,11 @@ interface BodyProps {
   /** Portal minimum pixel size — compression won't shrink below this. */
   minWidth?: number;
   minHeight?: number;
+  /** Portal minimum file size (KB band floor) — output is padded up to it. */
+  minKb?: number;
 }
 
-function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
+function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb }: BodyProps) {
   const [targetKb, setTargetKb] = React.useState(defaultKb);
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -70,6 +72,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight }: BodyProps) {
       const res = await compressToCap(canvas, targetKb, {
         minScale: 0.1,
         minDimensions,
+        minKb,
       });
       // Previous result URL is revoked by the cleanup effect on result change.
       setResult({
@@ -223,11 +226,14 @@ export function ResizeKbTool({
   toolName = "resize-kb",
   minWidth,
   minHeight,
+  minKb,
 }: {
   defaultKb?: number;
   toolName?: string;
   minWidth?: number;
   minHeight?: number;
+  /** Portal minimum file size (KB band floor) — output is padded up to it. */
+  minKb?: number;
 }) {
   React.useEffect(() => {
     track({ name: "tool_view", tool: toolName });
@@ -242,6 +248,7 @@ export function ResizeKbTool({
           toolName={toolName}
           minWidth={minWidth}
           minHeight={minHeight}
+          minKb={minKb}
         />
       )}
     </ImageToolShell>

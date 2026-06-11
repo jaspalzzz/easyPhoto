@@ -89,6 +89,7 @@ export function PortalResizer({ portalId }: { portalId: string }) {
               defaultKb={spec.photoLimitKb}
               minWidth={spec.photoWidthPx}
               minHeight={spec.photoHeightPx}
+              minKb={spec.photoMinKb}
               toolName={`form-resizer-${portalId}`}
             />
           </div>
@@ -101,6 +102,7 @@ export function PortalResizer({ portalId }: { portalId: string }) {
             <SignatureWorkflowTool
               defaultTab="resize"
               defaultKb={spec.sigLimitKb}
+              minKb={spec.sigMinKb}
               autoCropDefault={true}
             />
           </div>
