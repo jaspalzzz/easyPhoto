@@ -25,7 +25,7 @@ export default function PrivacyPage() {
         <h1 className="text-[2rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2.4rem]">
           Privacy Policy
         </h1>
-        <p className="text-sm text-muted-foreground">Last updated: June 6, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: June 11, 2026</p>
       </header>
 
       {/* The short version — highlighted so it's the first thing read */}
@@ -63,11 +63,14 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="Analytics and tracking">
-          We do not run third-party analytics, advertising trackers, fingerprinting,
-          or behavioural profiling, and we do not set tracking cookies. As with
-          any website, the server that hosts these pages may keep standard,
-          short-lived technical logs (such as IP address and browser type) for
-          the page requests themselves — never any image content.
+          We use Cloudflare&apos;s cookieless, aggregate web analytics to count
+          page views and measure site speed — it sets no cookies, does no
+          fingerprinting or cross-site tracking, and builds no personal
+          profiles. Beyond that we run no advertising trackers or behavioural
+          profiling of any kind. As with any website, the server that hosts
+          these pages may keep standard, short-lived technical logs (such as
+          IP address and browser type) for the page requests themselves —
+          never any image content. Your images still never leave your device.
         </Section>
 
         <Section title="Accounts and payments">
