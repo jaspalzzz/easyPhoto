@@ -86,6 +86,14 @@ export function deviceClass(): DeviceClass {
 
 /** Record an event. Safe to call anywhere; never throws, never blocks. */
 export function track(event: AnalyticsEvent): void {
+  // Remember the tool locally for the homepage "pick up where you left off"
+  // strip. Device-local UX state (slug names only, nothing transmitted), so
+  // it is independent of analytics consent.
+  if (event.name === "tool_view" && event.tool) {
+    void import("@/lib/recentTools")
+      .then((m) => m.recordRecentTool(event.tool))
+      .catch(() => {});
+  }
   try {
     if (!collectionAllowed() || !sink) return;
     sink(event);

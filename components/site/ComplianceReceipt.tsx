@@ -33,7 +33,7 @@ export function ComplianceReceipt({
     <div
       role="status"
       className={cn(
-        "rounded-xl border p-4 sm:p-5",
+        "ep-fade-in rounded-xl border p-4 sm:p-5",
         allOk
           ? "border-[hsl(142_50%_45%/0.4)] bg-[hsl(142_55%_45%/0.07)]"
           : "border-[hsl(38_92%_50%/0.4)] bg-[hsl(38_92%_50%/0.07)]",

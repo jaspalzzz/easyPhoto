@@ -19,6 +19,7 @@ import { ToolCard } from "@/components/site/ToolCard";
 import { HeroStarter } from "@/components/site/HeroStarter";
 import { Flag } from "@/components/site/Flag";
 import { ToolSearch } from "@/components/site/ToolSearch";
+import { RecentTools } from "@/components/site/RecentTools";
 
 export const metadata = pageMetadata({
   // The layout's "%s — easyPhoto" template does NOT apply to the root segment
@@ -76,6 +77,10 @@ export default function HomePage() {
           steps: HOW_IT_WORKS_STEPS.map((s) => ({ name: s.title, text: s.body })),
         })}
       />
+
+      {/* Returners: one-tap path back to their tool (renders nothing on a
+          first visit — device-local, see lib/recentTools.ts). */}
+      <RecentTools />
 
       {/* Hero — two columns: value proposition + live passport starter */}
       <section className="border-b border-hairline bg-paper">

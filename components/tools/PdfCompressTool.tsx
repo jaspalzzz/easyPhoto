@@ -17,6 +17,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
   const [file, setFile] = React.useState<File | null>(null);
   const [targetKb, setTargetKb] = React.useState<number>(defaultKb);
   const [busy, setBusy] = React.useState(false);
+  const [dragging, setDragging] = React.useState(false);
   const [progress, setProgress] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<PdfCompressResult | null>(null);
@@ -85,12 +86,21 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
             tabIndex={0}
             onClick={() => inputRef.current?.click()}
             onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
-            onDragOver={(e) => e.preventDefault()}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={() => setDragging(false)}
             onDrop={(e) => {
               e.preventDefault();
+              setDragging(false);
               if (e.dataTransfer.files?.[0]) pick(e.dataTransfer.files[0]);
             }}
-            className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
+            className={`flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed p-8 text-center transition-colors ${
+              dragging
+                ? "border-brand bg-brand-soft/40"
+                : "border-hairline-strong bg-paper hover:bg-accent/40"
+            }`}
           >
             <FileUp className="h-8 w-8 text-brand" strokeWidth={1.75} />
             <p className="font-semibold tracking-tight text-sm">Select a PDF to compress, or drop it here</p>

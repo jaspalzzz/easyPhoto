@@ -94,7 +94,7 @@ export function PreviewFrame({
 }) {
   return (
     <div
-      className={`relative flex justify-center rounded-md border border-hairline p-4 ${checker ? "checkerboard" : "bg-paper"}`}
+      className={`ep-fade-in relative flex justify-center rounded-md border border-hairline p-4 ${checker ? "checkerboard" : "bg-paper"}`}
     >
       <CropMarks size={14} inset={8} className="opacity-60" />
       {children}
