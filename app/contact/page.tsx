@@ -10,7 +10,7 @@ import { ExploreTools } from "@/components/site/ExploreTools";
 const EMAIL = "hello@easyphoto.in";
 
 export const metadata = pageMetadata({
-  title: "Contact EasyPhoto",
+  title: "Contact",
   description:
     "Get in touch with EasyPhoto to report a photo-spec correction or a bug, or " +
     "to ask a question. We read every message.",

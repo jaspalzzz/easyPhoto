@@ -17,7 +17,7 @@ import { READY_TOOLS } from "@/lib/toolsCatalog";
 import { ExploreTools } from "@/components/site/ExploreTools";
 
 export const metadata = pageMetadata({
-  title: "About EasyPhoto",
+  title: "About",
   description:
     "EasyPhoto makes compliant passport, visa and ID photos, plus image and " +
     "PDF tools, free and entirely in your browser. Here's why we built it.",
