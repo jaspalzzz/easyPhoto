@@ -76,7 +76,13 @@ function Body({ source }: { source: ToolSource }) {
         <figure className="space-y-1.5">
           <PreviewFrame>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={source.url} alt="Original signature" className="max-h-[220px] w-auto rounded" />
+            <img
+              src={source.url}
+              alt="Original signature"
+              width={source.size.width}
+              height={source.size.height}
+              className="max-h-[220px] w-auto rounded"
+            />
           </PreviewFrame>
           <figcaption className="text-center font-mono text-[11px] text-ink-soft">
             Before · {source.size.width}×{source.size.height}px
@@ -86,7 +92,13 @@ function Body({ source }: { source: ToolSource }) {
           <PreviewFrame>
             <div className="relative inline-flex">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={out?.url ?? source.url} alt="Cropped signature" className="max-h-[220px] w-auto rounded" />
+              <img
+                src={out?.url ?? source.url}
+                alt="Cropped signature"
+                width={out?.w ?? source.size.width}
+                height={out?.h ?? source.size.height}
+                className="max-h-[220px] w-auto rounded"
+              />
               {busy && (
                 <div className="absolute inset-0 overflow-hidden rounded bg-white/40">
                   {/* Brand scan-line sweeps the signature preview (transform-only). */}
