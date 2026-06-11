@@ -32,6 +32,8 @@ export const PASSPORT_COUNTRIES = [
   "canada",
   "uk",
   "australia",
+  "pakistan",
+  "nepal",
 ] as const;
 
 /** Countries that get a visa-photo maker page (ordered by demand). */
@@ -41,9 +43,12 @@ export const VISA_COUNTRIES = [
   "uk",
   "australia",
   "schengen",
+  "uae",
   "germany",
   "france",
   "italy",
+  "spain",
+  "portugal",
   "netherlands",
   "ireland",
 ] as const;
@@ -85,6 +90,13 @@ export const MAKER_PAGES: MakerPage[] = [
     slug: "india-visa-photo-maker",
     countryId: "india-evisa",
     flag: "india",
+    kind: "visa" as const,
+  },
+  // Manual: the Saudi eVisa is likewise a distinct SQUARE spec ("saudi-evisa").
+  {
+    slug: "saudi-visa-photo-maker",
+    countryId: "saudi-evisa",
+    flag: "saudi",
     kind: "visa" as const,
   },
 ];

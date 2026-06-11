@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+  <!-- Nepal's double pennant on a neutral field (flag is non-rectangular) -->
+  <rect width="36" height="24" fill="#F4F2EE"/>
+  <path d="M8 1l14 7.5H13.5L24 22H8z" fill="#003893"/>
+  <path d="M9.3 2.8l10 5.4H12l9.4 12H9.3z" fill="#DC143C"/>
+  <!-- Moon -->
+  <path d="M12.5 7.6a2.5 2.5 0 01-4.6 0 2.9 2.9 0 004.6 0z" fill="#FFFFFF"/>
+  <circle cx="10.2" cy="7.1" r="1.05" fill="#FFFFFF"/>
+  <!-- Sun -->
+  <circle cx="11" cy="15.5" r="1.7" fill="#FFFFFF"/>
+</svg>

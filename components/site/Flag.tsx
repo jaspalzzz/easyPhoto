@@ -13,6 +13,13 @@ const CODE: Record<string, string> = {
   italy: "it",
   netherlands: "nl",
   ireland: "ie",
+  uae: "ae",
+  saudi: "sa",
+  "saudi-evisa": "sa",
+  pakistan: "pk",
+  nepal: "np",
+  spain: "es",
+  portugal: "pt",
 };
 
 /** Genuine SVG flag, rounded with a hairline ring for a premium look. */

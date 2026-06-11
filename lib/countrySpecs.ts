@@ -509,6 +509,200 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source: "https://www.dfa.ie/passports/photo-guidelines/",
     verified: "gov",
   },
+
+  // ─────────────────────────────────────────────────────────────
+  uae: {
+    id: "uae",
+    label: "UAE",
+    documents: ["UAE visit / tourist visa", "Employment & residence visa", "Emirates ID"],
+    printMm: { width: 43, height: 55 },
+    // ICP's official ICAO guide mandates face = 70–80% of the photo; for the
+    // 43×55 visa print that band is ≈39–44mm chin to crown.
+    headHeightMm: { min: 39, max: 44 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white (ICP guide: plain light-coloured), no shadows",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA", "#F5F5F5"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 508, height: 650 },
+      fileSizeKb: null, // limits vary by channel (ICP / GDRFA / typing centre)
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "allowed if eyes clearly visible — no tint, no glare",
+    smileAllowed: "neutral, mouth closed",
+    notes:
+      "UAE visa/residence photo: 43x55mm on plain white — the size used across " +
+      "visit, employment and residence channels. The ICP federal photo guide " +
+      "(ICAO) confirms: face 70-80% of the photo, max 6 months old, plain " +
+      "light-coloured background, neutral expression, glasses only without tint " +
+      "or glare, head covering for religious reasons only with the full face " +
+      "visible. Print size is the channel convention — confirm with your typing " +
+      "centre / portal before submitting.",
+    source: "https://icp.gov.ae/wp-content/uploads/2021/11/icao_english.pdf",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  "saudi-evisa": {
+    id: "saudi-evisa",
+    label: "Saudi Arabia",
+    documents: ["Saudi eVisa (tourist)", "Enjaz visa application"],
+    // Square, digital-first (like the Indian e-Visa): a 51×51mm physical
+    // equivalent makes the DPI→pixel math produce a compliant square; the
+    // binding rule is the official 200×200 px upload.
+    printMm: { width: 51, height: 51 },
+    headHeightMm: { min: 36, max: 41 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white, no patterns, no shadows",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA"],
+    },
+    digital: {
+      square: true,
+      px: { width: 200, height: 200 },
+      fileSizeKb: { min: 5, max: 100 },
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "best avoided (eyes must be clearly visible)",
+    smileAllowed: "neutral, facing straight at the camera",
+    notes:
+      "Saudi eVisa photo, CONFIRMED on the official visa.visitsaudi.com photo " +
+      "specifications page: exactly 200x200 px, 5-100 KB, white background with " +
+      "no pattern or shadows, face 70-80% of the photo, head square to the " +
+      "camera with ears and cheeks visible, max 6 months old, head coverings " +
+      "for religious reasons only. The consulate (paper) channel uses a 4x6cm " +
+      "print — this page targets the eVisa upload.",
+    source: "https://visa.visitsaudi.com/Home/PhotoSpecifications",
+    verified: "gov",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  pakistan: {
+    id: "pakistan",
+    label: "Pakistan",
+    documents: ["Pakistani passport (DGIP online renewal)", "NICOP / POC (NADRA)"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white, no shadows or patterns",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA", "#F5F5F5"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null, // DGIP online portal accepts up to 5 MB
+      formats: ["jpg"],
+    },
+    dpiMin: 600,
+    glasses: "not allowed",
+    smileAllowed: "neutral, mouth closed",
+    notes:
+      "Pakistani passport photo: 35x45mm (the DGIP online-renewal portal states " +
+      "45mm high x 35mm wide, professionally taken, upload up to 5 MB, 600 DPI " +
+      "scan guidance) on a plain white background. Head band uses the ICAO " +
+      "70-80% convention. In-country first-time applications capture biometrics " +
+      "live at the office; the upload path serves online renewals (onlinemrp)." ,
+    source: "https://onlinemrp.dgip.gov.pk/photo-requirements/",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  nepal: {
+    id: "nepal",
+    label: "Nepal",
+    documents: ["Nepali passport (MRP/e-passport form photo)", "Government forms"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 31, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white, no shadows",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA", "#F5F5F5"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "remove unless medically required",
+    smileAllowed: "neutral, mouth closed",
+    notes:
+      "Nepali MRP/passport-size photo: 35x45mm on plain white, neutral " +
+      "expression, taken within 6 months — the standard photo Nepali passport " +
+      "pre-enrolment and government forms expect. Numbers are consistent across " +
+      "reputable guides but not yet confirmed against a single official spec " +
+      "page — re-check your application's notice before submitting.",
+    source: "https://nepalpassport.gov.np",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  spain: {
+    id: "spain",
+    label: "Spain",
+    documents: ["Spain Schengen Visa", "National (D) visa"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain light grey or white, even lighting, no shadows",
+      hex: "#DCDCDC",
+      acceptableHex: ["#DCDCDC", "#D3D3D3", "#FFFFFF"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "not permitted unless medically required",
+    smileAllowed: "neutral only (biometric)",
+    notes:
+      "Spain Schengen-visa photo: the standard ICAO 35x45mm biometric photo, " +
+      "face 70-80% of the height, on a plain light background (grey is the safe " +
+      "default across Schengen consulates). NOTE: Spain's domestic passport/DNI " +
+      "uses a smaller 26x32mm photo — that is a different document; this page " +
+      "is for the visa.",
+    source: "https://www.exteriores.gob.es/en/ServiciosAlCiudadano/Paginas/Schengen-visas.aspx",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  portugal: {
+    id: "portugal",
+    label: "Portugal",
+    documents: ["Portugal Schengen Visa", "National (D) visa / residence"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain light grey or white, even lighting, no shadows",
+      hex: "#DCDCDC",
+      acceptableHex: ["#DCDCDC", "#D3D3D3", "#FFFFFF"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "not permitted (Portugal rejects glasses in ID photos)",
+    smileAllowed: "neutral only (biometric)",
+    notes:
+      "Portugal Schengen-visa photo: standard ICAO 35x45mm biometric photo, " +
+      "face 70-80%, plain light background. Portugal is notably strict on " +
+      "glasses — remove them even if prescription. The Portuguese Citizen Card " +
+      "uses a smaller 30x40mm photo — a different document from the visa.",
+    source: "https://vistos.mne.gov.pt/en/short-stay-visas-schengen",
+    verified: "aggregator",
+  },
 };
 
 /**
@@ -536,6 +730,12 @@ export const LAUNCH_ORDER = [
   "italy",
   "netherlands",
   "ireland",
+  "uae",
+  "saudi-evisa",
+  "pakistan",
+  "nepal",
+  "spain",
+  "portugal",
 ];
 
 /**
