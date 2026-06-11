@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
+import { useDebouncedValue } from "@/lib/useDebouncedValue";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
@@ -27,6 +28,9 @@ interface BodyProps {
 
 function Body({ source, kb, toolName }: BodyProps) {
   const [threshold, setThreshold] = React.useState(200);
+  // The pipeline below is a full-pixel pass + PNG encode loop — far too heavy
+  // per slider tick. Recompute only after the user pauses.
+  const dThreshold = useDebouncedValue(threshold, 180);
   const [busy, setBusy] = React.useState(false);
   const [out, setOut] = React.useState<Out | null>(null);
   const [error, setError] = React.useState<string | null>(null);
@@ -43,7 +47,7 @@ function Body({ source, kb, toolName }: BodyProps) {
       setError(null);
       try {
         const base = imageToCanvas(source.image, source.size.width, source.size.height);
-        const transparent = whiteToTransparent(base, { threshold, softness: 40 });
+        const transparent = whiteToTransparent(base, { threshold: dThreshold, softness: 40 });
         const trimmed = trimToContent(transparent, { mode: "alpha", padding: 12 }).canvas;
         const res = await pngUnderKb(trimmed, kb);
         if (cancelled) return;
@@ -81,7 +85,7 @@ function Body({ source, kb, toolName }: BodyProps) {
     return () => {
       cancelled = true;
     };
-  }, [source, threshold, kb, toolName]);
+  }, [source, dThreshold, kb, toolName]);
 
   const handleDownload = () => {
     if (!out) return;

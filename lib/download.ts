@@ -9,6 +9,12 @@ export function downloadBlob(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   a.remove();
-  // Revoke after the download has had a chance to start.
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  // Revoke after the download has had a chance to start. iOS Safari routes
+  // the blob through a share/preview flow that reads the URL later than
+  // desktop browsers do — revoking at 1s there can yield a blank
+  // "WebKitBlobResource" failure, so give it a comfortable window.
+  const isIOS =
+    typeof navigator !== "undefined" &&
+    /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  setTimeout(() => URL.revokeObjectURL(url), isIOS ? 10_000 : 1500);
 }

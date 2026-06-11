@@ -42,6 +42,11 @@ export interface PortalSpec {
   verification?: VerificationStatus;
   /** ISO date (YYYY-MM-DD) the numbers were last confirmed against `source`. */
   verifiedOn?: string;
+  /**
+   * Scan DPI the portal officially mandates (e.g. PAN: 200). Written into the
+   * exported JPEG's JFIF header so a strict metadata check also passes.
+   */
+  dpi?: number;
 }
 
 export const PORTAL_PRESETS: Record<string, PortalSpec> = {
@@ -648,6 +653,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-06-11",
+    dpi: 200, // officially mandated scan resolution
   },
   "driving-licence": {
     id: "driving-licence",

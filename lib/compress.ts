@@ -12,6 +12,7 @@
  */
 
 import { padBlobToMin } from "@/lib/padBytes";
+import { setBlobDensityDpi } from "@/lib/jpegDensity";
 
 // ── Pure, testable search ────────────────────────────────────────────────
 
@@ -212,6 +213,12 @@ export async function compressToCap(
      * quality are untouched; every JPEG reader skips the padding.
      */
     minKb?: number;
+    /**
+     * Declared DPI for the JFIF header (e.g. PAN mandates 200 DPI scans).
+     * Pixels are unchanged — this only sets the metadata a strict portal
+     * could read. Applied before any min-KB padding.
+     */
+    densityDpi?: number;
   } = {}
 ): Promise<CompressResult> {
   // Scale floor: the most restrictive of an explicit minScale and the pixel
@@ -245,8 +252,12 @@ export async function compressToCap(
     minScale,
   });
 
-  // Portal minimum-KB floor: pad up when the best encoding is below the band.
   let blob = res.payload.blob;
+  // Declared-DPI metadata first (so padding lands after the APP0 header)…
+  if (opts.densityDpi) {
+    blob = await setBlobDensityDpi(blob, opts.densityDpi);
+  }
+  // …then the portal minimum-KB floor: pad up when below the band.
   if (opts.minKb && res.underCap && blob.size < opts.minKb * 1024) {
     blob = await padBlobToMin(blob, opts.minKb * 1024);
   }

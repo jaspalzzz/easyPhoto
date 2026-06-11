@@ -3,6 +3,7 @@ import {
   padJpegBytesToMin,
   padPngBytesToMin,
 } from "@/lib/padBytes";
+import { setJpegDensityDpi } from "@/lib/jpegDensity";
 
 /** Minimal structurally-valid JPEG: SOI + one COM segment + EOI. */
 function tinyJpeg(): Uint8Array {
@@ -58,6 +59,49 @@ describe("padJpegBytesToMin", () => {
   it("refuses to touch non-JPEG data", () => {
     const notJpeg = new Uint8Array([1, 2, 3, 4]);
     expect(padJpegBytesToMin(notJpeg, 1024)).toBe(notJpeg);
+  });
+
+  it("inserts padding AFTER a leading JFIF APP0, not between SOI and it", () => {
+    // SOI + APP0(JFIF, 18 bytes) + EOI
+    const withApp0 = setJpegDensityDpi(
+      new Uint8Array([0xff, 0xd8, 0xff, 0xd9]),
+      200
+    );
+    expect([withApp0[2], withApp0[3]]).toEqual([0xff, 0xe0]); // APP0 after SOI
+    const out = padJpegBytesToMin(withApp0, 2048);
+    // APP0 must STILL immediately follow SOI (JFIF spec)…
+    expect([out[2], out[3]]).toEqual([0xff, 0xe0]);
+    // …and the COM padding sits right after the 18-byte APP0.
+    expect([out[20], out[21]]).toEqual([0xff, 0xfe]);
+    expect(out.length).toBeGreaterThanOrEqual(2048);
+  });
+});
+
+describe("setJpegDensityDpi", () => {
+  it("inserts a JFIF APP0 declaring the DPI when none exists", () => {
+    const bare = new Uint8Array([0xff, 0xd8, 0xff, 0xd9]); // SOI + EOI
+    const out = setJpegDensityDpi(bare, 200);
+    expect([out[2], out[3]]).toEqual([0xff, 0xe0]); // APP0
+    expect(out[13]).toBe(1); // units = dpi
+    expect((out[14] << 8) | out[15]).toBe(200); // X density
+    expect((out[16] << 8) | out[17]).toBe(200); // Y density
+  });
+
+  it("patches an existing JFIF APP0 in place (length unchanged)", () => {
+    const withApp0 = setJpegDensityDpi(
+      new Uint8Array([0xff, 0xd8, 0xff, 0xd9]),
+      72
+    );
+    const out = setJpegDensityDpi(withApp0, 300);
+    expect(out.length).toBe(withApp0.length);
+    expect((out[14] << 8) | out[15]).toBe(300);
+  });
+
+  it("refuses non-JPEG data and absurd DPI", () => {
+    const notJpeg = new Uint8Array([1, 2, 3]);
+    expect(setJpegDensityDpi(notJpeg, 200)).toBe(notJpeg);
+    const jpeg = new Uint8Array([0xff, 0xd8, 0xff, 0xd9]);
+    expect(setJpegDensityDpi(jpeg, 0)).toBe(jpeg);
   });
 });
 

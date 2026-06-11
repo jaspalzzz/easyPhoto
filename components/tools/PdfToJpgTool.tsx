@@ -75,11 +75,18 @@ export function PdfToJpgTool() {
   };
 
   const downloadAll = async () => {
-    for (let i = 0; i < pages.length; i++) {
-      downloadOne(pages[i], i);
-      // Small gap so browsers don't drop rapid sequential downloads.
-      await new Promise((r) => setTimeout(r, 250));
+    if (pages.length === 1) {
+      downloadOne(pages[0], 0);
+      return;
     }
+    // One ZIP instead of N sequential downloads: iOS Safari silently blocks
+    // more than one programmatic download per gesture, and desktop browsers
+    // prompt about multiple files. A single archive works everywhere.
+    const JSZip = (await import("jszip")).default;
+    const zip = new JSZip();
+    pages.forEach((p, i) => zip.file(`page-${i + 1}.jpg`, p.blob));
+    const blob = await zip.generateAsync({ type: "blob" });
+    downloadBlob(blob, "pdf-pages.zip");
   };
 
   const reset = () => {

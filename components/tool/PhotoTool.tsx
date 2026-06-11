@@ -64,6 +64,31 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
   const [editing, setEditing] = React.useState(false);
   const [manual, setManual] = React.useState(false);
 
+  // Brightness/contrast sliders: the store setter triggers a full preset
+  // rebuild (Pica resize + re-encode), far too heavy to run per drag tick.
+  // Render from local state for an instant thumb, push to the store only
+  // after the user pauses.
+  const [liveBrightness, setLiveBrightness] = React.useState(brightness);
+  const [liveContrast, setLiveContrast] = React.useState(contrast);
+  const adjustTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  React.useEffect(() => setLiveBrightness(brightness), [brightness]);
+  React.useEffect(() => setLiveContrast(contrast), [contrast]);
+  React.useEffect(
+    () => () => {
+      if (adjustTimer.current) clearTimeout(adjustTimer.current);
+    },
+    []
+  );
+  const pushAdjust = (kind: "b" | "c", value: number) => {
+    if (kind === "b") setLiveBrightness(value);
+    else setLiveContrast(value);
+    if (adjustTimer.current) clearTimeout(adjustTimer.current);
+    adjustTimer.current = setTimeout(() => {
+      if (kind === "b") setBrightness(value);
+      else setContrast(value);
+    }, 180);
+  };
+
   React.useEffect(() => {
     setSpec(spec);
     // If the user picked a photo in the hero, process it now (one-click start).
@@ -195,27 +220,27 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                       <div className="grid grid-cols-2 gap-4">
                         <label className="block text-xs">
                           <span className="text-muted-foreground block mb-1 font-semibold uppercase text-[10px]">
-                            Brightness: {brightness}%
+                            Brightness: {liveBrightness}%
                           </span>
                           <input
                             type="range"
                             min={80}
                             max={120}
-                            value={brightness}
-                            onChange={(e) => setBrightness(Number(e.target.value))}
+                            value={liveBrightness}
+                            onChange={(e) => pushAdjust("b", Number(e.target.value))}
                             className="w-full accent-brand cursor-pointer"
                           />
                         </label>
                         <label className="block text-xs">
                           <span className="text-muted-foreground block mb-1 font-semibold uppercase text-[10px]">
-                            Contrast: {contrast}%
+                            Contrast: {liveContrast}%
                           </span>
                           <input
                             type="range"
                             min={80}
                             max={120}
-                            value={contrast}
-                            onChange={(e) => setContrast(Number(e.target.value))}
+                            value={liveContrast}
+                            onChange={(e) => pushAdjust("c", Number(e.target.value))}
                             className="w-full accent-brand cursor-pointer"
                           />
                         </label>

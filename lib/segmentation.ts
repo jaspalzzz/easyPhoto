@@ -146,6 +146,19 @@ let rmbgProcessorPromise: Promise<any> | null = null;
 let rmbgProcessorSize = 0;
 let rmbgModelKey = "";
 
+/**
+ * Drop the cached RMBG model/processor so the WASM heap can be reclaimed.
+ * The next run re-instantiates from the browser's HTTP cache (no re-download
+ * on a warm cache) — a few seconds of setup traded for ~150MB of tab memory,
+ * which is the difference between working and crashing on low-RAM iPhones.
+ */
+export function disposeRMBG(): void {
+  rmbgModelPromise = null;
+  rmbgProcessorPromise = null;
+  rmbgProcessorSize = 0;
+  rmbgModelKey = "";
+}
+
 async function getRMBG(opts: {
   device: string;
   dtype: string;
@@ -276,7 +289,14 @@ export async function removeBgWebGPU(
     ).resize(size.width, size.height);
     // Compose at SOURCE resolution from the ORIGINAL image (full RGB quality)
     // with the mask upscaled to match — only here do we touch full dimensions.
-    return finishCutout(source, maskImg, size);
+    const cutout = finishCutout(source, maskImg, size);
+    // On the memory-tight path (iOS small-input wasm) drop the cached model
+    // after a successful run: the session's WASM heap is the single biggest
+    // allocation in the tab, and the weights re-load from HTTP cache if the
+    // user runs again. Larger-input engines keep the cache (re-runs are
+    // common and desktop/Android have headroom).
+    if (inputSize <= 256) disposeRMBG();
+    return cutout;
   } catch (e) {
     // Tag the failing stage for logs; the store turns this into a graceful
     // fallback (original background + notice), never a hard failure.

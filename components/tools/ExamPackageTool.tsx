@@ -143,6 +143,7 @@ export function ExamPackageTool() {
             : undefined,
         // Portals reject files below the band's floor too — pad up to it.
         minKb: spec.photoMinKb,
+        densityDpi: spec.dpi,
       });
       if (photo?.url) URL.revokeObjectURL(photo.url);
       const photoCompliant =

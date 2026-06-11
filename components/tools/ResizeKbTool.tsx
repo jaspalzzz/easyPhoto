@@ -19,9 +19,11 @@ interface BodyProps {
   minHeight?: number;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
+  /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
+  densityDpi?: number;
 }
 
-function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb }: BodyProps) {
+function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, densityDpi }: BodyProps) {
   const [targetKb, setTargetKb] = React.useState(defaultKb);
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -73,6 +75,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb }: BodyP
         minScale: 0.1,
         minDimensions,
         minKb,
+        densityDpi,
       });
       // Previous result URL is revoked by the cleanup effect on result change.
       setResult({
@@ -227,6 +230,7 @@ export function ResizeKbTool({
   minWidth,
   minHeight,
   minKb,
+  densityDpi,
 }: {
   defaultKb?: number;
   toolName?: string;
@@ -234,6 +238,8 @@ export function ResizeKbTool({
   minHeight?: number;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
+  /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
+  densityDpi?: number;
 }) {
   React.useEffect(() => {
     track({ name: "tool_view", tool: toolName });
@@ -249,6 +255,7 @@ export function ResizeKbTool({
           minWidth={minWidth}
           minHeight={minHeight}
           minKb={minKb}
+          densityDpi={densityDpi}
         />
       )}
     </ImageToolShell>

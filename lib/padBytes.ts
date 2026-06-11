@@ -38,6 +38,20 @@ export function padJpegBytesToMin(
 ): Uint8Array {
   if (src.length >= minBytes || !isJpeg(src)) return src;
 
+  // JFIF requires APP0 (and EXIF its APP1) immediately after SOI — so insert
+  // our padding AFTER any leading APPn segments, not between SOI and them.
+  let insertAt = 2;
+  while (
+    insertAt + 4 <= src.length &&
+    src[insertAt] === 0xff &&
+    src[insertAt + 1] >= 0xe0 &&
+    src[insertAt + 1] <= 0xef
+  ) {
+    const segLen = (src[insertAt + 2] << 8) | src[insertAt + 3];
+    if (segLen < 2) break; // corrupt length; stop scanning
+    insertAt += 2 + segLen;
+  }
+
   const segments: Uint8Array[] = [];
   let deficit = minBytes - src.length;
   while (deficit > 0) {
@@ -58,14 +72,14 @@ export function padJpegBytesToMin(
   const total =
     src.length + segments.reduce((n, s) => n + s.length, 0);
   const out = new Uint8Array(total);
-  // SOI, then the padding segments, then the rest of the original stream.
-  out.set(src.subarray(0, 2), 0);
-  let offset = 2;
+  // Original head (SOI + any APPn), padding segments, then the remainder.
+  out.set(src.subarray(0, insertAt), 0);
+  let offset = insertAt;
   for (const seg of segments) {
     out.set(seg, offset);
     offset += seg.length;
   }
-  out.set(src.subarray(2), offset);
+  out.set(src.subarray(insertAt), offset);
   return out;
 }
 

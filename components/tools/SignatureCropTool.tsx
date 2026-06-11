@@ -7,10 +7,15 @@ import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell"
 import { imageToCanvas, canvasToBlob } from "@/lib/imaging";
 import { trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
+import { useDebouncedValue } from "@/lib/useDebouncedValue";
 
 function Body({ source }: { source: ToolSource }) {
   const [padding, setPadding] = React.useState(12);
   const [threshold, setThreshold] = React.useState(200);
+  // Full-pixel bbox scan per change is too heavy for live slider ticks —
+  // recompute only after the user pauses.
+  const dPadding = useDebouncedValue(padding, 180);
+  const dThreshold = useDebouncedValue(threshold, 180);
   const [out, setOut] = React.useState<{ url: string; canvas: HTMLCanvasElement; w: number; h: number } | null>(null);
   const [empty, setEmpty] = React.useState(false);
   const [busy, setBusy] = React.useState(false);
@@ -25,8 +30,8 @@ function Body({ source }: { source: ToolSource }) {
       const canvas = imageToCanvas(source.image, source.size.width, source.size.height);
       const { canvas: cropped, bbox } = trimToContent(canvas, {
         mode: "luma",
-        threshold,
-        padding,
+        threshold: dThreshold,
+        padding: dPadding,
       });
       if (cancelled) return;
       if (!bbox) {
@@ -45,7 +50,7 @@ function Body({ source }: { source: ToolSource }) {
     }
     run();
     return () => { cancelled = true; };
-  }, [source, padding, threshold]);
+  }, [source, dPadding, dThreshold]);
 
   const onDownload = async (type: "image/png" | "image/jpeg") => {
     if (!out) return;
