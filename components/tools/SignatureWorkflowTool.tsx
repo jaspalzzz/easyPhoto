@@ -935,6 +935,7 @@ function Body({
                         <input
                           id="sig-resize-width"
                           type="number"
+            inputMode="numeric"
                           value={width || (out ? out.w : 0)}
                           onChange={(e) => handleWidthChange(Math.max(1, Number(e.target.value) || 0))}
                           className="w-full h-9 rounded-md border border-hairline bg-background px-3 font-mono text-xs focus:border-brand"
@@ -945,6 +946,7 @@ function Body({
                         <input
                           id="sig-resize-height"
                           type="number"
+            inputMode="numeric"
                           value={height || (out ? out.h : 0)}
                           onChange={(e) => handleHeightChange(Math.max(1, Number(e.target.value) || 0))}
                           className="w-full h-9 rounded-md border border-hairline bg-background px-3 font-mono text-xs focus:border-brand"

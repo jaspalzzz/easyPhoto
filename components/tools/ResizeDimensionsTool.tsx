@@ -121,6 +121,7 @@ function Body({ source }: { source: ToolSource }) {
           <span className="eyebrow mb-1 block">Width (px)</span>
           <input
             type="number"
+            inputMode="numeric"
             min={1}
             value={widthStr}
             onChange={(e) => onWidth(e.target.value)}
@@ -145,6 +146,7 @@ function Body({ source }: { source: ToolSource }) {
           <span className="eyebrow mb-1 block">Height (px)</span>
           <input
             type="number"
+            inputMode="numeric"
             min={1}
             value={heightStr}
             onChange={(e) => onHeight(e.target.value)}

@@ -362,7 +362,7 @@ export function PdfReorderTool() {
                             type="button"
                             variant="ghost"
                             size="icon"
-                            className="h-7 w-7 text-ink-soft hover:bg-accent/40"
+                            className="h-10 w-10 text-ink-soft hover:bg-accent/40"
                             onClick={() => rotatePage(index, "ccw")}
                             title="Rotate CCW (90° Left)"
                             aria-label={`Rotate page ${index + 1} counter-clockwise`}
@@ -374,7 +374,7 @@ export function PdfReorderTool() {
                             type="button"
                             variant="ghost"
                             size="icon"
-                            className="h-7 w-7 text-ink-soft hover:bg-accent/40"
+                            className="h-10 w-10 text-ink-soft hover:bg-accent/40"
                             onClick={() => rotatePage(index, "cw")}
                             title="Rotate CW (90° Right)"
                             aria-label={`Rotate page ${index + 1} clockwise`}
@@ -390,7 +390,7 @@ export function PdfReorderTool() {
                             type="button"
                             variant="ghost"
                             size="icon"
-                            className="h-7 w-7 text-ink-soft hover:bg-accent/40"
+                            className="h-10 w-10 text-ink-soft hover:bg-accent/40"
                             onClick={() => cancelDelete(item.id)}
                             title="Undo Delete"
                             aria-label={`Undo delete page ${index + 1}`}
@@ -403,7 +403,7 @@ export function PdfReorderTool() {
                             type="button"
                             variant="ghost"
                             size="icon"
-                            className="h-7 w-7 text-destructive hover:bg-destructive/10"
+                            className="h-10 w-10 text-destructive hover:bg-destructive/10"
                             onClick={() => removePage(item.id)}
                             title="Delete Page"
                             aria-label={`Delete page ${index + 1}`}
@@ -420,7 +420,7 @@ export function PdfReorderTool() {
                           type="button"
                           variant="ghost"
                           size="icon"
-                          className="h-7 w-7 text-ink-soft hover:bg-accent/40 flex-1"
+                          className="h-10 w-10 text-ink-soft hover:bg-accent/40 flex-1"
                           disabled={index === 0}
                           onClick={() => movePage(index, "left")}
                           title="Move Left"
@@ -436,7 +436,7 @@ export function PdfReorderTool() {
                           type="button"
                           variant="ghost"
                           size="icon"
-                          className="h-7 w-7 text-ink-soft hover:bg-accent/40 flex-1"
+                          className="h-10 w-10 text-ink-soft hover:bg-accent/40 flex-1"
                           disabled={index === pages.length - 1}
                           onClick={() => movePage(index, "right")}
                           title="Move Right"

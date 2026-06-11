@@ -260,6 +260,37 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Mobile ergonomics (80%+ of traffic is phones).
+--------------------------------------------------------------------------- */
+
+/* Range sliders: a 44px hit area and the brand thumb colour — native thumbs
+   are ~14px and nearly impossible to drag precisely on touch screens. */
+input[type="range"] {
+  min-height: 44px;
+  accent-color: hsl(var(--brand));
+}
+
+@media (max-width: 640px) {
+  /* iOS Safari zooms the page when a focused input's font is under 16px —
+     deeply disorienting mid-flow. Force 16px on phones; desktop keeps the
+     compact sizes. */
+  input[type="number"],
+  input[type="text"],
+  input[type="email"],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  /* The 11-12px utility text layer reads cramped on mid-range screens. */
+  .spec {
+    font-size: 12px;
+  }
+  .eyebrow {
+    font-size: 13px;
+  }
+}
+
 /* Download-confirmation toast: gentle rise + fade. */
 @keyframes ep-toast-in {
   from { transform: translateY(12px); opacity: 0; }

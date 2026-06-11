@@ -73,7 +73,10 @@ export function Editor({
         <Cropper
           ref={cropperRef}
           src={src}
-          style={{ height: 380, width: "100%" }}
+          // Fixed 380px overflows small phones once the 64px header and the
+          // controls are accounted for — cap to the viewport so the Apply
+          // button stays reachable without scrolling mid-crop.
+          style={{ height: "min(380px, 52vh)", width: "100%" }}
           aspectRatio={aspectRatio}
           viewMode={1}
           dragMode="move"

@@ -159,6 +159,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
           <span className="eyebrow mb-1 block">Target size (KB)</span>
           <input
             type="number"
+            inputMode="numeric"
             min={5}
             value={targetKb}
             onChange={(e) => setTargetKb(Math.max(5, Number(e.target.value) || 0))}

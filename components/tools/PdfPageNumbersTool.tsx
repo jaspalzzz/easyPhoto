@@ -171,6 +171,7 @@ export function PdfPageNumbersTool() {
                 <span className="mb-2 block font-semibold">Start numbering at</span>
                 <input
                   type="number"
+            inputMode="numeric"
                   min={0}
                   value={startAt}
                   onChange={(e) => setStartAt(Number(e.target.value) || 0)}

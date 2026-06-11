@@ -178,6 +178,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               <input
                 id="print-sheet-copies-input"
                 type="number"
+            inputMode="numeric"
                 min={1}
                 max={maxCapacity}
                 value={copies}
@@ -277,21 +278,21 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
           <a
             id="promo-compress-20kb"
             href="/photo-resize-to-20kb/"
-            className="rounded px-2 py-1.5 bg-card border border-hairline hover:bg-accent/50 font-medium text-[11px] text-foreground transition-colors"
+            className="inline-flex min-h-10 items-center rounded-md px-3 py-2 bg-card border border-hairline hover:bg-accent/50 font-medium text-xs text-foreground transition-colors"
           >
             Compress to 20 KB
           </a>
           <a
             id="promo-compress-50kb"
             href="/photo-resize-to-50kb/"
-            className="rounded px-2 py-1.5 bg-card border border-hairline hover:bg-accent/50 font-medium text-[11px] text-foreground transition-colors"
+            className="inline-flex min-h-10 items-center rounded-md px-3 py-2 bg-card border border-hairline hover:bg-accent/50 font-medium text-xs text-foreground transition-colors"
           >
             Compress to 50 KB
           </a>
           <a
             id="promo-compress-custom"
             href="/tools/resize-kb/"
-            className="rounded px-2 py-1.5 bg-card border border-hairline hover:bg-accent/50 font-medium text-[11px] text-brand transition-colors"
+            className="inline-flex min-h-10 items-center rounded-md px-3 py-2 bg-card border border-hairline hover:bg-accent/50 font-medium text-xs text-brand transition-colors"
           >
             Custom Size
           </a>
