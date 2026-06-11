@@ -81,21 +81,26 @@ export default function HomePage() {
       <section className="border-b border-hairline bg-paper">
         <div className="container py-12 sm:py-16 lg:py-20">
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-            {/* Left: value proposition */}
+            {/* Left: value proposition. The headline sells the outcome the
+                anxious visitor came for (acceptance), not the mechanism; the
+                precision claim moves to the eyebrow. */}
             <div className="max-w-xl">
-              <span className="eyebrow">Passport, exam &amp; document tools</span>
+              <span className="eyebrow">
+                Passport · exam · visa — exact to the millimetre
+              </span>
               <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
-                Document photos, exact{" "}
-                <span className="text-brand">to the millimetre</span>
+                Document photos that{" "}
+                <span className="text-brand">get accepted</span>
               </h1>
               <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-                Pick your country and drop a photo — we crop to the exact head
-                size, apply the background your government requires, and check it.
-                Free, and entirely in your browser.
+                Pick your country or exam and drop a photo — we crop to the
+                official spec, set the required background, and check it before
+                you download. Free, and entirely in your browser.
               </p>
 
-              {/* Credibility stats — real, dynamic counts, in a clean strip */}
-              <dl className="mt-7 flex max-w-md divide-x divide-hairline overflow-hidden rounded-xl border border-hairline bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04)]">
+              {/* Credibility stats — real, dynamic counts. Desktop-and-up:
+                  on phones they pushed the actual tool two viewports down. */}
+              <dl className="mt-7 hidden max-w-md divide-x divide-hairline overflow-hidden rounded-xl border border-hairline bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04)] sm:flex">
                 {[
                   { v: `${LAUNCH_ORDER.length}`, l: "country specs" },
                   { v: `${PORTAL_KEYS.length}`, l: "exam & form specs" },
@@ -112,11 +117,13 @@ export default function HomePage() {
                 ))}
               </dl>
 
-              <div className="mt-6 max-w-md">
+              {/* Search is a power-user shortcut — desktop only; on mobile it
+                  competed with the primary flow (and the nav covers it). */}
+              <div className="mt-6 hidden max-w-md lg:block">
                 <ToolSearch />
               </div>
 
-              <TrustPills className="mt-6 justify-start" />
+              <TrustPills className="mt-5 justify-start sm:mt-6" />
             </div>
 
             {/* Right: live passport starter */}
@@ -168,43 +175,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Country index — a ruled bureau register, not floating cards */}
-      <section id="countries" className="container scroll-mt-16 py-14 sm:py-16">
-        <div className="flex items-baseline justify-between border-b border-hairline pb-4">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            Choose your country
-          </h2>
-          <span className="eyebrow hidden sm:block">Official specifications</span>
-        </div>
-        <div className="ep-card-grid mt-6">
-          {LAUNCH_ORDER.map((id) => {
-            const spec = COUNTRY_SPECS[id];
-            const mm = effectivePrintMm(spec);
-            return (
-              <Link
-                key={id}
-                href={primaryMakerPath(id)}
-                className="ep-card group flex items-center gap-3.5 p-4"
-              >
-                <Flag country={id} className="h-8 w-11 shrink-0 rounded-[3px] ring-1 ring-hairline" />
-                <span className="min-w-0">
-                  <span className="block truncate font-semibold leading-tight text-ink">
-                    {spec.label}
-                  </span>
-                  <span className="spec mt-1 block normal-case tracking-[0.08em]">
-                    {mm.width}×{mm.height}mm ·{" "}
-                    {spec.background.description.split("(")[0].trim().split(",")[0]}
-                  </span>
-                </span>
-                <ArrowRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
       {/* Indian exams & forms — convert the dominant exam-candidate audience */}
-      <section id="exams" className="border-t border-hairline bg-paper scroll-mt-16">
+      <section id="exams" className="scroll-mt-16">
         <div className="container py-14 sm:py-16">
           <div className="flex items-baseline justify-between border-b border-hairline pb-4">
             <h2 className="text-2xl font-semibold tracking-tight">
@@ -262,6 +234,43 @@ export default function HomePage() {
               signature resize
             </Link>
           </p>
+        </div>
+      </section>
+
+      {/* Country index — a ruled bureau register, not floating cards */}
+      <section id="countries" className="border-t border-hairline bg-paper scroll-mt-16">
+        <div className="container py-14 sm:py-16">
+        <div className="flex items-baseline justify-between border-b border-hairline pb-4">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Choose your country
+          </h2>
+          <span className="eyebrow hidden sm:block">Official specifications</span>
+        </div>
+        <div className="ep-card-grid mt-6">
+          {LAUNCH_ORDER.map((id) => {
+            const spec = COUNTRY_SPECS[id];
+            const mm = effectivePrintMm(spec);
+            return (
+              <Link
+                key={id}
+                href={primaryMakerPath(id)}
+                className="ep-card group flex items-center gap-3.5 p-4"
+              >
+                <Flag country={id} className="h-8 w-11 shrink-0 rounded-[3px] ring-1 ring-hairline" />
+                <span className="min-w-0">
+                  <span className="block truncate font-semibold leading-tight text-ink">
+                    {spec.label}
+                  </span>
+                  <span className="spec mt-1 block normal-case tracking-[0.08em]">
+                    {mm.width}×{mm.height}mm ·{" "}
+                    {spec.background.description.split("(")[0].trim().split(",")[0]}
+                  </span>
+                </span>
+                <ArrowRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
+              </Link>
+            );
+          })}
+        </div>
         </div>
       </section>
 

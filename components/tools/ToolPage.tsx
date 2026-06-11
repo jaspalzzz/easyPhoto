@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
 import { relatedTools, getTool, categoryOf, toolColorCategory } from "@/lib/toolsCatalog";
 import { ToolIconTile } from "@/components/site/ToolIcon";
+import { ExploreTools } from "@/components/site/ExploreTools";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { breadcrumbSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
@@ -121,6 +122,14 @@ export function ToolPage({
           <Faq items={faqItems} />
         </section>
       )}
+
+      {/* Never a dead end: surface the wider toolkit after the page's own
+          content (related = same category; this = breadth). */}
+      <ExploreTools
+        className="mt-12 border-t border-hairline pt-10"
+        heading="More free tools"
+        subtitle="All on-device — nothing you open here is uploaded."
+      />
     </div>
   );
 }
