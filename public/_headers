@@ -28,3 +28,9 @@
 /*opengraph-image
   Content-Type: image/png
   Cache-Control: public, max-age=86400
+
+# The exam-calendar .ics is exported extensionless; declare its type so phones
+# hand it to the calendar app instead of showing raw text.
+/exam-calendar/ics
+  Content-Type: text/calendar; charset=utf-8
+  Content-Disposition: attachment; filename="easyphoto-exam-calendar.ics"

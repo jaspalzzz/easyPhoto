@@ -42,6 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...PORTAL_KEYS.map((key) => `/tools/form-resizer/${key}/`),
     "/exam-requirements/",
     "/exam-photo-size/",
+    "/exam-calendar/",
     ...PORTAL_KEYS.map((key) => `/exam-requirements/${key}/`),
     ...KB_TARGETS.map((kb) => kbPath(kb)),
     ...PDF_KB_TARGETS.map((kb) => pdfKbPath(kb)),

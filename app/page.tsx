@@ -224,8 +224,13 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Hindi / Hinglish */}
+          {/* Calendar + Hindi / Hinglish */}
           <p className="mt-5 text-sm text-muted-foreground">
+            <Link href="/exam-calendar/" className="font-medium text-brand hover:underline">
+              Upcoming exam dates &amp; application windows →
+            </Link>
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
             Hindi me:{" "}
             <Link href="/photo-resize-kaise-kare/" className="text-brand hover:underline">
               photo resize kaise kare

@@ -63,7 +63,10 @@ export default function Page() {
           <Link href="/exam-photo-size/" className="font-medium text-brand hover:underline">
             See the full size comparison table →
           </Link>{" "}
-          <span className="text-muted-foreground">— all exams&apos; KB &amp; pixel limits in one view.</span>
+          <span className="text-muted-foreground">— all exams&apos; KB &amp; pixel limits in one view.</span>{" "}
+          <Link href="/exam-calendar/" className="font-medium text-brand hover:underline">
+            Upcoming exam dates →
+          </Link>
         </p>
       </header>
 
