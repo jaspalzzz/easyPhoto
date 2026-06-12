@@ -12,7 +12,9 @@ export function HinglishLanding({ slug }: { slug: string }) {
   if (!page) notFound();
 
   return (
-    <ToolPage title={page.h1} blurb={page.blurb} faqItems={page.faqs}>
+    // `path` makes ToolPage emit Breadcrumb + SoftwareApplication JSON-LD for
+    // these pages — without it they shipped with no page-level schema at all.
+    <ToolPage title={page.h1} blurb={page.blurb} faqItems={page.faqs} path={`/${slug}/`}>
       {page.tool === "signature-kb" ? (
         <SignatureKbTool kb={page.kb} toolName={slug} />
       ) : page.tool === "white-bg" ? (
