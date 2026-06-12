@@ -127,7 +127,17 @@ export function PdfMergeTool() {
           tabIndex={busy ? -1 : 0}
           onClick={() => !busy && inputRef.current?.click()}
           onKeyDown={(e) => !busy && (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
-          onDragOver={(e) => { if (!busy) e.preventDefault(); }}
+          onDragOver={(e) => {
+            if (busy) return;
+            e.preventDefault();
+            e.currentTarget.dataset.dragging = "1";
+          }}
+          onDragLeave={(e) => {
+            delete e.currentTarget.dataset.dragging;
+          }}
+          onDropCapture={(e) => {
+            delete e.currentTarget.dataset.dragging;
+          }}
           onDrop={(e) => {
             e.preventDefault();
             if (!busy && e.dataTransfer.files) {
@@ -217,30 +227,33 @@ export function PdfMergeTool() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 text-ink-soft"
+                      className="h-10 w-10 text-ink-soft"
                       disabled={index === 0 || busy}
                       onClick={() => moveFile(index, "up")}
                       title="Move Up"
+                      aria-label={`Move ${item.name} up`}
                     >
                       <ArrowUp className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 text-ink-soft"
+                      className="h-10 w-10 text-ink-soft"
                       disabled={index === files.length - 1 || busy}
                       onClick={() => moveFile(index, "down")}
                       title="Move Down"
+                      aria-label={`Move ${item.name} down`}
                     >
                       <ArrowDown className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 text-destructive hover:bg-destructive/10"
+                      className="h-10 w-10 text-destructive hover:bg-destructive/10"
                       disabled={busy}
                       onClick={() => removeFile(item.id)}
                       title="Remove file"
+                      aria-label={`Remove ${item.name}`}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

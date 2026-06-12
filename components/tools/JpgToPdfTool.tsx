@@ -82,7 +82,16 @@ export function JpgToPdfTool() {
           onKeyDown={(e) =>
             (e.key === "Enter" || e.key === " ") && inputRef.current?.click()
           }
-          onDragOver={(e) => e.preventDefault()}
+          onDragOver={(e) => {
+              e.preventDefault();
+              e.currentTarget.dataset.dragging = "1";
+            }}
+            onDragLeave={(e) => {
+              delete e.currentTarget.dataset.dragging;
+            }}
+            onDropCapture={(e) => {
+              delete e.currentTarget.dataset.dragging;
+            }}
           onDrop={(e) => {
             e.preventDefault();
             add(e.dataTransfer.files);

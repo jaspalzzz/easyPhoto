@@ -87,7 +87,16 @@ export function PdfPageNumbersTool() {
             tabIndex={0}
             onClick={() => inputRef.current?.click()}
             onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
-            onDragOver={(e) => e.preventDefault()}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.currentTarget.dataset.dragging = "1";
+            }}
+            onDragLeave={(e) => {
+              delete e.currentTarget.dataset.dragging;
+            }}
+            onDropCapture={(e) => {
+              delete e.currentTarget.dataset.dragging;
+            }}
             onDrop={(e) => {
               e.preventDefault();
               if (e.dataTransfer.files?.[0]) pick(e.dataTransfer.files[0]);

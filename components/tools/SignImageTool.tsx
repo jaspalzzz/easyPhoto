@@ -186,7 +186,16 @@ export function SignImageTool() {
             tabIndex={0}
             onClick={() => fileInputRef.current?.click()}
             onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && fileInputRef.current?.click()}
-            onDragOver={(e) => e.preventDefault()}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.currentTarget.dataset.dragging = "1";
+            }}
+            onDragLeave={(e) => {
+              delete e.currentTarget.dataset.dragging;
+            }}
+            onDropCapture={(e) => {
+              delete e.currentTarget.dataset.dragging;
+            }}
             onDrop={(e) => {
               e.preventDefault();
               if (e.dataTransfer.files && e.dataTransfer.files[0]) {

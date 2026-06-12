@@ -291,6 +291,13 @@ input[type="range"] {
   }
 }
 
+/* Drag-over feedback for every dropzone: the handlers set data-dragging on
+   the zone itself (no per-tool React state), this rule lights it up. */
+[data-dragging="1"] {
+  border-color: hsl(var(--brand)) !important;
+  background-color: hsl(var(--brand-soft) / 0.4) !important;
+}
+
 /* Results easing in instead of popping — the "reveal" moment. */
 @keyframes ep-fade-in {
   from { transform: translateY(6px); opacity: 0; }

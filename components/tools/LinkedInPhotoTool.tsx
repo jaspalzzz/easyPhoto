@@ -153,10 +153,16 @@ function Body({ source }: { source: ToolSource }) {
             />
           )}
           {busy && (
-            <div className="absolute inset-0 flex items-center justify-center rounded-md bg-paper/70">
-              <span className="flex items-center gap-2 text-sm text-ink-soft">
-                <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
-                Detecting face…
+            <div className="absolute inset-0 flex items-center justify-center rounded-md bg-paper/70 p-4">
+              <span className="flex flex-col items-center gap-2 text-center text-sm text-ink-soft">
+                <span className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+                  Detecting face…
+                </span>
+                <span className="text-xs text-ink-faint">
+                  First run downloads the AI model — up to a minute on slow
+                  connections, instant after that.
+                </span>
               </span>
             </div>
           )}
