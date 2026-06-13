@@ -12,7 +12,7 @@ import {
 } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { dedicatedResizerLinks } from "@/lib/examResizers";
-import { SUB_EXAM_RESIZERS } from "@/lib/subExamResizers";
+import { SUB_EXAM_RESIZERS, RESIZER_YEAR } from "@/lib/subExamResizers";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -54,7 +54,7 @@ export async function generateMetadata({
   return pageMetadata({
     // Short exam name keeps the SERP title under ~60 chars and matches how
     // people actually search ("SSC photo size", not the full commission name).
-    title: `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Size (Official)`,
+    title: `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR} (Official)`,
     description:
       `${spec.name}: photo ${photoKb(spec)} (${px(spec.photoWidthPx, spec.photoHeightPx)})` +
       (sig ? `, signature ${sig} (${px(spec.sigWidthPx, spec.sigHeightPx)})` : "") +

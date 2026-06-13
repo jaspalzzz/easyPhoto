@@ -13,7 +13,7 @@ import { breadcrumbSchema } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 
 export const metadata = pageMetadata({
-  title: "Exam Photo & Signature Size — Full List for Indian Exams (Official)",
+  title: "Exam Photo & Signature Size 2026 — Full List for Indian Exams (Official)",
   titleAbsolute: true,
   description:
     "The complete, official photo and signature size list for 30+ Indian exam and recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA, RBI, NABARD, LIC and State PSCs. Compare KB limits and pixel dimensions in one table, each with its source.",
