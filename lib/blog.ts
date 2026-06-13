@@ -17,6 +17,39 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "why-exam-photo-signature-rejected",
+    title: "Why Your Exam Photo or Signature Keeps Getting Rejected (and the Fix)",
+    description:
+      "SSC, IBPS and RRB portals reject photos and signatures for a handful of predictable reasons — wrong KB, wrong dimensions, paper showing behind the signature. Here's each one and the 60-second fix, free and in your browser.",
+    date: "June 13, 2026",
+    dateISO: "2026-06-13",
+    excerpt:
+      "“Photo not as per specification.” “Invalid signature.” Exam portals reject for a handful of predictable reasons — here's every one, and the quick fix for each.",
+    readMins: 6,
+  },
+  {
+    slug: "add-name-date-on-exam-photo",
+    title: "How to Add Your Name and Date on an Exam Photo (UPSC, Army) — No Photoshop",
+    description:
+      "UPSC, Indian Army and some banking forms want your name and the date the photo was taken printed on the photo itself. Here's exactly what they require and how to add it free in your browser — no Photoshop, no upload.",
+    date: "June 13, 2026",
+    dateISO: "2026-06-13",
+    excerpt:
+      "UPSC and Army forms reject photos that don't have your name and the photo date printed on them. Here's the exact rule and how to add it in under a minute.",
+    readMins: 5,
+  },
+  {
+    slug: "ibps-po-2026-photo-signature-checklist",
+    title: "IBPS PO 2026: Photo & Signature Checklist Before You Apply",
+    description:
+      "IBPS PO 2026 prelims are on 22–23 August. Get your photo and signature to the exact size and KB now so you can apply in minutes when registration opens. The full checklist, with the official spec and a free resizer.",
+    date: "June 13, 2026",
+    dateISO: "2026-06-13",
+    excerpt:
+      "IBPS PO 2026 prelims are on 22–23 August. Here's the exact photo and signature checklist to prepare now, so applying takes minutes when the form opens.",
+    readMins: 5,
+  },
+  {
     slug: "schengen-europe-visa-photo-size",
     title: "Schengen & Europe Visa Photo Size (Germany, France, Italy & More)",
     description:
