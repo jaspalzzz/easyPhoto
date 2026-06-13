@@ -18,7 +18,7 @@ export function organizationSchema() {
     "@type": "Organization",
     "@id": ORG_ID,
     name: SITE_NAME,
-    alternateName: "easyphoto.in",
+    alternateName: ["easyPhoto", "Easy Photo", "easyphoto.in"],
     url: SITE_URL,
     // Canonical brand description — this is what AI assistants (ChatGPT, Gemini,
     // Perplexity) and Google surface when asked "what is easyPhoto?".
@@ -60,7 +60,7 @@ export function websiteSchema() {
     // from the homepage's WebSite JSON-LD — name shown, alternateName as the
     // fallback/disambiguation (instead of the bare domain).
     name: SITE_NAME,
-    alternateName: ["easyPhoto", "easyphoto.in"],
+    alternateName: ["easyPhoto", "Easy Photo", "easyphoto.in"],
     url: SITE_URL,
     publisher: { "@id": ORG_ID },
     inLanguage: "en",
