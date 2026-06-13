@@ -13,6 +13,23 @@ function isHeic(file: File): boolean {
   );
 }
 
+/**
+ * iOS/iPadOS WebKit decodes HEIC natively in <img>/canvas — so on iPhone we
+ * must NOT run the heic2any WASM converter. That converter decodes the full
+ * 12 MP HEIC into a large WASM buffer, and on a 4 GB iPhone 11 in Safari that
+ * extra allocation — stacked on the two ML models in the passport flow — is
+ * what crashed the tab. Skipping it lets Safari decode the HEIC cheaply itself.
+ */
+function isIOS(): boolean {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent;
+  return (
+    /iPhone|iPad|iPod/.test(ua) ||
+    // iPadOS 13+ reports as desktop Safari but is touch-capable.
+    (/Macintosh/.test(ua) && "ontouchend" in document)
+  );
+}
+
 /** Hard ceiling — a 100MB+ "image" will OOM mobile browsers long before decode. */
 const MAX_FILE_BYTES = 80 * 1024 * 1024;
 
@@ -42,6 +59,10 @@ export function assertValidImageFile(file: File): void {
 export async function ensureDecodable(file: File): Promise<File> {
   assertValidImageFile(file);
   if (!isHeic(file)) return file;
+
+  // iOS decodes HEIC natively — skip the heavy WASM converter (it was the
+  // memory spike crashing Safari on the passport flow). Pass the file through.
+  if (isIOS()) return file;
 
   // Load the converter first: an import failure is a NETWORK problem (offline,
   // blocked CDN), not a broken photo — tell the user the right thing to fix.
