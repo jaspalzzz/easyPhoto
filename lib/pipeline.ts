@@ -39,13 +39,20 @@ export interface LoadedImage {
  * Mobile gets a tighter cap (tab-memory limits); desktop can afford more detail.
  */
 const SOURCE_MAX_EDGE_MOBILE = 2500;
+// iOS Safari has a much tighter per-tab memory ceiling than Chrome, and the
+// passport flow runs TWO models (face detection + background removal) plus
+// several full-frame canvases at once. On a 4 GB iPhone (e.g. iPhone 11) the
+// 2500px cap pushed Safari over its limit and the tab reloaded (OOM). Capping
+// iOS at 1600px cuts canvas memory ~60%; the passport output is only ~800–
+// 1000px, so the result stays sharp.
+const SOURCE_MAX_EDGE_IOS = 1600;
 const SOURCE_MAX_EDGE_DESKTOP = 4096;
 
 function sourceMaxEdge(): number {
   const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
-  return /Android|iPhone|iPad|iPod/i.test(ua)
-    ? SOURCE_MAX_EDGE_MOBILE
-    : SOURCE_MAX_EDGE_DESKTOP;
+  if (/iPhone|iPad|iPod/i.test(ua)) return SOURCE_MAX_EDGE_IOS;
+  if (/Android/i.test(ua)) return SOURCE_MAX_EDGE_MOBILE;
+  return SOURCE_MAX_EDGE_DESKTOP;
 }
 
 /**
