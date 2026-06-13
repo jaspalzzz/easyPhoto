@@ -20,6 +20,11 @@ const CODE: Record<string, string> = {
   nepal: "np",
   spain: "es",
   portugal: "pt",
+  china: "cn",
+  singapore: "sg",
+  "new-zealand": "nz",
+  japan: "jp",
+  malaysia: "my",
 };
 
 /** Genuine SVG flag, rounded with a hairline ring for a premium look. */

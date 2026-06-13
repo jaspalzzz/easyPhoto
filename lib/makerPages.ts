@@ -51,6 +51,11 @@ export const VISA_COUNTRIES = [
   "portugal",
   "netherlands",
   "ireland",
+  "china",
+  "singapore",
+  "new-zealand",
+  "japan",
+  "malaysia",
 ] as const;
 
 export const passportSlug = (id: string) => `${id}-passport-photo-maker`;

@@ -703,6 +703,160 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source: "https://vistos.mne.gov.pt/en/short-stay-visas-schengen",
     verified: "aggregator",
   },
+
+  // ─────────────────────────────────────────────────────────────
+  china: {
+    id: "china",
+    label: "China",
+    documents: ["China visa (tourist L / business M)"],
+    printMm: { width: 33, height: 48 },
+    headHeightMm: { min: 28, max: 33 },
+    headPercentOfFrame: { min: 58, max: 69 },
+    background: {
+      description: "Plain white, no shadows or pattern",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA"],
+    },
+    digital: {
+      pxMin: { width: 354, height: 420 },
+      pxMax: { width: 472, height: 560 },
+      fileSizeKb: { min: 40, max: 120 },
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "best avoided — no tint, no glare, eyes fully visible",
+    smileAllowed: "neutral, mouth closed",
+    notes:
+      "China visa photo: a distinctive 33x48mm (not the usual 35x45), white " +
+      "background, head 28-33mm chin-to-crown. Digital upload (COVA / consulate): " +
+      "JPEG, 354x420 to 472x560 px, 40-120 KB. Numbers are consistent across " +
+      "reputable guides — confirm on the consulate / COVA portal before submitting.",
+    source: "https://www.visaforchina.cn",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  singapore: {
+    id: "singapore",
+    label: "Singapore",
+    documents: ["Singapore visa (ICA)"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white, no shadows",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA"],
+    },
+    digital: {
+      px: { width: 400, height: 514 },
+      fileSizeKb: null, // online: JPEG, ≤60 KB (see notes)
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "remove unless medically required",
+    smileAllowed: "neutral, mouth closed",
+    notes:
+      "Singapore visa photo (ICA): 35x45mm on plain white, taken within 3 " +
+      "months. Online upload is 400x514 px JPEG, 60 KB or less. No head " +
+      "coverings except for religious reasons. Confirm on the ICA portal.",
+    source: "https://www.ica.gov.sg",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  "new-zealand": {
+    id: "new-zealand",
+    label: "New Zealand",
+    documents: ["New Zealand visa / NZeTA"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain light grey, off-white or cream; no shadows",
+      hex: "#F5F5F0",
+      acceptableHex: ["#F5F5F0", "#DCDCDC", "#FFFFFF"],
+    },
+    digital: {
+      pxMin: { width: 900, height: 1200 },
+      pxMax: { width: 2250, height: 3000 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "remove unless medically required",
+    smileAllowed: "neutral, eyes open, looking at camera",
+    notes:
+      "New Zealand visa / NZeTA photo: 35x45mm print, plain light/neutral " +
+      "background (light grey, off-white or cream). Online: JPEG, 900x1200 to " +
+      "2250x3000 px, max 6 months old. Immigration NZ does not accept photos " +
+      "altered by AI editing tools. Confirm on immigration.govt.nz.",
+    source: "https://www.immigration.govt.nz",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  japan: {
+    id: "japan",
+    label: "Japan",
+    documents: ["Japan visa (MOFA)"],
+    // Square; consulates also accept 35x45 and 2x2in, but 45x45 is the
+    // most-cited MOFA size. The square print + the pixels are the binding rule.
+    printMm: { width: 45, height: 45 },
+    headHeightMm: { min: 34, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white, no shadows or pattern",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA"],
+    },
+    digital: {
+      square: true,
+      pxApprox300dpi: { width: 531, height: 531 },
+      fileSizeKb: null, // ≤120 KB where uploaded digitally (see notes)
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "remove unless medically required",
+    smileAllowed: "neutral, mouth closed",
+    notes:
+      "Japan visa photo (MOFA): 45x45mm square on plain white, taken within 6 " +
+      "months, two prints required for paper applications. Some consulates also " +
+      "accept 35x45mm or 2x2 inch — check yours. Digital uploads are JPEG, " +
+      "typically 120 KB or less.",
+    source: "https://www.mofa.go.jp",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  malaysia: {
+    id: "malaysia",
+    label: "Malaysia",
+    documents: ["Malaysia visa / eVisa"],
+    printMm: { width: 35, height: 50 },
+    headHeightMm: { min: 30, max: 35 },
+    headPercentOfFrame: { min: 60, max: 70 },
+    background: {
+      description: "Plain white (light grey / cream also accepted), no shadows",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA", "#F5F5F0"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 591 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "remove unless medically required",
+    smileAllowed: "neutral, full front view",
+    notes:
+      "Malaysia visa / eVisa photo: a distinctive 35x50mm, plain white " +
+      "background (light grey or cream sometimes accepted), head 30-35mm, face " +
+      "60-70% of the frame. A dark-coloured shirt is recommended. Confirm on the " +
+      "official Malaysia eVisa portal before submitting.",
+    source: "https://malaysiavisa.imi.gov.my",
+    verified: "aggregator",
+  },
 };
 
 /**
@@ -736,6 +890,11 @@ export const LAUNCH_ORDER = [
   "nepal",
   "spain",
   "portugal",
+  "china",
+  "singapore",
+  "new-zealand",
+  "japan",
+  "malaysia",
 ];
 
 /**
