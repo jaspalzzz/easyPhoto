@@ -12,6 +12,7 @@ import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { PortalResizer } from "@/components/tools/PortalResizer";
 import { ExploreTools } from "@/components/site/ExploreTools";
+import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
 import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -119,6 +120,9 @@ export default async function Page({
           )}
         </p>
       </header>
+
+      {/* Pre-upload self-check — above the tool, where it pre-empts the fear. */}
+      <ExamSubmitTips hasSignature={spec.sigLimitKb !== undefined} />
 
       <PortalResizer portalId={e.parentId} displayName={e.name} />
 

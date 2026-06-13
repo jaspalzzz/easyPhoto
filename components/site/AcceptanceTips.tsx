@@ -2,40 +2,23 @@ import { Check, X } from "lucide-react";
 import type { CountrySpec } from "@/lib/countrySpecs";
 
 /**
- * "Get accepted" pre-upload guidance — the honest version of competitors'
- * do/don't sample-photo strips. Instead of stock example faces, it derives the
- * do's and don'ts from THIS country's actual spec (background, glasses,
- * expression), so an anxious applicant self-checks against the real rules
- * before they even upload — the moment that pre-empts the rejection fear.
+ * Presentational do/don't strip — the honest version of competitors' do/don't
+ * sample-photo rows. A pre-submit self-check, framed in our design language,
+ * that pre-empts the rejection fear before the user even uploads.
  */
-export function AcceptanceTips({ spec }: { spec: CountrySpec }) {
-  const glassesAllowed =
-    spec.glasses === true ||
-    (typeof spec.glasses === "string" && /allowed|permitted/i.test(spec.glasses));
-
-  const dos = [
-    // The tool applies the required background colour; the user just needs a
-    // plain, evenly-lit one to start — so we don't try to name grey/white/cream.
-    "A plain, evenly lit background to start (we apply the official colour)",
-    "Face the camera straight on, both ears roughly visible",
-    "Neutral expression, mouth closed, eyes open",
-    "A recent photo, taken within the last 6 months",
-  ];
-  const donts = [
-    "Shadows on your face or the wall behind you",
-    glassesAllowed
-      ? "Glare or tint on glasses"
-      : "Glasses — remove them unless they're medically required",
-    "Hair across the eyes, hats or caps",
-    "Filters, beauty smoothing, or a cropped group photo",
-  ];
-
+export function DoDontStrip({
+  title,
+  dos,
+  donts,
+}: {
+  title: string;
+  dos: string[];
+  donts: string[];
+}) {
   return (
-    <section className="rounded-xl border border-hairline bg-card p-5">
-      <h2 className="text-sm font-semibold tracking-tight text-ink">
-        Before you upload — what gets {spec.label} photos accepted
-      </h2>
-      <div className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+    <div>
+      <h3 className="text-sm font-semibold tracking-tight text-ink">{title}</h3>
+      <div className="mt-2.5 grid gap-x-6 gap-y-2 sm:grid-cols-2">
         <ul className="space-y-1.5">
           {dos.map((d) => (
             <li key={d} className="flex items-start gap-2 text-sm text-ink-soft">
@@ -53,6 +36,77 @@ export function AcceptanceTips({ spec }: { spec: CountrySpec }) {
           ))}
         </ul>
       </div>
+    </div>
+  );
+}
+
+/** Country passport/visa "get accepted" tips, derived from the country's spec. */
+export function AcceptanceTips({ spec }: { spec: CountrySpec }) {
+  const glassesAllowed =
+    spec.glasses === true ||
+    (typeof spec.glasses === "string" && /allowed|permitted/i.test(spec.glasses));
+
+  return (
+    <section className="rounded-xl border border-hairline bg-card p-5">
+      <DoDontStrip
+        title={`Before you upload — what gets ${spec.label} photos accepted`}
+        dos={[
+          "A plain, evenly lit background to start (we apply the official colour)",
+          "Face the camera straight on, both ears roughly visible",
+          "Neutral expression, mouth closed, eyes open",
+          "A recent photo, taken within the last 6 months",
+        ]}
+        donts={[
+          "Shadows on your face or the wall behind you",
+          glassesAllowed
+            ? "Glare or tint on glasses"
+            : "Glasses — remove them unless they're medically required",
+          "Hair across the eyes, hats or caps",
+          "Filters, beauty smoothing, or a cropped group photo",
+        ]}
+      />
+    </section>
+  );
+}
+
+/**
+ * Exam-form tips — photo AND signature, the two things portals reject most.
+ * The signature do/don'ts are the gap competitors' photo-only strips miss
+ * (paper/shadow behind the signature is the #1 signature rejection).
+ */
+export function ExamSubmitTips({ hasSignature }: { hasSignature: boolean }) {
+  return (
+    <section className="space-y-4 rounded-xl border border-hairline bg-card p-5">
+      <DoDontStrip
+        title="What gets the photo accepted"
+        dos={[
+          "Plain, evenly lit light background",
+          "Face straight on, neutral expression, both eyes open",
+          "A recent, sharp photo — JPG output",
+        ]}
+        donts={[
+          "Shadows behind you or glare on glasses",
+          "Hats, caps, or hair across the eyes",
+          "Filters, beauty smoothing, or a selfie crop",
+        ]}
+      />
+      {hasSignature && (
+        <div className="border-t border-hairline pt-4">
+          <DoDontStrip
+            title="What gets the signature accepted"
+            dos={[
+              "Black or blue ink on plain white paper",
+              "Signed large and clear, photographed in good light",
+              "Clean white background (we remove the paper for you)",
+            ]}
+            donts={[
+              "Grey paper or a shadow showing behind the ink",
+              "Faint pencil, or a smudged / cut-off signature",
+              "Block capitals or a printed name instead of a signature",
+            ]}
+          />
+        </div>
+      )}
     </section>
   );
 }
