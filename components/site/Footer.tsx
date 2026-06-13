@@ -111,6 +111,9 @@ export function Footer() {
             <Link href="/terms/" className="transition-colors hover:text-brand">
               Terms
             </Link>
+            <Link href="/disclaimer/" className="transition-colors hover:text-brand">
+              Disclaimer
+            </Link>
           </nav>
         </div>
       </div>

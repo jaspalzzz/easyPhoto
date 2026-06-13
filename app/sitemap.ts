@@ -37,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/contact/",
     "/privacy/",
     "/terms/",
+    "/disclaimer/",
     ...MAKER_PAGES.map((m) => `/${m.slug}/`),
     ...CATEGORY_SLUGS.map((s) => `/tools/${s}/`),
     ...READY_TOOLS.map((t) => `/tools/${t.slug}/`),
