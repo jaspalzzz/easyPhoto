@@ -7,8 +7,16 @@ import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool"
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle, ShieldCheck, Camera, PenLine } from "lucide-react";
 
-export function PortalResizer({ portalId }: { portalId: string }) {
+export function PortalResizer({
+  portalId,
+  displayName,
+}: {
+  portalId: string;
+  /** Override the shown name (sub-exam pages pass e.g. "SSC CGL"; spec stays the parent's). */
+  displayName?: string;
+}) {
   const spec = PORTAL_PRESETS[portalId];
+  const shownName = displayName ?? spec?.name.split(" (")[0];
   const [activeSubTool, setActiveSubTool] = React.useState<"photo" | "signature">("photo");
 
   React.useEffect(() => {
@@ -31,7 +39,7 @@ export function PortalResizer({ portalId }: { portalId: string }) {
     <div className="space-y-6">
       {/* Specs Summary Banner */}
       <div className="rounded-lg border border-brand bg-brand-soft/10 p-5">
-        <h3 className="font-semibold text-brand text-base mb-1.5">{spec.name} Requirements</h3>
+        <h3 className="font-semibold text-brand text-base mb-1.5">{shownName} Requirements</h3>
         <p className="text-sm text-muted-foreground leading-relaxed mb-3">{spec.description}</p>
         <div className="flex flex-wrap gap-4 text-xs font-mono">
           <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
@@ -91,7 +99,7 @@ export function PortalResizer({ portalId }: { portalId: string }) {
               minHeight={spec.photoHeightPx}
               minKb={spec.photoMinKb}
               densityDpi={spec.dpi}
-              requirementLabel={spec.name.split(" (")[0]}
+              requirementLabel={shownName}
               toolName={`form-resizer-${portalId}`}
             />
           </div>

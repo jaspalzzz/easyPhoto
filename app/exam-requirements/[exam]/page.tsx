@@ -12,6 +12,7 @@ import {
 } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { dedicatedResizerLinks } from "@/lib/examResizers";
+import { SUB_EXAM_RESIZERS } from "@/lib/subExamResizers";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
@@ -190,14 +191,28 @@ export default async function Page({
             across its exams, so the same sizes apply to:
           </p>
           <div className="flex flex-wrap gap-1.5">
-            {SUB_EXAMS[exam].map((e) => (
-              <span
-                key={e}
-                className="rounded-md border border-hairline bg-card px-3 py-1.5 text-[13px] font-medium text-foreground"
-              >
-                {e}
-              </span>
-            ))}
+            {SUB_EXAMS[exam].map((e) => {
+              // If a dedicated sub-exam resizer page exists, link to it.
+              const sub = SUB_EXAM_RESIZERS.find(
+                (s) => s.parentId === exam && e.startsWith(s.name)
+              );
+              return sub ? (
+                <Link
+                  key={e}
+                  href={`/exam-resizer/${sub.slug}/`}
+                  className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand-soft/40"
+                >
+                  {e} resizer
+                </Link>
+              ) : (
+                <span
+                  key={e}
+                  className="rounded-md border border-hairline bg-card px-3 py-1.5 text-[13px] font-medium text-foreground"
+                >
+                  {e}
+                </span>
+              );
+            })}
           </div>
         </section>
       )}

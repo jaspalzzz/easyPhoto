@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { MAKER_PAGES } from "@/lib/makerPages";
+import { SUB_EXAM_SLUGS } from "@/lib/subExamResizers";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
 import { KB_TARGETS, kbPath, PDF_KB_TARGETS, pdfKbPath } from "@/lib/kbTargets";
 import { BLOG_POSTS } from "@/lib/blog";
@@ -43,6 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/exam-requirements/",
     "/exam-photo-size/",
     "/exam-calendar/",
+    ...SUB_EXAM_SLUGS.map((s) => `/exam-resizer/${s}/`),
     ...PORTAL_KEYS.map((key) => `/exam-requirements/${key}/`),
     ...KB_TARGETS.map((kb) => kbPath(kb)),
     ...PDF_KB_TARGETS.map((kb) => pdfKbPath(kb)),
