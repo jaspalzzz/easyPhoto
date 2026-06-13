@@ -13,6 +13,7 @@ import {
   type MakerKind,
 } from "@/lib/makerPages";
 import { getMakerContent } from "@/lib/makerContent";
+import { AcceptanceTips } from "@/components/site/AcceptanceTips";
 import { PhotoTool } from "@/components/tool/PhotoTool";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -224,6 +225,9 @@ export default async function MakerPage({
 
       {/* On visa pages, drop the passport-only advisory (e.g. AU guarantor). */}
       <PhotoTool spec={kind === "visa" ? { ...spec, advisory: undefined } : spec} />
+
+      {/* Spec-aware do/don't — self-check against the real rules before submitting. */}
+      <AcceptanceTips spec={spec} />
 
       {kind === "passport" && (
         <p className="text-sm text-muted-foreground">
