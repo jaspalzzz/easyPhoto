@@ -122,7 +122,10 @@
     box-shadow: 0 8px 24px rgb(0 0 0 / 0.09);
   }
   .ep-card-grid {
-    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+    /* grid-cols-1 (not bare `grid`) so the mobile track is minmax(0,1fr) and
+       shrinks — a bare implicit track sizes to max-content and any nowrap card
+       (e.g. a truncated spec line) would blow the row past the viewport. */
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3;
   }
   @media (prefers-reduced-motion: reduce) {
     .ep-card { transition: none; }
