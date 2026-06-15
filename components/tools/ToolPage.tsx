@@ -17,6 +17,7 @@ export function ToolPage({
   footnote,
   faqItems,
   breadcrumbs: breadcrumbsProp,
+  wide = false,
 }: {
   title: string;
   blurb: string;
@@ -30,6 +31,8 @@ export function ToolPage({
   faqItems?: FaqItem[];
   /** Explicit breadcrumb chain override. When provided, replaces the auto-built crumbs. */
   breadcrumbs?: Crumb[];
+  /** Wider container for content-heavy tools (e.g. the exam picker grid). */
+  wide?: boolean;
 }) {
   const related = slug ? relatedTools(slug) : [];
   const entry = slug ? getTool(slug) : undefined;
@@ -49,7 +52,7 @@ export function ToolPage({
   const crumbs = breadcrumbsProp ?? autoCrumbs;
 
   return (
-    <div className="container max-w-3xl py-10">
+    <div className={`container py-10 ${wide ? "max-w-5xl" : "max-w-3xl"}`}>
       {urlPath && (
         <JsonLd
           schema={[

@@ -21,6 +21,7 @@ export default function Page() {
       blurb={tool.blurb}
       faqItems={EXAM_PACKAGE_FAQ}
       footnote="Photo and signature are processed entirely in your browser — nothing is uploaded."
+      wide
     >
       <ExamPackageTool />
     </ToolPage>

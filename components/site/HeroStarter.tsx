@@ -35,27 +35,34 @@ export function HeroStarter({
   const router = useRouter();
   const setPendingFile = useToolStore((s) => s.setPendingFile);
 
+  // The visa hub lists the visa maker pages; the homepage and the passport hub
+  // both offer every launch country, each routed to its primary maker (a
+  // dedicated passport page where one exists, otherwise the visa maker — the
+  // photo spec is the same 35×45-style frame). This keeps "Passport" a true
+  // all-country picker rather than only the handful with bespoke passport pages.
   const opts: Opt[] =
-    kind === "primary"
-      ? LAUNCH_ORDER.map((id) => ({
-          flag: id,
-          label: COUNTRY_SPECS[id].label,
-          path: primaryMakerPath(id),
-        }))
-      : makerPagesByKind(kind).map((m) => ({
+    kind === "visa"
+      ? makerPagesByKind("visa").map((m) => ({
           flag: m.flag,
           label: makerSpec(m.slug)!.label,
           path: `/${m.slug}/`,
+        }))
+      : LAUNCH_ORDER.map((id) => ({
+          flag: id,
+          label: COUNTRY_SPECS[id].label,
+          path: primaryMakerPath(id),
         }));
 
   const [sel, setSel] = React.useState(opts[0]?.path ?? "");
 
-  // Show a curated set first — the full launch list (22+) makes the starter
-  // card tall and busy. The top entries cover the overwhelming majority of
-  // intent; the rest are one tap behind a quiet "+N more".
+  // On the HOMEPAGE only, curate the full launch list (22+) to a tight set so
+  // the starter card stays compact — the rest are one tap behind a quiet
+  // "+N more". The dedicated Passport/Visa hubs are about choosing a country,
+  // so they always show every option.
   const TOP = 8;
+  const collapsible = kind === "primary";
   const [showAll, setShowAll] = React.useState(false);
-  const visible = showAll ? opts : opts.slice(0, TOP);
+  const visible = !collapsible || showAll ? opts : opts.slice(0, TOP);
   const hiddenCount = opts.length - TOP;
 
   const start = (file: File) => {
@@ -89,7 +96,7 @@ export function HeroStarter({
               {o.label}
             </button>
           ))}
-          {!showAll && hiddenCount > 0 && (
+          {collapsible && !showAll && hiddenCount > 0 && (
             <button
               type="button"
               onClick={() => setShowAll(true)}
