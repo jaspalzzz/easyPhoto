@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { hubCountries, makerPagesByKind } from "@/lib/makerPages";
+import { hubCountries, makerPagesByKind, MAKER_PAGES } from "@/lib/makerPages";
 import { LAUNCH_ORDER } from "@/lib/countrySpecs";
+
+/** Every path that actually gets a generated maker route. */
+const REAL_MAKER_PATHS = new Set(MAKER_PAGES.map((m) => `/${m.slug}/`));
 
 /**
  * Regression guard for a bug that shipped once: the passport hub's picker and
@@ -21,6 +24,17 @@ describe("hubCountries — single source of truth for hub country lists", () => 
 
   it("visa hub matches the visa maker pages exactly", () => {
     expect(hubCountries("visa").length).toBe(makerPagesByKind("visa").length);
+  });
+
+  it("every hub link points at a REAL generated maker route (no 404s)", () => {
+    // Guards the saudi-evisa class of bug: primaryMakerPath must resolve to a
+    // registered slug (e.g. /saudi-visa-photo-maker/), not a string-built one
+    // (/saudi-evisa-visa-photo-maker/) that is never generated.
+    for (const kind of ["passport", "visa"] as const) {
+      for (const c of hubCountries(kind)) {
+        expect(REAL_MAKER_PATHS.has(c.path)).toBe(true);
+      }
+    }
   });
 
   it("every entry has a path, a flag and a spec with print dimensions", () => {

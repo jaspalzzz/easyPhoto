@@ -19,7 +19,8 @@ function SpecRow({ label, value }: { label: string; value: React.ReactNode }) {
 }
 
 function kbRange(min: number | undefined, max: number): string {
-  return min ? `${min}–${max} KB` : `≤ ${max} KB`;
+  // typeof check (not truthiness) so a legitimate min of 0 still renders "0–max".
+  return typeof min === "number" ? `${min}–${max} KB` : `≤ ${max} KB`;
 }
 
 export function ExamSpecTable({

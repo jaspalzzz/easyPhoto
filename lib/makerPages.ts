@@ -68,13 +68,22 @@ export const makerPath = (kind: MakerKind, id: string) =>
 
 /**
  * The single "primary" maker page for a country — used by the homepage grid,
- * where each country links to its most relevant page (passport if it has one,
- * otherwise visa, e.g. Schengen).
+ * hub pickers and footer (passport page if one exists, otherwise visa).
+ *
+ * Resolve via the REGISTERED maker pages, not by string-building the slug, so
+ * manual / non-derivable slugs stay correct. e.g. saudi-evisa's page is
+ * /saudi-visa-photo-maker/ — string-building would yield the never-generated
+ * /saudi-evisa-visa-photo-maker/ (a 404).
  */
-export const primaryMakerPath = (id: string) =>
-  (PASSPORT_COUNTRIES as readonly string[]).includes(id)
-    ? passportPath(id)
-    : visaPath(id);
+export const primaryMakerPath = (id: string): string => {
+  const passport = MAKER_PAGES.find(
+    (m) => m.countryId === id && m.kind === "passport"
+  );
+  if (passport) return `/${passport.slug}/`;
+  const visa = MAKER_PAGES.find((m) => m.countryId === id && m.kind === "visa");
+  if (visa) return `/${visa.slug}/`;
+  return visaPath(id); // fallback: no registered page (not expected for launch countries)
+};
 
 export const MAKER_PAGES: MakerPage[] = [
   ...PASSPORT_COUNTRIES.map((id) => ({
@@ -145,13 +154,10 @@ export interface HubCountry {
  */
 export function hubCountries(kind: MakerKind): HubCountry[] {
   if (kind === "visa") {
-    return makerPagesByKind("visa").map((m) => ({
-      key: m.slug,
-      flag: m.flag,
-      label: makerSpec(m.slug)!.label,
-      path: `/${m.slug}/`,
-      spec: makerSpec(m.slug)!,
-    }));
+    return makerPagesByKind("visa").map((m) => {
+      const spec = COUNTRY_SPECS[m.countryId];
+      return { key: m.slug, flag: m.flag, label: spec.label, path: `/${m.slug}/`, spec };
+    });
   }
   return LAUNCH_ORDER.map((id) => ({
     key: id,
