@@ -12,6 +12,7 @@ import {
   type FileFacts,
 } from "@/lib/compliance";
 import { buildComplianceCard } from "@/lib/complianceCard";
+import { checkPhotoQuality, type PhotoCheck } from "@/lib/photoCheck";
 import { downloadBlob } from "@/lib/download";
 import { track, deviceClass } from "@/lib/analytics";
 
@@ -67,6 +68,7 @@ export function ComplianceCheckerTool() {
   const [report, setReport] = React.useState<ComplianceReport | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [sharing, setSharing] = React.useState(false);
+  const [photoChecks, setPhotoChecks] = React.useState<PhotoCheck[] | null>(null);
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "compliance-checker" });
@@ -80,31 +82,46 @@ export function ComplianceCheckerTool() {
     setBusy(true);
     setError(null);
     setReport(null);
+    setPhotoChecks(null);
     track({ name: "tool_start", tool: "compliance-checker", device: deviceClass() });
+    const bmp = await createImageBitmap(file).catch(() => null);
     try {
       let width: number | null = null;
       let height: number | null = null;
       let backgroundLight: boolean | undefined;
-      const bmp = await createImageBitmap(file).catch(() => null);
       if (bmp) {
-        try {
-          width = bmp.width;
-          height = bmp.height;
-          if (kind === "photo") backgroundLight = cornersLookWhite(bmp);
-        } finally {
-          // Always release the bitmap's GPU memory, even if analysis throws.
-          bmp.close?.();
-        }
+        width = bmp.width;
+        height = bmp.height;
+        if (kind === "photo") backgroundLight = cornersLookWhite(bmp);
       }
       const type = (file.type || file.name.split(".").pop() || "").toLowerCase();
       const facts: FileFacts = { bytes: file.size, width, height, type, backgroundLight };
       const rep = checkCompliance(facts, spec, kind);
       setReport(rep);
+
+      // AI photo-quality analysis (face geometry + background/lighting). Photo
+      // only; runs on a downscaled copy to keep mobile memory low.
+      if (kind === "photo" && bmp) {
+        try {
+          const cap = 1024;
+          const s = Math.min(1, cap / Math.max(bmp.width, bmp.height));
+          const cw = Math.max(1, Math.round(bmp.width * s));
+          const ch = Math.max(1, Math.round(bmp.height * s));
+          const ac = document.createElement("canvas");
+          ac.width = cw;
+          ac.height = ch;
+          ac.getContext("2d")?.drawImage(bmp, 0, 0, cw, ch);
+          setPhotoChecks(await checkPhotoQuality(ac, { width: cw, height: ch }));
+        } catch {
+          // Face/quality analysis is best-effort — never block the file report.
+        }
+      }
       track({ name: "tool_success", tool: "compliance-checker", device: deviceClass() });
     } catch {
       setError("Couldn't read that file. Try a JPG or PNG.");
       track({ name: "tool_failure", tool: "compliance-checker", device: deviceClass(), reason: "decode" });
     } finally {
+      bmp?.close?.(); // release the bitmap's memory once all analysis is done
       setBusy(false);
     }
   };
@@ -223,6 +240,26 @@ export function ComplianceCheckerTool() {
               </li>
             ))}
           </ul>
+
+          {/* AI photo-quality analysis — face geometry + background/lighting,
+              each with a concrete fix. Photo only. */}
+          {photoChecks && photoChecks.length > 0 && (
+            <div className="space-y-2.5 rounded-lg border border-hairline bg-paper p-4">
+              <p className="eyebrow text-ink-soft">Photo quality (AI check)</p>
+              {photoChecks.map((c) => (
+                <div key={c.label} className="flex items-start gap-2.5 text-sm">
+                  {STATUS_ICON[c.status]}
+                  <span>
+                    <span className="font-medium text-foreground">{c.label}: </span>
+                    <span className="text-muted-foreground">{c.detail}</span>
+                    {c.fix && c.status !== "pass" && (
+                      <span className="mt-0.5 block text-xs text-brand">→ {c.fix}</span>
+                    )}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="flex flex-wrap gap-1.5 pt-1">
             {report.verdict !== "pass" && spec && (
               <Link
