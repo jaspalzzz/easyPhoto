@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { COUNTRY_SPECS, LAUNCH_ORDER, effectivePrintMm } from "@/lib/countrySpecs";
-import { makerPagesByKind, makerSpec, primaryMakerPath } from "@/lib/makerPages";
+import { effectivePrintMm } from "@/lib/countrySpecs";
+import { hubCountries } from "@/lib/makerPages";
 import { HeroStarter } from "@/components/site/HeroStarter";
 import { Flag } from "@/components/site/Flag";
 import { TrustStrip } from "@/components/site/TrustStrip";
@@ -28,19 +28,15 @@ export function DocPhotoLanding({
   path: string;
 }) {
   const doc = kind === "passport" ? "passport" : "visa";
-  // Size-by-country list must match the picker above: the visa hub lists visa
-  // maker pages; the passport hub lists EVERY launch country (each → its primary
-  // maker), not just the handful with a bespoke passport page.
-  const sizeByCountry =
-    kind === "visa"
-      ? makerPagesByKind("visa").map((m) => {
-          const spec = makerSpec(m.slug)!;
-          return { key: m.slug, flag: m.flag, label: spec.label, href: `/${m.slug}/`, mm: effectivePrintMm(spec) };
-        })
-      : LAUNCH_ORDER.map((id) => {
-          const spec = COUNTRY_SPECS[id];
-          return { key: id, flag: id, label: spec.label, href: primaryMakerPath(id), mm: effectivePrintMm(spec) };
-        });
+  // Same single source as the picker (hubCountries) → the two sections cannot
+  // disagree on which countries are shown.
+  const sizeByCountry = hubCountries(kind).map((c) => ({
+    key: c.key,
+    flag: c.flag,
+    label: c.label,
+    href: c.path,
+    mm: effectivePrintMm(c.spec),
+  }));
 
   return (
     <div className="container max-w-4xl py-10">

@@ -5,12 +5,7 @@ import { useRouter } from "next/navigation";
 import { Uploader } from "@/components/tool/Uploader";
 import { Flag } from "@/components/site/Flag";
 import { useToolStore } from "@/store/useToolStore";
-import { COUNTRY_SPECS, LAUNCH_ORDER } from "@/lib/countrySpecs";
-import {
-  makerPagesByKind,
-  makerSpec,
-  primaryMakerPath,
-} from "@/lib/makerPages";
+import { hubCountries } from "@/lib/makerPages";
 import { cn } from "@/lib/utils";
 
 interface Opt {
@@ -35,23 +30,12 @@ export function HeroStarter({
   const router = useRouter();
   const setPendingFile = useToolStore((s) => s.setPendingFile);
 
-  // The visa hub lists the visa maker pages; the homepage and the passport hub
-  // both offer every launch country, each routed to its primary maker (a
-  // dedicated passport page where one exists, otherwise the visa maker — the
-  // photo spec is the same 35×45-style frame). This keeps "Passport" a true
-  // all-country picker rather than only the handful with bespoke passport pages.
-  const opts: Opt[] =
-    kind === "visa"
-      ? makerPagesByKind("visa").map((m) => ({
-          flag: m.flag,
-          label: makerSpec(m.slug)!.label,
-          path: `/${m.slug}/`,
-        }))
-      : LAUNCH_ORDER.map((id) => ({
-          flag: id,
-          label: COUNTRY_SPECS[id].label,
-          path: primaryMakerPath(id),
-        }));
+  // Single source of truth (lib/makerPages hubCountries) so this picker and the
+  // "size by country" grid can never drift apart. "primary" (homepage) behaves
+  // like the passport hub: every launch country.
+  const opts: Opt[] = hubCountries(kind === "visa" ? "visa" : "passport").map(
+    (c) => ({ flag: c.flag, label: c.label, path: c.path })
+  );
 
   const [sel, setSel] = React.useState(opts[0]?.path ?? "");
 

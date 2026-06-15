@@ -11,7 +11,7 @@
  * metadata and search intent, which is what makes them distinct, indexable
  * pages rather than duplicates.
  */
-import { COUNTRY_SPECS, type CountrySpec } from "./countrySpecs";
+import { COUNTRY_SPECS, LAUNCH_ORDER, type CountrySpec } from "./countrySpecs";
 
 export type MakerKind = "passport" | "visa";
 
@@ -119,4 +119,45 @@ export function makerPagesByKind(kind: MakerKind): MakerPage[] {
 export function makerSpec(slug: string): CountrySpec | undefined {
   const m = getMakerPage(slug);
   return m ? COUNTRY_SPECS[m.countryId] : undefined;
+}
+
+/** One entry in a hub's country list (picker chips + size-by-country grid). */
+export interface HubCountry {
+  /** Stable React key. */
+  key: string;
+  /** Flag id for the <Flag> component. */
+  flag: string;
+  /** Display label, e.g. "India" / "Schengen Visa". */
+  label: string;
+  /** Destination maker page. */
+  path: string;
+  /** Country spec (for showing print size, etc.). */
+  spec: CountrySpec;
+}
+
+/**
+ * THE single source of truth for a hub's country list. Both the in-hero picker
+ * (HeroStarter) and the "size by country" grid (DocPhotoLanding) — and the
+ * homepage picker — read from this, so the two sections can never drift apart
+ * again. The visa hub lists visa maker pages; the passport hub and homepage
+ * list every launch country routed to its primary maker (a bespoke passport
+ * page where one exists, otherwise the visa maker — same photo frame).
+ */
+export function hubCountries(kind: MakerKind): HubCountry[] {
+  if (kind === "visa") {
+    return makerPagesByKind("visa").map((m) => ({
+      key: m.slug,
+      flag: m.flag,
+      label: makerSpec(m.slug)!.label,
+      path: `/${m.slug}/`,
+      spec: makerSpec(m.slug)!,
+    }));
+  }
+  return LAUNCH_ORDER.map((id) => ({
+    key: id,
+    flag: id,
+    label: COUNTRY_SPECS[id].label,
+    path: primaryMakerPath(id),
+    spec: COUNTRY_SPECS[id],
+  }));
 }
