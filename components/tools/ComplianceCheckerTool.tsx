@@ -224,10 +224,39 @@ export function ComplianceCheckerTool() {
         <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>
       )}
 
-      {report && (
+      {report && (() => {
+        // Readiness score — derived transparently from the checks shown below
+        // (pass = 1, warn = 0.5, fail = 0). Not a magic number: it provably
+        // maps to the checklist, so it reassures without faking precision.
+        const all = [...report.checks, ...(photoChecks ?? [])];
+        const score = all.length
+          ? Math.round(
+              (all.reduce(
+                (s, c) => s + (c.status === "pass" ? 1 : c.status === "warn" ? 0.5 : 0),
+                0
+              ) /
+                all.length) *
+                100
+            )
+          : 0;
+        return (
         <div className="space-y-4">
-          <div className={`rounded-md border p-3 text-sm font-semibold ${VERDICT[report.verdict].cls}`}>
-            {VERDICT[report.verdict].text}
+          <div className={`flex items-center gap-4 rounded-lg border p-4 ${VERDICT[report.verdict].cls}`}>
+            <div className="shrink-0 text-center">
+              <div className="text-3xl font-bold leading-none">
+                {score}
+                <span className="text-base font-semibold opacity-70">/100</span>
+              </div>
+              <div className="mt-1 text-[10px] font-semibold uppercase tracking-wide opacity-70">
+                Readiness
+              </div>
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold">{VERDICT[report.verdict].text}</p>
+              <p className="mt-0.5 text-xs opacity-80">
+                Based on the {all.length} checks below — fix any ✗ or ⚠ before you upload.
+              </p>
+            </div>
           </div>
           <ul className="space-y-2.5">
             {report.checks.map((c) => (
@@ -296,7 +325,8 @@ export function ComplianceCheckerTool() {
             Always confirm against the official portal before submitting.
           </p>
         </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
