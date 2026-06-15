@@ -6,7 +6,7 @@ import { breadcrumbSchema, ORG_ID } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { ExploreTools } from "@/components/site/ExploreTools";
 
-// Change this to your real inbox before launch.
+// Live inbox — routed via Cloudflare Email Routing to the team mailbox.
 const EMAIL = "hello@easyphoto.in";
 
 export const metadata = pageMetadata({

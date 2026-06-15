@@ -9,8 +9,8 @@
  *
  * `verified` field:
  *   "gov"        = confirmed against the official government source
- *   "aggregator" = sourced from reputable third-party guides; MUST be
- *                  re-checked against the primary gov portal before launch
+ *   "aggregator" = sourced from reputable third-party guides; should be
+ *                  re-confirmed against the primary gov portal when possible
  *
  * GOLDEN RULE: a wrong number here = a rejected photo = a dead reputation.
  * Treat this file as the product. Re-verify on a schedule; specs change quietly.
@@ -304,7 +304,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "requires a commercial photographer's certification + guarantor " +
       "signature on the back, which a DIY tool cannot provide. Serve only: " +
       "Canada visa/permit (35x45mm), PR/Express Entry, and online passport " +
-      "renewal (digital). Verify IRCC digital file-size caps before launch.",
+      "renewal (digital). Re-confirm IRCC digital file-size caps on the official portal.",
     source:
       "https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html",
     verified: "gov",
