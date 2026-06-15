@@ -51,6 +51,7 @@ export const SUB_EXAM_RESIZERS: SubExamResizer[] = [
   // NTA
   { slug: "neet", parentId: "nta", name: "NEET", context: "NEET UG medical entrance" },
   { slug: "jee-main", parentId: "nta", name: "JEE Main", context: "Joint Entrance Examination" },
+  { slug: "cuet", parentId: "cuet", name: "CUET", context: "Common University Entrance Test" },
 ];
 
 export const SUB_EXAM_SLUGS = SUB_EXAM_RESIZERS.map((e) => e.slug);

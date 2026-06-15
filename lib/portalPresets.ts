@@ -685,6 +685,24 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "needs-review",
   },
+  cuet: {
+    id: "cuet",
+    name: "CUET (Common University Entrance Test)",
+    photoLimitKb: 200,
+    photoMinKb: 10,
+    sigLimitKb: 50,
+    sigMinKb: 10,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    sigWidthPx: 140,
+    sigHeightPx: 60,
+    photoAspectRatio: 20 / 23,
+    sigAspectRatio: 14 / 6,
+    description:
+      "NTA CUET (UG) application (cuet.nta.nic.in). Photo 10-200 KB (200×230 px), passport-style with ~80% face on a white background; signature 10-50 KB (140×60 px), black or blue ink on white paper; JPG/JPEG. A live photo is also captured during the application.",
+    source: { url: "https://cuet.nta.nic.in", label: "NTA CUET (cuet.nta.nic.in)" },
+    verification: "needs-review",
+  },
 };
 
 export const PORTAL_KEYS = Object.keys(PORTAL_PRESETS) as Array<keyof typeof PORTAL_PRESETS>;

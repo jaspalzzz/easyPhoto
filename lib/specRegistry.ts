@@ -50,7 +50,7 @@ export const PORTAL_CATEGORY_LABEL: Record<PortalCategory, string> = {
 const CATEGORY_OF: Record<string, PortalCategory> = {
   // National entrance / eligibility
   gate: "national", "ugc-net": "national", "csir-net": "national", nta: "national",
-  cat: "national", clat: "national",
+  cat: "national", clat: "national", cuet: "national",
   // Defence
   nda: "defence", cds: "defence", afcat: "defence",
   "army-agniveer": "defence", "airforce-agniveer": "defence",
