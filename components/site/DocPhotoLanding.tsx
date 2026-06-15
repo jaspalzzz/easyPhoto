@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { effectivePrintMm } from "@/lib/countrySpecs";
-import { makerPagesByKind, makerSpec } from "@/lib/makerPages";
+import { COUNTRY_SPECS, LAUNCH_ORDER, effectivePrintMm } from "@/lib/countrySpecs";
+import { makerPagesByKind, makerSpec, primaryMakerPath } from "@/lib/makerPages";
 import { HeroStarter } from "@/components/site/HeroStarter";
 import { Flag } from "@/components/site/Flag";
 import { TrustStrip } from "@/components/site/TrustStrip";
@@ -28,7 +28,19 @@ export function DocPhotoLanding({
   path: string;
 }) {
   const doc = kind === "passport" ? "passport" : "visa";
-  const pages = makerPagesByKind(kind);
+  // Size-by-country list must match the picker above: the visa hub lists visa
+  // maker pages; the passport hub lists EVERY launch country (each → its primary
+  // maker), not just the handful with a bespoke passport page.
+  const sizeByCountry =
+    kind === "visa"
+      ? makerPagesByKind("visa").map((m) => {
+          const spec = makerSpec(m.slug)!;
+          return { key: m.slug, flag: m.flag, label: spec.label, href: `/${m.slug}/`, mm: effectivePrintMm(spec) };
+        })
+      : LAUNCH_ORDER.map((id) => {
+          const spec = COUNTRY_SPECS[id];
+          return { key: id, flag: id, label: spec.label, href: primaryMakerPath(id), mm: effectivePrintMm(spec) };
+        });
 
   return (
     <div className="container max-w-4xl py-10">
@@ -73,23 +85,19 @@ export function DocPhotoLanding({
           <span className="eyebrow hidden sm:block">Official specifications</span>
         </div>
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {pages.map((m) => {
-            const spec = makerSpec(m.slug)!;
-            const mm = effectivePrintMm(spec);
-            return (
-              <Link
-                key={m.slug}
-                href={`/${m.slug}/`}
-                className="ep-card flex items-center gap-3 p-4"
-              >
-                <Flag country={m.flag} className="h-7 w-10 shrink-0 rounded-[3px] ring-1 ring-hairline" />
-                <span className="text-sm font-semibold text-ink">{spec.label}</span>
-                <span className="spec ml-auto normal-case tracking-[0.08em]">
-                  {mm.width}×{mm.height}mm
-                </span>
-              </Link>
-            );
-          })}
+          {sizeByCountry.map((c) => (
+            <Link
+              key={c.key}
+              href={c.href}
+              className="ep-card flex items-center gap-3 p-4"
+            >
+              <Flag country={c.flag} className="h-7 w-10 shrink-0 rounded-[3px] ring-1 ring-hairline" />
+              <span className="text-sm font-semibold text-ink">{c.label}</span>
+              <span className="spec ml-auto normal-case tracking-[0.08em]">
+                {c.mm.width}×{c.mm.height}mm
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
 
