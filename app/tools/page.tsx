@@ -44,13 +44,14 @@ export default function ToolsHubPage() {
         </div>
       </header>
 
-      {/* Most popular — highest-demand tools surfaced first */}
+      {/* Most popular — a tight quick-access set. The full catalogue lives in
+          the categorised sections below, so this stays curated (not a dupe). */}
       <section className="mt-12">
         <h2 className="eyebrow mb-4">
           Most popular
         </h2>
         <div className="ep-card-grid">
-          {POPULAR_TOOLS.map((tool) => (
+          {POPULAR_TOOLS.slice(0, 6).map((tool) => (
             <ToolCard
               key={tool.slug}
               slug={tool.slug}
