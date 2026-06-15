@@ -51,11 +51,11 @@ export function MainNav() {
   return (
     <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
       <Link
-        href="/"
-        aria-current={pathname === "/" ? "page" : undefined}
+        href="/passport-photo/"
+        aria-current={pathname === "/passport-photo/" ? "page" : undefined}
         className={cn(
           "rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground",
-          pathname === "/" ? "text-foreground font-medium" : "text-muted-foreground"
+          pathname === "/passport-photo/" ? "text-foreground font-medium" : "text-muted-foreground"
         )}
       >
         Passport

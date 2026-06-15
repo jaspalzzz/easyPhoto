@@ -9,7 +9,7 @@ import { ToolIcon } from "@/components/site/ToolIcon";
 
 /** Top-level destinations mirrored from the desktop nav. */
 const PRIMARY_LINKS: { href: string; label: string }[] = [
-  { href: "/", label: "Passport" },
+  { href: "/passport-photo/", label: "Passport" },
   { href: "/tools/exam-package/", label: "Exams" },
   { href: "/blog/", label: "Blog" },
 ];
