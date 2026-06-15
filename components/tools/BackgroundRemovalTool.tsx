@@ -64,7 +64,7 @@ function Body({ source }: { source: ToolSource }) {
       <ScanProgress
         label="Removing background…"
         hint="First run downloads the AI model — one moment."
-        thumbnailUrl={source.url}
+        thumbnailUrl={source.thumbUrl || source.url}
       />
     );
 

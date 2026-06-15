@@ -11,6 +11,36 @@ import { ensureDecodable } from "@/lib/heic";
 
 export interface ToolSource extends LoadedImage {
   file: File;
+  /**
+   * A small (~480px) JPEG data URL of the image, for the in-progress preview.
+   * Showing the full-resolution `url` in an <img> during a heavy AI run forces
+   * the browser to keep a second full-res decoded bitmap in memory — enough to
+   * make iOS Safari stop painting the rest of the page (or reload the tab) on a
+   * 12MP phone photo. This downscaled copy is a few KB and avoids that spike.
+   */
+  thumbUrl: string;
+}
+
+/** Downscaled JPEG data URL of a loaded image — cheap preview, tiny memory. */
+function makeThumbDataUrl(
+  image: HTMLImageElement,
+  size: { width: number; height: number },
+  maxEdge = 480
+): string {
+  try {
+    const scale = Math.min(1, maxEdge / Math.max(size.width, size.height));
+    const w = Math.max(1, Math.round(size.width * scale));
+    const h = Math.max(1, Math.round(size.height * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return "";
+    ctx.drawImage(image, 0, 0, w, h);
+    return canvas.toDataURL("image/jpeg", 0.82);
+  } catch {
+    return ""; // fall back to no thumbnail rather than break the tool
+  }
 }
 
 /**
@@ -33,7 +63,8 @@ export function ImageToolShell({
     try {
       const decodable = await ensureDecodable(file); // iPhone HEIC → JPEG
       const loaded = await loadImageFromFile(decodable);
-      setSource({ ...loaded, file: decodable });
+      const thumbUrl = makeThumbDataUrl(loaded.image, loaded.size);
+      setSource({ ...loaded, file: decodable, thumbUrl });
     } catch (e) {
       // Pipeline errors (validation, HEIC, decode) carry user-facing messages.
       setError(
