@@ -74,9 +74,15 @@ export function AcceptanceTips({ spec }: { spec: CountrySpec }) {
  * The signature do/don'ts are the gap competitors' photo-only strips miss
  * (paper/shadow behind the signature is the #1 signature rejection).
  */
-export function ExamSubmitTips({ hasSignature }: { hasSignature: boolean }) {
+export function ExamSubmitTips({
+  hasSignature,
+  className = "",
+}: {
+  hasSignature: boolean;
+  className?: string;
+}) {
   return (
-    <section className="space-y-4 rounded-xl border border-hairline bg-card p-5">
+    <section className={`space-y-4 rounded-xl border border-hairline bg-card p-5 ${className}`}>
       <DoDontStrip
         title="What gets the photo accepted"
         dos={[

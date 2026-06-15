@@ -13,6 +13,7 @@ import { portalFaqItems } from "@/lib/faqs";
 import { PortalResizer } from "@/components/tools/PortalResizer";
 import { ExploreTools } from "@/components/site/ExploreTools";
 import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
+import { ExamSpecTable } from "@/components/site/ExamSpecTable";
 import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -125,6 +126,8 @@ export default async function Page({
       <ExamSubmitTips hasSignature={spec.sigLimitKb !== undefined} />
 
       <PortalResizer portalId={e.parentId} displayName={e.name} />
+
+      <ExamSpecTable spec={spec} name={e.name} />
 
       {related.length > 0 && (
         <section className="space-y-3">
