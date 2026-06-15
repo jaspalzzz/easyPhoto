@@ -5,7 +5,7 @@ import {
   LAUNCH_ORDER,
   effectivePrintMm,
 } from "@/lib/countrySpecs";
-import { POPULAR_TOOLS, getTool, toolColorCategory, READY_TOOLS } from "@/lib/toolsCatalog";
+import { POPULAR_TOOLS, READY_TOOLS } from "@/lib/toolsCatalog";
 import { PORTAL_KEYS } from "@/lib/portalPresets";
 import { primaryMakerPath } from "@/lib/makerPages";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
@@ -32,22 +32,6 @@ export const metadata = pageMetadata({
     "runs in your browser — nothing is uploaded.",
   path: "/",
 });
-
-/**
- * Quick-access strip of the highest-intent tools, surfaced right under the hero
- * so visitors who came for an image/PDF/professional-photo task (not a passport)
- * immediately see the breadth — fixes the "reads as a passport-only site" gap.
- */
-const QUICK_TOOLS = [
-  "background-removal",
-  "resize-kb",
-  "resume-photo",
-  "linkedin-photo",
-  "jpg-to-pdf",
-  "pdf-compress",
-  "pdf-merge",
-  "sign-pdf",
-].map((slug) => getTool(slug)!);
 
 /** Top exam destinations — dedicated landing page where it exists, else the form-resizer. */
 const EXAM_LINKS: { label: string; href: string }[] = [
@@ -136,47 +120,6 @@ export default function HomePage() {
               <HeroStarter />
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Quick tools — surface breadth (image/PDF/professional) right after the hero */}
-      <section className="border-b border-hairline bg-paper">
-        <div className="container py-10 sm:py-12">
-          <div className="flex items-baseline justify-between border-b border-hairline pb-4">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Popular free tools
-            </h2>
-            <Link
-              href="/tools/"
-              className="hidden items-center gap-1 text-sm font-medium text-brand hover:underline sm:inline-flex"
-            >
-              All tools <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {QUICK_TOOLS.map((tool) => (
-              <Link
-                key={tool.slug}
-                href={`/tools/${tool.slug}/`}
-                className="ep-card group flex items-center gap-3 px-4 py-3.5"
-              >
-                <ToolIconTile
-                  name={tool.icon}
-                  category={toolColorCategory(tool.slug)}
-                  className="!h-9 !w-9"
-                />
-                <span className="text-sm font-semibold leading-tight text-ink">
-                  {tool.title}
-                </span>
-              </Link>
-            ))}
-          </div>
-          <Link
-            href="/tools/"
-            className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline sm:hidden"
-          >
-            All tools <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
       </section>
 
@@ -271,7 +214,7 @@ export default function HomePage() {
                   <span className="block truncate font-semibold leading-tight text-ink">
                     {spec.label}
                   </span>
-                  <span className="spec mt-1 block normal-case tracking-[0.08em]">
+                  <span className="spec mt-1 block truncate normal-case tracking-[0.08em]">
                     {mm.width}×{mm.height}mm ·{" "}
                     {spec.background.description.split("(")[0].trim().split(",")[0]}
                   </span>
