@@ -50,6 +50,14 @@ export function HeroStarter({
 
   const [sel, setSel] = React.useState(opts[0]?.path ?? "");
 
+  // Show a curated set first — the full launch list (22+) makes the starter
+  // card tall and busy. The top entries cover the overwhelming majority of
+  // intent; the rest are one tap behind a quiet "+N more".
+  const TOP = 8;
+  const [showAll, setShowAll] = React.useState(false);
+  const visible = showAll ? opts : opts.slice(0, TOP);
+  const hiddenCount = opts.length - TOP;
+
   const start = (file: File) => {
     setPendingFile(file);
     router.push(sel);
@@ -64,7 +72,7 @@ export function HeroStarter({
           <span className="text-ink-faint">01</span> Choose country
         </span>
         <div className="mt-3 flex flex-wrap gap-1.5">
-          {opts.map((o) => (
+          {visible.map((o) => (
             <button
               key={o.path}
               type="button"
@@ -81,6 +89,15 @@ export function HeroStarter({
               {o.label}
             </button>
           ))}
+          {!showAll && hiddenCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowAll(true)}
+              className="inline-flex items-center gap-1 rounded-md border border-dashed border-hairline-strong px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:text-brand"
+            >
+              +{hiddenCount} more
+            </button>
+          )}
         </div>
       </div>
 

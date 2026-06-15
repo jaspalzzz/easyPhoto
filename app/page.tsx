@@ -85,7 +85,7 @@ export default function HomePage() {
       {/* Hero — two columns: value proposition + live passport starter */}
       <section className="border-b border-hairline bg-paper">
         <div className="container py-12 sm:py-16 lg:py-20">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+          <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
             {/* Left: value proposition. The headline sells the outcome the
                 anxious visitor came for (acceptance), not the mechanism; the
                 precision claim moves to the eyebrow. */}
