@@ -48,6 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/pan-card-photo-resizer/",
     "/voter-id-photo-resizer/",
     "/driving-licence-photo-resizer/",
+    "/aadhaar-photo/",
     ...SUB_EXAM_SLUGS.map((s) => `/exam-resizer/${s}/`),
     ...PORTAL_KEYS.map((key) => `/exam-requirements/${key}/`),
     ...KB_TARGETS.map((kb) => kbPath(kb)),
