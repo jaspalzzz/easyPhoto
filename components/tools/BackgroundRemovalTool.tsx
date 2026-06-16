@@ -6,7 +6,7 @@ import { ScanProgress } from "@/components/site/ScanProgress";
 import { Button } from "@/components/ui/button";
 import { CropMarks } from "@/components/site/CropMarks";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
-import { removeBg } from "@/lib/segmentation";
+import { removeBgSmart } from "@/lib/segmentation";
 import { canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
 import { withTimeout } from "@/lib/withTimeout";
@@ -34,7 +34,7 @@ function Body({ source }: { source: ToolSource }) {
       setError(null);
       try {
         const cutout = await withTimeout(
-          removeBg(source.file, source.size),
+          removeBgSmart(source.image, source.file, source.size),
           120000
         );
         if (cancelled) return;

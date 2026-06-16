@@ -170,13 +170,19 @@ async function getRMBG(opts: {
   // Constrain WASM threads BEFORE the session is created. The threaded ORT
   // build allocates a large SharedArrayBuffer; single-thread uses a smaller,
   // growable heap — lower peak memory on constrained phones (iOS).
-  if (opts.device === "wasm" && opts.threads) {
+  if (opts.device === "wasm") {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const wasmEnv = (transformers as any).env?.backends?.onnx?.wasm;
       if (wasmEnv) {
-        wasmEnv.numThreads = opts.threads;
-        wasmEnv.proxy = false;
+        if (opts.threads) wasmEnv.numThreads = opts.threads;
+        // Run ONNX in a Web Worker so inference NEVER blocks the main thread.
+        // On low-end phones (iPhone 11, mid Android) a main-thread run froze the
+        // whole page — couldn't scroll, the FAQ/footer stopped painting, and it
+        // sometimes crashed. With numThreads=1 the heap stays small AND the UI
+        // thread stays free. (Was previously false to save memory; the worker
+        // copy is cheap next to keeping the page responsive.)
+        wasmEnv.proxy = true;
       }
     } catch {
       /* env shape changed; ignore */
@@ -303,6 +309,54 @@ export async function removeBgWebGPU(
     const msg = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
     throw new Error(`[${stage.at}] ${msg}`);
   }
+}
+
+/**
+ * Device-aware background removal for the STANDALONE tools (Background Remover,
+ * White Background) — previously they called the untuned imgly path at full
+ * resolution on the main thread, which lagged/crashed low-end phones. This routes
+ * mobile through the same worker-backed, memory-tuned RMBG engines the passport
+ * flow uses, falling back to imgly only on desktop (plenty of headroom there).
+ *
+ * NOTE: the engine matrix below MIRRORS the one in store/useToolStore.ts (the
+ * sacred device matrix) — keep the two in sync. iOS → wasm/q8/256px single-
+ * thread; Android f16 GPU → webgpu/fp16; other Android → wasm/fp32.
+ */
+export async function removeBgSmart(
+  image: CanvasImageSource,
+  blob: Blob,
+  size: { width: number; height: number }
+): Promise<HTMLCanvasElement> {
+  const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+
+  if (isMobile) {
+    const engines: {
+      device: string;
+      dtype: string;
+      inputSize: number;
+      threads?: number;
+    }[] = isIOS
+      ? [{ device: "wasm", dtype: "q8", inputSize: 256, threads: 1 }]
+      : (await webgpuSupportsF16())
+        ? [
+            { device: "webgpu", dtype: "fp16", inputSize: 1024 },
+            { device: "wasm", dtype: "fp32", inputSize: 1024 },
+          ]
+        : [{ device: "wasm", dtype: "fp32", inputSize: 1024 }];
+
+    for (const eng of engines) {
+      try {
+        return await removeBgWebGPU(image, size, eng);
+      } catch {
+        /* try the next candidate; if all fail, fall through to imgly */
+      }
+    }
+  }
+
+  // Desktop (or every mobile engine failed): the full imgly model.
+  return removeBg(blob, size);
 }
 
 /** Apply the alpha matte to the source image at the target size. */

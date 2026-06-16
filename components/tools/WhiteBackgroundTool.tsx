@@ -5,7 +5,7 @@ import { Download } from "lucide-react";
 import { ScanProgress } from "@/components/site/ScanProgress";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
-import { removeBg, compositeFull } from "@/lib/segmentation";
+import { removeBgSmart, compositeFull } from "@/lib/segmentation";
 import { canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
 import { withTimeout } from "@/lib/withTimeout";
@@ -31,7 +31,7 @@ function Body({ source }: { source: ToolSource }) {
       cutoutRef.current = null;
       try {
         const cutout = await withTimeout(
-          removeBg(source.file, source.size),
+          removeBgSmart(source.image, source.file, source.size),
           120000
         );
         if (cancelled) return;
