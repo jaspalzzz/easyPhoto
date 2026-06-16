@@ -75,10 +75,11 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
     if (!canvasRef.current) return null;
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    
+    if (rect.width === 0 || rect.height === 0) return null;
+
     let clientX: number;
     let clientY: number;
-    
+
     if ("touches" in e) {
       if (e.touches.length === 0) return null;
       clientX = e.touches[0].clientX;
@@ -87,15 +88,20 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
       clientX = e.clientX;
       clientY = e.clientY;
     }
-    
-    // Multiply by DPR to convert CSS-pixel coordinates to physical canvas pixels.
-    // dprRef.current is set during canvas initialisation and matches the scale
-    // factor used for canvas.width / canvas.height.
-    const dpr = dprRef.current;
-    const x = (clientX - rect.left) * dpr;
-    const y = (clientY - rect.top) * dpr;
 
-    return { x, y };
+    // Map CSS coordinates → backing-store coordinates using the ACTUAL ratio.
+    // Using DPR alone was wrong: canvas.width is clamped to a 640×240 minimum,
+    // so on a phone (~350px wide) the backing store is 640·dpr while the canvas
+    // displays at 350px — every point landed ~1.8× off, growing with distance
+    // from the corner (the "drawn 1.5in from my finger" bug). The width/height
+    // ratio is correct regardless of the clamp or DPR.
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (clientX - rect.left) * scaleX;
+    const y = (clientY - rect.top) * scaleY;
+
+    // Keep the visible stroke ~2.5 CSS px thick whatever the backing scale is.
+    return { x, y, lineWidth: Math.max(2, 2.5 * scaleX) };
   };
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
@@ -112,7 +118,7 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
     if (ctx) {
       ctx.beginPath();
       ctx.strokeStyle = penColor;
-      ctx.lineWidth = 3;
+      ctx.lineWidth = coords.lineWidth;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.moveTo(coords.x, coords.y);
@@ -130,13 +136,13 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
     if (ctx && lastPointRef.current) {
       ctx.beginPath();
       ctx.strokeStyle = penColor;
-      ctx.lineWidth = 3;
+      ctx.lineWidth = coords.lineWidth;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       ctx.moveTo(lastPointRef.current.x, lastPointRef.current.y);
       ctx.lineTo(coords.x, coords.y);
       ctx.stroke();
-      
+
       lastPointRef.current = coords;
     }
   };
