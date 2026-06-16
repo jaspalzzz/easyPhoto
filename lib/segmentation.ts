@@ -394,6 +394,20 @@ async function finishCutout(
   const md: ArrayLike<number> = maskImg.data;
   const ch: number = maskImg.channels || 1;
   const total = size.width * size.height;
+
+  // De-halo curve (precomputed 0–255 LUT). The matte's faint semi-transparent
+  // fringe still carries the ORIGINAL background colour, so on a solid new
+  // background it shows as a grey halo around hair. Tightening alpha — drop the
+  // faintest fringe to 0, solidify near-opaque to 255, keep a soft middle —
+  // narrows that halo while keeping a natural hairline. TUNABLE: raise LO if a
+  // halo remains; lower it if fine hair gets eaten.
+  const LO = 38;
+  const HI = 224;
+  const lut = new Uint8Array(256);
+  for (let a = 0; a < 256; a++) {
+    lut[a] = a <= LO ? 0 : a >= HI ? 255 : Math.round(((a - LO) / (HI - LO)) * 255);
+  }
+
   // Apply the matte in ~1M-pixel slices, yielding to the event loop between
   // each. After inference (now off-thread in a worker) this per-pixel pass was
   // the only remaining main-thread step — running it in one burst caused a
@@ -404,7 +418,7 @@ async function finishCutout(
   for (let start = 0; start < total; start += CHUNK) {
     const end = Math.min(total, start + CHUNK);
     for (let i = start; i < end; i++) {
-      d[i * 4 + 3] = md[i * ch]; // mask value -> alpha (foreground opaque)
+      d[i * 4 + 3] = lut[md[i * ch] & 255]; // de-halo'd mask value -> alpha
     }
     if (end < total) await new Promise((r) => setTimeout(r, 0));
   }
