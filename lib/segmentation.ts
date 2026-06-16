@@ -331,7 +331,7 @@ export async function removeBgWebGPU(
  *
  * NOTE: the engine matrix below MIRRORS the one in store/useToolStore.ts (the
  * sacred device matrix) — keep the two in sync. iOS → wasm/q8/256px single-
- * thread; Android f16 GPU → webgpu/fp16; other Android → wasm/fp32.
+ * thread; Android f16 GPU → webgpu/fp16; other Android → wasm/q8 @ 1024px.
  */
 export async function removeBgSmart(
   image: CanvasImageSource,
@@ -353,9 +353,9 @@ export async function removeBgSmart(
       : (await webgpuSupportsF16())
         ? [
             { device: "webgpu", dtype: "fp16", inputSize: 1024 },
-            { device: "wasm", dtype: "fp32", inputSize: 1024 },
+            { device: "wasm", dtype: "q8", inputSize: 1024 },
           ]
-        : [{ device: "wasm", dtype: "fp32", inputSize: 1024 }];
+        : [{ device: "wasm", dtype: "q8", inputSize: 1024 }];
 
     let lastErr: unknown;
     for (const eng of engines) {

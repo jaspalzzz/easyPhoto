@@ -234,9 +234,12 @@ export const useToolStore = create<ToolState>((set, get) => ({
       // is 100% on-device; only the model downloads (never the photo).
       //   • Desktop            → isnet (@imgly, onnxruntime WASM). Proven.
       //   • Android, f16 GPU   → RMBG-1.4 webgpu/fp16. Fast + premium.   [Redmi]
-      //   • Android, no f16    → RMBG-1.4 wasm/fp32 (full model on CPU). Clean
-      //                          edges, slower. (q8-on-webgpu corrupts output,
-      //                          fp32-on-webgpu crashes those GPUs.)        [OnePlus]
+      //   • Android, no f16    → RMBG-1.4 wasm/q8 @ 1024px. q8 keeps FULL
+      //                          resolution but is ~4× lighter+faster than fp32,
+      //                          which intermittently OOM'd low-RAM Android
+      //                          (e.g. 6GB MIUI: only ~1/3 runs completed at
+      //                          fp32). (q8-on-webgpu corrupts; fp32-on-webgpu
+      //                          crashes those GPUs.)                     [OnePlus]
       //   • iOS                → RMBG-1.4 wasm/q8, single-thread, small input.
       //                          Safari tab memory is tight; this is the lightest
       //                          path. Old 4GB iPhones still can't fit it and
@@ -254,11 +257,11 @@ export const useToolStore = create<ToolState>((set, get) => ({
           engines.push({ device: "wasm", dtype: "q8", inputSize: 256, threads: 1 });
         } else if (await webgpuSupportsF16()) {
           engines.push({ device: "webgpu", dtype: "fp16", inputSize: 1024 });
-          // If the GPU dies mid-run, the full model on CPU still produces a
-          // clean cutout (slower).
-          engines.push({ device: "wasm", dtype: "fp32", inputSize: 1024 });
+          // If the GPU dies mid-run, the q8 model on CPU still produces a clean
+          // cutout at full 1024px (lighter than fp32 → fits low-RAM Android).
+          engines.push({ device: "wasm", dtype: "q8", inputSize: 1024 });
         } else {
-          engines.push({ device: "wasm", dtype: "fp32", inputSize: 1024 });
+          engines.push({ device: "wasm", dtype: "q8", inputSize: 1024 });
         }
       }
       // Detection is done; on mobile, free MediaPipe (GPU+WASM) BEFORE loading
