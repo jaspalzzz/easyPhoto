@@ -276,6 +276,29 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     updatePreview();
   }, [updatePreview]);
 
+  // Live preview while cropping/panning/zooming. THE GOTCHA: react-cropper binds
+  // its event callbacks once at cropper-init, so a normal handler captures a
+  // STALE updatePreview (cropperReady=false at init) and never refreshes — which
+  // is exactly why the crop only updated after typing (that path goes through
+  // the React effect below, not the cropper events). Fix: a STABLE handler
+  // (empty deps, frozen identity is fine) that dereferences a ref to the latest
+  // updatePreview, debounced so a drag doesn't re-render on every pixel.
+  const updatePreviewRef = React.useRef(updatePreview);
+  React.useEffect(() => {
+    updatePreviewRef.current = updatePreview;
+  }, [updatePreview]);
+  const previewTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onCropEvent = React.useCallback(() => {
+    if (previewTimer.current) clearTimeout(previewTimer.current);
+    previewTimer.current = setTimeout(() => updatePreviewRef.current(), 120);
+  }, []);
+  React.useEffect(
+    () => () => {
+      if (previewTimer.current) clearTimeout(previewTimer.current);
+    },
+    []
+  );
+
   // Revoke each preview's object URL when replaced or on unmount.
   React.useEffect(() => {
     const url = previewUrl;
@@ -377,8 +400,9 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
                 setCropperReady(true);
                 updatePreview();
               }}
-              cropend={updatePreview}
-              zoom={updatePreview}
+              crop={onCropEvent}
+              cropend={onCropEvent}
+              zoom={onCropEvent}
             />
           </div>
         </div>

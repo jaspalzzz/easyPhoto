@@ -291,7 +291,10 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
             </Button>
           </div>
 
-          <div className="relative border border-hairline rounded-md bg-paper overflow-hidden aspect-[8/3] max-w-full">
+          {/* Tall, roomy pad — big names + big fingers need space. Output is
+              auto-trimmed to the strokes, so a larger pad never affects the
+              exported signature size. */}
+          <div className="relative border border-hairline rounded-md bg-paper overflow-hidden h-[240px] sm:h-[300px] max-w-full">
             <canvas
               ref={canvasRef}
               className="absolute inset-0 w-full h-full cursor-crosshair touch-none"
