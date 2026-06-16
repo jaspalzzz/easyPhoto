@@ -37,14 +37,20 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
     const canvas = canvasRef.current;
 
     const initCanvas = (cssWidth: number, cssHeight: number) => {
+      if (cssWidth < 1 || cssHeight < 1) return; // wait for real layout
       const dpr = window.devicePixelRatio || 1;
       dprRef.current = dpr;
-      // Use minimum dimensions so a zero-size layout never produces a 0×0 canvas
-      const w = Math.max(cssWidth, 640);
-      const h = Math.max(cssHeight, 240);
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      // No ctx.scale — drawing code will multiply by dpr directly
+      // Backing store = the DISPLAY size × dpr, so the drawing keeps the pad's
+      // real aspect ratio. The old fixed 640×240 clamp made the backing wider
+      // than the box (2.67:1 vs ~1.84:1), so strokes rendered + exported
+      // horizontally compressed. Re-init only when the size actually changes —
+      // assigning canvas.width clears the canvas (don't wipe a drawing in
+      // progress on a spurious ResizeObserver fire).
+      const nextW = Math.round(cssWidth * dpr);
+      const nextH = Math.round(cssHeight * dpr);
+      if (canvas.width === nextW && canvas.height === nextH) return;
+      canvas.width = nextW;
+      canvas.height = nextH;
       const ctx = canvas.getContext("2d");
       if (ctx) {
         ctx.fillStyle = "rgba(0,0,0,0)";
@@ -100,8 +106,9 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
     const x = (clientX - rect.left) * scaleX;
     const y = (clientY - rect.top) * scaleY;
 
-    // Keep the visible stroke ~2.5 CSS px thick whatever the backing scale is.
-    return { x, y, lineWidth: Math.max(2, 2.5 * scaleX) };
+    // Keep the visible stroke a fine ~1.8 CSS px pen (was 2.5 — read as a marker)
+    // whatever the backing scale is.
+    return { x, y, lineWidth: Math.max(1.5, 1.8 * scaleX) };
   };
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
@@ -166,10 +173,11 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
     if (!canvasRef.current || !hasDrawn) return;
     const canvas = canvasRef.current;
     
-    // Trim drawing bounds close to the strokes
+    // Trim to the strokes, but leave real breathing room so the signature never
+    // touches the box edges when placed (was 6px on a high-dpr backing ≈ nothing).
     const { canvas: trimmed, bbox } = trimToContent(canvas, {
       mode: "alpha",
-      padding: 6,
+      padding: Math.round(16 * (dprRef.current || 1)),
     });
     
     if (!bbox) return;
