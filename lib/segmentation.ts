@@ -306,7 +306,7 @@ export async function removeBgWebGPU(
     ).resize(size.width, size.height);
     // Compose at SOURCE resolution from the ORIGINAL image (full RGB quality)
     // with the mask upscaled to match — only here do we touch full dimensions.
-    const cutout = finishCutout(source, maskImg, size);
+    const cutout = await finishCutout(source, maskImg, size);
     // On the memory-tight path (iOS small-input wasm) drop the cached model
     // after a successful run: the session's WASM heap is the single biggest
     // allocation in the tab, and the weights re-load from HTTP cache if the
@@ -376,12 +376,12 @@ export async function removeBgSmart(
 }
 
 /** Apply the alpha matte to the source image at the target size. */
-function finishCutout(
+async function finishCutout(
   source: CanvasImageSource,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   maskImg: any,
   size: { width: number; height: number }
-): HTMLCanvasElement {
+): Promise<HTMLCanvasElement> {
   const canvas = document.createElement("canvas");
   canvas.width = size.width;
   canvas.height = size.height;
@@ -393,8 +393,20 @@ function finishCutout(
   const d = imgData.data;
   const md: ArrayLike<number> = maskImg.data;
   const ch: number = maskImg.channels || 1;
-  for (let i = 0; i < size.width * size.height; i++) {
-    d[i * 4 + 3] = md[i * ch]; // mask value -> alpha (foreground opaque)
+  const total = size.width * size.height;
+  // Apply the matte in ~1M-pixel slices, yielding to the event loop between
+  // each. After inference (now off-thread in a worker) this per-pixel pass was
+  // the only remaining main-thread step — running it in one burst caused a
+  // visible blip at "the moment of output" on fast-GPU phones (Android).
+  // Chunking turns a single ~50ms freeze into sub-frame slices the browser can
+  // paint between, with negligible added latency.
+  const CHUNK = 1_000_000;
+  for (let start = 0; start < total; start += CHUNK) {
+    const end = Math.min(total, start + CHUNK);
+    for (let i = start; i < end; i++) {
+      d[i * 4 + 3] = md[i * ch]; // mask value -> alpha (foreground opaque)
+    }
+    if (end < total) await new Promise((r) => setTimeout(r, 0));
   }
   ctx.putImageData(imgData, 0, 0);
   return canvas;
