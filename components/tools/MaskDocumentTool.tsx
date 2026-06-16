@@ -95,6 +95,26 @@ export function MaskDocumentTool() {
       );
       ctx.restore();
     }
+
+    // Per-box "×" remove badge — one tap on any black area deletes it, so an
+    // accidental or over-broad mask is trivial to undo on a phone.
+    for (const b of boxes) {
+      if (b.w <= 0 || b.h <= 0) continue;
+      const { cx, cy, r } = badgeCenter(b);
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = "#DC2626";
+      ctx.fill();
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = Math.max(2, r * 0.2);
+      const k = r * 0.42;
+      ctx.beginPath();
+      ctx.moveTo(cx - k, cy - k);
+      ctx.lineTo(cx + k, cy + k);
+      ctx.moveTo(cx + k, cy - k);
+      ctx.lineTo(cx - k, cy + k);
+      ctx.stroke();
+    }
   }, [img, boxes, selectedId]);
 
   const onFile = async (file: File) => {
@@ -149,11 +169,36 @@ export function MaskDocumentTool() {
     return undefined;
   };
 
+  // The "×" remove badge sits at each box's top-right corner. Finger-sized.
+  const badgeCenter = (b: Box) => {
+    const canvas = canvasRef.current!;
+    const r = Math.max(12, 16 * scaleRef.current);
+    return { cx: Math.min(b.x + b.w, canvas.width - r), cy: Math.max(b.y, r), r };
+  };
+  const badgeAt = (x: number, y: number): Box | undefined => {
+    for (let i = boxes.length - 1; i >= 0; i--) {
+      const b = boxes[i];
+      if (b.w <= 0 || b.h <= 0) continue;
+      const { cx, cy, r } = badgeCenter(b);
+      if ((x - cx) ** 2 + (y - cy) ** 2 <= (r * 1.4) ** 2) return b;
+    }
+    return undefined;
+  };
+
   const onPointerDown = (e: React.PointerEvent) => {
     if (!img) return;
     e.preventDefault();
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
     const { x, y } = toImageCoords(e);
+
+    // 0) Tap on a box's "×" badge → delete that box (no capture/draw).
+    const badge = badgeAt(x, y);
+    if (badge) {
+      setBoxes((bs) => bs.filter((b) => b.id !== badge.id));
+      setSelectedId((s) => (s === badge.id ? null : s));
+      return;
+    }
+
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
 
     // 1) Resize the selected box if the handle was grabbed.
     const sel = boxes.find((b) => b.id === selectedId);
@@ -269,11 +314,14 @@ export function MaskDocumentTool() {
           <p className="rounded-md border border-brand/25 bg-brand-soft/20 p-3 text-sm text-foreground">
             <strong>Drag across an area to hide it</strong> — for an Aadhaar card,
             cover the <strong>first 8 digits</strong> (UIDAI recommends showing
-            only the last 4). Then <strong>drag a box to move it</strong>, drag its
-            corner to resize, or tap it and press Delete to remove.
+            only the last 4). Drag a box to move it, drag its corner to resize,
+            or tap the red <strong>×</strong> on a box to remove it. Scroll the
+            page using the margins on either side of the image.
           </p>
 
-          <div className="overflow-hidden rounded-md border border-hairline bg-accent/5">
+          {/* Horizontal gutters on phones: the canvas is touch-none (so drawing
+              doesn't scroll), so leave scrollable page margins on each side. */}
+          <div className="mx-8 overflow-hidden rounded-md border border-hairline bg-accent/5 sm:mx-0">
             <canvas
               ref={canvasRef}
               onPointerDown={onPointerDown}
