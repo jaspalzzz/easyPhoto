@@ -43,7 +43,7 @@ function Body({ source }: { source: ToolSource }) {
         if (cancelled) return;
         setUrl(URL.createObjectURL(blob));
       } catch {
-        if (!cancelled) setError("Background removal didn't finish — on first use the AI model has to download, which can take a minute on slow connections. Wait a moment and try again; your photo is fine.");
+        if (!cancelled) setError("Background removal didn't finish — the first run can take a little longer on a slow connection. Wait a moment and try again; your photo is safe on your device.");
       } finally {
         if (!cancelled) setBusy(false);
       }
@@ -63,7 +63,7 @@ function Body({ source }: { source: ToolSource }) {
     return (
       <ScanProgress
         label="Removing background…"
-        hint="First run downloads the AI model — one moment."
+        hint="First run sets up the AI — a few seconds. Your photo never leaves your device."
         thumbnailUrl={source.thumbUrl || source.url}
       />
     );

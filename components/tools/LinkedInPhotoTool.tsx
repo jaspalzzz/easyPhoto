@@ -160,8 +160,8 @@ function Body({ source }: { source: ToolSource }) {
                   Detecting face…
                 </span>
                 <span className="text-xs text-ink-faint">
-                  First run downloads the AI model — up to a minute on slow
-                  connections, instant after that.
+                  First run sets up the AI — a few seconds, instant after that.
+                  Your photo never leaves your device.
                 </span>
               </span>
             </div>

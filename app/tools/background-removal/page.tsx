@@ -22,7 +22,7 @@ export default function Page() {
       slug={tool.slug}
       blurb={tool.blurb}
       faqItems={BACKGROUND_REMOVER_FAQ}
-      footnote="The AI model downloads once from a CDN, then runs locally. Your image never leaves your device."
+      footnote="Runs entirely in your browser — your image never leaves your device. The first run takes a few seconds to set up the AI."
     >
       <BackgroundRemovalTool />
     </ToolPage>
