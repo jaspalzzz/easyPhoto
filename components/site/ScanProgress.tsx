@@ -44,7 +44,12 @@ export function ScanProgress({
 
   return (
     <div className="flex flex-col items-center gap-5 py-10">
-      <div className="relative overflow-hidden rounded-md border border-hairline-strong bg-paper">
+      {/* min-h + centering so the frame ALWAYS has real height. Otherwise the
+          sweep layer (height:100%) collapses to ~0px until the thumbnail <img>
+          decodes, so the scan-line has no travel and looks frozen at the top
+          (reported on iPhone 11). The no-thumbnail branch already had a fixed
+          box and animated fine — this gives the img branch the same guarantee. */}
+      <div className="relative flex min-h-[200px] items-center justify-center overflow-hidden rounded-md border border-hairline-strong bg-paper">
         {thumbnailUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img

@@ -153,10 +153,21 @@ let rmbgModelKey = "";
  * which is the difference between working and crashing on low-RAM iPhones.
  */
 export function disposeRMBG(): void {
+  const pending = rmbgModelPromise;
   rmbgModelPromise = null;
   rmbgProcessorPromise = null;
   rmbgProcessorSize = 0;
   rmbgModelKey = "";
+  // Actually release the ORT InferenceSession. With wasm.proxy=true the model
+  // lives in a Web Worker, so nulling the JS promise alone leaves the worker's
+  // ~150MB WASM heap resident — the OOM guard would silently do nothing. The
+  // model's dispose() releases the session (and signals the proxy worker).
+  pending
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ?.then((m: any) => m?.dispose?.())
+    .catch(() => {
+      /* model failed to load or has no dispose(); nothing to release */
+    });
 }
 
 async function getRMBG(opts: {
@@ -346,16 +357,21 @@ export async function removeBgSmart(
           ]
         : [{ device: "wasm", dtype: "fp32", inputSize: 1024 }];
 
+    let lastErr: unknown;
     for (const eng of engines) {
       try {
         return await removeBgWebGPU(image, size, eng);
-      } catch {
-        /* try the next candidate; if all fail, fall through to imgly */
+      } catch (e) {
+        lastErr = e; // try the next candidate
       }
     }
+    // Do NOT fall back to imgly on mobile — that's the full main-thread model
+    // these phones can't run (the very thing that crashed them). Surface the
+    // error so the tool shows its graceful "try again" state instead.
+    throw lastErr ?? new Error("All mobile segmentation engines failed.");
   }
 
-  // Desktop (or every mobile engine failed): the full imgly model.
+  // Desktop only: the full imgly model (plenty of headroom).
   return removeBg(blob, size);
 }
 
