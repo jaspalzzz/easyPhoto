@@ -202,25 +202,57 @@ async function getRMBG(opts: {
 
   // Self-host the model on our own R2 domain under a NEUTRAL id ("seg"), so the
   // URL (models.easyphoto.in/seg/onnx/model_*.onnx) never reveals "briaai/RMBG-1.4"
-  // and we don't depend on huggingface.co. If R2 fails (outage / missing file),
-  // fall back to Hugging Face so background removal keeps working.
+  // and we don't depend on huggingface.co.
   // R2 layout: seg/onnx/{model_quantized,model_fp16,model}.onnx + seg/config.json
+  //
+  // The host is PINNED ONCE and never mutated. transformers builds each file URL
+  // lazily from env.remoteHost at fetch time (config.json and model.onnx are
+  // separate fetches), so flipping env.remoteHost mid-load — as an inline
+  // R2→HF fallback used to — races with an in-flight "seg" load and resolves it
+  // against the wrong host, producing bogus `huggingface.co/seg/...` 401s.
+  // Instead the reliability fallback (R2 outage → Hugging Face, same weights)
+  // lives in a fetch wrapper, so the host stays constant and the name never
+  // leaks in the primary URL.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const env = (transformers as any).env;
-  const useSource = (src: "r2" | "hf") => {
-    if (!env) return;
+  if (env && !env.__epSegPinned) {
+    env.__epSegPinned = true;
     env.allowRemoteModels = true;
-    if (src === "r2") {
-      env.remoteHost = "https://models.easyphoto.in/";
-      env.remotePathTemplate = "{model}/"; // → {base}/seg/onnx/model_*.onnx
-    } else {
-      env.remoteHost = "https://huggingface.co/";
-      env.remotePathTemplate = "{model}/resolve/{revision}/";
-    }
-  };
-  const loadModel = (src: "r2" | "hf") => {
-    useSource(src);
-    return AutoModel.from_pretrained(src === "r2" ? "seg" : "briaai/RMBG-1.4", {
+    env.remoteHost = "https://models.easyphoto.in/";
+    env.remotePathTemplate = "{model}/"; // {model}=seg → models.easyphoto.in/seg/<file>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const origFetch: typeof fetch = env.fetch
+      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        env.fetch.bind(env)
+      : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (globalThis as any).fetch.bind(globalThis);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    env.fetch = async (input: any, init?: any) => {
+      const url = typeof input === "string" ? input : input?.url ?? "";
+      const m = /\/seg\/(.+)$/.exec(url);
+      if (m) {
+        const file = m[1]; // "onnx/model_quantized.onnx" | "config.json" | …
+        try {
+          const res = await origFetch(`https://models.easyphoto.in/seg/${file}`, init);
+          if (res.ok) return res;
+        } catch {
+          /* R2 unreachable — fall through to the mirror below */
+        }
+        // Silent reliability fallback: identical weights, different origin. Only
+        // fires if R2 is down; the model name is never surfaced in the primary URL.
+        return origFetch(
+          `https://huggingface.co/briaai/RMBG-1.4/resolve/main/${file}`,
+          init
+        );
+      }
+      return origFetch(input, init);
+    };
+  }
+
+  const modelKey = `${opts.device}:${opts.dtype}:${opts.threads ?? 0}`;
+  if (!rmbgModelPromise || rmbgModelKey !== modelKey) {
+    rmbgModelKey = modelKey;
+    rmbgModelPromise = AutoModel.from_pretrained("seg", {
       // webgpu (Android) is fast; wasm (iOS, where webgpu OOMs at model-load)
       // is universal. q8 keeps memory low; fp16 balances quality on GPU.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -229,24 +261,10 @@ async function getRMBG(opts: {
       dtype: opts.dtype as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       config: { model_type: "custom" } as any,
+    }).catch((e: unknown) => {
+      rmbgModelPromise = null;
+      throw e;
     });
-  };
-
-  const modelKey = `${opts.device}:${opts.dtype}:${opts.threads ?? 0}`;
-  if (!rmbgModelPromise || rmbgModelKey !== modelKey) {
-    rmbgModelKey = modelKey;
-    rmbgModelPromise = loadModel("r2")
-      .catch((e: unknown) => {
-        console.warn(
-          "[seg] self-hosted (R2) model load failed; falling back to Hugging Face.",
-          e
-        );
-        return loadModel("hf");
-      })
-      .catch((e: unknown) => {
-        rmbgModelPromise = null;
-        throw e;
-      });
   }
   // RMBG/ISNet is fully convolutional, so the inference resolution is a free
   // memory↔quality knob. Low-RAM phones (e.g. iPhone 11) OOM at 1024², so we
