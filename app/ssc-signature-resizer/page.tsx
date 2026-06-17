@@ -4,6 +4,7 @@ import { SignatureKbTool } from "@/components/tools/SignatureKbTool";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { ExamSpecTable } from "@/components/site/ExamSpecTable";
+import { ExamContext } from "@/components/site/ExamContext";
 import { Info } from "lucide-react";
 
 const spec = getPortalSpec("ssc")!;
@@ -43,6 +44,8 @@ export default function Page() {
       </div>
 
       <SignatureKbTool kb={spec.sigLimitKb || 20} toolName="ssc-signature-resizer" />
+
+      <ExamContext spec={spec} />
 
       <div className="mt-10">
         <ExamSpecTable spec={spec} />

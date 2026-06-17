@@ -220,6 +220,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://exams.nta.ac.in", label: "NTA exams portal (nta.ac.in)" },
     verification: "official",
     verifiedOn: "2026-06-08",
+    context:
+      "The National Testing Agency (NTA) conducts NEET-UG and JEE Main; you upload the photo and signature during the online application. NEET applicants also need a separate 4×6 inch (postcard-size) photograph in addition to the passport-size one.",
   },
   rbi: {
     id: "rbi",
@@ -719,6 +721,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "NTA CUET (UG) application (cuet.nta.nic.in). Photo 10-200 KB (200×230 px), passport-style with ~80% face on a white background; signature 10-50 KB (140×60 px), black or blue ink on white paper; JPG/JPEG. A live photo is also captured during the application.",
     source: { url: "https://cuet.nta.nic.in", label: "NTA CUET (cuet.nta.nic.in)" },
     verification: "needs-review",
+    context:
+      "CUET (Common University Entrance Test) is conducted by the National Testing Agency (NTA) for undergraduate admission to central and other participating universities; the photo and signature are uploaded during the online application, and a live photo is also captured.",
   },
 };
 
