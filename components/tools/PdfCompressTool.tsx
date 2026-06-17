@@ -173,13 +173,17 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
           <div className="rounded-md border border-hairline bg-paper p-4 text-xs space-y-1.5">
             <p className="font-semibold text-ink">Result</p>
             <ul className="space-y-1 text-ink-soft font-mono">
-              <li>
-                · Before: {formatKb(file.size)} → After: {formatKb(result.bytes)}
-                {result.bytes < file.size
-                  ? ` (${Math.round((1 - result.bytes / file.size) * 100)}% smaller`
-                  : ` (already optimised`}
-                , {result.pages} page{result.pages > 1 ? "s" : ""})
-              </li>
+              {result.alreadyUnder ? (
+                <li>· Your PDF is {formatKb(file.size)}</li>
+              ) : (
+                <li>
+                  · Before: {formatKb(file.size)} → After: {formatKb(result.bytes)}
+                  {result.bytes < file.size
+                    ? ` (${Math.round((1 - result.bytes / file.size) * 100)}% smaller`
+                    : ` (no further reduction possible`}
+                  , {result.pages} page{result.pages > 1 ? "s" : ""})
+                </li>
+              )}
               <li>
                 · Status:{" "}
                 {result.underTarget ? (
@@ -193,7 +197,25 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
                 )}
               </li>
             </ul>
-            {result.bytes >= file.size ? (
+            {result.alreadyUnder ? (
+              <>
+                <p className="mt-2 text-xs text-emerald-700 border-l-2 border-emerald-400 pl-2">
+                  Already under the {targetKb} KB limit — no compression needed.
+                  (Re-compressing a text PDF would only make it larger.) Your
+                  original file is ready to download unchanged.
+                </p>
+                {resultBlob && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2 w-full"
+                    onClick={() => downloadBlob(resultBlob, file.name)}
+                  >
+                    <Download className="h-3.5 w-3.5" /> Download PDF ({formatKb(file.size)})
+                  </Button>
+                )}
+              </>
+            ) : result.bytes >= file.size ? (
               <p className="mt-2 text-xs text-amber-700 border-l-2 border-amber-400 pl-2">
                 This PDF is already well-optimised — compressing it would not reduce its size. No file was downloaded.
               </p>

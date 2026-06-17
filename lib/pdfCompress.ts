@@ -17,6 +17,12 @@ export interface PdfCompressResult {
   /** True if we got at or under the requested target. */
   underTarget: boolean;
   pages: number;
+  /**
+   * True when the input was ALREADY at/under the target, so no compression was
+   * attempted (rasterising a text/vector PDF would only inflate it). The blob is
+   * the original file, unchanged.
+   */
+  alreadyUnder?: boolean;
 }
 
 /**
@@ -115,6 +121,20 @@ export async function compressPdfToTarget(
   onProgress?: (msg: string) => void
 ): Promise<PdfCompressResult> {
   const targetBytes = targetKb * 1024;
+
+  // Already within budget → return the original untouched. Rasterising a
+  // text/vector PDF to fit a cap it ALREADY meets only inflates it (e.g. an
+  // 82 KB report balloons to 132 KB of JPEGs), which then reads as a failure.
+  if (file.size <= targetBytes) {
+    return {
+      blob: file,
+      bytes: file.size,
+      underTarget: true,
+      alreadyUnder: true,
+      pages: 0,
+    };
+  }
+
   // ~8% headroom for the PDF container/overhead so we land safely under the cap.
   const budget = targetBytes * 0.92;
 
