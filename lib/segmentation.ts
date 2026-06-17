@@ -139,6 +139,16 @@ export async function webgpuSupportsF16(): Promise<boolean> {
 // AutoProcessor with explicit configs (model_type: "custom" + the processor
 // settings RMBG-1.4 expects). We cache model + processor; failures reset so one
 // error can't permanently disable the path.
+
+// R2 folder for the self-hosted weights: models.easyphoto.in/<SEG_ID>/onnx/…
+// The edge + every visitor's browser cache this URL ~forever (see public/_headers
+// + the CF Cache Rule), and transformers.js does a HARD cache hit by URL with NO
+// revalidation. So to ship a NEW model you MUST cache-bust by changing this id and
+// uploading under the matching new R2 folder (e.g. "seg-v2/"). NEVER overwrite the
+// files in place — returning users would be pinned to the stale model until their
+// browser evicts it, which a Cloudflare purge cannot fix. Bump = clean rollout.
+const SEG_ID = "seg";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let rmbgModelPromise: Promise<any> | null = null;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -219,27 +229,32 @@ async function getRMBG(opts: {
     env.__epSegPinned = true;
     env.allowRemoteModels = true;
     env.remoteHost = "https://models.easyphoto.in/";
-    env.remotePathTemplate = "{model}/"; // {model}=seg → models.easyphoto.in/seg/<file>
+    env.remotePathTemplate = "{model}/"; // {model}=SEG_ID → models.easyphoto.in/<SEG_ID>/<file>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const origFetch: typeof fetch = env.fetch
       ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
         env.fetch.bind(env)
       : // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (globalThis as any).fetch.bind(globalThis);
+    const segFile = new RegExp(`/${SEG_ID}/(.+)$`);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     env.fetch = async (input: any, init?: any) => {
       const url = typeof input === "string" ? input : input?.url ?? "";
-      const m = /\/seg\/(.+)$/.exec(url);
+      const m = segFile.exec(url);
       if (m) {
         const file = m[1]; // "onnx/model_quantized.onnx" | "config.json" | …
         try {
-          const res = await origFetch(`https://models.easyphoto.in/seg/${file}`, init);
+          const res = await origFetch(
+            `https://models.easyphoto.in/${SEG_ID}/${file}`,
+            init
+          );
           if (res.ok) return res;
         } catch {
           /* R2 unreachable — fall through to the mirror below */
         }
         // Silent reliability fallback: identical weights, different origin. Only
         // fires if R2 is down; the model name is never surfaced in the primary URL.
+        // NOTE: keep this mirror in sync with whatever weights SEG_ID points at.
         return origFetch(
           `https://huggingface.co/briaai/RMBG-1.4/resolve/main/${file}`,
           init
@@ -252,7 +267,7 @@ async function getRMBG(opts: {
   const modelKey = `${opts.device}:${opts.dtype}:${opts.threads ?? 0}`;
   if (!rmbgModelPromise || rmbgModelKey !== modelKey) {
     rmbgModelKey = modelKey;
-    rmbgModelPromise = AutoModel.from_pretrained("seg", {
+    rmbgModelPromise = AutoModel.from_pretrained(SEG_ID, {
       // webgpu (Android) is fast; wasm (iOS, where webgpu OOMs at model-load)
       // is universal. q8 keeps memory low; fp16 balances quality on GPU.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -273,7 +288,7 @@ async function getRMBG(opts: {
     rmbgProcessorSize = opts.inputSize;
     // Neutral id; the full processor config is supplied inline below, so this
     // never hits the network (no model name leaks regardless of source).
-    rmbgProcessorPromise = AutoProcessor.from_pretrained("seg", {
+    rmbgProcessorPromise = AutoProcessor.from_pretrained(SEG_ID, {
       // RMBG-1.4 ships no preprocessor recognised by AutoProcessor, so supply it.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       config: {
