@@ -360,10 +360,10 @@ export function countryFaqItems(
   };
 
   const items: FaqItem[] = [
-    { q: `What size is a ${spec.label} ${doc} photo?`, a: `A ${spec.label} ${doc} photo is ${size}. EasyPhoto sets this size automatically.` },
-    { q: `What background colour does a ${spec.label} ${doc} photo need?`, a: `${spec.background.description}. The tool applies the correct colour for you.` },
-    { q: `What is the head size in a ${spec.label} ${doc} photo?`, a: `Your head should measure ${spec.headHeightMm.min}–${spec.headHeightMm.max}mm from chin to crown. We size it to that band and flag it if it's off.` },
-    { q: `Can I wear glasses or smile in a ${spec.label} ${doc} photo?`, a: `${glasses} Expression: ${spec.smileAllowed}.` },
+    { q: `What size is a ${doc} photo for ${spec.label}?`, a: `A ${doc} photo for ${spec.label} is ${size}. EasyPhoto sets this size automatically.` },
+    { q: `What background colour does a ${doc} photo for ${spec.label} need?`, a: `${spec.background.description}. The tool applies the correct colour for you.` },
+    { q: `What is the head size in a ${doc} photo for ${spec.label}?`, a: `Your head should measure ${spec.headHeightMm.min}–${spec.headHeightMm.max}mm from chin to crown. We size it to that band and flag it if it's off.` },
+    { q: `Can I wear glasses or smile in a ${doc} photo for ${spec.label}?`, a: `${glasses} Expression: ${spec.smileAllowed}.` },
     { q: `What file size does the ${spec.label} online ${doc} upload need?`, a: fileSize },
     { q: `Is the ${spec.label} ${doc} photo maker free and private?`, a: "Yes. It's free, with no watermark, and processed entirely in your browser. Your photo is never uploaded." },
   ];

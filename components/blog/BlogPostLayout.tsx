@@ -7,6 +7,7 @@ import { ReadingProgress } from "@/components/blog/ReadingProgress";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, ORG_ID } from "@/lib/schema";
 import { absoluteUrl } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/site";
 
 /** Shared chrome + Article schema for a blog post. */
 export function BlogPostLayout({
@@ -39,8 +40,18 @@ export function BlogPostLayout({
               datePublished: post.dateISO,
               dateModified: post.dateISO,
               mainEntityOfPage: absoluteUrl(url),
-              image: absoluteUrl("/og.png"),
-              author: { "@id": ORG_ID },
+              image: {
+                "@type": "ImageObject",
+                url: absoluteUrl("/og.png"),
+                width: 1200,
+                height: 630,
+              },
+              author: {
+                "@type": "Organization",
+                "@id": ORG_ID,
+                name: SITE_NAME,
+                url: absoluteUrl("/"),
+              },
               publisher: { "@id": ORG_ID },
             },
           ]}

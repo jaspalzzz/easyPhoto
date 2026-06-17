@@ -97,7 +97,7 @@ export function softwareApplicationSchema(opts: {
     url: absoluteUrl(opts.url),
     applicationCategory: opts.category ?? "UtilitiesApplication",
     operatingSystem: "Any (modern web browser)",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
     isAccessibleForFree: true,
   };
 }
