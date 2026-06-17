@@ -200,30 +200,27 @@ async function getRMBG(opts: {
     }
   }
 
-  // Self-host on R2 when NEXT_PUBLIC_MODELS_BASE_URL is set: fetch the model from
-  // our own domain under a NEUTRAL id ("seg"), so the URL
-  // (e.g. models.easyphoto.in/seg/onnx/model_quantized.onnx) never reveals
-  // "briaai/RMBG-1.4" to the network, and we stop depending on huggingface.co.
-  // Unset → default HF behaviour (zero regression). Required R2 layout:
-  //   seg/config.json
-  //   seg/onnx/model_quantized.onnx   (q8)
-  //   seg/onnx/model_fp16.onnx        (fp16)
-  const MODELS_BASE = process.env.NEXT_PUBLIC_MODELS_BASE_URL;
-  const MODEL_ID = MODELS_BASE ? "seg" : "briaai/RMBG-1.4";
-  if (MODELS_BASE) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const env = (transformers as any).env;
-    if (env) {
-      env.remoteHost = MODELS_BASE.replace(/\/?$/, "/");
-      env.remotePathTemplate = "{model}/"; // flat: {base}/seg/onnx/...
-      env.allowRemoteModels = true;
+  // Self-host the model on our own R2 domain under a NEUTRAL id ("seg"), so the
+  // URL (models.easyphoto.in/seg/onnx/model_*.onnx) never reveals "briaai/RMBG-1.4"
+  // and we don't depend on huggingface.co. If R2 fails (outage / missing file),
+  // fall back to Hugging Face so background removal keeps working.
+  // R2 layout: seg/onnx/{model_quantized,model_fp16,model}.onnx + seg/config.json
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const env = (transformers as any).env;
+  const useSource = (src: "r2" | "hf") => {
+    if (!env) return;
+    env.allowRemoteModels = true;
+    if (src === "r2") {
+      env.remoteHost = "https://models.easyphoto.in/";
+      env.remotePathTemplate = "{model}/"; // → {base}/seg/onnx/model_*.onnx
+    } else {
+      env.remoteHost = "https://huggingface.co/";
+      env.remotePathTemplate = "{model}/resolve/{revision}/";
     }
-  }
-
-  const modelKey = `${opts.device}:${opts.dtype}:${opts.threads ?? 0}:${MODELS_BASE ? "r2" : "hf"}`;
-  if (!rmbgModelPromise || rmbgModelKey !== modelKey) {
-    rmbgModelKey = modelKey;
-    rmbgModelPromise = AutoModel.from_pretrained(MODEL_ID, {
+  };
+  const loadModel = (src: "r2" | "hf") => {
+    useSource(src);
+    return AutoModel.from_pretrained(src === "r2" ? "seg" : "briaai/RMBG-1.4", {
       // webgpu (Android) is fast; wasm (iOS, where webgpu OOMs at model-load)
       // is universal. q8 keeps memory low; fp16 balances quality on GPU.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -232,17 +229,33 @@ async function getRMBG(opts: {
       dtype: opts.dtype as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       config: { model_type: "custom" } as any,
-    }).catch((e: unknown) => {
-      rmbgModelPromise = null;
-      throw e;
     });
+  };
+
+  const modelKey = `${opts.device}:${opts.dtype}:${opts.threads ?? 0}`;
+  if (!rmbgModelPromise || rmbgModelKey !== modelKey) {
+    rmbgModelKey = modelKey;
+    rmbgModelPromise = loadModel("r2")
+      .catch((e: unknown) => {
+        console.warn(
+          "[seg] self-hosted (R2) model load failed; falling back to Hugging Face.",
+          e
+        );
+        return loadModel("hf");
+      })
+      .catch((e: unknown) => {
+        rmbgModelPromise = null;
+        throw e;
+      });
   }
   // RMBG/ISNet is fully convolutional, so the inference resolution is a free
   // memory↔quality knob. Low-RAM phones (e.g. iPhone 11) OOM at 1024², so we
   // run them smaller. If the requested size changes, rebuild the processor.
   if (!rmbgProcessorPromise || rmbgProcessorSize !== opts.inputSize) {
     rmbgProcessorSize = opts.inputSize;
-    rmbgProcessorPromise = AutoProcessor.from_pretrained(MODEL_ID, {
+    // Neutral id; the full processor config is supplied inline below, so this
+    // never hits the network (no model name leaks regardless of source).
+    rmbgProcessorPromise = AutoProcessor.from_pretrained("seg", {
       // RMBG-1.4 ships no preprocessor recognised by AutoProcessor, so supply it.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       config: {
