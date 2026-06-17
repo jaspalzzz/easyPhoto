@@ -8,6 +8,24 @@ import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
 import type { PortalSpec } from "@/lib/portalPresets";
 
 /**
+ * Meta description for an exam photo/signature resizer page. Covers BOTH the
+ * photo and signature KB targets (dual search intent) and fills the ~150–160
+ * char SERP width. All values come straight from the verified spec.
+ */
+export function resizerMetaDescription(spec: PortalSpec, label: string): string {
+  const photo = spec.photoMinKb
+    ? `${spec.photoMinKb}–${spec.photoLimitKb} KB`
+    : `under ${spec.photoLimitKb} KB`;
+  const px = spec.photoWidthPx
+    ? ` (${spec.photoWidthPx}×${spec.photoHeightPx}px)`
+    : "";
+  const sig = spec.sigLimitKb
+    ? ` and signature to ${spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}${spec.sigLimitKb} KB`
+    : "";
+  return `Compress your ${label} photo to ${photo}${px}${sig} — the exact size the ${label} form needs. Free, no watermark, 100% in your browser.`;
+}
+
+/**
  * Exam/portal FAQ built from the verified spec — targets high-intent searches
  * ("what is the ssc photo size", "resize signature to 20kb") and emits valid
  * FAQPage JSON-LD via ToolPage. Numbers come from the registry, never hardcoded.

@@ -18,6 +18,7 @@ export function ToolPage({
   faqItems,
   breadcrumbs: breadcrumbsProp,
   wide = false,
+  dateModified,
 }: {
   title: string;
   blurb: string;
@@ -33,6 +34,8 @@ export function ToolPage({
   breadcrumbs?: Crumb[];
   /** Wider container for content-heavy tools (e.g. the exam picker grid). */
   wide?: boolean;
+  /** ISO date the underlying spec was verified — emitted as schema dateModified. */
+  dateModified?: string;
 }) {
   const related = slug ? relatedTools(slug) : [];
   const entry = slug ? getTool(slug) : undefined;
@@ -62,6 +65,7 @@ export function ToolPage({
               description: blurb,
               url: urlPath,
               category: "MultimediaApplication",
+              dateModified,
             }),
           ]}
         />

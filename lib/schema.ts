@@ -89,9 +89,12 @@ export function softwareApplicationSchema(opts: {
   description: string;
   url: string;
   category?: string;
+  /** ISO date (YYYY-MM-DD) the spec was last verified — surfaces freshness. */
+  dateModified?: string;
 }) {
   return {
     "@type": "SoftwareApplication",
+    "@id": `${absoluteUrl(opts.url)}#app`,
     name: opts.name,
     description: opts.description,
     url: absoluteUrl(opts.url),
@@ -99,6 +102,7 @@ export function softwareApplicationSchema(opts: {
     operatingSystem: "Any (modern web browser)",
     offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
     isAccessibleForFree: true,
+    ...(opts.dateModified ? { dateModified: opts.dateModified } : {}),
   };
 }
 

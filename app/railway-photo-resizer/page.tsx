@@ -2,7 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ExamResizerSteps } from "@/components/tools/ExamResizerSteps";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
-import { portalFaqItems } from "@/lib/faqs";
+import { portalFaqItems, resizerMetaDescription } from "@/lib/faqs";
 import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
 import { ExamSpecTable } from "@/components/site/ExamSpecTable";
 import { ExamContext } from "@/components/site/ExamContext";
@@ -13,7 +13,7 @@ const prov = specProvenance(spec);
 
 export const metadata = pageMetadata({
   title: `Railway RRB Photo Resizer — Compress to ${spec.photoLimitKb} KB`,
-  description: `Compress your passport photo to under ${spec.photoLimitKb} KB and exact specs (${spec.photoWidthPx}x${spec.photoHeightPx}px) for the RRB Railway application form. 100% private, client-side only.`,
+  description: resizerMetaDescription(spec, "RRB Railway"),
   path: "/railway-photo-resizer/",
 });
 
@@ -24,6 +24,7 @@ export default function Page() {
       slug="railway-photo-resizer"
       faqItems={portalFaqItems(spec)}
       path="/railway-photo-resizer/"
+      dateModified={spec.verifiedOn}
       blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB) and standard dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for the Railway Recruitment Board portal.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >

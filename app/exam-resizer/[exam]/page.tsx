@@ -86,6 +86,7 @@ export default async function Page({
             name: `${e.name} Photo & Signature Resizer`,
             description: `Resize a ${e.name} photo and signature to the exact size and KB the application form requires, in your browser.`,
             url: path,
+            dateModified: spec.verifiedOn,
           }),
         ]}
       />

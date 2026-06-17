@@ -17,7 +17,7 @@ export function DoDontStrip({
 }) {
   return (
     <div>
-      <h3 className="text-sm font-semibold tracking-tight text-ink">{title}</h3>
+      <h2 className="text-sm font-semibold tracking-tight text-ink">{title}</h2>
       <div className="mt-2.5 grid gap-x-6 gap-y-2 sm:grid-cols-2">
         <ul className="space-y-1.5">
           {dos.map((d) => (

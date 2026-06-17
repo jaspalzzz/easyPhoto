@@ -2,7 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ExamResizerSteps } from "@/components/tools/ExamResizerSteps";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
-import { portalFaqItems } from "@/lib/faqs";
+import { portalFaqItems, resizerMetaDescription } from "@/lib/faqs";
 import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
 import { ExamSpecTable } from "@/components/site/ExamSpecTable";
 import { ExamContext } from "@/components/site/ExamContext";
@@ -13,7 +13,7 @@ const prov = specProvenance(spec);
 
 export const metadata = pageMetadata({
   title: "IBPS Photo Resizer — Compress Photo for IBPS Bank Exams",
-  description: `Compress your passport photo to under ${spec.photoLimitKb} KB and exact specs (${spec.photoWidthPx}x${spec.photoHeightPx}px) for the IBPS banking application forms. 100% private.`,
+  description: resizerMetaDescription(spec, "IBPS"),
   path: "/ibps-photo-resizer/",
 });
 
@@ -24,6 +24,7 @@ export default function Page() {
       slug="ibps-photo-resizer"
       faqItems={portalFaqItems(spec)}
       path="/ibps-photo-resizer/"
+      dateModified={spec.verifiedOn}
       blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB) and standard dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for IBPS online bank application forms.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >

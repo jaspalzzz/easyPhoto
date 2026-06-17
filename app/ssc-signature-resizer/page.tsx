@@ -23,6 +23,7 @@ export default function Page() {
       slug="ssc-signature-resizer"
       faqItems={portalFaqItems(spec)}
       path="/ssc-signature-resizer/"
+      dateModified={spec.verifiedOn}
       blurb={`Resize, clean, and compress your signature to under ${spec.sigLimitKb} KB (${spec.sigMinKb}–${spec.sigLimitKb} KB) and standard dimensions (${spec.sigWidthPx}×${spec.sigHeightPx}px) for the Staff Selection Commission portal.`}
       footnote="Your signature is processed entirely in your browser. No server uploads."
     >
