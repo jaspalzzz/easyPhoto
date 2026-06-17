@@ -149,6 +149,25 @@ export async function webgpuSupportsF16(): Promise<boolean> {
 // browser evicts it, which a Cloudflare purge cannot fix. Bump = clean rollout.
 const SEG_ID = "seg";
 
+// RMBG-1.4's image preprocessor settings. transformers REQUIRES a
+// preprocessor_config.json to exist (a 404 throws, even though we also pass this
+// inline to AutoProcessor). We deliberately do NOT host it on R2 — instead the
+// fetch wrapper serves it synthetically from here, so there is ZERO Hugging Face
+// traffic in normal operation (the model name never leaks) and no extra R2 object
+// to keep in sync. `size` is a placeholder; the real per-call size is set inline.
+const RMBG_PREPROCESSOR = {
+  do_normalize: true,
+  do_pad: false,
+  do_rescale: true,
+  do_resize: true,
+  image_mean: [0.5, 0.5, 0.5],
+  image_std: [1, 1, 1],
+  feature_extractor_type: "ImageFeatureExtractor",
+  resample: 2,
+  rescale_factor: 0.00392156862745098,
+  size: { width: 1024, height: 1024 },
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let rmbgModelPromise: Promise<any> | null = null;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -243,17 +262,34 @@ async function getRMBG(opts: {
       const m = segFile.exec(url);
       if (m) {
         const file = m[1]; // "onnx/model_quantized.onnx" | "config.json" | …
+        // Serve the required preprocessor config from code — never the network —
+        // so no Hugging Face request (and no model-name leak) ever fires for it.
+        if (file === "preprocessor_config.json") {
+          return new Response(JSON.stringify(RMBG_PREPROCESSOR), {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          });
+        }
+        const isWeights = /\.onnx$/i.test(file);
         try {
           const res = await origFetch(
             `https://models.easyphoto.in/${SEG_ID}/${file}`,
             init
           );
           if (res.ok) return res;
+          // 404 on a NON-weight file (e.g. preprocessor_config.json, which we
+          // don't host because the config is supplied inline) means "absent on
+          // R2", not "R2 down". Return the 404 so transformers uses the inline
+          // config — do NOT fall through to Hugging Face, which would leak the
+          // model name in the network on every run. Only weights (and server
+          // errors) get the reliability mirror below.
+          if (res.status === 404 && !isWeights) return res;
         } catch {
           /* R2 unreachable — fall through to the mirror below */
         }
         // Silent reliability fallback: identical weights, different origin. Only
-        // fires if R2 is down; the model name is never surfaced in the primary URL.
+        // fires if R2 is genuinely down (network error / 5xx) or a weight file is
+        // missing; the model name is never surfaced in the primary URL.
         // NOTE: keep this mirror in sync with whatever weights SEG_ID points at.
         return origFetch(
           `https://huggingface.co/briaai/RMBG-1.4/resolve/main/${file}`,
@@ -286,21 +322,15 @@ async function getRMBG(opts: {
   // run them smaller. If the requested size changes, rebuild the processor.
   if (!rmbgProcessorPromise || rmbgProcessorSize !== opts.inputSize) {
     rmbgProcessorSize = opts.inputSize;
-    // Neutral id; the full processor config is supplied inline below, so this
-    // never hits the network (no model name leaks regardless of source).
+    // Neutral id; the preprocessor_config.json fetch is served synthetically by
+    // the fetch wrapper above (from RMBG_PREPROCESSOR), and we also pass the
+    // config inline here — so the processor never reaches the network and no
+    // model name leaks regardless of source.
     rmbgProcessorPromise = AutoProcessor.from_pretrained(SEG_ID, {
       // RMBG-1.4 ships no preprocessor recognised by AutoProcessor, so supply it.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       config: {
-        do_normalize: true,
-        do_pad: false,
-        do_rescale: true,
-        do_resize: true,
-        image_mean: [0.5, 0.5, 0.5],
-        image_std: [1, 1, 1],
-        feature_extractor_type: "ImageFeatureExtractor",
-        resample: 2,
-        rescale_factor: 0.00392156862745098,
+        ...RMBG_PREPROCESSOR,
         size: { width: opts.inputSize, height: opts.inputSize },
       } as any,
     }).catch((e: unknown) => {
