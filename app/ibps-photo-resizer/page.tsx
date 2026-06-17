@@ -5,6 +5,7 @@ import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
 import { ExamSpecTable } from "@/components/site/ExamSpecTable";
+import { ExamContext } from "@/components/site/ExamContext";
 import { Info } from "lucide-react";
 
 const spec = getPortalSpec("ibps")!;
@@ -46,6 +47,8 @@ export default function Page() {
       </div>
 
       <ResizeKbTool defaultKb={spec.photoLimitKb} minWidth={spec.photoWidthPx} minHeight={spec.photoHeightPx} toolName="ibps-photo-resizer" />
+
+      <ExamContext spec={spec} />
 
       <div className="mt-10">
         <ExamSpecTable spec={spec} />

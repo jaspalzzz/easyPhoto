@@ -47,6 +47,13 @@ export interface PortalSpec {
    * exported JPEG's JFIF header so a strict metadata check also passes.
    */
   dpi?: number;
+  /**
+   * 1–2 sentences of ACCURATE, exam-specific context (conducting body, exams
+   * covered, where/how the photo is uploaded, exam-specific rules). Surfaced as
+   * unique on-page prose to differentiate the otherwise-templated per-exam
+   * resizer pages. Verifiable facts only — no marketing fluff, no guessed numbers.
+   */
+  context?: string;
 }
 
 export const PORTAL_PRESETS: Record<string, PortalSpec> = {
@@ -67,6 +74,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://ssc.gov.in", label: "SSC official portal (ssc.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-08",
+    context:
+      "SSC (Staff Selection Commission) recruitments — CGL, CHSL, MTS, GD Constable, Stenographer and Junior Engineer — collect your photograph and signature during the One-Time Registration (OTR) on ssc.gov.in. SSC also requires your name and the date the photo was taken to appear on the photograph itself.",
   },
   upsc: {
     id: "upsc",
@@ -85,6 +94,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://upsconline.nic.in", label: "UPSC online application (upsconline.nic.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "UPSC (Union Public Service Commission) runs the Civil Services (IAS, IPS, IFS), CDS, NDA, CMS and other central recruitments through a single One-Time Registration (OTR) account on upsconline.nic.in. UPSC requires the candidate's name and the date the photo was taken to be printed on the photograph itself.",
   },
   ds160: {
     id: "ds160",
@@ -149,6 +160,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://rrbapply.gov.in", label: "RRB Application Portal (rrbapply.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "Railway Recruitment Board (RRB) recruitments — NTPC, Group D, ALP and Technician — are applied for on the common portal rrbapply.gov.in, and share the same photo and signature upload spec across every CEN notification.",
   },
   ibps: {
     id: "ibps",
@@ -167,6 +180,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://ibps.in", label: "IBPS official portal (ibps.in)" },
     verification: "official",
     verifiedOn: "2026-06-08",
+    context:
+      "IBPS (Institute of Banking Personnel Selection) conducts the common recruitment process for Probationary Officer, Clerk, Specialist Officer and Regional Rural Bank posts across public-sector banks; the photo and signature are uploaded during the online registration at ibps.in.",
   },
   sbi: {
     id: "sbi",
@@ -185,6 +200,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://sbi.co.in/web/careers", label: "SBI Careers (sbi.co.in/web/careers)" },
     verification: "official",
     verifiedOn: "2026-06-08",
+    context:
+      "The State Bank of India recruits its Probationary Officer, Clerk (Junior Associate) and Specialist Officer cadres directly through its own careers portal — separately from the IBPS common exam — though the photo and signature upload limits match most banking recruitments.",
   },
   nta: {
     id: "nta",

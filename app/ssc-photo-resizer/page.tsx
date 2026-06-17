@@ -1,5 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
+import { ExamContext } from "@/components/site/ExamContext";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
@@ -46,6 +47,8 @@ export default function Page() {
       </div>
 
       <ResizeKbTool defaultKb={spec.photoLimitKb} minWidth={spec.photoWidthPx} minHeight={spec.photoHeightPx} toolName="ssc-photo-resizer" />
+
+      <ExamContext spec={spec} nameDateHref="/ssc-photo-with-name-date/" />
 
       <div className="mt-10">
         <ExamSpecTable spec={spec} />

@@ -5,6 +5,7 @@ import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
 import { ExamSpecTable } from "@/components/site/ExamSpecTable";
+import { ExamContext } from "@/components/site/ExamContext";
 import { Info } from "lucide-react";
 
 const spec = getPortalSpec("upsc")!;
@@ -46,6 +47,8 @@ export default function Page() {
       </div>
 
       <ResizeKbTool defaultKb={spec.photoLimitKb} minWidth={spec.photoWidthPx} minHeight={spec.photoHeightPx} toolName="upsc-photo-resizer" />
+
+      <ExamContext spec={spec} nameDateHref="/tools/photo-with-name-date/" />
 
       <div className="mt-10">
         <ExamSpecTable spec={spec} />
