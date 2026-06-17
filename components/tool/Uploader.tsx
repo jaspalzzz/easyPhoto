@@ -10,13 +10,23 @@ interface UploaderProps {
   disabled?: boolean;
   /** Extra classes for the dropzone (e.g. a taller hero variant). */
   className?: string;
+  /** Primary call-to-action line. Defaults to photo-oriented copy. */
+  title?: string;
+  /** Secondary hint line. Override for non-photo inputs (e.g. signatures). */
+  hint?: string;
 }
 
 /**
  * File / drag-drop input, framed like a photo being aligned under crop marks.
  * The selected file is read in-memory by the caller — NEVER uploaded.
  */
-export function Uploader({ onFile, disabled, className }: UploaderProps) {
+export function Uploader({
+  onFile,
+  disabled,
+  className,
+  title = "Drop a photo, or click to browse",
+  hint = "A clear, front-facing photo works best",
+}: UploaderProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = React.useState(false);
 
@@ -71,12 +81,8 @@ export function Uploader({ onFile, disabled, className }: UploaderProps) {
         <Plus className="h-5 w-5" strokeWidth={1.75} />
       </span>
       <div>
-        <p className="text-[15px] font-medium text-foreground">
-          Drop a photo, or click to browse
-        </p>
-        <p className="mt-0.5 text-sm text-muted-foreground">
-          A clear, front-facing photo works best
-        </p>
+        <p className="text-[15px] font-medium text-foreground">{title}</p>
+        <p className="mt-0.5 text-sm text-muted-foreground">{hint}</p>
       </div>
       <p className="spec mt-1 normal-case tracking-[0.04em]">
         JPG · PNG · HEIC &nbsp;·&nbsp; processed on your device, never uploaded

@@ -50,8 +50,13 @@ function makeThumbDataUrl(
  */
 export function ImageToolShell({
   children,
+  uploaderTitle,
+  uploaderHint,
 }: {
   children: (source: ToolSource, reset: () => void) => React.ReactNode;
+  /** Override the dropzone copy (e.g. for signature scans, not photos). */
+  uploaderTitle?: string;
+  uploaderHint?: string;
 }) {
   const [source, setSource] = React.useState<ToolSource | null>(null);
   const [loading, setLoading] = React.useState(false);
@@ -93,7 +98,9 @@ export function ImageToolShell({
           </div>
         )}
 
-        {!source && !loading && <Uploader onFile={onFile} />}
+        {!source && !loading && (
+          <Uploader onFile={onFile} title={uploaderTitle} hint={uploaderHint} />
+        )}
 
         {loading && <ProcessingState label="Reading your image…" />}
 

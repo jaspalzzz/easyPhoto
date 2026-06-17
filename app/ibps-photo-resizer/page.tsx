@@ -1,6 +1,6 @@
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
-import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
+import { ExamResizerSteps } from "@/components/tools/ExamResizerSteps";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
@@ -46,7 +46,7 @@ export default function Page() {
         </div>
       </div>
 
-      <ResizeKbTool defaultKb={spec.photoLimitKb} minWidth={spec.photoWidthPx} minHeight={spec.photoHeightPx} toolName="ibps-photo-resizer" />
+      <ExamResizerSteps spec={spec} slug="ibps" />
 
       <ExamContext spec={spec} />
 

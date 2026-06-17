@@ -178,7 +178,10 @@ export function SignatureKbTool({
   }, [toolName]);
 
   return (
-    <ImageToolShell>
+    <ImageToolShell
+      uploaderTitle="Drop your signature, or click to browse"
+      uploaderHint="A scan or photo of your signature on white paper works best"
+    >
       {(source) => <Body source={source} kb={kb} toolName={toolName} />}
     </ImageToolShell>
   );
