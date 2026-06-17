@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check:specs": "node scripts/check-specs.mjs"
+    "check:specs": "node scripts/check-specs.mjs",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.2.0",
