@@ -273,9 +273,17 @@ function Body({
         let finalCanvas = finalCleaned;
         let cropOk = true;
         if (autoCrop) {
+          // Ignore sparse margin noise (specks, scanner dust, a faint page-edge
+          // rim) so the box snaps to the real ink instead of barely moving.
+          // Floor scales with size: ~0.5% of the smaller side, min 2 px.
+          const minRun = Math.max(
+            2,
+            Math.round(Math.min(finalCleaned.width, finalCleaned.height) * 0.005)
+          );
           const { canvas: trimmed, bbox } = trimToContent(finalCleaned, {
             mode: "alpha",
             padding: dPadding,
+            minRun,
           });
           if (bbox) {
             finalCanvas = trimmed;

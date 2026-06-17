@@ -90,10 +90,18 @@ export interface BBox {
  */
 export function getContentBBox(
   source: HTMLCanvasElement,
-  opts: { mode?: "alpha" | "luma"; threshold?: number } = {}
+  opts: { mode?: "alpha" | "luma"; threshold?: number; minRun?: number } = {}
 ): BBox | null {
   const mode = opts.mode ?? "alpha";
   const threshold = opts.threshold ?? (mode === "alpha" ? 16 : 200);
+  // A row/column counts toward the box only if MORE than `minRun` of its pixels
+  // are content. This is what makes the trim robust on real scans: a stray
+  // speck, scanner dust, a thin page-edge rim or faint texture leaves a few
+  // opaque pixels in the margins that would otherwise pin the box to the image
+  // edge — so the crop barely moves (the "no visible difference" bug). Ignoring
+  // sparse rows/cols snaps the box to the actual ink. Default 0 = legacy
+  // behaviour (any single content pixel counts).
+  const minRun = opts.minRun ?? 0;
   const ctx = source.getContext("2d");
   if (!ctx) return null;
   const { data, width, height } = ctx.getImageData(
@@ -103,10 +111,11 @@ export function getContentBBox(
     source.height
   );
 
-  let minX = width;
-  let minY = height;
-  let maxX = -1;
-  let maxY = -1;
+  // Per-row / per-column content histograms, so the density floor applies
+  // independently on each axis (a speck in a margin only adds to its own row
+  // and column, both of which then fall below the floor and are skipped).
+  const rowHits = new Int32Array(height);
+  const colHits = new Int32Array(width);
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const i = (y * width + x) * 4;
@@ -116,21 +125,37 @@ export function getContentBBox(
           : luma(data[i], data[i + 1], data[i + 2]) < threshold &&
             data[i + 3] > 16;
       if (hit) {
-        if (x < minX) minX = x;
-        if (x > maxX) maxX = x;
-        if (y < minY) minY = y;
-        if (y > maxY) maxY = y;
+        rowHits[y]++;
+        colHits[x]++;
       }
     }
   }
-  if (maxX < 0) return null;
+
+  const firstAbove = (arr: Int32Array) => {
+    for (let i = 0; i < arr.length; i++) if (arr[i] > minRun) return i;
+    return -1;
+  };
+  const lastAbove = (arr: Int32Array) => {
+    for (let i = arr.length - 1; i >= 0; i--) if (arr[i] > minRun) return i;
+    return -1;
+  };
+  const minY = firstAbove(rowHits);
+  const maxY = lastAbove(rowHits);
+  const minX = firstAbove(colHits);
+  const maxX = lastAbove(colHits);
+  if (minX < 0 || minY < 0) return null;
   return { x: minX, y: minY, width: maxX - minX + 1, height: maxY - minY + 1 };
 }
 
 /** Crop a canvas to its content bounding box, with optional padding (px). */
 export function trimToContent(
   source: HTMLCanvasElement,
-  opts: { mode?: "alpha" | "luma"; threshold?: number; padding?: number } = {}
+  opts: {
+    mode?: "alpha" | "luma";
+    threshold?: number;
+    padding?: number;
+    minRun?: number;
+  } = {}
 ): { canvas: HTMLCanvasElement; bbox: BBox | null } {
   const bbox = getContentBBox(source, opts);
   if (!bbox) return { canvas: source, bbox: null };
