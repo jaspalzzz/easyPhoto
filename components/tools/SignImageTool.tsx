@@ -228,7 +228,7 @@ export function SignImageTool() {
         )}
 
         {baseFile && baseImage && (
-          <div className="grid gap-6 md:grid-cols-[1fr_280px]">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_280px]">
             {/* Left Column: Interactive Image Frame */}
             <div className="space-y-4">
               <div className="border-b border-hairline pb-2.5">

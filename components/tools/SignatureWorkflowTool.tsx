@@ -473,7 +473,7 @@ function Body({
   };
 
   return (
-    <div className="grid gap-6 md:grid-cols-[1.2fr_1fr]">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-[1.2fr_1fr]">
       {/* Left: Preview */}
       <div className="space-y-4">
         <PreviewFrame checker={bgFormat === "png"}>

@@ -274,7 +274,7 @@ export function SignPdfTool() {
         )}
 
         {pdfFile && pageCount > 0 && (
-          <div className="grid gap-6 md:grid-cols-[1fr_280px]">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_280px]">
             {/* Left Column: Interactive Page Display */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-hairline pb-2.5">

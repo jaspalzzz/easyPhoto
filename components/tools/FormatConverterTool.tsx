@@ -319,7 +319,7 @@ export function FormatConverterTool({
         )}
 
         {items.length > 0 && (
-          <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
             {/* Left Column: Queue List */}
             <div className="space-y-3">
               <div className="flex items-center justify-between border-b border-hairline pb-2">
