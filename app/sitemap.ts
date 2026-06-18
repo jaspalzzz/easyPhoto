@@ -56,12 +56,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...HINGLISH_SLUGS.map((s) => `/${s}/`),
     "/convert/",
     ...CONVERT_SLUGS.map((slug) => convertPath(slug)),
-    ...BLOG_POSTS.map((p) => `/blog/${p.slug}/`),
   ];
 
-  return routes.map((path) => ({
-    url: `${SITE_URL}${path}`,
-    changeFrequency: path === "/" ? "weekly" : "monthly",
-    priority: path === "/" ? 1 : path.startsWith("/tools/") ? 0.7 : 0.8,
-  }));
+  // Site-wide "last significant update". Bump MANUALLY on real content changes —
+  // NOT new Date(), so lastmod reflects actual freshness instead of churning on
+  // every build/deploy (which Google distrusts). Blog posts use their own date.
+  const LAST_UPDATED = "2026-06-18";
+
+  return [
+    ...routes.map((path) => ({
+      url: `${SITE_URL}${path}`,
+      lastModified: LAST_UPDATED,
+      changeFrequency: (path === "/" ? "weekly" : "monthly") as "weekly" | "monthly",
+      priority: path === "/" ? 1 : path.startsWith("/tools/") ? 0.7 : 0.8,
+    })),
+    // Blog posts carry their own real publish/update date.
+    ...BLOG_POSTS.map((p) => ({
+      url: `${SITE_URL}/blog/${p.slug}/`,
+      lastModified: p.dateISO,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+  ];
 }
