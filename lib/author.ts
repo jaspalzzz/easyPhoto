@@ -21,10 +21,6 @@ export const AUTHOR = {
   ],
   /** Public profile — byline link and Person.sameAs. */
   url: "https://www.linkedin.com/in/jaspal-jk/",
-  /**
-   * Headshot served from /public. EMPTY for now → the avatar shows clean "JK"
-   * initials (no broken-image flash). Save the photo to
-   * public/authors/jaspal-kumar.jpg, then set this to "/authors/jaspal-kumar.jpg".
-   */
-  photo: "",
+  /** Headshot in public/authors/. Avatar falls back to "JK" initials if absent. */
+  photo: "/authors/jaspal-kumar.jpeg",
 };
