@@ -27,8 +27,8 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "Indian Passport Photo Size & Rules (Passport Seva 2026)",
     description:
       "Indian passport photos are 45×35 mm in print and exactly 630×810 px / under 250 KB online, on a plain white background. Full Passport Seva rules and a free maker.",
-    date: "July 14, 2026",
-    dateISO: "2026-07-14",
+    date: "June 18, 2026",
+    dateISO: "2026-06-18",
     excerpt:
       "The Passport Seva spec is exact: a 45×35 mm printed photo or a 630×810 px JPEG under 250 KB, plain white background, face filling 80–85% of the frame. Here's every rule — plus how OCI and NRI applications differ.",
     readMins: 8,
@@ -84,8 +84,8 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "UPSC CSE / IAS Photo & Signature Requirements 2026",
     description:
       "UPSC CSE: 20–300 KB JPG, min 350×350 px square, name and date mandatory, three signatures on one sheet. Live photo matching and 10-day recency rule explained.",
-    date: "July 7, 2026",
-    dateISO: "2026-07-07",
+    date: "June 18, 2026",
+    dateISO: "2026-06-18",
     excerpt:
       "UPSC CSE 2026 added live webcam matching and a 10-day photo recency rule. Here are the confirmed specs, why three signatures are required, and the complete upload workflow.",
     readMins: 7,
@@ -95,8 +95,8 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "NDA & CDS Photo and Signature Requirements 2026",
     description:
       "NDA and CDS: 20–300 KB JPG, min 350×350 px square, plain white background, name and date required at bottom. Rejection checklist and free UPSC resizer.",
-    date: "July 4, 2026",
-    dateISO: "2026-07-04",
+    date: "June 18, 2026",
+    dateISO: "2026-06-18",
     excerpt:
       "NDA and CDS require a square photo — 350×350 px minimum — plus your name and date printed on the image. Here are the exact specs, the square vs portrait trap, and the complete upload workflow.",
     readMins: 7,
@@ -106,8 +106,8 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "SSC CGL / CHSL Photo & Signature Size 2026",
     description:
       "SSC CGL and CHSL require a 20–50 KB JPG photo (live capture only, no gallery) and 10–20 KB signature. Spec table, rejection checklist, and free resizer.",
-    date: "July 1, 2026",
-    dateISO: "2026-07-01",
+    date: "June 18, 2026",
+    dateISO: "2026-06-18",
     excerpt:
       "SSC now requires live photo capture — no gallery uploads. Here are the exact specs for CGL and CHSL, the six rejection reasons, and how to prepare your signature in one step.",
     readMins: 7,

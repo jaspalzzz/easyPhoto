@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo">
       <p>
         Every Indian competitive exam and recruitment portal asks for a photo and
         a signature. Almost every candidate gets at least one of them wrong on the

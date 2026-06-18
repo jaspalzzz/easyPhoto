@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} ctaHref="/upsc-photo-resizer/" ctaLabel="Resize your NDA/CDS photo">
       <p>
         NDA and CDS have a requirement no other Indian competitive exam does:
         your full name and the date you took the photo must be printed on the

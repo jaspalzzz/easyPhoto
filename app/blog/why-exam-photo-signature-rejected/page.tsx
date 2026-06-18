@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo">
       <p>
         You upload your photo to the{" "}
         <a href="https://ssc.nic.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>{" "}

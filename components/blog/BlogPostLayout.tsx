@@ -13,9 +13,13 @@ import { AUTHOR } from "@/lib/author";
 export function BlogPostLayout({
   slug,
   children,
+  ctaHref = "/passport-photo/",
+  ctaLabel = "Open the photo maker",
 }: {
   slug: string;
   children: React.ReactNode;
+  ctaHref?: string;
+  ctaLabel?: string;
 }) {
   const post = getPost(slug);
   if (!post) notFound();
@@ -43,7 +47,7 @@ export function BlogPostLayout({
               mainEntityOfPage: absoluteUrl(url),
               image: {
                 "@type": "ImageObject",
-                url: absoluteUrl("/og.png"),
+                url: absoluteUrl(`/blog/${post.slug}/opengraph-image`),
                 width: 1200,
                 height: 630,
               },
@@ -152,10 +156,10 @@ export function BlogPostLayout({
             Compliant size &amp; background, checked before you download — free, in your browser.
           </p>
           <Link
-            href="/passport-photo/"
+            href={ctaHref}
             className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-cta px-4 py-2.5 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
           >
-            Open the photo maker <ArrowRight className="h-4 w-4" strokeWidth={2} />
+            {ctaLabel} <ArrowRight className="h-4 w-4" strokeWidth={2} />
           </Link>
         </div>
 

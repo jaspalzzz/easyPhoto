@@ -12,7 +12,7 @@ import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
 import { HowItWorks, HOW_IT_WORKS_STEPS } from "@/components/site/HowItWorks";
 import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { howToSchema } from "@/lib/schema";
+import { softwareApplicationSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { ToolIconTile } from "@/components/site/ToolIcon";
 import { ToolCard } from "@/components/site/ToolCard";
@@ -25,11 +25,11 @@ export const metadata = pageMetadata({
   // The layout's "%s — easyPhoto" template does NOT apply to the root segment
   // (Next.js scoping), so the brand must be written here explicitly — it's the
   // homepage's strongest signal for the "easyphoto" brand query.
-  title: "easyPhoto — Free Passport, Visa & Exam Photo Maker",
+  title: "easyPhoto — Document Photo & Form-Resize Tools for India",
   description:
-    "Create a compliant passport or visa photo free, or resize your photo & " +
-    "signature to the exact KB for SSC, UPSC and 30+ exam forms. Everything " +
-    "runs in your browser — nothing is uploaded.",
+    "Free tools for Indian passport photos, visa photos, exam form resizing " +
+    "and government document images. Pick your country or exam — everything " +
+    "runs in your browser, nothing is uploaded.",
   path: "/",
 });
 
@@ -54,11 +54,13 @@ export default function HomePage() {
   return (
     <>
       <JsonLd
-        schema={howToSchema({
-          name: "How to make a compliant passport photo",
+        schema={softwareApplicationSchema({
+          name: "easyPhoto — Document Photo & Form-Resize Tools",
           description:
-            "Turn any photo into a passport/visa-compliant photo in three steps.",
-          steps: HOW_IT_WORKS_STEPS.map((s) => ({ name: s.title, text: s.body })),
+            "Free tools for Indian passport photos, visa photos, exam form resizing and government document images. Everything runs in your browser, nothing is uploaded.",
+          url: "/",
+          category: "UtilitiesApplication",
+          dateModified: "2026-06-18",
         })}
       />
 

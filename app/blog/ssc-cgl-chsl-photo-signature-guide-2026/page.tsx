@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} ctaHref="/ssc-photo-resizer/" ctaLabel="Resize your SSC photo">
       <p>
         If you&apos;ve applied for an SSC exam recently and tried to upload a
         saved photo, you already know the problem: the portal no longer lets

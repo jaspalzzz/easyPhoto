@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} ctaHref="/upsc-photo-resizer/" ctaLabel="Resize your UPSC photo">
       <p>
         UPSC CSE 2026 added two requirements that no previous cycle had: a
         strict 10-day recency rule (your photo must have been taken within 10

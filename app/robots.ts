@@ -14,8 +14,8 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "ChatGPT-User", allow: "/" },
       { userAgent: "ClaudeBot", allow: "/" },
       { userAgent: "PerplexityBot", allow: "/" },
-      // Default: allow all other bots.
-      { userAgent: "*", allow: "/" },
+      // Default: allow all other bots, but skip /_next/ JS chunks.
+      { userAgent: "*", allow: "/", disallow: "/_next/" },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

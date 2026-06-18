@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} ctaHref="/ibps-photo-resizer/" ctaLabel="Resize your IBPS photo">
       <p>
         Per the official IBPS calendar, the <strong>IBPS PO 2026 prelims are on
         22–23 August</strong>, with registration opening on the notification a

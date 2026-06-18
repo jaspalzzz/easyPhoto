@@ -1,4 +1,14 @@
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { pageMetadata } from "@/lib/seo";
+import { getPost } from "@/lib/blog";
+
+const post = getPost("visafoto-alternative-india-free")!;
+
+export const metadata = pageMetadata({
+  title: post.title,
+  description: post.description,
+  path: `/blog/${post.slug}/`,
+});
 
 export default function Page() {
   return (

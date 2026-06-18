@@ -1,8 +1,18 @@
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { pageMetadata } from "@/lib/seo";
+import { getPost } from "@/lib/blog";
+
+const post = getPost("best-free-exam-photo-resizer-india")!;
+
+export const metadata = pageMetadata({
+  title: post.title,
+  description: post.description,
+  path: `/blog/${post.slug}/`,
+});
 
 export default function Page() {
   return (
-    <BlogPostLayout slug="best-free-exam-photo-resizer-india">
+    <BlogPostLayout slug="best-free-exam-photo-resizer-india" ctaHref="/tools/exam-package/" ctaLabel="Try the exam photo tool">
       <p>
         Every Indian government exam portal specifies its own photo and signature size — not just
         dimensions, but an exact kilobyte range. SSC CGL wants a 275×354 px JPG between 20 KB and

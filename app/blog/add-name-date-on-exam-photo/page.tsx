@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo">
       <p>
         Some application forms don&apos;t just want a photo — they want your{" "}
         <strong>name and the date the photo was taken printed on the photo
