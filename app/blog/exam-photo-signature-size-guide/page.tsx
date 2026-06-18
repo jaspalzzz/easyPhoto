@@ -38,6 +38,19 @@ export default function Page() {
         </ul>
       </div>
 
+      <div className="my-6 rounded-xl border border-brand/20 bg-brand-soft/10 p-5">
+        <p className="!mt-0 text-sm font-semibold text-ink">Resize your photo or signature right now</p>
+        <p className="!mt-1 text-[15px] text-ink-soft">
+          Pick your exam — the tool applies the exact KB target, pixel dimensions, and background spec automatically. No sign-up, nothing uploaded.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Link href="/ssc-photo-resizer/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">SSC</Link>
+          <Link href="/ibps-photo-resizer/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">IBPS / SBI</Link>
+          <Link href="/upsc-photo-resizer/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">UPSC</Link>
+          <Link href="/tools/exam-package/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">All exams →</Link>
+        </div>
+      </div>
+
       <h2>How the KB band works — and why there&apos;s a minimum</h2>
       <p>
         Most candidates know about the upper KB limit. What catches people out is
@@ -201,6 +214,10 @@ export default function Page() {
         complete rejection list, see the dedicated{" "}
         <Link href="/blog/ssc-cgl-chsl-photo-signature-guide-2026/">SSC CGL / CHSL photo and signature guide</Link>.
       </p>
+      <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
+        <strong>Prepare your SSC signature:</strong>{" "}
+        <Link href="/ssc-photo-resizer/" className="text-brand underline font-medium">SSC photo &amp; signature resizer →</Link>
+      </p>
 
       <h2>Banking exams: IBPS PO, IBPS Clerk, SBI PO, SBI Clerk</h2>
       <p>
@@ -234,6 +251,12 @@ export default function Page() {
         the registration prep calendar — see the{" "}
         <Link href="/blog/ibps-po-2026-photo-signature-checklist/">IBPS PO 2026 photo and signature checklist</Link>.
       </p>
+      <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
+        <strong>Resize for IBPS / SBI:</strong>{" "}
+        <Link href="/ibps-photo-resizer/" className="text-brand underline font-medium">IBPS &amp; SBI photo resizer →</Link>
+        {" "}or{" "}
+        <Link href="/tools/exam-package/" className="text-brand underline font-medium">all-exam package →</Link>
+      </p>
 
       <h2>UPSC exams: CSE / IAS, NDA, CDS</h2>
       <p>
@@ -265,6 +288,10 @@ export default function Page() {
         the{" "}
         <Link href="/blog/add-name-date-on-exam-photo/">add name and date on exam photo guide</Link>.
       </p>
+      <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
+        <strong>Prepare your UPSC square photo:</strong>{" "}
+        <Link href="/upsc-photo-resizer/" className="text-brand underline font-medium">UPSC photo resizer →</Link>
+      </p>
 
       <h2>Railway exams: RRB NTPC, ALP, Group D</h2>
       <p>
@@ -287,6 +314,10 @@ export default function Page() {
         prepare the thumb impression image the same way you prepare the signature:
         photograph flat on a white surface with even light.
       </p>
+      <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
+        <strong>Resize for RRB exams:</strong>{" "}
+        <Link href="/tools/exam-package/" className="text-brand underline font-medium">All-exam photo &amp; signature package →</Link>
+      </p>
 
       <h2>NTA exams: NEET and JEE (Main)</h2>
       <p>
@@ -305,6 +336,10 @@ export default function Page() {
         candidates upload WebP or HEIC (common default formats on recent iPhones
         and Android phones) — those are rejected. Convert to JPG before uploading
         if you&apos;re not sure of your phone&apos;s output format.
+      </p>
+      <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
+        <strong>Convert &amp; resize for NEET / JEE:</strong>{" "}
+        <Link href="/tools/resize-kb/" className="text-brand underline font-medium">KB resizer — supports JPG, PNG, WebP →</Link>
       </p>
 
       <h2>State PSC and other board exams</h2>

@@ -3,12 +3,11 @@ import { DocPhotoLanding } from "@/components/site/DocPhotoLanding";
 import { PASSPORT_FAQ } from "@/lib/faqs";
 
 export const metadata = pageMetadata({
-  title: "Free Passport Size Photo Maker – Compliant for Any Country",
+  title: "Free Indian Passport Photo Maker — ICAO Compliant, No Upload",
   titleAbsolute: true,
   description:
-    "Make a passport size photo online free. Auto-crops to the exact head " +
-    "size & background for India, US, UK, Canada & Australia. 100% private, " +
-    "no upload.",
+    "Make a compliant Indian passport photo free — 35×45 mm or exactly 630×810 px JPEG under 250 KB for " +
+    "Passport Seva. Also US, UK, Canada & Australia. ICAO-compliant, 100% private, nothing uploaded.",
   path: "/passport-photo/",
 });
 
@@ -17,8 +16,8 @@ export default function Page() {
     <DocPhotoLanding
       kind="passport"
       path="/passport-photo/"
-      h1="Free Passport Size Photo Maker"
-      intro="Create a compliant passport size photo online for free. Pick your country and drop a photo, and we'll auto-crop to the exact head size and background for India, the US, UK, Canada and Australia. It's 100% private; nothing is uploaded."
+      h1="Free Indian Passport Size Photo Maker"
+      intro="Make a compliant Indian passport photo for free — 35×45 mm for the printed form, or exactly 630×810 px JPEG under 250 KB for the Passport Seva online upload. Pick your country, drop in a photo, and we auto-crop to the exact head size, ICAO-compliant white background, and portal spec. 100% private; nothing is uploaded."
       faqItems={PASSPORT_FAQ}
     />
   );

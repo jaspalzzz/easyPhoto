@@ -15,8 +15,9 @@ export const metadata = pageMetadata({
 });
 
 const BLURB =
-  "Turn a photo of your handwritten signature into a clean, form-ready image — " +
-  "remove the paper background, make it white or transparent, then crop and resize to spec.";
+  "Have a handwritten signature on paper? Upload a photo or scan — the tool removes the paper background, " +
+  "trims tightly to the ink, and exports a clean signature image ready for exam forms, PAN card, " +
+  "passport, or any portal that needs a white-background JPG or transparent PNG under 20 KB.";
 
 export default function Page() {
   return (

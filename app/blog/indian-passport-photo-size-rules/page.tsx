@@ -98,8 +98,22 @@ export default function Page() {
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
-          Source: Passport Seva photo-upload instructions and PSK &ldquo;DOs &amp; DON&apos;Ts for Photograph&rdquo;, verified June 2026 against passportindia.gov.in. Confirm current limits before applying.
+          Source: Passport Seva photo-upload instructions and PSK &ldquo;DOs &amp; DON&apos;Ts for Photograph&rdquo;, verified June 2026 against{" "}
+          <a href="https://www.passportindia.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">passportindia.gov.in</a>. Confirm current limits before applying.
         </p>
+      </div>
+
+      <div className="my-6 rounded-xl border border-brand/20 bg-brand-soft/10 p-5">
+        <p className="!mt-0 text-sm font-semibold text-ink">Make a compliant Indian passport photo free</p>
+        <p className="!mt-1 text-[15px] text-ink-soft">
+          Drop in your photo — the tool outputs a white-background 630×810&nbsp;px JPEG under 250&nbsp;KB for
+          the Passport Seva portal, and a print-ready 35×45&nbsp;mm crop. Nothing uploaded.
+        </p>
+        <div className="mt-3">
+          <Link href="/passport-photo/" className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white">
+            Make my passport photo →
+          </Link>
+        </div>
       </div>
 
       <h2>The white background rule</h2>

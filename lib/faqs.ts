@@ -94,6 +94,9 @@ export const PASSPORT_FAQ: FaqItem[] = [
   { q: "Can I make a US DV Lottery or green card photo?", a: "The DV Lottery uses a stricter square spec (600×600, JPEG, under 240KB). Use the US page, then the resize tool to meet the file-size limit." },
   { q: "How do I print my passport photo?", a: "Download the 4×6 inch PDF sheet and print it at any photo kiosk or chemist, then cut out the copies." },
   { q: "What's the difference between a passport photo and a visa photo?", a: "The size is often similar, but background rules and exact specs differ, so use the visa photo maker for visa applications." },
+  { q: "What is the passport photo size for the Passport Seva portal upload?", a: "Exactly 630×810 px JPEG, under 250 KB for the Passport Seva online application. For the printed form pasted on paper, the size is 35×45 mm (4.5×3.5 cm). EasyPhoto's India preset outputs the 630×810 px digital file ready for portal upload." },
+  { q: "Has India changed passport photo requirements?", a: "Yes — from 1 September 2025, applications through Indian embassies and consulates abroad (the NRI/overseas route) require ICAO-compliant photographs. The domestic Passport Seva Kendra spec continues to use the 35×45 mm white-background format. Glasses are now effectively banned on both routes." },
+  { q: "Can I upload a selfie for an Indian passport photo?", a: "No. Selfies are not accepted. The photo must be taken by someone else from about 1.5 metres, on a plain white background with even lighting. Selfies distort face proportions and typically fail the Passport Seva automated compliance check." },
 ];
 
 export const VISA_FAQ: FaqItem[] = [
