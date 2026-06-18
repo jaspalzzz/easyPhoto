@@ -38,7 +38,8 @@ export function BlogPostLayout({
               headline: post.title,
               description: post.description,
               datePublished: post.dateISO,
-              dateModified: post.dateISO,
+              dateModified: post.updatedISO ?? post.dateISO,
+              inLanguage: "en-IN",
               mainEntityOfPage: absoluteUrl(url),
               image: {
                 "@type": "ImageObject",

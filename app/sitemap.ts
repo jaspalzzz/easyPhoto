@@ -70,10 +70,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: (path === "/" ? "weekly" : "monthly") as "weekly" | "monthly",
       priority: path === "/" ? 1 : path.startsWith("/tools/") ? 0.7 : 0.8,
     })),
-    // Blog posts carry their own real publish/update date.
+    // Blog posts carry their real publish date, or updatedISO if the content
+    // was subsequently refreshed (set updatedISO in lib/blog.ts when refreshing).
     ...BLOG_POSTS.map((p) => ({
       url: `${SITE_URL}/blog/${p.slug}/`,
-      lastModified: p.dateISO,
+      lastModified: p.updatedISO ?? p.dateISO,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),

@@ -11,6 +11,12 @@ export interface BlogPost {
   date: string;
   /** ISO date for schema/datetime, e.g. "2026-06-06". */
   dateISO: string;
+  /**
+   * ISO date of last significant content update — set this when a post is
+   * refreshed so dateModified in the BlogPosting schema reflects real freshness
+   * rather than the original publish date. Leave unset for new posts.
+   */
+  updatedISO?: string;
   excerpt: string;
   readMins: number;
 }
