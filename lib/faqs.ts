@@ -274,6 +274,7 @@ export const SIGNATURE_BG_REMOVAL_FAQ: FaqItem[] = [
 ];
 
 export const SIGNATURE_CLEANER_FAQ: FaqItem[] = [
+  { q: "How do I turn a photo of my signature into a signature image?", a: "Sign on plain white paper, take a clear photo or scan, and upload it here. The tool removes the paper background, trims tightly to the ink, and converts the photo into a clean signature image you can drop onto any form — exported as a white-background JPG or a transparent PNG." },
   { q: "What does the signature cleaner do?", a: "It removes the paper background, auto-trims the empty space around the ink, and optimises the file size — turning a phone photo of your signature into a clean, form-ready image." },
   { q: "Will it keep a transparent background?", a: "Yes. The cleaned signature is exported as a transparent PNG so it sits cleanly on forms and documents." },
   { q: "Can it fix a faint or shadowed scan?", a: "Yes. Adjust the cleanup strength to lift faint paper and shadows while keeping the ink legible." },

@@ -7,16 +7,20 @@ import { SIGNATURE_CLEANER_FAQ } from "@/lib/faqs";
 const tool = getTool("signature-cleaner")!;
 
 export const metadata = pageMetadata({
-  title: "Signature Cleaner & Resizer Online — Make Background White",
+  title: "Photo to Signature Converter — Clean, Crop & Resize",
   description:
-    "Clean scanned signatures online. Easily make background white or transparent, crop, resize, and compress " +
-    "to meet PAN card, passport, or exam specifications like under 20 KB or 50 KB.",
+    "Turn a photo or image of your signature into a clean, form-ready signature — remove the paper background, " +
+    "make it white or transparent, then crop and resize to PAN, passport or exam limits like 20 KB or 50 KB.",
   path: `/tools/${tool.slug}/`,
 });
 
+const BLURB =
+  "Turn a photo of your handwritten signature into a clean, form-ready image — " +
+  "remove the paper background, make it white or transparent, then crop and resize to spec.";
+
 export default function Page() {
   return (
-    <ToolPage title="Signature Cleaner & Resizer" slug={tool.slug} blurb={tool.blurb} faqItems={SIGNATURE_CLEANER_FAQ}>
+    <ToolPage title="Signature Cleaner & Resizer" slug={tool.slug} blurb={BLURB} faqItems={SIGNATURE_CLEANER_FAQ}>
       <SignatureWorkflowTool
         defaultTab="clean"
         autoCropDefault={true}
