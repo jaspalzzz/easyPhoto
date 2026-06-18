@@ -18,7 +18,7 @@ export function WatermarkPdfTool() {
   const [file, setFile] = React.useState<File | null>(null);
   const [text, setText] = React.useState("CONFIDENTIAL");
   const [opacity, setOpacity] = React.useState(22);
-  const [diagonal, setDiagonal] = React.useState(true);
+  const [angle, setAngle] = React.useState(45);
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [done, setDone] = React.useState(false);
@@ -48,7 +48,7 @@ export function WatermarkPdfTool() {
       const blob = await watermarkPdf(file, {
         text,
         opacity: opacity / 100,
-        rotate: diagonal ? 45 : 0,
+        rotate: angle,
       });
       downloadBlob(blob, `${file.name.replace(/\.[^/.]+$/, "")}-watermarked.pdf`);
       setDone(true);
@@ -167,14 +167,22 @@ export function WatermarkPdfTool() {
                   className="w-full accent-[hsl(var(--brand))]"
                 />
               </label>
-              <label className="flex items-center gap-2 text-sm font-medium sm:mt-7">
+              <label className="text-sm">
+                <span className="mb-2 block font-semibold">
+                  Angle{" "}
+                  <span className="font-normal text-muted-foreground">
+                    · {angle}°{angle === 0 ? " (horizontal)" : angle === 45 ? " (diagonal)" : ""}
+                  </span>
+                </span>
                 <input
-                  type="checkbox"
-                  checked={diagonal}
-                  onChange={(e) => setDiagonal(e.target.checked)}
-                  className="h-4 w-4 accent-[hsl(var(--brand))]"
+                  type="range"
+                  min={0}
+                  max={90}
+                  step={5}
+                  value={angle}
+                  onChange={(e) => setAngle(Number(e.target.value))}
+                  className="w-full accent-[hsl(var(--brand))]"
                 />
-                Diagonal (45°)
               </label>
             </div>
 

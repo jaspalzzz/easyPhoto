@@ -40,7 +40,7 @@ export default function Page() {
     <ToolPage
       title="Watermark PDF"
       slug={tool.slug}
-      blurb="Stamp a text watermark across every page of a PDF — CONFIDENTIAL, DRAFT, COPY, or your own text. Adjustable opacity, diagonal or horizontal. Free and fully in your browser."
+      blurb="Stamp a text watermark across every page of a PDF — CONFIDENTIAL, DRAFT, COPY, or your own text. Adjustable opacity and angle. Free and fully in your browser."
       faqItems={FAQS}
       footnote="The watermark is added as real text and your PDF is never uploaded."
     >
