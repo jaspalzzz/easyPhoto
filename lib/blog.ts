@@ -23,6 +23,17 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "indian-passport-photo-size-rules",
+    title: "Indian Passport Photo Size & Rules (Passport Seva 2026)",
+    description:
+      "Indian passport photos are 45×35 mm in print and exactly 630×810 px / under 250 KB online, on a plain white background. Full Passport Seva rules and a free maker.",
+    date: "July 14, 2026",
+    dateISO: "2026-07-14",
+    excerpt:
+      "The Passport Seva spec is exact: a 45×35 mm printed photo or a 630×810 px JPEG under 250 KB, plain white background, face filling 80–85% of the frame. Here's every rule — plus how OCI and NRI applications differ.",
+    readMins: 8,
+  },
+  {
     slug: "cutout-pro-alternative-india",
     title: "Free Cutout Pro Alternative India: No Subscription, No Watermark, No Upload",
     description:
