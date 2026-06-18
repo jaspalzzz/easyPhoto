@@ -3,6 +3,7 @@
  * pdf-lib. Original page content (text, vectors, fonts) is preserved; nothing
  * is rasterized and nothing is uploaded.
  */
+import { assertPdfDecryptable } from "./pdfToImages";
 
 export interface WatermarkOptions {
   text: string;
@@ -17,6 +18,9 @@ export async function watermarkPdf(
   file: File,
   opts: WatermarkOptions
 ): Promise<Blob> {
+  // Reject password-protected PDFs up front — pdf-lib's ignoreEncryption would
+  // otherwise "succeed" on a file it can't decrypt and emit a broken output.
+  await assertPdfDecryptable(file);
   const { PDFDocument, StandardFonts, rgb, degrees } = await import("pdf-lib");
   const doc = await PDFDocument.load(await file.arrayBuffer(), {
     ignoreEncryption: true,
@@ -80,6 +84,7 @@ export async function addPageNumbers(
   file: File,
   opts: PageNumberOptions = {}
 ): Promise<Blob> {
+  await assertPdfDecryptable(file);
   const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
   const doc = await PDFDocument.load(await file.arrayBuffer(), {
     ignoreEncryption: true,

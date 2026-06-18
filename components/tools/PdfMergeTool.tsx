@@ -5,6 +5,8 @@ import { Download, FileUp, ShieldCheck, ArrowUp, ArrowDown, Trash2, FileText, Ch
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
+import { PdfEncryptedError } from "@/lib/pdfToImages";
 import { mergePdfs } from "@/lib/pdfMergeSplit";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
@@ -98,7 +100,8 @@ export function PdfMergeTool() {
       setMergedBlob(blob);
     } catch (err) {
       console.error(err);
-      setError("Could not merge the PDFs. Ensure none are encrypted or corrupted.");
+      if (err instanceof PdfEncryptedError) setError("encrypted");
+      else setError("Could not merge the PDFs. Ensure none are corrupted.");
     } finally {
       setBusy(false);
       setProgress(null);
@@ -163,11 +166,13 @@ export function PdfMergeTool() {
         </div>
 
         {/* Error message */}
-        {error && (
+        {error === "encrypted" ? (
+          <EncryptedPdfNotice />
+        ) : error ? (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
             {error}
           </p>
-        )}
+        ) : null}
 
         {/* Duplicate warning */}
         {duplicateWarning && (

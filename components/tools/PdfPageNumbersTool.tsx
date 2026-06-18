@@ -5,6 +5,8 @@ import { Download, FileUp, ShieldCheck } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
+import { PdfEncryptedError } from "@/lib/pdfToImages";
 import {
   addPageNumbers,
   type PageNumberPosition,
@@ -71,7 +73,8 @@ export function PdfPageNumbersTool() {
       track({ name: "tool_success", tool: "pdf-page-numbers", device: deviceClass() });
     } catch (e) {
       console.error(e);
-      setError("Could not add page numbers. If the PDF is password-protected, unlock it first.");
+      if (e instanceof PdfEncryptedError) setError("encrypted");
+      else setError("Could not add page numbers. Try re-saving the PDF as a plain PDF.");
       track({ name: "tool_failure", tool: "pdf-page-numbers", device: deviceClass(), reason: "pagenum-error" });
     } finally {
       setBusy(false);
@@ -119,11 +122,13 @@ export function PdfPageNumbersTool() {
           </div>
         )}
 
-        {error && (
+        {error === "encrypted" ? (
+          <EncryptedPdfNotice />
+        ) : error ? (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
             {error}
           </p>
-        )}
+        ) : null}
 
         {busy && <ProcessingState label="Adding page numbers…" />}
 

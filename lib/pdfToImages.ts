@@ -37,6 +37,33 @@ export class PdfEncryptedError extends Error {
   }
 }
 
+/**
+ * Throw PdfEncryptedError if the PDF needs a password to read. Cheap — it loads
+ * the document via pdfjs (no page rendering) and checks for a PasswordException,
+ * then disposes. The lossless pdf-lib tools (watermark, page numbers, merge) use
+ * this BEFORE pdf-lib's load({ ignoreEncryption: true }), which otherwise accepts
+ * a locked PDF it can't decrypt and emits a broken/blank/encrypted file.
+ * Owner-only encrypted PDFs (no user password) do NOT throw — pdfjs reads them.
+ */
+export async function assertPdfDecryptable(file: File): Promise<void> {
+  const pdfjs = await import("pdfjs-dist");
+  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    "pdfjs-dist/build/pdf.worker.min.mjs",
+    import.meta.url
+  ).toString();
+  const data = await file.arrayBuffer();
+  let pdf: Awaited<ReturnType<typeof pdfjs.getDocument>["promise"]>;
+  try {
+    pdf = await pdfjs.getDocument({ data }).promise;
+  } catch (err: unknown) {
+    if (err instanceof Error && err.name === "PasswordException") {
+      throw new PdfEncryptedError();
+    }
+    throw err;
+  }
+  await pdf.destroy();
+}
+
 export async function pdfToCanvases(
   file: File,
   opts: PdfRenderOptions = {}

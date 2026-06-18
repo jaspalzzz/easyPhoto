@@ -5,6 +5,8 @@ import { Download, FileUp, ShieldCheck } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
+import { PdfEncryptedError } from "@/lib/pdfToImages";
 import { watermarkPdf } from "@/lib/pdfAnnotate";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
@@ -54,7 +56,8 @@ export function WatermarkPdfTool() {
       track({ name: "tool_success", tool: "watermark-pdf", device: deviceClass() });
     } catch (e) {
       console.error(e);
-      setError("Could not watermark this PDF. If it's password-protected, unlock it first.");
+      if (e instanceof PdfEncryptedError) setError("encrypted");
+      else setError("Could not watermark this PDF. Try re-saving it as a plain PDF.");
       track({ name: "tool_failure", tool: "watermark-pdf", device: deviceClass(), reason: "watermark-error" });
     } finally {
       setBusy(false);
@@ -102,11 +105,13 @@ export function WatermarkPdfTool() {
           </div>
         )}
 
-        {error && (
+        {error === "encrypted" ? (
+          <EncryptedPdfNotice />
+        ) : error ? (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
             {error}
           </p>
-        )}
+        ) : null}
 
         {busy && <ProcessingState label="Adding watermark…" />}
 
