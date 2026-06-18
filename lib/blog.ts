@@ -23,6 +23,17 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "best-free-exam-photo-resizer-india",
+    title: "Best Free Exam Photo & Signature Resizer India (2026)",
+    description:
+      "Resize SSC, IBPS, UPSC, or RRB exam photos to exact KB and px specs for free. Three on-device tools compared: ExamMint, SarkariResizer, and easyPhoto.",
+    date: "June 18, 2026",
+    dateISO: "2026-06-18",
+    excerpt:
+      "Every exam portal has its own KB and pixel spec — a general resize tool won't hit it. Here are three free, on-device tools that know the exact SSC, IBPS, UPSC, and RRB requirements, compared honestly.",
+    readMins: 6,
+  },
+  {
     slug: "best-free-passport-photo-maker-india-2026",
     title: "Best Free Passport Photo Maker Online India (2026)",
     description:
