@@ -37,7 +37,10 @@ export default function Page() {
       <h2>Typical specs by exam</h2>
       <p>
         The exact numbers change between notification cycles, so always confirm in
-        the official notification — but these are the typical ranges:
+        the official notification — but these are the typical ranges. Official sources:{" "}
+        <a href="https://ssc.nic.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>,{" "}
+        <a href="https://ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>,{" "}
+        <a href="https://upsc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">UPSC</a>.
       </p>
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
@@ -117,6 +120,12 @@ export default function Page() {
         <li>Wrong dimensions — match the pixel size the form asks for.</li>
         <li>Old or unclear photo — use a recent, well-lit, front-facing one.</li>
       </ul>
+      <p>
+        For a full breakdown of every rejection reason, see{" "}
+        <Link href="/blog/why-exam-photo-signature-rejected/">why exam photos and signatures get rejected</Link>.
+        UPSC and Army applications also need your name and date{" "}
+        <Link href="/blog/add-name-date-on-exam-photo/">printed on the photo</Link>.
+      </p>
 
       <div className="mt-12">
         <Faq items={[

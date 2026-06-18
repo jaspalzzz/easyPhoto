@@ -96,7 +96,9 @@ export default function Page() {
         grey or cream. To put any photo on a clean white background directly, use
         the <Link href="/tools/white-background/">white background tool</Link>;
         to drop the background out completely first, try the{" "}
-        <Link href="/tools/background-removal/">background remover</Link>.
+        <Link href="/tools/background-removal/">background remover</Link>.{" "}
+        For lighting, framing and setup tips when shooting at home, see{" "}
+        <Link href="/blog/how-to-take-a-passport-photo-at-home/">how to take a passport photo at home</Link>.
       </p>
 
       <h2>One more check before you submit</h2>

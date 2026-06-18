@@ -99,6 +99,12 @@ export default function Page() {
         </li>
       </ul>
 
+      <p>
+        For a full walkthrough of compression options and what to do when the
+        target is very tight, see{" "}
+        <Link href="/blog/how-to-compress-pdf/">how to compress a PDF to an exact KB target</Link>.
+      </p>
+
       <h2>Splitting a PDF instead</h2>
       <p>
         Need the reverse — one large PDF broken into parts? The{" "}

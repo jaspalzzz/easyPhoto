@@ -58,7 +58,9 @@ export default function Page() {
       </table>
       <p>
         Always read the form&apos;s instructions. Limits vary, and some portals
-        set a minimum as well as a maximum.
+        set a minimum as well as a maximum. Official sources:{" "}
+        <a href="https://ssc.nic.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>,{" "}
+        <a href="https://ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>.
       </p>
 
       <h2>How to compress without losing sharpness</h2>
@@ -110,7 +112,10 @@ export default function Page() {
         Compression can&apos;t fix a non-compliant photo. Crop and set the
         correct background with the{" "}
         <Link href="/passport-photo/">passport photo maker</Link> first, then
-        compress the result. Everything runs in your browser, so your photo is
+        compress the result. For exact KB and pixel specs by exam, see the{" "}
+        <Link href="/blog/exam-photo-signature-size-guide/">
+          photo and signature size guide for government exams
+        </Link>. Everything runs in your browser, so your photo is
         never uploaded to a server.
       </p>
 

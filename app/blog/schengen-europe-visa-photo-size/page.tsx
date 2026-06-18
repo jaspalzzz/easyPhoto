@@ -78,6 +78,8 @@ export default function Page() {
       <p>
         If you&apos;re unsure, <strong>light grey is the safest universal choice</strong> —
         it&apos;s accepted everywhere, including Switzerland (which rejects white).
+        For EU Schengen visa requirements, see the{" "}
+        <a href="https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en" className="text-brand underline" target="_blank" rel="noopener noreferrer">European Commission Schengen visa guidance</a>.
       </p>
 
       <h2>How to make one free, without uploading your photo</h2>
@@ -94,7 +96,9 @@ export default function Page() {
         file at a few hundred KB — use the{" "}
         <Link href="/tools/resize-kb/">compress-to-KB tool</Link> on the finished
         photo. Always confirm the exact requirement on your consulate or VFS portal
-        before submitting.
+        before submitting. For photo dimensions across all passport and visa types,
+        see{" "}
+        <Link href="/blog/passport-photo-size-by-country/">passport photo size by country</Link>.
       </p>
 
       <div className="mt-12">

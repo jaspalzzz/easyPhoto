@@ -18,7 +18,11 @@ export default function Page() {
   return (
     <BlogPostLayout slug={post.slug}>
       <p>
-        You upload your photo to the SSC or IBPS portal, click submit, and the
+        You upload your photo to the{" "}
+        <a href="https://ssc.nic.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>{" "}
+        or{" "}
+        <a href="https://ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>{" "}
+        portal, click submit, and the
         page throws it back: <em>&quot;Photo is not as per specification.&quot;</em>{" "}
         No detail, no reason — just a red error and a closing deadline. The good
         news: portals reject for a small, predictable set of reasons, and every

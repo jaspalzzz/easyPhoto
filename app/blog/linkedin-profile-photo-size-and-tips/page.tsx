@@ -60,6 +60,11 @@ export default function Page() {
         </tbody>
       </table>
 
+      <p className="text-sm text-ink-soft">
+        Source:{" "}
+        <a href="https://www.linkedin.com/help/linkedin" className="text-brand underline" target="_blank" rel="noopener noreferrer">LinkedIn Help Centre</a>.
+      </p>
+
       <h2>Why is my LinkedIn photo shown in a circle?</h2>
       <p>
         LinkedIn stores a square image but displays it inside a circle. That means
@@ -92,7 +97,9 @@ export default function Page() {
         <Link href="/tools/white-background/">white background maker</Link>, then
         crop it. And if you&apos;re job-hunting, make a matching passport-size{" "}
         <Link href="/tools/resume-photo/">resume photo</Link> from the same
-        headshot.
+        headshot — see{" "}
+        <Link href="/blog/resume-photo-size-and-rules/">resume photo size and rules</Link>{" "}
+        for when to include one.
       </p>
 
       <h2>Common mistakes to avoid</h2>

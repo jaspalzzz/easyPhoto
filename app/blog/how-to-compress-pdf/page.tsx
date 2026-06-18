@@ -137,9 +137,16 @@ export default function Page() {
       <p>
         The{" "}
         <Link href="/exam-requirements/">exam requirements directory</Link> lists
-        the exact photo, signature and document size rules for SSC, UPSC, IBPS,
-        SBI, Railway, NTA (NEET/JEE) and other major portals — each with a link
-        to the official notification so you can verify before you upload.
+        the exact photo, signature and document size rules for SSC,{" "}
+        <a href="https://upsc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">UPSC</a>,
+        IBPS, SBI, Railway, NTA (NEET/JEE) and other major portals — each with a
+        link to the official notification so you can verify before you upload.
+      </p>
+
+      <p>
+        If you need to combine multiple documents first, see{" "}
+        <Link href="/blog/how-to-merge-pdf-free/">how to merge PDFs free</Link> — then
+        compress the merged result to your portal&apos;s limit.
       </p>
 
       <div className="mt-12">

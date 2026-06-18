@@ -58,6 +58,32 @@ export default function Page() {
         share the full one if explicitly required.
       </p>
 
+      <h2>Full vs. masked Aadhaar: when each is accepted</h2>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead>
+          <tr className="border-b border-hairline text-left">
+            <th className="py-2 pr-3 font-semibold text-ink">Situation</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Which version</th>
+          </tr>
+        </thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["Bank KYC (account opening, credit card)", "Full Aadhaar"],
+            ["e-KYC / OTP-based verification", "Full number required for OTP"],
+            ["Government portal identity verification", "Follow the portal's own instruction"],
+            ["Hotels and hostels (mandatory guest registration)", "Masked Aadhaar accepted"],
+            ["Coaching institutes and exam admission desks", "Masked Aadhaar accepted"],
+            ["Private landlord or rental agreements", "Masked Aadhaar accepted"],
+            ["Sharing via email or messaging apps", "Masked Aadhaar — never share the full card"],
+          ].map(([situation, version]) => (
+            <tr key={situation} className="border-b border-hairline/60">
+              <td className="py-2 pr-3 font-medium text-ink">{situation}</td>
+              <td className="py-2 pr-3">{version}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       <h2>How to mask your Aadhaar yourself (free, private)</h2>
       <p>
         You don&apos;t need to wait for the UIDAI download — you can mask any copy

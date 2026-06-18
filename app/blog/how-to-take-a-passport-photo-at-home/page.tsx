@@ -117,6 +117,17 @@ export default function Page() {
         photo kiosk on photo paper. For online applications, use the upload-ready
         file. A compliant photo, and you never left home.
       </p>
+      <p>
+        Photographing a baby or infant? The rules differ — eyes must be open and
+        the head unsupported. See{" "}
+        <Link href="/blog/baby-and-infant-passport-photo-guide/">
+          how to take a baby passport photo at home
+        </Link>. For the full list of reasons photos get rejected at the counter,
+        see{" "}
+        <Link href="/blog/why-passport-photos-get-rejected/">
+          why passport photos get rejected
+        </Link>.
+      </p>
 
       <div className="mt-12">
         <Faq items={[
