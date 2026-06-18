@@ -77,7 +77,12 @@ export function BlogPostLayout({
               <LogoMark className="h-5 w-5" />
             </span>
             <div className="text-sm leading-tight">
-              <p className="font-semibold text-ink">The easyPhoto team</p>
+              <Link
+                href="/about/"
+                className="font-semibold text-ink hover:text-brand hover:underline"
+              >
+                The easyPhoto team
+              </Link>
               <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">
                 <ShieldCheck className="h-3 w-3 text-brand" strokeWidth={2} />
                 Reviewed against official sources
@@ -98,6 +103,27 @@ export function BlogPostLayout({
         >
           {children}
         </article>
+
+        {/* Editorial standards — the "How / Why" E-E-A-T signal: real process,
+            dated verification, on-device privacy, corrections invite. All
+            truthful; no invented person or credentials. */}
+        <aside className="mt-12 rounded-xl border border-hairline bg-accent/5 p-5 text-sm leading-relaxed text-ink-soft">
+          <p className="font-semibold text-ink">How we keep this accurate</p>
+          <p className="mt-2">
+            Every photo and signature specification on easyPhoto is checked
+            against the official government source — passport offices, exam boards
+            and embassies — and dated, then re-verified when a portal changes its
+            rules. Every tool runs entirely in your browser; your documents are
+            never uploaded.
+          </p>
+          <p className="mt-2">
+            Spotted something out of date?{" "}
+            <Link href="/contact/" className="font-medium text-brand underline">
+              Tell us
+            </Link>{" "}
+            and we&apos;ll correct it.
+          </p>
+        </aside>
 
         {/* Closing CTA */}
         <div className="mt-12 flex flex-col items-start gap-3 rounded-xl border border-brand/25 bg-brand-soft/20 p-5 sm:flex-row sm:items-center sm:justify-between">
