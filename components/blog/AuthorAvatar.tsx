@@ -34,6 +34,8 @@ export function AuthorAvatar({
     <img
       src={src}
       alt={name}
+      width={120}
+      height={112}
       onError={() => setFailed(true)}
       className={`shrink-0 rounded-full border border-hairline object-cover ${className}`}
     />
