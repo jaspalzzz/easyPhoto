@@ -62,18 +62,25 @@ export default function Page() {
         </tbody>
       </table>
       <p>
-        When in doubt, follow the norm of the country and company you&apos;re
-        applying to. If a form or job portal asks for a photo, it will usually
-        specify the size and file limit.
+        The difference comes down to discrimination law. In countries with the{" "}
+        <a href="https://www.gov.uk/guidance/equality-act-2010-guidance" className="text-brand underline" target="_blank" rel="noopener noreferrer">UK Equality Act 2010</a>{" "}
+        and equivalent US EEOC frameworks, a hiring manager who sees a photo
+        before reading qualifications may unconsciously filter on protected
+        characteristics such as age, race or gender — creating legal liability.
+        Most Western companies now actively filter out CVs with photos for this
+        reason. In India and most of Asia, no equivalent legal pressure exists,
+        so a passport-size photo on a CV remains the norm.
       </p>
 
       <h2>What size is a resume photo?</h2>
       <p>
         In India, a resume or bio-data photo is almost always a standard{" "}
         <strong>passport-size photo — 35×45&nbsp;mm (3.5×4.5&nbsp;cm)</strong> — the
-        same size used for most application forms. There is no separate
-        &quot;resume size.&quot; For digital uploads, portals commonly want a
-        JPG within a set KB range, so check the form&apos;s limit.
+        same size used for most application forms — see{" "}
+        <Link href="/blog/passport-photo-size-by-country/">passport photo size by country</Link>{" "}
+        for how it varies globally. There is no separate &quot;resume size.&quot;
+        For digital uploads, portals commonly want a JPG within a set KB range,
+        so check the form&apos;s limit.
       </p>
 
       <h2>Background, attire and expression</h2>
@@ -93,7 +100,9 @@ export default function Page() {
         print or paste — and nothing is uploaded to a server. Building an online
         profile too? Make a square{" "}
         <Link href="/tools/linkedin-photo/">LinkedIn photo</Link> from the same
-        headshot.
+        headshot — see the{" "}
+        <Link href="/blog/linkedin-profile-photo-size-and-tips/">LinkedIn photo size guide</Link>{" "}
+        for size, circle-crop tips, and what looks professional.
       </p>
 
       <h2>Uploading to a job portal</h2>

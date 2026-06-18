@@ -119,7 +119,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "resume-photo-size-and-rules",
     title: "Resume Photo: Size, Background & Rules (India Guide)",
     description:
-      "In India a resume photo is passport-size (35×45 mm) on a plain background. The US and UK omit it. The rules, the right size, and a free maker.",
+      "In India a resume photo is passport-size (35×45 mm). The US, UK and Canada omit it to avoid bias claims — the rules by region, the exact size, and a free maker.",
     date: "June 7, 2026",
     dateISO: "2026-06-07",
     excerpt:
