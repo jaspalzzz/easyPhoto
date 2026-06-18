@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { MAKER_PAGES } from "@/lib/makerPages";
-import { SUB_EXAM_SLUGS } from "@/lib/subExamResizers";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
 import { KB_TARGETS, kbPath, PDF_KB_TARGETS, pdfKbPath } from "@/lib/kbTargets";
 import { BLOG_POSTS } from "@/lib/blog";
-import { PORTAL_KEYS } from "@/lib/portalPresets";
+import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
+import { SUB_EXAM_RESIZERS } from "@/lib/subExamResizers";
 import { HINGLISH_SLUGS } from "@/lib/hinglishPages";
 import { CONVERT_SLUGS, convertPath } from "@/lib/convertPairs";
 
@@ -41,7 +41,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...MAKER_PAGES.map((m) => `/${m.slug}/`),
     ...CATEGORY_SLUGS.map((s) => `/tools/${s}/`),
     ...READY_TOOLS.map((t) => `/tools/${t.slug}/`),
-    ...PORTAL_KEYS.map((key) => `/tools/form-resizer/${key}/`),
     "/exam-requirements/",
     "/exam-photo-size/",
     "/exam-calendar/",
@@ -49,8 +48,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/voter-id-photo-resizer/",
     "/driving-licence-photo-resizer/",
     "/aadhaar-photo/",
-    ...SUB_EXAM_SLUGS.map((s) => `/exam-resizer/${s}/`),
-    ...PORTAL_KEYS.map((key) => `/exam-requirements/${key}/`),
     ...KB_TARGETS.map((kb) => kbPath(kb)),
     ...PDF_KB_TARGETS.map((kb) => pdfKbPath(kb)),
     ...HINGLISH_SLUGS.map((s) => `/${s}/`),
@@ -63,12 +60,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // every build/deploy (which Google distrusts). Blog posts use their own date.
   const LAST_UPDATED = "2026-06-18";
 
+  // Exam pages carry the date their spec was last verified against the official
+  // source (verifiedOn), so lastmod reflects real freshness per exam instead of
+  // a single site-wide date. Falls back to LAST_UPDATED when a spec has no date.
+  const examFreshness = (key: string) => PORTAL_PRESETS[key]?.verifiedOn ?? LAST_UPDATED;
+
   return [
     ...routes.map((path) => ({
       url: `${SITE_URL}${path}`,
       lastModified: LAST_UPDATED,
       changeFrequency: (path === "/" ? "weekly" : "monthly") as "weekly" | "monthly",
       priority: path === "/" ? 1 : path.startsWith("/tools/") ? 0.7 : 0.8,
+    })),
+    // Per-exam spec pages — lastmod = the spec's own verification date.
+    ...PORTAL_KEYS.map((key) => ({
+      url: `${SITE_URL}/exam-requirements/${key}/`,
+      lastModified: examFreshness(key),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    ...PORTAL_KEYS.map((key) => ({
+      url: `${SITE_URL}/tools/form-resizer/${key}/`,
+      lastModified: examFreshness(key),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    // Sub-exam resizers inherit their parent spec's verification date.
+    ...SUB_EXAM_RESIZERS.map((e) => ({
+      url: `${SITE_URL}/exam-resizer/${e.slug}/`,
+      lastModified: examFreshness(e.parentId),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
     })),
     // Blog posts carry their real publish date, or updatedISO if the content
     // was subsequently refreshed (set updatedISO in lib/blog.ts when refreshing).

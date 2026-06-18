@@ -66,6 +66,14 @@ export default async function Page({
     >
       <FormatConverterTool key={p.target} defaultTarget={p.target} />
 
+      {/* Unique per-pair prose — differentiates each conversion page. */}
+      <section className="mt-10 max-w-2xl">
+        <h2 className="text-xl font-semibold tracking-tight text-ink">
+          {p.from} vs {p.to}: what changes
+        </h2>
+        <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">{p.detail}</p>
+      </section>
+
       {related.length > 0 && (
         <section className="mt-10">
           <h2 className="eyebrow mb-3">Other conversions</h2>

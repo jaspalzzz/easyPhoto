@@ -131,6 +131,14 @@ export default async function Page({
 
       <ExamSpecTable spec={spec} name={e.name} />
 
+      {/* Unique per-sub-exam prose — differentiates same-spec sibling pages. */}
+      <section className="max-w-xl">
+        <h2 className="text-xl font-semibold tracking-tight text-ink">
+          About {e.name}
+        </h2>
+        <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">{e.note}</p>
+      </section>
+
       <ExamContext spec={spec} />
 
       {related.length > 0 && (

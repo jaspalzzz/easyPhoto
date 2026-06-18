@@ -22,6 +22,13 @@ export interface ConvertPair {
   target: ConvertTargetFormat;
   /** One-line "why convert" hook, used in copy + FAQ. */
   reason: string;
+  /**
+   * 2–3 sentences of format-specific, accurate prose rendered as a unique
+   * on-page block — what actually happens in this conversion (lossless vs
+   * lossy, transparency, compatibility). Differentiates each pair page from
+   * its near-identical siblings. Facts only.
+   */
+  detail: string;
 }
 
 export const CONVERT_PAIRS: ConvertPair[] = [
@@ -32,6 +39,8 @@ export const CONVERT_PAIRS: ConvertPair[] = [
     target: "image/jpeg",
     reason:
       "HEIC is the format iPhones save photos in, but most websites, forms and Windows apps only accept JPG.",
+    detail:
+      "iPhones have saved photos as HEIC by default since iOS 11 because it stores the same quality in roughly half the space. The trade-off is reach: most exam portals, Windows photo viewers and older editors still expect JPG. Converting to JPG makes the photo open everywhere, while you keep the smaller HEIC original on your phone.",
   },
   {
     slug: "heic-to-png",
@@ -40,6 +49,8 @@ export const CONVERT_PAIRS: ConvertPair[] = [
     target: "image/png",
     reason:
       "Convert iPhone HEIC photos to widely-supported PNG when you need lossless quality or transparency support.",
+    detail:
+      "PNG is a lossless format, so converting a HEIC photo to PNG keeps every pixel intact — useful for screenshots, diagrams or images you plan to edit further. The file will be larger than the HEIC original, but it opens in virtually any app and supports a transparent background if you need one later.",
   },
   {
     slug: "webp-to-jpg",
@@ -48,6 +59,8 @@ export const CONVERT_PAIRS: ConvertPair[] = [
     target: "image/jpeg",
     reason:
       "WebP images saved from the web often won't open in older editors or upload to forms — JPG works everywhere.",
+    detail:
+      "WebP is built for fast-loading websites, which is why images you save from the web often arrive in this format. Many upload forms, older software and some printers still reject it. Converting to JPG — the most universally accepted photo format — guarantees the image opens and uploads anywhere, with a quality slider to balance sharpness against file size.",
   },
   {
     slug: "webp-to-png",
@@ -56,6 +69,8 @@ export const CONVERT_PAIRS: ConvertPair[] = [
     target: "image/png",
     reason:
       "Turn a WebP into a PNG to keep transparency and edit it in apps that don't read WebP.",
+    detail:
+      "Both WebP and PNG support transparency, so a logo or graphic with a see-through background keeps it through the conversion. PNG is lossless and far more widely supported in design and office software, making it the safer choice when you need to drop the image into an app that can't read WebP.",
   },
   {
     slug: "png-to-jpg",
@@ -64,6 +79,8 @@ export const CONVERT_PAIRS: ConvertPair[] = [
     target: "image/jpeg",
     reason:
       "PNG files are large; converting to JPG shrinks the file size dramatically for email, forms and the web.",
+    detail:
+      "PNG stores every pixel without compression, so photographs saved as PNG end up several times larger than they need to be. JPG uses smart lossy compression that shrinks a photo dramatically with little visible difference — ideal when a form caps the file size or you're emailing images. Note that any transparent areas become white, since JPG has no transparency.",
   },
   {
     slug: "jpg-to-png",
@@ -72,6 +89,8 @@ export const CONVERT_PAIRS: ConvertPair[] = [
     target: "image/png",
     reason:
       "Convert a JPG to PNG for lossless editing or to add a transparent background later.",
+    detail:
+      "Converting a JPG to PNG won't recover detail the JPG already discarded, but it stops any further quality loss from that point on — useful before repeated edits and re-saves. PNG also lets you erase the background to transparency, which a JPG can never hold. Expect a larger file in exchange for the lossless, edit-friendly format.",
   },
   {
     slug: "jpg-to-webp",
@@ -80,6 +99,8 @@ export const CONVERT_PAIRS: ConvertPair[] = [
     target: "image/webp",
     reason:
       "WebP makes JPG photos noticeably smaller at the same quality — ideal for faster-loading websites.",
+    detail:
+      "WebP typically produces files around 25–30% smaller than JPG at the same visual quality, which is why it's the go-to format for speeding up websites and improving Core Web Vitals. It's supported by every current browser. Keep a JPG copy too if you also need to upload the image to a form or service that hasn't adopted WebP yet.",
   },
   {
     slug: "png-to-webp",
@@ -88,6 +109,8 @@ export const CONVERT_PAIRS: ConvertPair[] = [
     target: "image/webp",
     reason:
       "WebP keeps PNG transparency while cutting the file size, perfect for web graphics and logos.",
+    detail:
+      "WebP supports the same transparency as PNG but compresses far more efficiently, so logos, icons and graphics with a see-through background load faster on the web without losing their alpha channel. It supports both lossless and lossy modes, letting you trade a little quality for an even smaller file when speed matters most.",
   },
   {
     slug: "heic-to-webp",
@@ -96,6 +119,8 @@ export const CONVERT_PAIRS: ConvertPair[] = [
     target: "image/webp",
     reason:
       "Convert iPhone HEIC photos straight to compact WebP for the web without a quality drop.",
+    detail:
+      "HEIC and WebP are both modern, highly-compressed formats — but WebP works in every browser, while HEIC barely renders outside Apple's ecosystem. Converting straight from HEIC to WebP keeps the file small and the quality high, making it the best pick for putting iPhone photos on a website without the bulk of a JPG or PNG.",
   },
 ];
 
