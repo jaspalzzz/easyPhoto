@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
 
 const post = getPost("how-to-mask-aadhaar-before-sharing")!;
@@ -24,13 +25,25 @@ export default function Page() {
         one isn&apos;t strictly required.
       </p>
 
+      <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
+        <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
+        <ul className="!mt-2 text-[15px]">
+          <li>A <strong>masked Aadhaar</strong> hides the first 8 digits and shows only the last 4.</li>
+          <li>Share it anywhere the full number isn&apos;t legally required — hotels, landlords, coaching/admission desks.</li>
+          <li>Mask any copy free with the{" "}
+            <Link href="/tools/mask-aadhaar/">Aadhaar masking tool</Link> — the
+            black box is burned into the image and nothing is uploaded.</li>
+        </ul>
+      </div>
+
       <h2>What is a masked Aadhaar?</h2>
       <p>
         A masked Aadhaar hides the <strong>first 8 digits</strong> of your Aadhaar
         number and shows only the <strong>last 4</strong> — enough to identify the
-        document to you, without exposing the full number. UIDAI offers a masked
-        download on its site, and many verification flows now accept the masked
-        version.
+        document to you, without exposing the full number.{" "}
+        <a href="https://uidai.gov.in" target="_blank" rel="noopener noreferrer">UIDAI</a>{" "}
+        offers a masked download on its site, and many verification flows now
+        accept the masked version.
       </p>
 
       <h2>When you can share a masked Aadhaar</h2>
@@ -72,6 +85,29 @@ export default function Page() {
         <li>Share over secure channels; avoid public/unknown upload sites.</li>
         <li>If a PDF is password-protected (like e-Aadhaar), open it with the <Link href="/unlock-aadhaar-pdf/">e-Aadhaar password</Link> first, then mask a screenshot.</li>
       </ul>
+
+      <div className="mt-12">
+        <Faq
+          items={[
+            {
+              q: "Is a masked Aadhaar valid as ID proof?",
+              a: "For many private and KYC-light purposes, yes — UIDAI itself promotes masked Aadhaar to limit exposure. Some banking and government KYC still need the full number, so follow the specific instruction; whenever it isn't mandated, share the masked version.",
+            },
+            {
+              q: "Which digits does Aadhaar masking hide?",
+              a: "The first 8 of the 12-digit number. Only the last 4 stay visible — enough to identify the document to you without exposing the full number.",
+            },
+            {
+              q: "Can the black box be removed from a masked copy?",
+              a: "No. The masking tool burns the black box into the image pixels, so it can't be peeled off or recovered — unlike a highlight or box added in some PDF editors, which can be deleted.",
+            },
+            {
+              q: "Is it safe to mask my Aadhaar online?",
+              a: "With this tool, yes — it runs entirely in your browser and your Aadhaar is never uploaded to any server. Avoid tools that upload your document to a server to mask it.",
+            },
+          ]}
+        />
+      </div>
     </BlogPostLayout>
   );
 }

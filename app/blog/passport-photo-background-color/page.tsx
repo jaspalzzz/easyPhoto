@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
 
 const post = getPost("passport-photo-background-color")!;
@@ -24,31 +25,50 @@ export default function Page() {
         each major country, and how to apply it.
       </p>
 
+      <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
+        <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
+        <ul className="!mt-2 text-[15px]">
+          <li><strong>White / off-white:</strong> US, India, Canada, Australia.</li>
+          <li><strong>Light grey or cream:</strong> the UK — <strong>pure white is rejected</strong>.</li>
+          <li><strong>Light grey:</strong> safest for Schengen (Switzerland rejects white).</li>
+          <li>Whatever the colour, it must be a <strong>single even tone with no shadows</strong>.</li>
+        </ul>
+      </div>
+
       <h2>Background color by country</h2>
-      <ul>
-        <li>
-          <strong>United States:</strong> plain white or off-white.{" "}
-          <Link href="/us-passport-photo-maker/">US spec</Link>.
-        </li>
-        <li>
-          <strong>India:</strong> plain white. <Link href="/india-passport-photo-maker/">India spec</Link>.
-        </li>
-        <li>
-          <strong>United Kingdom:</strong> light grey or cream.{" "}
-          <em>Pure white is rejected.</em> <Link href="/uk-passport-photo-maker/">UK spec</Link>.
-        </li>
-        <li>
-          <strong>Canada:</strong> plain white. <Link href="/canada-passport-photo-maker/">Canada spec</Link>.
-        </li>
-        <li>
-          <strong>Australia:</strong> plain white or light grey.{" "}
-          <Link href="/australia-passport-photo-maker/">Australia spec</Link>.
-        </li>
-        <li>
-          <strong>Schengen (EU):</strong> light grey is safest, since many
-          consulates are wary of pure white. <Link href="/schengen-visa-photo-maker/">Schengen spec</Link>.
-        </li>
-      </ul>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead>
+          <tr className="border-b border-hairline text-left">
+            <th className="py-2 pr-3 font-semibold text-ink">Country</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Background</th>
+            <th className="py-2 font-semibold text-ink">Spec</th>
+          </tr>
+        </thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["United States", "Plain white or off-white", "/us-passport-photo-maker/"],
+            ["India", "Plain white", "/india-passport-photo-maker/"],
+            ["United Kingdom", "Light grey or cream (pure white rejected)", "/uk-passport-photo-maker/"],
+            ["Canada", "Plain white", "/canada-passport-photo-maker/"],
+            ["Australia", "Plain white or light grey", "/australia-passport-photo-maker/"],
+            ["Schengen (EU)", "Light grey safest (varies by country)", "/schengen-visa-photo-maker/"],
+          ].map(([c, bg, href]) => (
+            <tr key={c} className="border-b border-hairline/60">
+              <td className="py-2 pr-3 font-medium text-ink">{c}</td>
+              <td className="py-2 pr-3">{bg}</td>
+              <td className="py-2">
+                <Link href={href}>View&nbsp;→</Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="text-sm text-ink-soft">
+        Official sources:{" "}
+        <a href="https://travel.state.gov/content/travel/en/passports/how-apply/photos.html" target="_blank" rel="noopener noreferrer">U.S. Dept. of State</a>,{" "}
+        <a href="https://www.passportindia.gov.in" target="_blank" rel="noopener noreferrer">Passport Seva (India)</a>,{" "}
+        <a href="https://www.gov.uk/photos-for-passports" target="_blank" rel="noopener noreferrer">GOV.UK</a>.
+      </p>
 
       <h2>Why the shade matters so much</h2>
       <p>
@@ -90,6 +110,29 @@ export default function Page() {
         <Link href="/tools/resize-kb/">resize to an exact KB</Link>. Everything
         runs locally, so your photo never leaves your device.
       </p>
+
+      <div className="mt-12">
+        <Faq
+          items={[
+            {
+              q: "Can I use a plain white wall for my passport photo?",
+              a: "Only for countries that require white (US, India, Canada). The UK rejects pure white. And a white wall shot in warm indoor light often comes out cream or grey, with a shadow behind the head — both fail the 'single even tone' rule.",
+            },
+            {
+              q: "What background colour does a US or India passport photo need?",
+              a: "Both require plain white (the US also accepts off-white). It must be a single, even, shadow-free tone.",
+            },
+            {
+              q: "Why does the UK reject white passport-photo backgrounds?",
+              a: "UK rules require a plain light grey or cream background — pure white is one of the most common UK rejection reasons. Use grey or cream for any UK passport or visa photo.",
+            },
+            {
+              q: "How do I remove a shadow behind my head?",
+              a: "Step about half a metre away from the wall and light yourself evenly from the front (a window works). If a faint shadow remains, replace the background entirely with the white-background tool or background remover.",
+            },
+          ]}
+        />
+      </div>
     </BlogPostLayout>
   );
 }
