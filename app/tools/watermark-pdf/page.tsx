@@ -11,7 +11,7 @@ export const metadata = pageMetadata({
   titleAbsolute: true,
   description:
     "Add a text watermark (CONFIDENTIAL, DRAFT, COPY…) across every page of a PDF " +
-    "online for free. Adjustable opacity and diagonal placement. 100% private — your " +
+    "online for free. Adjustable opacity and angle. 100% private — your " +
     "PDF is processed in your browser and never uploaded.",
   path: `/tools/${tool.slug}/`,
 });
@@ -30,8 +30,8 @@ const FAQS: FaqItem[] = [
     a: "Yes. The watermark is added as real vector text layered over each page, and the original page content (text, images) is preserved — the PDF is not flattened to images.",
   },
   {
-    q: "Can I make the watermark lighter or horizontal?",
-    a: "Yes. Use the opacity slider to make it subtle or bold, and toggle the diagonal (45°) option off for a horizontal watermark.",
+    q: "Can I make the watermark lighter or change its angle?",
+    a: "Yes. Use the opacity slider to make it subtle or bold, and the angle slider to set any rotation from horizontal (0°) to diagonal (45°).",
   },
 ];
 
