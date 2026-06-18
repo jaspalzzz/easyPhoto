@@ -23,23 +23,36 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
-    slug: "best-free-exam-photo-resizer-india",
-    title: "Best Free Exam Photo & Signature Resizer India (2026)",
+    slug: "cutout-pro-alternative-india",
+    title: "Free Cutout Pro Alternative India: No Subscription, No Watermark, No Upload",
     description:
-      "Resize SSC, IBPS, UPSC, or RRB exam photos to exact KB and px specs for free. Three on-device tools compared: ExamMint, SarkariResizer, and easyPhoto.",
+      "Cutout.pro's passport photo feature costs 2 credits — free credits run out fast, then it's ₹246.50/month or more. Three free, on-device alternatives.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     excerpt:
-      "Every exam portal has its own KB and pixel spec — a general resize tool won't hit it. Here are three free, on-device tools that know the exact SSC, IBPS, UPSC, and RRB requirements, compared honestly.",
-    readMins: 6,
+      "Cutout.pro starts free but caps you at 5 credits — a passport photo costs 2. Once they're gone, it's a monthly subscription. Here are three tools that are free permanently, don't upload to a server, and work for India.",
+    readMins: 5,
+  },
+  {
+    slug: "best-free-exam-photo-resizer-india",
+    title: "Best Free Exam Photo & Signature Resizer India (2026)",
+    description:
+      "Resize SSC, IBPS, UPSC, or RRB exam photos to exact KB and px specs for free. Five on-device tools compared: ExamMint, myexamphoto.in, govtphotoresizer.com, SarkariResizer, and easyPhoto.",
+    date: "June 18, 2026",
+    dateISO: "2026-06-18",
+    updatedISO: "2026-06-18",
+    excerpt:
+      "Every exam portal has its own KB and pixel spec — a general resize tool won't hit it. Five free tools that know the exact SSC, IBPS, UPSC, and RRB requirements, compared honestly on coverage, privacy, and breadth.",
+    readMins: 7,
   },
   {
     slug: "best-free-passport-photo-maker-india-2026",
     title: "Best Free Passport Photo Maker Online India (2026)",
     description:
-      "Five free tools that make a compliant 35×45 mm Indian passport photo — compared on privacy, spec accuracy, and exam support. No ₹600 fees, no account required.",
+      "Seven free tools that make a compliant 35×45 mm Indian passport photo — compared on privacy, spec accuracy, and exam support. No ₹600 fees, no account required.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
+    updatedISO: "2026-06-18",
     excerpt:
       "Most tools either charge ₹600, upload your photo to a server, or use the wrong India spec. Here are five options compared on cost, privacy, and whether they actually know the 35×45 mm Seva requirement.",
     readMins: 6,

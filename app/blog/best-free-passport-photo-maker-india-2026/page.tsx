@@ -7,7 +7,7 @@ export default function Page() {
         Most online passport photo tools have at least one of three problems: they charge ₹600 per
         photo, they upload your biometric face photo to a remote server, or they use the US 2×2 inch
         spec instead of India&apos;s actual 35×45 mm requirement. If you&apos;re applying for a
-        passport, OCI card, or a government exam form, none of those is acceptable. Here are five
+        passport, OCI card, or a government exam form, none of those is acceptable. Here are seven
         tools compared on the criteria that matter — cost, privacy, and whether they actually know
         the India spec.
       </p>
@@ -78,6 +78,20 @@ export default function Page() {
               <td className="px-4 py-3 text-muted-foreground">Often wrong spec</td>
               <td className="px-4 py-3 text-muted-foreground">None</td>
             </tr>
+            <tr>
+              <td className="px-4 py-3 font-medium text-ink">PhotoGov</td>
+              <td className="px-4 py-3 text-muted-foreground">Free (limited) + paid from $5.90</td>
+              <td className="px-4 py-3 font-medium text-amber-700">Yes — server + email required</td>
+              <td className="px-4 py-3 text-muted-foreground">⚠ Generic India page shows US spec</td>
+              <td className="px-4 py-3 text-muted-foreground">None</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-medium text-ink">Cutout.pro</td>
+              <td className="px-4 py-3 text-muted-foreground">5 free credits, then ₹246.50+/mo</td>
+              <td className="px-4 py-3 font-medium text-amber-700">Yes — AWS server</td>
+              <td className="px-4 py-3 text-muted-foreground">India listed (spec unconfirmed)</td>
+              <td className="px-4 py-3 text-muted-foreground">None</td>
+            </tr>
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
@@ -107,21 +121,31 @@ export default function Page() {
         is free with no account required.
       </p>
 
-      <h2>PassportSizePhoto.in — the other India-native free tool</h2>
+      <h2>PassportSizePhoto.in — free, WebAssembly, India-first</h2>
 
       <p>
-        PassportSizePhoto.in is a free, India-focused passport photo maker that says it runs
-        processing on-device — their homepage states no upload and DPDPA compliance. It handles the
-        Indian passport 35×45 mm spec and a range of other Indian ID document types. It&apos;s a
-        real alternative for users who want a second option.
+        PassportSizePhoto.in is a free, India-native passport photo tool built on WebAssembly with
+        a verifiable &quot;zero-data-transfer&quot; privacy model — processing runs entirely in
+        the browser and photos are never sent to a server. The India spec is implemented at the
+        pixel level: 630×810 px, 10–250 KB, matching the Passport Seva portal&apos;s exact upload
+        constraints. The tool claims DPDPA (India&apos;s Digital Personal Data Protection Act)
+        compliance alongside GDPR, and a Hindi-language version is available.
       </p>
 
       <p>
-        Where it falls short for exam applicants: it doesn&apos;t appear to have the specific KB
-        and pixel targets for individual exam portals. It&apos;s positioned as a general
-        passport/ID tool. If you only need a passport photo, it&apos;s a valid free choice. If you
-        need a 20–50 KB JPG at exactly 275×354 px for an SSC form, you need something more
-        specific.
+        The feature set goes beyond a basic crop: a print layout selector lets you output 1, 4, 6,
+        or 8 photos per 4R sheet for physical printing; background colour options include white,
+        off-white, light blue, and light grey; and a guided three-step flow walks through upload,
+        settings, and download clearly. The workflow steps are visually structured on their
+        how-to-use page — upload with drag-and-drop or camera, choose document type and layout,
+        then download a print-ready sheet.
+      </p>
+
+      <p>
+        The gap: it is a passport and ID photo tool. SSC and UPSC are mentioned by name in their
+        content, but there are no portal-specific KB ceilings or pixel dimensions for individual
+        exam forms. For a passport photo only, it is a strong free choice. For exam portal photos,
+        use a dedicated exam resizer.
       </p>
 
       <h2>IDPhoto4You — free, but your photo goes to a server</h2>
@@ -167,6 +191,47 @@ export default function Page() {
         is worth verifying what a tool claims before paying.
       </p>
 
+      <h2>PhotoGov — check which India page you land on</h2>
+
+      <p>
+        PhotoGov (photogov.net) serves 1.8 million users across 200 countries and 900+ document
+        types — it is a large, well-established tool. The India 35×45 mm Passport Seva spec exists
+        on their dedicated page (/documents/in-passport-35x45mm-photo/). However, their generic
+        India passport page (/documents/in-passport-photo/) showed 2×2 inches (51×51 mm) — the
+        US specification — with a light grey background rather than the India-mandated white. This
+        is a verifiable content discrepancy on their site (confirmed June 2026). If you use
+        PhotoGov for an Indian passport photo, navigate to the specific 35×45 mm page, not the
+        generic India page.
+      </p>
+
+      <p>
+        Other caveats: PhotoGov requires an email address and uploads your photo to their server
+        for processing. The free tier is location-dependent — Indian users may face a paywall;
+        paid options start from approximately $5.90 USD. There is a human expert review add-on
+        available (pricing not publicly listed). No exam portal support of any kind.
+      </p>
+
+      <h2>Cutout.pro — AI background removal, but credit-gated for passport photos</h2>
+
+      <p>
+        Cutout.pro gives 5 free credits on sign-up. A passport photo costs 2 credits — you get
+        two complete photos before credits run out. After that, the cheapest plan is ₹246.50/month
+        (confirmed June 2026 from their pricing page). Free previews are watermarked. Photos are
+        uploaded to Amazon Web Services and retained for 24–48 hours. Public reports (Cybernews
+        2023; Trustpilot references to a BreachForums posting in February 2024) document past
+        data security incidents.
+      </p>
+
+      <p>
+        Cutout.pro is genuinely strong at AI background removal for complex subjects — product
+        photography, hair, transparent objects. For a one-off Indian passport photo, that
+        capability is not needed and the credit pricing is poor value. See the dedicated{" "}
+        <a href="/blog/cutout-pro-alternative-india/" className="text-brand underline">
+          Cutout.pro alternatives post
+        </a>{" "}
+        for a full comparison including PassportMaker and PassportSizePhoto.in.
+      </p>
+
       <h2>Which should you use?</h2>
 
       <ul>
@@ -185,8 +250,18 @@ export default function Page() {
         </li>
         <li>
           <strong>Privacy is a hard requirement:</strong> easyPhoto or PassportSizePhoto.in —
-          both claim on-device processing; easyPhoto&apos;s privacy model is verifiable (the
-          code runs in your browser; network tab shows zero image uploads).
+          both use on-device WebAssembly processing; easyPhoto&apos;s model is verifiable via
+          the browser network tab (zero image upload requests sent).
+        </li>
+        <li>
+          <strong>You found PhotoGov and want to use it:</strong> Navigate specifically to their
+          India 35×45 mm page — their generic India passport page shows the US spec. Or use a
+          free on-device tool and skip the server upload entirely.
+        </li>
+        <li>
+          <strong>You are considering Cutout.pro:</strong> It runs out of free credits after two
+          passport photos, then requires a subscription. For one-off document photos, the free
+          on-device tools are better value. Cutout.pro is strong for bulk product photography.
         </li>
       </ul>
 
@@ -215,9 +290,10 @@ export default function Page() {
         <strong>Do these tools add a watermark to free photos?</strong>
       </p>
       <p>
-        None of the free tools listed here add a watermark to the downloaded photo. easyPhoto,
-        PassportSizePhoto.in, and IDPhoto4You are all fully free with no paid tier for the
-        download itself.
+        easyPhoto, PassportSizePhoto.in, and IDPhoto4You do not add a watermark — downloads are
+        fully free. Cutout.pro&apos;s free tier produces watermarked previews; a watermark-free
+        full-resolution download requires credits (confirmed by independent reviews). Visafoto
+        and Passport Photo Online are paid tools — there is no free download tier.
       </p>
     </BlogPostLayout>
   );
