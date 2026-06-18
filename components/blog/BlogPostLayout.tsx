@@ -53,6 +53,7 @@ export function BlogPostLayout({
                 sameAs: [AUTHOR.url],
                 ...(AUTHOR.photo ? { image: absoluteUrl(AUTHOR.photo) } : {}),
                 jobTitle: AUTHOR.title,
+                knowsAbout: AUTHOR.knowsAbout,
                 worksFor: { "@id": ORG_ID },
               },
               publisher: { "@id": ORG_ID },
