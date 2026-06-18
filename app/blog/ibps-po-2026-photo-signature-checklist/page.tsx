@@ -118,7 +118,11 @@ export default function Page() {
         signature will serve most banking and SSC applications this cycle. If
         you&apos;re applying to more than one, the{" "}
         <Link href="/tools/exam-package/">Exam Application Kit</Link> prepares a
-        photo + signature for any chosen exam in one guided flow.
+        photo + signature for any chosen exam in one guided flow. Applying to SSC
+        as well? Note that the SSC portal uses live webcam capture rather than file
+        upload — see the{" "}
+        <Link href="/blog/ssc-cgl-chsl-photo-signature-guide-2026/">SSC CGL / CHSL photo and signature guide</Link>{" "}
+        for the full details.
       </p>
 
       <h2>Don&apos;t miss the window</h2>

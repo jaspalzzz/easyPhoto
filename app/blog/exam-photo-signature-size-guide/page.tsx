@@ -125,6 +125,12 @@ export default function Page() {
         <Link href="/blog/why-exam-photo-signature-rejected/">why exam photos and signatures get rejected</Link>.
         UPSC and Army applications also need your name and date{" "}
         <Link href="/blog/add-name-date-on-exam-photo/">printed on the photo</Link>.
+        For NDA and CDS specifically — including the square 350&nbsp;×&nbsp;350&nbsp;px
+        requirement and the mandatory name/date text — see the{" "}
+        <Link href="/blog/nda-cds-photo-signature-guide-2026/">NDA &amp; CDS photo and signature guide</Link>.
+        For SSC CGL and CHSL specifically — including the live-capture requirement
+        and the all-caps signature rule — see the{" "}
+        <Link href="/blog/ssc-cgl-chsl-photo-signature-guide-2026/">SSC CGL / CHSL photo and signature guide</Link>.
       </p>
 
       <div className="mt-12">

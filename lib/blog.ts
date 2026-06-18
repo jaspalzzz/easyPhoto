@@ -17,6 +17,28 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "nda-cds-photo-signature-guide-2026",
+    title: "NDA & CDS Photo and Signature Requirements 2026",
+    description:
+      "NDA and CDS: 20–300 KB JPG, min 350×350 px square, plain white background, name and date required at bottom. Rejection checklist and free UPSC resizer.",
+    date: "July 4, 2026",
+    dateISO: "2026-07-04",
+    excerpt:
+      "NDA and CDS require a square photo — 350×350 px minimum — plus your name and date printed on the image. Here are the exact specs, the square vs portrait trap, and the complete upload workflow.",
+    readMins: 7,
+  },
+  {
+    slug: "ssc-cgl-chsl-photo-signature-guide-2026",
+    title: "SSC CGL / CHSL Photo & Signature Size 2026",
+    description:
+      "SSC CGL and CHSL require a 20–50 KB JPG photo (live capture only, no gallery) and 10–20 KB signature. Spec table, rejection checklist, and free resizer.",
+    date: "July 1, 2026",
+    dateISO: "2026-07-01",
+    excerpt:
+      "SSC now requires live photo capture — no gallery uploads. Here are the exact specs for CGL and CHSL, the six rejection reasons, and how to prepare your signature in one step.",
+    readMins: 7,
+  },
+  {
     slug: "why-exam-photo-signature-rejected",
     title: "Why Exam Photos & Signatures Get Rejected (and the Fix)",
     description:

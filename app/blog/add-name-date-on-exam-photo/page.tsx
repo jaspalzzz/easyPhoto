@@ -115,6 +115,15 @@ export default function Page() {
         text first, resize second — keeps the text crisp and the file compliant.
       </p>
       <p>
+        For the full NDA and CDS photo requirements — including the mandatory
+        square crop (350&nbsp;×&nbsp;350&nbsp;px) and the CDS 10-day date rule
+        — see the{" "}
+        <Link href="/blog/nda-cds-photo-signature-guide-2026/">
+          NDA &amp; CDS photo and signature guide
+        </Link>
+        .
+      </p>
+      <p>
         Worried about other reasons a photo gets sent back? We listed every
         common one in{" "}
         <Link href="/blog/why-exam-photo-signature-rejected/">
