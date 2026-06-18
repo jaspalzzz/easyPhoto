@@ -273,6 +273,11 @@ export default function Page() {
         <Link href="/blog/ibps-po-2026-photo-signature-checklist/">
           IBPS PO 2026 photo &amp; signature checklist
         </Link>
+        . Applying to UPSC CSE as well? Note that CSE adds a live webcam
+        matching step and a 10-day recency rule not present in NDA — see the{" "}
+        <Link href="/blog/upsc-cse-ias-photo-signature-guide-2026/">
+          UPSC CSE / IAS photo and signature guide
+        </Link>
         . For SSC&apos;s live-capture system, see the{" "}
         <Link href="/blog/ssc-cgl-chsl-photo-signature-guide-2026/">
           SSC CGL / CHSL photo and signature guide

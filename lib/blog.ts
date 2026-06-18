@@ -17,6 +17,17 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "upsc-cse-ias-photo-signature-guide-2026",
+    title: "UPSC CSE / IAS Photo & Signature Requirements 2026",
+    description:
+      "UPSC CSE: 20–300 KB JPG, min 350×350 px square, name and date mandatory, three signatures on one sheet. Live photo matching and 10-day recency rule explained.",
+    date: "July 7, 2026",
+    dateISO: "2026-07-07",
+    excerpt:
+      "UPSC CSE 2026 added live webcam matching and a 10-day photo recency rule. Here are the confirmed specs, why three signatures are required, and the complete upload workflow.",
+    readMins: 7,
+  },
+  {
     slug: "nda-cds-photo-signature-guide-2026",
     title: "NDA & CDS Photo and Signature Requirements 2026",
     description:

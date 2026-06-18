@@ -128,6 +128,9 @@ export default function Page() {
         For NDA and CDS specifically — including the square 350&nbsp;×&nbsp;350&nbsp;px
         requirement and the mandatory name/date text — see the{" "}
         <Link href="/blog/nda-cds-photo-signature-guide-2026/">NDA &amp; CDS photo and signature guide</Link>.
+        For UPSC CSE (IAS) — including the three-signature requirement and the
+        live webcam matching step added in 2026 — see the{" "}
+        <Link href="/blog/upsc-cse-ias-photo-signature-guide-2026/">UPSC CSE / IAS photo and signature guide</Link>.
         For SSC CGL and CHSL specifically — including the live-capture requirement
         and the all-caps signature rule — see the{" "}
         <Link href="/blog/ssc-cgl-chsl-photo-signature-guide-2026/">SSC CGL / CHSL photo and signature guide</Link>.
