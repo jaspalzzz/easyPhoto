@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
 
 const post = getPost("add-name-date-on-exam-photo")!;
@@ -25,26 +26,45 @@ export default function Page() {
         ask for and how to add it in under a minute, without Photoshop.
       </p>
 
+      <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
+        <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
+        <ul className="!mt-2 text-[15px]">
+          <li>UPSC (CSE, NDA, CDS) and the Indian Army / Agniveer require your <strong>name and photo date</strong> printed on the photo.</li>
+          <li>SSC, IBPS and most banking exams do <strong>not</strong> require it — adding text to a plain-photo exam can cause rejection.</li>
+          <li>Use the <Link href="/tools/photo-with-name-date/" className="text-brand underline">photo with name &amp; date tool</Link> to add a clean strip in seconds — no Photoshop.</li>
+        </ul>
+      </div>
+
       <h2>Which exams require name and date on the photo</h2>
-      <ul>
-        <li>
-          <strong>UPSC</strong> (Civil Services, NDA, CDS and others) — the photo
-          must carry your name and the date of the photograph along the bottom.
-        </li>
-        <li>
-          <strong>Indian Army / Agniveer</strong> — name and photo date printed
-          on the photo; it&apos;s checked at every stage of recruitment.
-        </li>
-        <li>
-          <strong>Some banking and state forms</strong> — a few request it; the
-          notification will say &quot;photograph with name and date&quot; if so.
-        </li>
-      </ul>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead>
+          <tr className="border-b border-hairline text-left">
+            <th className="py-2 pr-3 font-semibold text-ink">Exam</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Name &amp; date required?</th>
+          </tr>
+        </thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["UPSC (CSE, NDA, CDS, CAPF)", "Yes — name and photo date on the image"],
+            ["Indian Army / Agniveer recruitment", "Yes — checked at every recruitment stage"],
+            ["SSC (CGL, CHSL, MTS)", "No — plain passport-size photo"],
+            ["IBPS / SBI (PO, Clerk, RRB)", "No — plain passport-size photo"],
+            ["Railway (RRB)", "No — plain passport-size photo"],
+          ].map(([exam, req]) => (
+            <tr key={exam} className="border-b border-hairline/60">
+              <td className="py-2 pr-3 font-medium text-ink">{exam}</td>
+              <td className="py-2 pr-3">{req}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <p>
         If your exam&apos;s notification doesn&apos;t mention it, you don&apos;t
         need it — adding text to a photo that should be plain can itself cause a
         rejection. When in doubt, check your exam in the{" "}
-        <Link href="/exam-requirements/">requirements directory</Link>.
+        <Link href="/exam-requirements/">requirements directory</Link> or on{" "}
+        <a href="https://upsc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">upsc.gov.in</a>{" "}
+        directly.
       </p>
 
       <h2>What the text actually needs to look like</h2>
@@ -94,7 +114,6 @@ export default function Page() {
         <Link href="/exam-resizer/upsc-nda/">UPSC NDA resizer</Link>. That order —
         text first, resize second — keeps the text crisp and the file compliant.
       </p>
-
       <p>
         Worried about other reasons a photo gets sent back? We listed every
         common one in{" "}
@@ -103,6 +122,27 @@ export default function Page() {
         </Link>
         .
       </p>
+
+      <div className="mt-12">
+        <Faq items={[
+          {
+            q: "Does UPSC really require the name and date to be on the photo?",
+            a: "Yes. UPSC's online application instructions require candidates to upload a photo with their name and the date the photograph was taken printed at the bottom. A photo without this text is rejected during document verification. Confirm in the current official notification at upsc.gov.in.",
+          },
+          {
+            q: "What date should I write on the photo — the application date or the photo date?",
+            a: "The date the photo was taken, not the date you apply. Most portals check that the photo is recent (usually within the last 6 months). If you took the photo specifically for this application, write today's date.",
+          },
+          {
+            q: "Can I handwrite the name and date on a printed photo?",
+            a: "For printed paper applications, yes — many UPSC and Army forms allow neat handwriting at the bottom. For online uploads, the text must be part of the digital image file. Use the photo with name & date tool for online submissions.",
+          },
+          {
+            q: "Should I add name and date for SSC or IBPS?",
+            a: "No. SSC and IBPS require a plain passport-size photo without any text overlay. Adding a name-and-date strip to a photo for these portals will cause rejection. Only add the text when the official notification explicitly asks for it.",
+          },
+        ]} />
+      </div>
     </BlogPostLayout>
   );
 }

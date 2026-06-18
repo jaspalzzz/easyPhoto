@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
 
 const post = getPost("how-to-merge-pdf-free")!;
@@ -23,26 +24,37 @@ export default function Page() {
         free, right here, without anything leaving your device. Here&apos;s how.
       </p>
 
+      <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
+        <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
+        <ul className="!mt-2 text-[15px]">
+          <li>Open the <Link href="/tools/pdf-merge/" className="text-brand underline">PDF merge tool</Link>, drop two or more files, reorder pages, then click <strong>Merge &amp; Download</strong>.</li>
+          <li>No sign-up, no watermark — all processing runs locally in your browser.</li>
+          <li>If the result is over the portal&apos;s KB limit, compress it immediately with the <Link href="/tools/pdf-compress/" className="text-brand underline">PDF compress tool</Link>.</li>
+        </ul>
+      </div>
+
       <h2>When you need to merge PDFs</h2>
-      <ul>
-        <li>
-          <strong>Exam applications.</strong> Many portals ask for a single
-          combined PDF of your marksheets, degree certificate and ID — even if
-          they were scanned separately.
-        </li>
-        <li>
-          <strong>Visa and OCI applications.</strong> Supporting documents often
-          need to be submitted as one file per category.
-        </li>
-        <li>
-          <strong>Job and university portfolios.</strong> Cover letter, CV and
-          certificates combined into a single attachment.
-        </li>
-        <li>
-          <strong>Bank and government form packs.</strong> Application form +
-          Aadhaar + PAN + income certificate, merged before upload.
-        </li>
-      </ul>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead>
+          <tr className="border-b border-hairline text-left">
+            <th className="py-2 pr-3 font-semibold text-ink">Situation</th>
+            <th className="py-2 pr-3 font-semibold text-ink">What to combine</th>
+          </tr>
+        </thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["Exam applications (UPSC, IBPS, SSC)", "Marksheets + degree certificate + ID"],
+            ["Visa and OCI applications", "Application form + supporting docs per category"],
+            ["Job and university portfolios", "Cover letter + CV + certificates"],
+            ["Bank / government form packs", "Application + Aadhaar + PAN + income certificate"],
+          ].map(([situation, content]) => (
+            <tr key={situation} className="border-b border-hairline/60">
+              <td className="py-2 pr-3 font-medium text-ink">{situation}</td>
+              <td className="py-2 pr-3">{content}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       <h2>How to merge PDFs free in your browser</h2>
       <p>
@@ -74,11 +86,11 @@ export default function Page() {
       </p>
       <ul>
         <li>
-          <Link href="/compress-pdf-to-100kb/">Compress to 100 KB</Link> or{" "}
-          <Link href="/compress-pdf-to-200kb/">200 KB</Link> for most portals.
+          <Link href="/compress-pdf-to-100kb/">Compress to 100&nbsp;KB</Link> or{" "}
+          <Link href="/compress-pdf-to-200kb/">200&nbsp;KB</Link> for most portals.
         </li>
         <li>
-          <Link href="/compress-pdf-to-50kb/">Compress to 50 KB</Link> for the
+          <Link href="/compress-pdf-to-50kb/">Compress to 50&nbsp;KB</Link> for the
           tightest exam-portal limits (UPSC annexures, IBPS supporting docs).
         </li>
         <li>
@@ -102,6 +114,27 @@ export default function Page() {
         Aadhaar and income documents are sensitive; none of that data is ever
         transmitted to or stored on any server.
       </p>
+
+      <div className="mt-12">
+        <Faq items={[
+          {
+            q: "Can I merge PDFs that are password-protected?",
+            a: "No. Password-protected PDFs need to be unlocked first. Use the Unlock PDF tool to remove the password, then merge the resulting files. Attempting to merge an encrypted PDF will produce an error or a broken output.",
+          },
+          {
+            q: "Is there a page limit for merging?",
+            a: "There is no hard page limit built into the tool. The practical limit is your device's available memory — most modern phones and laptops handle a combined document of several hundred MB without issues.",
+          },
+          {
+            q: "Can I reorder pages after merging?",
+            a: "Yes. Before you click Merge & Download, you can drag pages into any order and delete any page you don't need. This lets you combine three separate PDFs and arrange all their pages exactly as the portal requires.",
+          },
+          {
+            q: "Will the merged PDF have a watermark?",
+            a: "No. The PDF merge tool on easyPhoto is completely free and adds no watermark. The output is a standard PDF file identical to what a paid tool would produce.",
+          },
+        ]} />
+      </div>
     </BlogPostLayout>
   );
 }

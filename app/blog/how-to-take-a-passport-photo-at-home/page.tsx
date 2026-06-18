@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
 
 const post = getPost("how-to-take-a-passport-photo-at-home")!;
@@ -23,13 +24,62 @@ export default function Page() {
         the approach that actually gets accepted.
       </p>
 
+      <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
+        <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
+        <ul className="!mt-2 text-[15px]">
+          <li>Stand half a metre from a plain wall; face a window for soft, even light — no flash.</li>
+          <li>Neutral expression, mouth closed, both ears visible, no glasses.</li>
+          <li>Background colour depends on your country — the UK requires light grey, not white.</li>
+          <li>Upload to the <Link href="/passport-photo/" className="text-brand underline">passport photo maker</Link>, pick your country, and it crops and sets the background automatically.</li>
+        </ul>
+      </div>
+
+      <h2>Background colour by country</h2>
+      <p>
+        The background colour is not universal — get it wrong and the photo fails
+        even if everything else is perfect.
+      </p>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead>
+          <tr className="border-b border-hairline text-left">
+            <th className="py-2 pr-3 font-semibold text-ink">Country</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Required background</th>
+          </tr>
+        </thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["United States", "Plain white or off-white"],
+            ["India", "Plain white"],
+            ["United Kingdom", "Light grey or cream (not white)"],
+            ["Canada", "White"],
+            ["Australia", "White or plain light grey"],
+            ["Schengen (EU visa)", "Light grey preferred"],
+          ].map(([country, bg]) => (
+            <tr key={country} className="border-b border-hairline/60">
+              <td className="py-2 pr-3 font-medium text-ink">{country}</td>
+              <td className="py-2 pr-3">{bg}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p>
+        The UK&apos;s specification is published on{" "}
+        <a
+          href="https://www.gov.uk/photos-for-passports"
+          className="text-brand underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GOV.UK
+        </a>
+        . The passport photo maker applies the correct background for each country automatically, so you don&apos;t need to repaint your wall.
+      </p>
+
       <h2>1. Find a plain wall and good light</h2>
       <p>
-        Stand about half a metre in front of a smooth, plain wall. White works
-        for most countries, but the UK wants light grey or cream, so don&apos;t
-        just assume (you can fix the colour later anyway). Face a window during
-        the day for soft, even light. Steer clear of overhead lights that cast
-        shadows under your eyes. And skip the flash. It flattens your skin and
+        Stand about half a metre in front of a smooth, plain wall. Face a window
+        during the day for soft, even light. Steer clear of overhead lights that
+        cast shadows under your eyes, and skip the flash — it flattens skin and
         bounces off the wall.
       </p>
 
@@ -56,17 +106,38 @@ export default function Page() {
         usually slip. Instead of guessing, upload your photo to the{" "}
         <Link href="/passport-photo/">passport photo maker</Link>, choose your
         country, and it crops your head to the exact required size and applies the
-        correct background colour. Then it checks the result for you. If your
-        country&apos;s portal caps the file size, run the result through{" "}
-        <Link href="/photo-resize-to-50kb/">resize to 50 KB</Link>.
+        correct background colour. If your country&apos;s portal caps the file
+        size, run the result through{" "}
+        <Link href="/photo-resize-to-50kb/">resize to 50&nbsp;KB</Link>.
       </p>
 
       <h2>5. Print or upload</h2>
       <p>
         For a printed application, download the 4×6&quot; sheet and print it at a
         photo kiosk on photo paper. For online applications, use the upload-ready
-        file. That&apos;s it. A compliant photo, and you never left home.
+        file. A compliant photo, and you never left home.
       </p>
+
+      <div className="mt-12">
+        <Faq items={[
+          {
+            q: "Can I use a selfie for a passport photo?",
+            a: "A front-facing selfie taken at arm's length can work, but the perspective often distorts the face slightly. A better approach is to prop your phone against something and use the timer, or ask someone to take it from about a metre away at eye level.",
+          },
+          {
+            q: "Does the background have to be white?",
+            a: "Not for all countries. The UK requires light grey or cream — a pure white background will fail. The US and India require white. Upload your photo to the passport photo maker and select your country; it applies the correct background regardless of what was behind you.",
+          },
+          {
+            q: "Why do passport photos get rejected for shadows?",
+            a: "Passport photos use the face as a biometric identifier. Shadows alter the apparent shape of facial features and can cause automated systems to flag the photo. Stand away from the wall and use soft frontal light to eliminate both face shadows and background shadows.",
+          },
+          {
+            q: "How do I know if my head takes up the right amount of the frame?",
+            a: "Every country specifies a required chin-to-crown head height as a percentage of the photo height. The passport photo maker measures this automatically and adjusts the crop so your head fills exactly the required band — something very difficult to judge by eye.",
+          },
+        ]} />
+      </div>
     </BlogPostLayout>
   );
 }

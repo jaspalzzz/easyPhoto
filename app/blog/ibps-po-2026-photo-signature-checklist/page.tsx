@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
 
 const post = getPost("ibps-po-2026-photo-signature-checklist")!;
@@ -25,21 +26,55 @@ export default function Page() {
         there&apos;s no deadline pressure. Here&apos;s the full checklist.
       </p>
 
+      <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
+        <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
+        <ul className="!mt-2 text-[15px]">
+          <li><strong>Photo:</strong> JPG, 20–50&nbsp;KB, ~200×230&nbsp;px, plain light background.</li>
+          <li><strong>Signature:</strong> JPG, 10–20&nbsp;KB, black ink on white paper.</li>
+          <li>Both must fall <em>within</em> the band — a 12&nbsp;KB file is rejected just like a 2&nbsp;MB one.</li>
+          <li>Confirm exact specs on the live IBPS notification at{" "}
+            <a href="https://www.ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">ibps.in</a>{" "}
+            before applying.</li>
+        </ul>
+      </div>
+
       <h2>The IBPS PO photo &amp; signature spec</h2>
-      <ul>
-        <li>
-          <strong>Photo:</strong> JPEG, 20–50&nbsp;KB, roughly 200×230&nbsp;px,
-          plain light background, recent and clear.
-        </li>
-        <li>
-          <strong>Signature:</strong> JPEG, 10–20&nbsp;KB, black ink on white
-          paper, scanned cleanly.
-        </li>
-        <li>
-          <strong>Format:</strong> JPG/JPEG only — a PNG or an iPhone HEIC file
-          is rejected at upload.
-        </li>
-      </ul>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead>
+          <tr className="border-b border-hairline text-left">
+            <th className="py-2 pr-3 font-semibold text-ink">Field</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Photo</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Signature</th>
+          </tr>
+        </thead>
+        <tbody className="text-ink-soft">
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">Format</td>
+            <td className="py-2 pr-3">JPG / JPEG only</td>
+            <td className="py-2 pr-3">JPG / JPEG only</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">File size</td>
+            <td className="py-2 pr-3">20–50 KB</td>
+            <td className="py-2 pr-3">10–20 KB</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">Typical dimensions</td>
+            <td className="py-2 pr-3">~200×230 px</td>
+            <td className="py-2 pr-3">~140×60 px</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">Background</td>
+            <td className="py-2 pr-3">Plain light background</td>
+            <td className="py-2 pr-3">White paper, clean scan</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">Ink colour</td>
+            <td className="py-2 pr-3">—</td>
+            <td className="py-2 pr-3">Black or blue</td>
+          </tr>
+        </tbody>
+      </table>
       <p>
         These are a band, not just a maximum — a file <em>under</em> 20&nbsp;KB
         is rejected too. Always confirm the exact numbers on the live
@@ -80,19 +115,18 @@ export default function Page() {
       <p>
         The IBPS PO spec is shared across IBPS Clerk, SO and RRB, and is close to
         the SBI and SSC bands. A clean 20–50&nbsp;KB photo and 10–20&nbsp;KB
-        signature will serve most banking and SSC applications this cycle — so
-        the work you do for IBPS PO pays off across several forms. If you&apos;re
-        applying to more than one, the{" "}
+        signature will serve most banking and SSC applications this cycle. If
+        you&apos;re applying to more than one, the{" "}
         <Link href="/tools/exam-package/">Exam Application Kit</Link> prepares a
         photo + signature for any chosen exam in one guided flow.
       </p>
 
       <h2>Don&apos;t miss the window</h2>
       <p>
-        IBPS PO is just one of several exams opening this season. The{" "}
+        The{" "}
         <Link href="/exam-calendar/">exam calendar</Link> lists the upcoming
         notification and exam dates from the official SSC, UPSC and IBPS
-        calendars — and you can add them to your own phone&apos;s calendar so a
+        calendars — and you can add them to your phone&apos;s calendar so a
         reminder lands before each window opens.
       </p>
       <p>
@@ -103,6 +137,27 @@ export default function Page() {
         </Link>
         .
       </p>
+
+      <div className="mt-12">
+        <Faq items={[
+          {
+            q: "What are the IBPS PO 2026 photo size requirements?",
+            a: "The IBPS PO portal typically requires a JPG photo between 20 and 50 KB and approximately 200×230 pixels, with a plain light background. Always verify the exact numbers in the live official notification at ibps.in before applying, as they can vary slightly between cycles.",
+          },
+          {
+            q: "Can I use a PNG or HEIC file for the IBPS portal?",
+            a: "No. The IBPS portal accepts JPG/JPEG only. A PNG or HEIC file (the default format on iPhones) will be rejected at upload. The IBPS PO resizer on easyPhoto automatically outputs JPG, so no separate conversion is needed.",
+          },
+          {
+            q: "What happens if my photo is under 20 KB?",
+            a: "It is rejected. The portal enforces a minimum as well as a maximum — a 12 KB file is considered too low-quality. Use a resizer that targets the 20–50 KB band specifically, not one that just compresses to the smallest possible size.",
+          },
+          {
+            q: "Can I reuse the same photo and signature for IBPS Clerk and SBI PO?",
+            a: "Usually yes. IBPS Clerk, IBPS RRB, and SBI PO all use the same 20–50 KB photo and 10–20 KB signature specs. A file prepared for IBPS PO will pass the other portals too, as long as you confirm each notification before applying.",
+          },
+        ]} />
+      </div>
     </BlogPostLayout>
   );
 }

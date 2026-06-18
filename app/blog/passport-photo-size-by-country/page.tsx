@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
 
 const post = getPost("passport-photo-size-by-country")!;
@@ -23,47 +24,90 @@ export default function Page() {
         it looks fine to you. Here&apos;s what the major countries actually require.
       </p>
 
-      <h2>The sizes, country by country</h2>
-      <ul>
-        <li>
-          <strong>United States.</strong> 2×2 inches (51×51mm), square. Head
-          (chin to crown) 1 to 1⅜ inches (25–35mm). Plain white or off-white
-          background.{" "}
-          <Link href="/us-passport-photo-maker/">US passport photo maker</Link>.
-        </li>
-        <li>
-          <strong>India.</strong> 35×45mm, with a notably large face filling
-          roughly 80–85% of the frame. Plain white background. Online portals
-          often cap the file at 10–100&nbsp;KB.{" "}
-          <Link href="/india-passport-photo-maker/">India passport photo maker</Link>.
-        </li>
-        <li>
-          <strong>United Kingdom.</strong> 35×45mm. Head 29–34mm. Crucially, the
-          background must be light grey or cream, <em>not</em> white.{" "}
-          <Link href="/uk-passport-photo-maker/">UK passport photo maker</Link>.
-        </li>
-        <li>
-          <strong>Canada.</strong> 50×70mm, larger than most. Head 31–36mm.
-          White background.{" "}
-          <Link href="/canada-passport-photo-maker/">Canada passport photo maker</Link>.
-        </li>
-        <li>
-          <strong>Australia.</strong> 35×45mm. Head 32–36mm. Plain white or
-          light grey.{" "}
-          <Link href="/australia-passport-photo-maker/">Australia passport photo maker</Link>.
-        </li>
-        <li>
-          <strong>Schengen (EU visa).</strong> 35×45mm. Head 32–36mm. Light grey
-          is safest, since several consulates dislike pure white.{" "}
-          <Link href="/schengen-visa-photo-maker/">Schengen visa photo maker</Link>.
-        </li>
-      </ul>
+      <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
+        <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
+        <ul className="!mt-2 text-[15px]">
+          <li>Most countries use <strong>35×45&nbsp;mm</strong>. The US uses <strong>2×2&nbsp;in (51×51&nbsp;mm)</strong>. Canada uses <strong>50×70&nbsp;mm</strong>.</li>
+          <li>Head height (chin to crown) is a separate biometric requirement — not just how big the photo is.</li>
+          <li>Background colour varies: the UK requires light grey or cream, not white.</li>
+        </ul>
+      </div>
+
+      <h2>Passport photo sizes by country</h2>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead>
+          <tr className="border-b border-hairline text-left">
+            <th className="py-2 pr-3 font-semibold text-ink">Country</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Photo size</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Head height</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Background</th>
+          </tr>
+        </thead>
+        <tbody className="text-ink-soft">
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">
+              <Link href="/us-passport-photo-maker/" className="text-brand underline">United States</Link>
+            </td>
+            <td className="py-2 pr-3">2×2&nbsp;in (51×51&nbsp;mm)</td>
+            <td className="py-2 pr-3">25–35&nbsp;mm</td>
+            <td className="py-2 pr-3">White or off-white</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">
+              <Link href="/india-passport-photo-maker/" className="text-brand underline">India</Link>
+            </td>
+            <td className="py-2 pr-3">35×45&nbsp;mm</td>
+            <td className="py-2 pr-3">~80% of frame</td>
+            <td className="py-2 pr-3">White</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">
+              <Link href="/uk-passport-photo-maker/" className="text-brand underline">United Kingdom</Link>
+            </td>
+            <td className="py-2 pr-3">35×45&nbsp;mm</td>
+            <td className="py-2 pr-3">29–34&nbsp;mm</td>
+            <td className="py-2 pr-3">Light grey or cream</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">
+              <Link href="/canada-passport-photo-maker/" className="text-brand underline">Canada</Link>
+            </td>
+            <td className="py-2 pr-3">50×70&nbsp;mm</td>
+            <td className="py-2 pr-3">31–36&nbsp;mm</td>
+            <td className="py-2 pr-3">White</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">
+              <Link href="/australia-passport-photo-maker/" className="text-brand underline">Australia</Link>
+            </td>
+            <td className="py-2 pr-3">35×45&nbsp;mm</td>
+            <td className="py-2 pr-3">32–36&nbsp;mm</td>
+            <td className="py-2 pr-3">White or plain light grey</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">
+              <Link href="/schengen-visa-photo-maker/" className="text-brand underline">Schengen (EU visa)</Link>
+            </td>
+            <td className="py-2 pr-3">35×45&nbsp;mm</td>
+            <td className="py-2 pr-3">32–36&nbsp;mm</td>
+            <td className="py-2 pr-3">Light grey preferred</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Sources:{" "}
+        <a href="https://travel.state.gov/content/travel/en/passports/photos.html" className="text-brand underline" target="_blank" rel="noopener noreferrer">U.S. State Department</a>
+        {" "}·{" "}
+        <a href="https://www.gov.uk/photos-for-passports" className="text-brand underline" target="_blank" rel="noopener noreferrer">GOV.UK</a>
+        {" "}·{" "}
+        <a href="https://passportindia.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">Passport Seva</a>
+      </p>
 
       <h2>Why head size matters as much as photo size</h2>
       <p>
-        Two photos can be the same 35×45mm and still differ wildly. India wants
-        your face to dominate the frame, while the UK leaves more headroom. A
-        generic square crop almost never matches the required chin-to-crown band.
+        Two photos can be the same 35×45&nbsp;mm and still differ wildly. India
+        wants your face to dominate the frame, while the UK leaves more headroom.
+        A generic square crop almost never matches the required chin-to-crown band.
         That&apos;s why &quot;I cropped it myself&quot; photos fail so often. The
         head ratio is a biometric requirement, not a suggestion.
       </p>
@@ -91,11 +135,32 @@ export default function Page() {
       <p>
         Once the dimensions are right, the last hurdle is the portal&apos;s file
         cap. Compress the finished image to the limit with{" "}
-        <Link href="/photo-resize-to-20kb/">resize to 20 KB</Link>,{" "}
-        <Link href="/photo-resize-to-50kb/">50 KB</Link> or a{" "}
+        <Link href="/photo-resize-to-20kb/">resize to 20&nbsp;KB</Link>,{" "}
+        <Link href="/photo-resize-to-50kb/">50&nbsp;KB</Link> or a{" "}
         <Link href="/tools/resize-kb/">custom KB target</Link>. It all runs in
         your browser, with nothing uploaded.
       </p>
+
+      <div className="mt-12">
+        <Faq items={[
+          {
+            q: "What is the standard passport photo size?",
+            a: "There is no single standard. Most countries use 35×45 mm — including India, the UK, Australia and Schengen. The US uses 2×2 inches (51×51 mm, a square). Canada uses 50×70 mm, which is larger than the rest. Always check the requirement for your specific country.",
+          },
+          {
+            q: "Why does my self-cropped passport photo keep getting rejected?",
+            a: "Photo size and head size are two separate requirements. Even if you cut a 35×45 mm frame, the chin-to-crown head height must fall in a specific millimetre range. India, the UK and the US each have different ratios. The passport photo maker measures and adjusts your head position automatically.",
+          },
+          {
+            q: "Is a white background required for all countries?",
+            a: "No. The UK specifically requires light grey or cream — a white background fails. The US, India and Canada require white. Australia accepts white or plain light grey. The Schengen area prefers light grey. Using the wrong colour is one of the most common rejection reasons.",
+          },
+          {
+            q: "Can I use a passport photo for a visa application?",
+            a: "Sometimes, but not always. Visa photo requirements can differ from passport requirements even for the same country — for example, some consulates specify different background colours or head ratios. Use the visa photo maker and select the specific visa type to get the correct spec.",
+          },
+        ]} />
+      </div>
     </BlogPostLayout>
   );
 }
