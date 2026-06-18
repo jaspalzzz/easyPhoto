@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getPost, BLOG_POSTS } from "@/lib/blog";
-import { LogoMark } from "@/components/site/LogoMark";
+import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { ReadingProgress } from "@/components/blog/ReadingProgress";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, ORG_ID } from "@/lib/schema";
 import { absoluteUrl } from "@/lib/seo";
-import { SITE_NAME } from "@/lib/site";
+import { AUTHOR } from "@/lib/author";
 
 /** Shared chrome + Article schema for a blog post. */
 export function BlogPostLayout({
@@ -47,10 +47,13 @@ export function BlogPostLayout({
                 height: 630,
               },
               author: {
-                "@type": "Organization",
-                "@id": ORG_ID,
-                name: SITE_NAME,
-                url: absoluteUrl("/"),
+                "@type": "Person",
+                name: AUTHOR.name,
+                url: AUTHOR.url,
+                sameAs: [AUTHOR.url],
+                ...(AUTHOR.photo ? { image: absoluteUrl(AUTHOR.photo) } : {}),
+                jobTitle: AUTHOR.title,
+                worksFor: { "@id": ORG_ID },
               },
               publisher: { "@id": ORG_ID },
             },
@@ -71,22 +74,19 @@ export function BlogPostLayout({
           <h1 className="text-[2rem] font-semibold leading-[1.12] tracking-tight text-ink sm:text-[2.4rem]">
             {post.title}
           </h1>
-          {/* Byline + authenticity signal */}
+          {/* Byline — named author (E-E-A-T "Who"), links to their profile. */}
           <div className="flex items-center gap-3 pt-1">
-            <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-hairline bg-card">
-              <LogoMark className="h-5 w-5" />
-            </span>
+            <AuthorAvatar src={AUTHOR.photo} name={AUTHOR.name} className="h-10 w-10" />
             <div className="text-sm leading-tight">
-              <Link
-                href="/about/"
+              <a
+                href={AUTHOR.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="font-semibold text-ink hover:text-brand hover:underline"
               >
-                The easyPhoto team
-              </Link>
-              <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                <ShieldCheck className="h-3 w-3 text-brand" strokeWidth={2} />
-                Reviewed against official sources
-              </p>
+                {AUTHOR.name}
+              </a>
+              <p className="text-xs text-muted-foreground">{AUTHOR.title}</p>
             </div>
           </div>
         </header>
@@ -103,6 +103,24 @@ export function BlogPostLayout({
         >
           {children}
         </article>
+
+        {/* About the author — named-person E-E-A-T card with profile link. */}
+        <aside className="mt-12 flex items-start gap-4 rounded-xl border border-hairline bg-card p-5">
+          <AuthorAvatar src={AUTHOR.photo} name={AUTHOR.name} className="h-12 w-12" />
+          <div className="text-sm leading-relaxed">
+            <p className="eyebrow mb-1 text-ink-soft">About the author</p>
+            <a
+              href={AUTHOR.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-ink hover:text-brand hover:underline"
+            >
+              {AUTHOR.name}
+            </a>
+            <span className="text-muted-foreground"> · {AUTHOR.title}</span>
+            <p className="mt-1.5 text-ink-soft">{AUTHOR.bio}</p>
+          </div>
+        </aside>
 
         {/* Editorial standards — the "How / Why" E-E-A-T signal: real process,
             dated verification, on-device privacy, corrections invite. All
