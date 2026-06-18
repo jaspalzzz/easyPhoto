@@ -117,22 +117,18 @@ export function faqSchema(items: { q: string; a: string }[]) {
   };
 }
 
-export function howToSchema(opts: {
+/**
+ * @deprecated Google removed HowTo rich results (Sept 2023), so this markup gets
+ * no SERP feature and only adds page weight. Emits nothing — kept as a typed
+ * no-op so existing callers don't break; <JsonLd> filters the null out. Remove
+ * the call sites when convenient.
+ */
+export function howToSchema(_opts: {
   name: string;
   description: string;
   steps: { name: string; text: string }[];
-}) {
-  return {
-    "@type": "HowTo",
-    name: opts.name,
-    description: opts.description,
-    step: opts.steps.map((s, i) => ({
-      "@type": "HowToStep",
-      position: i + 1,
-      name: s.name,
-      text: s.text,
-    })),
-  };
+}): null {
+  return null;
 }
 
 export function collectionPageSchema(opts: {
