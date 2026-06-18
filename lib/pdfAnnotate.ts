@@ -33,12 +33,22 @@ export async function watermarkPdf(
 
   for (const page of doc.getPages()) {
     const { width, height } = page.getSize();
-    // Scale the watermark to roughly span the page diagonally.
     let size = Math.max(24, Math.min(width, height) * 0.13);
     let tw = font.widthOfTextAtSize(text, size);
-    const maxSpan = Math.min(width, height) * 1.1;
-    if (tw > maxSpan) {
-      size *= maxSpan / tw;
+    // Fit the ROTATED text's footprint inside the page (5% gutter each side) for
+    // ANY angle. A line of width tw rotated by `angle` spans tw·|cos| across and
+    // tw·|sin| down, so it must satisfy both. Without this, a horizontal (0°)
+    // watermark on a portrait page was capped at 110% of the page width and
+    // spilled off both edges; a diagonal one can run longer (corner-to-corner).
+    const m = 0.9;
+    const cos = Math.abs(Math.cos(rad));
+    const sin = Math.abs(Math.sin(rad));
+    const maxTw = Math.min(
+      cos > 1e-3 ? (width * m) / cos : Infinity,
+      sin > 1e-3 ? (height * m) / sin : Infinity
+    );
+    if (tw > maxTw) {
+      size *= maxTw / tw;
       tw = font.widthOfTextAtSize(text, size);
     }
     // Centre the rotated baseline midpoint on the page centre.
