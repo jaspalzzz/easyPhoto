@@ -63,7 +63,7 @@ export function websiteSchema() {
     alternateName: ["easyPhoto", "Easy Photo", "easyphoto.in"],
     url: SITE_URL,
     publisher: { "@id": ORG_ID },
-    inLanguage: "en",
+    inLanguage: "en-IN",
   };
 }
 
