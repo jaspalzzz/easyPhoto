@@ -18,141 +18,518 @@ export default function Page() {
   return (
     <BlogPostLayout slug={post.slug}>
       <p>
-        Almost every Indian exam and recruitment portal asks you to upload a photo
-        and a signature, and almost every one rejects them for the same reasons:
-        the file is too big, the dimensions are wrong, or the signature has a white
-        box around it. Here&apos;s what the major exams expect and how to get your
-        files accepted on the first try.
+        Every Indian competitive exam and recruitment portal asks for a photo and
+        a signature. Almost every candidate gets at least one of them wrong on the
+        first try — wrong KB, wrong pixel dimensions, grey background on the
+        signature, or a portrait photo where the portal expects a square. This
+        guide covers the exact specs for every major exam, how the KB band works,
+        how to prepare your signature correctly, and what to fix when the portal
+        bounces your upload.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
-          <li>Most exams want a <strong>20–50&nbsp;KB photo</strong> and a <strong>10–20&nbsp;KB signature</strong>, both in JPG format.</li>
-          <li>Portals check a <em>band</em>, not just a cap — a 12&nbsp;KB photo is rejected for being too small.</li>
-          <li>Always confirm the exact numbers in the official exam notification before applying.</li>
+          <li>Most exams want a <strong>20–50&nbsp;KB JPG photo</strong> and a <strong>10–20&nbsp;KB JPG signature</strong>.</li>
+          <li>Portals check a <em>band</em> — a photo under the minimum is rejected as firmly as one over the cap.</li>
+          <li>UPSC and NDA/CDS use a wider 20–300&nbsp;KB range and require a <em>square</em> photo (min 350×350&nbsp;px).</li>
+          <li>NTA (NEET, JEE) allows up to 200&nbsp;KB and accepts JPG or PNG.</li>
+          <li>Always confirm the exact KB and pixel figures in the official exam notification — they can change between cycles.</li>
         </ul>
       </div>
 
-      <h2>Typical specs by exam</h2>
+      <h2>How the KB band works — and why there&apos;s a minimum</h2>
       <p>
-        The exact numbers change between notification cycles, so always confirm in
-        the official notification — but these are the typical ranges. Official sources:{" "}
-        <a href="https://ssc.nic.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>,{" "}
+        Most candidates know about the upper KB limit. What catches people out is
+        the lower limit. A file compressed too aggressively — say, a 200×230&nbsp;px
+        JPG saved at 5&nbsp;KB — loses so much detail that it becomes blurry and
+        unreadable on the admit card. The portal validator rejects it automatically
+        with the same &ldquo;file not as per specification&rdquo; error as an
+        over-large file.
+      </p>
+      <p>
+        The band (e.g. 20–50&nbsp;KB) ensures images are both small enough to
+        upload quickly and sharp enough to verify identity. The sweet spot for most
+        exam portals is 25–40&nbsp;KB for the photo and 12–18&nbsp;KB for the
+        signature. If your compressed photo lands outside the band, resize to a
+        specific KB target — a general &ldquo;reduce quality&rdquo; slider that
+        doesn&apos;t let you set the exact output KB won&apos;t reliably hit the
+        required range.
+      </p>
+
+      <h2>Spec table: photo and signature requirements by exam</h2>
+      <p>
+        The pixel dimensions below are the most commonly reported values for each
+        portal. They can vary between notification cycles — always confirm in the
+        official notification PDF before applying. Official sources:{" "}
+        <a href="https://ssc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>,{" "}
         <a href="https://ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>,{" "}
-        <a href="https://upsc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">UPSC</a>.
+        <a href="https://sbi.co.in/careers" className="text-brand underline" target="_blank" rel="noopener noreferrer">SBI</a>,{" "}
+        <a href="https://upsc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">UPSC</a>,{" "}
+        <a href="https://indianrailways.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">Railways</a>,{" "}
+        <a href="https://nta.ac.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">NTA</a>.
       </p>
-      <table className="my-5 w-full border-collapse text-[14px]">
-        <thead>
-          <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-3 font-semibold text-ink">Exam</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Photo (KB)</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Signature (KB)</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Format</th>
-          </tr>
-        </thead>
-        <tbody className="text-ink-soft">
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">SSC (CGL, CHSL, MTS)</td>
-            <td className="py-2 pr-3">20–50 KB</td>
-            <td className="py-2 pr-3">10–20 KB</td>
-            <td className="py-2 pr-3">JPG</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">IBPS / SBI (PO, Clerk)</td>
-            <td className="py-2 pr-3">20–50 KB</td>
-            <td className="py-2 pr-3">10–20 KB</td>
-            <td className="py-2 pr-3">JPG</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Railway RRB (NTPC, ALP)</td>
-            <td className="py-2 pr-3">20–50 KB</td>
-            <td className="py-2 pr-3">10–20 KB</td>
-            <td className="py-2 pr-3">JPG</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">UPSC (CSE, NDA, CDS)</td>
-            <td className="py-2 pr-3">varies by notification</td>
-            <td className="py-2 pr-3">varies by notification</td>
-            <td className="py-2 pr-3">JPG</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">NTA (NEET, JEE)</td>
-            <td className="py-2 pr-3">10–200 KB</td>
-            <td className="py-2 pr-3">4–30 KB</td>
-            <td className="py-2 pr-3">JPG / PNG</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="my-5 overflow-x-auto rounded-xl border border-hairline text-sm">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b border-hairline bg-accent/30">
+              <th className="px-3 py-2 text-left font-semibold text-ink">Exam</th>
+              <th className="px-3 py-2 text-left font-semibold text-ink">Photo (KB)</th>
+              <th className="px-3 py-2 text-left font-semibold text-ink">Photo (px)</th>
+              <th className="px-3 py-2 text-left font-semibold text-ink">Signature (KB)</th>
+              <th className="px-3 py-2 text-left font-semibold text-ink">Sig (px)</th>
+              <th className="px-3 py-2 text-left font-semibold text-ink">Format</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-hairline text-ink-soft">
+            <tr>
+              <td className="px-3 py-2 font-medium text-ink">SSC CGL / CHSL</td>
+              <td className="px-3 py-2">20–50 KB</td>
+              <td className="px-3 py-2">275×354 typical</td>
+              <td className="px-3 py-2">10–20 KB</td>
+              <td className="px-3 py-2">140×60 typical</td>
+              <td className="px-3 py-2">JPG</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2 font-medium text-ink">SSC MTS / CAPF</td>
+              <td className="px-3 py-2">20–50 KB</td>
+              <td className="px-3 py-2">portal-resized (live)</td>
+              <td className="px-3 py-2">10–20 KB</td>
+              <td className="px-3 py-2">140×60 typical</td>
+              <td className="px-3 py-2">JPG</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2 font-medium text-ink">IBPS PO / Clerk</td>
+              <td className="px-3 py-2">20–50 KB</td>
+              <td className="px-3 py-2">200×230</td>
+              <td className="px-3 py-2">10–20 KB</td>
+              <td className="px-3 py-2">140×60</td>
+              <td className="px-3 py-2">JPG</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2 font-medium text-ink">SBI PO / Clerk</td>
+              <td className="px-3 py-2">20–50 KB</td>
+              <td className="px-3 py-2">200×230</td>
+              <td className="px-3 py-2">10–20 KB</td>
+              <td className="px-3 py-2">140×60</td>
+              <td className="px-3 py-2">JPG</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2 font-medium text-ink">UPSC CSE / IAS</td>
+              <td className="px-3 py-2">20–300 KB</td>
+              <td className="px-3 py-2">min 350×350 (square)</td>
+              <td className="px-3 py-2">10–40 KB</td>
+              <td className="px-3 py-2">varies</td>
+              <td className="px-3 py-2">JPG</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2 font-medium text-ink">UPSC NDA / CDS</td>
+              <td className="px-3 py-2">20–300 KB</td>
+              <td className="px-3 py-2">min 350×350 (square)</td>
+              <td className="px-3 py-2">10–40 KB</td>
+              <td className="px-3 py-2">varies</td>
+              <td className="px-3 py-2">JPG</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2 font-medium text-ink">RRB NTPC / ALP</td>
+              <td className="px-3 py-2">20–50 KB</td>
+              <td className="px-3 py-2">200×230 typical</td>
+              <td className="px-3 py-2">10–20 KB</td>
+              <td className="px-3 py-2">140×60 typical</td>
+              <td className="px-3 py-2">JPG</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2 font-medium text-ink">RRB Group D</td>
+              <td className="px-3 py-2">20–50 KB</td>
+              <td className="px-3 py-2">200×230 typical</td>
+              <td className="px-3 py-2">10–20 KB</td>
+              <td className="px-3 py-2">140×60 typical</td>
+              <td className="px-3 py-2">JPG</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2 font-medium text-ink">NTA NEET</td>
+              <td className="px-3 py-2">10–200 KB</td>
+              <td className="px-3 py-2">3.5×4.5 cm portrait</td>
+              <td className="px-3 py-2">4–30 KB</td>
+              <td className="px-3 py-2">—</td>
+              <td className="px-3 py-2">JPG / PNG</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2 font-medium text-ink">NTA JEE (Main)</td>
+              <td className="px-3 py-2">10–200 KB</td>
+              <td className="px-3 py-2">3.5×4.5 cm portrait</td>
+              <td className="px-3 py-2">4–30 KB</td>
+              <td className="px-3 py-2">—</td>
+              <td className="px-3 py-2">JPG / PNG</td>
+            </tr>
+          </tbody>
+        </table>
+        <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
+          Pixel dimensions are typical reported values. Verify in the official notification PDF before applying — specs can change between cycles.
+        </p>
+      </div>
 
-      <h2>The general rule</h2>
+      <h2>SSC exams: CGL, CHSL, MTS and CAPF</h2>
       <p>
-        Most exam forms want a recent passport-style <strong>photo around 20–50&nbsp;KB</strong>{" "}
-        and a <strong>signature around 10–20&nbsp;KB</strong>, each within set pixel
-        dimensions, in JPG format. The signature must be on a clean background —
-        sign on white paper in black or blue ink, then scan or photograph it.
+        The{" "}
+        <a href="https://ssc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">Staff Selection Commission</a>{" "}
+        runs India&apos;s largest combined recruitment exams. For CGL, CHSL, MTS
+        and CAPF, the typical band is{" "}
+        <strong>20–50&nbsp;KB for the photo and 10–20&nbsp;KB for the
+        signature</strong>, both JPG.
+      </p>
+      <p>
+        The most important change in recent SSC cycles:{" "}
+        <strong>the portal no longer accepts uploaded gallery photos.</strong>{" "}
+        You must capture the photo live through the SSC portal&apos;s camera
+        interface at the time of filling the form. The portal opens a webcam or
+        phone camera window, you take the shot in real time, and the system saves
+        it directly. This means preparation shifts from &ldquo;have a resized file
+        ready&rdquo; to &ldquo;have the right environment ready before you open
+        the form&rdquo; — clean white wall behind you, soft front lighting, formal
+        dress. The signature, by contrast, is still uploaded as a scanned file.
+      </p>
+      <p>
+        SSC also enforces a signature style rule almost no other portal has:{" "}
+        <strong>all-capitals signatures are explicitly rejected.</strong> Your
+        signature must be in cursive or running hand. Print block letters do not
+        pass the validator. The physical size is 4.0&nbsp;×&nbsp;2.0&nbsp;cm on
+        white paper with black ink.
+      </p>
+      <p>
+        For the full SSC spec table, the live-capture prep checklist, and the
+        complete rejection list, see the dedicated{" "}
+        <Link href="/blog/ssc-cgl-chsl-photo-signature-guide-2026/">SSC CGL / CHSL photo and signature guide</Link>.
       </p>
 
-      <h2>How to resize your photo and signature</h2>
+      <h2>Banking exams: IBPS PO, IBPS Clerk, SBI PO, SBI Clerk</h2>
       <p>
-        You don&apos;t need to look up every number. Pick your exam in the{" "}
-        <Link href="/tools/exam-package/">Exam Application Kit</Link> and it sets the
-        right photo and signature size for you in one flow. Prefer to do them
-        separately? Use the per-exam resizers, such as the{" "}
-        <Link href="/ssc-photo-resizer/">SSC photo resizer</Link> or{" "}
-        <Link href="/upsc-photo-resizer/">UPSC photo resizer</Link>.
+        IBPS and SBI use consistent specs across their PO and Clerk exams. The
+        confirmed photo requirement (per{" "}
+        <a href="https://ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">ibps.in</a>{" "}
+        and{" "}
+        <a href="https://sbi.co.in/careers" className="text-brand underline" target="_blank" rel="noopener noreferrer">sbi.co.in/careers</a>)
+        is a JPG between{" "}
+        <strong>20&nbsp;KB and 50&nbsp;KB at 200×230&nbsp;px</strong>. The
+        signature is a JPG between{" "}
+        <strong>10&nbsp;KB and 20&nbsp;KB at 140×60&nbsp;px</strong>.
       </p>
       <p>
-        For the signature, the{" "}
-        <Link href="/signature-resize-to-20kb/">resize signature to 20&nbsp;KB</Link>{" "}
-        tool removes the paper background and gets it under the limit. For the
-        photo alone, compress to the exact cap with{" "}
-        <Link href="/photo-resize-to-50kb/">resize to 50&nbsp;KB</Link> or a{" "}
-        <Link href="/tools/resize-kb/">custom KB target</Link>. Everything runs in
-        your browser — nothing is uploaded.
+        These portals accept regular file uploads — no live capture. The common
+        mistake here is resizing to the right pixels but the wrong KB: a
+        200×230&nbsp;px photo saved as a high-quality JPG can exceed 50&nbsp;KB,
+        while the same image compressed too hard can fall under 20&nbsp;KB. Use a
+        KB-target resizer — set it to output 35&nbsp;KB — to land safely in the
+        middle of the band.
+      </p>
+      <p>
+        The signature at 140×60&nbsp;px is a wide, low rectangle — much wider than
+        it is tall. Crop your signature scan tightly to the ink before resizing:
+        a signature with too much white space around it will appear very small and
+        thin in the portal preview, and may fail a visual check even if it passes
+        the file validator.
+      </p>
+      <p>
+        For IBPS PO specifically — August prelim dates, document checklist and
+        the registration prep calendar — see the{" "}
+        <Link href="/blog/ibps-po-2026-photo-signature-checklist/">IBPS PO 2026 photo and signature checklist</Link>.
       </p>
 
-      <h2>Why uploads get rejected</h2>
+      <h2>UPSC exams: CSE / IAS, NDA, CDS</h2>
+      <p>
+        UPSC uses completely different specs from SSC and banking portals. The
+        photo must be a minimum of{" "}
+        <strong>350×350&nbsp;px — square, not portrait</strong> — between
+        20&nbsp;KB and 300&nbsp;KB in JPG. The wider KB range means almost any
+        reasonably sized photo file will fit, but the square format catches almost
+        everyone: candidates upload a standard passport-size portrait (taller than
+        wide) and the portal rejects it outright.
+      </p>
+      <p>
+        UPSC CSE added further requirements in 2026: your name and the date the
+        photo was taken must be printed at the bottom of the image, the photo must
+        be within 10 days old at the time of upload, and the portal includes a live
+        webcam matching step that compares your uploaded photo against your current
+        appearance. The DAF (Detailed Application Form) also requires{" "}
+        <strong>three signatures on one page</strong>, each in a separate box —
+        not a single signature submitted three times.
+      </p>
+      <p>
+        NDA and CDS share the square photo rule and the name-and-date requirement.
+        For the complete UPSC CSE spec table, three-signature workflow and webcam
+        step, see the{" "}
+        <Link href="/blog/upsc-cse-ias-photo-signature-guide-2026/">UPSC CSE / IAS photo and signature guide</Link>.
+        For NDA and CDS specifically, see the{" "}
+        <Link href="/blog/nda-cds-photo-signature-guide-2026/">NDA &amp; CDS photo and signature guide</Link>.
+        How to add the name and date text to the photo is covered step by step in
+        the{" "}
+        <Link href="/blog/add-name-date-on-exam-photo/">add name and date on exam photo guide</Link>.
+      </p>
+
+      <h2>Railway exams: RRB NTPC, ALP, Group D</h2>
+      <p>
+        Railway Recruitment Boards run exams across 21 regional boards, and specs
+        are confirmed per notification at{" "}
+        <a href="https://indianrailways.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">indianrailways.gov.in</a>.
+        The typical photo requirement mirrors banking exams:{" "}
+        <strong>20–50&nbsp;KB, JPG, 200×230&nbsp;px</strong>. The signature band
+        is <strong>10–20&nbsp;KB, JPG, 140×60&nbsp;px</strong>. Verify the exact
+        pixel dimensions for your specific RRB region — different boards can state
+        slightly different values in the same notification cycle.
+      </p>
+      <p>
+        Railway portals upload the photo and signature as separate files. The
+        background must be plain white. Recent RRB Group D cycles have also
+        included a{" "}
+        <strong>thumb impression upload</strong> — a separate 10–20&nbsp;KB JPG
+        of your right thumb on white paper. Check the notification for this
+        requirement if you&apos;re applying for Group D or technical posts and
+        prepare the thumb impression image the same way you prepare the signature:
+        photograph flat on a white surface with even light.
+      </p>
+
+      <h2>NTA exams: NEET and JEE (Main)</h2>
+      <p>
+        The National Testing Agency uses a more relaxed file size range than most
+        other portals. For both NEET and JEE Main, the photo is a{" "}
+        <strong>JPG or PNG between 10&nbsp;KB and 200&nbsp;KB</strong> — and the
+        signature is between <strong>4&nbsp;KB and 30&nbsp;KB</strong> in JPG or
+        PNG. This is the widest tolerance of any major exam portal; almost any
+        clear phone photo will pass on KB alone.
+      </p>
+      <p>
+        NTA does not require live portal capture — you upload a saved file. The
+        photo should be on a plain white or off-white background, front-facing,
+        taken within the last six months. The common mistake for NTA applications
+        is format confusion: NTA explicitly accepts both JPG and PNG, but some
+        candidates upload WebP or HEIC (common default formats on recent iPhones
+        and Android phones) — those are rejected. Convert to JPG before uploading
+        if you&apos;re not sure of your phone&apos;s output format.
+      </p>
+
+      <h2>State PSC and other board exams</h2>
+      <p>
+        State Public Service Commissions — BPSC, UPPSC, MPSC, TNPSC, KPSC, WBCS
+        and others — each set their own photo and signature specs per notification.
+        Most follow the 20–50&nbsp;KB, JPG, 200×230&nbsp;px convention, but
+        state boards differ more than national boards. Always download the
+        official notification PDF for the specific state exam and use the exact
+        figures listed there. If the state portal specifies an unusual dimension
+        (e.g. 350×400&nbsp;px), use the{" "}
+        <Link href="/tools/resize-kb/">custom KB resizer</Link>{" "}
+        and set the pixel dimensions manually.
+      </p>
+
+      <h2>How to prepare a correct signature for exam forms</h2>
+      <p>
+        The signature is the upload that fails most often — and the fix is almost
+        always the same: the background is grey or cream rather than white, or
+        the signature is over-compressed into illegibility.
+      </p>
+      <p>Here is the correct preparation sequence:</p>
+      <ol>
+        <li>
+          <strong>Use the right materials.</strong> Sign on bright white unlined
+          paper with a black ballpoint or gel pen. Avoid fountain pens (ink spread)
+          and pencil (too faint). The signature should be roughly 4&nbsp;×&nbsp;2&nbsp;cm —
+          matching the physical target most portals specify.
+        </li>
+        <li>
+          <strong>Photograph in flat, even light.</strong> Place the paper on a
+          table near a window. Use your phone&apos;s rear camera held level
+          directly above the signature, not at an angle. Avoid your own shadow
+          falling on the paper.
+        </li>
+        <li>
+          <strong>Crop tightly.</strong> Crop the image close to the ink — a small
+          white margin on each side is fine, but the signature should fill at
+          least 70% of the crop frame. Large white margins cause the signature to
+          appear tiny and thin when the portal resizes to its stored dimensions.
+        </li>
+        <li>
+          <strong>Clean the background.</strong> Upload to the{" "}
+          <Link href="/signature-resize-to-20kb/">signature resizer</Link>, which
+          removes the paper background, whitens any grey or cream tone, and outputs
+          within the target KB band. For portals that want a transparent background,
+          use the PNG output option.
+        </li>
+        <li>
+          <strong>Check the style (SSC only).</strong> SSC portals reject
+          all-capitals signatures. Use cursive or running hand. If your natural
+          signature is a set of printed block capitals, re-sign in a connected
+          flowing style before scanning.
+        </li>
+      </ol>
+      <p>
+        For exams requiring a thumb impression (RRB Group D, some state PSC
+        forms), apply the same approach: ink your right thumb on a fresh pad,
+        press firmly on white paper, photograph flat with even light, and resize
+        to the specified KB target using the custom resizer.
+      </p>
+
+      <h2>How to take a compliant exam photo</h2>
+      <p>
+        Unlike a studio passport photo, an exam portal photo needs to match your
+        current appearance closely enough that an invigilator can verify you on
+        exam day. Here is what the portal validator and the invigilator both check:
+      </p>
       <ul>
-        <li>The photo or signature is over the file-size cap — compress it under the stated KB limit.</li>
-        <li>The file is under the minimum — portals check both ends of the band.</li>
-        <li>The signature has a white background box — use a transparent or cleaned version.</li>
-        <li>Wrong dimensions — match the pixel size the form asks for.</li>
-        <li>Old or unclear photo — use a recent, well-lit, front-facing one.</li>
+        <li>
+          <strong>Background:</strong> plain white or very light off-white. A
+          patterned wall, room background, or coloured sheet is an automatic
+          rejection on most portals. Use a white sheet taped to a wall, or stand
+          close to a plain painted surface.
+        </li>
+        <li>
+          <strong>Lighting:</strong> face the light source — a window or lamp —
+          not away from it. Shadows across one side of the face trigger biometric
+          validator failures on portals with automated checks.
+        </li>
+        <li>
+          <strong>Framing:</strong> head and shoulders, face centred, filling
+          roughly 70–80% of the frame height. Do not include hands, other people,
+          or distracting elements in the frame.
+        </li>
+        <li>
+          <strong>Expression:</strong> neutral, mouth closed. Most exam portals
+          disallow open-mouth smiles or squinting eyes.
+        </li>
+        <li>
+          <strong>Dress:</strong> formal or semi-formal in a solid colour. No caps,
+          hats, sunglasses, or heavy-framed glasses (some portals disallow glasses
+          entirely — check the notification for your exam).
+        </li>
+        <li>
+          <strong>Recency:</strong> SSC requires within 3 months; UPSC CSE within
+          10 days. Do not use an old photo even if the portal does not state a
+          window — an invigilator can and will flag a visible difference in
+          appearance.
+        </li>
       </ul>
       <p>
-        For a full breakdown of every rejection reason, see{" "}
+        For a detailed guide to taking a compliant photo at home — including phone
+        setup, lighting tips, and the exact mistakes that get photos rejected — see{" "}
+        <Link href="/blog/how-to-take-a-passport-photo-at-home/">how to take a passport photo at home</Link>.
+      </p>
+
+      <h2>Why uploads get rejected — and how to fix each one</h2>
+      <p>
+        Exam portal rejection messages are typically terse. Here is what each
+        failure usually means and how to fix it:
+      </p>
+      <ul>
+        <li>
+          <strong>File too large (over the cap):</strong> compress to a specific
+          KB target. A general &ldquo;reduce quality&rdquo; slider is unreliable
+          — target a value like 35&nbsp;KB to land safely within the 20–50&nbsp;KB band.
+        </li>
+        <li>
+          <strong>File too small (under the minimum):</strong> the file was
+          over-compressed. Re-export at a higher JPEG quality setting, or use the
+          KB resizer to set a higher target.
+        </li>
+        <li>
+          <strong>Wrong format:</strong> the portal expects JPG and received PNG,
+          WebP, or HEIC. Convert to JPG before uploading. iPhones and recent
+          Android phones save as HEIC by default — check your camera settings.
+        </li>
+        <li>
+          <strong>Wrong pixel dimensions:</strong> the photo or signature does not
+          match the portal&apos;s required width × height. Use the exam-specific
+          resizer to apply the exact pixel preset.
+        </li>
+        <li>
+          <strong>Signature background grey or cream:</strong> use the signature
+          resizer to clean the background. This is the single most common
+          rejection reason for signatures.
+        </li>
+        <li>
+          <strong>All-caps signature (SSC only):</strong> the validator flags
+          printed capital letters. Re-sign in cursive.
+        </li>
+        <li>
+          <strong>Photo not recent enough (UPSC / Army):</strong> the notification
+          specifies a recency window. Use a fresh photo taken for this application.
+        </li>
+        <li>
+          <strong>Missing name and date text (UPSC / Army):</strong> UPSC CSE, NDA
+          and Indian Army forms require your name and the date printed at the bottom
+          of the photo. See{" "}
+          <Link href="/blog/add-name-date-on-exam-photo/">how to add name and date</Link>{" "}
+          for the exact positioning rule.
+        </li>
+        <li>
+          <strong>Portrait photo where square is required (UPSC / NDA / CDS):</strong>{" "}
+          crop to a 1:1 square with your head centred before uploading. The
+          UPSC photo resizer applies this crop automatically.
+        </li>
+      </ul>
+      <p>
+        For a complete breakdown with screenshots and fixes, see{" "}
         <Link href="/blog/why-exam-photo-signature-rejected/">why exam photos and signatures get rejected</Link>.
-        UPSC and Army applications also need your name and date{" "}
-        <Link href="/blog/add-name-date-on-exam-photo/">printed on the photo</Link>.
-        For NDA and CDS specifically — including the square 350&nbsp;×&nbsp;350&nbsp;px
-        requirement and the mandatory name/date text — see the{" "}
-        <Link href="/blog/nda-cds-photo-signature-guide-2026/">NDA &amp; CDS photo and signature guide</Link>.
-        For UPSC CSE (IAS) — including the three-signature requirement and the
-        live webcam matching step added in 2026 — see the{" "}
-        <Link href="/blog/upsc-cse-ias-photo-signature-guide-2026/">UPSC CSE / IAS photo and signature guide</Link>.
-        For SSC CGL and CHSL specifically — including the live-capture requirement
-        and the all-caps signature rule — see the{" "}
-        <Link href="/blog/ssc-cgl-chsl-photo-signature-guide-2026/">SSC CGL / CHSL photo and signature guide</Link>.
+      </p>
+
+      <h2>How to resize for any exam in one step</h2>
+      <p>
+        The fastest path: pick your exam in the{" "}
+        <Link href="/tools/exam-package/">Exam Application Kit</Link> and it applies
+        the correct photo and signature spec — KB target, pixel dimensions,
+        background — in one flow. It covers 40+ Indian exam portals including SSC,
+        IBPS, SBI, UPSC, RRB and NTA.
+      </p>
+      <p>To prepare each file separately:</p>
+      <ul>
+        <li>
+          <strong>Photo to exact KB:</strong>{" "}
+          <Link href="/photo-resize-to-50kb/">resize to 50&nbsp;KB</Link> for the
+          standard ceiling, or{" "}
+          <Link href="/tools/resize-kb/">set a custom KB target</Link> for exams
+          with a different cap.
+        </li>
+        <li>
+          <strong>Signature:</strong> the{" "}
+          <Link href="/signature-resize-to-20kb/">resize signature to 20&nbsp;KB</Link>{" "}
+          tool removes the paper background, crops tightly, and outputs within the
+          required band.
+        </li>
+        <li>
+          <strong>Per-exam resizers:</strong> dedicated tools for{" "}
+          <Link href="/ssc-photo-resizer/">SSC</Link>,{" "}
+          <Link href="/upsc-photo-resizer/">UPSC</Link>, and{" "}
+          <Link href="/ibps-photo-resizer/">IBPS</Link>{" "}
+          apply each board&apos;s exact pixel and KB preset automatically.
+        </li>
+      </ul>
+      <p>
+        Everything runs in your browser — no files are uploaded to a server, no
+        account is required, and there is no watermark.
       </p>
 
       <div className="mt-12">
         <Faq items={[
           {
+            q: "Can I use the same photo for SSC, IBPS and SBI in the same cycle?",
+            a: "Usually yes for KB, but not always for pixels. IBPS and SBI both use 200×230 px, so a photo sized for one passes the other. SSC CGL typically uses 275×354 px, which is a different dimension. You may need to resize in pixels (not just KB) when switching between SSC and banking portals. A photo that passes all KB checks will still be rejected if the pixel dimensions don't match.",
+          },
+          {
             q: "Why do exam portals set a minimum file size as well as a maximum?",
-            a: "A minimum KB floor ensures the image has enough data to be clearly readable on screen and printable on the admit card. A photo compressed below ~10 KB at 200×230 px becomes noticeably blurry. The band (e.g. 20–50 KB) ensures images are both small enough to upload and sharp enough to verify identity.",
+            a: "A minimum KB floor ensures the image has enough data to be clearly readable on screen and printable on the admit card. A photo compressed below roughly 10 KB at 200×230 px becomes noticeably blurry and unreliable for identity verification. The band (e.g. 20–50 KB) ensures images are both small enough to upload quickly and sharp enough to verify identity.",
           },
           {
-            q: "Can I use the same photo for multiple exams?",
-            a: "Usually yes, if the specs are similar. SSC, IBPS, SBI and Railway exams all use roughly the same 20–50 KB, JPG, 200×230 px band. A photo that passes one will pass the others. UPSC and NTA use different ranges, so check each notification separately.",
+            q: "My signature scan looks grey or cream — will it be rejected?",
+            a: "Yes. Grey or cream background is the most common reason signatures fail. Most portals expect bright white. Use the signature resizer: it removes the paper background and whitens any grey or cream tone automatically. Photograph the signature near a window (not under yellow indoor lighting) to minimise the grey cast before processing.",
           },
           {
-            q: "My signature scan looks grey — will it be rejected?",
-            a: "Yes, if the portal's validator expects a clean white background. A grey or shadowed scan is a common rejection reason. Use the signature resizer: it removes the paper background and trims to a tight bounding box, resulting in a much smaller and cleaner file.",
+            q: "UPSC asks for a square photo but my camera takes portrait shots. What should I do?",
+            a: "UPSC requires a minimum 350×350 px square, not a 35×45 mm portrait. Crop your photo to a 1:1 square with your head centred and face filling most of the frame, then resize to meet the KB requirement. The UPSC photo resizer applies the square crop and KB target in one step. Submitting a portrait photo to a UPSC portal — even one with the correct KB — will be rejected.",
           },
           {
-            q: "What format does the signature need to be in?",
-            a: "JPG for almost all Indian portals, including SSC, IBPS, SBI and Railway. NTA (NEET/JEE) accepts JPG or PNG. A transparent PNG signature may be rejected by portals expecting a white-background JPG, so confirm in the notification and convert if needed.",
+            q: "What format should I use — JPG or PNG?",
+            a: "JPG for almost every Indian exam portal: SSC, IBPS, SBI, UPSC and RRB all require JPG. NTA (NEET and JEE) is the exception — it accepts both JPG and PNG. If your phone saves photos as HEIC or WebP (common on newer iPhones and Android), convert to JPG before uploading. WebP and HEIC are rejected by all major Indian exam portals.",
+          },
+          {
+            q: "Do specs change between exam cycles?",
+            a: "Yes. KB bands, pixel dimensions, and background requirements can all change from one notification cycle to the next — even for the same exam. The specs in this guide are the most commonly reported current values, but always download the official notification PDF for the specific exam and cycle you are applying for. The official sources are ssc.gov.in, ibps.in, upsc.gov.in, indianrailways.gov.in and nta.ac.in.",
           },
         ]} />
       </div>

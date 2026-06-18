@@ -182,12 +182,13 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "exam-photo-signature-size-guide",
     title: "Photo & Signature Size for Govt Exams: SSC, UPSC, IBPS",
     description:
-      "Photo and signature KB limits and dimensions for Indian exams — SSC, UPSC, IBPS, SBI, Railway, NEET/JEE — and how to resize yours to fit in one step.",
+      "Exact photo and signature KB limits, pixel dimensions and background rules for SSC, IBPS, SBI, UPSC, RRB and NTA exams — plus how to prepare your signature and resize to spec.",
     date: "June 8, 2026",
     dateISO: "2026-06-08",
+    updatedISO: "2026-06-18",
     excerpt:
-      "Most exam portals cap the photo at 20–50 KB and the signature at 10–20 KB, with set dimensions. Here's what each major exam wants and how to hit it exactly.",
-    readMins: 6,
+      "Wrong KB, wrong pixels, grey signature background — these three mistakes account for nearly every upload rejection. Here's the exact spec for every major Indian exam and how to fix each failure.",
+    readMins: 10,
   },
   {
     slug: "linkedin-profile-photo-size-and-tips",
