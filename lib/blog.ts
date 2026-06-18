@@ -23,6 +23,28 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "best-free-passport-photo-maker-india-2026",
+    title: "Best Free Passport Photo Maker Online India (2026)",
+    description:
+      "Five free tools that make a compliant 35×45 mm Indian passport photo — compared on privacy, spec accuracy, and exam support. No ₹600 fees, no account required.",
+    date: "June 18, 2026",
+    dateISO: "2026-06-18",
+    excerpt:
+      "Most tools either charge ₹600, upload your photo to a server, or use the wrong India spec. Here are five options compared on cost, privacy, and whether they actually know the 35×45 mm Seva requirement.",
+    readMins: 6,
+  },
+  {
+    slug: "visafoto-alternative-india-free",
+    title: "Free Visafoto Alternative India: 4 Tools That Won't Charge ₹600",
+    description:
+      "Visafoto charges ₹600 per photo and uploads your image to a server. Four free alternatives that make India-compliant 35×45 mm passport photos in your browser — no payment, no upload.",
+    date: "June 18, 2026",
+    dateISO: "2026-06-18",
+    excerpt:
+      "Visafoto is accurate, but ₹600 per photo and a server upload aren't necessary for most Indian passport or exam photos. Here are four free alternatives and when Visafoto is actually worth it.",
+    readMins: 5,
+  },
+  {
     slug: "upsc-cse-ias-photo-signature-guide-2026",
     title: "UPSC CSE / IAS Photo & Signature Requirements 2026",
     description:

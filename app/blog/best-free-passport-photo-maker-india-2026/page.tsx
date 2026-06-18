@@ -1,0 +1,224 @@
+import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+
+export default function Page() {
+  return (
+    <BlogPostLayout slug="best-free-passport-photo-maker-india-2026">
+      <p>
+        Most online passport photo tools have at least one of three problems: they charge ₹600 per
+        photo, they upload your biometric face photo to a remote server, or they use the US 2×2 inch
+        spec instead of India&apos;s actual 35×45 mm requirement. If you&apos;re applying for a
+        passport, OCI card, or a government exam form, none of those is acceptable. Here are five
+        tools compared on the criteria that matter — cost, privacy, and whether they actually know
+        the India spec.
+      </p>
+
+      <p>
+        <strong>Transparency:</strong> We built easyPhoto, so we&apos;re not neutral. Every feature
+        claim below is based on publicly verifiable information — pricing sourced directly from each
+        tool&apos;s website, upload behaviour from their terms of service. Where a competitor does
+        something better, we say so.
+      </p>
+
+      <h2>What the India passport photo spec actually requires</h2>
+
+      <p>
+        The Passport Seva portal (passportindia.gov.in) specifies a{" "}
+        <strong>35×45 mm JPG</strong> with a plain white background, the face taking up 70–80% of
+        the frame, and the file under 1 MB. This is not the same as the US 2×2 inch (51×51 mm)
+        spec — a mistake several tools make for their &quot;India&quot; preset. For exam portals
+        the rules are stricter: SSC requires 20–50 KB at 275×354 px, IBPS requires 20–50 KB at
+        200×230 px, UPSC requires 20–300 KB at a minimum of 350×350 px — all set by each
+        board&apos;s own notification.
+      </p>
+
+      <div className="my-8 overflow-x-auto rounded-xl border border-hairline text-sm">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b border-hairline bg-accent/30">
+              <th className="px-4 py-3 text-left font-semibold text-ink">Tool</th>
+              <th className="px-4 py-3 text-left font-semibold text-ink">Cost</th>
+              <th className="px-4 py-3 text-left font-semibold text-ink">Server upload?</th>
+              <th className="px-4 py-3 text-left font-semibold text-ink">India 35×45 mm</th>
+              <th className="px-4 py-3 text-left font-semibold text-ink">Exam tools</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-hairline">
+            <tr className="bg-brand-soft/10">
+              <td className="px-4 py-3 font-medium text-ink">easyPhoto</td>
+              <td className="px-4 py-3 text-muted-foreground">Free</td>
+              <td className="px-4 py-3 font-medium text-emerald-700">No — on-device</td>
+              <td className="px-4 py-3 text-muted-foreground">✓ Seva spec</td>
+              <td className="px-4 py-3 text-muted-foreground">✓ 40+ portals</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-medium text-ink">PassportSizePhoto.in</td>
+              <td className="px-4 py-3 text-muted-foreground">Free</td>
+              <td className="px-4 py-3 font-medium text-emerald-700">No (per their site)</td>
+              <td className="px-4 py-3 text-muted-foreground">✓ India-focused</td>
+              <td className="px-4 py-3 text-muted-foreground">Partial</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-medium text-ink">IDPhoto4You</td>
+              <td className="px-4 py-3 text-muted-foreground">Free</td>
+              <td className="px-4 py-3 font-medium text-amber-700">Yes — 6 hr retention</td>
+              <td className="px-4 py-3 text-muted-foreground">✓ 35×45 mm in dropdown</td>
+              <td className="px-4 py-3 text-muted-foreground">None</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-medium text-ink">Visafoto</td>
+              <td className="px-4 py-3 text-muted-foreground">₹600 / photo</td>
+              <td className="px-4 py-3 font-medium text-amber-700">Yes — server-processed</td>
+              <td className="px-4 py-3 text-muted-foreground">✓ India page</td>
+              <td className="px-4 py-3 text-muted-foreground">None</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-medium text-ink">AI passport photo apps</td>
+              <td className="px-4 py-3 text-muted-foreground">$5–$17 / photo</td>
+              <td className="px-4 py-3 font-medium text-amber-700">Yes — cloud AI</td>
+              <td className="px-4 py-3 text-muted-foreground">Often wrong spec</td>
+              <td className="px-4 py-3 text-muted-foreground">None</td>
+            </tr>
+          </tbody>
+        </table>
+        <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
+          Pricing verified June 2026. Sources: each tool&apos;s own website and terms.
+        </p>
+      </div>
+
+      <h2>easyPhoto — free, on-device, built around Indian documents</h2>
+
+      <p>
+        <em>This is our product — read the section above for the independent comparison.</em>
+      </p>
+
+      <p>
+        easyPhoto makes passport photos (India 35×45 mm, US 2×2 in, UK, Canada, Schengen and 20+
+        other countries), resizes exam photos to the exact KB and pixel limits of 40+ Indian exam
+        portals (SSC, IBPS, UPSC, SBI, RRB, NTA and more), and handles PDF compression, signature
+        resize, and format conversion. Nothing is uploaded — every operation runs in your browser
+        using WebAssembly. The specs come from each board&apos;s official notification, verified
+        against the source.
+      </p>
+
+      <p>
+        The reason we built it specifically for India is that no Western tool covers exam photo
+        requirements. A SSC CGL applicant needs a 275×354 px JPG between 20 KB and 50 KB — a spec
+        that doesn&apos;t exist anywhere in Visafoto&apos;s or iLoveIMG&apos;s interface. The tool
+        is free with no account required.
+      </p>
+
+      <h2>PassportSizePhoto.in — the other India-native free tool</h2>
+
+      <p>
+        PassportSizePhoto.in is a free, India-focused passport photo maker that says it runs
+        processing on-device — their homepage states no upload and DPDPA compliance. It handles the
+        Indian passport 35×45 mm spec and a range of other Indian ID document types. It&apos;s a
+        real alternative for users who want a second option.
+      </p>
+
+      <p>
+        Where it falls short for exam applicants: it doesn&apos;t appear to have the specific KB
+        and pixel targets for individual exam portals. It&apos;s positioned as a general
+        passport/ID tool. If you only need a passport photo, it&apos;s a valid free choice. If you
+        need a 20–50 KB JPG at exactly 275×354 px for an SSC form, you need something more
+        specific.
+      </p>
+
+      <h2>IDPhoto4You — free, but your photo goes to a server</h2>
+
+      <p>
+        IDPhoto4You is free with no account required, and it supports India&apos;s 35×45 mm spec
+        in its 73-country dropdown. For a straightforward passport photo it works. The important
+        caveat: their own terms state that uploaded photos are stored on their servers during
+        processing and automatically deleted within six hours. For a face photo intended for a
+        government document, that&apos;s a privacy trade-off worth knowing about before you upload.
+      </p>
+
+      <p>
+        There&apos;s also no KB-target output control and no exam portal presets. The tool
+        generates a cropped, background-removed photo — but you can&apos;t tell it &quot;give me
+        this under 50 KB at 275×354 px.&quot; A general resize step is still needed after.
+      </p>
+
+      <h2>Visafoto — the paid option with an accuracy guarantee</h2>
+
+      <p>
+        Visafoto charges ₹600 per photo (confirmed June 2026) and adds a human expert review of
+        compliance. If the photo fails the official check, they redo it. That guarantee is
+        genuinely valuable for an embassy-grade visa photo where rejection causes a real problem.
+      </p>
+
+      <p>
+        For most Indian passport or exam photo use cases — where the official portal simply checks
+        dimensions and file size — that guarantee is overkill. The ₹600 fee makes sense for a
+        Schengen visa with strict biometric requirements, not for a SSC CGL exam registration. It
+        also uploads your photo to a remote server for processing, which is the same privacy
+        trade-off as other server-based tools. There are no exam photo presets.
+      </p>
+
+      <h2>What about AI passport photo apps?</h2>
+
+      <p>
+        Several AI tools — Passport Photo Online ($16.95), AIPassportPhoto (~$5), and others —
+        use machine learning to adjust background, lighting, and expression automatically. They
+        generally require server upload and payment before you can download the result.
+        AIPassportPhoto&apos;s India page (as of June 2026) lists the spec as 2×2 inches —
+        the US size, not the Indian Passport Seva spec of 35×45 mm. If spec accuracy matters, it
+        is worth verifying what a tool claims before paying.
+      </p>
+
+      <h2>Which should you use?</h2>
+
+      <ul>
+        <li>
+          <strong>Indian passport or OCI card application:</strong> easyPhoto or
+          PassportSizePhoto.in — both are free, India-spec-correct, and don&apos;t upload your
+          photo.
+        </li>
+        <li>
+          <strong>SSC, IBPS, UPSC, SBI, RRB, NTA exam form:</strong> easyPhoto — the only tool
+          with verified KB and pixel targets per portal.
+        </li>
+        <li>
+          <strong>Visa for a foreign country with strict embassy standards:</strong> Visafoto or
+          Passport Photo Online are worth the cost for the compliance guarantee.
+        </li>
+        <li>
+          <strong>Privacy is a hard requirement:</strong> easyPhoto or PassportSizePhoto.in —
+          both claim on-device processing; easyPhoto&apos;s privacy model is verifiable (the
+          code runs in your browser; network tab shows zero image uploads).
+        </li>
+      </ul>
+
+      <h2>Frequently asked questions</h2>
+
+      <p>
+        <strong>Is the India passport photo size 35×45 mm or 2×2 inches?</strong>
+      </p>
+      <p>
+        35×45 mm, per Passport Seva (passportindia.gov.in). The 2×2 inch (51×51 mm) size is the
+        US specification. Some tools incorrectly use the US size for their India preset — check
+        the dimensions before submitting.
+      </p>
+
+      <p>
+        <strong>Can I use a phone photo for my Indian passport application?</strong>
+      </p>
+      <p>
+        Yes. Passport Seva accepts digital photos uploaded during the online application. The photo
+        must be a clear, recent JPG with a plain white background, face centred, and no glasses.
+        A phone camera in good light is sufficient. Resize it to 35×45 mm and under 1 MB before
+        uploading.
+      </p>
+
+      <p>
+        <strong>Do these tools add a watermark to free photos?</strong>
+      </p>
+      <p>
+        None of the free tools listed here add a watermark to the downloaded photo. easyPhoto,
+        PassportSizePhoto.in, and IDPhoto4You are all fully free with no paid tier for the
+        download itself.
+      </p>
+    </BlogPostLayout>
+  );
+}
