@@ -724,6 +724,242 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     context:
       "CUET (Common University Entrance Test) is conducted by the National Testing Agency (NTA) for undergraduate admission to central and other participating universities; the photo and signature are uploaded during the online application, and a live photo is also captured.",
   },
+
+  // ---------------------------------------------------------------------------
+  // State PSCs — additional entries.
+  // ---------------------------------------------------------------------------
+  "kerala-psc": {
+    id: "kerala-psc",
+    name: "Kerala PSC (Thulasi Portal)",
+    photoLimitKb: 30,
+    sigLimitKb: 20,
+    photoWidthPx: 150,
+    photoHeightPx: 200,
+    sigWidthPx: 150,
+    sigHeightPx: 75,
+    photoAspectRatio: 150 / 200,
+    sigAspectRatio: 2,
+    description:
+      "Kerala Public Service Commission (Thulasi portal — thulasi.psc.kerala.gov.in). Photo 150×200 px, under 30 KB, JPG/JPEG, plain light background; signature 150×75 px, under 20 KB. The Thulasi portal is strict on file size — even 31 KB is rejected.",
+    source: { url: "https://thulasi.psc.kerala.gov.in", label: "Kerala PSC Thulasi portal" },
+    verification: "needs-review",
+    context:
+      "Kerala Public Service Commission uses its own Thulasi portal for all recruitments. The photo and signature upload limits (150×200 px / 30 KB and 150×75 px / 20 KB) differ from the standard national exam pattern — always verify against the current notification on thulasi.psc.kerala.gov.in.",
+  },
+
+  // ---------------------------------------------------------------------------
+  // Central government & skill exams.
+  // ---------------------------------------------------------------------------
+  "ccc-nielit": {
+    id: "ccc-nielit",
+    name: "NIELIT CCC (Computer Concepts)",
+    photoLimitKb: 50,
+    photoMinKb: 20,
+    sigLimitKb: 20,
+    sigMinKb: 10,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    sigWidthPx: 140,
+    sigHeightPx: 60,
+    photoAspectRatio: 20 / 23,
+    sigAspectRatio: 14 / 6,
+    description:
+      "NIELIT CCC / BCC / ECC online application (student.nielit.gov.in). Photo 20-50 KB (200×230 px), JPG/JPEG; signature 10-20 KB (140×60 px, black ink on white paper), JPG.",
+    source: { url: "https://student.nielit.gov.in", label: "NIELIT Student Portal" },
+    verification: "needs-review",
+    context:
+      "NIELIT (National Institute of Electronics and Information Technology) conducts the CCC (Course on Computer Concepts), BCC and ECC certification exams. The online application and admit card photo/signature are uploaded via student.nielit.gov.in.",
+  },
+
+  dsssb: {
+    id: "dsssb",
+    name: "DSSSB (Delhi SSB)",
+    photoLimitKb: 50,
+    photoMinKb: 20,
+    sigLimitKb: 20,
+    sigMinKb: 10,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    sigWidthPx: 140,
+    sigHeightPx: 60,
+    photoAspectRatio: 20 / 23,
+    sigAspectRatio: 14 / 6,
+    description:
+      "Delhi Subordinate Services Selection Board online application (dsssb.delhi.gov.in). Photo 20-50 KB (200×230 px), JPG/JPEG, plain white background; signature 10-20 KB (140×60 px, black ink), JPG.",
+    source: { url: "https://dsssb.delhi.gov.in", label: "DSSSB (dsssb.delhi.gov.in)" },
+    verification: "needs-review",
+    context:
+      "DSSSB (Delhi Subordinate Services Selection Board) recruits for posts under the Government of NCT of Delhi — TGT, PGT, various Group B and C posts. Photo and signature are uploaded on the online application portal.",
+  },
+
+  upsssc: {
+    id: "upsssc",
+    name: "UPSSSC (UP Subordinate Services)",
+    photoLimitKb: 50,
+    sigLimitKb: 30,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    photoAspectRatio: 20 / 23,
+    description:
+      "Uttar Pradesh Subordinate Services Selection Commission online application (upsssc.gov.in). Photo under 50 KB (200×230 px or 3.5×4.5 cm); signature under 30 KB; JPG/JPEG. Limits can vary per recruitment — confirm against the current notification.",
+    source: { url: "https://upsssc.gov.in", label: "UPSSSC (upsssc.gov.in)" },
+    verification: "needs-review",
+    context:
+      "UPSSSC (Uttar Pradesh Subordinate Services Selection Commission) conducts recruitments for Lekhpal, Junior Assistant, Forest Guard, VDO and many other Group B/C posts under the UP state government. Applications are submitted on upsssc.gov.in.",
+  },
+
+  // ---------------------------------------------------------------------------
+  // Central Armed Police Forces (CAPFs) & paramilitary.
+  // ---------------------------------------------------------------------------
+  bsf: {
+    id: "bsf",
+    name: "BSF (Border Security Force)",
+    photoLimitKb: 50,
+    photoMinKb: 20,
+    sigLimitKb: 20,
+    sigMinKb: 10,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    sigWidthPx: 140,
+    sigHeightPx: 60,
+    photoAspectRatio: 20 / 23,
+    sigAspectRatio: 14 / 6,
+    description:
+      "BSF (Border Security Force) constable / HC / SI recruitment (rectt.bsf.gov.in). Photo 20-50 KB (200×230 px), plain white background, JPG; signature 10-20 KB (140×60 px, black ink), JPG.",
+    source: { url: "https://rectt.bsf.gov.in", label: "BSF Recruitment (rectt.bsf.gov.in)" },
+    verification: "needs-review",
+    context:
+      "BSF (Border Security Force) recruits Constable (GD/Tradesmen), Head Constable and Sub-Inspector posts via rectt.bsf.gov.in. Specs are consistent with the standard CAPF pattern but always confirm the current notification before applying.",
+  },
+
+  crpf: {
+    id: "crpf",
+    name: "CRPF (Central Reserve Police)",
+    photoLimitKb: 50,
+    photoMinKb: 20,
+    sigLimitKb: 20,
+    sigMinKb: 10,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    sigWidthPx: 140,
+    sigHeightPx: 60,
+    photoAspectRatio: 20 / 23,
+    sigAspectRatio: 14 / 6,
+    description:
+      "CRPF (Central Reserve Police Force) recruitment portal. Photo 20-50 KB (200×230 px), JPG/JPEG, plain white background; signature 10-20 KB (140×60 px, black ink on white), JPG.",
+    source: { url: "https://crpf.gov.in/recruitment", label: "CRPF Recruitment" },
+    verification: "needs-review",
+    context:
+      "CRPF (Central Reserve Police Force) conducts Constable GD, SI (GD/Steno) and ASI (Steno/Clerk) recruitments. Applications go through CRPF's own portal or SSC CAPFs. Confirm the current vacancy notification for exact upload limits.",
+  },
+
+  cisf: {
+    id: "cisf",
+    name: "CISF (Central Industrial Security)",
+    photoLimitKb: 50,
+    photoMinKb: 20,
+    sigLimitKb: 20,
+    sigMinKb: 10,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    sigWidthPx: 140,
+    sigHeightPx: 60,
+    photoAspectRatio: 20 / 23,
+    sigAspectRatio: 14 / 6,
+    description:
+      "CISF (Central Industrial Security Force) Head Constable / Constable recruitment. Photo 20-50 KB (200×230 px), JPG, plain white background; signature 10-20 KB (140×60 px, black ink), JPG.",
+    source: { url: "https://cisf.gov.in", label: "CISF (cisf.gov.in)" },
+    verification: "needs-review",
+    context:
+      "CISF (Central Industrial Security Force) secures public-sector undertakings, airports and government infrastructure; it recruits Constable (Tradesmen) and Head Constable through its own portal and occasionally through SSC CAPFs.",
+  },
+
+  itbp: {
+    id: "itbp",
+    name: "ITBP (Indo-Tibetan Border Police)",
+    photoLimitKb: 50,
+    photoMinKb: 20,
+    sigLimitKb: 20,
+    sigMinKb: 10,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    sigWidthPx: 140,
+    sigHeightPx: 60,
+    photoAspectRatio: 20 / 23,
+    sigAspectRatio: 14 / 6,
+    description:
+      "ITBP (Indo-Tibetan Border Police) Constable / SI / HC recruitment (itbpolice.nic.in). Photo 20-50 KB (200×230 px), plain white background, JPG; signature 10-20 KB (140×60 px), JPG.",
+    source: { url: "https://itbpolice.nic.in/itbp/rectt", label: "ITBP Recruitment Portal" },
+    verification: "needs-review",
+    context:
+      "ITBP (Indo-Tibetan Border Police) guards India's northern border with China and recruits Constable (GD/Tradesmen), Head Constable and Sub-Inspector through itbpolice.nic.in. Specs follow the standard CAPF pattern.",
+  },
+
+  "navy-agniveer": {
+    id: "navy-agniveer",
+    name: "Indian Navy Agniveer",
+    photoLimitKb: 50,
+    photoMinKb: 10,
+    sigLimitKb: 50,
+    sigMinKb: 10,
+    photoWidthPx: 413,
+    photoHeightPx: 531,
+    sigWidthPx: 413,
+    sigHeightPx: 177,
+    photoAspectRatio: 413 / 531,
+    sigAspectRatio: 413 / 177,
+    description:
+      "Indian Navy Agniveer SSR / MR / CHEF recruitment (joinindiannavy.gov.in). Photo 10-50 KB JPEG, 413×531 px, passport-style with name and date at the bottom; signature 10-50 KB (413×177 px), black ink, running hand.",
+    source: { url: "https://joinindiannavy.gov.in", label: "Join Indian Navy (joinindiannavy.gov.in)" },
+    verification: "needs-review",
+    context:
+      "Indian Navy Agniveer (SSR, MR and CHEF) applications are submitted on joinindiannavy.gov.in. Like Army Agniveer, the photo must have the candidate's name and date printed at the bottom. Confirm exact specs in the current notification.",
+  },
+
+  // ---------------------------------------------------------------------------
+  // Government services & corporations.
+  // ---------------------------------------------------------------------------
+  epfo: {
+    id: "epfo",
+    name: "EPFO (SSA / Inspector)",
+    photoLimitKb: 50,
+    photoMinKb: 20,
+    sigLimitKb: 20,
+    sigMinKb: 10,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    sigWidthPx: 140,
+    sigHeightPx: 60,
+    photoAspectRatio: 20 / 23,
+    sigAspectRatio: 14 / 6,
+    description:
+      "EPFO (Social Security Assistant / Inspector) recruitment administered by UPSC/IBPS. Photo 20-50 KB (200×230 px); signature 10-20 KB (140×60 px); JPG/JPEG.",
+    source: { url: "https://www.epfindia.gov.in", label: "EPFO (epfindia.gov.in)" },
+    verification: "needs-review",
+    context:
+      "EPFO (Employees' Provident Fund Organisation) SSA and Inspector recruitments are administered by IBPS or UPSC depending on the cycle. Photo and signature specs follow the standard banking-pattern upload format.",
+  },
+
+  fci: {
+    id: "fci",
+    name: "FCI (Food Corporation of India)",
+    photoLimitKb: 50,
+    photoMinKb: 20,
+    sigLimitKb: 20,
+    sigMinKb: 10,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    sigWidthPx: 140,
+    sigHeightPx: 60,
+    photoAspectRatio: 20 / 23,
+    sigAspectRatio: 14 / 6,
+    description:
+      "FCI (Food Corporation of India) recruitment — AGM / JE / Watchman / Typist (fci.gov.in). Photo 20-50 KB (200×230 px), JPG; signature 10-20 KB (140×60 px, black or blue ink), JPG.",
+    source: { url: "https://fci.gov.in", label: "FCI (fci.gov.in)" },
+    verification: "needs-review",
+    context:
+      "FCI (Food Corporation of India) recruits for AGM, Management Trainee, JE, Typist-Hindi, Watchman and other posts via fci.gov.in or NTA when outsourced. Specs follow the standard banking-sector upload pattern.",
+  },
 };
 
 export const PORTAL_KEYS = Object.keys(PORTAL_PRESETS) as Array<keyof typeof PORTAL_PRESETS>;

@@ -51,9 +51,9 @@ const CATEGORY_OF: Record<string, PortalCategory> = {
   // National entrance / eligibility
   gate: "national", "ugc-net": "national", "csir-net": "national", nta: "national",
   cat: "national", clat: "national", cuet: "national",
-  // Defence
+  // Defence — regular + agniveer
   nda: "defence", cds: "defence", afcat: "defence",
-  "army-agniveer": "defence", "airforce-agniveer": "defence",
+  "army-agniveer": "defence", "airforce-agniveer": "defence", "navy-agniveer": "defence",
   // State police recruitment
   "up-police": "police",
   // Banking & insurance
@@ -62,9 +62,13 @@ const CATEGORY_OF: Record<string, PortalCategory> = {
   // State PSCs
   uppsc: "state-psc", bpsc: "state-psc", mpsc: "state-psc", rpsc: "state-psc",
   tnpsc: "state-psc", kpsc: "state-psc", appsc: "state-psc", tgpsc: "state-psc",
-  wbpsc: "state-psc", gpsc: "state-psc", hpsc: "state-psc",
+  wbpsc: "state-psc", gpsc: "state-psc", hpsc: "state-psc", "kerala-psc": "state-psc",
   // Central government recruitment
   ssc: "central", rrb: "central", ctet: "central", upsc: "central",
+  dsssb: "central", upsssc: "central", "ccc-nielit": "central",
+  epfo: "central", fci: "central",
+  // CAPFs & paramilitary
+  bsf: "defence", crpf: "defence", cisf: "defence", itbp: "defence",
   // Visa & identity
   ds160: "visa", "passport-seva": "visa", oci: "visa",
   pan: "visa", "driving-licence": "visa", "voter-id": "visa",

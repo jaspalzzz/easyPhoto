@@ -582,6 +582,123 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   },
 
   // ─────────────────────────────────────────────────────────────
+  bahrain: {
+    id: "bahrain",
+    label: "Bahrain",
+    documents: ["Bahrain visa", "Bahrain residence permit (CPR)"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white, no shadows or patterns",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA", "#F5F5F5"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "best avoided (eyes must be clearly visible)",
+    smileAllowed: "neutral, mouth closed",
+    notes:
+      "Bahrain visa / CPR photo: 35×45 mm on plain white background, neutral " +
+      "expression, taken within 6 months. Confirm current requirements with the " +
+      "Nationality, Passports & Residence Affairs (NPRA) portal or your visa agent.",
+    source: "https://www.npra.gov.bh",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  kuwait: {
+    id: "kuwait",
+    label: "Kuwait",
+    documents: ["Kuwait visa", "Kuwait residence permit (Civil ID)"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white, no shadows or patterns",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA", "#F5F5F5"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "best avoided (eyes must be clearly visible)",
+    smileAllowed: "neutral, mouth closed",
+    notes:
+      "Kuwait visa / Civil ID photo: 35×45 mm on plain white background, neutral " +
+      "expression, head covering for religious reasons only with full face visible. " +
+      "Confirm requirements with the Kuwait Ministry of Foreign Affairs or your " +
+      "visa centre before submitting.",
+    source: "https://e.gov.kw",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  qatar: {
+    id: "qatar",
+    label: "Qatar",
+    documents: ["Qatar visa", "Qatar Residence Permit (QID)"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white, no shadows or patterns",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA", "#F5F5F5"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "best avoided (eyes must be clearly visible)",
+    smileAllowed: "neutral, mouth closed",
+    notes:
+      "Qatar visa / QID photo: 35×45 mm on plain white background, neutral " +
+      "expression, taken within 6 months. For e-visas and QID applications verify " +
+      "current photo requirements on the Qatar Ministry of Interior (MOI) portal.",
+    source: "https://portal.moi.gov.qa",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  oman: {
+    id: "oman",
+    label: "Oman",
+    documents: ["Oman visa", "Oman residence permit"],
+    printMm: { width: 35, height: 45 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
+    background: {
+      description: "Plain white, no shadows or patterns",
+      hex: "#FFFFFF",
+      acceptableHex: ["#FFFFFF", "#FAFAFA", "#F5F5F5"],
+    },
+    digital: {
+      pxApprox300dpi: { width: 413, height: 531 },
+      fileSizeKb: null,
+      formats: ["jpg"],
+    },
+    dpiMin: 300,
+    glasses: "best avoided (eyes must be clearly visible)",
+    smileAllowed: "neutral, mouth closed",
+    notes:
+      "Oman visa / residence photo: 35×45 mm on plain white background, neutral " +
+      "expression, taken within 6 months. Confirm requirements via the Royal Oman " +
+      "Police e-services portal (rop.gov.om) or your visa processing agent.",
+    source: "https://www.rop.gov.om",
+    verified: "aggregator",
+  },
+
+  // ─────────────────────────────────────────────────────────────
   pakistan: {
     id: "pakistan",
     label: "Pakistan",
@@ -886,6 +1003,10 @@ export const LAUNCH_ORDER = [
   "ireland",
   "uae",
   "saudi-evisa",
+  "bahrain",
+  "kuwait",
+  "qatar",
+  "oman",
   "pakistan",
   "nepal",
   "spain",
