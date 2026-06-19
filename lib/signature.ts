@@ -174,3 +174,96 @@ export function trimToContent(
   ctx.drawImage(source, x, y, w, h, 0, 0, w, h);
   return { canvas: out, bbox };
 }
+
+/**
+ * Detect the ink bounding box of a signature on a real-world PHOTO (uneven
+ * lighting, off-white paper, shadows) — where a fixed luma threshold fails
+ * because the paper itself can be darker than the cut-off.
+ *
+ * Ink is the DARK MINORITY of pixels, so the threshold can't come from Otsu
+ * (which splits the dominant mode — on a photo that's paper-light vs
+ * paper-shadow, not paper vs ink). Instead:
+ *   1. Downsample for speed + noise smoothing.
+ *   2. paper level = median luma (robust to the small ink fraction).
+ *   3. ink level = darkest luma reached after a small absolute pixel count
+ *      (the dark tail). If it isn't meaningfully below paper, there's no real
+ *      ink contrast → bail (blank page, or dust only).
+ *   4. threshold = halfway between ink and paper; bound the darker class with a
+ *      per-row/column density floor so specks/page rims don't pin the box.
+ *
+ * Returns a bbox in the SOURCE canvas's coordinate space, or null when no
+ * reliable signature region is found (caller should let the user drag manually).
+ * All constants validated against synthetic shadowed-photo fixtures.
+ */
+export function detectInkBBox(
+  source: HTMLCanvasElement,
+  opts: { padding?: number } = {}
+): BBox | null {
+  const maxEdge = 800;
+  const scale = Math.min(1, maxEdge / Math.max(source.width, source.height));
+  const sw = Math.max(1, Math.round(source.width * scale));
+  const sh = Math.max(1, Math.round(source.height * scale));
+
+  const small = document.createElement("canvas");
+  small.width = sw;
+  small.height = sh;
+  const sctx = small.getContext("2d");
+  if (!sctx) return null;
+  sctx.drawImage(source, 0, 0, sw, sh);
+  const { data } = sctx.getImageData(0, 0, sw, sh);
+
+  // Luma histogram over the downsampled image.
+  const hist = new Int32Array(256);
+  const total = sw * sh;
+  for (let i = 0; i < data.length; i += 4) {
+    hist[luma(data[i], data[i + 1], data[i + 2]) | 0]++;
+  }
+
+  // paper = median luma (50th percentile).
+  const percentile = (frac: number) => {
+    const target = frac * total;
+    let cum = 0;
+    for (let t = 0; t < 256; t++) {
+      cum += hist[t];
+      if (cum >= target) return t;
+    }
+    return 255;
+  };
+  const paper = percentile(0.5);
+
+  // ink = darkest luma reached after a small absolute count of pixels (the dark
+  // tail). Min 12 px guards against single stray pixels on tiny images.
+  const anchorCount = Math.max(12, Math.round(total * 0.0002));
+  let cum = 0;
+  let ink = 0;
+  for (let t = 0; t < 256; t++) {
+    cum += hist[t];
+    if (cum >= anchorCount) {
+      ink = t;
+      break;
+    }
+  }
+
+  // No meaningful dark/light separation → no signature to find.
+  if (paper - ink < 40) return null;
+
+  const thr = ink + (paper - ink) * 0.5;
+  // Density floor: a row/col must have > minRun ink pixels to count. Kept low so
+  // thin strokes survive (a column crosses only a few px of a stroke); the
+  // contrast gate above is what rejects blank/speck images, not this floor.
+  const minRun = Math.max(2, Math.round(Math.min(sw, sh) * 0.004));
+  const bbox = getContentBBox(small, { mode: "luma", threshold: thr, minRun });
+  if (!bbox) return null;
+
+  // A box covering almost the whole frame means detection was unreliable.
+  if (bbox.width * bbox.height > total * 0.85) return null;
+
+  // Scale the box back up to the source resolution and apply padding.
+  const inv = 1 / scale;
+  const pad = opts.padding ?? 0;
+  const x = Math.max(0, Math.round(bbox.x * inv) - pad);
+  const y = Math.max(0, Math.round(bbox.y * inv) - pad);
+  const width = Math.min(source.width - x, Math.round(bbox.width * inv) + pad * 2);
+  const height = Math.min(source.height - y, Math.round(bbox.height * inv) + pad * 2);
+  return { x, y, width, height };
+}

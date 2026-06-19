@@ -226,7 +226,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       {
         slug: "signature-crop",
         title: "Signature Crop",
-        blurb: "Auto-trim a signature scan tight to the ink.",
+        blurb: "Crop a signature tight to the ink — drag the box or auto-detect.",
         ready: true,
         icon: "Crop",
       },
