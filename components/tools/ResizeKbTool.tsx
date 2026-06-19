@@ -1,13 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download } from "lucide-react";
+import { Loader2, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
-import { downloadBlob } from "@/lib/download";
+import { downloadBlob, shareFile } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
 
@@ -123,6 +123,11 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
     });
   };
 
+  const handleShare = async () => {
+    if (!result) return;
+    await shareFile(result.blob, `resized-${targetKb}kb.jpg`, "Resized photo");
+  };
+
   return (
     <div className="space-y-4">
       <div className={result ? "grid grid-cols-2 gap-3" : undefined}>
@@ -233,6 +238,11 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
               <Download className="h-4 w-4" strokeWidth={1.75} /> Download JPG ·{" "}
               {formatKb(result.bytes)}
             </Button>
+            {"share" in navigator && (
+              <Button variant="outline" size="sm" onClick={handleShare}>
+                <Share2 className="h-4 w-4" strokeWidth={1.75} /> Share
+              </Button>
+            )}
             <span className="spec normal-case tracking-[0.06em] text-ink-faint">
               was {formatKb(source.file.size)} · quality {result.quality.toFixed(2)}
             </span>
