@@ -48,6 +48,13 @@ export interface PortalSpec {
    */
   dpi?: number;
   /**
+   * The portal requires the candidate's name and/or the date of photography
+   * printed onto the photo itself (e.g. Kerala PSC Thulasi, Army/Navy Agniveer).
+   * When true, the resizer surfaces a callout linking to the name+date tool so
+   * the requirement isn't missed.
+   */
+  requiresNameDate?: boolean;
+  /**
    * 1–2 sentences of ACCURATE, exam-specific context (conducting body, exams
    * covered, where/how the photo is uploaded, exam-specific rules). Surfaced as
    * unique on-page prose to differentiate the otherwise-templated per-exam
@@ -94,6 +101,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://upsconline.nic.in", label: "UPSC online application (upsconline.nic.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    requiresNameDate: true,
     context:
       "UPSC (Union Public Service Commission) runs the Civil Services (IAS, IPS, IFS), CDS, NDA, CMS and other central recruitments through a single One-Time Registration (OTR) account on upsconline.nic.in. UPSC requires the candidate's name and the date the photo was taken to be printed on the photograph itself.",
   },
@@ -446,6 +454,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://psc.ap.gov.in", label: "APPSC (psc.ap.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    requiresNameDate: true,
   },
   tgpsc: {
     id: "tgpsc",
@@ -620,6 +629,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       label: "Join Indian Army (joinindianarmy.nic.in)",
     },
     verification: "needs-review",
+    requiresNameDate: true,
   },
   "airforce-agniveer": {
     id: "airforce-agniveer",
@@ -740,11 +750,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 150 / 200,
     sigAspectRatio: 2,
     description:
-      "Kerala Public Service Commission (Thulasi portal — thulasi.psc.kerala.gov.in). Photo 150×200 px, under 30 KB, JPG/JPEG, plain light background; signature 150×75 px, under 20 KB. The Thulasi portal is strict on file size — even 31 KB is rejected.",
+      "Kerala Public Service Commission (Thulasi portal — thulasi.psc.kerala.gov.in). Photo 150×200 px, under 30 KB, JPG/JPEG, plain light background, with the candidate's name and the date of photography printed at the bottom; signature 150×75 px, under 20 KB. The Thulasi portal is strict on file size — even 31 KB is rejected.",
     source: { url: "https://thulasi.psc.kerala.gov.in", label: "Kerala PSC Thulasi portal" },
     verification: "needs-review",
+    requiresNameDate: true,
     context:
-      "Kerala Public Service Commission uses its own Thulasi portal for all recruitments. The photo and signature upload limits (150×200 px / 30 KB and 150×75 px / 20 KB) differ from the standard national exam pattern — always verify against the current notification on thulasi.psc.kerala.gov.in.",
+      "Kerala Public Service Commission uses its own Thulasi portal for all recruitments. The photo and signature upload limits (150×200 px / 30 KB and 150×75 px / 20 KB) differ from the standard national exam pattern, and Kerala PSC requires your name and the date of photography printed on the photo — always verify against the current notification on thulasi.psc.kerala.gov.in.",
   },
 
   // ---------------------------------------------------------------------------
@@ -912,6 +923,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "Indian Navy Agniveer SSR / MR / CHEF recruitment (joinindiannavy.gov.in). Photo 10-50 KB JPEG, 413×531 px, passport-style with name and date at the bottom; signature 10-50 KB (413×177 px), black ink, running hand.",
     source: { url: "https://joinindiannavy.gov.in", label: "Join Indian Navy (joinindiannavy.gov.in)" },
     verification: "needs-review",
+    requiresNameDate: true,
     context:
       "Indian Navy Agniveer (SSR, MR and CHEF) applications are submitted on joinindiannavy.gov.in. Like Army Agniveer, the photo must have the candidate's name and date printed at the bottom. Confirm exact specs in the current notification.",
   },

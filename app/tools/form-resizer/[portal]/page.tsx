@@ -73,6 +73,26 @@ export default async function Page({
     >
       <PortalResizer portalId={portal} />
 
+      {spec.requiresNameDate && (
+        <div className="mt-6 rounded-lg border border-amber-300 bg-amber-50/70 p-4 dark:border-amber-800 dark:bg-amber-950/30">
+          <h2 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+            This form needs your name &amp; date on the photo
+          </h2>
+          <p className="mt-1 text-sm leading-relaxed text-amber-800 dark:text-amber-300">
+            {spec.name.split(" (")[0]} requires the candidate&apos;s name and the
+            date of photography printed on the photo itself. After sizing it here,
+            add the strip with the{" "}
+            <Link
+              href="/tools/photo-with-name-date/"
+              className="font-medium underline underline-offset-2"
+            >
+              Photo with Name &amp; Date tool
+            </Link>
+            .
+          </p>
+        </div>
+      )}
+
       <p className="mt-4 text-sm text-muted-foreground">
         See the full{" "}
         <Link href={`/exam-requirements/${portal}/`} className="text-brand hover:underline">
