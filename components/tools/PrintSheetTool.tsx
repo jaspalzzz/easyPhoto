@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Download, Share2 } from "lucide-react";
+import { Download, Share2, FileDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell } from "./ImageToolShell";
 import { downloadBlob, shareFile } from "@/lib/download";
@@ -60,7 +60,11 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
   const [busy, setBusy] = React.useState(false);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
   const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
+  const [pdfBusy, setPdfBusy] = React.useState(false);
   const prevPreviewRef = React.useRef<string | null>(null);
+  // Full composed-sheet JPEG data URL, reused for the one-page PDF export so the
+  // PDF and the JPG are byte-identical layouts.
+  const sheetDataUrlRef = React.useRef<string | null>(null);
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "print-sheet" });
@@ -129,6 +133,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
       const blob = await new Promise<Blob>((res, rej) =>
         canvas.toBlob((b) => (b ? res(b) : rej(new Error("toBlob failed"))), "image/jpeg", 0.94)
       );
+      sheetDataUrlRef.current = canvas.toDataURL("image/jpeg", 0.94);
       setResultBlob(blob);
       setPreviewUrl(URL.createObjectURL(blob));
       track({ name: "tool_success", tool: "print-sheet", device: deviceClass() });
@@ -144,6 +149,28 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
     if (!resultBlob) return;
     downloadBlob(resultBlob, `photo-sheet-${count}up-${paper}.jpg`);
     track({ name: "download", tool: "print-sheet", format: "jpg" });
+  };
+
+  const handleDownloadPdf = async () => {
+    const dataUrl = sheetDataUrlRef.current;
+    if (!dataUrl) return;
+    setPdfBusy(true);
+    try {
+      const { jsPDF } = await import("jspdf");
+      const p = PAPER[paper];
+      // px @ 300 DPI → mm, so the page is the true physical paper size.
+      const wMm = (p.widthPx / 300) * 25.4;
+      const hMm = (p.heightPx / 300) * 25.4;
+      const doc = new jsPDF({ unit: "mm", format: [wMm, hMm], orientation: "portrait" });
+      doc.addImage(dataUrl, "JPEG", 0, 0, wMm, hMm);
+      downloadBlob(doc.output("blob"), `photo-sheet-${count}up-${paper}.pdf`);
+      track({ name: "download", tool: "print-sheet", format: "pdf" });
+    } catch (e) {
+      console.error(e);
+      track({ name: "tool_failure", tool: "print-sheet", device: deviceClass(), reason: "pdf-error" });
+    } finally {
+      setPdfBusy(false);
+    }
   };
 
   const handleShare = async () => {
@@ -210,6 +237,10 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
             <Button variant="cta" size="sm" onClick={handleDownload}>
               <Download className="h-4 w-4" strokeWidth={1.75} />
               Download JPG
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleDownloadPdf} disabled={pdfBusy}>
+              <FileDown className="h-4 w-4" strokeWidth={1.75} />
+              {pdfBusy ? "Building PDF…" : "Download PDF"}
             </Button>
             {"share" in navigator && (
               <Button variant="outline" size="sm" onClick={handleShare}>

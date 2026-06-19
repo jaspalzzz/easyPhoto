@@ -8,7 +8,7 @@ const tool = getTool("print-sheet")!;
 export const metadata = pageMetadata({
   title: "Passport Photo Print Sheet — A4, A5, 4×6, 5×6 or 4×4 Inch",
   description:
-    "Tile 4, 6 or 8 passport-size photos onto an A4, A5, 4×6, 5×6 or 4×4 inch sheet and download a print-ready JPG. Free, in-browser, nothing uploaded.",
+    "Tile 4, 6 or 8 passport-size photos onto an A4, A5, 4×6, 5×6 or 4×4 inch sheet and download a print-ready JPG or PDF. Free, in-browser, nothing uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
@@ -33,7 +33,11 @@ export default function Page() {
         },
         {
           q: "What resolution is the output?",
-          a: "The sheet is generated at 300 DPI. A4 at 300 DPI is 2480×3508 pixels and 4×6 inch is 1200×1800 pixels — both print-shop standard. The output is a JPG to keep the file size manageable for emailing or sending over WhatsApp.",
+          a: "The sheet is generated at 300 DPI. A4 at 300 DPI is 2480×3508 pixels and 4×6 inch is 1200×1800 pixels — both print-shop standard.",
+        },
+        {
+          q: "Should I download the JPG or the PDF?",
+          a: "Both contain the identical layout. Choose JPG to email or send over WhatsApp, or to print at a kiosk that accepts images. Choose PDF if your print shop prefers a document or you want the page sized to the exact paper dimensions — the PDF page matches the true millimetre size of the sheet you picked.",
         },
       ]}
     >
