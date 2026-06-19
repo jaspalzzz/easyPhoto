@@ -190,9 +190,22 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
                   <span className="text-emerald-700">Under {targetKb} KB</span>
                 ) : (
                   <span className="text-amber-700">
-                    Couldn&apos;t reach {targetKb} KB — {formatKb(result.bytes)} is
-                    the smallest achievable. This PDF is likely already optimised
-                    or contains high-resolution scans.
+                    Couldn&apos;t reach {targetKb} KB.{" "}
+                    {result.pages > 1 ? (
+                      <>
+                        Across {result.pages} pages that&apos;s about{" "}
+                        {Math.max(1, Math.round(targetKb / result.pages))} KB per
+                        page — too low to keep them legible, so it stopped at{" "}
+                        {formatKb(result.bytes)}, the smallest this tool makes
+                        without turning the text unreadable.
+                      </>
+                    ) : (
+                      <>
+                        This page has too much detail (likely a high-resolution
+                        scan) to compress that far without making the text
+                        unreadable. It stopped at {formatKb(result.bytes)}.
+                      </>
+                    )}
                   </span>
                 )}
               </li>
