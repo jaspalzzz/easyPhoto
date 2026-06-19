@@ -25,6 +25,7 @@ import {
   Camera,
   Gauge,
   Combine,
+  Eye,
   type LucideIcon,
 } from "lucide-react";
 import type { ToolColorCategory } from "@/lib/toolsCatalog";
@@ -56,6 +57,7 @@ const MAP: Record<string, LucideIcon> = {
   Camera,
   Gauge,
   Combine,
+  Eye,
 };
 
 /** Plain icon glyph (no tile). */

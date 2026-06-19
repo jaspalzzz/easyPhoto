@@ -152,6 +152,13 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         ready: true,
         icon: "Gauge",
       },
+      {
+        slug: "red-eye-removal",
+        title: "Red-Eye Removal",
+        blurb: "Tap each pupil to remove flash red-eye before printing your photo — fully in your browser.",
+        ready: true,
+        icon: "Eye",
+      },
     ],
   },
   {
