@@ -159,6 +159,13 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         ready: true,
         icon: "Eye",
       },
+      {
+        slug: "straighten-photo",
+        title: "Straighten Tilted Photo",
+        blurb: "Auto-level a tilted passport photo so your eyes are straight — detects the angle on-device.",
+        ready: true,
+        icon: "RotateCw",
+      },
     ],
   },
   {
