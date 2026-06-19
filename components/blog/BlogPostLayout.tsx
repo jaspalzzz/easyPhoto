@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { getPost, BLOG_POSTS } from "@/lib/blog";
+import { getPost, relatedPosts } from "@/lib/blog";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { ReadingProgress } from "@/components/blog/ReadingProgress";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -24,7 +24,8 @@ export function BlogPostLayout({
   const post = getPost(slug);
   if (!post) notFound();
   const url = `/blog/${post.slug}/`;
-  const more = BLOG_POSTS.filter((p) => p.slug !== slug).slice(0, 2);
+  // Same-topic posts first (falls back to array order to fill the 2 slots).
+  const more = relatedPosts(slug, 2);
 
   return (
     <>

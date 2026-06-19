@@ -294,3 +294,67 @@ export const BLOG_POSTS: BlogPost[] = [
 export function getPost(slug: string): BlogPost | undefined {
   return BLOG_POSTS.find((p) => p.slug === slug);
 }
+
+/**
+ * Topic clusters — used to make "Keep reading" relevant (same-topic posts
+ * first) instead of just showing whichever posts sit first in the array. Keep a
+ * post in exactly one cluster; any slug not listed falls back to array order.
+ */
+const CLUSTERS: Record<string, string[]> = {
+  exam: [
+    "exam-photo-signature-size-guide",
+    "best-free-exam-photo-resizer-india",
+    "upsc-cse-ias-photo-signature-guide-2026",
+    "nda-cds-photo-signature-guide-2026",
+    "ssc-cgl-chsl-photo-signature-guide-2026",
+    "ibps-po-2026-photo-signature-checklist",
+    "why-exam-photo-signature-rejected",
+    "add-name-date-on-exam-photo",
+  ],
+  passport: [
+    "indian-passport-photo-size-rules",
+    "best-free-passport-photo-maker-india-2026",
+    "visafoto-alternative-india-free",
+    "cutout-pro-alternative-india",
+    "schengen-europe-visa-photo-size",
+    "how-to-take-a-passport-photo-at-home",
+    "why-passport-photos-get-rejected",
+    "passport-photo-size-by-country",
+    "how-to-reduce-passport-photo-size-for-online-forms",
+    "baby-and-infant-passport-photo-guide",
+    "passport-photo-background-color",
+  ],
+  pdf: [
+    "how-to-compress-pdf",
+    "how-to-merge-pdf-free",
+    "how-to-mask-aadhaar-before-sharing",
+  ],
+  professional: [
+    "linkedin-profile-photo-size-and-tips",
+    "resume-photo-size-and-rules",
+  ],
+};
+
+/** The cluster a post belongs to, or undefined if it isn't grouped. */
+export function clusterOf(slug: string): string | undefined {
+  for (const [cluster, slugs] of Object.entries(CLUSTERS)) {
+    if (slugs.includes(slug)) return cluster;
+  }
+  return undefined;
+}
+
+/**
+ * Up to `n` posts to show as "Keep reading": same-cluster posts first (most
+ * relevant), then fill any remaining slots in array order. Never returns the
+ * current post.
+ */
+export function relatedPosts(slug: string, n = 2): BlogPost[] {
+  const cluster = clusterOf(slug);
+  const others = BLOG_POSTS.filter((p) => p.slug !== slug);
+  const sameCluster = cluster
+    ? others.filter((p) => clusterOf(p.slug) === cluster)
+    : [];
+  const sameSlugs = new Set(sameCluster.map((p) => p.slug));
+  const rest = others.filter((p) => !sameSlugs.has(p.slug));
+  return [...sameCluster, ...rest].slice(0, n);
+}

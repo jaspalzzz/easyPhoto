@@ -65,12 +65,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // a single site-wide date. Falls back to LAST_UPDATED when a spec has no date.
   const examFreshness = (key: string) => PORTAL_PRESETS[key]?.verifiedOn ?? LAST_UPDATED;
 
+  // Low-churn legal / company pages: rarely change and shouldn't compete with
+  // tool/content pages for crawl priority.
+  const LEGAL = new Set([
+    "/about/",
+    "/contact/",
+    "/privacy/",
+    "/terms/",
+    "/disclaimer/",
+  ]);
+
   return [
     ...routes.map((path) => ({
       url: `${SITE_URL}${path}`,
       lastModified: LAST_UPDATED,
-      changeFrequency: (path === "/" ? "weekly" : "monthly") as "weekly" | "monthly",
-      priority: path === "/" ? 1 : path.startsWith("/tools/") ? 0.7 : 0.8,
+      changeFrequency: (LEGAL.has(path)
+        ? "yearly"
+        : path === "/"
+        ? "weekly"
+        : "monthly") as "yearly" | "weekly" | "monthly",
+      priority: LEGAL.has(path)
+        ? 0.3
+        : path === "/"
+        ? 1
+        : path.startsWith("/tools/")
+        ? 0.7
+        : 0.8,
     })),
     // Per-exam spec pages — lastmod = the spec's own verification date.
     ...PORTAL_KEYS.map((key) => ({

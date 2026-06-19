@@ -41,6 +41,14 @@ export default function Page() {
         board&apos;s own notification.
       </p>
 
+      <p>
+        This is a quick summary; for the complete, regularly-verified Passport Seva
+        rules — print vs digital sizes, OCI and NRI differences, and the exact
+        pixel and KB limits — see our{" "}
+        <a href="/blog/indian-passport-photo-size-rules/">Indian passport photo size &amp; rules</a>{" "}
+        guide, the canonical reference we keep updated.
+      </p>
+
       <div className="my-8 overflow-x-auto rounded-xl border border-hairline text-sm">
         <table className="w-full border-collapse">
           <thead>

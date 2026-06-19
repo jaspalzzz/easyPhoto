@@ -110,6 +110,7 @@ export default function Page() {
         <li>Mask the QR code too if you don&apos;t want it scanned — it encodes your details.</li>
         <li>Share over secure channels; avoid public/unknown upload sites.</li>
         <li>If a PDF is password-protected (like e-Aadhaar), open it with the <Link href="/unlock-aadhaar-pdf/">e-Aadhaar password</Link> first, then mask a screenshot.</li>
+        <li>If the form caps the upload size, see <Link href="/blog/how-to-compress-pdf/">how to compress a PDF to an exact KB target</Link> after masking — the file stays on your device throughout.</li>
       </ul>
 
       <div className="mt-12">

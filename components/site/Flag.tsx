@@ -42,6 +42,8 @@ export function Flag({
       src={`/flags/${code}.svg`}
       alt=""
       aria-hidden
+      width={24}
+      height={16}
       className={cn(
         "inline-block h-4 w-[1.5rem] shrink-0 rounded-[2px] object-cover ring-1 ring-ink/15",
         className

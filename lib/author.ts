@@ -5,8 +5,10 @@
  */
 export const AUTHOR = {
   name: "Jaspal Kumar",
-  /** Credential-forward title (the Expertise signal). */
-  title: "Web & mobile developer",
+  /** Credential-forward title (the Expertise signal) — grounded in the bio:
+      builds easyPhoto and verifies every photo/signature spec against official
+      government sources. Not an invented credential. */
+  title: "Document photo & form-spec researcher · easyPhoto",
   /** Leads with hands-on experience; ties to the product he builds. */
   bio:
     "Jaspal Kumar builds and maintains easyPhoto. With over 10 years of hands-on " +
