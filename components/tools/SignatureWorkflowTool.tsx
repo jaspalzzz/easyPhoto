@@ -99,9 +99,6 @@ function Body({
   // Stable aspect ratio derived from source on first pipeline output — not from stale `out`
   const lockedAspectRef = React.useRef<number | null>(null);
 
-  // Before/After comparison toggle
-  const [showOriginal, setShowOriginal] = React.useState(false);
-
   // Eraser Settings
   const [eraserEnabled, setEraserEnabled] = React.useState(false);
   const [brushSize, setBrushSize] = React.useState(15);
@@ -476,67 +473,64 @@ function Body({
     <div className="grid grid-cols-1 gap-6 md:grid-cols-[1.2fr_1fr]">
       {/* Left: Preview */}
       <div className="space-y-4">
-        <PreviewFrame checker={bgFormat === "png"}>
-          {busy ? (
+        {busy ? (
+          <PreviewFrame checker={bgFormat === "png"}>
             <ProcessingState bare label="Processing signature…" />
-          ) : out ? (
-            <div className="flex flex-col items-center gap-2">
-              {out && (
-                <div className="flex gap-1 self-end">
-                  <button
-                    type="button"
-                    onClick={() => setShowOriginal(false)}
-                    className={`px-2 py-0.5 rounded text-[10px] font-medium border transition-colors ${
-                      !showOriginal ? "bg-brand/10 border-brand text-brand" : "border-hairline text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    After
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowOriginal(true)}
-                    className={`px-2 py-0.5 rounded text-[10px] font-medium border transition-colors ${
-                      showOriginal ? "bg-brand/10 border-brand text-brand" : "border-hairline text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    Before
-                  </button>
-                </div>
-              )}
-              <img
-                ref={imgRef}
-                src={
-                  showOriginal
-                    ? source.url
-                    : eraserEnabled && cleanedUrl
-                    ? cleanedUrl
-                    : out.url
-                }
-                alt={showOriginal ? "Original signature" : "Processed signature preview"}
-                className={`max-h-[260px] w-auto object-contain select-none ${
-                  bgFormat === "jpeg" && !showOriginal ? "bg-white" : ""
-                } ${
-                  eraserEnabled && !showOriginal ? "cursor-crosshair border border-dashed border-brand/40" : ""
-                }`}
-                draggable={false}
-                onMouseDown={!showOriginal ? handleStart : undefined}
-                onMouseMove={!showOriginal ? handleMove : undefined}
-                onMouseUp={!showOriginal ? handleEnd : undefined}
-                onMouseLeave={!showOriginal ? handleEnd : undefined}
-                onTouchStart={!showOriginal ? handleStart : undefined}
-                onTouchMove={!showOriginal ? handleMove : undefined}
-                onTouchEnd={!showOriginal ? handleEnd : undefined}
-              />
-              {eraserEnabled && !showOriginal && (
-                <p className="text-[11px] text-brand font-medium mt-2 text-center">
-                  Drag on the image above to erase unwanted parts.
-                </p>
-              )}
-            </div>
-          ) : (
+          </PreviewFrame>
+        ) : out ? (
+          // Side-by-side Before / After — both states visible at once, no toggle
+          // to interpret. The "After" frame doubles as the eraser surface.
+          <div className="grid gap-3 sm:grid-cols-2">
+            <figure className="space-y-1.5">
+              <PreviewFrame>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={source.url}
+                  alt="Original signature"
+                  className="max-h-[220px] w-auto object-contain select-none"
+                  draggable={false}
+                />
+              </PreviewFrame>
+              <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+                Before · {source.size.width}×{source.size.height}px
+              </figcaption>
+            </figure>
+            <figure className="space-y-1.5">
+              <PreviewFrame checker={bgFormat === "png"}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  ref={imgRef}
+                  src={eraserEnabled && cleanedUrl ? cleanedUrl : out.url}
+                  alt="Processed signature preview"
+                  className={`max-h-[220px] w-auto object-contain select-none ${
+                    bgFormat === "jpeg" ? "bg-white" : ""
+                  } ${eraserEnabled ? "cursor-crosshair border border-dashed border-brand/40" : ""}`}
+                  draggable={false}
+                  onMouseDown={handleStart}
+                  onMouseMove={handleMove}
+                  onMouseUp={handleEnd}
+                  onMouseLeave={handleEnd}
+                  onTouchStart={handleStart}
+                  onTouchMove={handleMove}
+                  onTouchEnd={handleEnd}
+                />
+              </PreviewFrame>
+              <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+                After · {out.w}×{out.h}px
+              </figcaption>
+            </figure>
+          </div>
+        ) : (
+          <PreviewFrame checker={bgFormat === "png"}>
             <div className="py-20 text-sm text-muted-foreground">No preview available</div>
-          )}
-        </PreviewFrame>
+          </PreviewFrame>
+        )}
+
+        {eraserEnabled && out && !busy && (
+          <p className="text-center text-[11px] font-medium text-brand">
+            Drag on the <strong>After</strong> image to erase unwanted parts.
+          </p>
+        )}
 
         {processingError && (
           <p className="border-l-2 border-red-500 bg-red-50/60 p-2 text-xs text-red-900 leading-normal">
