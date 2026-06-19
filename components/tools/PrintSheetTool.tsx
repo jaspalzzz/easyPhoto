@@ -7,13 +7,19 @@ import { ImageToolShell } from "./ImageToolShell";
 import { downloadBlob, shareFile } from "@/lib/download";
 import { track, deviceClass } from "@/lib/analytics";
 
-type PaperSize = "a4" | "4x6";
+type PaperSize = "a4" | "a5" | "4x6" | "5x6" | "4x4";
 type Count = 4 | 6 | 8;
 
+// All dimensions in pixels at 300 DPI (print-shop standard).
 const PAPER: Record<PaperSize, { label: string; widthPx: number; heightPx: number }> = {
-  a4:  { label: "A4 (210×297 mm)", widthPx: 2480, heightPx: 3508 }, // 300 DPI
-  "4x6": { label: '4×6 inch',       widthPx: 1200, heightPx: 1800 }, // 300 DPI
+  a4:  { label: "A4 (210×297 mm)", widthPx: 2480, heightPx: 3508 },
+  a5:  { label: "A5 (148×210 mm)", widthPx: 1748, heightPx: 2480 },
+  "4x6": { label: "4×6 inch",      widthPx: 1200, heightPx: 1800 },
+  "5x6": { label: "5×6 inch",      widthPx: 1500, heightPx: 1800 },
+  "4x4": { label: "4×4 inch",      widthPx: 1200, heightPx: 1200 },
 };
+
+const PAPER_SIZES = Object.keys(PAPER) as PaperSize[];
 
 const COUNTS: Count[] = [4, 6, 8];
 
@@ -152,7 +158,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
         <fieldset>
           <legend className="eyebrow mb-2 block text-xs">Paper size</legend>
           <div className="flex gap-2">
-            {(["a4", "4x6"] as PaperSize[]).map((ps) => (
+            {PAPER_SIZES.map((ps) => (
               <button
                 key={ps}
                 onClick={() => setPaper(ps)}

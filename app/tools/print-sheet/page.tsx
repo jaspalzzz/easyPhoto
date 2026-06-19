@@ -6,9 +6,9 @@ import { getTool } from "@/lib/toolsCatalog";
 const tool = getTool("print-sheet")!;
 
 export const metadata = pageMetadata({
-  title: "Passport Photo Print Sheet — 4, 6 or 8 on A4 or 4×6 Inch",
+  title: "Passport Photo Print Sheet — A4, A5, 4×6, 5×6 or 4×4 Inch",
   description:
-    "Tile 4, 6 or 8 passport-size photos onto an A4 or 4×6 inch sheet and download a print-ready JPG. Free, in-browser, nothing uploaded.",
+    "Tile 4, 6 or 8 passport-size photos onto an A4, A5, 4×6, 5×6 or 4×4 inch sheet and download a print-ready JPG. Free, in-browser, nothing uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
@@ -21,7 +21,7 @@ export default function Page() {
       faqItems={[
         {
           q: "What paper size should I choose?",
-          a: "A4 (210×297 mm) is the standard paper size at most Indian print shops. Choose 4×6 inch if you are printing at a pharmacy kiosk (common in the US and UK) or if your studio asks for that size.",
+          a: "A4 (210×297 mm) is the standard paper at most Indian print shops, and A5 is half of it. Choose 4×6, 5×6 or 4×4 inch if you are printing at a photo kiosk (common in the US and UK) or if your studio asks for that size. All sheets are generated at 300 DPI.",
         },
         {
           q: "How many photos should I tile?",
