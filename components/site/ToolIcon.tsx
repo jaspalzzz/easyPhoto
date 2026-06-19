@@ -21,6 +21,10 @@ import {
   Calendar,
   Stamp,
   Hash,
+  Printer,
+  Camera,
+  Gauge,
+  Combine,
   type LucideIcon,
 } from "lucide-react";
 import type { ToolColorCategory } from "@/lib/toolsCatalog";
@@ -48,6 +52,10 @@ const MAP: Record<string, LucideIcon> = {
   Calendar,
   Stamp,
   Hash,
+  Printer,
+  Camera,
+  Gauge,
+  Combine,
 };
 
 /** Plain icon glyph (no tile). */

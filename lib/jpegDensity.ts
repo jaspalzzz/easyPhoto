@@ -73,3 +73,36 @@ export async function setBlobDensityDpi(blob: Blob, dpi: number): Promise<Blob> 
   if (out === src) return blob;
   return new Blob([out as BlobPart], { type: blob.type });
 }
+
+/** The declared DPI of a JPEG's JFIF header. */
+export interface JpegDensity {
+  /** X density (dots per `unit`). */
+  x: number;
+  /** Y density (dots per `unit`). */
+  y: number;
+  /** JFIF units: 0 = aspect-ratio only (no real DPI), 1 = dpi, 2 = dots/cm. */
+  units: number;
+}
+
+/**
+ * Read the JFIF density a JPEG declares, normalised to dots-per-inch.
+ * Returns null for non-JPEG input or a JPEG with no JFIF APP0 segment.
+ * When units = 2 (dots/cm) the value is converted to DPI (× 2.54);
+ * when units = 0 the density fields are an aspect ratio, not a real DPI,
+ * so `units` is surfaced for the caller to label it "not specified".
+ */
+export function readJpegDensityDpi(src: Uint8Array): JpegDensity | null {
+  if (!isJpeg(src) || !hasJfifApp0(src) || src.length < 18) return null;
+  const units = src[13];
+  const xRaw = (src[14] << 8) | src[15];
+  const yRaw = (src[16] << 8) | src[17];
+  // Normalise dots/cm → dots/inch so callers always reason in DPI.
+  const toDpi = (v: number) => (units === 2 ? Math.round(v * 2.54) : v);
+  return { x: toDpi(xRaw), y: toDpi(yRaw), units };
+}
+
+/** Blob convenience wrapper for reading JPEG density; null for other types. */
+export async function readBlobDensityDpi(blob: Blob): Promise<JpegDensity | null> {
+  const src = new Uint8Array(await blob.arrayBuffer());
+  return readJpegDensityDpi(src);
+}

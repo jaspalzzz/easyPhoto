@@ -28,3 +28,26 @@ export function downloadBlob(blob: Blob, filename: string): void {
     })
   );
 }
+
+/**
+ * Share a Blob via the Web Share API (navigator.share).
+ * Falls back silently (returns false) when the API or file sharing is not
+ * available — callers should guard the button with `"share" in navigator`.
+ */
+export async function shareFile(
+  blob: Blob,
+  filename: string,
+  title?: string
+): Promise<boolean> {
+  if (typeof navigator === "undefined" || !("share" in navigator)) return false;
+  const file = new File([blob], filename, { type: blob.type });
+  try {
+    await navigator.share({ files: [file], title });
+    return true;
+  } catch (err) {
+    // AbortError = user cancelled — not a real error.
+    if (err instanceof Error && err.name === "AbortError") return false;
+    // NotAllowedError or NotSupportedError = browser doesn't support file sharing.
+    return false;
+  }
+}
