@@ -17,6 +17,8 @@ export interface PhotoCheck {
   detail: string;
   /** Concrete next step shown only on warn/fail. */
   fix?: string;
+  /** Optional internal tool route that resolves the issue (renders the fix as a link). */
+  href?: string;
 }
 
 /** Draw onto a small canvas for cheap pixel sampling (keeps mobile memory low). */
@@ -111,6 +113,48 @@ export async function checkPhotoQuality(
         status: "pass",
         detail: `Your head fills about ${headPct}% of the photo.`,
       });
+    }
+
+    // Eyes level (ICAO roll) — a tilted head is a common rejection cause and is
+    // reliable from landmarks. Within ±5° passes; ±5–10° warns; beyond fails.
+    const tilt = Math.abs(det.rollDeg);
+    if (tilt <= 5) {
+      checks.push({
+        label: "Eyes level",
+        status: "pass",
+        detail: "Your head is straight and your eyes are level.",
+      });
+    } else {
+      checks.push({
+        label: "Eyes level",
+        status: tilt <= 10 ? "warn" : "fail",
+        detail: `Your head is tilted about ${Math.round(tilt)}°.`,
+        fix: "Straighten the photo so your eyes are level.",
+        href: "/tools/straighten-photo/",
+      });
+    }
+
+    // Eye line height — for a correctly framed passport photo the eyes sit in
+    // the upper-middle band. Landmark-based but framing-dependent, so warn only.
+    if (det.eyeCenterY != null) {
+      const eyeBand = det.eyeCenterY / size.height;
+      checks.push(
+        eyeBand >= 0.3 && eyeBand <= 0.55
+          ? {
+              label: "Eye position",
+              status: "pass",
+              detail: "Your eyes sit in the expected upper-middle band.",
+            }
+          : {
+              label: "Eye position",
+              status: "warn",
+              detail:
+                eyeBand < 0.3
+                  ? "Your eyes sit high in the frame."
+                  : "Your eyes sit low in the frame.",
+              fix: "Re-crop so your eyes fall in the upper-middle third of the photo.",
+            }
+      );
     }
 
     const topMargin = det.crownY / size.height;

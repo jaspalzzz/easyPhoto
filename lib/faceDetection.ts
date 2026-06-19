@@ -37,6 +37,11 @@ const IDX = {
   rightEyeInner: 362,
 } as const;
 
+export interface Point {
+  x: number;
+  y: number;
+}
+
 export interface DetectionResult extends FaceMeasurements {
   /** Number of faces the model found (we expect exactly 1). */
   faceCount: number;
@@ -44,6 +49,15 @@ export interface DetectionResult extends FaceMeasurements {
   faceXSpan: { min: number; max: number };
   /** True when crownY is a landmark extrapolation, not a measured value. */
   crownIsEstimated: boolean;
+  /** Centre of each eye (source-image px) — midpoint of its inner/outer corners. */
+  leftEyeCenter: Point;
+  rightEyeCenter: Point;
+  /**
+   * Head roll in degrees: the tilt of the eye line off horizontal. 0 = level.
+   * Positive = the image-right eye sits lower (head tilted clockwise). Drives
+   * the "eyes level" compliance check and the straighten tool.
+   */
+  rollDeg: number;
 }
 
 // Lazy singleton so the heavy model only loads once, on first use.
@@ -126,6 +140,15 @@ export async function detectFace(
   const eyeCenterY = (lOuter.y + lInner.y + rOuter.y + rInner.y) / 4;
   const faceCenterX = (lOuter.x + rOuter.x) / 2;
 
+  // Per-eye centres (midpoint of each eye's inner+outer corner).
+  const lEye = { x: (lOuter.x + lInner.x) / 2, y: (lOuter.y + lInner.y) / 2 };
+  const rEye = { x: (rOuter.x + rInner.x) / 2, y: (rOuter.y + rInner.y) / 2 };
+
+  // Roll = tilt of the eye line off horizontal. Order the two eyes by image-x so
+  // the sign is stable regardless of MediaPipe's left/right landmark naming.
+  const [leftPt, rightPt] = lEye.x <= rEye.x ? [lEye, rEye] : [rEye, lEye];
+  const rollDeg = (Math.atan2(rightPt.y - leftPt.y, rightPt.x - leftPt.x) * 180) / Math.PI;
+
   // Fallback crown estimate: the true top of the head sits above the forehead
   // landmark by roughly the forehead→eye distance. Clamp to image top.
   const foreheadToEye = Math.max(0, eyeCenterY - forehead.y);
@@ -148,6 +171,9 @@ export async function detectFace(
     faceCount: faces.length,
     faceXSpan: { min: minX, max: maxX },
     crownIsEstimated: true,
+    leftEyeCenter: leftPt,
+    rightEyeCenter: rightPt,
+    rollDeg,
   };
 }
 

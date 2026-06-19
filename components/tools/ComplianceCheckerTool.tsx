@@ -282,7 +282,16 @@ export function ComplianceCheckerTool() {
                     <span className="font-medium text-foreground">{c.label}: </span>
                     <span className="text-muted-foreground">{c.detail}</span>
                     {c.fix && c.status !== "pass" && (
-                      <span className="mt-0.5 block text-xs text-brand">→ {c.fix}</span>
+                      <span className="mt-0.5 block text-xs text-brand">
+                        →{" "}
+                        {c.href ? (
+                          <Link href={c.href} className="underline underline-offset-2">
+                            {c.fix}
+                          </Link>
+                        ) : (
+                          c.fix
+                        )}
+                      </span>
                     )}
                   </span>
                 </div>
