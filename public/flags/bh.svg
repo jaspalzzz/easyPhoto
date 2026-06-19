@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+  <!-- Bahrain: white hoist band with 5 red triangles, red fly -->
+  <rect width="36" height="24" fill="#CE1126"/>
+  <!-- White section on the hoist side -->
+  <polygon points="0,0 11,0 11,24 0,24" fill="#FFFFFF"/>
+  <!-- 5 red triangles cutting into the white from the fly side -->
+  <polygon points="11,0 16,2.4 11,4.8" fill="#CE1126"/>
+  <polygon points="11,4.8 16,7.2 11,9.6" fill="#CE1126"/>
+  <polygon points="11,9.6 16,12 11,14.4" fill="#CE1126"/>
+  <polygon points="11,14.4 16,16.8 11,19.2" fill="#CE1126"/>
+  <polygon points="11,19.2 16,21.6 11,24" fill="#CE1126"/>
+</svg>

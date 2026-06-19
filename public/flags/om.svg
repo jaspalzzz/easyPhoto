@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+  <!-- Oman: white/red/green horizontal stripes + red vertical band on hoist -->
+  <rect width="36" height="8" fill="#FFFFFF"/>
+  <rect y="8" width="36" height="8" fill="#DB161B"/>
+  <rect y="16" width="36" height="8" fill="#008000"/>
+  <!-- Red vertical band on hoist side -->
+  <rect width="9" height="24" fill="#DB161B"/>
+  <!-- Simplified white khanjar emblem in red band -->
+  <rect x="3.5" y="3" width="2" height="8" rx="0.5" fill="#FFFFFF" opacity="0.9"/>
+  <ellipse cx="4.5" cy="3" rx="2.5" ry="1.5" fill="none" stroke="#FFFFFF" stroke-width="0.7" opacity="0.9"/>
+</svg>

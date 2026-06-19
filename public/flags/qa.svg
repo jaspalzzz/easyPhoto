@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+  <!-- Qatar: white hoist band with 9 maroon triangles, maroon fly -->
+  <rect width="36" height="24" fill="#8D1B3D"/>
+  <!-- White section on the hoist side -->
+  <polygon points="0,0 10,0 10,24 0,24" fill="#FFFFFF"/>
+  <!-- 9 maroon triangles cutting into the white from the fly side -->
+  <polygon points="10,0 14,1.33 10,2.67" fill="#8D1B3D"/>
+  <polygon points="10,2.67 14,4 10,5.33" fill="#8D1B3D"/>
+  <polygon points="10,5.33 14,6.67 10,8" fill="#8D1B3D"/>
+  <polygon points="10,8 14,9.33 10,10.67" fill="#8D1B3D"/>
+  <polygon points="10,10.67 14,12 10,13.33" fill="#8D1B3D"/>
+  <polygon points="10,13.33 14,14.67 10,16" fill="#8D1B3D"/>
+  <polygon points="10,16 14,17.33 10,18.67" fill="#8D1B3D"/>
+  <polygon points="10,18.67 14,20 10,21.33" fill="#8D1B3D"/>
+  <polygon points="10,21.33 14,22.67 10,24" fill="#8D1B3D"/>
+</svg>
