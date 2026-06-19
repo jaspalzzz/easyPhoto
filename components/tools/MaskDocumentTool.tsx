@@ -169,13 +169,12 @@ export function MaskDocumentTool() {
     return undefined;
   };
 
-  // The "×" remove badge sits at each box's top-right corner. Kept visually
-  // small (~10px screen radius) so it doesn't obscure the area being masked on a
-  // cramped phone screen, while the TAP zone (badgeAt below) stays much larger so
-  // it's still easy to hit. The "Delete box" button is an alternative.
+  // The "×" remove badge sits at each box's top-right corner. Visual radius is
+  // kept small (~7px screen) so it doesn't obscure masked content; the TAP zone
+  // is 2.5× the visual radius so fingers can still hit it reliably.
   const badgeCenter = (b: Box) => {
     const canvas = canvasRef.current!;
-    const r = Math.max(8, 10 * scaleRef.current);
+    const r = Math.max(5, 7 * scaleRef.current);
     return { cx: Math.min(b.x + b.w, canvas.width - r), cy: Math.max(b.y, r), r };
   };
   const badgeAt = (x: number, y: number): Box | undefined => {
@@ -183,8 +182,8 @@ export function MaskDocumentTool() {
       const b = boxes[i];
       if (b.w <= 0 || b.h <= 0) continue;
       const { cx, cy, r } = badgeCenter(b);
-      // Tap tolerance ~2× the visual radius → small badge, finger-friendly target.
-      if ((x - cx) ** 2 + (y - cy) ** 2 <= (r * 2) ** 2) return b;
+      // Tap tolerance ~2.5× visual radius → small badge, finger-friendly target.
+      if ((x - cx) ** 2 + (y - cy) ** 2 <= (r * 2.5) ** 2) return b;
     }
     return undefined;
   };
