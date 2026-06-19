@@ -54,110 +54,123 @@ function gridLayout(
   return { cols, rows, cellW, cellH };
 }
 
+/**
+ * Compose the print sheet onto a canvas. `scale` lets the same layout math drive
+ * both a cheap live preview (scale < 1, fast) and the full-resolution export
+ * (scale = 1, true 300 DPI) — so what you see is exactly what downloads.
+ */
+function composeSheet(
+  source: import("./ImageToolShell").ToolSource,
+  paper: PaperSize,
+  count: Count,
+  scale: number
+): HTMLCanvasElement {
+  const p = PAPER[paper];
+  const { cols, rows, cellW, cellH } = gridLayout(count, p.widthPx, p.heightPx);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(p.widthPx * scale));
+  canvas.height = Math.max(1, Math.round(p.heightPx * scale));
+  const ctx = canvas.getContext("2d")!;
+  // Draw in full-resolution coordinates; the scale transform maps them down.
+  ctx.scale(scale, scale);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, p.widthPx, p.heightPx);
+
+  const srcW = source.size.width;
+  const srcH = source.size.height;
+
+  for (let i = 0; i < count; i++) {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const x = MARGIN + col * (cellW + GAP);
+    const y = MARGIN + row * (cellH + GAP);
+
+    // Cover-fit the source image into the cell.
+    const fit = Math.max(cellW / srcW, cellH / srcH);
+    const drawW = srcW * fit;
+    const drawH = srcH * fit;
+    const ox = (cellW - drawW) / 2;
+    const oy = (cellH - drawH) / 2;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x, y, cellW, cellH);
+    ctx.clip();
+    ctx.drawImage(source.image, x + ox, y + oy, drawW, drawH);
+    ctx.restore();
+
+    // Thin cut-guide around each cell.
+    ctx.strokeStyle = "#cccccc";
+    ctx.lineWidth = Math.max(1, 1 / scale);
+    ctx.strokeRect(x, y, cellW, cellH);
+  }
+
+  return canvas;
+}
+
+function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
+  return new Promise((res, rej) =>
+    canvas.toBlob((b) => (b ? res(b) : rej(new Error("toBlob failed"))), "image/jpeg", 0.94)
+  );
+}
+
 function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource; reset: () => void }) {
   const [paper, setPaper] = React.useState<PaperSize>("a4");
   const [count, setCount] = React.useState<Count>(6);
-  const [busy, setBusy] = React.useState(false);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
-  const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
   const [pdfBusy, setPdfBusy] = React.useState(false);
-  const prevPreviewRef = React.useRef<string | null>(null);
-  // Full composed-sheet JPEG data URL, reused for the one-page PDF export so the
-  // PDF and the JPG are byte-identical layouts.
-  const sheetDataUrlRef = React.useRef<string | null>(null);
+  const [jpgBusy, setJpgBusy] = React.useState(false);
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "print-sheet" });
   }, []);
 
-  // Clean up previous preview URL when it changes
+  const p = PAPER[paper];
+  const layout = gridLayout(count, p.widthPx, p.heightPx);
+
+  // Live preview — recompose a lightweight (640px-wide) sheet whenever the photo,
+  // paper size, or count changes. Debounced so rapid toggles don't thrash, and
+  // it shows immediately on first load (no "Generate" click needed).
   React.useEffect(() => {
-    const prev = prevPreviewRef.current;
-    prevPreviewRef.current = previewUrl;
-    if (prev && prev !== previewUrl) URL.revokeObjectURL(prev);
-  }, [previewUrl]);
-
-  // Revoke on unmount
-  React.useEffect(() => {
-    return () => {
-      if (prevPreviewRef.current) URL.revokeObjectURL(prevPreviewRef.current);
-    };
-  }, []);
-
-  const generate = React.useCallback(async () => {
-    setBusy(true);
-    try {
-      const p = PAPER[paper];
-      const { cols, rows, cellW, cellH } = gridLayout(count, p.widthPx, p.heightPx);
-
-      const canvas = document.createElement("canvas");
-      canvas.width = p.widthPx;
-      canvas.height = p.heightPx;
-      const ctx = canvas.getContext("2d")!;
-
-      // White background
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, p.widthPx, p.heightPx);
-
-      // Draw each photo cell
-      for (let i = 0; i < count; i++) {
-        const col = i % cols;
-        const row = Math.floor(i / cols);
-        const x = MARGIN + col * (cellW + GAP);
-        const y = MARGIN + row * (cellH + GAP);
-
-        // Cover-fit the source image into the cell
-        const srcW = source.size.width;
-        const srcH = source.size.height;
-        const scaleX = cellW / srcW;
-        const scaleY = cellH / srcH;
-        const scale = Math.max(scaleX, scaleY);
-        const drawW = srcW * scale;
-        const drawH = srcH * scale;
-        const ox = (cellW - drawW) / 2;
-        const oy = (cellH - drawH) / 2;
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.rect(x, y, cellW, cellH);
-        ctx.clip();
-        ctx.drawImage(source.image, x + ox, y + oy, drawW, drawH);
-        ctx.restore();
-
-        // Thin cut-guide line around each cell
-        ctx.strokeStyle = "#cccccc";
-        ctx.lineWidth = 1;
-        ctx.strokeRect(x, y, cellW, cellH);
+    let cancelled = false;
+    const t = setTimeout(() => {
+      try {
+        const previewScale = 640 / PAPER[paper].widthPx;
+        const canvas = composeSheet(source, paper, count, previewScale);
+        if (!cancelled) setPreviewUrl(canvas.toDataURL("image/jpeg", 0.85));
+      } catch (e) {
+        console.error(e);
       }
+    }, 80);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [source, paper, count]);
 
-      const blob = await new Promise<Blob>((res, rej) =>
-        canvas.toBlob((b) => (b ? res(b) : rej(new Error("toBlob failed"))), "image/jpeg", 0.94)
-      );
-      sheetDataUrlRef.current = canvas.toDataURL("image/jpeg", 0.94);
-      setResultBlob(blob);
-      setPreviewUrl(URL.createObjectURL(blob));
-      track({ name: "tool_success", tool: "print-sheet", device: deviceClass() });
+  const handleDownload = async () => {
+    setJpgBusy(true);
+    try {
+      const canvas = composeSheet(source, paper, count, 1); // full 300 DPI
+      const blob = await canvasToBlob(canvas);
+      downloadBlob(blob, `photo-sheet-${count}up-${paper}.jpg`);
+      track({ name: "download", tool: "print-sheet", format: "jpg" });
     } catch (e) {
       console.error(e);
       track({ name: "tool_failure", tool: "print-sheet", device: deviceClass(), reason: "render-error" });
     } finally {
-      setBusy(false);
+      setJpgBusy(false);
     }
-  }, [source, paper, count]);
-
-  const handleDownload = () => {
-    if (!resultBlob) return;
-    downloadBlob(resultBlob, `photo-sheet-${count}up-${paper}.jpg`);
-    track({ name: "download", tool: "print-sheet", format: "jpg" });
   };
 
   const handleDownloadPdf = async () => {
-    const dataUrl = sheetDataUrlRef.current;
-    if (!dataUrl) return;
     setPdfBusy(true);
     try {
+      const canvas = composeSheet(source, paper, count, 1); // full 300 DPI
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.94);
       const { jsPDF } = await import("jspdf");
-      const p = PAPER[paper];
       // px @ 300 DPI → mm, so the page is the true physical paper size.
       const wMm = (p.widthPx / 300) * 25.4;
       const hMm = (p.heightPx / 300) * 25.4;
@@ -174,22 +187,55 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
   };
 
   const handleShare = async () => {
-    if (!resultBlob) return;
-    await shareFile(resultBlob, `photo-sheet-${count}up.jpg`, "Photo print sheet");
+    try {
+      const canvas = composeSheet(source, paper, count, 1);
+      const blob = await canvasToBlob(canvas);
+      await shareFile(blob, `photo-sheet-${count}up.jpg`, "Photo print sheet");
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
-    <div className="space-y-5">
-      {/* Controls */}
-      <div className="flex flex-wrap gap-4">
+    <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,300px)]">
+      {/* ── Live preview ─────────────────────────────────────────────────── */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between gap-2">
+          <span className="eyebrow text-xs">Preview</span>
+          <span className="text-xs tabular-nums text-muted-foreground">
+            {p.label} · {count} photos · {layout.cols}×{layout.rows}
+          </span>
+        </div>
+        <div className="flex justify-center rounded-xl border border-hairline bg-accent/20 p-4">
+          {previewUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={previewUrl}
+              alt={`Print sheet preview — ${count} photos on ${p.label}`}
+              className="ep-fade-in max-h-[440px] w-auto rounded-md bg-white object-contain shadow-sm ring-1 ring-hairline"
+            />
+          ) : (
+            <div className="flex h-[300px] w-full items-center justify-center text-sm text-muted-foreground">
+              Building preview…
+            </div>
+          )}
+        </div>
+        <p className="text-xs text-muted-foreground">
+          300 DPI · print-ready · grey guide lines mark the cut edges
+        </p>
+      </div>
+
+      {/* ── Controls ─────────────────────────────────────────────────────── */}
+      <div className="space-y-5">
         <fieldset>
           <legend className="eyebrow mb-2 block text-xs">Paper size</legend>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {PAPER_SIZES.map((ps) => (
               <button
                 key={ps}
                 onClick={() => setPaper(ps)}
-                className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
+                aria-pressed={paper === ps}
+                className={`rounded-md border px-3 py-2 text-sm font-medium transition-colors ${
                   paper === ps
                     ? "border-brand bg-brand text-white"
                     : "border-hairline-strong bg-background text-foreground hover:bg-accent/40"
@@ -203,12 +249,13 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
 
         <fieldset>
           <legend className="eyebrow mb-2 block text-xs">Number of photos</legend>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {COUNTS.map((n) => (
               <button
                 key={n}
                 onClick={() => setCount(n)}
-                className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
+                aria-pressed={count === n}
+                className={`rounded-md border px-3 py-2 text-sm font-medium transition-colors ${
                   count === n
                     ? "border-brand bg-brand text-white"
                     : "border-hairline-strong bg-background text-foreground hover:bg-accent/40"
@@ -219,47 +266,30 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
             ))}
           </div>
         </fieldset>
-      </div>
 
-      <Button variant="cta" onClick={generate} disabled={busy}>
-        {busy ? "Generating…" : "Generate print sheet"}
-      </Button>
-
-      {previewUrl && (
-        <div className="space-y-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={previewUrl}
-            alt="Print sheet preview"
-            className="w-full max-w-sm rounded-lg border border-hairline object-contain shadow-sm"
-          />
-          <div className="flex flex-wrap items-center gap-3">
-            <Button variant="cta" size="sm" onClick={handleDownload}>
-              <Download className="h-4 w-4" strokeWidth={1.75} />
-              Download JPG
+        <div className="space-y-2 border-t border-hairline pt-4">
+          <Button variant="cta" className="w-full" onClick={handleDownload} disabled={jpgBusy}>
+            <Download className="h-4 w-4" strokeWidth={1.75} />
+            {jpgBusy ? "Preparing…" : "Download JPG"}
+          </Button>
+          <Button variant="outline" className="w-full" onClick={handleDownloadPdf} disabled={pdfBusy}>
+            <FileDown className="h-4 w-4" strokeWidth={1.75} />
+            {pdfBusy ? "Building PDF…" : "Download PDF"}
+          </Button>
+          {"share" in navigator && (
+            <Button variant="outline" className="w-full" onClick={handleShare}>
+              <Share2 className="h-4 w-4" strokeWidth={1.75} />
+              Share / WhatsApp
             </Button>
-            <Button variant="outline" size="sm" onClick={handleDownloadPdf} disabled={pdfBusy}>
-              <FileDown className="h-4 w-4" strokeWidth={1.75} />
-              {pdfBusy ? "Building PDF…" : "Download PDF"}
-            </Button>
-            {"share" in navigator && (
-              <Button variant="outline" size="sm" onClick={handleShare}>
-                <Share2 className="h-4 w-4" strokeWidth={1.75} />
-                Share / WhatsApp
-              </Button>
-            )}
-            <button
-              onClick={reset}
-              className="text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
-            >
-              Use different photo
-            </button>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            300 DPI · print-ready · grey guide lines mark the cut edges
-          </p>
+          )}
+          <button
+            onClick={reset}
+            className="block w-full pt-1 text-center text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
+          >
+            Use a different photo
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }
