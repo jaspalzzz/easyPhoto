@@ -85,7 +85,7 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="border-b border-hairline bg-paper">
-        <div className="container py-12 sm:py-16 lg:py-20">
+        <div className="container pb-12 pt-6 sm:pb-16 sm:pt-8 lg:pb-20 lg:pt-10">
           <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-10">
 
             {/* Left — value proposition */}
