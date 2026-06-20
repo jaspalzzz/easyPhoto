@@ -42,8 +42,7 @@
 # loadable by embedders that run a strict COEP. Self-contained inline-styled
 # HTML, no scripts. (More specific path → overrides the /* CSP for these URLs.)
 /embed/exam-spec/*
+  ! Content-Security-Policy
   Content-Type: text/html; charset=utf-8
-  Content-Security-Policy: frame-ancestors *; img-src 'self' data:; style-src 'unsafe-inline'
   Cross-Origin-Resource-Policy: cross-origin
-  Cross-Origin-Embedder-Policy: unsafe-none
   Cache-Control: public, max-age=3600
