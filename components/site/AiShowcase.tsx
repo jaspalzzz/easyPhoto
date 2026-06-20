@@ -93,7 +93,7 @@ export function AiShowcase() {
 
             <div className="mx-auto mb-5 h-56 w-40 overflow-hidden rounded-xl shadow-sm">
               <img
-                src="/images/selfie_input.png"
+                src="/images/east_asian_man_input.png"
                 alt="Example selfie before AI processing"
                 className="h-full w-full object-cover object-top"
               />
@@ -157,7 +157,7 @@ export function AiShowcase() {
             <div className="relative mx-auto mb-5 w-40">
               <div className="h-56 w-40 overflow-hidden rounded-sm border border-hairline shadow-sm">
                 <img
-                  src="/images/selfie_compliant.png"
+                  src="/images/east_asian_man_compliant.png"
                   alt="Compliant passport photo after AI processing"
                   className="h-full w-full object-cover object-top"
                 />

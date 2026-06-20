@@ -31,7 +31,7 @@ export function ComplianceEngine() {
             <div className="ep-card w-full max-w-[220px] p-3">
               <div className="relative aspect-square overflow-hidden rounded-lg">
                 <img
-                  src="/images/selfie_compliant.png"
+                  src="/images/black_woman_compliant.png"
                   alt="AI compliance scan example"
                   className="h-full w-full object-cover object-top"
                 />

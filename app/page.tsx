@@ -347,7 +347,7 @@ export default function HomePage() {
                   {/* "Used by …" avatar footer — matches prototype */}
                   <div className="mt-auto flex items-center gap-2 border-t border-hairline pt-2.5">
                     <div className="flex items-center">
-                      {["/images/selfie_compliant.png", "/images/man_compliant.png"].map((src, ai) => (
+                      {["/images/black_woman_compliant.png", "/images/east_asian_man_compliant.png"].map((src, ai) => (
                         <img
                           key={ai}
                           src={src}
