@@ -42,6 +42,22 @@ export function ExamSpecTable({
       ? `${spec.sigWidthPx}×${spec.sigHeightPx} px`
       : null;
 
+  // Answer-first prose summary, built from the SAME fields as the register
+  // below so the two can never disagree. AI answer engines (ChatGPT, Perplexity,
+  // Google AI Overviews) flatten or drop the <dl> register when extracting text;
+  // this sentence hands them a clean, citable answer with the exact numbers —
+  // worded the way people ask ("what is the SSC photo size?").
+  const photoSentence =
+    `The ${label} photo must be a JPG/JPEG file of ${kbRange(spec.photoMinKb, spec.photoLimitKb)}` +
+    (photoDim ? ` at ${photoDim}` : "") +
+    (spec.dpi ? ` (${spec.dpi} DPI)` : "") +
+    ".";
+  const sigSentence = hasSig
+    ? ` The signature must be a JPG/JPEG file of ${kbRange(spec.sigMinKb, spec.sigLimitKb!)}` +
+      (sigDim ? ` at ${sigDim}` : "") +
+      "."
+    : "";
+
   return (
     <section>
       <div className="mb-5 flex items-baseline justify-between gap-4 border-b border-hairline pb-4">
@@ -52,6 +68,11 @@ export function ExamSpecTable({
           Exact requirement
         </span>
       </div>
+
+      <p className="mb-5 text-[15px] leading-relaxed text-ink-soft">
+        {photoSentence}
+        {sigSentence}
+      </p>
 
       <div className={`grid gap-x-10 gap-y-1 ${hasSig ? "sm:grid-cols-2" : ""}`}>
         {/* Photo */}
