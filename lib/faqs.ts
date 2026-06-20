@@ -66,6 +66,10 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
       a: `Upload your photo and the tool compresses it under the ${spec.name} limit while keeping the correct dimensions. Everything runs in your browser.`,
     },
     {
+      q: `Why do ${spec.name} photos${sigKb ? " and signatures" : ""} get rejected?`,
+      a: `The most common reasons are the wrong file size (outside the ${photoKb}${sigKb ? ` photo / ${sigKb} signature` : ""} range), wrong pixel dimensions, a non-JPG file, a busy or coloured background, or a blurry, low-resolution scan.${sigKb ? " Signatures are also rejected when they are faint, sit on a grey or coloured background, or show the paper edge." : ""} This tool fixes the size, dimensions and format automatically — just start from a clear, well-lit photo on a plain background.`,
+    },
+    {
       q: `Is this ${spec.name} resizer free and private?`,
       a: "Yes — free, no watermark, no sign-up, and your photo never leaves your device. All processing happens in your browser.",
     },

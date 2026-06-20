@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { relatedTools, getTool, categoryOf, toolColorCategory } from "@/lib/toolsCatalog";
 import { ToolIconTile } from "@/components/site/ToolIcon";
 import { ExploreTools } from "@/components/site/ExploreTools";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { breadcrumbSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
@@ -70,12 +71,7 @@ export function ToolPage({
           ]}
         />
       )}
-      <Link
-        href="/tools/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All tools
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
       <header className="mt-4 flex items-start gap-4">
         {entry && (
           <ToolIconTile

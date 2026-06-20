@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { PortalSpec } from "@/lib/portalPresets";
+import { RelatedPortals } from "@/components/site/RelatedPortals";
 
 /**
  * Per-exam context block — surfaces the accurate, exam-specific `spec.context`
@@ -17,24 +18,28 @@ export function ExamContext({
   spec: PortalSpec;
   nameDateHref?: string;
 }) {
-  if (!spec.context) return null;
   const short = spec.name.split(" (")[0];
   const hasSig = spec.sigLimitKb !== undefined;
   return (
-    <section className="mt-10 max-w-xl">
-      <h2 className="text-xl font-semibold tracking-tight text-ink">
-        About the {short} photo {hasSig && <>&amp; signature </>}requirement
-      </h2>
-      <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">{spec.context}</p>
-      {nameDateHref && (
-        <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
-          Need your name and the date printed on the photo?{" "}
-          <Link href={nameDateHref} className="font-medium text-brand underline">
-            Use the Photo with Name &amp; Date tool
-          </Link>
-          .
-        </p>
+    <>
+      {spec.context && (
+        <section className="mt-10 max-w-xl">
+          <h2 className="text-xl font-semibold tracking-tight text-ink">
+            About the {short} photo {hasSig && <>&amp; signature </>}requirement
+          </h2>
+          <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">{spec.context}</p>
+          {nameDateHref && (
+            <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
+              Need your name and the date printed on the photo?{" "}
+              <Link href={nameDateHref} className="font-medium text-brand underline">
+                Use the Photo with Name &amp; Date tool
+              </Link>
+              .
+            </p>
+          )}
+        </section>
       )}
-    </section>
+      <RelatedPortals portalId={spec.id} />
+    </>
   );
 }
