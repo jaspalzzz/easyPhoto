@@ -82,7 +82,7 @@ export function ToolPage({
         )}
         <div className="space-y-2">
           {category && (
-            <span className="eyebrow block text-brand">{category.group}</span>
+            <span className="eyebrow block text-[#A87E10]">{category.group}</span>
           )}
           <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
             {title}

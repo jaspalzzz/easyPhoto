@@ -65,7 +65,7 @@ export function ExamSpecTable({
         <h2 className="text-xl font-semibold tracking-tight text-ink">
           {label} photo {hasSig && <>&amp; signature </>}specification
         </h2>
-        <span className="eyebrow hidden text-ink-soft sm:block">
+        <span className="eyebrow hidden text-[#A87E10] sm:block">
           Exact requirement
         </span>
       </div>
@@ -75,31 +75,40 @@ export function ExamSpecTable({
         {sigSentence}
       </p>
 
-      <div className={`grid gap-x-10 gap-y-1 ${hasSig ? "sm:grid-cols-2" : ""}`}>
-        {/* Photo */}
-        <dl>
-          <p className="eyebrow mb-1 text-brand">Photograph</p>
-          <SpecRow
-            label="File size"
-            value={kbRange(spec.photoMinKb, spec.photoLimitKb)}
-          />
-          {photoDim && <SpecRow label="Dimensions" value={photoDim} />}
-          {spec.dpi && <SpecRow label="Scan DPI" value={spec.dpi} />}
-          <SpecRow label="Format" value="JPG / JPEG" />
-        </dl>
+      {/* Spec plate — gold crop-mark corners frame the exact spec (the
+          "cut to size" motif that runs through the brand). */}
+      <div className="relative rounded-lg border border-hairline bg-card px-6 py-5">
+        <span aria-hidden className="pointer-events-none absolute left-2 top-2 h-3.5 w-3.5 rounded-tl-[3px] border-l-2 border-t-2 border-[#C9921A]" />
+        <span aria-hidden className="pointer-events-none absolute right-2 top-2 h-3.5 w-3.5 rounded-tr-[3px] border-r-2 border-t-2 border-[#C9921A]" />
+        <span aria-hidden className="pointer-events-none absolute bottom-2 left-2 h-3.5 w-3.5 rounded-bl-[3px] border-b-2 border-l-2 border-[#C9921A]" />
+        <span aria-hidden className="pointer-events-none absolute bottom-2 right-2 h-3.5 w-3.5 rounded-br-[3px] border-b-2 border-r-2 border-[#C9921A]" />
 
-        {/* Signature */}
-        {hasSig && (
-          <dl className="mt-6 sm:mt-0">
-            <p className="eyebrow mb-1 text-brand">Signature</p>
+        <div className={`grid gap-x-10 gap-y-1 ${hasSig ? "sm:grid-cols-2" : ""}`}>
+          {/* Photo */}
+          <dl>
+            <p className="eyebrow mb-1 text-[#A87E10]">Photograph</p>
             <SpecRow
               label="File size"
-              value={kbRange(spec.sigMinKb, spec.sigLimitKb!)}
+              value={kbRange(spec.photoMinKb, spec.photoLimitKb)}
             />
-            {sigDim && <SpecRow label="Dimensions" value={sigDim} />}
+            {photoDim && <SpecRow label="Dimensions" value={photoDim} />}
+            {spec.dpi && <SpecRow label="Scan DPI" value={spec.dpi} />}
             <SpecRow label="Format" value="JPG / JPEG" />
           </dl>
-        )}
+
+          {/* Signature */}
+          {hasSig && (
+            <dl className="mt-6 sm:mt-0">
+              <p className="eyebrow mb-1 text-[#A87E10]">Signature</p>
+              <SpecRow
+                label="File size"
+                value={kbRange(spec.sigMinKb, spec.sigLimitKb!)}
+              />
+              {sigDim && <SpecRow label="Dimensions" value={sigDim} />}
+              <SpecRow label="Format" value="JPG / JPEG" />
+            </dl>
+          )}
+        </div>
       </div>
 
       <EmbedSpec id={spec.id} name={spec.name} hasSig={hasSig} />
