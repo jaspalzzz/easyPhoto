@@ -10,6 +10,7 @@ import { PORTAL_KEYS } from "@/lib/portalPresets";
 import { primaryMakerPath } from "@/lib/makerPages";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
 import { HowItWorks, HOW_IT_WORKS_STEPS } from "@/components/site/HowItWorks";
+import { BeforeAfter } from "@/components/site/BeforeAfter";
 import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { softwareApplicationSchema } from "@/lib/schema";
@@ -124,6 +125,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Before → after: the result, illustrated */}
+      <BeforeAfter />
 
       {/* Indian exams & forms — convert the dominant exam-candidate audience */}
       <section id="exams" className="scroll-mt-16">
