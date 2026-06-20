@@ -80,45 +80,40 @@ export default function HomePage() {
 
       {/* ── HERO — dark navy from header edge, no white gap ────────
           RecentTools lives inside the dark wrapper so returning users
-          never see a cream strip breaking the header→hero flow.       */}
-      <div style={{ background: "linear-gradient(180deg, #040c24 0%, #0a173c 100%)" }}>
-        {/* Returners strip — renders nothing on first visit */}
-        <RecentTools />
+          */}
+      <RecentTools />
 
-        <section style={{ padding: "60px 0 64px" }}>
-        <div className="container">
+      {/* Hero */}
+      <section className="border-b border-hairline bg-paper">
+        <div className="container py-12 sm:py-16 lg:py-20">
           <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-12">
 
-            {/* Left — original value proposition, dark-styled */}
+            {/* Left — value proposition */}
             <div className="max-w-xl">
-              <span className="mb-4 block text-[11px] font-bold uppercase tracking-[0.12em] text-[#ffd000]">
+              <span className="eyebrow">
                 Passport · exam · visa — exact to the millimetre
               </span>
-              <h1
-                className="text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest text-white sm:text-[3.25rem]"
-                style={{ fontFamily: "var(--font-outfit, sans-serif)" }}
-              >
+              <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
                 Document photos that{" "}
-                <span className="text-[#ffd000]">get accepted</span>
+                <span className="mark-gold text-ink">get accepted</span>
               </h1>
-              <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-[#94a3b8] sm:text-base">
+              <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
                 Pick your country or exam and drop a photo — we crop to the
                 official spec, set the required background, and check it before
                 you download. Free, and entirely in your browser.
               </p>
 
-              {/* Stats — dark glass pill */}
-              <dl className="mt-7 hidden max-w-md overflow-hidden rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(10,23,60,0.7)] shadow-[0_1px_4px_rgba(0,0,0,0.3)] sm:flex sm:divide-x sm:divide-[rgba(255,255,255,0.07)]">
+              <dl className="mt-7 hidden max-w-md divide-x divide-hairline overflow-hidden rounded-xl border border-hairline bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04)] sm:flex">
                 {[
                   { v: `${LAUNCH_ORDER.length}`, l: "country specs" },
                   { v: `${PORTAL_KEYS.length}`, l: "exam & form specs" },
                   { v: `${READY_TOOLS.length}`, l: "free tools" },
                 ].map((s) => (
                   <div key={s.l} className="flex-1 px-4 py-3.5">
-                    <dt className="text-[1.65rem] font-bold leading-none tracking-tight text-[#ffd000]">
+                    <dt className="text-[1.65rem] font-bold leading-none tracking-tight text-brand">
                       {s.v}
                     </dt>
-                    <dd className="mt-1 text-xs leading-tight text-[#94a3b8]">
+                    <dd className="mt-1 text-xs leading-tight text-muted-foreground">
                       {s.l}
                     </dd>
                   </div>
@@ -138,8 +133,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        </section>
-      </div>{/* end dark hero wrapper */}
+      </section>
 
       {/* ── Live tool — right below the hero ────────────────────── */}
       <section className="border-b border-hairline bg-paper">
