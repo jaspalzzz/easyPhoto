@@ -11,6 +11,7 @@ import { primaryMakerPath } from "@/lib/makerPages";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
 import { HowItWorks, HOW_IT_WORKS_STEPS } from "@/components/site/HowItWorks";
 import { BeforeAfter } from "@/components/site/BeforeAfter";
+import { AiShowcase } from "@/components/site/AiShowcase";
 import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { softwareApplicationSchema } from "@/lib/schema";
@@ -137,7 +138,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Before → after: the result, illustrated */}
+      {/* AI Showcase — 3-panel before/AI/after + 4-step process strip */}
+      <AiShowcase />
+
+      {/* Before → after: dramatic transformation with dimension markers */}
       <BeforeAfter />
 
       {/* Indian exams & forms — convert the dominant exam-candidate audience */}
