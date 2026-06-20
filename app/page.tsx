@@ -81,7 +81,7 @@ export default function HomePage() {
               </span>
               <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
                 Document photos that{" "}
-                <span className="text-brand">get accepted</span>
+                <span className="mark-gold text-ink">get accepted</span>
               </h1>
               <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
                 Pick your country or exam and drop a photo — we crop to the

@@ -110,17 +110,28 @@
     @apply text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-soft;
   }
 
-  /* Premium tool card — white surface, soft shadow, hover lift. The building
-     block of the tool grids (replaces flat hairline lists). */
+  /* Tool card — calm, FLAT bureau surface. Structure comes from a hairline,
+     not elevation; hover darkens the border to navy + a faint navy wash. No
+     drop-shadows, no lift (those read as generic "AI SaaS"). */
   .ep-card {
-    @apply rounded-xl border bg-card transition-all duration-150;
-    border-color: hsl(36 18% 90%);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 2px 8px rgb(0 0 0 / 0.05);
+    @apply rounded-xl border bg-card transition-colors duration-150;
+    border-color: hsl(var(--hairline));
   }
   .ep-card:hover {
-    transform: translateY(-2px);
-    border-color: hsl(33 14% 80%);
-    box-shadow: 0 8px 24px rgb(0 0 0 / 0.09);
+    border-color: hsl(var(--brand) / 0.4);
+    background-color: hsl(var(--brand-soft) / 0.28);
+  }
+
+  /* Gold highlighter — a marker swept under a keyword (navy text stays on top).
+     The signature "stamp" accent for headlines. */
+  .mark-gold {
+    background: linear-gradient(
+      transparent 58%,
+      hsl(var(--cta)) 58%,
+      hsl(var(--cta)) 90%,
+      transparent 90%
+    );
+    padding: 0 0.05em;
   }
   .ep-card-grid {
     /* grid-cols-1 (not bare `grid`) so the mobile track is minmax(0,1fr) and
