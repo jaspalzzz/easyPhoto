@@ -100,7 +100,7 @@ function Body({ source }: { source: ToolSource }) {
 
     // Crop border.
     const line = Math.max(2, scaleRef.current * 1.5);
-    ctx.strokeStyle = "#157F75";
+    ctx.strokeStyle = "#163A6B";
     ctx.lineWidth = line;
     ctx.strokeRect(x, y, w, h);
 
@@ -113,7 +113,7 @@ function Body({ source }: { source: ToolSource }) {
       [x + w, y + h],
     ];
     for (const [cx, cy] of corners) {
-      ctx.fillStyle = "#157F75";
+      ctx.fillStyle = "#163A6B";
       ctx.fillRect(cx - hs / 2, cy - hs / 2, hs, hs);
       ctx.fillStyle = "#fff";
       ctx.fillRect(cx - hs / 6, cy - hs / 6, hs / 3, hs / 3);

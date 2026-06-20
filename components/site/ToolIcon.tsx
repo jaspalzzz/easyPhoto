@@ -67,24 +67,19 @@ export function ToolIcon({ name, className }: { name: string; className?: string
 }
 
 /**
- * Vibrant per-category icon tile — the wayfinding colour that makes the tool grid
- * scannable (the pattern that makes iLovePDF/Smallpdf feel premium). The icon is
- * full-saturation on a soft tint of the same hue. All icon colours pass WCAG AA
- * (≥3:1 non-text contrast) on white.
+ * Icon tile in the brand palette: navy glyph on a faint navy tint, with GOLD
+ * reserved for the exam category (the core audience). Strictly navy + gold —
+ * no rainbow category hues. All colours pass WCAG AA (≥3:1) on white.
  */
+const NAVY_TILE =
+  "bg-[hsl(var(--brand)/0.12)] text-[hsl(var(--brand))] group-hover:bg-[hsl(var(--brand)/0.2)]";
 const TILE_COLORS: Record<ToolColorCategory, string> = {
-  photo:
-    "bg-[hsl(174_78%_32%/0.18)] text-[hsl(174_82%_28%)] group-hover:bg-[hsl(174_78%_32%/0.28)]",
-  pdf:
-    "bg-[hsl(8_85%_50%/0.18)] text-[hsl(8_88%_46%)] group-hover:bg-[hsl(8_85%_50%/0.28)]",
-  signature:
-    "bg-[hsl(248_75%_58%/0.18)] text-[hsl(248_78%_56%)] group-hover:bg-[hsl(248_75%_58%/0.28)]",
-  privacy:
-    "bg-[hsl(150_70%_36%/0.18)] text-[hsl(150_76%_30%)] group-hover:bg-[hsl(150_70%_36%/0.28)]",
-  convert:
-    "bg-[hsl(212_88%_48%/0.18)] text-[hsl(212_90%_44%)] group-hover:bg-[hsl(212_88%_48%/0.28)]",
-  exam:
-    "bg-[hsl(33_92%_46%/0.18)] text-[hsl(30_92%_40%)] group-hover:bg-[hsl(33_92%_46%/0.28)]",
+  photo: NAVY_TILE,
+  pdf: NAVY_TILE,
+  signature: NAVY_TILE,
+  privacy: NAVY_TILE,
+  convert: NAVY_TILE,
+  exam: "bg-[hsl(var(--cta)/0.22)] text-[#A87E10] group-hover:bg-[hsl(var(--cta)/0.34)]",
 };
 
 export function ToolIconTile({

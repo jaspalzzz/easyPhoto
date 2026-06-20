@@ -29,21 +29,23 @@ const NEW_SLUGS = new Set([
   "photo-validator",
 ]);
 
-// Colored left-border accent per category column.
+// Category column accent — gold, the single brand accent.
 const CAT_ACCENT: Record<string, string> = {
-  photo: "bg-[hsl(174_78%_32%)]",
-  pdf: "bg-[hsl(8_85%_50%)]",
-  signature: "bg-[hsl(248_75%_58%)]",
+  photo: "bg-cta",
+  pdf: "bg-cta",
+  signature: "bg-cta",
 };
 
-// Tinted card background for each featured tool, keyed by ToolColorCategory.
+// Featured-tool card tint — navy by default, gold for the exam category.
+const NAVY_FEAT =
+  "bg-[hsl(var(--brand)/0.05)] border-[hsl(var(--brand)/0.2)] hover:border-[hsl(var(--brand)/0.45)]";
 const FEAT_TINT: Record<ToolColorCategory, string> = {
-  photo:     "bg-[hsl(174_78%_32%/0.06)] border-[hsl(174_78%_32%/0.22)] hover:border-[hsl(174_78%_32%/0.45)]",
-  pdf:       "bg-[hsl(8_85%_50%/0.06)]   border-[hsl(8_85%_50%/0.22)]   hover:border-[hsl(8_85%_50%/0.45)]",
-  signature: "bg-[hsl(248_75%_58%/0.06)] border-[hsl(248_75%_58%/0.22)] hover:border-[hsl(248_75%_58%/0.45)]",
-  privacy:   "bg-[hsl(150_70%_36%/0.06)] border-[hsl(150_70%_36%/0.22)] hover:border-[hsl(150_70%_36%/0.45)]",
-  convert:   "bg-[hsl(212_88%_48%/0.06)] border-[hsl(212_88%_48%/0.22)] hover:border-[hsl(212_88%_48%/0.45)]",
-  exam:      "bg-[hsl(33_92%_46%/0.06)]  border-[hsl(33_92%_46%/0.22)]  hover:border-[hsl(33_92%_46%/0.45)]",
+  photo: NAVY_FEAT,
+  pdf: NAVY_FEAT,
+  signature: NAVY_FEAT,
+  privacy: NAVY_FEAT,
+  convert: NAVY_FEAT,
+  exam: "bg-[hsl(var(--cta)/0.08)] border-[hsl(var(--cta)/0.3)] hover:border-[hsl(var(--cta)/0.55)]",
 };
 
 /** Header nav with a premium Tools mega-menu. */

@@ -78,13 +78,13 @@ export function MaskDocumentTool() {
       const hs = handleImg();
       const line = Math.max(2, scaleRef.current * 1.5);
       ctx.save();
-      ctx.strokeStyle = "#157F75";
+      ctx.strokeStyle = "#163A6B";
       ctx.lineWidth = line;
       ctx.setLineDash([hs * 0.5, hs * 0.4]);
       ctx.strokeRect(sel.x, sel.y, sel.w, sel.h);
       ctx.setLineDash([]);
       // Bottom-right resize handle
-      ctx.fillStyle = "#157F75";
+      ctx.fillStyle = "#163A6B";
       ctx.fillRect(sel.x + sel.w - hs, sel.y + sel.h - hs, hs, hs);
       ctx.fillStyle = "#fff";
       ctx.fillRect(

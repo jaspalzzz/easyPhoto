@@ -13,8 +13,8 @@ import { ImageResponse } from "next/og";
 export const OG_SIZE = { width: 1200, height: 630 } as const;
 export const OG_CONTENT_TYPE = "image/png";
 
-const BRAND_TEAL = "#157F75";
-const BRAND_ORANGE = "#F57819";
+const BRAND_TEAL = "#163A6B";
+const BRAND_ORANGE = "#F4C63F";
 
 // The crop-mark logo mark, inline as a data URI (satori renders <img> reliably).
 const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><g fill="none" stroke="${BRAND_TEAL}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17 V8 Q6 6 8 6 H17"/><path d="M47 6 H56 Q58 6 58 8 V17"/><path d="M58 47 V56 Q58 58 56 58 H47"/><path d="M17 58 H8 Q6 58 6 56 V47"/></g><circle cx="32" cy="26" r="8.5" fill="${BRAND_TEAL}"/><path d="M18 49 C18 37 46 37 46 49 Z" fill="${BRAND_ORANGE}"/></svg>`;
@@ -51,8 +51,8 @@ export function ogImage({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={LOGO_SRC} width={56} height={56} alt="" />
           <div style={{ display: "flex", alignItems: "center", fontSize: 48, fontWeight: 800 }}>
-            <span style={{ color: BRAND_ORANGE }}>easy</span>
-            <span style={{ color: BRAND_TEAL }}>Photo</span>
+            <span style={{ color: BRAND_TEAL }}>easy</span>
+            <span style={{ color: "#A87E10" }}>Photo</span>
           </div>
         </div>
 

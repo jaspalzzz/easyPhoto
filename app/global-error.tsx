@@ -42,7 +42,7 @@ export default function GlobalError({
               padding: "10px 18px",
               borderRadius: 8,
               border: 0,
-              background: "#F57819",
+              background: "#0C1B34",
               color: "#fff",
               fontSize: 14,
               fontWeight: 600,
