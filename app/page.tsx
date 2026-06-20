@@ -9,12 +9,9 @@ import { POPULAR_TOOLS, READY_TOOLS } from "@/lib/toolsCatalog";
 import { PORTAL_KEYS } from "@/lib/portalPresets";
 import { primaryMakerPath } from "@/lib/makerPages";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
-import { HowItWorks } from "@/components/site/HowItWorks";
 import { AiShowcase } from "@/components/site/AiShowcase";
 import { HeroVisual } from "@/components/site/HeroVisual";
-import { UsedForTabs } from "@/components/site/UsedForTabs";
 import { ComplianceEngine } from "@/components/site/ComplianceEngine";
-import { RealTransformations } from "@/components/site/RealTransformations";
 import { ComparisonTable } from "@/components/site/ComparisonTable";
 import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -81,19 +78,16 @@ export default function HomePage() {
         })}
       />
 
-      {/* Returners: one-tap path back to their tool (renders nothing on a
-          first visit — device-local, see lib/recentTools.ts). */}
-      <RecentTools />
+      {/* ── HERO — dark navy from header edge, no white gap ────────
+          RecentTools lives inside the dark wrapper so returning users
+          never see a cream strip breaking the header→hero flow.       */}
+      <div style={{ background: "linear-gradient(180deg, #040c24 0%, #0a173c 100%)" }}>
+        {/* Returners strip — renders nothing on first visit */}
+        <RecentTools />
 
-      {/* ── HERO — dark navy shell, original content ─────────────── */}
-      <section
-        style={{
-          background: "linear-gradient(180deg, #040c24 0%, #0a173c 100%)",
-          padding: "72px 0 56px",
-        }}
-      >
+        <section style={{ padding: "60px 0 64px" }}>
         <div className="container">
-          <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+          <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-12">
 
             {/* Left — original value proposition, dark-styled */}
             <div className="max-w-xl">
@@ -144,33 +138,26 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </div>{/* end dark hero wrapper */}
 
-      {/* ── Live tool — below the hero ───────────────────────────── */}
+      {/* ── Live tool — right below the hero ────────────────────── */}
       <section className="border-b border-hairline bg-paper">
         <div className="container py-10">
-          <div className="mb-6 text-center">
-            <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-              Make Your Free Passport Photo Now
-            </p>
-          </div>
+          <p className="mb-6 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+            Make your free passport photo now
+          </p>
           <div className="mx-auto max-w-lg">
             <HeroStarter />
           </div>
         </div>
       </section>
 
-      {/* "Used For" tab strip — passive filter showing document types */}
-      <UsedForTabs />
-
       {/* AI Showcase — 3-panel before/AI/after with real photos + 4-step process */}
       <AiShowcase />
 
-      {/* AI Compliance Engine — dark navy panel with checklist + 100% score */}
+      {/* AI Compliance Engine — checklist + 100% score */}
       <ComplianceEngine />
-
-      {/* Real Transformations — before/after grid with real photo pairs */}
-      <RealTransformations />
 
       {/* Indian exams & forms — convert the dominant exam-candidate audience */}
       <section id="exams" className="scroll-mt-16">
@@ -377,11 +364,6 @@ export default function HomePage() {
           </div>
           <TrustStrip />
         </div>
-      </section>
-
-      {/* How it works */}
-      <section className="container border-t border-hairline py-14 sm:py-16">
-        <HowItWorks />
       </section>
 
       {/* FAQ */}

@@ -34,7 +34,7 @@ export function HeroVisual() {
         </span>
 
         {/* Photo */}
-        <div className="relative aspect-square overflow-hidden rounded-lg">
+        <div className="relative overflow-hidden rounded-xl" style={{ aspectRatio: "3/4" }}>
           <img
             src="/images/selfie_input.png"
             alt="Example selfie — before AI processing"
@@ -106,7 +106,7 @@ export function HeroVisual() {
         </span>
 
         {/* Photo with scanning beam */}
-        <div className="relative aspect-square overflow-hidden rounded-lg">
+        <div className="relative overflow-hidden rounded-xl" style={{ aspectRatio: "3/4" }}>
           <img
             src="/images/selfie_compliant.png"
             alt="Compliant passport photo — after AI processing"
