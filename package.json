@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check:specs": "node scripts/check-specs.mjs",
+    "freshness": "node scripts/freshness-audit.mjs",
     "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {

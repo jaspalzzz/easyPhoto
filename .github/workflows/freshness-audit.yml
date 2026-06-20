@@ -1,0 +1,84 @@
+# Exam content freshness automation
+# ----------------------------------
+# Runs the freshness audit on a weekly cadence and keeps ONE rolling GitHub
+# issue up to date with what needs a human to re-verify — prioritised by which
+# exam cycles are about to spike in traffic. It never edits content: spec
+# numbers are verified by a human against the official source (wrong KB/px = a
+# rejected application), so this only surfaces the work.
+#
+# Trigger manually any time from the Actions tab ("Run workflow").
+
+name: Exam freshness audit
+
+on:
+  schedule:
+    - cron: "30 3 * * 1" # Mondays 03:30 UTC (~09:00 IST)
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run freshness audit
+        id: audit
+        run: |
+          # Script exits 1 when work is needed; capture output, don't fail the job.
+          node scripts/freshness-audit.mjs --md > freshness-report.md || true
+          n=$(grep -oE 'ACTION_NEEDED=[0-9]+' freshness-report.md | grep -oE '[0-9]+' | head -1)
+          echo "action_needed=${n:-0}" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the rolling issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('freshness-report.md', 'utf8');
+            const TITLE = '🗓 Exam content freshness';
+            const actionNeeded = Number('${{ steps.audit.outputs.action_needed }}') || 0;
+
+            const { data: open } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'freshness',
+              per_page: 50,
+            });
+            const existing = open.find((i) => i.title === TITLE);
+
+            if (actionNeeded === 0) {
+              // Nothing to do — close any open issue so a green inbox means "all fresh".
+              if (existing) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: existing.number, state: 'closed',
+                });
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: existing.number,
+                  body: '✅ All exam content is fresh as of this run — closing automatically.',
+                });
+              }
+              return;
+            }
+
+            if (existing) {
+              await github.rest.issues.update({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.number, body, state: 'open',
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title: TITLE, body, labels: ['freshness'],
+              });
+            }
