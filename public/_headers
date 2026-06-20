@@ -34,3 +34,16 @@
 /exam-calendar/ics
   Content-Type: text/calendar; charset=utf-8
   Content-Disposition: attachment; filename="easyphoto-exam-calendar.ics"
+
+# Embeddable exam-spec widgets (the backlink engine). Exported extensionless via
+# a Route Handler, so declare text/html. CRITICAL: override the site-wide
+# `frame-ancestors 'none'` so third-party sites can actually <iframe> these —
+# the whole point is to be embedded anywhere. CORP cross-origin keeps them
+# loadable by embedders that run a strict COEP. Self-contained inline-styled
+# HTML, no scripts. (More specific path → overrides the /* CSP for these URLs.)
+/embed/exam-spec/*
+  Content-Type: text/html; charset=utf-8
+  Content-Security-Policy: frame-ancestors *; img-src 'self' data:; style-src 'unsafe-inline'
+  Cross-Origin-Resource-Policy: cross-origin
+  Cross-Origin-Embedder-Policy: unsafe-none
+  Cache-Control: public, max-age=3600

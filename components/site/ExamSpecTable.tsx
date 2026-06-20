@@ -1,4 +1,5 @@
 import type { PortalSpec } from "@/lib/portalPresets";
+import { EmbedSpec } from "@/components/site/EmbedSpec";
 
 /**
  * The exact photo (and signature) specification for an exam/form portal,
@@ -100,6 +101,8 @@ export function ExamSpecTable({
           </dl>
         )}
       </div>
+
+      <EmbedSpec id={spec.id} name={spec.name} hasSig={hasSig} />
     </section>
   );
 }
