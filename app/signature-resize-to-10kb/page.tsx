@@ -5,7 +5,6 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import {
   breadcrumbSchema,
   softwareApplicationSchema,
-  howToSchema,
 } from "@/lib/schema";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
 import { Faq } from "@/components/site/Faq";
@@ -50,16 +49,6 @@ export default function Page() {
             description:
               "Free tool to compress a signature to under 10 KB with a transparent background, in your browser.",
             url: PATH,
-          }),
-          howToSchema({
-            name: "How to resize a signature to 10KB",
-            description:
-              "Get a transparent signature under 10 KB for online form uploads.",
-            steps: [
-              { name: "Upload your signature", text: "Scan or photograph your signature and drop it in — it stays on your device." },
-              { name: "Remove the paper background", text: "Adjust the strength so the background is fully transparent and the ink stays crisp." },
-              { name: "Download under 10 KB", text: "We trim and compress to under 10 KB as a transparent PNG, then you download it." },
-            ],
           }),
         ]}
       />

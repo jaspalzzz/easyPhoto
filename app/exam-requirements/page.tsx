@@ -8,7 +8,7 @@ import {
 } from "@/lib/specRegistry";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema } from "@/lib/schema";
+import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
 
 export const metadata = pageMetadata({
   title: "Exam Photo & Signature Size Requirements 2026 (Official, India)",
@@ -43,10 +43,18 @@ export default function Page() {
   return (
     <div className="container max-w-5xl space-y-8 py-10">
       <JsonLd
-        schema={breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Exam Requirements", path: "/exam-requirements/" },
-        ])}
+        schema={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Exam Requirements", path: "/exam-requirements/" },
+          ]),
+          collectionPageSchema({
+            name: "Exam Photo & Signature Size Requirements 2026",
+            description:
+              "Official photo and signature size, dimensions and file-size limits for 30+ Indian exam & recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA and State PSCs. Each with its official source.",
+            url: "/exam-requirements/",
+          }),
+        ]}
       />
 
       <header className="space-y-3 border-b border-hairline pb-7">

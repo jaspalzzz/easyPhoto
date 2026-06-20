@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema } from "@/lib/schema";
+import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
 import { BLOG_POSTS } from "@/lib/blog";
 
 export const metadata = pageMetadata({
@@ -18,10 +18,18 @@ export default function BlogIndex() {
   return (
     <div className="container max-w-4xl py-12">
       <JsonLd
-        schema={breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Blog", path: "/blog/" },
-        ])}
+        schema={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blog/" },
+          ]),
+          collectionPageSchema({
+            name: "Blog — Passport, Visa & Photo Guides",
+            description:
+              "Practical guides on passport and visa photos, file-size limits, signatures and image tools — how to get it right the first time.",
+            url: "/blog/",
+          }),
+        ]}
       />
 
       <Link

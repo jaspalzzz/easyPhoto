@@ -12,7 +12,8 @@ const spec = getPortalSpec("ssc")!;
 const prov = specProvenance(spec);
 
 export const metadata = pageMetadata({
-  title: `SSC Photo Resizer — Compress to ${spec.photoLimitKb} KB`,
+  title: `SSC Photo & Signature Resizer 2026 — ${spec.photoLimitKb} KB`,
+  titleAbsolute: true,
   description: resizerMetaDescription(spec, "SSC"),
   path: "/ssc-photo-resizer/",
 });
@@ -20,7 +21,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <ToolPage
-      title="SSC Photo Resizer"
+      title="SSC Photo & Signature Resizer 2026"
       slug="ssc-photo-resizer"
       faqItems={portalFaqItems(spec)}
       path="/ssc-photo-resizer/"

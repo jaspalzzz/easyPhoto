@@ -1,6 +1,8 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { webPageSchema, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata = pageMetadata({
   title: "Privacy Policy",
@@ -13,6 +15,21 @@ export const metadata = pageMetadata({
 export default function PrivacyPage() {
   return (
     <div className="container max-w-3xl py-12">
+      <JsonLd
+        schema={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Privacy Policy", path: "/privacy/" },
+          ]),
+          webPageSchema({
+            name: "Privacy Policy — easyPhoto",
+            description:
+              "How easyPhoto handles your data: it doesn't. Photos and PDFs are processed entirely in your browser and never uploaded.",
+            url: "/privacy/",
+            dateModified: "2026-06-11",
+          }),
+        ]}
+      />
       <Link
         href="/"
         className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"

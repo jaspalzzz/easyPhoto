@@ -100,7 +100,7 @@ export function softwareApplicationSchema(opts: {
     url: absoluteUrl(opts.url),
     applicationCategory: opts.category ?? "UtilitiesApplication",
     operatingSystem: "Any (modern web browser)",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     isAccessibleForFree: true,
     ...(opts.dateModified ? { dateModified: opts.dateModified } : {}),
   };
@@ -141,5 +141,22 @@ export function collectionPageSchema(opts: {
     name: opts.name,
     description: opts.description,
     url: absoluteUrl(opts.url),
+  };
+}
+
+export function webPageSchema(opts: {
+  name: string;
+  description: string;
+  url: string;
+  dateModified?: string;
+}) {
+  return {
+    "@type": "WebPage",
+    "@id": `${absoluteUrl(opts.url)}#webpage`,
+    name: opts.name,
+    description: opts.description,
+    url: absoluteUrl(opts.url),
+    isPartOf: { "@id": WEBSITE_ID },
+    ...(opts.dateModified ? { dateModified: opts.dateModified } : {}),
   };
 }

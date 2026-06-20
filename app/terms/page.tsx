@@ -1,6 +1,8 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowLeft, AlertTriangle } from "lucide-react";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { webPageSchema, breadcrumbSchema } from "@/lib/schema";
 
 export const metadata = pageMetadata({
   title: "Terms of Use",
@@ -13,6 +15,21 @@ export const metadata = pageMetadata({
 export default function TermsPage() {
   return (
     <div className="container max-w-3xl py-12">
+      <JsonLd
+        schema={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Terms of Use", path: "/terms/" },
+          ]),
+          webPageSchema({
+            name: "Terms of Use — easyPhoto",
+            description:
+              "Terms of use for easyPhoto — a free, in-browser passport/visa photo and image tool provided as-is. Always verify against official requirements.",
+            url: "/terms/",
+            dateModified: "2026-06-06",
+          }),
+        ]}
+      />
       <Link
         href="/"
         className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
