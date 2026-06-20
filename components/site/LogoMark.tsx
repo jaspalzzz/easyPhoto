@@ -4,8 +4,14 @@
  * Brand colours: document navy #163A6B, stamp gold #F4C63F. Crisp at any size.
  * Keep this in sync with /public/icon.svg (used for favicons/app icons).
  */
-export function LogoMark({ className }: { className?: string }) {
-  const teal = "#163A6B";
+export function LogoMark({
+  className,
+  onDark = false,
+}: {
+  className?: string;
+  onDark?: boolean;
+}) {
+  const teal = onDark ? "#FFFFFF" : "#163A6B";
   const orange = "#F4C63F";
   return (
     <svg

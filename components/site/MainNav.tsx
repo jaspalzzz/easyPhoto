@@ -47,7 +47,7 @@ const FEAT_TINT: Record<ToolColorCategory, string> = {
 };
 
 /** Header nav with a premium Tools mega-menu. */
-export function MainNav() {
+export function MainNav({ onDark = false }: { onDark?: boolean }) {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
   const wrapRef = React.useRef<HTMLDivElement>(null);
@@ -81,15 +81,22 @@ export function MainNav() {
     .map((slug) => getTool(slug))
     .filter((t): t is ToolEntry => t !== undefined);
 
+  // Link colours adapt to the surface: light text on the navy header bar,
+  // dark text on light surfaces.
+  const linkCls = (active: boolean) =>
+    cn(
+      "rounded-md px-3 py-2 transition-colors",
+      onDark
+        ? cn("hover:bg-white/10 hover:text-white", active ? "font-medium text-white" : "text-white/70")
+        : cn("hover:bg-accent hover:text-foreground", active ? "font-medium text-foreground" : "text-muted-foreground")
+    );
+
   return (
     <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
       <Link
         href="/passport-photo/"
         aria-current={pathname === "/passport-photo/" ? "page" : undefined}
-        className={cn(
-          "rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground",
-          pathname === "/passport-photo/" ? "text-foreground font-medium" : "text-muted-foreground"
-        )}
+        className={linkCls(pathname === "/passport-photo/")}
       >
         Passport
       </Link>
@@ -97,10 +104,7 @@ export function MainNav() {
       <Link
         href="/tools/exam-package/"
         aria-current={pathname === "/tools/exam-package/" ? "page" : undefined}
-        className={cn(
-          "rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground",
-          pathname === "/tools/exam-package/" ? "text-foreground font-medium" : "text-muted-foreground"
-        )}
+        className={linkCls(pathname === "/tools/exam-package/")}
       >
         Exams
       </Link>
@@ -108,10 +112,7 @@ export function MainNav() {
       <Link
         href="/blog/"
         aria-current={pathname === "/blog/" || pathname.startsWith("/blog/") ? "page" : undefined}
-        className={cn(
-          "rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground",
-          pathname === "/blog/" || pathname.startsWith("/blog/") ? "text-foreground font-medium" : "text-muted-foreground"
-        )}
+        className={linkCls(pathname === "/blog/" || pathname.startsWith("/blog/"))}
       >
         Blog
       </Link>
@@ -129,8 +130,10 @@ export function MainNav() {
           aria-haspopup="menu"
           aria-controls="tools-mega-menu"
           className={cn(
-            "inline-flex items-center gap-1 rounded-md px-3 py-2 transition-colors hover:bg-accent hover:text-foreground",
-            open ? "bg-accent text-foreground" : "text-muted-foreground"
+            "inline-flex items-center gap-1 rounded-md px-3 py-2 transition-colors",
+            onDark
+              ? cn("hover:bg-white/10 hover:text-white", open ? "bg-white/10 text-white" : "text-white/70")
+              : cn("hover:bg-accent hover:text-foreground", open ? "bg-accent text-foreground" : "text-muted-foreground")
           )}
         >
           Tools

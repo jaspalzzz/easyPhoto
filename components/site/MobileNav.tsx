@@ -18,7 +18,7 @@ const PRIMARY_LINKS: { href: string; label: string }[] = [
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function MobileNav() {
+export function MobileNav({ onDark = false }: { onDark?: boolean }) {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
 
@@ -96,7 +96,11 @@ export function MobileNav() {
         aria-label="Open menu"
         aria-expanded={open}
         aria-haspopup="dialog"
-        className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground transition-colors hover:bg-accent"
+        className={
+          onDark
+            ? "inline-flex h-10 w-10 items-center justify-center rounded-md text-white transition-colors hover:bg-white/10"
+            : "inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground transition-colors hover:bg-accent"
+        }
       >
         <Menu className="h-6 w-6" />
       </button>

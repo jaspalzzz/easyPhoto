@@ -97,8 +97,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Brand teal — gives easyPhoto a branded mobile browser/PWA chrome.
-  themeColor: "#157F75",
+  // Brand navy — gives easyPhoto a branded mobile browser/PWA chrome.
+  themeColor: "#0C1B34",
 };
 
 export default function RootLayout({
@@ -120,20 +120,20 @@ export default function RootLayout({
         </a>
         {/* Site-wide structured data: brand + website */}
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
-        {/* Crisp white header with a whisper of elevation — brand-forward. */}
-        <header className="sticky top-0 z-40 border-b border-hairline bg-surface shadow-[0_1px_3px_rgb(0_0_0/0.04)]">
+        {/* Navy bureau header with the gold rule — the document-official signature. */}
+        <header className="sticky top-0 z-40 border-b-2 border-cta bg-[hsl(222_60%_8%)]">
           <div className="container flex h-16 items-center justify-between">
             <Link
               href="/"
               className="flex items-center gap-2.5 transition-opacity hover:opacity-90"
               aria-label="easyPhoto home"
             >
-              <LogoMark className="h-9 w-9" />
-              <Wordmark className="text-[1.35rem]" />
+              <LogoMark className="h-9 w-9" onDark />
+              <Wordmark className="text-[1.35rem]" tone="light" />
             </Link>
             <div className="flex items-center">
-              <MainNav />
-              <MobileNav />
+              <MainNav onDark />
+              <MobileNav onDark />
             </div>
           </div>
         </header>
