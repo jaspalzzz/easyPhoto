@@ -135,14 +135,68 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Live tool — right below the hero ────────────────────── */}
+      {/* ── Live tool — 2-col: visual left, tool right ──────────── */}
       <section className="border-b border-hairline bg-paper">
-        <div className="container py-10">
-          <p className="mb-6 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-            Make your free passport photo now
-          </p>
-          <div className="mx-auto max-w-lg">
-            <HeroStarter />
+        <div className="container py-10 lg:py-14">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+
+            {/* Left — photo transformation visual */}
+            <div className="relative flex items-center justify-center">
+              {/* Gold background blob */}
+              <div
+                className="absolute inset-[10%] rounded-[2.5rem]"
+                style={{ background: "#ffd000", opacity: 0.18 }}
+              />
+              {/* Main compliant portrait */}
+              <div className="relative z-10 w-[55%] overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
+                <img
+                  src="/images/man_compliant.png"
+                  alt="Professional passport photo result"
+                  className="h-full w-full object-cover object-top"
+                  style={{ aspectRatio: "3/4" }}
+                />
+              </div>
+
+              {/* Before thumbnail — top left */}
+              <div className="absolute top-4 left-4 z-20 w-[28%] overflow-hidden rounded-xl border-2 border-white shadow-[0_8px_20px_rgba(0,0,0,0.18)]">
+                <img
+                  src="/images/man_input.png"
+                  alt="Original selfie before processing"
+                  className="h-full w-full object-cover object-top"
+                  style={{ aspectRatio: "1/1" }}
+                />
+              </div>
+
+              {/* Gold arrow */}
+              <div
+                className="absolute top-[14%] left-[26%] z-20 text-[28px] leading-none"
+                style={{ color: "#d97706", transform: "rotate(-30deg)" }}
+              >
+                →
+              </div>
+
+              {/* Dimension badge — bottom right */}
+              <div className="absolute bottom-4 right-3 z-20 flex flex-col items-end gap-1 rounded-xl border border-hairline bg-white px-3 py-2 shadow-[0_4px_14px_rgba(0,0,0,0.10)]">
+                <span className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">Passport Size</span>
+                <span className="text-[13px] font-black text-brand">35 × 45 mm</span>
+                <span className="text-[10px] text-muted-foreground">300 DPI · White bg</span>
+              </div>
+
+              {/* Compliance badge — bottom left */}
+              <div className="absolute bottom-4 left-3 z-20 flex items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 shadow-[0_4px_14px_rgba(0,0,0,0.08)]">
+                <span className="text-emerald-600 text-[14px]">✓</span>
+                <span className="text-[11px] font-bold text-emerald-700">Government Compliant</span>
+              </div>
+            </div>
+
+            {/* Right — tool */}
+            <div>
+              <p className="mb-5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                Make your free passport photo now
+              </p>
+              <HeroStarter />
+            </div>
+
           </div>
         </div>
       </section>
