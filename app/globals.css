@@ -3,35 +3,36 @@
 @tailwind utilities;
 
 /*
- * easyPhoto — "Passport Bureau" design language
- * ---------------------------------------------
- * A precision instrument for official document photos. The system is built from
- * paper, hairline rules and monospace specimen type — not floating cards and
- * gradients. Structure comes from 1px lines; elevation is reserved for the one
- * live working surface. Orange is the official "stamp": the single primary action.
+ * easyPhoto — "Document Bureau" design language · navy + gold
+ * ----------------------------------------------------------
+ * A precision instrument for official document photos. Deep NAVY is the document
+ * ink (headings, links, icons, the trust); warm GOLD is the official stamp — the
+ * single primary action and the precious accent. Structure comes from hairline
+ * rules and monospace specimen type, on a near-white canvas. Functional green/red
+ * are kept ONLY for compliance pass/fail state (a rejection checker needs them).
  */
 
 @layer base {
   :root {
     /* Surfaces */
-    --paper: 40 30% 98.5%;         /* near-white warm canvas — lets white cards pop */
+    --paper: 42 33% 98%;           /* near-white canvas — lets white cards pop */
     --surface: 0 0% 100%;          /* true white — cards, photo canvas, result */
-    --ink: 30 12% 12%;             /* warm near-black — primary text */
-    --ink-soft: 32 7% 40%;         /* secondary text / labels */
-    --ink-faint: 33 8% 44%;        /* tertiary / placeholder — 44% L meets WCAG AA 4.5:1 on paper/white */
+    --ink: 222 47% 11%;            /* deep navy — primary text/headings */
+    --ink-soft: 221 16% 42%;       /* slate-navy — secondary text / labels */
+    --ink-faint: 221 14% 45%;      /* tertiary / placeholder — meets WCAG AA 4.5:1 on paper/white */
 
     /* Hairlines (the primary structuring device) */
     --hairline: 36 18% 85%;        /* default rule / border */
     --hairline-strong: 33 14% 74%; /* emphasised rule */
 
-    /* Brand — signature "document teal", used confidently across the UI */
-    --brand: 174 72% 29%;          /* teal: wordmark, links, active, focus, icons */
-    --brand-soft: 174 42% 92%;     /* faint teal wash */
-    --cta: 22 89% 50%;             /* stamp orange: PRIMARY ACTION ONLY */
-    --cta-foreground: 40 33% 98%;
-    --success: 151 42% 33%;        /* passport-stamp green: "compliant" */
+    /* Brand — deep navy: wordmark, links, active, focus, icons (reads on white) */
+    --brand: 212 64% 24%;          /* navy: wordmark, links, active, focus, icons */
+    --brand-soft: 212 48% 93%;     /* faint navy wash */
+    --cta: 45 88% 60%;             /* GOLD: primary action + precious accent */
+    --cta-foreground: 225 52% 9%;  /* deep navy text ON gold (never white) */
+    --success: 151 42% 33%;        /* functional only: "compliant" pass state */
     --success-soft: 150 38% 93%;
-    --destructive: 4 62% 47%;
+    --destructive: 4 62% 47%;      /* functional only: "rejected" fail state */
     --destructive-foreground: 40 33% 98%;
 
     /* shadcn token bridge (so existing primitives keep working) */
@@ -53,9 +54,9 @@
     --radius: 0.375rem;
 
     /* legacy aliases still referenced around the app */
-    --brand-foreground: 40 33% 98%;
+    --brand-foreground: 42 33% 98%;   /* near-white text on navy bg */
     --brand-muted: var(--brand-soft);
-    --cta-muted: 28 80% 94%;
+    --cta-muted: 44 80% 90%;          /* faint gold wash */
   }
 }
 

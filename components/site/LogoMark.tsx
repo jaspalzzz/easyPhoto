@@ -1,12 +1,12 @@
 /**
  * easyPhoto logo mark — corner crop-marks framing a head ("crop to the exact
  * size", the precision/scan motif that runs through the whole product).
- * Brand colours: document teal #157F75, stamp orange #F57819. Crisp at any size.
+ * Brand colours: document navy #163A6B, stamp gold #F4C63F. Crisp at any size.
  * Keep this in sync with /public/icon.svg (used for favicons/app icons).
  */
 export function LogoMark({ className }: { className?: string }) {
-  const teal = "#157F75";
-  const orange = "#F57819";
+  const teal = "#163A6B";
+  const orange = "#F4C63F";
   return (
     <svg
       viewBox="0 0 64 64"
