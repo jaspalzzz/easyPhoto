@@ -148,15 +148,15 @@ export default function HomePage() {
 
             {/* Left — photo transformation visual + SEO punch copy */}
             <div className="flex flex-col">
-              {/* Visual frame — moved up with negative margin */}
-              <div className="relative -mt-4 flex items-center justify-center pb-6">
+              {/* Visual frame */}
+              <div className="relative flex items-center justify-center pb-6">
                 {/* Gold background blob */}
                 <div
                   className="absolute inset-[8%] rounded-[2.5rem]"
                   style={{ background: "#ffd000", opacity: 0.15 }}
                 />
-                {/* Main compliant portrait */}
-                <div className="relative z-10 w-[52%] overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
+                {/* Main compliant portrait — floats gently */}
+                <div className="animate-float-slow relative z-10 w-[52%] overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
                   <img
                     src="/images/man_compliant.png"
                     alt="Professional passport photo result"
@@ -198,7 +198,7 @@ export default function HomePage() {
               </div>
 
               {/* SEO punch copy */}
-              <div className="rounded-xl border border-hairline bg-card px-5 py-4">
+              <div className="mt-5 rounded-xl border border-hairline bg-card px-5 py-4">
                 <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                   Works for every document
                 </p>
