@@ -97,7 +97,7 @@ export function HeroStarter({
           <span className="text-ink-faint">02</span> Add your photo
         </span>
         <div className="mt-3">
-          <Uploader onFile={start} className="min-h-[230px] gap-4 py-12" />
+          <Uploader onFile={start} allowCamera className="min-h-[230px] gap-4 py-12" />
         </div>
       </div>
     </div>

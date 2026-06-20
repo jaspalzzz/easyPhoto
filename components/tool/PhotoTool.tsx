@@ -140,7 +140,7 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
           </div>
         )}
 
-        {status === "idle" && <Uploader onFile={processFile} disabled={busy} />}
+        {status === "idle" && <Uploader onFile={processFile} disabled={busy} allowCamera />}
 
         {busy && (
           <ScanProgress
