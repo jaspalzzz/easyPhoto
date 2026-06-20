@@ -34,6 +34,17 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
+/** Top 5 featured countries shown as large spotlight cards. */
+const FEATURED_IDS = ["india", "us", "canada", "uk", "australia"] as const;
+
+const FEATURED_SUBS: Record<string, string> = {
+  india: "Passport Seva",
+  us: "State Dept Standard",
+  canada: "IRCC Standard",
+  uk: "HMPO Standard",
+  australia: "APO Standard",
+};
+
 /** Top exam destinations — dedicated landing page where it exists, else the form-resizer. */
 const EXAM_LINKS: { label: string; href: string }[] = [
   { label: "SSC", href: "/ssc-photo-resizer/" },
@@ -196,40 +207,78 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Country index — a ruled bureau register, not floating cards */}
+      {/* Country index — featured spotlight + full dense grid */}
       <section id="countries" className="border-t border-hairline bg-paper scroll-mt-16">
         <div className="container py-14 sm:py-16">
-        <div className="flex items-baseline justify-between border-b border-hairline pb-4">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            Choose your country
-          </h2>
-          <span className="eyebrow hidden sm:block">Official specifications</span>
-        </div>
-        <div className="ep-card-grid mt-6">
-          {LAUNCH_ORDER.map((id) => {
-            const spec = COUNTRY_SPECS[id];
-            const mm = effectivePrintMm(spec);
-            return (
-              <Link
-                key={id}
-                href={primaryMakerPath(id)}
-                className="ep-card group flex items-center gap-3.5 p-4"
-              >
-                <Flag country={id} className="h-8 w-11 shrink-0 rounded-[3px] ring-1 ring-hairline" />
-                <span className="min-w-0">
-                  <span className="block truncate font-semibold leading-tight text-ink">
-                    {spec.label}
+          <div className="flex items-baseline justify-between border-b border-hairline pb-4">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Choose your country
+            </h2>
+            <span className="eyebrow hidden sm:block">
+              {LAUNCH_ORDER.length} countries · official specs
+            </span>
+          </div>
+
+          {/* Featured 5 — flag-forward cards with standard name */}
+          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {FEATURED_IDS.map((id) => {
+              const spec = COUNTRY_SPECS[id];
+              const mm = effectivePrintMm(spec);
+              return (
+                <Link
+                  key={id}
+                  href={primaryMakerPath(id)}
+                  className="ep-card group flex flex-col gap-2.5 p-4"
+                >
+                  <Flag
+                    country={id}
+                    className="h-10 w-[3.5rem] rounded-[3px] ring-1 ring-hairline"
+                  />
+                  <span className="min-w-0">
+                    <span className="block font-semibold leading-tight text-ink">
+                      {spec.label}
+                    </span>
+                    <span className="mt-1 block text-[11px] font-medium text-[#A87E10]">
+                      {mm.width}×{mm.height} mm
+                    </span>
+                    <span className="spec mt-0.5 block truncate normal-case tracking-[0.07em]">
+                      {FEATURED_SUBS[id]}
+                    </span>
                   </span>
-                  <span className="spec mt-1 block truncate normal-case tracking-[0.08em]">
-                    {mm.width}×{mm.height}mm ·{" "}
-                    {spec.background.description.split("(")[0].trim().split(",")[0]}
+                  <ArrowRight className="h-4 w-4 text-ink-faint opacity-0 transition-all group-hover:text-brand group-hover:opacity-100" />
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Remaining countries — compact 4-column grid */}
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {LAUNCH_ORDER.filter((id) => !(FEATURED_IDS as readonly string[]).includes(id)).map((id) => {
+              const spec = COUNTRY_SPECS[id];
+              const mm = effectivePrintMm(spec);
+              return (
+                <Link
+                  key={id}
+                  href={primaryMakerPath(id)}
+                  className="ep-card group flex items-center gap-3 p-3.5"
+                >
+                  <Flag
+                    country={id}
+                    className="h-7 w-10 shrink-0 rounded-[3px] ring-1 ring-hairline"
+                  />
+                  <span className="min-w-0">
+                    <span className="block truncate text-[13px] font-semibold leading-tight text-ink">
+                      {spec.label}
+                    </span>
+                    <span className="spec mt-0.5 block truncate normal-case tracking-[0.07em]">
+                      {mm.width}×{mm.height} mm
+                    </span>
                   </span>
-                </span>
-                <ArrowRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
-              </Link>
-            );
-          })}
-        </div>
+                  <ArrowRight className="ml-auto h-3.5 w-3.5 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </section>
 
