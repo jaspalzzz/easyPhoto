@@ -9,9 +9,12 @@ import { POPULAR_TOOLS, READY_TOOLS } from "@/lib/toolsCatalog";
 import { PORTAL_KEYS } from "@/lib/portalPresets";
 import { primaryMakerPath } from "@/lib/makerPages";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
-import { HowItWorks, HOW_IT_WORKS_STEPS } from "@/components/site/HowItWorks";
-import { BeforeAfter } from "@/components/site/BeforeAfter";
+import { HowItWorks } from "@/components/site/HowItWorks";
 import { AiShowcase } from "@/components/site/AiShowcase";
+import { UsedForTabs } from "@/components/site/UsedForTabs";
+import { ComplianceEngine } from "@/components/site/ComplianceEngine";
+import { RealTransformations } from "@/components/site/RealTransformations";
+import { ComparisonTable } from "@/components/site/ComparisonTable";
 import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { softwareApplicationSchema } from "@/lib/schema";
@@ -138,11 +141,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* AI Showcase — 3-panel before/AI/after + 4-step process strip */}
+      {/* "Used For" tab strip — passive filter showing document types */}
+      <UsedForTabs />
+
+      {/* AI Showcase — 3-panel before/AI/after with real photos + 4-step process */}
       <AiShowcase />
 
-      {/* Before → after: dramatic transformation with dimension markers */}
-      <BeforeAfter />
+      {/* AI Compliance Engine — dark navy panel with checklist + 100% score */}
+      <ComplianceEngine />
+
+      {/* Real Transformations — before/after grid with real photo pairs */}
+      <RealTransformations />
 
       {/* Indian exams & forms — convert the dominant exam-candidate audience */}
       <section id="exams" className="scroll-mt-16">
@@ -313,6 +322,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Why Choose + VS Table + Reviews */}
+      <ComparisonTable />
 
       {/* Trust */}
       <section className="border-t border-hairline bg-paper">
