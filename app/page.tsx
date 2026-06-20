@@ -85,94 +85,61 @@ export default function HomePage() {
           first visit — device-local, see lib/recentTools.ts). */}
       <RecentTools />
 
-      {/* ── HERO — dark navy, matching reference prototype ────────── */}
+      {/* ── HERO — dark navy shell, original content ─────────────── */}
       <section
         style={{
           background: "linear-gradient(180deg, #040c24 0%, #0a173c 100%)",
-          padding: "80px 0 60px",
+          padding: "72px 0 56px",
         }}
       >
         <div className="container">
-          <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_1fr]">
+          <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
 
-            {/* Left: value proposition */}
-            <div>
-              {/* Badge */}
-              <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-[rgba(255,208,0,0.25)] bg-[rgba(255,208,0,0.1)] px-4 py-1.5 text-[13px] font-bold tracking-[0.05em] text-[#ffd000]">
-                <span>⚡</span> FREE PASSPORT PHOTO MAKER
-              </div>
-
-              {/* Headline — 54px Outfit font matching prototype */}
+            {/* Left — original value proposition, dark-styled */}
+            <div className="max-w-xl">
+              <span className="mb-4 block text-[11px] font-bold uppercase tracking-[0.12em] text-[#ffd000]">
+                Passport · exam · visa — exact to the millimetre
+              </span>
               <h1
-                className="mb-5 text-balance text-[42px] font-bold leading-[1.15] text-white sm:text-[54px]"
-                style={{
-                  fontFamily: "var(--font-outfit, sans-serif)",
-                  letterSpacing: "-0.02em",
-                }}
+                className="text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest text-white sm:text-[3.25rem]"
+                style={{ fontFamily: "var(--font-outfit, sans-serif)" }}
               >
-                Get Passport &amp; Visa Photos
-                <br />Approved in{" "}
-                <span className="text-[#ffd000]">Seconds ⚡</span>
+                Document photos that{" "}
+                <span className="text-[#ffd000]">get accepted</span>
               </h1>
-
-              <p className="mb-10 max-w-[520px] text-[18px] leading-relaxed text-[#94a3b8]">
-                AI-powered photo maker for 190+ countries. 100% compliant.
-                Ready in seconds.
+              <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-[#94a3b8] sm:text-base">
+                Pick your country or exam and drop a photo — we crop to the
+                official spec, set the required background, and check it before
+                you download. Free, and entirely in your browser.
               </p>
 
-              {/* CTA + "It's Free!" hand-drawn decoration */}
-              <div className="relative mb-12 flex items-center gap-5">
-                <Link
-                  href="/india-passport-photo/"
-                  className="inline-flex items-center gap-2 rounded-lg bg-[#ffd000] px-7 py-3.5 text-[15px] font-semibold text-[#040c24] transition-all hover:-translate-y-0.5 hover:bg-[#e6bc00] hover:shadow-[0_8px_24px_rgba(255,208,0,0.35)]"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
-                  </svg>
-                  Upload Your Photo
-                </Link>
-                {/* "It's Free!" decoration */}
-                <div className="absolute left-[220px] top-[-10px] flex -rotate-6 flex-col items-center">
-                  <span
-                    className="text-[16px] font-bold text-[#ffd000]"
-                    style={{ fontFamily: "var(--font-outfit, sans-serif)" }}
-                  >
-                    It&rsquo;s Free!
-                  </span>
-                  <svg width="54" height="28" viewBox="0 0 60 30" fill="none" aria-hidden>
-                    <path d="M5 25C15 15 35 5 50 15M50 15L42 12M50 15L45 22" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
+              {/* Stats — dark glass pill */}
+              <dl className="mt-7 hidden max-w-md overflow-hidden rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(10,23,60,0.7)] shadow-[0_1px_4px_rgba(0,0,0,0.3)] sm:flex sm:divide-x sm:divide-[rgba(255,255,255,0.07)]">
+                {[
+                  { v: `${LAUNCH_ORDER.length}`, l: "country specs" },
+                  { v: `${PORTAL_KEYS.length}`, l: "exam & form specs" },
+                  { v: `${READY_TOOLS.length}`, l: "free tools" },
+                ].map((s) => (
+                  <div key={s.l} className="flex-1 px-4 py-3.5">
+                    <dt className="text-[1.65rem] font-bold leading-none tracking-tight text-[#ffd000]">
+                      {s.v}
+                    </dt>
+                    <dd className="mt-1 text-xs leading-tight text-[#94a3b8]">
+                      {s.l}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="mt-6 hidden max-w-md lg:block">
+                <ToolSearch />
               </div>
 
-              {/* Rating — real avatar photos + "Trusted by 500,000+"  */}
-              <div className="flex items-center gap-4">
-                <div className="flex items-center">
-                  {["/images/selfie_compliant.png", "/images/man_compliant.png"].map((src, i) => (
-                    <img
-                      key={i}
-                      src={src}
-                      alt="User avatar"
-                      className="h-10 w-10 rounded-full border-2 border-[#0a173c] object-cover object-top"
-                      style={{ marginLeft: i === 0 ? "0" : "-12px" }}
-                    />
-                  ))}
-                  <div
-                    className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0a173c] bg-[#102154] text-[12px] font-bold text-[#ffd000]"
-                    style={{ marginLeft: "-12px" }}
-                  >
-                    +50
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[16px] tracking-[2px] text-[#ffd000]">★★★★★</div>
-                  <p className="text-[13px] text-[#94a3b8]">Trusted by 500,000+ users worldwide</p>
-                </div>
-              </div>
+              <TrustPills className="mt-5 justify-start sm:mt-6" />
             </div>
 
-            {/* Right: 3-panel visual */}
-            <div>
+            {/* Right — animated 3-panel visual */}
+            <div className="lg:pl-2">
               <HeroVisual />
             </div>
           </div>
