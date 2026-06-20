@@ -44,7 +44,7 @@ export function HeroVisual() {
       </div>
 
       {/* ── Center: AI Engine ──────────────────────────────────────── */}
-      <div className="relative z-10 mx-3 flex flex-col items-center">
+      <div className="relative z-10 mx-2 flex flex-col items-center">
         {/* Horizontal connector lines */}
         <div
           className="pointer-events-none absolute top-[29px] right-[58px] h-px w-10"
@@ -62,16 +62,16 @@ export function HeroVisual() {
             className="animate-pulse-wave absolute inset-[-6px] rounded-full border border-[#ffd000]"
             style={{ animationDuration: "2s" }}
           />
-          {/* Gold circle */}
+          {/* Gold coin */}
           <div
-            className="relative flex h-full w-full items-center justify-center rounded-full border-2 border-[#ffd000]"
+            className="relative flex h-full w-full items-center justify-center rounded-full border-2 border-[#d97706]"
             style={{
-              background: "radial-gradient(circle, #ffd000 0%, #040c24 100%)",
-              boxShadow: "0 0 20px rgba(255,208,0,0.4)",
+              background: "linear-gradient(135deg, #ffe566 0%, #ffd000 45%, #f59e0b 100%)",
+              boxShadow: "0 4px 16px rgba(255,208,0,0.55), inset 0 1px 0 rgba(255,255,255,0.5)",
             }}
           >
             <span
-              className="text-[20px] font-black leading-none text-[#040c24]"
+              className="text-[20px] font-black leading-none text-[#78350f]"
               style={{ fontFamily: "var(--font-outfit, sans-serif)", letterSpacing: "-0.04em" }}
             >
               AI

@@ -86,7 +86,7 @@ export default function HomePage() {
       {/* Hero */}
       <section className="border-b border-hairline bg-paper">
         <div className="container py-12 sm:py-16 lg:py-20">
-          <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-12">
+          <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-8">
 
             {/* Left — value proposition */}
             <div className="max-w-xl">
