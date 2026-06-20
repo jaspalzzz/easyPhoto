@@ -11,6 +11,7 @@ import { primaryMakerPath } from "@/lib/makerPages";
 import { TrustStrip, TrustPills } from "@/components/site/TrustStrip";
 import { HowItWorks } from "@/components/site/HowItWorks";
 import { AiShowcase } from "@/components/site/AiShowcase";
+import { HeroVisual } from "@/components/site/HeroVisual";
 import { UsedForTabs } from "@/components/site/UsedForTabs";
 import { ComplianceEngine } from "@/components/site/ComplianceEngine";
 import { RealTransformations } from "@/components/site/RealTransformations";
@@ -84,59 +85,110 @@ export default function HomePage() {
           first visit — device-local, see lib/recentTools.ts). */}
       <RecentTools />
 
-      {/* Hero — two columns: value proposition + live passport starter */}
-      <section className="border-b border-hairline bg-paper">
-        <div className="container py-12 sm:py-16 lg:py-20">
-          <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-            {/* Left: value proposition. The headline sells the outcome the
-                anxious visitor came for (acceptance), not the mechanism; the
-                precision claim moves to the eyebrow. */}
-            <div className="max-w-xl">
-              <span className="eyebrow">
-                Passport · exam · visa — exact to the millimetre
-              </span>
-              <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
-                Document photos that{" "}
-                <span className="mark-gold text-ink">get accepted</span>
-              </h1>
-              <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-                Pick your country or exam and drop a photo — we crop to the
-                official spec, set the required background, and check it before
-                you download. Free, and entirely in your browser.
-              </p>
+      {/* ── HERO — dark navy, matching reference prototype ────────── */}
+      <section
+        style={{
+          background: "linear-gradient(180deg, #040c24 0%, #0a173c 100%)",
+          padding: "80px 0 60px",
+        }}
+      >
+        <div className="container">
+          <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_1fr]">
 
-              {/* Credibility stats — real, dynamic counts. Desktop-and-up:
-                  on phones they pushed the actual tool two viewports down. */}
-              <dl className="mt-7 hidden max-w-md divide-x divide-hairline overflow-hidden rounded-xl border border-hairline bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04)] sm:flex">
-                {[
-                  { v: `${LAUNCH_ORDER.length}`, l: "country specs" },
-                  { v: `${PORTAL_KEYS.length}`, l: "exam & form specs" },
-                  { v: `${READY_TOOLS.length}`, l: "free tools" },
-                ].map((s) => (
-                  <div key={s.l} className="flex-1 px-4 py-3.5">
-                    <dt className="text-[1.65rem] font-bold leading-none tracking-tight text-brand">
-                      {s.v}
-                    </dt>
-                    <dd className="mt-1 text-xs leading-tight text-muted-foreground">
-                      {s.l}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-
-              {/* Search is a power-user shortcut — desktop only; on mobile it
-                  competed with the primary flow (and the nav covers it). */}
-              <div className="mt-6 hidden max-w-md lg:block">
-                <ToolSearch />
+            {/* Left: value proposition */}
+            <div>
+              {/* Badge */}
+              <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-[rgba(255,208,0,0.25)] bg-[rgba(255,208,0,0.1)] px-4 py-1.5 text-[13px] font-bold tracking-[0.05em] text-[#ffd000]">
+                <span>⚡</span> FREE PASSPORT PHOTO MAKER
               </div>
 
-              <TrustPills className="mt-5 justify-start sm:mt-6" />
+              {/* Headline — 54px Outfit font matching prototype */}
+              <h1
+                className="mb-5 text-balance text-[42px] font-bold leading-[1.15] text-white sm:text-[54px]"
+                style={{
+                  fontFamily: "var(--font-outfit, sans-serif)",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Get Passport &amp; Visa Photos
+                <br />Approved in{" "}
+                <span className="text-[#ffd000]">Seconds ⚡</span>
+              </h1>
+
+              <p className="mb-10 max-w-[520px] text-[18px] leading-relaxed text-[#94a3b8]">
+                AI-powered photo maker for 190+ countries. 100% compliant.
+                Ready in seconds.
+              </p>
+
+              {/* CTA + "It's Free!" hand-drawn decoration */}
+              <div className="relative mb-12 flex items-center gap-5">
+                <Link
+                  href="/india-passport-photo/"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#ffd000] px-7 py-3.5 text-[15px] font-semibold text-[#040c24] transition-all hover:-translate-y-0.5 hover:bg-[#e6bc00] hover:shadow-[0_8px_24px_rgba(255,208,0,0.35)]"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  Upload Your Photo
+                </Link>
+                {/* "It's Free!" decoration */}
+                <div className="absolute left-[220px] top-[-10px] flex -rotate-6 flex-col items-center">
+                  <span
+                    className="text-[16px] font-bold text-[#ffd000]"
+                    style={{ fontFamily: "var(--font-outfit, sans-serif)" }}
+                  >
+                    It&rsquo;s Free!
+                  </span>
+                  <svg width="54" height="28" viewBox="0 0 60 30" fill="none" aria-hidden>
+                    <path d="M5 25C15 15 35 5 50 15M50 15L42 12M50 15L45 22" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Rating — real avatar photos + "Trusted by 500,000+"  */}
+              <div className="flex items-center gap-4">
+                <div className="flex items-center">
+                  {["/images/selfie_compliant.png", "/images/man_compliant.png"].map((src, i) => (
+                    <img
+                      key={i}
+                      src={src}
+                      alt="User avatar"
+                      className="h-10 w-10 rounded-full border-2 border-[#0a173c] object-cover object-top"
+                      style={{ marginLeft: i === 0 ? "0" : "-12px" }}
+                    />
+                  ))}
+                  <div
+                    className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0a173c] bg-[#102154] text-[12px] font-bold text-[#ffd000]"
+                    style={{ marginLeft: "-12px" }}
+                  >
+                    +50
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[16px] tracking-[2px] text-[#ffd000]">★★★★★</div>
+                  <p className="text-[13px] text-[#94a3b8]">Trusted by 500,000+ users worldwide</p>
+                </div>
+              </div>
             </div>
 
-            {/* Right: live passport starter */}
-            <div className="lg:pl-2">
-              <HeroStarter />
+            {/* Right: 3-panel visual */}
+            <div>
+              <HeroVisual />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Live tool — below the hero ───────────────────────────── */}
+      <section className="border-b border-hairline bg-paper">
+        <div className="container py-10">
+          <div className="mb-6 text-center">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+              Make Your Free Passport Photo Now
+            </p>
+          </div>
+          <div className="mx-auto max-w-lg">
+            <HeroStarter />
           </div>
         </div>
       </section>
@@ -247,7 +299,7 @@ export default function HomePage() {
                     country={id}
                     className="h-10 w-[3.5rem] rounded-[3px] ring-1 ring-hairline"
                   />
-                  <span className="min-w-0">
+                  <span className="min-w-0 flex-1">
                     <span className="block font-semibold leading-tight text-ink">
                       {spec.label}
                     </span>
@@ -258,7 +310,25 @@ export default function HomePage() {
                       {FEATURED_SUBS[id]}
                     </span>
                   </span>
-                  <ArrowRight className="h-4 w-4 text-ink-faint opacity-0 transition-all group-hover:text-brand group-hover:opacity-100" />
+                  {/* "Used by …" avatar footer — matches prototype */}
+                  <div className="mt-auto flex items-center gap-2 border-t border-hairline pt-2.5">
+                    <div className="flex items-center">
+                      {["/images/selfie_compliant.png", "/images/man_compliant.png"].map((src, ai) => (
+                        <img
+                          key={ai}
+                          src={src}
+                          alt=""
+                          aria-hidden
+                          className="h-6 w-6 rounded-full border-2 border-paper object-cover object-top"
+                          style={{ marginLeft: ai === 0 ? "0" : "-8px" }}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-[11px] font-semibold text-muted-foreground">
+                      Used by 250K+
+                    </span>
+                    <ArrowRight className="ml-auto h-3.5 w-3.5 text-ink-faint opacity-0 transition-all group-hover:text-brand group-hover:opacity-100" />
+                  </div>
                 </Link>
               );
             })}

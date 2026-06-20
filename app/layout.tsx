@@ -1,10 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import Script from "next/script";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 
 // Self-hosted at build (no runtime CDN — keeps the CSP tight).
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-outfit",
+  display: "swap",
+});
 const display = Space_Grotesk({
   subsets: ["latin"],
   weight: ["500", "600", "700"],
@@ -109,7 +115,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${sans.variable} ${mono.variable}`}
+      className={`${outfit.variable} ${display.variable} ${sans.variable} ${mono.variable}`}
     >
       <body className="flex min-h-screen flex-col antialiased">
         <a
