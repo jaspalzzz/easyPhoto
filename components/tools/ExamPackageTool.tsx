@@ -28,6 +28,7 @@ import { imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
 import { padBlobToMin } from "@/lib/padBytes";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
+import { useExamSearch } from "@/components/tools/ExamSearch";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
@@ -97,6 +98,7 @@ export function ExamPackageTool() {
   const [signature, setSignature] = React.useState<AssetResult | null>(null);
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const { query: examQuery, setQuery: setExamQuery } = useExamSearch();
 
   const spec = examId ? PORTAL_PRESETS[examId] : undefined;
   const needsSignature = !!spec?.sigLimitKb;
@@ -337,7 +339,19 @@ export function ExamPackageTool() {
         )}
 
         {/* Step 1: pick exam — grouped premium cards with the spec preview */}
-        {step === "exam" && (
+        {step === "exam" && (() => {
+          const q = examQuery.trim().toLowerCase();
+          const filteredGroups = GROUPED_EXAMS.map((group) => ({
+            ...group,
+            items: group.items.filter(
+              (s) =>
+                !q ||
+                s.name.toLowerCase().includes(q) ||
+                s.id.toLowerCase().includes(q)
+            ),
+          })).filter((g) => g.items.length > 0);
+
+          return (
           <div className="space-y-6">
             <div className="flex items-start gap-3">
               <ToolIconTile name="FileStack" category="exam" />
@@ -352,7 +366,35 @@ export function ExamPackageTool() {
               </div>
             </div>
 
-            {GROUPED_EXAMS.map((group) => (
+            {examQuery.trim() && (
+              <p className="text-[13px] text-muted-foreground">
+                Showing exams matching “{examQuery.trim()}” —{" "}
+                <button
+                  type="button"
+                  onClick={() => setExamQuery("")}
+                  className="font-semibold text-brand hover:underline"
+                >
+                  clear
+                </button>
+              </p>
+            )}
+
+            {filteredGroups.length === 0 && (
+              <div className="rounded-xl border border-dashed border-hairline-strong p-8 text-center">
+                <p className="text-sm text-muted-foreground">
+                  No exam matches “{examQuery.trim()}”.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setExamQuery("")}
+                  className="mt-2 text-[13px] font-semibold text-brand hover:underline"
+                >
+                  Clear search
+                </button>
+              </div>
+            )}
+
+            {filteredGroups.map((group) => (
               <div key={group.cat} className="space-y-2.5">
                 <h4 className="eyebrow text-ink-soft">{group.label}</h4>
                 <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
@@ -388,7 +430,8 @@ export function ExamPackageTool() {
               </div>
             ))}
           </div>
-        )}
+          );
+        })()}
 
         {/* Spec banner (steps 2+) — premium amber-accented card */}
         {spec && step !== "exam" && (

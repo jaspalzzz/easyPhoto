@@ -5,10 +5,12 @@ The logo lives as editable vector source:
   precision/scan motif). Keep in sync with `components/site/LogoMark.tsx`.
 - `public/logo.svg` — full logo (mark + "easyPhoto" wordmark)
 
-Brand palette: document teal `#157F75` (primary), stamp orange `#F57819` (CTA).
-The mobile/PWA `theme_color` is the brand teal (`app/layout.tsx` viewport +
-`public/site.webmanifest`). Social-share OG cards are generated from
-`lib/og.tsx` (logo + teal accent), with `public/og.png` as the static fallback.
+Brand palette: document navy `#163A6B` (primary; design token `--brand`), stamp
+gold `#F4C63F` (CTA; design token `--cta`), with gold-deep `#A87E10` for the
+"Photo" wordmark on light surfaces. The mobile/PWA `theme_color` is brand navy
+`#0C1B34` (`app/layout.tsx` viewport + `public/site.webmanifest`, kept in sync).
+Social-share OG cards are generated from `lib/og.tsx` (logo + navy accent), with
+`public/og.png` as the static fallback.
 
 ## Generated raster assets
 
@@ -25,5 +27,5 @@ All PNGs below are produced from the SVGs by `scripts/gen-icons.mjs`
 | `og.png` | 1200×630 | social share card |
 
 > These are a faithful vector recreation of the supplied logo in the exact brand
-> palette (document teal #157F75, orange #F57819). To use a precise raster instead, drop
+> palette (document navy #163A6B, gold #F4C63F). To use a precise raster instead, drop
 > your file at `public/logo.svg` (or edit the SVGs) and re-run the script.

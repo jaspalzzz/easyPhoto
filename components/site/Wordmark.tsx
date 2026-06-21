@@ -15,7 +15,7 @@ export function Wordmark({
   return (
     <span className={cn("font-display font-bold tracking-tightest", className)}>
       <span className={tone === "light" ? "text-white" : "text-ink"}>easy</span>
-      <span className={tone === "light" ? "text-cta" : "text-[#A87E10]"}>Photo</span>
+      <span className={tone === "light" ? "text-cta" : "text-[#7a5c06]"}>Photo</span>
     </span>
   );
 }

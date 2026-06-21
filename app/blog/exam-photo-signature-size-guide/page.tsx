@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
@@ -69,6 +70,38 @@ export default function Page() {
         doesn&apos;t let you set the exact output KB won&apos;t reliably hit the
         required range.
       </p>
+
+      <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
+        <div className="grid grid-cols-2">
+          <div className="relative border-r border-hairline">
+            <span className="absolute left-2 top-2 z-10 rounded bg-red-500/90 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+              Rejected
+            </span>
+            <Image
+              src="/images/sample4_before_1782052955340.png"
+              alt="Exam photo before AI correction — coloured background and incorrect framing"
+              width={400}
+              height={400}
+              className="h-48 w-full object-cover object-top"
+            />
+          </div>
+          <div className="relative">
+            <span className="absolute left-2 top-2 z-10 rounded bg-green-600/90 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+              Accepted
+            </span>
+            <Image
+              src="/images/sample4_after_1782052969219.png"
+              alt="AI-corrected exam photo — white background, correct head size, ready to upload"
+              width={400}
+              height={400}
+              className="h-48 w-full object-cover object-top"
+            />
+          </div>
+        </div>
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+          Left: original photo — unsuitable background. Right: corrected photo — white background, head centred, within the 20–50&nbsp;KB band.
+        </figcaption>
+      </figure>
 
       <h2>Spec table: photo and signature requirements by exam</h2>
       <p>

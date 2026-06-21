@@ -168,6 +168,28 @@ export const BLOG_POSTS: BlogPost[] = [
     readMins: 4,
   },
   {
+    slug: "how-to-sign-exam-application-forms-india",
+    title: "How to Sign an Exam Application Form in India (SSC, UPSC, IBPS Rules)",
+    description:
+      "Sign on white paper in black or blue ink, scan to JPG, keep it under 10–20 KB. Full portal-by-portal rules for SSC, UPSC, IBPS, RRB and Army Agniveer — plus why some forms need a transparent background.",
+    date: "June 21, 2026",
+    dateISO: "2026-06-21",
+    excerpt:
+      "Every major exam portal has its own KB limit and pixel dimension for your signature. Here's the exact spec for SSC, UPSC, IBPS, RRB and Army Agniveer — and why a transparent background matters for some forms.",
+    readMins: 8,
+  },
+  {
+    slug: "how-to-prepare-documents-for-exam-applications-india",
+    title: "How to Prepare Documents for Online Exam Applications in India",
+    description:
+      "Photo 20–50 KB, signature 10–20 KB, certificates under 100 KB, Aadhaar masked. The complete workflow to prepare every document before you open an SSC, UPSC, IBPS or Railway portal.",
+    date: "June 21, 2026",
+    dateISO: "2026-06-21",
+    excerpt:
+      "Most exam application rejections come from the same four documents: photo, signature, certificates and Aadhaar. Here's the complete preparation workflow for every major Indian exam portal.",
+    readMins: 10,
+  },
+  {
     slug: "how-to-compress-pdf",
     title: "How to Compress a PDF to 50, 100 or 200 KB (Free)",
     description:
@@ -302,8 +324,10 @@ export function getPost(slug: string): BlogPost | undefined {
  */
 const CLUSTERS: Record<string, string[]> = {
   exam: [
+    "how-to-prepare-documents-for-exam-applications-india",
     "exam-photo-signature-size-guide",
     "best-free-exam-photo-resizer-india",
+    "how-to-sign-exam-application-forms-india",
     "upsc-cse-ias-photo-signature-guide-2026",
     "nda-cds-photo-signature-guide-2026",
     "ssc-cgl-chsl-photo-signature-guide-2026",

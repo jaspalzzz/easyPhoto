@@ -79,7 +79,7 @@ const TILE_COLORS: Record<ToolColorCategory, string> = {
   signature: NAVY_TILE,
   privacy: NAVY_TILE,
   convert: NAVY_TILE,
-  exam: "bg-[hsl(var(--cta)/0.22)] text-[#A87E10] group-hover:bg-[hsl(var(--cta)/0.34)]",
+  exam: "bg-[hsl(var(--cta)/0.22)] text-[#7a5c06] group-hover:bg-[hsl(var(--cta)/0.34)]",
 };
 
 export function ToolIconTile({

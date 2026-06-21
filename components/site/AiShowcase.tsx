@@ -1,334 +1,444 @@
 /**
  * AiShowcase — "AI Perfects Every Detail"
- * Premium 3-panel flow + 4-step strip — colours from site design system only
- * Palette: bg-brand-soft section | text-brand icons | text-cta gold | bg-brand checkmarks
+ * 3-card comparison (selfie → AI engine → compliant) + 4-step flow bar
+ * Adapted from design template; palette: site tokens + semantic red/amber/emerald
  */
 
+import { Fragment } from "react";
+import Image from "next/image";
+import {
+  User,
+  Focus,
+  Eye,
+  Sun,
+  Maximize2,
+  Aperture,
+  ShieldCheck,
+  Lock,
+  Zap,
+  Tag,
+  Download,
+  Upload,
+  Cpu,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
+/* ── data ─────────────────────────────────────────────────────────────── */
+
 const BEFORE_ISSUES = [
-  "Busy Background",
-  "Uneven Lighting",
-  "Face Not Centered",
-  "Wrong Size & Ratio",
+  { n: 1, title: "Busy Background",    desc: "Background not plain"   },
+  { n: 2, title: "Uneven Lighting",    desc: "Shadows on face"        },
+  { n: 3, title: "Face Not Centered",  desc: "Not aligned properly"   },
+  { n: 4, title: "Wrong Size & Ratio", desc: "Incorrect crop & ratio" },
 ];
 
-const AI_CHECKS = [
-  {
-    label: "Background Removed",
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-brand">
-        <rect x="1" y="1" width="14" height="14" rx="3" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="4" y="4" width="8" height="8" rx="1" stroke="currentColor" strokeWidth="1.3" />
-      </svg>
-    ),
-  },
-  {
-    label: "Face Centered",
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-brand">
-        <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="8" cy="8" r="1.5" fill="currentColor" />
-        <path d="M8 2V4.5M8 11.5V14M2 8H4.5M11.5 8H14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    label: "Lighting Optimized",
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-brand">
-        <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    label: "Size & Ratio Adjusted",
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-brand">
-        <path d="M1 5V2h3M15 11v3h-3M5 14H2v-3M11 2h3v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-  },
-  {
-    label: "Compliance Verified",
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-brand">
-        <path d="M8 1.5L2 4v4C2 11.5 4.5 14 8 15c3.5-1 6-3.5 6-7V4L8 1.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <path d="M5.5 8l1.5 1.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-  },
+/* HUD scan-line positions (%) for the selfie overlay */
+const HUD_TOPS = [22, 40, 62, 80] as const;
+
+interface AiCheck { label: string; tileBg: string; tileText: string; Icon: LucideIcon; }
+const AI_CHECKS: AiCheck[] = [
+  { label: "Head Size",     tileBg: "bg-blue-50",   tileText: "text-blue-500",   Icon: User      },
+  { label: "Background",    tileBg: "bg-purple-50", tileText: "text-purple-500", Icon: Focus     },
+  { label: "Face Centered", tileBg: "bg-sky-50",    tileText: "text-sky-500",    Icon: Eye       },
+  { label: "Eye Position",  tileBg: "bg-indigo-50", tileText: "text-indigo-500", Icon: Eye       },
+  { label: "Lighting",      tileBg: "bg-amber-50",  tileText: "text-amber-600",  Icon: Sun       },
+  { label: "Dimensions",    tileBg: "bg-orange-50", tileText: "text-orange-500", Icon: Maximize2 },
+  { label: "Image Quality", tileBg: "bg-pink-50",   tileText: "text-pink-500",   Icon: Aperture  },
 ];
 
-const STEPS = [
-  {
-    num: "1",
-    label: "Upload",
-    body: "Upload your photo or selfie",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-cta">
-        <path d="M12 15V3M12 3L8 7M12 3l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M3 17v2a2 2 0 002 2h14a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    num: "2",
-    label: "AI Process",
-    body: "Our AI enhances and optimizes",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-cta">
-        <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="2" />
-        <rect x="8" y="8" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="2" />
-        <path d="M8 3v2M12 3v2M16 3v2M8 19v2M12 19v2M16 19v2M3 8h2M3 12h2M3 16h2M19 8h2M19 12h2M19 16h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    num: "3",
-    label: "Verify",
-    body: "We check compliance with official norms",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-cta">
-        <path d="M12 2L3 6v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V6l-9-4z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-        <path d="M8.5 12l2.5 2.5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-  },
-  {
-    num: "4",
-    label: "Download",
-    body: "Get your perfect photo in seconds",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-cta">
-        <path d="M12 3v13M12 16l-5-5M12 16l5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M3 21h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      </svg>
-    ),
-  },
+const MINI_STEPS = ["Scanning", "Analyzing", "Validating", "Optimizing"] as const;
+
+interface FlowStep { n: number; title: string; desc: string; Icon: LucideIcon; }
+const FLOW_STEPS: FlowStep[] = [
+  { n: 1, title: "Upload",              desc: "Upload your selfie from any device",                    Icon: Upload     },
+  { n: 2, title: "AI Analyzes",         desc: "Our AI checks every detail against official standards", Icon: Cpu        },
+  { n: 3, title: "Compliance Verified", desc: "We ensure 100% compliance so you never get rejected",   Icon: ShieldCheck },
+  { n: 4, title: "Download",            desc: "Get your perfect photo in seconds",                     Icon: Download   },
 ];
+
+const TRUST_PILLS = [
+  { label: "Secure",  Icon: Lock,       cls: "text-blue-500"    },
+  { label: "Private", Icon: ShieldCheck, cls: "text-emerald-500" },
+  { label: "Instant", Icon: Zap,        cls: "text-amber-500"   },
+  { label: "Free",    Icon: Tag,        cls: "text-pink-500"    },
+];
+
+const NAVY = { background: "hsl(222 60% 8%)" } as const;
+const GOLD_BADGE = { background: "hsl(45 88% 60%)", color: "hsl(222 60% 8%)" } as const;
+
+/* ── sub-components ──────────────────────────────────────────────────── */
+
+/** Amber right-pointing arrow (selfie → AI) */
+function AmberArrow() {
+  return (
+    <svg width="32" height="20" viewBox="0 0 40 20" fill="none" aria-hidden="true">
+      <path d="M2 10H30" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" />
+      <path d="M24 5L36 10L24 15" stroke="#f59e0b" strokeWidth="2"
+        strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </svg>
+  );
+}
+
+/** Emerald right-pointing arrow (AI → compliant) */
+function EmeraldArrow() {
+  return (
+    <svg width="32" height="20" viewBox="0 0 40 20" fill="none" aria-hidden="true">
+      <path d="M2 10H30" stroke="#10b981" strokeWidth="2" strokeLinecap="round" />
+      <path d="M24 5L36 10L24 15" stroke="#10b981" strokeWidth="2"
+        strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </svg>
+  );
+}
+
+/* ── main component ───────────────────────────────────────────────────── */
 
 export function AiShowcase() {
   return (
-    <section className="border-t border-hairline bg-paper">
-      <div className="container py-16 sm:py-20">
+    <section className="border-t border-hairline bg-card">
+      <div className="container reveal py-14 sm:py-16">
 
-        {/* Heading */}
-        <div className="mb-12 text-center">
-          <h2 className="text-[2.4rem] font-bold tracking-tight text-ink sm:text-[2.8rem]">
-            <span className="text-cta">AI</span>{" "}
-            Perfects Every Detail
+        {/* ── heading ── */}
+        <div className="mb-10 text-center">
+          <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+            AI Photo Perfection
+          </p>
+          <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
+            <span className="text-cta">AI</span> Perfects Every Detail
           </h2>
-          <p className="mt-3 text-[15px] text-muted-foreground">
-            From any selfie to government-compliant photo in seconds
+          <p className="mt-3 text-[14.5px] text-muted-foreground">
+            From any selfie to 100% government-compliant photo in seconds
           </p>
         </div>
 
-        {/* 3-panel comparison */}
-        <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-[1fr_52px_1.1fr_52px_1fr]">
+        {/* ── 3-panel comparison ──────────────────────────────────────── */}
+        {/* Mobile → flex-col; Desktop → flex-row with arrows */}
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-3">
 
-          {/* Panel 1 — Before / Your Selfie */}
-          <div className="rounded-2xl border-2 border-red-100 bg-white p-5 shadow-[0_4px_28px_rgba(239,68,68,0.08)]">
-            <div className="mb-4 flex items-center gap-2">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-500 text-[10px] font-black text-white">
-                ✕
+          {/* ── LEFT — Your Selfie ── */}
+          <div className="flex flex-1 flex-col rounded-2xl border-2 border-red-100 bg-card p-5 shadow-[0_4px_28px_rgba(239,68,68,0.06)]">
+
+            {/* card header */}
+            <div className="mb-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                    stroke="#ef4444" strokeWidth="3" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </span>
+                <h3 className="text-[15px] font-bold text-ink">Your Selfie</h3>
+              </div>
+              <span className="rounded-full bg-red-50 px-3 py-1 text-[10px] font-bold text-red-700">
+                Needs Improvement
               </span>
-              <span className="text-[14px] font-bold text-red-600">Your Selfie</span>
             </div>
 
-            <div
-              className="mx-auto mb-5 overflow-hidden rounded-xl shadow-sm"
-              style={{ aspectRatio: "3/4", maxWidth: "160px" }}
-            >
-              <img
-                src="/images/east_asian_man_input.png"
-                alt="Example selfie before AI processing"
-                className="h-full w-full object-cover object-top"
-              />
+            {/* Selfie with HUD scan-line overlay */}
+            <div className="mb-5 flex items-center justify-center rounded-xl border border-slate-100 bg-slate-50 py-5">
+              <div className="relative h-[150px] w-[110px] sm:h-[190px] sm:w-[140px]">
+                <Image
+                  src="/images/sample2_before_1782052888740.png"
+                  alt="Example selfie before AI processing"
+                  fill
+                  priority
+                  sizes="140px"
+                  className="rounded-xl object-cover object-top"
+                />
+                {/* Dotted red scan lines + numbered circles */}
+                {HUD_TOPS.map((top, i) => (
+                  <div
+                    key={i}
+                    className="pointer-events-none absolute left-0 w-full"
+                    style={{ top: `${top}%` }}
+                  >
+                    <div className="w-full border-t border-dashed border-red-400 opacity-60" />
+                    <span
+                      className="absolute -right-5 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white shadow-sm"
+                      aria-hidden="true"
+                    >
+                      {i + 1}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <ul className="space-y-2.5">
-              {BEFORE_ISSUES.map((issue) => (
-                <li key={issue} className="flex items-center gap-2.5 text-[13px] font-medium text-red-500">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-red-200 bg-red-50 text-[9px] font-black text-red-500">
-                    ✕
-                  </span>
-                  {issue}
+            {/* Issues list — space-between rows */}
+            <ul className="mt-auto flex flex-col gap-3">
+              {BEFORE_ISSUES.map(({ n, title, desc }) => (
+                <li key={n} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-[10px] font-bold text-red-500">
+                      {n}
+                    </span>
+                    <span className="text-[12.5px] font-bold text-red-500">{title}</span>
+                  </div>
+                  <span className="text-[11.5px] text-muted-foreground">{desc}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Arrow: Before → AI (warm amber) */}
-          <div className="hidden items-center justify-center md:flex">
-            <svg width="44" height="20" viewBox="0 0 44 20" fill="none">
-              <path d="M2 10H34" stroke="url(#ag1)" strokeWidth="2.5" strokeLinecap="round" />
-              <path d="M27 4l10 6-10 6" stroke="url(#ag1)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-              <defs>
-                <linearGradient id="ag1" x1="0" y1="10" x2="44" y2="10" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#fde68a" />
-                  <stop offset="1" stopColor="#f59e0b" />
-                </linearGradient>
-              </defs>
-            </svg>
+          {/* ── ARROW 1 — amber, desktop only ── */}
+          <div className="hidden shrink-0 items-center justify-center lg:flex">
+            <AmberArrow />
           </div>
 
-          {/* Panel 2 — AI Processing */}
-          <div className="rounded-2xl border border-hairline bg-white p-6 shadow-[0_8px_36px_rgba(0,0,0,0.07)]">
-            {/* Gold coin AI badge — matches HeroVisual */}
-            <div className="mb-5 flex flex-col items-center">
-              <div className="relative mb-3">
-                <div
-                  className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-2 border-[#d97706]"
-                  style={{
-                    background: "linear-gradient(135deg, #ffe566 0%, #ffd000 45%, #f59e0b 100%)",
-                    boxShadow: "0 8px 28px rgba(255,208,0,0.50), inset 0 1px 0 rgba(255,255,255,0.45)",
-                  }}
-                >
-                  <span
-                    className="text-[1.75rem] font-black text-[#78350f]"
-                    style={{ letterSpacing: "-0.05em", fontFamily: "var(--font-outfit, sans-serif)" }}
-                  >
-                    AI
-                  </span>
-                </div>
-                {/* Gold sparkle marks */}
-                <span className="absolute -top-2 -right-1 text-[18px] leading-none text-cta">✦</span>
-                <span className="absolute -bottom-1 -left-2 text-[12px] leading-none text-cta opacity-70">✦</span>
-                <span className="absolute top-0 -left-3 text-[8px] leading-none text-cta opacity-50">✦</span>
+          {/* ── MIDDLE — AI Compliance Engine ── */}
+          <div className="flex flex-[1.2] flex-col rounded-2xl border-2 border-amber-100 bg-card p-5 shadow-[0_8px_36px_rgba(0,0,0,0.05)]">
+
+            {/* card header */}
+            <div className="mb-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="rounded-md bg-amber-500 px-2 py-0.5 text-[11px] font-black text-white">
+                  AI
+                </span>
+                <h3 className="text-[15px] font-bold text-ink">AI Compliance Engine</h3>
               </div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                AI Processing
-              </p>
+              <span className="rounded-full border border-amber-100 bg-amber-50 px-3 py-1 text-[10px] font-bold text-amber-700">
+                Analyzing…
+              </span>
             </div>
 
-            {/* Checklist with icons */}
-            <div className="space-y-3.5">
-              {AI_CHECKS.map(({ label, icon }) => (
-                <div key={label} className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-soft">
-                      {icon}
-                    </span>
-                    <span className="text-[13px] font-medium text-ink">{label}</span>
-                  </div>
-                  {/* Navy checkmark */}
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand text-[9px] font-black text-white">
+            {/* Circular gauge + checks (side by side) */}
+            <div className="mb-4 flex items-center gap-4">
+
+              {/* Circular SVG gauge */}
+              <div className="relative shrink-0" style={{ width: 128, height: 128 }}>
+                <svg width="128" height="128" viewBox="0 0 150 150" aria-hidden="true">
+                  {/* Track */}
+                  <circle cx="75" cy="75" r="62" fill="none" stroke="#f1f5f9" strokeWidth="6" />
+                  {/* Inner dashed ring */}
+                  <circle cx="75" cy="75" r="54" fill="none" stroke="#e2e8f0"
+                    strokeWidth="1" strokeDasharray="4,3" />
+                  {/* Progress arc — amber, 98% ≈ strokeDashoffset=8 */}
+                  <circle cx="75" cy="75" r="62" fill="none"
+                    stroke="#f59e0b" strokeWidth="6"
+                    strokeDasharray="390" strokeDashoffset="8"
+                    strokeLinecap="round" transform="rotate(-90 75 75)" />
+                </svg>
+                {/* Centered text overlay */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-[1.5rem] font-black leading-none text-emerald-500">98%</span>
+                  <span className="mt-0.5 text-center text-[8px] font-semibold leading-tight text-muted-foreground">
+                    Compliance<br />Score
+                  </span>
+                  <span className="mt-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-emerald-600">
+                    Excellent
+                  </span>
+                </div>
+              </div>
+
+              {/* Checks table */}
+              <div className="min-w-0 flex-1">
+                <div className="mb-1.5 flex justify-between border-b border-hairline pb-1">
+                  <span className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Check</span>
+                  <span className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Status</span>
+                </div>
+                <ul className="flex flex-col gap-[5px]">
+                  {AI_CHECKS.map(({ label, tileBg, tileText, Icon }) => (
+                    <li key={label} className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${tileBg}`}>
+                          <Icon className={`h-2.5 w-2.5 ${tileText}`} strokeWidth={2.5} />
+                        </span>
+                        <span className="text-[11px] font-semibold text-ink">{label}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-[10px] font-bold text-emerald-500">Pass</span>
+                        <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 text-[7px] font-bold text-white">
+                          ✓
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Ready-for-submission banner */}
+            <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-amber-100 bg-amber-50 px-3 py-2.5">
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" strokeWidth={2} />
+              <div>
+                <p className="text-[12px] font-bold text-ink">Ready for Submission</p>
+                <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+                  Meets 100% government standards for passport, visa, ID &amp; more.
+                </p>
+              </div>
+            </div>
+
+            {/* Mini stepper: Scanning → Analyzing → Validating → Optimizing */}
+            <div className="mt-auto hidden sm:flex items-start">
+              {MINI_STEPS.map((label, i) => (
+                <div key={label} className="relative flex flex-1 flex-col items-center">
+                  {/* Connector — left half (not for first item) */}
+                  {i > 0 && (
+                    <div
+                      className="absolute border-t-2 border-amber-400"
+                      style={{ top: 10, left: 0, right: "50%" }}
+                    />
+                  )}
+                  {/* Connector — right half (not for last item) */}
+                  {i < MINI_STEPS.length - 1 && (
+                    <div
+                      className="absolute border-t-2 border-amber-400"
+                      style={{ top: 10, left: "50%", right: 0 }}
+                    />
+                  )}
+                  {/* Circle */}
+                  <div className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-[8px] font-bold text-white">
                     ✓
+                  </div>
+                  <span className="mt-1 whitespace-nowrap text-[9px] font-bold text-ink">
+                    {label}
                   </span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Arrow: AI → After (emerald — kept semantic) */}
-          <div className="hidden items-center justify-center md:flex">
-            <svg width="44" height="20" viewBox="0 0 44 20" fill="none">
-              <path d="M2 10H34" stroke="url(#ag2)" strokeWidth="2.5" strokeLinecap="round" />
-              <path d="M27 4l10 6-10 6" stroke="url(#ag2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-              <defs>
-                <linearGradient id="ag2" x1="0" y1="10" x2="44" y2="10" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#6ee7b7" />
-                  <stop offset="1" stopColor="#10b981" />
-                </linearGradient>
-              </defs>
-            </svg>
+          {/* ── ARROW 2 — emerald, desktop only ── */}
+          <div className="hidden shrink-0 items-center justify-center lg:flex">
+            <EmeraldArrow />
           </div>
 
-          {/* Panel 3 — Compliant Photo */}
-          <div className="rounded-2xl border-2 border-emerald-100 bg-white p-5 shadow-[0_4px_28px_rgba(16,185,129,0.08)]">
-            <div className="mb-4 flex items-center gap-2">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-black text-white">
-                ✓
-              </span>
-              <span className="text-[14px] font-bold text-emerald-600">Compliant Photo</span>
-            </div>
+          {/* ── RIGHT — Compliant Photo ── */}
+          <div className="flex flex-1 flex-col rounded-2xl border-2 border-emerald-100 bg-card p-5 shadow-[0_4px_28px_rgba(16,185,129,0.06)]">
 
-            {/* Photo with dimension markers */}
-            <div className="relative mx-auto mb-4" style={{ width: "fit-content" }}>
-              <div
-                className="overflow-hidden rounded-lg border border-hairline shadow-sm"
-                style={{ width: "160px", height: "213px" }}
-              >
-                <img
-                  src="/images/east_asian_man_compliant.png"
-                  alt="Compliant passport photo after AI processing"
-                  className="h-full w-full object-cover object-top"
-                />
-              </div>
-
-              {/* Right: height marker */}
-              <div className="absolute -right-7 inset-y-0 flex flex-col items-center">
-                <div className="flex-1 border-r-2 border-dashed border-emerald-400" />
-                <span
-                  className="shrink-0 py-0.5 text-[9px] font-bold text-emerald-500"
-                  style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-                >
-                  45 mm
+            {/* card header */}
+            <div className="mb-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                    stroke="#10b981" strokeWidth="3" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
                 </span>
-                <div className="flex-1 border-r-2 border-dashed border-emerald-400" />
+                <h3 className="text-[15px] font-bold text-ink">Compliant Photo</h3>
               </div>
+              <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-bold text-emerald-700">
+                Ready to Submit
+              </span>
+            </div>
 
-              {/* Bottom: width marker */}
-              <div className="mt-1.5 flex items-center gap-1">
-                <div className="flex-1" style={{ borderTop: "2px dashed #34d399" }} />
-                <span className="shrink-0 text-[9px] font-bold text-emerald-500">35 mm</span>
-                <div className="flex-1" style={{ borderTop: "2px dashed #34d399" }} />
+            {/* Compliant photo with dimension indicators */}
+            <div className="mb-4 flex items-center justify-center rounded-xl border border-slate-100 bg-slate-50 py-6">
+              {/*
+                Outer wrapper provides space for the dimension indicators:
+                  paddingRight  = space for the vertical "45 mm" ruler
+                  paddingBottom = space for the horizontal "35 mm" ruler
+              */}
+              <div className="relative" style={{ paddingRight: 36, paddingBottom: 28 }}>
+
+                {/* Photo frame with green dashed border overlay */}
+                <div
+                  className="relative overflow-hidden rounded-xl border border-hairline shadow-sm"
+                  style={{ width: 128, height: 170 }}
+                >
+                  {/* Green dashed compliance border */}
+                  <div className="absolute inset-0 z-10 rounded-xl border-2 border-dashed border-emerald-400 pointer-events-none" />
+                  <Image
+                    src="/images/sample2_after_1782052904856.png"
+                    alt="AI-corrected government-compliant passport photo"
+                    fill
+                    sizes="128px"
+                    className="object-cover object-top"
+                  />
+                </div>
+
+                {/* Width indicator — 35 mm (below the photo) */}
+                <div
+                  className="absolute left-0 hidden sm:flex items-center gap-1"
+                  style={{ bottom: 8, right: 36 }}
+                >
+                  <div className="flex-1 border-t-2 border-dashed border-emerald-400" />
+                  <span className="shrink-0 text-[9px] font-bold text-emerald-600">35 mm</span>
+                  <div className="flex-1 border-t-2 border-dashed border-emerald-400" />
+                </div>
+
+                {/* Height indicator — 45 mm (to the right of the photo) */}
+                <div
+                  className="absolute inset-y-0 hidden sm:flex flex-col items-center gap-1"
+                  style={{ right: 4 }}
+                >
+                  <div className="flex-1 border-r-2 border-dashed border-emerald-400" />
+                  <span
+                    className="shrink-0 text-[9px] font-bold text-emerald-600"
+                    style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+                  >
+                    45 mm
+                  </span>
+                  <div className="flex-1 border-r-2 border-dashed border-emerald-400" />
+                </div>
+
               </div>
             </div>
 
-            {/* Compliance badge */}
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5">
-              <div className="flex items-start gap-2.5">
-                <svg viewBox="0 0 20 20" fill="none" className="mt-0.5 h-5 w-5 shrink-0">
-                  <path
-                    d="M10 1.667L2.5 5v5c0 4.583 3.167 8.875 7.5 10 4.333-1.125 7.5-5.417 7.5-10V5L10 1.667z"
-                    fill="#10b981"
-                    fillOpacity="0.12"
-                    stroke="#10b981"
-                    strokeWidth="1.5"
-                    strokeLinejoin="round"
-                  />
-                  <path d="M7 10l2 2 4-4" stroke="#059669" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <div>
-                  <p className="text-[12px] font-bold text-emerald-700">100% Government Compliant</p>
-                  <p className="mt-0.5 text-[11px] leading-snug text-emerald-600">
-                    Ready for Passport, Visa, OCI, ID &amp; more
-                  </p>
-                </div>
+            {/* Compliance banner */}
+            <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2.5">
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" strokeWidth={2} />
+              <div>
+                <p className="text-[12px] font-bold text-ink">100% Government Compliant</p>
+                <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+                  Accepted for Passport, Visa, OCI, ID and all official documents.
+                </p>
               </div>
+            </div>
+
+            {/* Trust pills */}
+            <div className="mt-auto grid grid-cols-4 gap-1.5">
+              {TRUST_PILLS.map(({ label, Icon, cls }) => (
+                <div
+                  key={label}
+                  className="flex flex-col items-center justify-center gap-1 rounded-lg border border-hairline bg-paper py-2"
+                >
+                  <Icon className={`h-3.5 w-3.5 ${cls}`} strokeWidth={2} />
+                  <span className="text-[10px] font-semibold text-ink">{label}</span>
+                </div>
+              ))}
             </div>
           </div>
+
         </div>
 
-        {/* 4-step process strip */}
-        <div className="relative mt-16">
-          {/* Gold dashed connector (desktop only) */}
-          <div
-            className="pointer-events-none absolute left-[calc(12.5%+24px)] right-[calc(12.5%+24px)] top-[22px] hidden h-px md:block"
-            style={{ borderTop: "2px dashed hsl(var(--cta-muted))" }}
-          />
+        {/* ── 4-step flow bar ─────────────────────────────────────────── */}
+        <div className="mt-5 rounded-2xl border border-hairline bg-card px-6 py-5">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center">
+            {FLOW_STEPS.flatMap(({ n, title, desc, Icon }, i) => [
 
-          <ol className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-4">
-            {STEPS.map((step) => (
-              <li key={step.label} className="flex flex-col items-center text-center">
-                {/* Dark navy circle with gold icon — matches site's existing dark badge style */}
+              /* Step item */
+              <div key={title} className="flex items-start gap-3 lg:flex-1">
                 <div
-                  className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full"
-                  style={{
-                    background: "hsl(222 60% 8%)",
-                    boxShadow: "0 4px 14px rgba(255,208,0,0.20)",
-                  }}
+                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
+                  style={NAVY}
                 >
-                  {step.icon}
+                  <Icon className="h-5 w-5 text-cta" strokeWidth={1.75} />
                 </div>
-                <p className="mt-3 text-[13px] font-bold text-ink">
-                  {step.num}. {step.label}
-                </p>
-                <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">{step.body}</p>
-              </li>
-            ))}
-          </ol>
+                <div>
+                  <div className="mb-0.5 flex items-center gap-1.5">
+                    <span
+                      className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full text-[10px] font-bold"
+                      style={GOLD_BADGE}
+                    >
+                      {n}
+                    </span>
+                    <h4 className="text-[13px] font-bold text-ink">{title}</h4>
+                  </div>
+                  <p className="text-[11.5px] leading-snug text-muted-foreground">{desc}</p>
+                </div>
+              </div>,
+
+              /* Connector (not after the last step) */
+              i < FLOW_STEPS.length - 1 ? (
+                <div key={`sep-${i}`} className="hidden shrink-0 items-center gap-1.5 lg:flex">
+                  <div className="w-6 border-t border-dashed border-hairline-strong" />
+                  <span className="text-[14px] font-bold text-muted-foreground">›</span>
+                </div>
+              ) : null,
+
+            ])}
+          </div>
         </div>
 
       </div>

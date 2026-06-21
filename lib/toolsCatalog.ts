@@ -72,6 +72,14 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         icon: "Scaling",
       },
       {
+        slug: "image-crop",
+        title: "Image Crop",
+        blurb: "Crop any image with a draggable box — trim to exact pixels and download as PNG or JPG.",
+        ready: true,
+        popular: true,
+        icon: "Crop",
+      },
+      {
         slug: "linkedin-photo",
         title: "LinkedIn Photo Maker",
         blurb: "Crop any photo to a square LinkedIn profile picture, centred on your face.",

@@ -42,6 +42,10 @@ function aspectLabel(r: number): string {
   return `${r.toFixed(2)} : 1`;
 }
 
+const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {
+  "army-agniveer": "Army Agniveer Photo & Signature Size — Exact Specs & Resize Tool",
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -54,7 +58,8 @@ export async function generateMetadata({
   return pageMetadata({
     // Short exam name keeps the SERP title under ~60 chars and matches how
     // people actually search ("SSC photo size", not the full commission name).
-    title: `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR} (Official)`,
+    title: EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam] ?? `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR} (Official)`,
+    titleAbsolute: !!EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam],
     description:
       `${spec.name}: photo ${photoKb(spec)} (${px(spec.photoWidthPx, spec.photoHeightPx)})` +
       (sig ? `, signature ${sig} (${px(spec.sigWidthPx, spec.sigHeightPx)})` : "") +

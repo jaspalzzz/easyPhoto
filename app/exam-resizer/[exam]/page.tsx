@@ -31,6 +31,10 @@ export const dynamicParams = false;
 const photoKb = (min: number | undefined, max: number) =>
   min ? `${min}–${max} KB` : `under ${max} KB`;
 
+const EXAM_RESIZER_TITLE_OVERRIDES: Record<string, string> = {
+  "ssc-cpo": "SSC CPO Photo & Signature Resize Tool — 35×45mm, JPG, Online Free",
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -42,7 +46,7 @@ export async function generateMetadata({
   if (!e || !spec) return {};
   const sig = spec.sigLimitKb;
   return pageMetadata({
-    title: `${e.name} Photo & Signature Resizer ${RESIZER_YEAR} — Exact Size`,
+    title: EXAM_RESIZER_TITLE_OVERRIDES[exam] ?? `${e.name} Photo & Signature Resizer ${RESIZER_YEAR} — Exact Size`,
     titleAbsolute: true,
     description:
       `Resize your ${e.name} photo to ${photoKb(spec.photoMinKb, spec.photoLimitKb)}` +

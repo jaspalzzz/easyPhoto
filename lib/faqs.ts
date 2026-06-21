@@ -335,6 +335,15 @@ export const UNLOCK_PDF_FAQ: FaqItem[] = [
   { q: "Is the PDF password remover free?", a: "Yes — completely free, no watermark and no sign-up." },
 ];
 
+export const IMAGE_CROP_FAQ: FaqItem[] = [
+  { q: "How do I crop an image online for free?", a: "Upload your image, drag the crop box around the area you want to keep, and click Download PNG or JPG. No watermark, no sign-up required." },
+  { q: "Can I lock the aspect ratio when cropping?", a: "Yes. Choose Free, 1:1 (square), 4:3, 3:4, 16:9 or 9:16 before dragging — the crop box snaps to that ratio automatically as you resize." },
+  { q: "Does the tool show exact pixel dimensions?", a: "Yes. The live width × height in pixels is shown as you drag, so you can hit a precise size. If you need a specific output size, resize the image first with the Resize Image (Pixels) tool." },
+  { q: "What image formats does the crop tool support?", a: "JPG, PNG, WebP and HEIC (iPhone photos). You can download the cropped result as a PNG (lossless, supports transparency) or JPG (smaller file size)." },
+  { q: "Is my image uploaded to a server?", a: "No. All cropping runs entirely in your browser — your image never leaves your device and nothing is sent to any server." },
+  { q: "How is this different from the Signature Crop tool?", a: "The Signature Crop tool auto-detects the ink boundary and is designed for signature scans. The Image Crop tool is for general photos and images, giving you a free-hand drag interface with aspect ratio lock." },
+];
+
 /**
  * Per-country passport FAQ — built from the verified spec so every country's
  * set is genuinely different (sizes, background, head height, rules all differ).

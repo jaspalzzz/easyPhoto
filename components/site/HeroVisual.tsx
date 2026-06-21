@@ -15,17 +15,17 @@ const AI_CHECKS = [
 
 export function HeroVisual() {
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-0">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-0">
 
       {/* ── Card 1: Your Selfie (wrong) ────────────────────────────── */}
-      <div className="animate-float-slow flex flex-col rounded-2xl border border-hairline bg-white p-4 shadow-[0_12px_36px_rgba(0,0,0,0.09)]">
-        <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-[12px] font-bold text-red-600">
+      <div className="animate-float-slow flex flex-col rounded-2xl border border-hairline bg-white p-2 shadow-[0_12px_36px_rgba(0,0,0,0.09)] min-[360px]:p-4">
+        <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[10px] font-bold min-[360px]:px-3 min-[360px]:py-1 min-[360px]:text-[12px] text-red-600">
           <span>✕</span> Not Compliant
         </span>
 
         <div className="relative overflow-hidden rounded-xl" style={{ aspectRatio: "3/4" }}>
           <img
-            src="/images/selfie_input.png"
+            src="/images/white_young_before.png"
             alt="Example selfie — before AI processing"
             className="h-full w-full object-cover object-top"
           />
@@ -44,19 +44,19 @@ export function HeroVisual() {
       </div>
 
       {/* ── Center: AI Engine ──────────────────────────────────────── */}
-      <div className="relative z-10 mx-2 flex flex-col items-center">
+      <div className="relative z-10 mx-1 flex flex-col items-center min-[360px]:mx-2">
         {/* Horizontal connector lines */}
         <div
-          className="pointer-events-none absolute top-[29px] right-[58px] h-px w-10"
+          className="pointer-events-none absolute top-[25px] right-[58px] h-px w-10"
           style={{ background: "linear-gradient(90deg, transparent, #ffd000, transparent)" }}
         />
         <div
-          className="pointer-events-none absolute top-[29px] left-[58px] h-px w-10"
+          className="pointer-events-none absolute top-[25px] left-[58px] h-px w-10"
           style={{ background: "linear-gradient(90deg, transparent, #ffd000, transparent)" }}
         />
 
         {/* AI circle with pulse-wave ring */}
-        <div className="relative flex h-[58px] w-[58px] items-center justify-center">
+        <div className="relative flex h-[50px] w-[50px] items-center justify-center">
           {/* Expanding ring */}
           <span
             className="animate-pulse-wave absolute inset-[-6px] rounded-full border border-[#ffd000]"
@@ -71,7 +71,7 @@ export function HeroVisual() {
             }}
           >
             <span
-              className="text-[20px] font-black leading-none text-[#78350f]"
+              className="text-[18px] font-black leading-none text-[#78350f]"
               style={{ fontFamily: "var(--font-outfit, sans-serif)", letterSpacing: "-0.04em" }}
             >
               AI
@@ -85,14 +85,14 @@ export function HeroVisual() {
       </div>
 
       {/* ── Card 2: Compliant Photo (correct) ─────────────────────── */}
-      <div className="animate-float-delay flex flex-col rounded-2xl border border-hairline bg-white p-4 shadow-[0_12px_36px_rgba(0,0,0,0.09)]">
-        <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[12px] font-bold text-emerald-600">
+      <div className="animate-float-delay flex flex-col rounded-2xl border border-hairline bg-white p-2 shadow-[0_12px_36px_rgba(0,0,0,0.09)] min-[360px]:p-4">
+        <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold min-[360px]:px-3 min-[360px]:py-1 min-[360px]:text-[12px] text-emerald-600">
           <span>✓</span> Compliant
         </span>
 
         <div className="relative overflow-hidden rounded-xl" style={{ aspectRatio: "3/4" }}>
           <img
-            src="/images/selfie_compliant.png"
+            src="/images/white_young_after.png"
             alt="Compliant passport photo — after AI processing"
             className="h-full w-full object-cover object-top"
           />

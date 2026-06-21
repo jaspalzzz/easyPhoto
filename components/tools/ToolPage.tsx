@@ -20,6 +20,9 @@ export function ToolPage({
   breadcrumbs: breadcrumbsProp,
   wide = false,
   dateModified,
+  hero,
+  heroLeftBelow,
+  aside,
 }: {
   title: string;
   blurb: string;
@@ -37,6 +40,12 @@ export function ToolPage({
   wide?: boolean;
   /** ISO date the underlying spec was verified — emitted as schema dateModified. */
   dateModified?: string;
+  /** Optional hero visual rendered beside the heading (2-col). Decorative. */
+  hero?: React.ReactNode;
+  /** Optional content rendered in the heading column, below the blurb (e.g. a search). */
+  heroLeftBelow?: React.ReactNode;
+  /** Optional sidebar rendered to the right of the tool body on desktop. */
+  aside?: React.ReactNode;
 }) {
   const related = slug ? relatedTools(slug) : [];
   const entry = slug ? getTool(slug) : undefined;
@@ -55,8 +64,34 @@ export function ToolPage({
   }
   const crumbs = breadcrumbsProp ?? autoCrumbs;
 
+  const headerInner = (
+    <header className="flex items-start gap-4">
+      {entry && (
+        <ToolIconTile
+          name={entry.icon}
+          category={slug ? toolColorCategory(slug) : "photo"}
+          className="hidden shrink-0 sm:flex"
+        />
+      )}
+      <div className="min-w-0">
+        <div className="space-y-2">
+          {category && (
+            <span className="eyebrow block text-[#7a5c06]">{category.group}</span>
+          )}
+          <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
+            {title}
+          </h1>
+          <p className="text-[15px] leading-relaxed text-muted-foreground">{blurb}</p>
+        </div>
+        {heroLeftBelow}
+      </div>
+    </header>
+  );
+
+  const maxW = aside ? "max-w-6xl" : wide ? "max-w-5xl" : "max-w-3xl";
+
   return (
-    <div className={`container py-10 ${wide ? "max-w-5xl" : "max-w-3xl"}`}>
+    <div className={`container py-10 ${maxW}`}>
       {urlPath && (
         <JsonLd
           schema={[
@@ -72,26 +107,24 @@ export function ToolPage({
         />
       )}
       <Breadcrumbs crumbs={crumbs} />
-      <header className="mt-4 flex items-start gap-4">
-        {entry && (
-          <ToolIconTile
-            name={entry.icon}
-            category={slug ? toolColorCategory(slug) : "photo"}
-            className="hidden shrink-0 sm:flex"
-          />
-        )}
-        <div className="space-y-2">
-          {category && (
-            <span className="eyebrow block text-[#A87E10]">{category.group}</span>
-          )}
-          <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
-            {title}
-          </h1>
-          <p className="text-[15px] leading-relaxed text-muted-foreground">{blurb}</p>
-        </div>
-      </header>
 
-      <div className="mt-6">{children}</div>
+      {hero ? (
+        <div className="mt-4 grid items-center gap-8 lg:grid-cols-2">
+          {headerInner}
+          <div className="min-w-0">{hero}</div>
+        </div>
+      ) : (
+        <div className="mt-4">{headerInner}</div>
+      )}
+
+      {aside ? (
+        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
+          <div className="min-w-0">{children}</div>
+          <aside>{aside}</aside>
+        </div>
+      ) : (
+        <div className="mt-6">{children}</div>
+      )}
 
       <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />

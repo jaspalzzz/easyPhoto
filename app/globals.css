@@ -122,6 +122,28 @@
     background-color: hsl(var(--brand-soft) / 0.28);
   }
 
+  /* MARKETING HOMEPAGE ONLY — the premium "SaaS" elevation surface. Unlike the
+     flat .ep-card used across the tool pages, this one DOES lift: a resting soft
+     shadow that deepens and rises on hover. Use it for the homepage's headline
+     cards (workflows, country picks) so the marketing surface feels crafted,
+     while the app surfaces stay calm and flat. Motion is reduced-motion safe. */
+  .lift-card {
+    @apply rounded-2xl border border-hairline bg-card;
+    box-shadow: 0 1px 3px hsl(222 47% 11% / 0.06), 0 1px 2px hsl(222 47% 11% / 0.04);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out,
+      border-color 0.2s ease-out;
+  }
+  .lift-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px -16px hsl(222 47% 11% / 0.20),
+      0 6px 14px -8px hsl(222 47% 11% / 0.10);
+    border-color: hsl(var(--hairline-strong));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lift-card { transition: none; }
+    .lift-card:hover { transform: none; }
+  }
+
   /* Gold highlighter — a marker swept under a keyword (navy text stays on top).
      The signature "stamp" accent for headlines. */
   .mark-gold {
@@ -451,4 +473,26 @@ input[type="range"] {
 .ep-dark-section-alt {
   background-color: #0a173c;
   color: #ffffff;
+}
+
+/* ── Scroll reveal (MARKETING HOMEPAGE) ───────────────────────────────────
+   Sections gently rise + fade up as they enter the viewport — the signature
+   "premium SaaS" cue. Built to be SEO- and a11y-safe:
+     • Opacity never drops below 0.55 and text only translates, so content is
+       always rendered + visible to crawlers (no hidden-content risk, no CLS —
+       transform/opacity only).
+     • Gated behind @supports(animation-timeline) so unsupported browsers just
+       show content normally, and behind prefers-reduced-motion. */
+@keyframes ep-reveal {
+  from { opacity: 0.55; transform: translateY(20px); }
+  to   { opacity: 1;    transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: ep-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 20%;
+    }
+  }
 }

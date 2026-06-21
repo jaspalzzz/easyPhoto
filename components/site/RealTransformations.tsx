@@ -4,20 +4,10 @@
  */
 
 const PAIRS = [
-  { before: "/images/selfie_input.png", after: "/images/selfie_compliant.png" },
-  { before: "/images/man_input.png",    after: "/images/man_compliant.png" },
-  {
-    before: "/images/selfie_input.png",
-    after: "/images/selfie_compliant.png",
-    beforeFilter: "hue-rotate(90deg) brightness(0.9)",
-    afterFilter: "hue-rotate(90deg)",
-  },
-  {
-    before: "/images/man_input.png",
-    after: "/images/man_compliant.png",
-    beforeFilter: "saturate(0.5) contrast(1.1)",
-    afterFilter: "saturate(0.9)",
-  },
+  { before: "/images/sample2_before_1782052888740.png", after: "/images/sample2_after_1782052904856.png" },
+  { before: "/images/sample4_before_1782052955340.png", after: "/images/sample4_after_1782052969219.png" },
+  { before: "/images/sample7_before_1782053057303.png", after: "/images/sample7_after_1782053075466.png" },
+  { before: "/images/sample8_before_1782053095391.png", after: "/images/sample8_after_1782053120267.png" },
 ] as const;
 
 export function RealTransformations() {
@@ -43,7 +33,6 @@ export function RealTransformations() {
                     src={pair.before}
                     alt="Before transformation"
                     className="h-full w-full object-cover object-top transition-transform duration-500 hover:scale-105"
-                    style={"beforeFilter" in pair ? { filter: pair.beforeFilter } : undefined}
                   />
                 </div>
 
@@ -59,7 +48,6 @@ export function RealTransformations() {
                     src={pair.after}
                     alt="After transformation"
                     className="h-full w-full object-cover object-top transition-transform duration-500 hover:scale-105"
-                    style={"afterFilter" in pair ? { filter: pair.afterFilter } : undefined}
                   />
                 </div>
               </div>

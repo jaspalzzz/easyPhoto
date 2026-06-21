@@ -100,6 +100,10 @@ const config: Config = {
         panel: "0 1px 2px hsl(30 12% 12% / 0.05), 0 1px 1px hsl(30 12% 12% / 0.03)",
         // Menu/popover pop — still subtle.
         pop: "0 10px 30px -12px hsl(30 12% 12% / 0.22), 0 2px 6px -2px hsl(30 12% 12% / 0.08)",
+        // MARKETING HOMEPAGE ONLY (the flat tool pages stay shadow-free): a
+        // navy-tinted elevation pair for the premium surfaces — resting + lifted.
+        soft: "0 1px 3px hsl(222 47% 11% / 0.06), 0 1px 2px hsl(222 47% 11% / 0.04)",
+        lift: "0 18px 40px -16px hsl(222 47% 11% / 0.20), 0 6px 14px -8px hsl(222 47% 11% / 0.10)",
         none: "none",
       },
       letterSpacing: {

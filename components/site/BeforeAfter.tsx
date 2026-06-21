@@ -85,7 +85,7 @@ export function BeforeAfter() {
 
         {/* Heading */}
         <div className="mb-10 text-center">
-          <span className="eyebrow text-[#A87E10]">Transformation</span>
+          <span className="eyebrow text-[#7a5c06]">Transformation</span>
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-[2rem]">
             See the difference in seconds
           </h2>

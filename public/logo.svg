@@ -1,15 +1,15 @@
 <svg viewBox="0 0 250 64" xmlns="http://www.w3.org/2000/svg">
-  <g>
-    <rect x="4" y="22" width="52" height="30" rx="5" fill="#157F75"/>
-    <path d="M25 22 L29 15 L39 15 L43 22 Z" fill="#157F75"/>
-    <rect x="29.5" y="16.5" width="9" height="3" rx="1.5" fill="#fff"/>
-    <rect x="9" y="17" width="9" height="5" rx="1.5" fill="#157F75"/>
-    <rect x="10.5" y="18.5" width="6" height="2" rx="1" fill="#fff"/>
-    <rect x="23.5" y="27.5" width="25" height="29" rx="1.5" fill="#fff" stroke="#157F75" stroke-width="2.6"/>
-    <circle cx="36" cy="37" r="5" fill="#F57819"/>
-    <path d="M27 54 C27 45 45 45 45 54 Z" fill="#F57819"/>
+  <!-- Crop-mark logo mark (matches components/site/LogoMark.tsx + public/icon.svg) -->
+  <g fill="none" stroke="#163A6B" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 17 V8 Q6 6 8 6 H17"/>
+    <path d="M47 6 H56 Q58 6 58 8 V17"/>
+    <path d="M58 47 V56 Q58 58 56 58 H47"/>
+    <path d="M17 58 H8 Q6 58 6 56 V47"/>
   </g>
-  <text x="72" y="45" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="34" letter-spacing="-0.5">
-    <tspan fill="#F57819">easy</tspan><tspan fill="#157F75">Photo</tspan>
+  <circle cx="32" cy="26" r="8.5" fill="#163A6B"/>
+  <path d="M18 49 C18 37 46 37 46 49 Z" fill="#F4C63F"/>
+  <!-- Wordmark (matches components/site/Wordmark.tsx tone="dark"): navy "easy" + gold-deep "Photo" -->
+  <text x="74" y="44" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="33" letter-spacing="-0.8">
+    <tspan fill="#163A6B">easy</tspan><tspan fill="#A87E10">Photo</tspan>
   </text>
 </svg>

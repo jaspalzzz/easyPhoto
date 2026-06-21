@@ -65,7 +65,7 @@ export function ExamSpecTable({
         <h2 className="text-xl font-semibold tracking-tight text-ink">
           {label} photo {hasSig && <>&amp; signature </>}specification
         </h2>
-        <span className="eyebrow hidden text-[#A87E10] sm:block">
+        <span className="eyebrow hidden text-[#7a5c06] sm:block">
           Exact requirement
         </span>
       </div>
@@ -86,7 +86,7 @@ export function ExamSpecTable({
         <div className={`grid gap-x-10 gap-y-1 ${hasSig ? "sm:grid-cols-2" : ""}`}>
           {/* Photo */}
           <dl>
-            <p className="eyebrow mb-1 text-[#A87E10]">Photograph</p>
+            <p className="eyebrow mb-1 text-[#7a5c06]">Photograph</p>
             <SpecRow
               label="File size"
               value={kbRange(spec.photoMinKb, spec.photoLimitKb)}
@@ -99,7 +99,7 @@ export function ExamSpecTable({
           {/* Signature */}
           {hasSig && (
             <dl className="mt-6 sm:mt-0">
-              <p className="eyebrow mb-1 text-[#A87E10]">Signature</p>
+              <p className="eyebrow mb-1 text-[#7a5c06]">Signature</p>
               <SpecRow
                 label="File size"
                 value={kbRange(spec.sigMinKb, spec.sigLimitKb!)}
