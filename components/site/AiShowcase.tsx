@@ -109,7 +109,7 @@ const STEPS = [
 
 export function AiShowcase() {
   return (
-    <section className="border-t border-hairline bg-brand-soft">
+    <section className="border-t border-hairline bg-paper">
       <div className="container py-16 sm:py-20">
 
         {/* Heading */}
