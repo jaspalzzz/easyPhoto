@@ -9,6 +9,7 @@ export const metadata = pageMetadata({
   titleAbsolute: true,
   description: page.description,
   path: `/${page.slug}/`,
+  noIndex: true, // thin Hinglish duplicate — kept live, out of index (AdSense low-value audit)
 });
 
 export default function Page() {

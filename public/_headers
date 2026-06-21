@@ -46,3 +46,6 @@
   Content-Type: text/html; charset=utf-8
   Cross-Origin-Resource-Policy: cross-origin
   Cache-Control: public, max-age=3600
+  # Embeddable widgets, not content pages — keep them out of the search index so
+  # they don't count as thin content (AdSense low-value audit). Not in sitemap.
+  X-Robots-Tag: noindex

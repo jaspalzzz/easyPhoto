@@ -110,6 +110,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   if (!spec) {
     return new Response("Spec not found", { status: 404 });
   }
+  // NOTE: this is a static export — real HTTP headers (content-type, the
+  // X-Robots-Tag noindex, CSP override for embedding) are applied at the CDN via
+  // public/_headers, not from here. This content-type is for the dev server only.
   return new Response(renderEmbed(spec), {
     headers: { "content-type": "text/html; charset=utf-8" },
   });

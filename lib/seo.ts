@@ -57,7 +57,9 @@ export function pageMetadata({
     title: titleAbsolute ? { absolute: title } : title,
     description,
     alternates: { canonical: url },
-    ...(noIndex ? { robots: { index: false, follow: false } } : {}),
+    // Thin/duplicate tiers are kept live for users but removed from the index;
+    // follow:true so link equity still flows to the canonical pages they link to.
+    ...(noIndex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       type,
       url,

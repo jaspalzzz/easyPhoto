@@ -5,8 +5,6 @@ import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
 import { KB_TARGETS, kbPath, PDF_KB_TARGETS, pdfKbPath } from "@/lib/kbTargets";
 import { BLOG_POSTS } from "@/lib/blog";
 import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
-import { SUB_EXAM_RESIZERS } from "@/lib/subExamResizers";
-import { HINGLISH_SLUGS } from "@/lib/hinglishPages";
 import { CONVERT_SLUGS, convertPath } from "@/lib/convertPairs";
 
 export const dynamic = "force-static";
@@ -50,7 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/aadhaar-photo/",
     ...KB_TARGETS.map((kb) => kbPath(kb)),
     ...PDF_KB_TARGETS.map((kb) => pdfKbPath(kb)),
-    ...HINGLISH_SLUGS.map((s) => `/${s}/`),
+    // Hinglish pages are noindex (thin duplicates) — intentionally not in sitemap.
     "/convert/",
     ...CONVERT_SLUGS.map((slug) => convertPath(slug)),
   ];
@@ -105,13 +103,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
-    // Sub-exam resizers inherit their parent spec's verification date.
-    ...SUB_EXAM_RESIZERS.map((e) => ({
-      url: `${SITE_URL}/exam-resizer/${e.slug}/`,
-      lastModified: examFreshness(e.parentId),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    })),
+    // Sub-exam resizers (/exam-resizer/*) are noindex — they duplicate the
+    // /exam-requirements/ intent and inherit the parent spec — so they are
+    // intentionally omitted from the sitemap (AdSense low-value audit).
     // Blog posts carry their real publish date, or updatedISO if the content
     // was subsequently refreshed (set updatedISO in lib/blog.ts when refreshing).
     ...BLOG_POSTS.map((p) => ({

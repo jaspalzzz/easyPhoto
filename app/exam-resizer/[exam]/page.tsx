@@ -54,6 +54,11 @@ export async function generateMetadata({
       (sig ? ` and signature to ${photoKb(spec.sigMinKb, sig)}` : "") +
       `, in the exact size the ${e.name} application form needs. Free, 100% in your browser — nothing uploaded.`,
     path: `/exam-resizer/${exam}/`,
+    // Sub-exam resizers inherit the parent portal's spec and duplicate the
+    // /exam-requirements/ intent (0 organic clicks, deep rankings). Kept live and
+    // linked from the parent spec page, but out of the index to resolve the
+    // multi-page-per-portal cannibalization flagged in the AdSense low-value audit.
+    noIndex: true,
   });
 }
 
