@@ -344,24 +344,8 @@ export default function HomePage() {
                       {FEATURED_SUBS[id]}
                     </span>
                   </span>
-                  {/* "Used by …" avatar footer — matches prototype */}
-                  <div className="mt-auto flex items-center gap-2 border-t border-hairline pt-2.5">
-                    <div className="flex items-center">
-                      {["/images/black_woman_compliant.png", "/images/east_asian_man_compliant.png"].map((src, ai) => (
-                        <img
-                          key={ai}
-                          src={src}
-                          alt=""
-                          aria-hidden
-                          className="h-6 w-6 rounded-full border-2 border-paper object-cover object-top"
-                          style={{ marginLeft: ai === 0 ? "0" : "-8px" }}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-[11px] font-semibold text-muted-foreground">
-                      Used by 250K+
-                    </span>
-                    <ArrowRight className="ml-auto h-3.5 w-3.5 text-ink-faint opacity-0 transition-all group-hover:text-brand group-hover:opacity-100" />
+                  <div className="mt-auto flex items-center justify-end border-t border-hairline pt-2.5">
+                    <ArrowRight className="h-3.5 w-3.5 text-ink-faint opacity-0 transition-all group-hover:text-brand group-hover:opacity-100" />
                   </div>
                 </Link>
               );
