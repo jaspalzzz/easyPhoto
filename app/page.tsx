@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Globe, FileText, Wrench } from "lucide-react";
 import {
   COUNTRY_SPECS,
   LAUNCH_ORDER,
@@ -91,31 +91,34 @@ export default function HomePage() {
             {/* Left — value proposition */}
             <div className="max-w-xl">
               <span className="eyebrow">
-                Passport · exam · visa — exact to the millimetre
+                Passport · Visa · ID Card · Exam — exact to the millimetre
               </span>
               <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
                 Document photos that{" "}
                 <span className="mark-gold text-ink">get accepted</span>
               </h1>
               <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-                Pick your country or exam and drop a photo — we crop to the
-                official spec, set the required background, and check it before
-                you download. Free, and entirely in your browser.
+                Choose your country or exam and upload a photo. We'll crop it
+                to the official spec, check the rules, and let you download.
+                Free, secure, and private.
               </p>
 
               <dl className="mt-7 hidden max-w-md divide-x divide-hairline overflow-hidden rounded-xl border border-hairline bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04)] sm:flex">
                 {[
-                  { v: `${LAUNCH_ORDER.length}`, l: "country specs" },
-                  { v: `${PORTAL_KEYS.length}`, l: "exam & form specs" },
-                  { v: `${READY_TOOLS.length}`, l: "free tools" },
-                ].map((s) => (
-                  <div key={s.l} className="flex-1 px-4 py-3.5">
-                    <dt className="text-[1.65rem] font-bold leading-none tracking-tight text-brand">
-                      {s.v}
-                    </dt>
-                    <dd className="mt-1 text-xs leading-tight text-muted-foreground">
-                      {s.l}
-                    </dd>
+                  { v: `${LAUNCH_ORDER.length}`, l: "Countries",    Icon: Globe     },
+                  { v: `${PORTAL_KEYS.length}`,  l: "Exams & Forms", Icon: FileText  },
+                  { v: `${READY_TOOLS.length}`,  l: "Free Tools",   Icon: Wrench    },
+                ].map(({ v, l, Icon }) => (
+                  <div key={l} className="flex flex-1 items-center gap-3 px-4 py-3.5">
+                    <Icon className="h-[18px] w-[18px] shrink-0 text-muted-foreground" strokeWidth={1.5} />
+                    <div>
+                      <dt className="text-[1.65rem] font-bold leading-none tracking-tight text-ink">
+                        {v}
+                      </dt>
+                      <dd className="mt-0.5 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                        {l}
+                      </dd>
+                    </div>
                   </div>
                 ))}
               </dl>

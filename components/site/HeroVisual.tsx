@@ -20,7 +20,7 @@ export function HeroVisual() {
       {/* ── Card 1: Your Selfie (wrong) ────────────────────────────── */}
       <div className="animate-float-slow flex flex-col rounded-2xl border border-hairline bg-white p-4 shadow-[0_12px_36px_rgba(0,0,0,0.09)]">
         <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-[12px] font-bold text-red-600">
-          <span>✕</span> Your Selfie
+          <span>✕</span> Not Compliant
         </span>
 
         <div className="relative overflow-hidden rounded-xl" style={{ aspectRatio: "3/4" }}>
@@ -87,7 +87,7 @@ export function HeroVisual() {
       {/* ── Card 2: Compliant Photo (correct) ─────────────────────── */}
       <div className="animate-float-delay flex flex-col rounded-2xl border border-hairline bg-white p-4 shadow-[0_12px_36px_rgba(0,0,0,0.09)]">
         <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[12px] font-bold text-emerald-600">
-          <span>✓</span> Compliant Photo
+          <span>✓</span> Compliant
         </span>
 
         <div className="relative overflow-hidden rounded-xl" style={{ aspectRatio: "3/4" }}>

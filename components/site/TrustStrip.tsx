@@ -1,4 +1,4 @@
-import { ShieldCheck, BadgeCheck, Landmark, Gift } from "lucide-react";
+import { ShieldCheck, BadgeCheck, Landmark, Gift, ImageOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -64,10 +64,10 @@ export function TrustStrip() {
 /** Trust signals as compact bordered chips. `className` controls alignment. */
 export function TrustPills({ className }: { className?: string }) {
   const pills = [
-    { icon: ShieldCheck, label: "100% private" },
-    { icon: Gift, label: "Free · no watermark" },
-    { icon: BadgeCheck, label: "Compliance-checked" },
-    { icon: Landmark, label: "Official sources" },
+    { icon: ShieldCheck, label: "100% Private" },
+    { icon: Gift,        label: "Free to use"  },
+    { icon: ImageOff,    label: "No watermark" },
+    { icon: BadgeCheck,  label: "Compliance checked" },
   ];
   return (
     <div className={cn("flex flex-wrap items-center justify-center gap-2", className)}>
