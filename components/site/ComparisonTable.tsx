@@ -20,11 +20,27 @@ const VS_ROWS = [
   { feat: "Time",                   easy: "Seconds", studio: "30 – 60 min" },
 ];
 
-const REVIEWS = [
-  { text: "Super fast and accurate. Got my US visa photo in seconds!", author: "Rahul Sharma" },
-  { text: "Perfect size and background. Worked for my passport without any issues.", author: "Priya Nair" },
-  { text: "Finally a free tool that actually works 100%!", author: "Arjun Patel" },
-  { text: "The AI adjustment is just perfect. Highly recommended!", author: "Neha Verma" },
+const STATS = [
+  {
+    value: "3,300+",
+    label: "Passport photos made",
+    sub: "Compliant & ready to submit",
+  },
+  {
+    value: "5,000+",
+    label: "Signatures crafted",
+    sub: "Resized to exact KB & pixel limits",
+  },
+  {
+    value: "190+",
+    label: "Country specs covered",
+    sub: "Passport, visa & ID standards",
+  },
+  {
+    value: "0",
+    label: "Files uploaded to a server",
+    sub: "Everything runs in your browser",
+  },
 ];
 
 export function ComparisonTable() {
@@ -87,27 +103,23 @@ export function ComparisonTable() {
         </div>
       </section>
 
-      {/* Reviews */}
+      {/* Usage stats */}
       <section className="border-t border-hairline bg-card">
         <div className="container py-14 sm:py-16">
-          <div className="mb-10 flex items-end justify-between">
-            <h2 className="text-2xl font-semibold tracking-tight text-ink">
-              Loved by thousands of users
-            </h2>
-            <span className="hidden text-[13px] font-semibold text-brand sm:block">
-              ★★★★★ 4.9 / 5
-            </span>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {REVIEWS.map((r) => (
-              <div key={r.author} className="ep-card flex flex-col justify-between p-5">
-                <div>
-                  <div className="mb-3 text-[14px] tracking-wide text-brand">★★★★★</div>
-                  <p className="mb-4 text-[13px] italic leading-relaxed text-ink">
-                    &ldquo;{r.text}&rdquo;
-                  </p>
-                </div>
-                <span className="text-[12px] font-semibold text-muted-foreground">— {r.author}</span>
+          <p className="mb-10 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+            By the numbers
+          </p>
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
+            {STATS.map((s) => (
+              <div key={s.label} className="flex flex-col items-center text-center">
+                <span
+                  className="mb-1 text-[2.6rem] font-black leading-none text-ink"
+                  style={{ fontFamily: "var(--font-outfit, sans-serif)", letterSpacing: "-0.03em" }}
+                >
+                  {s.value}
+                </span>
+                <span className="mb-1 text-[14px] font-semibold text-ink">{s.label}</span>
+                <span className="text-[12px] leading-snug text-muted-foreground">{s.sub}</span>
               </div>
             ))}
           </div>
