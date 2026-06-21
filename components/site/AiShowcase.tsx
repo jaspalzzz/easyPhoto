@@ -1,7 +1,7 @@
 /**
  * AiShowcase — "AI Perfects Every Detail"
  * Premium 3-panel flow + 4-step strip — colours from site design system only
- * Brand navy: hsl(212 64% 24%) | Gold CTA: hsl(45 88% 60%) | brand-soft bg
+ * Palette: bg-brand-soft section | text-brand icons | text-cta gold | bg-brand checkmarks
  */
 
 const BEFORE_ISSUES = [
@@ -15,7 +15,7 @@ const AI_CHECKS = [
   {
     label: "Background Removed",
     icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-[hsl(212_64%_24%)]">
+      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-brand">
         <rect x="1" y="1" width="14" height="14" rx="3" stroke="currentColor" strokeWidth="1.5" />
         <rect x="4" y="4" width="8" height="8" rx="1" stroke="currentColor" strokeWidth="1.3" />
       </svg>
@@ -24,7 +24,7 @@ const AI_CHECKS = [
   {
     label: "Face Centered",
     icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-[hsl(212_64%_24%)]">
+      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-brand">
         <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
         <circle cx="8" cy="8" r="1.5" fill="currentColor" />
         <path d="M8 2V4.5M8 11.5V14M2 8H4.5M11.5 8H14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
@@ -34,7 +34,7 @@ const AI_CHECKS = [
   {
     label: "Lighting Optimized",
     icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-[hsl(212_64%_24%)]">
+      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-brand">
         <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.5" />
         <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
       </svg>
@@ -43,7 +43,7 @@ const AI_CHECKS = [
   {
     label: "Size & Ratio Adjusted",
     icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-[hsl(212_64%_24%)]">
+      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-brand">
         <path d="M1 5V2h3M15 11v3h-3M5 14H2v-3M11 2h3v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
@@ -51,7 +51,7 @@ const AI_CHECKS = [
   {
     label: "Compliance Verified",
     icon: (
-      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-[hsl(212_64%_24%)]">
+      <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4 text-brand">
         <path d="M8 1.5L2 4v4C2 11.5 4.5 14 8 15c3.5-1 6-3.5 6-7V4L8 1.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
         <path d="M5.5 8l1.5 1.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
@@ -65,7 +65,7 @@ const STEPS = [
     label: "Upload",
     body: "Upload your photo or selfie",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-[hsl(45_88%_60%)]">
+      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-cta">
         <path d="M12 15V3M12 3L8 7M12 3l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M3 17v2a2 2 0 002 2h14a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </svg>
@@ -76,7 +76,7 @@ const STEPS = [
     label: "AI Process",
     body: "Our AI enhances and optimizes",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-[hsl(45_88%_60%)]">
+      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-cta">
         <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="2" />
         <rect x="8" y="8" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="2" />
         <path d="M8 3v2M12 3v2M16 3v2M8 19v2M12 19v2M16 19v2M3 8h2M3 12h2M3 16h2M19 8h2M19 12h2M19 16h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -88,7 +88,7 @@ const STEPS = [
     label: "Verify",
     body: "We check compliance with official norms",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-[hsl(45_88%_60%)]">
+      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-cta">
         <path d="M12 2L3 6v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V6l-9-4z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
         <path d="M8.5 12l2.5 2.5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
@@ -99,7 +99,7 @@ const STEPS = [
     label: "Download",
     body: "Get your perfect photo in seconds",
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-[hsl(45_88%_60%)]">
+      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-cta">
         <path d="M12 3v13M12 16l-5-5M12 16l5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M3 21h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </svg>
@@ -109,13 +109,13 @@ const STEPS = [
 
 export function AiShowcase() {
   return (
-    <section className="border-t border-hairline bg-[hsl(212_48%_97%)]">
+    <section className="border-t border-hairline bg-brand-soft">
       <div className="container py-16 sm:py-20">
 
         {/* Heading */}
         <div className="mb-12 text-center">
           <h2 className="text-[2.4rem] font-bold tracking-tight text-ink sm:text-[2.8rem]">
-            <span className="text-[hsl(45_88%_52%)]">AI</span>{" "}
+            <span className="text-cta">AI</span>{" "}
             Perfects Every Detail
           </h2>
           <p className="mt-3 text-[15px] text-muted-foreground">
@@ -192,9 +192,9 @@ export function AiShowcase() {
                   </span>
                 </div>
                 {/* Gold sparkle marks */}
-                <span className="absolute -top-2 -right-1 text-[18px] leading-none text-[hsl(45_88%_60%)]">✦</span>
-                <span className="absolute -bottom-1 -left-2 text-[12px] leading-none text-[hsl(45_88%_60%)] opacity-70">✦</span>
-                <span className="absolute top-0 -left-3 text-[8px] leading-none text-[hsl(45_88%_60%)] opacity-50">✦</span>
+                <span className="absolute -top-2 -right-1 text-[18px] leading-none text-cta">✦</span>
+                <span className="absolute -bottom-1 -left-2 text-[12px] leading-none text-cta opacity-70">✦</span>
+                <span className="absolute top-0 -left-3 text-[8px] leading-none text-cta opacity-50">✦</span>
               </div>
               <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                 AI Processing
@@ -206,13 +206,13 @@ export function AiShowcase() {
               {AI_CHECKS.map(({ label, icon }) => (
                 <div key={label} className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[hsl(212_48%_93%)]">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-soft">
                       {icon}
                     </span>
                     <span className="text-[13px] font-medium text-ink">{label}</span>
                   </div>
                   {/* Navy checkmark */}
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[hsl(212_64%_24%)] text-[9px] font-black text-white">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand text-[9px] font-black text-white">
                     ✓
                   </span>
                 </div>
@@ -306,7 +306,7 @@ export function AiShowcase() {
           {/* Gold dashed connector (desktop only) */}
           <div
             className="pointer-events-none absolute left-[calc(12.5%+24px)] right-[calc(12.5%+24px)] top-[22px] hidden h-px md:block"
-            style={{ borderTop: "2px dashed hsl(45 88% 75%)" }}
+            style={{ borderTop: "2px dashed hsl(var(--cta-muted))" }}
           />
 
           <ol className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-4">
