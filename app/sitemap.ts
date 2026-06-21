@@ -2,7 +2,11 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { MAKER_PAGES } from "@/lib/makerPages";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
-import { KB_TARGETS, kbPath, PDF_KB_TARGETS, pdfKbPath } from "@/lib/kbTargets";
+import {
+  KB_TARGETS, kbPath,
+  PDF_KB_TARGETS, pdfKbPath,
+  SIGNATURE_KB_TARGETS, sigKbPath,
+} from "@/lib/kbTargets";
 import { BLOG_POSTS } from "@/lib/blog";
 import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
 import { CONVERT_SLUGS, convertPath } from "@/lib/convertPairs";
@@ -18,10 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/baby-passport-photo/",
     "/unlock-aadhaar-pdf/",
     "/visa-photo/",
-    "/signature-resize-to-10kb/",
-    "/signature-resize-to-20kb/",
-    "/signature-resize-to-50kb/",
-    "/signature-resize-to-100kb/",
+    ...SIGNATURE_KB_TARGETS.map((kb) => sigKbPath(kb)),
     "/ssc-photo-resizer/",
     "/ssc-signature-resizer/",
     "/ssc-photo-with-name-date/",
@@ -56,52 +57,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Site-wide "last significant update". Bump MANUALLY on real content changes —
   // NOT new Date(), so lastmod reflects actual freshness instead of churning on
   // every build/deploy (which Google distrusts). Blog posts use their own date.
-  const LAST_UPDATED = "2026-06-18";
+  const LAST_UPDATED = "2026-06-21";
 
   // Exam pages carry the date their spec was last verified against the official
   // source (verifiedOn), so lastmod reflects real freshness per exam instead of
   // a single site-wide date. Falls back to LAST_UPDATED when a spec has no date.
   const examFreshness = (key: string) => PORTAL_PRESETS[key]?.verifiedOn ?? LAST_UPDATED;
 
-  // Low-churn legal / company pages: rarely change and shouldn't compete with
-  // tool/content pages for crawl priority.
-  const LEGAL = new Set([
-    "/about/",
-    "/contact/",
-    "/privacy/",
-    "/terms/",
-    "/disclaimer/",
-  ]);
-
+  // Google ignores changeFrequency and priority — omit them for a leaner sitemap.
   return [
     ...routes.map((path) => ({
       url: `${SITE_URL}${path}`,
       lastModified: LAST_UPDATED,
-      changeFrequency: (LEGAL.has(path)
-        ? "yearly"
-        : path === "/"
-        ? "weekly"
-        : "monthly") as "yearly" | "weekly" | "monthly",
-      priority: LEGAL.has(path)
-        ? 0.3
-        : path === "/"
-        ? 1
-        : path.startsWith("/tools/")
-        ? 0.7
-        : 0.8,
     })),
     // Per-exam spec pages — lastmod = the spec's own verification date.
     ...PORTAL_KEYS.map((key) => ({
       url: `${SITE_URL}/exam-requirements/${key}/`,
       lastModified: examFreshness(key),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
     })),
     ...PORTAL_KEYS.map((key) => ({
       url: `${SITE_URL}/tools/form-resizer/${key}/`,
       lastModified: examFreshness(key),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
     })),
     // Sub-exam resizers (/exam-resizer/*) are noindex — they duplicate the
     // /exam-requirements/ intent and inherit the parent spec — so they are
@@ -111,8 +87,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...BLOG_POSTS.map((p) => ({
       url: `${SITE_URL}/blog/${p.slug}/`,
       lastModified: p.updatedISO ?? p.dateISO,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
     })),
   ];
 }

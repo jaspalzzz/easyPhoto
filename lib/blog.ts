@@ -218,7 +218,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Exact photo and signature KB limits, pixel dimensions and background rules for SSC, IBPS, SBI, UPSC, RRB and NTA exams — plus how to prepare your signature and resize to spec.",
     date: "June 8, 2026",
     dateISO: "2026-06-08",
-    updatedISO: "2026-06-18",
+    updatedISO: "2026-06-21",
     excerpt:
       "Wrong KB, wrong pixels, grey signature background — these three mistakes account for nearly every upload rejection. Here's the exact spec for every major Indian exam and how to fix each failure.",
     readMins: 10,
@@ -241,6 +241,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "In India a resume photo is passport-size (35×45 mm). The US, UK and Canada omit it to avoid bias claims — the rules by region, the exact size, and a free maker.",
     date: "June 7, 2026",
     dateISO: "2026-06-07",
+    updatedISO: "2026-06-21",
     excerpt:
       "In India a resume photo is usually passport-size on a plain background. Here's when to include one, the exact size, and how to make it look professional.",
     readMins: 5,
