@@ -10,12 +10,14 @@ import {
   softwareApplicationSchema,
   howToSchema,
 } from "@/lib/schema";
-import { PDF_KB_TARGETS, pdfKbPath } from "@/lib/kbTargets";
+import { PDF_KB_TARGETS, pdfKbPath, PDF_KB_USECASES } from "@/lib/kbTargets";
 
 /** Landing page for "Compress PDF to N KB", preset to the target. */
 export function PdfKbLanding({ kb }: { kb: number }) {
   const path = pdfKbPath(kb);
+  const uc = PDF_KB_USECASES[kb];
   const faqItems = [
+    ...(uc ? [uc.faq] : []),
     {
       q: `How do I compress a PDF to ${kb} KB?`,
       a: `Upload your PDF above, keep the target at ${kb} KB (or change it), and click compress. The pages are optimised to fit under ${kb} KB, then you download the result. Everything happens in your browser.`,
@@ -93,15 +95,25 @@ export function PdfKbLanding({ kb }: { kb: number }) {
       </p>
 
       <section className="mt-10 space-y-3">
-        <h2 className="text-lg font-semibold">
-          Compress documents for forms &amp; applications
-        </h2>
+        <h2 className="text-lg font-semibold">{uc?.heading ?? `Compress documents to ${kb} KB`}</h2>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Many application portals cap the size of supporting documents. This
-          tool gets scanned marksheets, certificates, Aadhaar, income
-          certificates and other PDFs under {kb} KB so the upload isn&apos;t
-          rejected for being too large.
+          {uc?.intro ??
+            `Many application portals cap the size of supporting documents. This tool gets scanned marksheets, certificates and other PDFs under ${kb} KB so the upload isn't rejected for being too large.`}
         </p>
+        {uc && (
+          <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
+            {uc.useCases.map((c) => (
+              <li key={c.label}>
+                <strong className="text-foreground">{c.label}</strong> — {c.detail}
+              </li>
+            ))}
+          </ul>
+        )}
+        {uc?.tip && (
+          <p className="rounded-lg border border-brand/20 bg-brand-soft/15 px-4 py-3 text-sm leading-relaxed text-ink-soft">
+            <strong className="text-foreground">Tip:</strong> {uc.tip}
+          </p>
+        )}
       </section>
 
       <section className="mt-8">

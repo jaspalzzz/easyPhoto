@@ -8,19 +8,22 @@ import {
 } from "@/lib/schema";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
 import { Faq } from "@/components/site/Faq";
+import { SIGNATURE_KB_USECASES } from "@/lib/kbTargets";
 
 const PATH = "/signature-resize-to-50kb/";
+const uc = SIGNATURE_KB_USECASES[50];
 
 export const metadata = pageMetadata({
   title: "Signature Resize to 50KB – Free, Keeps Transparency",
   titleAbsolute: true,
   description:
-    "Resize your signature to under 50 KB online for free, with a transparent " +
-    "background kept intact. Built for UPSC, SSC, bank & visa forms. No upload.",
+    "Resize your signature to under 50 KB — for CSIR NET, UGC and portals that " +
+    "allow a larger signature. Transparent background kept, in your browser. No upload.",
   path: PATH,
 });
 
 const faqItems = [
+  uc.faq,
   {
     q: "Why won't my signature upload to the form?",
     a: "Portals like UPSC, SSC and bank forms cap the signature file size (often 10–50 KB) and expect a clean background. A phone photo is usually far larger, so the upload is rejected.",
@@ -79,6 +82,21 @@ export default function Page() {
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
         Your signature is processed on your device and never uploaded.
       </p>
+
+      <section className="mt-8 space-y-3">
+        <h2 className="text-lg font-semibold tracking-tight">{uc.heading}</h2>
+        <p className="text-sm leading-relaxed text-muted-foreground">{uc.intro}</p>
+        <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
+          {uc.useCases.map((c) => (
+            <li key={c.label}>
+              <strong className="text-foreground">{c.label}</strong> — {c.detail}
+            </li>
+          ))}
+        </ul>
+        <p className="rounded-lg border border-brand/20 bg-brand-soft/15 px-4 py-3 text-sm leading-relaxed text-ink-soft">
+          <strong className="text-foreground">Tip:</strong> {uc.tip}
+        </p>
+      </section>
 
       <section className="mt-8">
         <h2 className="mb-3 text-sm font-semibold tracking-tight">Related tools</h2>

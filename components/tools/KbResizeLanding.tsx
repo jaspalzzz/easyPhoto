@@ -10,12 +10,14 @@ import {
   softwareApplicationSchema,
   howToSchema,
 } from "@/lib/schema";
-import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
+import { KB_TARGETS, kbPath, PHOTO_KB_USECASES } from "@/lib/kbTargets";
 
 /** Landing page for "Resize image to N KB", preset to the target. */
 export function KbResizeLanding({ kb }: { kb: number }) {
   const path = kbPath(kb);
+  const uc = PHOTO_KB_USECASES[kb];
   const faqItems = [
+    ...(uc ? [uc.faq] : []),
     {
       q: `How do I resize a photo to ${kb} KB?`,
       a: `Upload your image above, keep the target at ${kb} KB (or change it), and click “Compress to size”. We lower the JPEG quality first and then the dimensions if needed, so the file lands under ${kb} KB, then you download it. Everything happens in your browser.`,
@@ -92,54 +94,31 @@ export function KbResizeLanding({ kb }: { kb: number }) {
       </p>
 
       <section className="mt-10 space-y-3">
-        <h2 className="text-lg font-semibold">
-          Resize photos for exam &amp; government forms
-        </h2>
+        <h2 className="text-lg font-semibold">{uc?.heading ?? `Where a ${kb} KB photo is needed`}</h2>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Many application portals (exam boards, passport and visa sites, banks
-          and job forms across India, the US, UK, Canada and Australia) cap the
-          photo file size. This tool gets your image under {kb} KB while keeping
-          it as clear as possible, so uploads aren&apos;t rejected for being too
-          large.
+          {uc?.intro ??
+            `Many application portals cap the photo file size. This tool gets your image under ${kb} KB while keeping it as clear as possible, so uploads aren't rejected for being too large.`}
         </p>
-      </section>
-
-      <section className="mt-8 space-y-3">
-        <h2 className="text-lg font-semibold">Where a {kb} KB photo is needed</h2>
-        <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-          <li>
-            <strong className="text-foreground">
-              Indian exam &amp; government forms
-            </strong>{" "}
-            (SSC, UPSC, state PSCs, university portals) commonly ask for photos
-            around 20–50 KB and{" "}
-            <Link href="/signature-resize-to-20kb/" className="text-brand hover:underline">
-              signatures around 10–20 KB
-            </Link>
-            .
-          </li>
-          <li>
-            <strong className="text-foreground">Passport &amp; visa uploads</strong>{" "}
-            each set their own cap, so use the{" "}
-            <Link href="/passport-photo/" className="text-brand hover:underline">
-              passport photo maker
-            </Link>{" "}
-            or your{" "}
-            <Link
-              href="/india-passport-photo-maker/"
-              className="text-brand hover:underline"
-            >
-              country&apos;s photo spec
-            </Link>{" "}
-            to get the exact size and background first, then compress here.
-          </li>
-          <li>
-            <strong className="text-foreground">Job &amp; web forms</strong>{" "}
-            worldwide often limit uploads to 50–200 KB.
-          </li>
-        </ul>
+        {uc && (
+          <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
+            {uc.useCases.map((c) => (
+              <li key={c.label}>
+                <strong className="text-foreground">{c.label}</strong> — {c.detail}
+              </li>
+            ))}
+          </ul>
+        )}
+        {uc?.tip && (
+          <p className="rounded-lg border border-brand/20 bg-brand-soft/15 px-4 py-3 text-sm leading-relaxed text-ink-soft">
+            <strong className="text-foreground">Tip:</strong> {uc.tip}
+          </p>
+        )}
         <p className="text-xs text-muted-foreground">
-          Always check the exact limit shown on your form, then set it above.
+          Need the exact dimensions and white background too? Use the{" "}
+          <Link href="/passport-photo/" className="text-brand hover:underline">passport photo maker</Link>{" "}
+          first, then compress here. Pair it with a{" "}
+          <Link href="/signature-resize-to-20kb/" className="text-brand hover:underline">resized signature</Link>{" "}
+          for exam forms. Always check the exact limit on your form, then set it above.
         </p>
       </section>
 
