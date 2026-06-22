@@ -280,6 +280,10 @@ export function MaskDocumentTool() {
     // Redraw WITHOUT selection chrome so the green outline/handle never bakes in.
     const ctx = canvas.getContext("2d");
     if (ctx) {
+      if (type === "image/jpeg") {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
       ctx.drawImage(img, 0, 0);
       for (const b of boxes) {
         ctx.fillStyle = "#000";

@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, Share2 } from "lucide-react";
+import { Loader2, Download, Share2, Crop, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
@@ -67,7 +68,8 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
       const canvas = imageToCanvas(
         source.image,
         source.size.width,
-        source.size.height
+        source.size.height,
+        "#ffffff"   // JPEG output — fill white so transparent areas don't go black
       );
       // Compress to the KB cap. If the portal specifies a minimum pixel size,
       // never shrink below it (an undersized photo gets rejected); otherwise
@@ -247,6 +249,25 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
               was {formatKb(source.file.size)} · quality {result.quality.toFixed(2)}
             </span>
           </div>
+
+          <WorkflowNextSteps
+            getBlob={async () => result.blob}
+            filename="resized-photo.jpg"
+            steps={[
+              {
+                slug: "photo-with-name-date",
+                label: "Add Name & Date",
+                hint: "Add exam strip with your name, roll number, and date",
+                icon: <FileText className="h-4 w-4" strokeWidth={1.75} />,
+              },
+              {
+                slug: "image-crop",
+                label: "Crop Image",
+                hint: "Trim margins or adjust framing before submitting",
+                icon: <Crop className="h-4 w-4" strokeWidth={1.75} />,
+              },
+            ]}
+          />
         </div>
       )}
     </div>

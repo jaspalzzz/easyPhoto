@@ -15,11 +15,15 @@ async function getPica() {
   return picaInstance as any;
 }
 
-/** Draw any image source onto a freshly-sized canvas (1:1, no scaling). */
+/** Draw any image source onto a freshly-sized canvas (1:1, no scaling).
+ *  Pass `background` (e.g. "#ffffff") when the output will be JPEG-encoded —
+ *  without it, transparent pixels become black. Leave undefined for PNG/signatures
+ *  that need the alpha channel preserved. */
 export function imageToCanvas(
   source: HTMLImageElement | HTMLCanvasElement | ImageBitmap,
   width: number,
-  height: number
+  height: number,
+  background?: string
 ): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = width;
@@ -27,8 +31,17 @@ export function imageToCanvas(
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Could not acquire 2D canvas context.");
   ctx.imageSmoothingQuality = "high";
+  if (background) {
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, width, height);
+  }
   ctx.drawImage(source, 0, 0, width, height);
   return canvas;
+}
+
+/** Flatten a canvas onto white before JPEG encoding — prevents transparent pixels becoming black. */
+export function flattenForJpeg(source: HTMLCanvasElement): HTMLCanvasElement {
+  return imageToCanvas(source, source.width, source.height, "#ffffff");
 }
 
 /**

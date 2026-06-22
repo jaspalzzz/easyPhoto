@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { pageMetadata } from "@/lib/seo";
 import { getPost } from "@/lib/blog";
 
@@ -8,6 +10,7 @@ export const metadata = pageMetadata({
   title: post.title,
   description: post.description,
   path: `/blog/${post.slug}/`,
+  type: "article",
 });
 
 export default function Page() {
@@ -33,13 +36,16 @@ export default function Page() {
         Visafoto&apos;s human expert review layer is a real differentiator. A trained reviewer
         checks your photo against the official spec before you download it. For a Schengen or US
         visa where a rejected photo can delay the appointment by weeks, that guarantee is worth
-        ₹600. The India 35×45 mm spec is correctly implemented. The tool is polished and the
+        ₹600. The India{" "}
+        <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">35×45 mm spec</Link>{" "}
+        is correctly implemented. The tool is polished and the
         output quality is high.
       </p>
 
       <p>
-        What it doesn&apos;t cover: there are no Indian exam photo presets. SSC, IBPS, UPSC, SBI
-        PO, and RRB each have their own KB and pixel limits that a passport photo tool never
+        What it doesn&apos;t cover: there are no Indian exam photo presets.{" "}
+        <Link href="/blog/exam-photo-signature-size-guide/" className="text-brand underline">SSC, IBPS, UPSC, SBI PO, and RRB</Link>{" "}
+        each have their own KB and pixel limits that a passport photo tool never
         needs to know. If you&apos;re filling out an exam application form, Visafoto won&apos;t
         help you.
       </p>
@@ -154,7 +160,9 @@ export default function Page() {
 
       <p>
         Visafoto is worth paying for when the cost of rejection is high and the stakes are real.
-        A Schengen visa appointment that gets pushed back by weeks because the photo wasn&apos;t
+        A{" "}
+        <Link href="/blog/schengen-europe-visa-photo-size/" className="text-brand underline">Schengen visa</Link>{" "}
+        appointment that gets pushed back by weeks because the photo wasn&apos;t
         quite right is a much bigger problem than ₹600. The expert review layer gives you a
         human second opinion before submission. For a foreign visa application, or when an
         employer or embassy requires a photo that provably meets biometric standards, the fee
@@ -164,40 +172,25 @@ export default function Page() {
       <p>
         For a standard Indian passport renewal, an OCI application, or any exam portal photo
         where the system simply checks dimensions and file size — the free tools work equally well.
+        See the{" "}
+        <Link href="/blog/best-free-passport-photo-maker-india-2026/" className="text-brand underline">best free Indian passport photo maker guide</Link>{" "}
+        for a full comparison of all free options.
       </p>
 
-      <h2>Frequently asked questions</h2>
-
-      <p>
-        <strong>Is Visafoto safe to use?</strong>
-      </p>
-      <p>
-        Visafoto has been operating since 2009 and is a well-established service. &quot;Safe&quot;
-        in the security sense is reasonable — they process photos for millions of users. The
-        concern is not security but privacy: you are sending a biometric photo to a third-party
-        server. That is a different risk assessment from using a tool that never receives your
-        image.
-      </p>
-
-      <p>
-        <strong>Does easyPhoto produce photos that are accepted by Indian passport offices?</strong>
-      </p>
-      <p>
-        The tool uses the Passport Seva specification: 35×45 mm JPG, plain white background,
-        face centred, under 1 MB. Meeting the stated spec is what determines acceptance — no
-        tool (including Visafoto) can guarantee the physical photo print meets every counter
-        officer&apos;s judgment. The digital upload spec is met.
-      </p>
-
-      <p>
-        <strong>What is the cheapest way to get a passport photo in India?</strong>
-      </p>
-      <p>
-        The cheapest digital option is free: easyPhoto, PassportSizePhoto.in, or IDPhoto4You all
-        produce a compliant 35×45 mm JPG at no cost. For a physical printed photo, a local studio
-        charges ₹30–₹80 for a set of six. For a digital photo for the Passport Seva portal, the
-        free online tools are sufficient.
-      </p>
+      <Faq items={[
+        {
+          q: "Is Visafoto safe to use?",
+          a: "Visafoto has been operating since 2009 and is a well-established service. \"Safe\" in the security sense is reasonable — they process photos for millions of users. The concern is not security but privacy: you are sending a biometric photo to a third-party server. That is a different risk assessment from using a tool that never receives your image.",
+        },
+        {
+          q: "Does easyPhoto produce photos that are accepted by Indian passport offices?",
+          a: "The tool uses the Passport Seva specification: 35×45 mm JPG, plain white background, face centred, under 1 MB. Meeting the stated spec is what determines acceptance — no tool (including Visafoto) can guarantee the physical photo print meets every counter officer's judgment. The digital upload spec is met.",
+        },
+        {
+          q: "What is the cheapest way to get a passport photo in India?",
+          a: "The cheapest digital option is free: easyPhoto, PassportSizePhoto.in, or IDPhoto4You all produce a compliant 35×45 mm JPG at no cost. For a physical printed photo, a local studio charges ₹30–₹80 for a set of six. For a digital photo for the Passport Seva portal, the free online tools are sufficient.",
+        },
+      ]} />
     </BlogPostLayout>
   );
 }

@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Download } from "lucide-react";
+import { Download, Palette, Crop, Minimize2 } from "lucide-react";
 import { ScanProgress } from "@/components/site/ScanProgress";
 import { Button } from "@/components/ui/button";
 import { CropMarks } from "@/components/site/CropMarks";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { removeBgSmart } from "@/lib/segmentation";
 import { canvasToBlob } from "@/lib/imaging";
@@ -101,6 +102,34 @@ function Body({ source }: { source: ToolSource }) {
       <Button variant="cta" onClick={onDownload}>
         <Download className="h-4 w-4" strokeWidth={1.75} /> Download transparent PNG
       </Button>
+
+      <WorkflowNextSteps
+        getBlob={async () => {
+          if (!canvasRef.current) throw new Error("No output canvas");
+          return canvasToBlob(canvasRef.current, "image/png");
+        }}
+        filename="photo-no-bg.png"
+        steps={[
+          {
+            slug: "white-background",
+            label: "Add White Background",
+            hint: "Replace transparency with white or any solid color",
+            icon: <Palette className="h-4 w-4" strokeWidth={1.75} />,
+          },
+          {
+            slug: "image-crop",
+            label: "Crop to Size",
+            hint: "Trim to passport, square, or custom dimensions",
+            icon: <Crop className="h-4 w-4" strokeWidth={1.75} />,
+          },
+          {
+            slug: "resize-kb",
+            label: "Resize for Portal",
+            hint: "Hit exact KB limits for exam and visa portals",
+            icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+          },
+        ]}
+      />
     </div>
   );
 }

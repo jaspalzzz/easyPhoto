@@ -71,6 +71,8 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
     canvas.height = source.size.height;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(source.image, 0, 0);
   }, [source]);
 

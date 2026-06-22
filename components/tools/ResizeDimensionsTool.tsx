@@ -4,7 +4,7 @@ import * as React from "react";
 import { Loader2, Download, Link2, Link2Off } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
-import { picaResizeTo, canvasToBlob } from "@/lib/imaging";
+import { picaResizeTo, canvasToBlob, flattenForJpeg } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
 
 function Body({ source }: { source: ToolSource }) {
@@ -89,7 +89,8 @@ function Body({ source }: { source: ToolSource }) {
 
   const onDownload = async (type: "image/png" | "image/jpeg") => {
     if (!out) return;
-    const blob = await canvasToBlob(out.canvas, type, 0.95);
+    const src = type === "image/jpeg" ? flattenForJpeg(out.canvas) : out.canvas;
+    const blob = await canvasToBlob(src, type, 0.95);
     downloadBlob(blob, `resized-${width}x${height}.${type === "image/png" ? "png" : "jpg"}`);
   };
 

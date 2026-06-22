@@ -14,7 +14,7 @@ import {
   centerSquareCrop,
   type SquareCropRect,
 } from "@/lib/squareFaceCrop";
-import { picaResizeTo, canvasToBlob } from "@/lib/imaging";
+import { picaResizeTo, canvasToBlob, flattenForJpeg } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
 import { track, deviceClass } from "@/lib/analytics";
 
@@ -123,7 +123,8 @@ function Body({ source }: { source: ToolSource }) {
 
   const onDownload = async (type: "image/png" | "image/jpeg") => {
     if (!out) return;
-    const blob = await canvasToBlob(out.canvas, type, 0.95);
+    const src = type === "image/jpeg" ? flattenForJpeg(out.canvas) : out.canvas;
+    const blob = await canvasToBlob(src, type, 0.95);
     downloadBlob(
       blob,
       `linkedin-photo-${side}x${side}.${type === "image/png" ? "png" : "jpg"}`

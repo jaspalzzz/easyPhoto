@@ -246,8 +246,8 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     // matches the final export exactly.
     const croppedCanvas = cropper.getCroppedCanvas(
       activePreset.width && activePreset.height
-        ? { width: activePreset.width, height: activePreset.height }
-        : { width: 400 }
+        ? { width: activePreset.width, height: activePreset.height, fillColor: "#ffffff" }
+        : { width: 400, fillColor: "#ffffff" }
     );
     if (!croppedCanvas) return;
 
@@ -319,6 +319,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
       const croppedCanvas = cropper.getCroppedCanvas({
         imageSmoothingEnabled: true,
         imageSmoothingQuality: "high",
+        fillColor: "#ffffff",
       });
 
       if (!croppedCanvas) throw new Error("Could not acquire cropped canvas");

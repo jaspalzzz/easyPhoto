@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
@@ -69,6 +70,19 @@ export default function Page() {
         <a href="https://www.passportindia.gov.in" target="_blank" rel="noopener noreferrer">Passport Seva (India)</a>,{" "}
         <a href="https://www.gov.uk/photos-for-passports" target="_blank" rel="noopener noreferrer">GOV.UK</a>.
       </p>
+
+      <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
+        <Image
+          src="/images/passport-photo-background-color.png"
+          alt="Professional portrait background comparison showing white (India/US), light grey (UK), and cream backgrounds side by side"
+          width={1024}
+          height={1024}
+          className="w-full h-auto"
+        />
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+          The three most common passport photo backgrounds: white (India, US), light grey (UK), and cream. Each changes how the photo is assessed against national specs.
+        </figcaption>
+      </figure>
 
       <h2>Why the shade matters so much</h2>
       <p>

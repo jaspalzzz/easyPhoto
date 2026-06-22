@@ -72,34 +72,15 @@ export default function Page() {
       </p>
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
-        <div className="grid grid-cols-2">
-          <div className="relative border-r border-hairline">
-            <span className="absolute left-2 top-2 z-10 rounded bg-red-500/90 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-              Rejected
-            </span>
-            <Image
-              src="/images/sample4_before_1782052955340.png"
-              alt="Exam photo before AI correction — coloured background and incorrect framing"
-              width={400}
-              height={400}
-              className="h-48 w-full object-cover object-top"
-            />
-          </div>
-          <div className="relative">
-            <span className="absolute left-2 top-2 z-10 rounded bg-green-600/90 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-              Accepted
-            </span>
-            <Image
-              src="/images/sample4_after_1782052969219.png"
-              alt="AI-corrected exam photo — white background, correct head size, ready to upload"
-              width={400}
-              height={400}
-              className="h-48 w-full object-cover object-top"
-            />
-          </div>
-        </div>
+        <Image
+          src="/images/exam-photo-signature-size-guide.png"
+          alt="Exam photo acceptance criteria side-by-side: accepted photo with white background and 50 KB vs rejected photo with dark background and 1.2 MB file size"
+          width={760}
+          height={760}
+          className="w-full h-auto"
+        />
         <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
-          Left: original photo — unsuitable background. Right: corrected photo — white background, head centred, within the 20–50&nbsp;KB band.
+          Accepted vs rejected exam photo: white background, sharp focus, and correct file size (20–50&nbsp;KB) vs dark background, low quality, and oversize file.
         </figcaption>
       </figure>
 
@@ -164,7 +145,7 @@ export default function Page() {
               <td className="px-3 py-2 font-medium text-ink">UPSC CSE / IAS</td>
               <td className="px-3 py-2">20–300 KB</td>
               <td className="px-3 py-2">min 350×350 (square)</td>
-              <td className="px-3 py-2">10–40 KB</td>
+              <td className="px-3 py-2">20–300 KB</td>
               <td className="px-3 py-2">varies</td>
               <td className="px-3 py-2">JPG</td>
             </tr>
@@ -172,7 +153,7 @@ export default function Page() {
               <td className="px-3 py-2 font-medium text-ink">UPSC NDA / CDS</td>
               <td className="px-3 py-2">20–300 KB</td>
               <td className="px-3 py-2">min 350×350 (square)</td>
-              <td className="px-3 py-2">10–40 KB</td>
+              <td className="px-3 py-2">20–300 KB</td>
               <td className="px-3 py-2">varies</td>
               <td className="px-3 py-2">JPG</td>
             </tr>
