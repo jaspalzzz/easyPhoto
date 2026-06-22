@@ -187,15 +187,82 @@ function decontaminateData(
 }
 
 /**
- * Canvas wrapper around {@link decontaminateData} for cutouts produced outside
- * finishCutout (the isnet/@imgly fallback). Reads the pixels, un-spills the edge
- * colour, writes them back. No-op-safe if the context can't be acquired.
+ * Matte denoise (despeckle) — operates on raw RGBA bytes, ALPHA channel only.
+ *
+ * The model's matte is copied straight to the output alpha, so any per-pixel
+ * speckle the model emits becomes visible grain. On low-contrast cases (grey
+ * hair on a light background) the model is uncertain and the matte comes back
+ * speckled — isolated pixels whose alpha jumps far from their neighbours. That
+ * speckle IS the "noise" at the hair edge.
+ *
+ * We replace ONLY genuine outliers: a pixel whose alpha differs from its 3×3
+ * median by more than OUTLIER is snapped to that median; everything else is left
+ * exactly as-is. Crucially this is NOT a blur — consistent soft wisps (alpha
+ * close to their neighbours) pass through untouched, and the certain interior
+ * (α≈255) and exterior (α≈0) are skipped entirely, so a clean matte is a no-op.
+ * That's why it fixes the noisy grey-hair case without degrading the 8 clean
+ * ones. Snapshots alpha so the median always reads the ORIGINAL matte.
+ */
+function denoiseMatteData(d: Uint8ClampedArray, w: number, h: number): void {
+  if (w < 3 || h < 3) return;
+  const n = w * h;
+  const LOW = 12; // ≤ this α is certain background — can't be edge speckle
+  const HIGH = 243; // ≥ this α is certain foreground — leave solid hair alone
+  const OUTLIER = 64; // α must deviate this far from the local median to count
+  // Snapshot the alpha plane: the median must read the original matte, not the
+  // partly-despeckled one, or corrections would cascade pixel-to-pixel.
+  const a = new Uint8Array(n);
+  for (let i = 0; i < n; i++) a[i] = d[i * 4 + 3];
+  const m = new Uint8Array(9);
+  for (let i = 0; i < n; i++) {
+    const av = a[i];
+    if (av <= LOW || av >= HIGH) continue; // only the uncertain band can speckle
+    const x = i % w;
+    const y = (i - x) / w;
+    let c = 0;
+    for (let dy = -1; dy <= 1; dy++) {
+      const ny = y + dy < 0 ? 0 : y + dy >= h ? h - 1 : y + dy;
+      for (let dx = -1; dx <= 1; dx++) {
+        const nx = x + dx < 0 ? 0 : x + dx >= w ? w - 1 : x + dx;
+        m[c++] = a[ny * w + nx];
+      }
+    }
+    // Insertion sort of the 9 samples → median at index 4.
+    for (let p = 1; p < 9; p++) {
+      const v = m[p];
+      let q = p - 1;
+      while (q >= 0 && m[q] > v) {
+        m[q + 1] = m[q];
+        q--;
+      }
+      m[q + 1] = v;
+    }
+    const med = m[4];
+    if (Math.abs(av - med) > OUTLIER) d[i * 4 + 3] = med;
+  }
+}
+
+/**
+ * Full matte cleanup applied to every cutout before compositing: despeckle the
+ * alpha (kill model noise), then un-spill the old background colour from the
+ * soft edge. Order matters — denoise the matte first so colour decontamination
+ * reads a clean alpha band.
+ */
+function cleanCutoutData(d: Uint8ClampedArray, w: number, h: number): void {
+  denoiseMatteData(d, w, h);
+  decontaminateData(d, w, h);
+}
+
+/**
+ * Canvas wrapper around {@link cleanCutoutData} for cutouts produced outside
+ * finishCutout (the isnet/@imgly fallback). Reads the pixels, despeckles +
+ * un-spills, writes them back. No-op-safe if the context can't be acquired.
  */
 export function decontaminateForeground(cutout: HTMLCanvasElement): void {
   const ctx = cutout.getContext("2d", { willReadFrequently: true });
   if (!ctx) return;
   const img = ctx.getImageData(0, 0, cutout.width, cutout.height);
-  decontaminateData(img.data, cutout.width, cutout.height);
+  cleanCutoutData(img.data, cutout.width, cutout.height);
   ctx.putImageData(img, 0, 0);
 }
 
@@ -627,10 +694,11 @@ async function finishCutout(
     }
     if (end < total) await new Promise((r) => setTimeout(r, 0));
   }
-  // Un-spill the old background colour from the soft hair edge before this
-  // cutout is composited onto the new background (reuses the buffer we already
-  // hold — no extra getImageData on this hot, mobile-shared path).
-  decontaminateData(d, size.width, size.height);
+  // Clean the matte before compositing: despeckle the model's alpha (kills the
+  // grey-hair noise) then un-spill the old background colour from the soft edge.
+  // Reuses the buffer we already hold — no extra getImageData on this hot,
+  // mobile-shared path.
+  cleanCutoutData(d, size.width, size.height);
   ctx.putImageData(imgData, 0, 0);
   return canvas;
 }
