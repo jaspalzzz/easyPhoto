@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Download, Share2, RefreshCcw, ImagePlus, Loader2 } from "lucide-react";
+import { Download, Share2, RefreshCcw, ImagePlus, Loader2, Minimize2, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ensureDecodable } from "@/lib/heic";
 import { loadImageFromFile } from "@/lib/pipeline";
 import { trimToContent } from "@/lib/signature";
 import { downloadBlob, shareFile } from "@/lib/download";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { track, deviceClass } from "@/lib/analytics";
 
 type Layout = "stack" | "side";
@@ -307,6 +308,27 @@ export function PhotoSignatureMergeTool() {
               <RefreshCcw className="h-3.5 w-3.5" strokeWidth={1.75} /> Adjust
             </button>
           </div>
+          <WorkflowNextSteps
+            getBlob={async () => {
+              if (!resultBlob) throw new Error("No output");
+              return resultBlob;
+            }}
+            filename="photo-signature.jpg"
+            steps={[
+              {
+                slug: "resize-kb",
+                label: "Compress to KB",
+                hint: "Hit exact file size limits for exam and visa portals",
+                icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+              },
+              {
+                slug: "photo-with-name-date",
+                label: "Add Name & Date",
+                hint: "Add exam strip with your name, roll number, and date",
+                icon: <FileText className="h-4 w-4" strokeWidth={1.75} />,
+              },
+            ]}
+          />
         </div>
       )}
     </div>

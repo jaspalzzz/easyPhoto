@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, Link2, Link2Off } from "lucide-react";
+import { Loader2, Download, Link2, Link2Off, Minimize2, Scissors, Crop } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { picaResizeTo, canvasToBlob, flattenForJpeg } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 
 function Body({ source }: { source: ToolSource }) {
   const aspect = source.size.width / source.size.height;
@@ -167,14 +168,40 @@ function Body({ source }: { source: ToolSource }) {
       )}
 
       {out && (
-        <div className="flex gap-2">
-          <Button size="sm" onClick={() => onDownload("image/png")}>
-            <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
-          </Button>
-          <Button size="sm" variant="outline" onClick={() => onDownload("image/jpeg")}>
-            <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
-          </Button>
-        </div>
+        <>
+          <div className="flex gap-2">
+            <Button size="sm" onClick={() => onDownload("image/png")}>
+              <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => onDownload("image/jpeg")}>
+              <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
+            </Button>
+          </div>
+          <WorkflowNextSteps
+            getBlob={async () => canvasToBlob(flattenForJpeg(out.canvas), "image/jpeg", 0.95)}
+            filename="resized-photo.jpg"
+            steps={[
+              {
+                slug: "resize-kb",
+                label: "Compress to KB",
+                hint: "Hit exact file size limits for exam and visa portals",
+                icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+              },
+              {
+                slug: "background-removal",
+                label: "Remove Background",
+                hint: "AI removes the background from your resized photo",
+                icon: <Scissors className="h-4 w-4" strokeWidth={1.75} />,
+              },
+              {
+                slug: "image-crop",
+                label: "Crop to Size",
+                hint: "Trim to passport, square, or custom dimensions",
+                icon: <Crop className="h-4 w-4" strokeWidth={1.75} />,
+              },
+            ]}
+          />
+        </>
       )}
     </div>
   );

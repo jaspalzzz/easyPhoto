@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Download, Share2, Undo2 } from "lucide-react";
+import { Download, Share2, Undo2, Scissors, Minimize2, Crop } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, type ToolSource } from "./ImageToolShell";
 import { downloadBlob, shareFile } from "@/lib/download";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { track, deviceClass } from "@/lib/analytics";
 
 type Brush = "S" | "M" | "L";
@@ -190,6 +191,36 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
           Use different photo
         </button>
       </div>
+      {edited && (
+        <WorkflowNextSteps
+          getBlob={async () => {
+            const b = resultBlob ?? (await finish());
+            if (!b) throw new Error("No output");
+            return b;
+          }}
+          filename="red-eye-fixed.jpg"
+          steps={[
+            {
+              slug: "background-removal",
+              label: "Remove Background",
+              hint: "AI removes the background from your fixed photo",
+              icon: <Scissors className="h-4 w-4" strokeWidth={1.75} />,
+            },
+            {
+              slug: "image-crop",
+              label: "Crop to Size",
+              hint: "Trim to passport, square, or custom dimensions",
+              icon: <Crop className="h-4 w-4" strokeWidth={1.75} />,
+            },
+            {
+              slug: "resize-kb",
+              label: "Compress to KB",
+              hint: "Hit exact file size limits for exam and visa portals",
+              icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+            },
+          ]}
+        />
+      )}
     </div>
   );
 }

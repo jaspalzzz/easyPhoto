@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Download } from "lucide-react";
+import { Download, Minimize2, FilePen, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, canvasToBlob } from "@/lib/imaging";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
 
 interface Options {
@@ -95,6 +96,32 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
       <Button variant="cta" onClick={onDownload} disabled={!out}>
         <Download className="h-4 w-4" strokeWidth={1.75} /> Download transparent PNG
       </Button>
+      {out && (
+        <WorkflowNextSteps
+          getBlob={async () => canvasToBlob(out.canvas, "image/png")}
+          filename="signature-transparent.png"
+          steps={[
+            {
+              slug: "signature-resize",
+              label: "Compress to KB",
+              hint: "Hit the exact KB limit required by exam portals",
+              icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+            },
+            {
+              slug: "sign-image",
+              label: "Sign a Photo",
+              hint: "Overlay this signature onto any photo or document",
+              icon: <FilePen className="h-4 w-4" strokeWidth={1.75} />,
+            },
+            {
+              slug: "photo-signature-merge",
+              label: "Merge with Photo",
+              hint: "Combine signature and photo for exam applications",
+              icon: <Layers className="h-4 w-4" strokeWidth={1.75} />,
+            },
+          ]}
+        />
+      )}
     </div>
   );
 }

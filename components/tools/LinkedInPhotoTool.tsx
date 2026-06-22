@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, Info } from "lucide-react";
+import { Loader2, Download, Info, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import {
   detectFace,
   disposeLandmarker,
@@ -212,14 +213,28 @@ function Body({ source }: { source: ToolSource }) {
       </div>
 
       {out && !busy && (
-        <div className="flex gap-2">
-          <Button size="sm" onClick={() => onDownload("image/jpeg")}>
-            <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
-          </Button>
-          <Button size="sm" variant="outline" onClick={() => onDownload("image/png")}>
-            <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
-          </Button>
-        </div>
+        <>
+          <div className="flex gap-2">
+            <Button size="sm" onClick={() => onDownload("image/jpeg")}>
+              <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => onDownload("image/png")}>
+              <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
+            </Button>
+          </div>
+          <WorkflowNextSteps
+            getBlob={async () => canvasToBlob(flattenForJpeg(out.canvas), "image/jpeg", 0.95)}
+            filename="linkedin-photo.jpg"
+            steps={[
+              {
+                slug: "resize-kb",
+                label: "Compress to KB",
+                hint: "Shrink to an exact file-size target for any portal",
+                icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+              },
+            ]}
+          />
+        </>
       )}
     </div>
   );
