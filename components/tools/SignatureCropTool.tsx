@@ -4,7 +4,7 @@ import * as React from "react";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
-import { imageToCanvas, canvasToBlob } from "@/lib/imaging";
+import { imageToCanvas, canvasToBlob, flattenForJpeg } from "@/lib/imaging";
 import { trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
@@ -66,7 +66,8 @@ function Body({ source }: { source: ToolSource }) {
 
   const onDownload = async (type: "image/png" | "image/jpeg") => {
     if (!out) return;
-    const blob = await canvasToBlob(out.canvas, type, 0.95);
+    const src = type === "image/jpeg" ? flattenForJpeg(out.canvas) : out.canvas;
+    const blob = await canvasToBlob(src, type, 0.95);
     downloadBlob(blob, `signature-cropped.${type === "image/png" ? "png" : "jpg"}`);
   };
 

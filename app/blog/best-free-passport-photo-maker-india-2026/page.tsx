@@ -6,8 +6,10 @@ const post = getPost("best-free-passport-photo-maker-india-2026")!;
 
 export const metadata = pageMetadata({
   title: post.title,
+  titleAbsolute: true,
   description: post.description,
   path: `/blog/${post.slug}/`,
+  type: "article",
 });
 
 export default function Page() {

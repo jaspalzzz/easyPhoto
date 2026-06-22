@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { pageMetadata } from "@/lib/seo";
 import { getPost } from "@/lib/blog";
 
@@ -8,6 +10,7 @@ export const metadata = pageMetadata({
   title: post.title,
   description: post.description,
   path: `/blog/${post.slug}/`,
+  type: "article",
 });
 
 export default function Page() {
@@ -17,8 +20,9 @@ export default function Page() {
         Cutout.pro gives every new account 5 free credits. A passport photo costs 2 credits — so
         you can make exactly two complete passport photos before the credits run out. After that,
         the cheapest plan is a monthly subscription starting at ₹246.50 for 80 credits (pricing
-        confirmed June 2026 from cutout.pro/image-pricing). For someone who needs one passport
-        photo per year for a renewal, a monthly subscription makes no sense.
+        confirmed June 2026 from cutout.pro/image-pricing). For someone who needs one{" "}
+        <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">Indian passport photo</Link>{" "}
+        per year for a renewal, a monthly subscription makes no sense.
       </p>
 
       <p>
@@ -129,8 +133,9 @@ export default function Page() {
       </p>
 
       <p>
-        easyPhoto makes passport photos to the Passport Seva spec (35×45 mm, white background,
-        under 1 MB) for free, with no account and no server upload. Every operation runs in
+        easyPhoto makes{" "}
+        <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">Indian passport photos to the Passport Seva spec</Link>{" "}
+        (35×45 mm, white background, under 1 MB) for free, with no account and no server upload. Every operation runs in
         your browser — you can verify this yourself by watching the network tab while the tool
         processes your photo. No image upload request is sent.
       </p>
@@ -139,7 +144,8 @@ export default function Page() {
         It also handles exam photos that Cutout.pro has no support for. SSC CGL requires
         275×354 px between 20–50 KB; IBPS PO requires 200×230 px in the same range; UPSC needs
         a square minimum 350×350 px. The tool knows the exact spec from each board&apos;s official
-        notification and resizes to fit in one step for 40+ portals.
+        notification and resizes to fit in one step for{" "}
+        <Link href="/blog/exam-photo-signature-size-guide/" className="text-brand underline">40+ portals</Link>.
       </p>
 
       <h2>PassportSizePhoto.in — the strongest free passport-only alternative</h2>
@@ -157,7 +163,9 @@ export default function Page() {
       <p>
         The gap: it is a passport and ID photo tool only. It mentions SSC and UPSC by name but
         has no portal-specific KB and pixel constraints for individual exam forms. If you only
-        need a passport photo, it is a strong free alternative to Cutout.pro.
+        need a passport photo, it is a strong free alternative to Cutout.pro. For a broader
+        comparison of every free Indian passport photo tool, see the{" "}
+        <Link href="/blog/best-free-passport-photo-maker-india-2026/" className="text-brand underline">best free passport photo maker guide</Link>.
       </p>
 
       <h2>PassportMaker — AI outfit swap, server upload</h2>
@@ -208,38 +216,20 @@ export default function Page() {
         faster, and more private.
       </p>
 
-      <h2>Frequently asked questions</h2>
-
-      <p>
-        <strong>Is Cutout.pro actually free?</strong>
-      </p>
-      <p>
-        Cutout.pro starts with 5 free credits. A passport photo costs 2 credits, so you get two
-        complete photos before credits run out. After that, the cheapest option is ₹246.50/month
-        for 80 credits (subscription) or ₹254.15 for 30 credits (pay-as-you-go), both confirmed
-        from cutout.pro/image-pricing in June 2026. Free previews are watermarked.
-      </p>
-
-      <p>
-        <strong>Did Cutout.pro experience a data breach?</strong>
-      </p>
-      <p>
-        Cybernews researchers reported an exposed Elasticsearch server associated with Cutout.pro
-        in early 2023. In February 2024, Trustpilot user reviews referenced a 5.93 GB dataset
-        posted to BreachForums. These are sourced from public reports; we have not independently
-        verified the contents. Cutout.pro&apos;s current privacy policy states photos are
-        processed on AWS and deleted within 24–48 hours after the last edit.
-      </p>
-
-      <p>
-        <strong>Which free tool is most accurate for India passport photos?</strong>
-      </p>
-      <p>
-        PassportSizePhoto.in lists the Passport Seva spec at the pixel level (630×810 px,
-        10–250 KB), matching the upload portal&apos;s exact constraints. easyPhoto targets
-        the same spec and also covers exam portal requirements. Both are free with no server
-        upload. Neither charges credits for any feature.
-      </p>
+      <Faq items={[
+        {
+          q: "Is Cutout.pro actually free?",
+          a: "Cutout.pro starts with 5 free credits. A passport photo costs 2 credits, so you get two complete photos before credits run out. After that, the cheapest option is ₹246.50/month for 80 credits (subscription) or ₹254.15 for 30 credits (pay-as-you-go), both confirmed from cutout.pro/image-pricing in June 2026. Free previews are watermarked.",
+        },
+        {
+          q: "Did Cutout.pro experience a data breach?",
+          a: "Cybernews researchers reported an exposed Elasticsearch server associated with Cutout.pro in early 2023. In February 2024, Trustpilot user reviews referenced a 5.93 GB dataset posted to BreachForums. These are sourced from public reports; we have not independently verified the contents. Cutout.pro's current privacy policy states photos are processed on AWS and deleted within 24–48 hours after the last edit.",
+        },
+        {
+          q: "Which free tool is most accurate for India passport photos?",
+          a: "PassportSizePhoto.in lists the Passport Seva spec at the pixel level (630×810 px, 10–250 KB), matching the upload portal's exact constraints. easyPhoto targets the same spec and also covers exam portal requirements. Both are free with no server upload. Neither charges credits for any feature.",
+        },
+      ]} />
     </BlogPostLayout>
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Download } from "lucide-react";
+import { Download, Minimize2, Crop, FileText } from "lucide-react";
 import { ScanProgress } from "@/components/site/ScanProgress";
 import { Button } from "@/components/ui/button";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { removeBgSmart, compositeFull } from "@/lib/segmentation";
 import { canvasToBlob } from "@/lib/imaging";
@@ -141,6 +142,34 @@ function Body({ source }: { source: ToolSource }) {
           <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
         </Button>
       </div>
+
+      <WorkflowNextSteps
+        getBlob={async () => {
+          if (!outRef.current) throw new Error("No output canvas");
+          return canvasToBlob(outRef.current, "image/jpeg", 0.92);
+        }}
+        filename="photo-white-bg.jpg"
+        steps={[
+          {
+            slug: "resize-kb",
+            label: "Compress to KB",
+            hint: "Hit exact file size limits for exam and visa portals",
+            icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+          },
+          {
+            slug: "image-crop",
+            label: "Crop to Size",
+            hint: "Trim to passport, square, or custom dimensions",
+            icon: <Crop className="h-4 w-4" strokeWidth={1.75} />,
+          },
+          {
+            slug: "photo-with-name-date",
+            label: "Add Name & Date",
+            hint: "Add exam strip with your name, roll number, and date",
+            icon: <FileText className="h-4 w-4" strokeWidth={1.75} />,
+          },
+        ]}
+      />
     </div>
   );
 }

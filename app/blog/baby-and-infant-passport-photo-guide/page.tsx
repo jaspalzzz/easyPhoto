@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
@@ -94,6 +95,19 @@ export default function Page() {
         <li>Support the head if needed, but keep hands out of frame.</li>
         <li>Take many shots and pick the one with open eyes and a calm face.</li>
       </ul>
+
+      <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
+        <Image
+          src="/images/baby-and-infant-passport-photo-guide.png"
+          alt="Illustrated diagram of the lay-down passport photo method for babies: white sheet, baby lying flat facing up, adult holding smartphone directly above at 90 degrees"
+          width={1024}
+          height={1024}
+          className="w-full h-auto"
+        />
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+          The lay-down method: baby on a smooth white sheet, photographer directly overhead at 90°, natural side lighting — no flash, no shadows.
+        </figcaption>
+      </figure>
 
       <h2>For an older infant who can sit</h2>
       <p>

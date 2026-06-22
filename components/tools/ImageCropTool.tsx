@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Download, Maximize, ShieldCheck } from "lucide-react";
+import { Download, Maximize, ShieldCheck, Scissors, Palette, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
@@ -245,7 +246,7 @@ function Body({ source }: { source: ToolSource }) {
     let cancelled = false;
     let url: string | null = null;
     async function run() {
-      const out = cropCanvas(false);
+      const out = cropCanvas(true);
       if (!out) { setPreview(null); setPreviewKb(null); return; }
       const blob = await canvasToBlob(out, "image/jpeg", 0.85);
       if (cancelled) return;
@@ -339,6 +340,37 @@ function Body({ source }: { source: ToolSource }) {
           <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
         </Button>
       </div>
+
+      {hasCrop && (
+        <WorkflowNextSteps
+          getBlob={async () => {
+            const out = cropCanvas(true);
+            if (!out) throw new Error("No crop output");
+            return canvasToBlob(out, "image/jpeg", 0.95);
+          }}
+          filename="image-cropped.jpg"
+          steps={[
+            {
+              slug: "background-removal",
+              label: "Remove Background",
+              hint: "AI removes the background from your cropped photo",
+              icon: <Scissors className="h-4 w-4" strokeWidth={1.75} />,
+            },
+            {
+              slug: "white-background",
+              label: "Add White Background",
+              hint: "Replace background with white or any solid color",
+              icon: <Palette className="h-4 w-4" strokeWidth={1.75} />,
+            },
+            {
+              slug: "resize-kb",
+              label: "Compress to KB",
+              hint: "Hit exact file size limits for exam portals",
+              icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+            },
+          ]}
+        />
+      )}
 
       <p className="flex items-start gap-2 text-xs text-muted-foreground">
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />

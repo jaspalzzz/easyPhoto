@@ -88,7 +88,7 @@ async function fileToCanvas(file: File): Promise<HTMLCanvasElement> {
       reject(e);
     };
   });
-  return imageToCanvas(img, img.naturalWidth, img.naturalHeight);
+  return imageToCanvas(img, img.naturalWidth, img.naturalHeight, "#ffffff");
 }
 
 export function ExamPackageTool() {

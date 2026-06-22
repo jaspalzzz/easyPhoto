@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
@@ -269,6 +270,19 @@ export default function Page() {
           20–300&nbsp;KB band.
         </li>
       </ul>
+
+      <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
+        <Image
+          src="/images/upsc-cse-ias-photo-signature-guide-2026.png"
+          alt="UPSC CSE/IAS signature sheet layout showing three 6 cm × 3 cm boxes arranged vertically on A4 paper, each containing the candidate's signature"
+          width={760}
+          height={760}
+          className="w-full h-auto"
+        />
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+          UPSC CSE signature sheet layout: three identical signatures in 6&nbsp;cm&nbsp;×&nbsp;3&nbsp;cm boxes, written in black ink on plain A4 white paper.
+        </figcaption>
+      </figure>
 
       <h2>How does UPSC CSE compare to NDA and CDS for photo requirements?</h2>
       <p>

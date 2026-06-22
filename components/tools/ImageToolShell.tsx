@@ -8,6 +8,7 @@ import { ProcessingState } from "@/components/site/ProcessingState";
 import { CropMarks } from "@/components/site/CropMarks";
 import { loadImageFromFile, type LoadedImage } from "@/lib/pipeline";
 import { ensureDecodable } from "@/lib/heic";
+import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
 
 export interface ToolSource extends LoadedImage {
   file: File;
@@ -36,6 +37,8 @@ function makeThumbDataUrl(
     canvas.height = h;
     const ctx = canvas.getContext("2d");
     if (!ctx) return "";
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
     ctx.drawImage(image, 0, 0, w, h);
     return canvas.toDataURL("image/jpeg", 0.82);
   } catch {
@@ -62,16 +65,15 @@ export function ImageToolShell({
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  const onFile = async (file: File) => {
+  const loadFile = React.useCallback(async (file: File) => {
     setLoading(true);
     setError(null);
     try {
-      const decodable = await ensureDecodable(file); // iPhone HEIC → JPEG
+      const decodable = await ensureDecodable(file);
       const loaded = await loadImageFromFile(decodable);
       const thumbUrl = makeThumbDataUrl(loaded.image, loaded.size);
       setSource({ ...loaded, file: decodable, thumbUrl });
     } catch (e) {
-      // Pipeline errors (validation, HEIC, decode) carry user-facing messages.
       setError(
         e instanceof Error && e.message
           ? e.message
@@ -80,7 +82,18 @@ export function ImageToolShell({
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Auto-load a blob passed from the previous tool via the workflow handoff.
+  // Runs once on mount; consume-once semantics prevent strict-mode double-fire.
+  React.useEffect(() => {
+    const payload = consumeWorkflowPayload();
+    if (!payload) return;
+    const file = new File([payload.blob], payload.filename, { type: payload.blob.type });
+    void loadFile(file);
+  }, [loadFile]);
+
+  const onFile = loadFile;
 
   const reset = () => {
     if (source?.url) URL.revokeObjectURL(source.url);

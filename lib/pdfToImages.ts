@@ -114,6 +114,8 @@ export async function pdfToCanvases(
     canvas.height = Math.ceil(viewport.height);
     const ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("Could not acquire 2D canvas context.");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     await page.render({ canvasContext: ctx, viewport }).promise;
     page.cleanup();
     canvases.push(canvas);

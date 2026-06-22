@@ -48,7 +48,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "best-free-exam-photo-resizer-india",
     title: "Best Free Exam Photo & Signature Resizer India (2026)",
     description:
-      "Resize SSC, IBPS, UPSC, or RRB exam photos to exact KB and px specs for free. Five on-device tools compared: ExamMint, myexamphoto.in, govtphotoresizer.com, SarkariResizer, and easyPhoto.",
+      "Resize SSC, IBPS, UPSC or RRB exam photos to exact KB and px specs for free. Five tools compared: ExamMint, myexamphoto.in, SarkariResizer, govtphotoresizer.com, and easyPhoto.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     updatedISO: "2026-06-18",
@@ -60,7 +60,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "best-free-passport-photo-maker-india-2026",
     title: "Best Free Passport Photo Maker Online India (2026)",
     description:
-      "Seven free tools that make a compliant 35×45 mm Indian passport photo — compared on privacy, spec accuracy, and exam support. No ₹600 fees, no account required.",
+      "Seven free tools for a compliant 35×45 mm Indian passport photo — compared on privacy, spec accuracy, and exam support. No ₹600 fees, no account needed.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     updatedISO: "2026-06-18",
@@ -72,7 +72,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "visafoto-alternative-india-free",
     title: "Free Visafoto Alternative India: 4 Tools That Won't Charge ₹600",
     description:
-      "Visafoto charges ₹600 per photo and uploads your image to a server. Four free alternatives that make India-compliant 35×45 mm passport photos in your browser — no payment, no upload.",
+      "Visafoto charges ₹600 and uploads your image. Four free alternatives for India-compliant 35×45 mm passport photos in your browser — no payment, no upload.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     excerpt:
@@ -92,7 +92,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "nda-cds-photo-signature-guide-2026",
-    title: "NDA & CDS Photo and Signature Requirements 2026",
+    title: "NDA & CDS Photo and Signature Requirements 2026 Guide",
     description:
       "NDA and CDS: 20–300 KB JPG, min 350×350 px square, plain white background, name and date required at bottom. Rejection checklist and free UPSC resizer.",
     date: "June 18, 2026",
@@ -103,7 +103,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "ssc-cgl-chsl-photo-signature-guide-2026",
-    title: "SSC CGL / CHSL Photo & Signature Size 2026",
+    title: "SSC CGL / CHSL Photo & Signature Size Requirements 2026",
     description:
       "SSC CGL and CHSL require a 20–50 KB JPG photo (live capture only, no gallery) and 10–20 KB signature. Spec table, rejection checklist, and free resizer.",
     date: "June 18, 2026",
@@ -127,7 +127,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "add-name-date-on-exam-photo",
     title: "How to Add Name & Date on an Exam Photo (UPSC, Army)",
     description:
-      "UPSC and Indian Army require your name and the photo date printed on the image. Here's the exact rule and how to add it free — no Photoshop needed.",
+      "UPSC and Indian Army require your name and photo date printed on the image itself. Here's the exact rule, when it's checked, and how to add it free.",
     date: "June 13, 2026",
     dateISO: "2026-06-13",
     excerpt:
@@ -171,7 +171,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "how-to-sign-exam-application-forms-india",
     title: "How to Sign an Exam Application Form in India (SSC, UPSC, IBPS Rules)",
     description:
-      "Sign on white paper in black or blue ink, scan to JPG, keep it under 10–20 KB. Full portal-by-portal rules for SSC, UPSC, IBPS, RRB and Army Agniveer — plus why some forms need a transparent background.",
+      "Sign on white paper in black or blue ink, scan to JPG, keep it under 10–20 KB. Portal rules for SSC, UPSC, IBPS, RRB and Army Agniveer — and why some need a transparent background.",
     date: "June 21, 2026",
     dateISO: "2026-06-21",
     excerpt:
@@ -182,7 +182,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "how-to-prepare-documents-for-exam-applications-india",
     title: "How to Prepare Documents for Online Exam Applications in India",
     description:
-      "Photo 20–50 KB, signature 10–20 KB, certificates under 100 KB, Aadhaar masked. The complete workflow to prepare every document before you open an SSC, UPSC, IBPS or Railway portal.",
+      "Photo 20–50 KB, signature 10–20 KB, certificates under 100 KB, Aadhaar masked — complete prep workflow before you open an SSC, UPSC, IBPS or Railway portal.",
     date: "June 21, 2026",
     dateISO: "2026-06-21",
     excerpt:
@@ -215,7 +215,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "exam-photo-signature-size-guide",
     title: "Photo & Signature Size for Govt Exams: SSC, UPSC, IBPS",
     description:
-      "Exact photo and signature KB limits, pixel dimensions and background rules for SSC, IBPS, SBI, UPSC, RRB and NTA exams — plus how to prepare your signature and resize to spec.",
+      "Exact KB and pixel limits for SSC CGL, IBPS, SBI, UPSC, RRB and NTA exam photos and signatures — background rules, free resizer, and step-by-step prep guide.",
     date: "June 8, 2026",
     dateISO: "2026-06-08",
     updatedISO: "2026-06-21",
@@ -238,7 +238,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "resume-photo-size-and-rules",
     title: "Resume Photo: Size, Background & Rules (India Guide)",
     description:
-      "In India a resume photo is passport-size (35×45 mm). The US, UK and Canada omit it to avoid bias claims — the rules by region, the exact size, and a free maker.",
+      "In India a resume photo is passport-size (35×45 mm). The US, UK and Canada omit it to avoid bias claims — rules by region, exact size, and a free maker.",
     date: "June 7, 2026",
     dateISO: "2026-06-07",
     updatedISO: "2026-06-21",
@@ -250,7 +250,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "how-to-take-a-passport-photo-at-home",
     title: "How to Take a Passport Photo at Home (and Get It Accepted)",
     description:
-      "How to take a compliant passport photo at home: plain wall, good light, correct background colour, and the mistakes that get photos rejected.",
+      "How to take a compliant passport photo at home: plain wall, good light, correct background colour, and the six common mistakes that get photos rejected.",
     date: "June 6, 2026",
     dateISO: "2026-06-06",
     excerpt:
@@ -261,7 +261,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "why-passport-photos-get-rejected",
     title: "Why Passport Photos Get Rejected (and How to Avoid It)",
     description:
-      "The real reasons passport photos bounce: wrong size, wrong background, glasses, expression, shadows — and how to fix each one before you submit.",
+      "The real reasons passport photos get rejected: wrong size, wrong background, glasses, expression, shadows — and exactly how to fix each one before submitting.",
     date: "June 6, 2026",
     dateISO: "2026-06-06",
     excerpt:
@@ -283,7 +283,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "how-to-reduce-passport-photo-size-for-online-forms",
     title: "How to Reduce Passport Photo File Size (10–200 KB)",
     description:
-      "Online passport, visa and exam portals cap the file size, often at 10–100 KB. Here's how to compress your photo to an exact KB target without making it blurry.",
+      "Passport, visa and exam portals cap file size, often at 10–100 KB. Here's how to compress your photo to an exact KB target without making it blurry.",
     date: "June 4, 2026",
     dateISO: "2026-06-04",
     excerpt:

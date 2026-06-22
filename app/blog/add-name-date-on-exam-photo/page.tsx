@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
@@ -76,6 +77,19 @@ export default function Page() {
         printing is allowed for the paper form, but for online uploads the text
         needs to be part of the image.
       </p>
+
+      <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
+        <Image
+          src="/images/add-name-date-on-exam-photo.png"
+          alt="Before and after exam photo showing a plain passport photo transformed into one with name (ADITYA VERMA) and date (25/06/2026) added at the bottom"
+          width={1024}
+          height={1024}
+          className="w-full h-auto"
+        />
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+          Left: plain exam photo. Right: the same photo with candidate name and date stamp added in the required format — ready for exam portal upload.
+        </figcaption>
+      </figure>
 
       <h2>Why people struggle with this</h2>
       <p>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
@@ -37,6 +38,19 @@ export default function Page() {
             <a href="https://www.passportindia.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">passportindia.gov.in</a>.</li>
         </ul>
       </div>
+
+      <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
+        <Image
+          src="/images/indian-passport-photo-size-rules.png"
+          alt="Indian passport photo size diagram showing 35×45 mm frame, face height zone of 25–35 mm, and compliance requirements"
+          width={760}
+          height={760}
+          className="w-full h-auto"
+        />
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+          Indian passport photo dimensions: 35×45 mm frame, face must occupy 25–35 mm of the height, white or off-white background.
+        </figcaption>
+      </figure>
 
       <h2>What size is an Indian passport photo?</h2>
       <p>
