@@ -39,6 +39,9 @@ export async function removeBg(
   // Draw scaled to source dims in case the model returned a different size.
   ctx.drawImage(bitmap, 0, 0, size.width, size.height);
   bitmap.close?.();
+  // Un-spill old-background colour from the soft hair edge (same finish the RMBG
+  // path gets), so the isnet fallback composites cleanly too.
+  decontaminateForeground(canvas);
   return canvas;
 }
 
@@ -100,6 +103,100 @@ export function compositeFull(
   ctx.fillRect(0, 0, out.width, out.height);
   ctx.drawImage(cutout, 0, 0);
   return out;
+}
+
+/**
+ * Foreground decontamination (edge un-spill) — operates on raw RGBA bytes.
+ *
+ * At a soft hair edge the cutout's colour is α·F + (1−α)·B_old, so the ORIGINAL
+ * background colour is baked into every translucent pixel. Composited onto a NEW
+ * background it resurfaces as a faint fringe — e.g. warm room light behind grey
+ * hair shows up as a brown halo on a white passport. (This is the gap between
+ * our output and a studio matte; a better MASK alone can't fix it because the
+ * colour, not the alpha, is wrong.)
+ *
+ * Fix: nudge the COLOUR of translucent edge pixels toward the true foreground
+ * colour bled in from the adjacent opaque hair, weighting neighbours by α² so
+ * the trusted opaque pixels dominate. Alpha is left untouched, so soft wisps are
+ * KEPT — only their contaminated colour is corrected. A few passes cover the
+ * thin 1–3px fringe. Near-invisible outermost wisps (α below ~10%) are skipped:
+ * they barely contribute to the composite and aren't worth smearing colour into.
+ *
+ * In-place, allocation-light (one Int32 index of the edge band), so it is safe
+ * on the memory-tight mobile cutout path too.
+ */
+function decontaminateData(
+  d: Uint8ClampedArray,
+  w: number,
+  h: number
+): void {
+  if (w < 3 || h < 3) return;
+  const n = w * h;
+  const LOW = 24; // below this α a pixel is ~invisible once composited
+  const SOLID = 230; // at/above this α the colour is trusted true foreground
+  const PASSES = 3;
+
+  // Index the translucent edge band once (two passes: count, then fill).
+  let count = 0;
+  for (let i = 0; i < n; i++) {
+    const a = d[i * 4 + 3];
+    if (a >= LOW && a < SOLID) count++;
+  }
+  if (!count) return;
+  const band = new Int32Array(count);
+  let bi = 0;
+  for (let i = 0; i < n; i++) {
+    const a = d[i * 4 + 3];
+    if (a >= LOW && a < SOLID) band[bi++] = i;
+  }
+
+  for (let p = 0; p < PASSES; p++) {
+    for (let k = 0; k < count; k++) {
+      const i = band[k];
+      const x = i % w;
+      const y = (i - x) / w;
+      let sw = 0;
+      let sr = 0;
+      let sg = 0;
+      let sb = 0;
+      for (let dy = -1; dy <= 1; dy++) {
+        const ny = y + dy;
+        if (ny < 0 || ny >= h) continue;
+        for (let dx = -1; dx <= 1; dx++) {
+          if (dx === 0 && dy === 0) continue;
+          const nx = x + dx;
+          if (nx < 0 || nx >= w) continue;
+          const j = (ny * w + nx) * 4;
+          const an = d[j + 3] / 255;
+          const wgt = an * an; // α²: opaque (true-FG) neighbours dominate
+          if (wgt <= 0) continue;
+          sw += wgt;
+          sr += wgt * d[j];
+          sg += wgt * d[j + 1];
+          sb += wgt * d[j + 2];
+        }
+      }
+      if (sw > 0) {
+        const o = i * 4;
+        d[o] = sr / sw;
+        d[o + 1] = sg / sw;
+        d[o + 2] = sb / sw;
+      }
+    }
+  }
+}
+
+/**
+ * Canvas wrapper around {@link decontaminateData} for cutouts produced outside
+ * finishCutout (the isnet/@imgly fallback). Reads the pixels, un-spills the edge
+ * colour, writes them back. No-op-safe if the context can't be acquired.
+ */
+export function decontaminateForeground(cutout: HTMLCanvasElement): void {
+  const ctx = cutout.getContext("2d", { willReadFrequently: true });
+  if (!ctx) return;
+  const img = ctx.getImageData(0, 0, cutout.width, cutout.height);
+  decontaminateData(img.data, cutout.width, cutout.height);
+  ctx.putImageData(img, 0, 0);
 }
 
 // ── Premium matting via RMBG-1.4 (transformers.js) ──────────────────────────
@@ -526,6 +623,10 @@ async function finishCutout(
     }
     if (end < total) await new Promise((r) => setTimeout(r, 0));
   }
+  // Un-spill the old background colour from the soft hair edge before this
+  // cutout is composited onto the new background (reuses the buffer we already
+  // hold — no extra getImageData on this hot, mobile-shared path).
+  decontaminateData(d, size.width, size.height);
   ctx.putImageData(imgData, 0, 0);
   return canvas;
 }
