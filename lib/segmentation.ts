@@ -568,9 +568,13 @@ export async function removeBgSmart(
   // Desktop: RMBG-1.4 (BiRefNet) first — significantly better hair/fine-edge
   // quality than imgly's ISNet. WebGPU fp16 on capable GPUs, WASM q8 fallback,
   // then imgly as a final safety net if both RMBG paths fail.
+  // 2048px inference on WebGPU = a ~4× sharper matte (crisper hair edges, less
+  // upscaling haze) than 1024px; desktop GPUs have the headroom. Falls through
+  // to 1024 GPU then wasm/1024 if a weak GPU can't fit it — never a regression.
   const desktopEngines: { device: string; dtype: string; inputSize: number }[] =
     (await webgpuSupportsF16())
       ? [
+          { device: "webgpu", dtype: "fp16", inputSize: 2048 },
           { device: "webgpu", dtype: "fp16", inputSize: 1024 },
           { device: "wasm", dtype: "q8", inputSize: 1024 },
         ]
