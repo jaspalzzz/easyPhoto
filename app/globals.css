@@ -496,3 +496,52 @@ input[type="range"] {
     }
   }
 }
+
+/* ── 2026 Design Modernization ─────────────────────────────────────────────── */
+
+/* Gradient text — navy→gold brand sweep on hero key words */
+.text-gradient-brand {
+  background: linear-gradient(135deg, hsl(var(--brand)) 0%, hsl(var(--cta)) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* CTA button ambient glow — hover state only, respects prefers-reduced-motion */
+@keyframes ep-cta-glow {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(45 88% 60% / 0.55); }
+  50%       { box-shadow: 0 0 0 10px hsl(45 88% 60% / 0); }
+}
+.btn-cta-glow {
+  transition: box-shadow 0.3s ease, background-color 0.15s ease;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn-cta-glow:hover {
+    animation: ep-cta-glow 1.6s ease-out infinite;
+  }
+}
+
+/* Staggered card entrance — @starting-style fires on first paint so cards
+   cascade in without any JS. nth-child sets --si per-card stagger index. */
+@media (prefers-reduced-motion: no-preference) {
+  .ep-card-grid > * {
+    transition: opacity 0.38s ease-out calc(var(--si, 0) * 45ms),
+                transform 0.38s ease-out calc(var(--si, 0) * 45ms);
+    @starting-style {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  .ep-card-grid > *:nth-child(1)  { --si: 0; }
+  .ep-card-grid > *:nth-child(2)  { --si: 1; }
+  .ep-card-grid > *:nth-child(3)  { --si: 2; }
+  .ep-card-grid > *:nth-child(4)  { --si: 3; }
+  .ep-card-grid > *:nth-child(5)  { --si: 4; }
+  .ep-card-grid > *:nth-child(6)  { --si: 5; }
+  .ep-card-grid > *:nth-child(7)  { --si: 6; }
+  .ep-card-grid > *:nth-child(8)  { --si: 7; }
+  .ep-card-grid > *:nth-child(9)  { --si: 8; }
+  .ep-card-grid > *:nth-child(10) { --si: 9; }
+  .ep-card-grid > *:nth-child(11) { --si: 10; }
+  .ep-card-grid > *:nth-child(12) { --si: 11; }
+}
