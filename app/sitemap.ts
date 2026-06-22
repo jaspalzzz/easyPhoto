@@ -31,6 +31,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/railway-photo-resizer/",
     "/ibps-photo-resizer/",
     "/sbi-po-photo-resizer/",
+    "/nda-photo-resizer/",
+    "/ctet-photo-resizer/",
+    "/nta-photo-resizer/",
+    "/gate-photo-resizer/",
+    "/nabard-photo-resizer/",
+    "/rbi-photo-resizer/",
+    "/lic-photo-resizer/",
+    "/tnpsc-photo-resizer/",
+    "/us-passport-photo/",
+    "/uk-passport-photo/",
+    "/canada-passport-photo/",
+    "/schengen-visa-photo/",
     "/blog/",
     "/about/",
     "/contact/",
@@ -57,7 +69,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Site-wide "last significant update". Bump MANUALLY on real content changes —
   // NOT new Date(), so lastmod reflects actual freshness instead of churning on
   // every build/deploy (which Google distrusts). Blog posts use their own date.
-  const LAST_UPDATED = "2026-06-21";
+  const LAST_UPDATED = "2026-06-23";
 
   // Exam pages carry the date their spec was last verified against the official
   // source (verifiedOn), so lastmod reflects real freshness per exam instead of

@@ -92,7 +92,7 @@ export default function ToolsHubPage() {
         <h2 className="eyebrow mb-4">
           Exam &amp; Job Application Resizers
         </h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4">
           <Link
             href="/ssc-photo-resizer/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
@@ -149,6 +149,62 @@ export default function ToolsHubPage() {
             <span className="font-semibold block text-foreground mb-0.5">SBI PO Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
           </Link>
+          <Link
+            href="/nda-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">NDA Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">50–100 KB for upsconline</span>
+          </Link>
+          <Link
+            href="/ctet-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">CTET Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">10–100 KB for ctet.nic.in</span>
+          </Link>
+          <Link
+            href="/nta-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">NEET / JEE Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">10–200 KB for NTA portal</span>
+          </Link>
+          <Link
+            href="/gate-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">GATE Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">5–600 KB for GATE 2026</span>
+          </Link>
+          <Link
+            href="/rbi-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">RBI Grade B Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">20–50 KB, 200×230px</span>
+          </Link>
+          <Link
+            href="/lic-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">LIC AAO Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">20–50 KB for LIC portal</span>
+          </Link>
+          <Link
+            href="/nabard-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">NABARD Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">20–50 KB, 200×230px</span>
+          </Link>
+          <Link
+            href="/tnpsc-photo-resizer/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">TNPSC Photo Resizer</span>
+            <span className="text-muted-foreground leading-normal">Under 50 KB for tnpsc.gov.in</span>
+          </Link>
         </div>
       </section>
 
@@ -197,6 +253,71 @@ export default function ToolsHubPage() {
           </div>
         </section>
       ))}
+
+      {/* Western passport & visa photos — higher RPM countries */}
+      <section className="mt-12">
+        <h2 className="eyebrow mb-4">
+          Western Passport &amp; Visa Photos
+        </h2>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4">
+          <Link
+            href="/us-passport-photo/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">🇺🇸 US Passport Photo</span>
+            <span className="text-muted-foreground leading-normal">2×2 inch, white bg, no glasses</span>
+          </Link>
+          <Link
+            href="/uk-passport-photo/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">🇬🇧 UK Passport Photo</span>
+            <span className="text-muted-foreground leading-normal">35×45mm, light grey (not white)</span>
+          </Link>
+          <Link
+            href="/canada-passport-photo/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">🇨🇦 Canada Photo</span>
+            <span className="text-muted-foreground leading-normal">Visa, PR, Express Entry, renewal</span>
+          </Link>
+          <Link
+            href="/schengen-visa-photo/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">🇪🇺 Schengen Visa Photo</span>
+            <span className="text-muted-foreground leading-normal">35×45mm, light grey, all 29 countries</span>
+          </Link>
+          <Link
+            href="/us-passport-photo-maker/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">🇺🇸 US Passport Maker</span>
+            <span className="text-muted-foreground leading-normal">Full tool — crop, size, download</span>
+          </Link>
+          <Link
+            href="/uk-passport-photo-maker/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">🇬🇧 UK Passport Maker</span>
+            <span className="text-muted-foreground leading-normal">Grey bg auto-applied</span>
+          </Link>
+          <Link
+            href="/australia-passport-photo-maker/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">🇦🇺 Australia Passport</span>
+            <span className="text-muted-foreground leading-normal">35×45mm, white/light grey bg</span>
+          </Link>
+          <Link
+            href="/schengen-visa-photo-maker/"
+            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+          >
+            <span className="font-semibold block text-foreground mb-0.5">🇪🇺 Schengen Maker</span>
+            <span className="text-muted-foreground leading-normal">Full tool — ICAO compliant</span>
+          </Link>
+        </div>
+      </section>
 
       {/* Cross-silo bridge → passport & visa makers */}
       <section className="mt-12 rounded-lg border border-hairline bg-card p-6">
