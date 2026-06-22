@@ -468,7 +468,25 @@ export async function removeBgSmart(
     throw lastErr ?? new Error("All mobile segmentation engines failed.");
   }
 
-  // Desktop only: the full imgly model (plenty of headroom).
+  // Desktop: RMBG-1.4 (BiRefNet) first — significantly better hair/fine-edge
+  // quality than imgly's ISNet. WebGPU fp16 on capable GPUs, WASM q8 fallback,
+  // then imgly as a final safety net if both RMBG paths fail.
+  const desktopEngines: { device: string; dtype: string; inputSize: number }[] =
+    (await webgpuSupportsF16())
+      ? [
+          { device: "webgpu", dtype: "fp16", inputSize: 1024 },
+          { device: "wasm", dtype: "q8", inputSize: 1024 },
+        ]
+      : [{ device: "wasm", dtype: "q8", inputSize: 1024 }];
+
+  for (const eng of desktopEngines) {
+    try {
+      return await removeBgWebGPU(image, size, eng);
+    } catch {
+      /* try next engine */
+    }
+  }
+  // imgly/ISNet: universally available, lower hair quality, reliable fallback.
   return removeBg(blob, size);
 }
 
