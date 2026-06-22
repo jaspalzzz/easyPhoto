@@ -232,7 +232,14 @@ export const useToolStore = create<ToolState>((set, get) => ({
       set({ status: "segmenting" });
       // Engine choice is about device MEMORY, not quality preference. Every path
       // is 100% on-device; only the model downloads (never the photo).
-      //   • Desktop            → isnet (@imgly, onnxruntime WASM). Proven.
+      //   • Desktop            → RMBG-1.4 (BiRefNet): webgpu/fp16 if the GPU has
+      //                          it, else wasm/fp32 @ 1024px (desktop RAM has
+      //                          headroom). Far cleaner HAIR/fine-edge matting
+      //                          than isnet, which leaves opaque background
+      //                          islands in wispy/curly/grey hair. isnet (@imgly)
+      //                          stays as the final reliability fallback (it is on
+      //                          a different model CDN, so a single-CDN outage of
+      //                          one engine is still recoverable).
       //   • Android, f16 GPU   → RMBG-1.4 webgpu/fp16. Fast + premium.   [Redmi]
       //   • Android, no f16    → RMBG-1.4 wasm/q8 @ 1024px. q8 keeps FULL
       //                          resolution but is ~4× lighter+faster than fp32,
@@ -294,36 +301,51 @@ export const useToolStore = create<ToolState>((set, get) => ({
           }
           if (!cutout) throw lastErr ?? new Error("All segmentation engines failed.");
         } else {
-          // Desktop: isnet (@imgly, onnxruntime WASM) is the proven primary —
-          // unchanged. But a single attempt with no fallback meant any isnet
-          // hiccup (a transient staticimgly.com model-CDN stall, or a flaky
-          // desktop GPU/WASM failure) dropped the user straight to the original
-          // background ("background not removed"). So if isnet fails, fall back
-          // to the RMBG-1.4 runtime before giving up. Crucially, RMBG's model is
-          // hosted on a DIFFERENT CDN (huggingface.co), so a staticimgly.com-only
-          // outage is fully recoverable. This does NOT touch the mobile branch
-          // above (the iOS/Android engine matrix).
-          try {
+          // Desktop: RMBG-1.4 (BiRefNet) is the PRIMARY — it mattes hair and
+          // fine edges far more cleanly than isnet, which retains opaque
+          // background islands in wispy/curly/grey hair (the visible artifact on
+          // the passport maker, our USP tool). Try the best engine for the GPU,
+          // then fall back at runtime: webgpu/fp16 → wasm/fp32 (desktop RAM has
+          // headroom for full precision) → isnet (@imgly). isnet remains the
+          // final safety net because its model is on a DIFFERENT CDN, so a
+          // single-CDN stall of either engine is still recoverable. This does NOT
+          // touch the mobile branch above (the iOS/Android engine matrix).
+          const desktopEngines: SegEngine[] = (await webgpuSupportsF16())
+            ? [
+                { device: "webgpu", dtype: "fp16", inputSize: 1024 },
+                { device: "wasm", dtype: "fp32", inputSize: 1024 },
+              ]
+            : [{ device: "wasm", dtype: "fp32", inputSize: 1024 }];
+          let lastErr: unknown = null;
+          for (const eng of desktopEngines) {
+            try {
+              cutout = await withTimeout(
+                removeBgWebGPU(image, size, eng),
+                SEGMENTATION_TIMEOUT_MS,
+                "Background removal timed out."
+              );
+              usedEngine = engineToLabel(eng);
+              break;
+            } catch (e) {
+              lastErr = e;
+              console.warn(
+                `Desktop segmentation engine ${eng.device}/${eng.dtype} failed; trying next.`,
+                e
+              );
+            }
+          }
+          if (!cutout) {
+            // Both RMBG engines failed — fall back to isnet (different CDN).
+            console.warn(
+              "Desktop RMBG-1.4 segmentation failed; falling back to isnet.",
+              lastErr
+            );
             cutout = await withTimeout(
               removeBg(decodable, size),
               SEGMENTATION_TIMEOUT_MS,
               "Background removal timed out."
             );
             usedEngine = "isnet";
-          } catch (isnetErr) {
-            console.warn(
-              "Desktop isnet segmentation failed; falling back to RMBG-1.4.",
-              isnetErr
-            );
-            const fallback: SegEngine = (await webgpuSupportsF16())
-              ? { device: "webgpu", dtype: "fp16", inputSize: 1024 }
-              : { device: "wasm", dtype: "fp32", inputSize: 1024 };
-            cutout = await withTimeout(
-              removeBgWebGPU(image, size, fallback),
-              SEGMENTATION_TIMEOUT_MS,
-              "Background removal timed out."
-            );
-            usedEngine = engineToLabel(fallback);
           }
         }
         const crownY = findCrownY(cutout, measurements.faceXSpan);
