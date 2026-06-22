@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, AlertCircle, Calendar, User, Info, ShieldCheck } from "lucide-react";
+import { Loader2, Download, AlertCircle, Calendar, User, Info, ShieldCheck, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { compressToCap } from "@/lib/compress";
 import { downloadBlob } from "@/lib/download";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { formatKb } from "@/lib/utils";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import { Cropper, type ReactCropperElement } from "react-cropper";
@@ -598,6 +599,21 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
               </div>
             )}
           </div>
+        )}
+
+        {result && (
+          <WorkflowNextSteps
+            getBlob={async () => result.blob}
+            filename="photo-with-name-date.jpg"
+            steps={[
+              {
+                slug: "resize-kb",
+                label: "Compress to KB",
+                hint: "Hit exact file size limits for exam and visa portals",
+                icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+              },
+            ]}
+          />
         )}
 
         <div className="flex items-start gap-2 text-xs text-muted-foreground px-1">

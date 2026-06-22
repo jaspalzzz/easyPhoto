@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Download, Share2, Loader2, RotateCcw } from "lucide-react";
+import { Download, Share2, Loader2, RotateCcw, Scissors, Crop, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, type ToolSource } from "./ImageToolShell";
 import { detectFace, disposeLandmarker } from "@/lib/faceDetection";
 import { downloadBlob, shareFile } from "@/lib/download";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { track, deviceClass } from "@/lib/analytics";
 
 const MAX_NUDGE = 15; // clamp the slider to a sensible ±range (degrees)
@@ -180,6 +181,34 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
         Straightening adds a small white border at the corners. Crop to your
         exam&apos;s size afterwards with the resize tools.
       </p>
+      <WorkflowNextSteps
+        getBlob={async () => {
+          const b = await toBlob();
+          if (!b) throw new Error("No output");
+          return b;
+        }}
+        filename="straightened.jpg"
+        steps={[
+          {
+            slug: "background-removal",
+            label: "Remove Background",
+            hint: "AI removes the background from your straightened photo",
+            icon: <Scissors className="h-4 w-4" strokeWidth={1.75} />,
+          },
+          {
+            slug: "image-crop",
+            label: "Crop to Size",
+            hint: "Trim the white border corners to your exact dimensions",
+            icon: <Crop className="h-4 w-4" strokeWidth={1.75} />,
+          },
+          {
+            slug: "resize-kb",
+            label: "Compress to KB",
+            hint: "Hit exact file size limits for exam and visa portals",
+            icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+          },
+        ]}
+      />
     </div>
   );
 }

@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Download } from "lucide-react";
+import { Download, Minimize2, Scissors, FilePen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, canvasToBlob, flattenForJpeg } from "@/lib/imaging";
 import { trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
 
 function Body({ source }: { source: ToolSource }) {
@@ -159,17 +160,43 @@ function Body({ source }: { source: ToolSource }) {
       </div>
 
       {out && (
-        <div className="flex items-center gap-2">
-          <Button variant="cta" size="sm" disabled={busy} onClick={() => onDownload("image/png")}>
-            <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
-          </Button>
-          <Button size="sm" variant="outline" disabled={busy} onClick={() => onDownload("image/jpeg")}>
-            <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
-          </Button>
-          <span className="font-mono text-[13px] text-ink-soft">
-            {out.w}×{out.h}px
-          </span>
-        </div>
+        <>
+          <div className="flex items-center gap-2">
+            <Button variant="cta" size="sm" disabled={busy} onClick={() => onDownload("image/png")}>
+              <Download className="h-4 w-4" strokeWidth={1.75} /> PNG
+            </Button>
+            <Button size="sm" variant="outline" disabled={busy} onClick={() => onDownload("image/jpeg")}>
+              <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
+            </Button>
+            <span className="font-mono text-[13px] text-ink-soft">
+              {out.w}×{out.h}px
+            </span>
+          </div>
+          <WorkflowNextSteps
+            getBlob={async () => canvasToBlob(out.canvas, "image/png")}
+            filename="signature-cropped.png"
+            steps={[
+              {
+                slug: "signature-resize",
+                label: "Compress to KB",
+                hint: "Hit the exact KB limit required by exam portals",
+                icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+              },
+              {
+                slug: "transparent-signature",
+                label: "Remove Background",
+                hint: "Make the signature background transparent",
+                icon: <Scissors className="h-4 w-4" strokeWidth={1.75} />,
+              },
+              {
+                slug: "sign-image",
+                label: "Sign a Photo",
+                hint: "Overlay this signature onto any photo or document",
+                icon: <FilePen className="h-4 w-4" strokeWidth={1.75} />,
+              },
+            ]}
+          />
+        </>
       )}
     </div>
   );
