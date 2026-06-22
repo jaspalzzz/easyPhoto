@@ -70,7 +70,7 @@ export function BeforeAfterSlider({
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(pct)}
-        className="lift-card relative aspect-[4/5] w-full cursor-ew-resize select-none overflow-hidden rounded-2xl border border-hairline [container-type:inline-size] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        className="lift-card relative aspect-[4/5] w-full cursor-ew-resize select-none overflow-hidden rounded-2xl border border-hairline [container-type:inline-size] [touch-action:none] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
       >
         {/* AFTER (full, underneath) — compliant photo */}
         <div className="absolute inset-0">
@@ -109,7 +109,7 @@ export function BeforeAfterSlider({
           style={{ left: `${pct}%` }}
         >
           <span
-            className="absolute left-1/2 top-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[3px] border-white bg-cta text-[hsl(var(--cta-foreground))] shadow-md"
+            className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[3px] border-white bg-cta text-[hsl(var(--cta-foreground))] shadow-md"
           >
             <ChevronLeft className="h-3.5 w-3.5" strokeWidth={3} />
             <ChevronRight className="-ml-1 h-3.5 w-3.5" strokeWidth={3} />

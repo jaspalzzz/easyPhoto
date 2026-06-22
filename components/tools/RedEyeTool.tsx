@@ -169,7 +169,7 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
       <canvas
         ref={canvasRef}
         onClick={handleTap}
-        className="w-full max-w-md cursor-crosshair touch-none rounded-lg border border-hairline shadow-sm"
+        className="w-full max-w-md cursor-crosshair rounded-lg border border-hairline shadow-sm"
       />
 
       <div className="flex flex-wrap items-center gap-3">

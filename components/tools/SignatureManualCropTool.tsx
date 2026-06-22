@@ -299,8 +299,7 @@ function Body({ source }: { source: ToolSource }) {
         <strong>Auto-detect</strong> to snap it to the ink.
       </p>
 
-      {/* Editor — horizontal page-scroll gutters on phones; canvas is touch-none
-          so dragging the box never scrolls the page. */}
+      {/* Canvas is touch-none so drag-to-crop never triggers page scroll. */}
       <PreviewFrame>
         <canvas
           ref={canvasRef}
@@ -310,6 +309,15 @@ function Body({ source }: { source: ToolSource }) {
           className="block max-h-[300px] w-auto max-w-full cursor-crosshair touch-none select-none rounded"
         />
       </PreviewFrame>
+      {/* Mobile scroll affordance — not touch-none, reliable swipe target */}
+      <div
+        className="flex min-h-[44px] items-center justify-center gap-1.5 sm:hidden"
+        aria-hidden="true"
+      >
+        <div className="h-1 w-8 rounded-full bg-foreground/20" />
+        <span className="text-[11px] text-muted-foreground">swipe here to scroll</span>
+        <div className="h-1 w-8 rounded-full bg-foreground/20" />
+      </div>
 
       {autoMsg && (
         <p className="border-l-2 border-amber-500 pl-3 text-sm text-amber-700">{autoMsg}</p>

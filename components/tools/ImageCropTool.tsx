@@ -294,7 +294,7 @@ function Body({ source }: { source: ToolSource }) {
         </div>
       </div>
 
-      {/* Interactive canvas */}
+      {/* Interactive canvas — touch-none required for drag-to-crop on mobile */}
       <PreviewFrame>
         <canvas
           ref={canvasRef}
@@ -305,6 +305,15 @@ function Body({ source }: { source: ToolSource }) {
           className="block max-h-[450px] w-auto max-w-full cursor-crosshair touch-none select-none rounded"
         />
       </PreviewFrame>
+      {/* Mobile scroll affordance — not touch-none, gives a reliable swipe target */}
+      <div
+        className="flex min-h-[44px] items-center justify-center gap-1.5 sm:hidden"
+        aria-hidden="true"
+      >
+        <div className="h-1 w-8 rounded-full bg-foreground/20" />
+        <span className="text-[11px] text-muted-foreground">swipe here to scroll</span>
+        <div className="h-1 w-8 rounded-full bg-foreground/20" />
+      </div>
 
       {hasCrop && (
         <p className="text-center font-mono text-[11px] text-muted-foreground">
