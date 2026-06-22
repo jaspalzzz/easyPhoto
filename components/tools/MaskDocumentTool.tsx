@@ -322,13 +322,13 @@ export function MaskDocumentTool() {
             <strong>Drag across an area to hide it</strong> — for an Aadhaar card,
             cover the <strong>first 8 digits</strong> (UIDAI recommends showing
             only the last 4). Drag a box to move it, drag its corner to resize,
-            or tap the red <strong>×</strong> on a box to remove it. Scroll the
-            page using the margins on either side of the image.
+            or tap the red <strong>×</strong> on a box to remove it.
           </p>
 
-          {/* Horizontal gutters on phones: the canvas is touch-none (so drawing
-              doesn't scroll), so leave scrollable page margins on each side. */}
-          <div className="mx-8 overflow-hidden rounded-md border border-hairline bg-accent/5 sm:mx-0">
+          {/* Canvas is touch-none so drawing never triggers page-scroll.
+              Scroll affordance strip below is not touch-none, giving mobile
+              users a reliable swipe target to scroll the page. */}
+          <div className="mx-6 overflow-hidden rounded-md border border-hairline bg-accent/5 sm:mx-0">
             <canvas
               ref={canvasRef}
               onPointerDown={onPointerDown}
@@ -336,6 +336,15 @@ export function MaskDocumentTool() {
               onPointerUp={onPointerUp}
               className="block h-auto w-full cursor-crosshair touch-none select-none"
             />
+          </div>
+          {/* Mobile-only scroll strip — intentionally NOT touch-none */}
+          <div
+            className="flex min-h-[44px] items-center justify-center gap-1.5 sm:hidden"
+            aria-hidden="true"
+          >
+            <div className="h-1 w-8 rounded-full bg-foreground/20" />
+            <span className="text-[11px] text-muted-foreground">swipe here to scroll</span>
+            <div className="h-1 w-8 rounded-full bg-foreground/20" />
           </div>
 
           <div className="flex flex-wrap gap-2">
