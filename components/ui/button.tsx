@@ -10,7 +10,7 @@ const buttonVariants = cva(
         // Ink — the standard solid action.
         default: "bg-ink text-paper hover:bg-ink/90",
         // Stamp — the single primary action per screen. Orange, used sparingly.
-        cta: "bg-cta text-cta-foreground hover:bg-[hsl(22_89%_46%)]",
+        cta: "bg-cta text-cta-foreground hover:bg-[hsl(22_89%_46%)] btn-cta-glow",
         // Hairline outline on paper.
         outline:
           "border border-hairline-strong bg-card text-foreground hover:bg-accent/50 hover:border-ink/30",

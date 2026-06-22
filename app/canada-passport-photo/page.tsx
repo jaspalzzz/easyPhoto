@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, softwareApplicationSchema } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { COUNTRY_SPECS } from "@/lib/countrySpecs";
+import { StickyCtaBar } from "@/components/site/StickyCtaBar";
 
 const spec = COUNTRY_SPECS["canada"]!;
 
@@ -222,6 +223,11 @@ export default function Page() {
           Open maker <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
+      <StickyCtaBar
+        href="/canada-passport-photo-maker/"
+        label="Make your Canada visa photo free"
+        sublabel="100% on-device · never uploaded"
+      />
     </div>
   );
 }
