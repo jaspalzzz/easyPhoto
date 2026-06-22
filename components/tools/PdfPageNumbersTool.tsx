@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Download, FileUp, ShieldCheck } from "lucide-react";
+import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -43,6 +44,15 @@ export function PdfPageNumbersTool() {
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "pdf-page-numbers" });
+  }, []);
+
+  React.useEffect(() => {
+    const payload = consumeWorkflowPayload();
+    if (payload) {
+      const f = new File([payload.blob], payload.filename, { type: "application/pdf" });
+      pick(f);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const pick = (f: File) => {

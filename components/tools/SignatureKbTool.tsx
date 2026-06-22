@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download } from "lucide-react";
+import { Loader2, Download, FilePen, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, pngUnderKb } from "@/lib/imaging";
@@ -10,6 +10,7 @@ import { useDebouncedValue } from "@/lib/useDebouncedValue";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 
 interface Out {
   url: string;
@@ -161,6 +162,29 @@ function Body({ source, kb, toolName }: BodyProps) {
             <Download className="h-4 w-4" strokeWidth={1.75} /> Download PNG
           </Button>
         </div>
+      )}
+      {out && !busy && (
+        <WorkflowNextSteps
+          getBlob={async () => {
+            if (!out) throw new Error("No output");
+            return out.blob;
+          }}
+          filename={`signature-${kb}kb.png`}
+          steps={[
+            {
+              slug: "sign-image",
+              label: "Sign a Photo",
+              hint: "Overlay this signature onto any photo or document",
+              icon: <FilePen className="h-4 w-4" strokeWidth={1.75} />,
+            },
+            {
+              slug: "photo-signature-merge",
+              label: "Merge with Photo",
+              hint: "Combine signature and photo for exam applications",
+              icon: <Layers className="h-4 w-4" strokeWidth={1.75} />,
+            },
+          ]}
+        />
       )}
     </div>
   );

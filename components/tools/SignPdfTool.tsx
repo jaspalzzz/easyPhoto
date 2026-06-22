@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Download, FileUp, ShieldCheck, ChevronLeft, ChevronRight, PenLine, RotateCcw } from "lucide-react";
+import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -46,6 +47,15 @@ export function SignPdfTool() {
     return () => {
       canvasesRef.current = [];
     };
+  }, []);
+
+  React.useEffect(() => {
+    const payload = consumeWorkflowPayload();
+    if (payload) {
+      const f = new File([payload.blob], payload.filename, { type: "application/pdf" });
+      loadPdf(f);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
