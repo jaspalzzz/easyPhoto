@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Download, FileUp, ShieldCheck, PenLine } from "lucide-react";
+import { Download, FileUp, ShieldCheck, PenLine, Minimize2, Maximize2 } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { canvasToBlob } from "@/lib/imaging";
@@ -29,6 +30,7 @@ export function SignImageTool() {
   // App UI states
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [exportedBlob, setExportedBlob] = React.useState<Blob | null>(null);
 
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
@@ -157,6 +159,7 @@ export function SignImageTool() {
 
       const blob = await canvasToBlob(canvas, "image/jpeg", 0.95);
       const baseName = baseFile?.name.replace(/\.[^/.]+$/, "") || "signed-image";
+      setExportedBlob(blob);
       downloadBlob(blob, `${baseName}-signed.jpg`);
     } catch (err: any) {
       console.error(err);
@@ -175,6 +178,7 @@ export function SignImageTool() {
     setBaseImage(null);
     setPlacements([]);
     setError(null);
+    setExportedBlob(null);
   };
 
   return (
@@ -286,6 +290,30 @@ export function SignImageTool() {
                 <p className="text-[11px] text-muted-foreground text-center">
                   Place at least one signature before saving.
                 </p>
+              )}
+
+              {exportedBlob && (
+                <WorkflowNextSteps
+                  getBlob={async () => {
+                    if (!exportedBlob) throw new Error("No output");
+                    return exportedBlob;
+                  }}
+                  filename={`${baseFile?.name.replace(/\.[^/.]+$/, "") || "signed-image"}-signed.jpg`}
+                  steps={[
+                    {
+                      slug: "resize-kb",
+                      label: "Compress to KB",
+                      hint: "Hit exact file size limits for exam and visa portals",
+                      icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+                    },
+                    {
+                      slug: "resize-dimensions",
+                      label: "Resize Dimensions",
+                      hint: "Scale the signed photo to exact pixel dimensions",
+                      icon: <Maximize2 className="h-4 w-4" strokeWidth={1.75} />,
+                    },
+                  ]}
+                />
               )}
 
               {/* Signature Creator Panel */}

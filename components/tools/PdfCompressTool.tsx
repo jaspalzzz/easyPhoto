@@ -1,8 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Download, FileUp, ShieldCheck } from "lucide-react";
+import { Download, FileUp, ShieldCheck, PenLine, Hash } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
+import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { compressPdfToTarget, type PdfCompressResult } from "@/lib/pdfCompress";
@@ -26,6 +28,15 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "pdf-compress" });
+  }, []);
+
+  React.useEffect(() => {
+    const payload = consumeWorkflowPayload();
+    if (payload) {
+      const f = new File([payload.blob], payload.filename, { type: "application/pdf" });
+      pick(f);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const pick = (f: File) => {
@@ -245,6 +256,30 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
               )
             )}
           </div>
+        )}
+
+        {resultBlob && (
+          <WorkflowNextSteps
+            getBlob={async () => {
+              if (!resultBlob) throw new Error("No output");
+              return resultBlob;
+            }}
+            filename={file ? `${file.name.replace(/\.[^/.]+$/, "")}-compressed.pdf` : "compressed.pdf"}
+            steps={[
+              {
+                slug: "sign-pdf",
+                label: "Sign PDF",
+                hint: "Add your signature to the compressed PDF",
+                icon: <PenLine className="h-4 w-4" strokeWidth={1.75} />,
+              },
+              {
+                slug: "pdf-page-numbers",
+                label: "Add Page Numbers",
+                hint: "Number every page of the compressed PDF",
+                icon: <Hash className="h-4 w-4" strokeWidth={1.75} />,
+              },
+            ]}
+          />
         )}
 
         {busy && <ProcessingState label={progress ?? "Compressing…"} />}

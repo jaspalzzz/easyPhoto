@@ -1,8 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Download, FileUp, ShieldCheck, LockOpen } from "lucide-react";
+import { Download, FileUp, ShieldCheck, LockOpen, Minimize2, PenLine, Hash } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
+import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { unlockPdf, PdfPasswordError } from "@/lib/pdfUnlock";
@@ -23,6 +25,15 @@ export function UnlockPdfTool() {
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "unlock-pdf" });
+  }, []);
+
+  React.useEffect(() => {
+    const payload = consumeWorkflowPayload();
+    if (payload) {
+      const f = new File([payload.blob], payload.filename, { type: "application/pdf" });
+      pick(f);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const reset = () => {
@@ -180,6 +191,35 @@ export function UnlockPdfTool() {
               )}
               <Button variant="outline" size="sm" onClick={reset}>Unlock another PDF</Button>
             </div>
+            {unlockedBlob && (
+              <WorkflowNextSteps
+                getBlob={async () => {
+                  if (!unlockedBlob) throw new Error("No output");
+                  return unlockedBlob.blob;
+                }}
+                filename={unlockedBlob.name}
+                steps={[
+                  {
+                    slug: "pdf-compress",
+                    label: "Compress PDF",
+                    hint: "Shrink the unlocked PDF to fit upload size limits",
+                    icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+                  },
+                  {
+                    slug: "sign-pdf",
+                    label: "Sign PDF",
+                    hint: "Add your signature to the unlocked PDF",
+                    icon: <PenLine className="h-4 w-4" strokeWidth={1.75} />,
+                  },
+                  {
+                    slug: "pdf-page-numbers",
+                    label: "Add Page Numbers",
+                    hint: "Number every page of the unlocked PDF",
+                    icon: <Hash className="h-4 w-4" strokeWidth={1.75} />,
+                  },
+                ]}
+              />
+            )}
           </div>
         )}
 

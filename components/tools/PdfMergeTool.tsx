@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Download, FileUp, ShieldCheck, ArrowUp, ArrowDown, Trash2, FileText, CheckCircle2 } from "lucide-react";
+import { Download, FileUp, ShieldCheck, ArrowUp, ArrowDown, Trash2, FileText, CheckCircle2, Minimize2, PenLine, Hash } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
@@ -199,6 +200,33 @@ export function PdfMergeTool() {
                 Start over
               </Button>
             </div>
+            <WorkflowNextSteps
+              getBlob={async () => {
+                if (!mergedBlob) throw new Error("No output");
+                return mergedBlob;
+              }}
+              filename="merged-document.pdf"
+              steps={[
+                {
+                  slug: "pdf-compress",
+                  label: "Compress PDF",
+                  hint: "Shrink the merged PDF to fit upload size limits",
+                  icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+                },
+                {
+                  slug: "sign-pdf",
+                  label: "Sign PDF",
+                  hint: "Add your signature to the merged PDF",
+                  icon: <PenLine className="h-4 w-4" strokeWidth={1.75} />,
+                },
+                {
+                  slug: "pdf-page-numbers",
+                  label: "Add Page Numbers",
+                  hint: "Number every page of the merged PDF",
+                  icon: <Hash className="h-4 w-4" strokeWidth={1.75} />,
+                },
+              ]}
+            />
           </div>
         )}
 
