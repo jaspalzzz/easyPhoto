@@ -310,8 +310,18 @@ export const useToolStore = create<ToolState>((set, get) => ({
           // final safety net because its model is on a DIFFERENT CDN, so a
           // single-CDN stall of either engine is still recoverable. This does NOT
           // touch the mobile branch above (the iOS/Android engine matrix).
+          // inputSize is the inference resolution: the model emits an
+          // inputSize² matte that is then upscaled to the source photo. At
+          // 1024px any larger photo gets a bilinearly-stretched (soft) matte —
+          // the gray "haze" around hair. Desktop GPUs have the headroom to run
+          // RMBG at 2048px, giving a ~4× sharper matte and crisp hair edges
+          // (WebGPU only; the wasm CPU fallback stays at 1024 — 2048 on wasm is
+          // too slow). If a weak/integrated GPU can't fit 2048 it throws and we
+          // fall through to wasm/1024 (previous quality), so this never regresses
+          // reliability — only raises the ceiling where the GPU allows.
           const desktopEngines: SegEngine[] = (await webgpuSupportsF16())
             ? [
+                { device: "webgpu", dtype: "fp16", inputSize: 2048 },
                 { device: "webgpu", dtype: "fp16", inputSize: 1024 },
                 { device: "wasm", dtype: "fp32", inputSize: 1024 },
               ]
