@@ -261,7 +261,8 @@ export function CameraCapture({
         )}
 
         <p className="text-center text-xs text-muted-foreground">
-          Hold the camera at eye level, face a window, and keep a plain wall behind you.
+          Hold the camera at eye level, face a window, keep a plain wall behind you.
+          Face straight to the camera — no turning or tilting. Neutral expression, mouth closed, eyes open.
           Captured on your device — nothing is uploaded.
         </p>
       </div>
