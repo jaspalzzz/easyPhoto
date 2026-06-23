@@ -1,16 +1,16 @@
 
 const BEFORE_ISSUES = [
   "Wrong Size",
-  "Busy Background",
-  "Face Not Centered",
+  "Busy BG",
+  "Off-Center",
   "Poor Lighting",
 ];
 
 const AI_CHECKS = [
-  "Background Removed",
-  "Correct Size",
-  "Face Centered",
-  "Government Compliant",
+  "BG Removed",
+  "Exact Size",
+  "Face Aligned",
+  "Compliant",
 ];
 
 export function HeroVisual() {
@@ -18,26 +18,26 @@ export function HeroVisual() {
     <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-0">
 
       {/* ── Card 1: Your Selfie (wrong) ────────────────────────────── */}
-      <div className="animate-float-slow flex flex-col rounded-2xl border border-hairline bg-white p-2 shadow-[0_12px_36px_rgba(0,0,0,0.09)] min-[360px]:p-4">
-        <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[10px] font-bold min-[360px]:px-3 min-[360px]:py-1 min-[360px]:text-[12px] text-red-600">
+      <div className="animate-float-slow flex flex-col rounded-2xl border border-hairline bg-white p-2 shadow-[0_12px_36px_rgba(0,0,0,0.09)] dark:bg-card dark:shadow-[0_12px_36px_rgba(0,0,0,0.4)] min-[360px]:p-3 sm:p-4">
+        <span className="mb-3 inline-flex w-fit items-center gap-1 whitespace-nowrap rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[9px] font-bold sm:gap-1.5 sm:px-3 sm:py-1 sm:text-[12px] text-red-600 dark:border-red-800 dark:bg-red-950/40 dark:text-red-400">
           <span>✕</span> Not Compliant
         </span>
 
-        <div className="relative overflow-hidden rounded-xl" style={{ aspectRatio: "3/4" }}>
+        <div className="relative overflow-hidden rounded-xl bg-white" style={{ aspectRatio: "3/4" }}>
           <img
-            src="/images/white_young_before.png"
+            src="/images/sample4_before_1782052955340.png"
             alt="Example selfie — before AI processing"
             className="h-full w-full object-cover object-top"
           />
         </div>
 
-        <ul className="mt-3.5 space-y-2">
+        <ul className="mt-2.5 space-y-1.5 sm:mt-3.5 sm:space-y-2">
           {BEFORE_ISSUES.map((issue) => (
-            <li key={issue} className="flex items-center gap-2 text-[13px] font-medium text-red-600">
-              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-red-100 text-[9px] font-black">
+            <li key={issue} className="flex min-w-0 items-center gap-1.5 text-[10px] font-medium text-red-600 min-[360px]:text-[11px] sm:gap-2 sm:text-[13px] dark:text-red-400">
+              <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-red-100 text-[8px] font-black sm:h-4 sm:w-4 sm:text-[9px] dark:bg-red-900/40">
                 ✕
               </span>
-              {issue}
+              <span className="truncate">{issue}</span>
             </li>
           ))}
         </ul>
@@ -85,14 +85,14 @@ export function HeroVisual() {
       </div>
 
       {/* ── Card 2: Compliant Photo (correct) ─────────────────────── */}
-      <div className="animate-float-delay flex flex-col rounded-2xl border border-hairline bg-white p-2 shadow-[0_12px_36px_rgba(0,0,0,0.09)] min-[360px]:p-4">
-        <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold min-[360px]:px-3 min-[360px]:py-1 min-[360px]:text-[12px] text-emerald-600">
+      <div className="animate-float-delay flex flex-col rounded-2xl border border-hairline bg-white p-2 shadow-[0_12px_36px_rgba(0,0,0,0.09)] dark:bg-card dark:shadow-[0_12px_36px_rgba(0,0,0,0.4)] min-[360px]:p-3 sm:p-4">
+        <span className="mb-3 inline-flex w-fit items-center gap-1 whitespace-nowrap rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[9px] font-bold sm:gap-1.5 sm:px-3 sm:py-1 sm:text-[12px] text-emerald-600 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400">
           <span>✓</span> Compliant
         </span>
 
-        <div className="relative overflow-hidden rounded-xl" style={{ aspectRatio: "3/4" }}>
+        <div className="relative overflow-hidden rounded-xl bg-white" style={{ aspectRatio: "3/4" }}>
           <img
-            src="/images/white_young_after.png"
+            src="/images/sample4_after_1782052969219.png"
             alt="Compliant passport photo — after AI processing"
             className="h-full w-full object-cover object-top"
           />
@@ -106,13 +106,13 @@ export function HeroVisual() {
           </div>
         </div>
 
-        <ul className="mt-3.5 space-y-2">
+        <ul className="mt-2.5 space-y-1.5 sm:mt-3.5 sm:space-y-2">
           {AI_CHECKS.map((item) => (
-            <li key={item} className="flex items-center gap-2 text-[13px] font-medium text-emerald-600">
-              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-[9px] font-black">
+            <li key={item} className="flex min-w-0 items-center gap-1.5 text-[10px] font-medium text-emerald-600 min-[360px]:text-[11px] sm:gap-2 sm:text-[13px] dark:text-emerald-400">
+              <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-[8px] font-black sm:h-4 sm:w-4 sm:text-[9px] dark:bg-emerald-900/40">
                 ✓
               </span>
-              {item}
+              <span className="truncate">{item}</span>
             </li>
           ))}
         </ul>

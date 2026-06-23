@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Globe, GraduationCap, FileText, Aperture, PenLine } from "lucide-react";
 import { TOOLS_CATALOG, POPULAR_TOOLS } from "@/lib/toolsCatalog";
 import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
 import { ToolIcon } from "@/components/site/ToolIcon";
@@ -43,6 +43,31 @@ export default function ToolsHubPage() {
           <ToolSearch />
         </div>
       </header>
+
+      {/* ── Category jump grid ─────────────────────────────────────────── */}
+      <div className="mt-8 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
+        {[
+          { title: "Passport & Visa",  sub: "All countries",          href: "/passport-photo/",     Icon: Globe,         iconBg: "bg-amber-100 dark:bg-amber-900/30",   iconText: "text-amber-600 dark:text-amber-400",   span: "" },
+          { title: "Exam Tools",       sub: "SSC, UPSC, Banking",     href: "/tools/exam-package/", Icon: GraduationCap, iconBg: "bg-blue-100 dark:bg-blue-900/30",     iconText: "text-blue-600 dark:text-blue-400",     span: "" },
+          { title: "Image Tools",      sub: "Resize, convert, BG",    href: "/tools/photo/",        Icon: Aperture,      iconBg: "bg-emerald-100 dark:bg-emerald-900/30",iconText: "text-emerald-600 dark:text-emerald-400",span: "" },
+          { title: "PDF Tools",        sub: "Compress, merge, split", href: "/tools/pdf/",          Icon: FileText,      iconBg: "bg-violet-100 dark:bg-violet-900/30", iconText: "text-violet-600 dark:text-violet-400",  span: "" },
+          { title: "Signature Tools",  sub: "PNG, crop, cleaner",     href: "/tools/signature/",    Icon: PenLine,       iconBg: "bg-rose-100 dark:bg-rose-900/30",     iconText: "text-rose-600 dark:text-rose-400",     span: "col-span-2 sm:col-span-1" },
+        ].map(({ title, sub, href, Icon, iconBg, iconText, span }) => (
+          <Link
+            key={href}
+            href={href}
+            className={`group flex items-center gap-2.5 rounded-xl border border-hairline bg-card p-3 transition-colors hover:border-hairline-strong hover:bg-accent/40 ${span}`}
+          >
+            <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${iconBg} ${iconText}`}>
+              <Icon className="h-4.5 w-4.5" strokeWidth={1.75} />
+            </span>
+            <div className="min-w-0 text-left">
+              <p className="text-[12px] font-bold leading-tight text-ink">{title}</p>
+              <p className="mt-0.5 truncate text-[10px] leading-snug text-muted-foreground">{sub}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
 
       {/* Most popular — a tight quick-access set. The full catalogue lives in
           the categorised sections below, so this stays curated (not a dupe). */}

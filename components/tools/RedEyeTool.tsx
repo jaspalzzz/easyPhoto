@@ -169,7 +169,12 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
       <canvas
         ref={canvasRef}
         onClick={handleTap}
-        className="w-full max-w-md cursor-crosshair rounded-lg border border-hairline shadow-sm"
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          const touch = e.changedTouches[0];
+          if (touch) handleTap({ clientX: touch.clientX, clientY: touch.clientY, currentTarget: e.currentTarget } as unknown as React.MouseEvent<HTMLCanvasElement>);
+        }}
+        className="w-full max-w-md cursor-crosshair rounded-lg border border-hairline shadow-sm touch-none"
       />
 
       <div className="flex flex-wrap items-center gap-3">
