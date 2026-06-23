@@ -30,10 +30,10 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 const MAKER_STEPS: ScanStep[] = [
-  { key: "loading", label: "Read" },
-  { key: "detecting", label: "Detect face" },
-  { key: "segmenting", label: "Remove bg" },
-  { key: "rendering", label: "Crop & size" },
+  { key: "loading",    label: "Reading photo"        },
+  { key: "detecting",  label: "Detecting face"       },
+  { key: "segmenting", label: "Removing background"  },
+  { key: "rendering",  label: "Cropping & sizing"    },
 ];
 
 /**

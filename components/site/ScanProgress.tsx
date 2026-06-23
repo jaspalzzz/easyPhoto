@@ -1,13 +1,14 @@
 import * as React from "react";
+import { Check } from "lucide-react";
 import { CropMarks } from "@/components/site/CropMarks";
 
 /** Glitter riding the scan-line: varied positions/sizes/delays so it twinkles
  *  organically rather than in lockstep. Purely decorative. */
 const SPARKS = [
-  { left: "9%", size: 5, delay: "0s" },
+  { left: "9%",  size: 5, delay: "0s"    },
   { left: "23%", size: 3, delay: "0.55s" },
-  { left: "38%", size: 6, delay: "0.2s" },
-  { left: "52%", size: 4, delay: "0.8s" },
+  { left: "38%", size: 6, delay: "0.2s"  },
+  { left: "52%", size: 4, delay: "0.8s"  },
   { left: "66%", size: 5, delay: "0.35s" },
   { left: "80%", size: 3, delay: "0.65s" },
   { left: "93%", size: 5, delay: "0.15s" },
@@ -16,15 +17,14 @@ const SPARKS = [
 export interface ScanStep {
   /** Matches the tool's status key. */
   key: string;
-  /** Short label shown under the dot. */
+  /** Short label shown beside the step circle. */
   label: string;
 }
 
 /**
- * Document-scanner-style progress. Instead of a bare spinner, it sweeps a brand
- * scan-line over the user's own photo (framed with the crop-mark motif) and shows
- * named live stages — so the wait reads as a precise, on-brand process rather than
- * a hang. Falls back to a clean framed placeholder when there's no thumbnail.
+ * Document-scanner-style progress. Shows a vertical numbered stepper on the
+ * left and the user's photo with an animated scan line on the right — the wait
+ * reads as a precise, on-brand process rather than a hang.
  */
 export function ScanProgress({
   label,
@@ -43,28 +43,110 @@ export function ScanProgress({
     steps && activeKey ? steps.findIndex((s) => s.key === activeKey) : -1;
 
   return (
-    <div className="flex flex-col items-center gap-5 py-10">
-      {/* min-h + centering so the frame ALWAYS has real height. Otherwise the
-          sweep layer (height:100%) collapses to ~0px until the thumbnail <img>
-          decodes, so the scan-line has no travel and looks frozen at the top
-          (reported on iPhone 11). The no-thumbnail branch already had a fixed
-          box and animated fine — this gives the img branch the same guarantee. */}
-      <div className="relative flex min-h-[200px] items-center justify-center overflow-hidden rounded-md border border-hairline-strong bg-paper">
+    /* Mobile: photo on top, steps below.  sm+: steps left, photo right. */
+    <div className="flex flex-col-reverse gap-6 py-6 sm:flex-row sm:items-center sm:gap-10">
+
+      {/* ── Left: vertical stepper ─────────────────────────────────────── */}
+      <div className="flex-1 min-w-0">
+        <h3 className="mb-5 text-[17px] font-bold tracking-tight text-ink">
+          Preparing your photo
+        </h3>
+
+        {steps && steps.length > 0 && (
+          <ol className="space-y-0">
+            {steps.map((s, i) => {
+              const done   = activeIdx > i;
+              const active = activeIdx === i;
+              const last   = i === steps.length - 1;
+
+              return (
+                <li key={s.key} className="relative flex items-start gap-4">
+
+                  {/* Vertical connector track */}
+                  {!last && (
+                    <span
+                      aria-hidden
+                      className={`absolute left-[15px] top-8 h-8 w-px transition-colors duration-500 ${
+                        done ? "bg-brand" : "bg-hairline-strong"
+                      }`}
+                    />
+                  )}
+
+                  {/* Step circle */}
+                  <span
+                    className={`relative z-10 mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[13px] font-bold transition-all duration-300 ${
+                      done
+                        ? "bg-brand text-white"
+                        : active
+                          ? "bg-ink text-white shadow-lg"
+                          : "border-2 border-hairline-strong bg-paper text-ink-faint"
+                    }`}
+                  >
+                    {done ? (
+                      <Check className="h-[15px] w-[15px]" strokeWidth={2.5} />
+                    ) : (
+                      <span>{i + 1}</span>
+                    )}
+                  </span>
+
+                  {/* Step label + pulse dot */}
+                  <span className="mb-8 flex flex-1 items-center gap-2 pt-1.5">
+                    <span
+                      className={`text-[14px] leading-tight transition-colors duration-200 ${
+                        active
+                          ? "font-semibold text-ink"
+                          : done
+                            ? "text-ink-soft"
+                            : "text-ink-faint"
+                      }`}
+                    >
+                      {s.label}
+                    </span>
+                    {active && (
+                      <span
+                        aria-hidden
+                        className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand"
+                      />
+                    )}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
+        )}
+
+        {/* Active step subtitle */}
+        <p className="mt-1 text-[12px] text-ink-soft" aria-live="polite">
+          {label}
+        </p>
+        {hint && (
+          <p className="mt-1.5 text-[11px] leading-relaxed text-ink-faint">
+            {hint}
+          </p>
+        )}
+      </div>
+
+      {/* ── Right: photo + scan animation ─────────────────────────────── */}
+      <div className="relative flex min-h-[220px] flex-1 items-center justify-center overflow-hidden rounded-xl border border-hairline-strong bg-paper shadow-sm">
         {thumbnailUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={thumbnailUrl}
             alt=""
             aria-hidden
-            className="block max-h-[280px] w-auto max-w-full"
+            className="block max-h-[300px] w-auto max-w-full rounded-lg"
           />
         ) : (
-          <div className="h-[200px] w-[150px]" />
+          <div className="h-[220px] w-[165px]" />
         )}
-        {/* faint dim so the scan-line reads on bright photos */}
-        <span aria-hidden className="pointer-events-none absolute inset-0 bg-ink/[0.06]" />
-        {/* the sweeping scan band: glow halo + crisp line + twinkling glitter.
-            One compositor layer (transform/opacity only) → smooth under load. */}
+
+        {/* Faint dim so the scan-line reads on bright photos */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-ink/[0.06]"
+        />
+
+        {/* Sweeping scan band */}
         <span aria-hidden className="ep-scan-sweep">
           <span className="ep-scan-glow" />
           <span className="ep-scan-line" />
@@ -73,66 +155,23 @@ export function ScanProgress({
               key={i}
               className="ep-spark"
               style={{
-                left: s.left,
-                width: s.size,
-                height: s.size,
+                left:           s.left,
+                width:          s.size,
+                height:         s.size,
                 animationDelay: s.delay,
               }}
             />
           ))}
         </span>
+
         <CropMarks size={16} inset={8} />
       </div>
 
-      <div className="flex flex-col items-center gap-1.5 text-center">
-        <p className="text-sm font-medium text-foreground" aria-live="polite">
-          {label}
-        </p>
-        {hint && <p className="spec normal-case tracking-[0.04em]">{hint}</p>}
-      </div>
-
-      {/* Visually-hidden live region: announces the active step name on every change,
-          even when the top-level label prop stays constant between steps. */}
-      {steps && steps.length > 0 && activeKey && (
-        <span
-          aria-live="polite"
-          aria-atomic="true"
-          className="sr-only"
-        >
+      {/* Screen-reader live region: announces each step change */}
+      {steps && activeKey && (
+        <span aria-live="polite" aria-atomic="true" className="sr-only">
           {steps.find((s) => s.key === activeKey)?.label ?? ""}
         </span>
-      )}
-
-      {steps && steps.length > 0 && (
-        <ol className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2">
-          {steps.map((s, i) => {
-            const done = activeIdx > i;
-            const active = activeIdx === i;
-            return (
-              <React.Fragment key={s.key}>
-                {i > 0 && (
-                  <span className={`h-px w-4 ${done ? "bg-brand" : "bg-hairline"}`} />
-                )}
-                <span
-                  className={`inline-flex items-center gap-1.5 text-[11px] font-medium ${
-                    active ? "text-brand" : done ? "text-ink-soft" : "text-ink-faint"
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-2 w-2 rounded-full ${
-                      active
-                        ? "ep-pulse bg-brand"
-                        : done
-                          ? "bg-brand"
-                          : "bg-hairline-strong"
-                    }`}
-                  />
-                  {s.label}
-                </span>
-              </React.Fragment>
-            );
-          })}
-        </ol>
       )}
     </div>
   );
