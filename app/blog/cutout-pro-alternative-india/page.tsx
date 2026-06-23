@@ -6,6 +6,21 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("cutout-pro-alternative-india")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Is Cutout.pro actually free?",
+    a: "Cutout.pro starts with 5 free credits. A passport photo costs 2 credits, so you get two complete photos before credits run out. After that, the cheapest option is ₹246.50/month for 80 credits (subscription) or ₹254.15 for 30 credits (pay-as-you-go), both confirmed from cutout.pro/image-pricing in June 2026. Free previews are watermarked.",
+  },
+  {
+    q: "Did Cutout.pro experience a data breach?",
+    a: "Cybernews researchers reported an exposed Elasticsearch server associated with Cutout.pro in early 2023. In February 2024, Trustpilot user reviews referenced a 5.93 GB dataset posted to BreachForums. These are sourced from public reports; we have not independently verified the contents. Cutout.pro's current privacy policy states photos are processed on AWS and deleted within 24–48 hours after the last edit.",
+  },
+  {
+    q: "Which free tool is most accurate for India passport photos?",
+    a: "PassportSizePhoto.in lists the Passport Seva spec at the pixel level (630×810 px, 10–250 KB), matching the upload portal's exact constraints. easyPhoto targets the same spec and also covers exam portal requirements. Both are free with no server upload. Neither charges credits for any feature.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   description: post.description,
@@ -15,7 +30,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug="cutout-pro-alternative-india">
+    <BlogPostLayout slug="cutout-pro-alternative-india" faqItems={FAQ_ITEMS}>
       <p>
         Cutout.pro gives every new account 5 free credits. A passport photo costs 2 credits — so
         you can make exactly two complete passport photos before the credits run out. After that,
@@ -216,20 +231,7 @@ export default function Page() {
         faster, and more private.
       </p>
 
-      <Faq items={[
-        {
-          q: "Is Cutout.pro actually free?",
-          a: "Cutout.pro starts with 5 free credits. A passport photo costs 2 credits, so you get two complete photos before credits run out. After that, the cheapest option is ₹246.50/month for 80 credits (subscription) or ₹254.15 for 30 credits (pay-as-you-go), both confirmed from cutout.pro/image-pricing in June 2026. Free previews are watermarked.",
-        },
-        {
-          q: "Did Cutout.pro experience a data breach?",
-          a: "Cybernews researchers reported an exposed Elasticsearch server associated with Cutout.pro in early 2023. In February 2024, Trustpilot user reviews referenced a 5.93 GB dataset posted to BreachForums. These are sourced from public reports; we have not independently verified the contents. Cutout.pro's current privacy policy states photos are processed on AWS and deleted within 24–48 hours after the last edit.",
-        },
-        {
-          q: "Which free tool is most accurate for India passport photos?",
-          a: "PassportSizePhoto.in lists the Passport Seva spec at the pixel level (630×810 px, 10–250 KB), matching the upload portal's exact constraints. easyPhoto targets the same spec and also covers exam portal requirements. Both are free with no server upload. Neither charges credits for any feature.",
-        },
-      ]} />
+      <Faq items={FAQ_ITEMS} noSchema />
     </BlogPostLayout>
   );
 }

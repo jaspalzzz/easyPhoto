@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ExternalLink, ArrowRight, ShieldCheck } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, softwareApplicationSchema } from "@/lib/schema";
+import { breadcrumbSchema, softwareApplicationSchema, faqSchema } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { StickyCtaBar } from "@/components/site/StickyCtaBar";
@@ -67,6 +67,7 @@ export default function Page() {
               "Make a compliant US passport photo free — 2×2 inch, white background, no upload.",
             url: "/us-passport-photo/",
           }),
+          faqSchema(FAQ_ITEMS),
         ]}
       />
 
@@ -210,7 +211,7 @@ export default function Page() {
       </section>
 
       <section>
-        <Faq items={FAQ_ITEMS} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </section>
 
       <div className="rounded-lg border border-hairline bg-paper p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">

@@ -6,6 +6,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("linkedin-profile-photo-size-and-tips")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "What is the best size for a LinkedIn profile photo?",
+    a: "800×800 px is the practical sweet spot — it looks sharp on high-DPI laptop and phone screens and stays well under the 8 MB file limit. The minimum is 400×400 px, but this can appear slightly soft on modern retina displays.",
+  },
+  {
+    q: "Why does LinkedIn crop my photo into a circle and cut off my head?",
+    a: "LinkedIn stores your square image and displays it in a circular frame. If your head is near the top edge of the square, the circular crop clips it. To fix this, re-crop the photo with more space above your head — the LinkedIn photo maker centres your face automatically.",
+  },
+  {
+    q: "Should I use a JPG or PNG for my LinkedIn photo?",
+    a: "JPG is usually the better choice for portraits — it compresses well and produces a smaller file. PNG is lossless but creates a larger file for the same image. Either format is accepted by LinkedIn; for a typical headshot JPG under 1 MB will look identical to the PNG version.",
+  },
+  {
+    q: "Can I use the same photo for LinkedIn and my resume?",
+    a: "Yes, from the same original shot. Use the LinkedIn photo maker for the square 800×800 px crop (circular display) and the resume photo maker for the 35×45 mm passport-size crop. Both tools work from the same source image in your browser.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -16,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         Your LinkedIn photo is the first thing recruiters and connections see, and
         the platform has specific size rules. Get the dimensions wrong and your
@@ -111,24 +130,7 @@ export default function Page() {
       </ul>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "What is the best size for a LinkedIn profile photo?",
-            a: "800×800 px is the practical sweet spot — it looks sharp on high-DPI laptop and phone screens and stays well under the 8 MB file limit. The minimum is 400×400 px, but this can appear slightly soft on modern retina displays.",
-          },
-          {
-            q: "Why does LinkedIn crop my photo into a circle and cut off my head?",
-            a: "LinkedIn stores your square image and displays it in a circular frame. If your head is near the top edge of the square, the circular crop clips it. To fix this, re-crop the photo with more space above your head — the LinkedIn photo maker centres your face automatically.",
-          },
-          {
-            q: "Should I use a JPG or PNG for my LinkedIn photo?",
-            a: "JPG is usually the better choice for portraits — it compresses well and produces a smaller file. PNG is lossless but creates a larger file for the same image. Either format is accepted by LinkedIn; for a typical headshot JPG under 1 MB will look identical to the PNG version.",
-          },
-          {
-            q: "Can I use the same photo for LinkedIn and my resume?",
-            a: "Yes, from the same original shot. Use the LinkedIn photo maker for the square 800×800 px crop (circular display) and the resume photo maker for the 35×45 mm passport-size crop. Both tools work from the same source image in your browser.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

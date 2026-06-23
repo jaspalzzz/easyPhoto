@@ -7,6 +7,29 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("best-free-exam-photo-resizer-india")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Does ExamMint cover SSC CGL photo and signature?",
+    a: "Yes. ExamMint Resizer covers SSC CGL along with 104+ other exams, handling photo (275×354 px, 20–50 KB) and signature (140×60 px, 10–20 KB) in one tool. It is free and processes on your device.",
+  },
+  {
+    q: "What is the SSC CGL photo size requirement?",
+    a: "SSC CGL requires a JPG photo at 275×354 pixels, between 20 KB and 50 KB. The signature must be 140×60 pixels, between 10 KB and 20 KB. SSC now requires live capture for the photo — gallery uploads are blocked on the portal. Resize your photo to these specs before the live capture step.",
+  },
+  {
+    q: "What is the myexamphoto.in Image Upload Validator?",
+    a: "It is a pre-submission checker: you select your exam, upload your prepared photo, and the tool checks whether the file meets the exact dimensions, file size, format, and aspect ratio that the portal requires — before you ever open the application form. If anything is wrong, it tells you what to fix. No other tool in this comparison has an equivalent feature.",
+  },
+  {
+    q: "Can I use the same photo for multiple exams?",
+    a: "Only if the specs match exactly. SSC and IBPS both want 20–50 KB JPG but at different pixel dimensions (275×354 vs 200×230). UPSC requires square minimum 350×350 px — a completely different shape. Resize separately for each portal using its specific preset.",
+  },
+  {
+    q: "Do these tools upload my photo to a server?",
+    a: "ExamMint, myexamphoto.in (claimed), easyPhoto, and SarkariResizer all state on-device processing. govtphotoresizer.com processes server-side, claiming photos are not retained after processing (the About page only — not backed by the privacy policy). You can verify on-device claims yourself by opening the browser's network tab while resizing: no image upload request should appear.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   description: post.description,
@@ -16,7 +39,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug="best-free-exam-photo-resizer-india" ctaHref="/tools/exam-package/" ctaLabel="Try the exam photo tool">
+    <BlogPostLayout slug="best-free-exam-photo-resizer-india" ctaHref="/tools/exam-package/" ctaLabel="Try the exam photo tool" faqItems={FAQ_ITEMS}>
       <p>
         Every Indian government exam portal specifies its own photo and signature size — not just
         dimensions, but an exact kilobyte range.{" "}
@@ -318,28 +341,7 @@ export default function Page() {
         covers KB floors, signature backgrounds, format mismatches, and the quick fix for each.
       </p>
 
-      <Faq items={[
-        {
-          q: "Does ExamMint cover SSC CGL photo and signature?",
-          a: "Yes. ExamMint Resizer covers SSC CGL along with 104+ other exams, handling photo (275×354 px, 20–50 KB) and signature (140×60 px, 10–20 KB) in one tool. It is free and processes on your device.",
-        },
-        {
-          q: "What is the SSC CGL photo size requirement?",
-          a: "SSC CGL requires a JPG photo at 275×354 pixels, between 20 KB and 50 KB. The signature must be 140×60 pixels, between 10 KB and 20 KB. SSC now requires live capture for the photo — gallery uploads are blocked on the portal. Resize your photo to these specs before the live capture step.",
-        },
-        {
-          q: "What is the myexamphoto.in Image Upload Validator?",
-          a: "It is a pre-submission checker: you select your exam, upload your prepared photo, and the tool checks whether the file meets the exact dimensions, file size, format, and aspect ratio that the portal requires — before you ever open the application form. If anything is wrong, it tells you what to fix. No other tool in this comparison has an equivalent feature.",
-        },
-        {
-          q: "Can I use the same photo for multiple exams?",
-          a: "Only if the specs match exactly. SSC and IBPS both want 20–50 KB JPG but at different pixel dimensions (275×354 vs 200×230). UPSC requires square minimum 350×350 px — a completely different shape. Resize separately for each portal using its specific preset.",
-        },
-        {
-          q: "Do these tools upload my photo to a server?",
-          a: "ExamMint, myexamphoto.in (claimed), easyPhoto, and SarkariResizer all state on-device processing. govtphotoresizer.com processes server-side, claiming photos are not retained after processing (the About page only — not backed by the privacy policy). You can verify on-device claims yourself by opening the browser's network tab while resizing: no image upload request should appear.",
-        },
-      ]} />
+      <Faq items={FAQ_ITEMS} noSchema />
     </BlogPostLayout>
   );
 }

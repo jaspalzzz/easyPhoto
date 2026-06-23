@@ -25,9 +25,10 @@ export function HeroVisual() {
 
         <div className="relative overflow-hidden rounded-xl bg-white" style={{ aspectRatio: "3/4" }}>
           <img
-            src="/images/sample4_before_1782052955340.png"
+            src="/images/sample4_before_1782052955340.webp"
             alt="Example selfie — before AI processing"
             className="h-full w-full object-cover object-top"
+            fetchPriority="high"
           />
         </div>
 
@@ -90,15 +91,15 @@ export function HeroVisual() {
           <span>✓</span> Compliant
         </span>
 
-        <div className="relative overflow-hidden rounded-xl bg-white" style={{ aspectRatio: "3/4" }}>
+        <div className="relative overflow-hidden rounded-xl bg-white [container-type:size]" style={{ aspectRatio: "3/4" }}>
           <img
-            src="/images/sample4_after_1782052969219.png"
+            src="/images/sample4_after_1782052969219.webp"
             alt="Compliant passport photo — after AI processing"
             className="h-full w-full object-cover object-top"
           />
           <div className="pointer-events-none absolute inset-0 rounded-xl border-2 border-emerald-400 shadow-[inset_0_0_16px_rgba(16,185,129,0.12)]" />
           <div
-            className="animate-scan-beam pointer-events-none absolute left-0 h-[2px] w-full"
+            className="animate-scan-beam pointer-events-none absolute left-0 top-0 h-[2px] w-full"
             style={{ background: "#10b981", boxShadow: "0 0 10px #10b981", zIndex: 5 }}
           />
           <div className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500 text-[13px] font-bold text-white shadow-[0_4px_10px_rgba(16,185,129,0.4)]">

@@ -6,6 +6,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("how-to-reduce-passport-photo-size-for-online-forms")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Why is my photo rejected even though it's under the file-size cap?",
+    a: "Most portals set a band, not just a ceiling. SSC, IBPS and UPSC portals require photos between 20 and 50 KB — a 12 KB file is rejected for being too small just as a 2 MB file is rejected for being too large. Use a resizer that targets the exact band.",
+  },
+  {
+    q: "Can I compress a photo without losing face clarity?",
+    a: "Yes, to a point. A well-compressed 20 KB passport photo looks sharp at the thumbnail size portals display. Clarity suffers below roughly 10 KB — so use the portal's minimum as your floor, not the lowest possible.",
+  },
+  {
+    q: "Should I compress first or crop to the right dimensions first?",
+    a: "Crop first. Start with the passport photo maker to get the correct head ratio and background, then run the result through a KB-target tool. Compressing before cropping wastes file budget on areas that will be cut away.",
+  },
+  {
+    q: "My signature also needs to be under 20 KB — how do I handle that?",
+    a: "The signature resizer handles this in one step — it removes the paper background, trims empty edges, and compresses to the target. A clean white-background signature compresses much smaller than one with a grey paper scan behind it.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: `${post.title}`,
   titleAbsolute: true,
@@ -16,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         A phone photo is several megabytes. Most government, visa and exam
         portals accept only a tiny fraction of that, often 10 to 100&nbsp;KB.
@@ -120,24 +139,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Why is my photo rejected even though it's under the file-size cap?",
-            a: "Most portals set a band, not just a ceiling. SSC, IBPS and UPSC portals require photos between 20 and 50 KB — a 12 KB file is rejected for being too small just as a 2 MB file is rejected for being too large. Use a resizer that targets the exact band.",
-          },
-          {
-            q: "Can I compress a photo without losing face clarity?",
-            a: "Yes, to a point. A well-compressed 20 KB passport photo looks sharp at the thumbnail size portals display. Clarity suffers below roughly 10 KB — so use the portal's minimum as your floor, not the lowest possible.",
-          },
-          {
-            q: "Should I compress first or crop to the right dimensions first?",
-            a: "Crop first. Start with the passport photo maker to get the correct head ratio and background, then run the result through a KB-target tool. Compressing before cropping wastes file budget on areas that will be cut away.",
-          },
-          {
-            q: "My signature also needs to be under 20 KB — how do I handle that?",
-            a: "The signature resizer handles this in one step — it removes the paper background, trims empty edges, and compresses to the target. A clean white-background signature compresses much smaller than one with a grey paper scan behind it.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

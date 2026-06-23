@@ -19,6 +19,7 @@ export default function Page() {
       h1="Free Visa Photo Maker"
       intro="Create a compliant visa photo online for free. Pick the destination country and drop a photo, and we'll apply the exact size and background for US (DS-160), Canada, UK and Schengen visas. Made in your browser; nothing is uploaded."
       faqItems={VISA_FAQ}
+      dateModified="2026-06-11"
     />
   );
 }

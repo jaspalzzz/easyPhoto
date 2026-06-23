@@ -26,8 +26,8 @@ export default function Page() {
         footnote="Photo and signature are processed entirely in your browser — nothing is uploaded."
         hero={
           <BeforeAfterSlider
-            beforeSrc="/images/sample4_before_1782052955340.png"
-            afterSrc="/images/sample4_after_1782052969219.png"
+            beforeSrc="/images/sample4_before_1782052955340.webp"
+            afterSrc="/images/sample4_after_1782052969219.webp"
             caption="Drag to compare — AI centering & background removal"
           />
         }

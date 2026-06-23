@@ -6,6 +6,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("how-to-take-a-passport-photo-at-home")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Can I use a selfie for a passport photo?",
+    a: "A front-facing selfie taken at arm's length can work, but the perspective often distorts the face slightly. A better approach is to prop your phone against something and use the timer, or ask someone to take it from about a metre away at eye level.",
+  },
+  {
+    q: "Does the background have to be white?",
+    a: "Not for all countries. The UK requires light grey or cream — a pure white background will fail. The US and India require white. Upload your photo to the passport photo maker and select your country; it applies the correct background regardless of what was behind you.",
+  },
+  {
+    q: "Why do passport photos get rejected for shadows?",
+    a: "Passport photos use the face as a biometric identifier. Shadows alter the apparent shape of facial features and can cause automated systems to flag the photo. Stand away from the wall and use soft frontal light to eliminate both face shadows and background shadows.",
+  },
+  {
+    q: "How do I know if my head takes up the right amount of the frame?",
+    a: "Every country specifies a required chin-to-crown head height as a percentage of the photo height. The passport photo maker measures this automatically and adjusts the crop so your head fills exactly the required band — something very difficult to judge by eye.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: `${post.title}`,
   titleAbsolute: true,
@@ -16,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         A passport photo from a shop isn&apos;t magic. It&apos;s really just
         three things: a plain background, even light, and a precise crop. You can
@@ -130,24 +149,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Can I use a selfie for a passport photo?",
-            a: "A front-facing selfie taken at arm's length can work, but the perspective often distorts the face slightly. A better approach is to prop your phone against something and use the timer, or ask someone to take it from about a metre away at eye level.",
-          },
-          {
-            q: "Does the background have to be white?",
-            a: "Not for all countries. The UK requires light grey or cream — a pure white background will fail. The US and India require white. Upload your photo to the passport photo maker and select your country; it applies the correct background regardless of what was behind you.",
-          },
-          {
-            q: "Why do passport photos get rejected for shadows?",
-            a: "Passport photos use the face as a biometric identifier. Shadows alter the apparent shape of facial features and can cause automated systems to flag the photo. Stand away from the wall and use soft frontal light to eliminate both face shadows and background shadows.",
-          },
-          {
-            q: "How do I know if my head takes up the right amount of the frame?",
-            a: "Every country specifies a required chin-to-crown head height as a percentage of the photo height. The passport photo maker measures this automatically and adjusts the crop so your head fills exactly the required band — something very difficult to judge by eye.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { KeyRound, ShieldCheck } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, softwareApplicationSchema } from "@/lib/schema";
+import { breadcrumbSchema, softwareApplicationSchema, faqSchema } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { UnlockPdfTool } from "@/components/tools/UnlockPdfTool";
 
@@ -59,6 +59,7 @@ export default function Page() {
               "Open a password-protected e-Aadhaar PDF and remove the password for an unprotected copy — free, private, in your browser.",
             url: "/unlock-aadhaar-pdf/",
           }),
+          faqSchema(FAQS),
         ]}
       />
 
@@ -115,7 +116,7 @@ export default function Page() {
       </section>
 
       <section>
-        <Faq items={FAQS} />
+        <Faq items={FAQS} noSchema />
       </section>
     </div>
   );

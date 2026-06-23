@@ -14,7 +14,7 @@ export default function Page() {
   return (
     <DocPhotoResizerPage
       portalId="voter-id"
-      displayName="Voter ID"
+      displayName="ECI Voter ID"
       slug="voter-id-photo-resizer"
       intro="Get your new-voter (Form 6) photo to the size, dimensions and file limit the ECI Voters' Service Portal accepts — auto-resized and checked, free, entirely in your browser."
     />

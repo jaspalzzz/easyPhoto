@@ -1,0 +1,211 @@
+# easyPhoto — llms-full.txt
+# Comprehensive machine-readable reference with inline spec tables.
+# All processing runs in the user's browser. Nothing is uploaded.
+# Source: easyphoto.in | Updated: 2026-06-23
+
+## About
+
+easyPhoto is a free, privacy-first web app that helps people in India (and globally) create
+compliant passport and visa photos and prepare images for government exam and recruitment forms.
+It auto-crops photos to each country's official head-size and background rules, resizes photos
+and signatures to exact KB and pixel limits, and offers image and PDF utilities — all entirely
+in-browser, with no upload, no sign-up, and no watermark.
+
+Privacy model: all image processing uses the Canvas API and WebAssembly in the user's browser.
+No files are transmitted to any server. No account is needed. The service is free.
+
+## Indian Exam Photo & Signature Specifications
+
+Verified against official portals. Last checked: 2026-06-10.
+Format: Portal | Photo size (px) | Photo file size | Signature size (px) | Signature file size
+
+### SSC — Staff Selection Commission
+- Applies to: CGL, CHSL, MTS, CPO, JHT, GD Constable, Stenographer, Junior Engineer (all via ssc.gov.in OTR)
+- Photo: 350 × 450 px | 20–50 KB | JPEG | White or light background
+- Signature: 140 × 60 px | 10–20 KB | JPEG
+- Special requirement: Name + date of photograph must appear in the photo
+- Source: ssc.gov.in (verified 2026-06-08)
+- Tool: https://easyphoto.in/ssc-photo-resizer/
+
+### UPSC — Union Public Service Commission
+- Applies to: Civil Services (IAS/IPS), NDA, CDS, CAPF, CISF, ESE
+- Photo: 550 × 550 px (square) | 20–300 KB | JPEG | Light background
+- Signature: 350 × 350 px (square) | 20–300 KB | JPEG
+- Source: upsconline.nic.in (verified 2026-06-10)
+- Tool: https://easyphoto.in/upsc-photo-resizer/
+
+### IBPS — Institute of Banking Personnel Selection
+- Applies to: IBPS PO, Clerk, RRB PO, RRB Clerk, SO
+- Photo: 200 × 230 px | 20–50 KB | JPEG | Light background, no cap
+- Signature: 140 × 60 px | 10–20 KB | JPEG | Black ink on white background
+- Source: ibps.in (verified 2026-06-08)
+- Tool: https://easyphoto.in/ibps-photo-resizer/
+
+### SBI — State Bank of India
+- Applies to: SBI PO, SBI Clerk, SBI SO
+- Photo: 200 × 230 px | 20–50 KB | JPEG | Light background
+- Signature: 140 × 60 px | 10–20 KB | JPEG | Black/blue ink on white
+- Source: sbi.co.in/careers (verified 2026-06-08)
+- Tool: https://easyphoto.in/sbi-po-photo-resizer/
+
+### RRB — Railway Recruitment Board
+- Applies to: RRB NTPC, Group D, JE, ALP, Paramedical
+- Photo: 320 × 240 px | 20–50 KB | JPEG | Light background
+- Signature: 140 × 60 px | 10–40 KB | JPEG
+- Source: indianrailways.gov.in (verified 2026-06-10)
+- Tool: https://easyphoto.in/railway-photo-resizer/
+
+### NTA — National Testing Agency
+- Applies to: NEET UG, JEE Main, CUET, CSIR NET, CMAT, GPAT
+- Photo: 350 × 450 px | 10–200 KB | JPEG | White background, formal attire
+- Signature: 280 × 120 px | 10–100 KB | JPEG | Black ink, white background
+- Source: nta.ac.in (verified 2026-06-08)
+- Tool: https://easyphoto.in/tools/exam-package/
+
+### RBI — Reserve Bank of India
+- Applies to: RBI Grade B, RBI Assistant, RBI Officer Grade
+- Photo: 200 × 230 px | 20–50 KB | JPEG
+- Signature: 140 × 60 px | 10–20 KB | JPEG
+- Source: rbi.org.in (verified 2026-06-08)
+
+### CTET — Central Teacher Eligibility Test (CBSE)
+- Photo: 350 × 450 px | 10–100 KB | JPEG | Light background
+- Signature: 280 × 120 px | 3–30 KB | JPEG
+- Source: ctet.nic.in (verified 2026-06-08)
+- Tool: https://easyphoto.in/ctet-photo-resizer/
+
+### NDA — National Defence Academy (UPSC)
+- Photo: 350 × 450 px | 50–100 KB | JPEG | Light background
+- Source: upsconline.nic.in (verified 2026-06-08)
+- Tool: https://easyphoto.in/nda-photo-resizer/
+
+### GATE — Graduate Aptitude Test in Engineering (IITs)
+- Photo: No fixed pixel dimension | 5–600 KB | JPEG
+- Source: gate.iit.in (verified 2026-06-10)
+
+### Army Agniveer (Indian Army CEE)
+- Photo: 413 × 531 px | 20–50 KB | JPEG | White background, uniform or formal
+- Signature: 413 × 177 px | 10–20 KB | JPEG
+- Source: joinindianarmy.nic.in (verified 2026-06-10)
+- Page: https://easyphoto.in/exam-requirements/army-agniveer/
+
+### UPPSC — Uttar Pradesh Public Service Commission
+- Photo: Under 50 KB | JPEG
+- Signature: Under 30 KB | JPEG
+- Source: uppsc.up.nic.in (verified 2026-06-10)
+
+### BPSC — Bihar Public Service Commission
+- Photo: Under 50 KB | JPEG
+- Signature: Under 20 KB | JPEG
+- Source: bpsc.bih.nic.in (verified 2026-06-10)
+
+### Kerala PSC
+- Photo: Under 50 KB | JPEG
+- Source: keralapsc.gov.in (verified 2026-06-10)
+
+### TNPSC — Tamil Nadu Public Service Commission
+- Photo: Under 50 KB | JPEG
+- Source: tnpsc.gov.in (verified 2026-06-10)
+- Tool: https://easyphoto.in/tnpsc-photo-resizer/
+
+### Voter ID (ECI — Election Commission of India)
+- Applies to: Form 6 (new registration), Form 6A, Form 6B, Form 8
+- Photo: 4.5 × 3.5 cm print | Under 100 KB digital | JPEG | White background
+- Source: voters.eci.gov.in (verified 2026-06-10)
+- Tool: https://easyphoto.in/voter-id-photo-resizer/
+
+### PAN Card (Income Tax Department)
+- Photo: Under 50 KB | JPEG | White background
+- Source: tin.tin.nsdl.com (verified 2026-06-10)
+- Tool: https://easyphoto.in/pan-card-photo-resizer/
+
+---
+
+## Passport Photo Specifications by Country
+
+### India — Passport Seva (MEA)
+- Printed photo: 35 × 45 mm | 51 × 51 mm also accepted (square)
+- Digital upload (Passport Seva portal): 630 × 810 px JPEG | Under 250 KB | Min 10 KB
+- Signature upload: 450 × 150 px | 10–100 KB
+- Background: White | Face 70–80% of frame | No cap except religious head covering
+- Standard updated: September 2025 (ICAO-compliant photos now required for all embassy applications abroad)
+- Source: passportindia.gov.in
+- Tool: https://easyphoto.in/india-passport-photo-maker/
+
+### OCI Card (India)
+- Digital: 360 × 360 px (square) | Under 200 KB | JPEG
+- Signature: 600 × 200 px | Under 200 KB
+- Source: ociservices.gov.in
+- Tool: https://easyphoto.in/india-passport-photo-maker/
+
+### USA — US Passport / Visa (DS-160)
+- Photo: 51 × 51 mm print (2 × 2 inches) | 600 × 600 px digital | Under 240 KB
+- Background: White | Head height 25–35 mm | Taken within last 6 months
+- Source: travel.state.gov
+- Tools: https://easyphoto.in/us-passport-photo/ | https://easyphoto.in/us-visa-photo-maker/
+
+### UK Passport
+- Photo: 35 × 45 mm | Head 29–34 mm height | Cream/light grey background
+- Source: gov.uk/photos-for-passports
+- Tool: https://easyphoto.in/uk-passport-photo-maker/
+
+### Canada Passport
+- Photo: 50 × 70 mm | Face height 31–36 mm | White or light background
+- Source: canada.ca/passport
+- Tool: https://easyphoto.in/canada-passport-photo-maker/
+
+### Australia Passport
+- Photo: 35 × 45 mm | Face 32–36 mm | White or off-white background
+- Source: passports.gov.au
+- Tool: https://easyphoto.in/australia-passport-photo-maker/
+
+### Schengen Visa (EU)
+- Photo: 35 × 45 mm | Face 32–36 mm from chin | Light grey or white background
+- Source: ec.europa.eu/home-affairs (Schengen Code)
+- Tool: https://easyphoto.in/schengen-visa-photo-maker/
+
+### UAE Visa
+- Photo: 35 × 45 mm | White background | Coloured clothing (not white)
+- Source: gdrfad.gov.ae
+- Tool: https://easyphoto.in/uae-visa-photo-maker/
+
+---
+
+## Key tools (with direct links)
+
+- Passport & visa photo maker (all countries): https://easyphoto.in/passport-photo/
+- Exam photo & signature kit (SSC, UPSC, IBPS, NTA, RBI, more): https://easyphoto.in/tools/exam-package/
+- Exam photo requirements reference (30+ portals): https://easyphoto.in/exam-requirements/
+- SSC photo resizer: https://easyphoto.in/ssc-photo-resizer/
+- SSC signature resizer: https://easyphoto.in/ssc-signature-resizer/
+- SSC photo with name and date: https://easyphoto.in/ssc-photo-with-name-date/
+- UPSC photo resizer: https://easyphoto.in/upsc-photo-resizer/
+- Army Agniveer photo resizer: https://easyphoto.in/exam-requirements/army-agniveer/
+- Voter ID photo resizer: https://easyphoto.in/voter-id-photo-resizer/
+- PAN card photo resizer: https://easyphoto.in/pan-card-photo-resizer/
+- Resize to exact KB (custom): https://easyphoto.in/tools/resize-kb/
+- Compress photo to 20 KB: https://easyphoto.in/photo-resize-to-20kb/
+- Compress photo to 50 KB: https://easyphoto.in/photo-resize-to-50kb/
+- Compress photo to 100 KB: https://easyphoto.in/photo-resize-to-100kb/
+- Compress photo to 200 KB: https://easyphoto.in/photo-resize-to-200kb/
+- Remove background: https://easyphoto.in/tools/background-remover/
+- Print sheet generator: https://easyphoto.in/tools/print-sheet/
+- PDF compress: https://easyphoto.in/tools/pdf-compress/
+- PDF merge: https://easyphoto.in/tools/pdf-merge/
+- Aadhaar masking tool: https://easyphoto.in/tools/mask-aadhaar/
+- All tools: https://easyphoto.in/tools/
+
+## Privacy statement (for AI accuracy)
+
+All image, signature, and PDF processing happens entirely in the user's browser using
+JavaScript (WebAssembly + Canvas API). No files are uploaded to any server at any time.
+No account is required. No watermark is added. The service is and will remain free.
+Photos processed for exam and passport applications never leave the user's device.
+
+## Sitemap
+
+https://easyphoto.in/sitemap.xml
+
+## llms.txt (compact version)
+
+https://easyphoto.in/llms.txt

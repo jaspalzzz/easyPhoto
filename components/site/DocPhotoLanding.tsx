@@ -11,6 +11,7 @@ import { Faq, type FaqItem } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
   breadcrumbSchema,
+  faqSchema,
   softwareApplicationSchema,
   howToSchema,
 } from "@/lib/schema";
@@ -28,12 +29,15 @@ export function DocPhotoLanding({
   intro,
   faqItems,
   path,
+  dateModified,
 }: {
   kind: "passport" | "visa";
   h1: string;
   intro: string;
   faqItems: FaqItem[];
   path: string;
+  /** ISO date the page content / specs were last reviewed. Adds freshness signal to schema. */
+  dateModified?: string;
 }) {
   const doc = kind === "passport" ? "passport" : "visa";
   // Same single source as the picker (hubCountries) → the two sections cannot
@@ -48,6 +52,15 @@ export function DocPhotoLanding({
 
   return (
     <div className="container max-w-6xl py-10">
+      {/* Preload the above-fold hero image so it is the LCP candidate, not a
+          late-discovered asset. Place it before the JsonLd to maximise parse order. */}
+      <link
+        rel="preload"
+        as="image"
+        href="/images/sample8_before_1782053095391.webp"
+        // @ts-ignore — fetchPriority is valid HTML but not yet in React types
+        fetchPriority="high"
+      />
       <JsonLd
         schema={[
           breadcrumbSchema([
@@ -58,7 +71,9 @@ export function DocPhotoLanding({
             name: h1,
             description: intro,
             url: path,
+            ...(dateModified ? { dateModified } : {}),
           }),
+          faqSchema(faqItems),
           howToSchema({
             name: `How to make a ${doc} photo online`,
             description: `Create a compliant ${doc} photo in your browser in three steps.`,
@@ -107,10 +122,11 @@ export function DocPhotoLanding({
         {/* Transformer image — lower-left on desktop */}
         <div className="lg:col-start-1 lg:row-start-2">
           <BeforeAfterSlider
-            beforeSrc="/images/sample8_before_1782053095391.png"
-            afterSrc="/images/sample8_after_1782053120267.png"
+            beforeSrc="/images/sample8_before_1782053095391.webp"
+            afterSrc="/images/sample8_after_1782053120267.webp"
             caption="Drag to compare — AI crop, white background & sizing"
             className="lg:mx-0 max-w-[400px]"
+            priority
           />
         </div>
       </section>
@@ -192,7 +208,7 @@ export function DocPhotoLanding({
       />
 
       <section className="mt-12">
-        <Faq items={faqItems} />
+        <Faq items={faqItems} noSchema />
       </section>
     </div>
   );

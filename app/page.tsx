@@ -11,9 +11,9 @@ import { ToolsTabs } from "@/components/site/ToolsTabs";
 import { WhyRejected } from "@/components/site/WhyRejected";
 import { ComparisonTable } from "@/components/site/ComparisonTable";
 import { DarkTrustStrip } from "@/components/site/DarkTrustStrip";
-import { Faq } from "@/components/site/Faq";
+import { Faq, HOME_FAQ } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { softwareApplicationSchema } from "@/lib/schema";
+import { softwareApplicationSchema, faqSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { ToolSearch } from "@/components/site/ToolSearch";
 import { RecentTools } from "@/components/site/RecentTools";
@@ -55,14 +55,17 @@ export default function HomePage() {
   return (
     <>
       <JsonLd
-        schema={softwareApplicationSchema({
-          name: "easyPhoto — Document Photo & Form-Resize Tools",
-          description:
-            "Free tools for Indian passport photos, visa photos, exam form resizing and government document images. Everything runs in your browser, nothing is uploaded.",
-          url: "/",
-          category: "UtilitiesApplication",
-          dateModified: "2026-06-21",
-        })}
+        schema={[
+          softwareApplicationSchema({
+            name: "easyPhoto — Document Photo & Form-Resize Tools",
+            description:
+              "Free tools for Indian passport photos, visa photos, exam form resizing and government document images. Everything runs in your browser, nothing is uploaded.",
+            url: "/",
+            category: "UtilitiesApplication",
+            dateModified: "2026-06-21",
+          }),
+          faqSchema(HOME_FAQ),
+        ]}
       />
 
       {/* Personalisation bar for returning users */}
@@ -161,7 +164,7 @@ export default function HomePage() {
 
       {/* ── FAQ ───────────────────────────────────────────────────────── */}
       <section className="container py-14 sm:py-16">
-        <Faq />
+        <Faq noSchema />
       </section>
     </>
   );

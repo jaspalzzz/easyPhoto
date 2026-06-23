@@ -19,6 +19,7 @@ import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
   breadcrumbSchema,
+  faqSchema,
   softwareApplicationSchema,
 } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
@@ -97,6 +98,7 @@ export default async function Page({
             url: path,
             dateModified: spec.verifiedOn,
           }),
+          faqSchema(faqItems),
         ]}
       />
 
@@ -180,7 +182,7 @@ export default async function Page({
       />
 
       <section>
-        <Faq items={faqItems} />
+        <Faq items={faqItems} noSchema />
       </section>
 
       <p className="text-xs text-muted-foreground">

@@ -19,6 +19,7 @@ export default function Page() {
       h1="Free Indian Passport Size Photo Maker"
       intro="Make a compliant Indian passport photo for free — 35×45 mm for the printed form, or exactly 630×810 px JPEG under 250 KB for the Passport Seva online upload. Pick your country, drop in a photo, and we auto-crop to the exact head size, ICAO-compliant white background, and portal spec. 100% private; nothing is uploaded."
       faqItems={PASSPORT_FAQ}
+      dateModified="2026-06-11"
     />
   );
 }

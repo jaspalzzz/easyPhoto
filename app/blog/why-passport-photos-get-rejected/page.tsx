@@ -6,6 +6,29 @@ import { Faq } from "@/components/site/Faq";
 
 const post = getPost("why-passport-photos-get-rejected")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "What is the most common reason passport photos get rejected?",
+    a: "Wrong size or head proportion. Each country sets both the photo dimensions and how big the head must be within them, and a generic crop rarely matches — for example the US wants 25–35 mm chin-to-crown on a 2×2 inch photo while India requires a larger face.",
+  },
+  {
+    q: "Can I use a plain white background for every country?",
+    a: "No. The UK rejects plain white and requires light grey or cream, and Switzerland (for Schengen visas) requires grey. Light grey is the safest universal choice; set the background per country rather than assuming white.",
+  },
+  {
+    q: "Can I wear glasses or smile in a passport photo?",
+    a: "Most countries no longer allow glasses at all, and a smile, open mouth or raised eyebrows fails the biometric check. Keep a relaxed, neutral expression with your mouth closed.",
+  },
+  {
+    q: "How recent does my passport photo need to be?",
+    a: "Most countries require a photo taken within the last six months. An older photo, or a passport photo used where a visa photo is required, is a common cause of rejection.",
+  },
+  {
+    q: "Why does my photo fail the upload file-size limit?",
+    a: "Phone photos are far larger than online portals accept — many Indian exam and government forms want 20–50 KB. Compress the finished photo to your portal's exact limit before uploading.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: `${post.title}`,
   titleAbsolute: true,
@@ -16,7 +39,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         Passport photos rarely get rejected for dramatic reasons. It&apos;s almost
         always one of a handful of small, fixable things. Here&apos;s the full
@@ -126,30 +149,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq
-          items={[
-            {
-              q: "What is the most common reason passport photos get rejected?",
-              a: "Wrong size or head proportion. Each country sets both the photo dimensions and how big the head must be within them, and a generic crop rarely matches — for example the US wants 25–35 mm chin-to-crown on a 2×2 inch photo while India requires a larger face.",
-            },
-            {
-              q: "Can I use a plain white background for every country?",
-              a: "No. The UK rejects plain white and requires light grey or cream, and Switzerland (for Schengen visas) requires grey. Light grey is the safest universal choice; set the background per country rather than assuming white.",
-            },
-            {
-              q: "Can I wear glasses or smile in a passport photo?",
-              a: "Most countries no longer allow glasses at all, and a smile, open mouth or raised eyebrows fails the biometric check. Keep a relaxed, neutral expression with your mouth closed.",
-            },
-            {
-              q: "How recent does my passport photo need to be?",
-              a: "Most countries require a photo taken within the last six months. An older photo, or a passport photo used where a visa photo is required, is a common cause of rejection.",
-            },
-            {
-              q: "Why does my photo fail the upload file-size limit?",
-              a: "Phone photos are far larger than online portals accept — many Indian exam and government forms want 20–50 KB. Compress the finished photo to your portal’s exact limit before uploading.",
-            },
-          ]}
-        />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

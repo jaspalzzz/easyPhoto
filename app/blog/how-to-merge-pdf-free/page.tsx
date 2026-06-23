@@ -6,6 +6,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("how-to-merge-pdf-free")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Can I merge PDFs that are password-protected?",
+    a: "No. Password-protected PDFs need to be unlocked first. Use the Unlock PDF tool to remove the password, then merge the resulting files. Attempting to merge an encrypted PDF will produce an error or a broken output.",
+  },
+  {
+    q: "Is there a page limit for merging?",
+    a: "There is no hard page limit built into the tool. The practical limit is your device's available memory — most modern phones and laptops handle a combined document of several hundred MB without issues.",
+  },
+  {
+    q: "Can I reorder pages after merging?",
+    a: "Yes. Before you click Merge & Download, you can drag pages into any order and delete any page you don't need. This lets you combine three separate PDFs and arrange all their pages exactly as the portal requires.",
+  },
+  {
+    q: "Will the merged PDF have a watermark?",
+    a: "No. The PDF merge tool on easyPhoto is completely free and adds no watermark. The output is a standard PDF file identical to what a paid tool would produce.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -16,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         Exam applications, visa packets and job portfolios often need several
         documents bundled into a single PDF. You could pay for a desktop tool or
@@ -122,24 +141,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Can I merge PDFs that are password-protected?",
-            a: "No. Password-protected PDFs need to be unlocked first. Use the Unlock PDF tool to remove the password, then merge the resulting files. Attempting to merge an encrypted PDF will produce an error or a broken output.",
-          },
-          {
-            q: "Is there a page limit for merging?",
-            a: "There is no hard page limit built into the tool. The practical limit is your device's available memory — most modern phones and laptops handle a combined document of several hundred MB without issues.",
-          },
-          {
-            q: "Can I reorder pages after merging?",
-            a: "Yes. Before you click Merge & Download, you can drag pages into any order and delete any page you don't need. This lets you combine three separate PDFs and arrange all their pages exactly as the portal requires.",
-          },
-          {
-            q: "Will the merged PDF have a watermark?",
-            a: "No. The PDF merge tool on easyPhoto is completely free and adds no watermark. The output is a standard PDF file identical to what a paid tool would produce.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

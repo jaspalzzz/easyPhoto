@@ -17,7 +17,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <ToolPage
-      title="Sign Image or Photo"
+      title="Sign on Picture or Photo Online"
       slug={tool.slug}
       blurb={tool.blurb}
       faqItems={SIGN_IMAGE_FAQ}

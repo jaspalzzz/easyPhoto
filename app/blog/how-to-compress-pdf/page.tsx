@@ -6,6 +6,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("how-to-compress-pdf")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Can a 2 MB scanned PDF really be compressed to 50 KB without looking broken?",
+    a: "Yes, for most government documents. A scanned A4 page is mostly white space with black text — that data compresses extremely well. The result at 50 KB may be slightly softer if you zoom in, but it will look clear at normal reading size and on any portal display.",
+  },
+  {
+    q: "Why does compressing below 50 KB make the document blurry?",
+    a: "Below a certain threshold, the compression algorithm starts discarding detail that the human eye can detect. For a single page this floor is around 30–40 KB. For a multi-page document, each page shares the budget — a 4-page PDF at 50 KB total means ~12 KB per page, which is very tight. Extract only the required pages first.",
+  },
+  {
+    q: "Will the portal be able to open my compressed PDF?",
+    a: "Yes. The compression method converts pages to compressed images and re-assembles a standard PDF file. Any PDF viewer — Adobe Reader, Chrome, phone apps — opens it without issues. The only change is that text is no longer selectable (it becomes an image), which doesn't affect government portals.",
+  },
+  {
+    q: "Is it safe to use an online PDF compressor for Aadhaar or marksheets?",
+    a: "Only if the tool processes the file entirely in your browser without uploading it to a server. The PDF compress tool on easyPhoto runs on your device using local JavaScript — no file is ever transmitted. Check the privacy policy of any tool you use for sensitive documents.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -16,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         Upload a marksheet to an exam portal and the page rejects it: &quot;file
         too large.&quot; The PDF is 2&nbsp;MB; the portal wants 50&nbsp;KB. That
@@ -150,24 +169,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Can a 2 MB scanned PDF really be compressed to 50 KB without looking broken?",
-            a: "Yes, for most government documents. A scanned A4 page is mostly white space with black text — that data compresses extremely well. The result at 50 KB may be slightly softer if you zoom in, but it will look clear at normal reading size and on any portal display.",
-          },
-          {
-            q: "Why does compressing below 50 KB make the document blurry?",
-            a: "Below a certain threshold, the compression algorithm starts discarding detail that the human eye can detect. For a single page this floor is around 30–40 KB. For a multi-page document, each page shares the budget — a 4-page PDF at 50 KB total means ~12 KB per page, which is very tight. Extract only the required pages first.",
-          },
-          {
-            q: "Will the portal be able to open my compressed PDF?",
-            a: "Yes. The compression method converts pages to compressed images and re-assembles a standard PDF file. Any PDF viewer — Adobe Reader, Chrome, phone apps — opens it without issues. The only change is that text is no longer selectable (it becomes an image), which doesn't affect government portals.",
-          },
-          {
-            q: "Is it safe to use an online PDF compressor for Aadhaar or marksheets?",
-            a: "Only if the tool processes the file entirely in your browser without uploading it to a server. The PDF compress tool on easyPhoto runs on your device using local JavaScript — no file is ever transmitted. Check the privacy policy of any tool you use for sensitive documents.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

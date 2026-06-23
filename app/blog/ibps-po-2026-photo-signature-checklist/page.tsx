@@ -6,6 +6,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("ibps-po-2026-photo-signature-checklist")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "What are the IBPS PO 2026 photo size requirements?",
+    a: "The IBPS PO portal typically requires a JPG photo between 20 and 50 KB and approximately 200×230 pixels, with a plain light background. Always verify the exact numbers in the live official notification at ibps.in before applying, as they can vary slightly between cycles.",
+  },
+  {
+    q: "Can I use a PNG or HEIC file for the IBPS portal?",
+    a: "No. The IBPS portal accepts JPG/JPEG only. A PNG or HEIC file (the default format on iPhones) will be rejected at upload. The IBPS PO resizer on easyPhoto automatically outputs JPG, so no separate conversion is needed.",
+  },
+  {
+    q: "What happens if my photo is under 20 KB?",
+    a: "It is rejected. The portal enforces a minimum as well as a maximum — a 12 KB file is considered too low-quality. Use a resizer that targets the 20–50 KB band specifically, not one that just compresses to the smallest possible size.",
+  },
+  {
+    q: "Can I reuse the same photo and signature for IBPS Clerk and SBI PO?",
+    a: "Usually yes. IBPS Clerk, IBPS RRB, and SBI PO all use the same 20–50 KB photo and 10–20 KB signature specs. A file prepared for IBPS PO will pass the other portals too, as long as you confirm each notification before applying.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -16,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} ctaHref="/ibps-photo-resizer/" ctaLabel="Resize your IBPS photo">
+    <BlogPostLayout slug={post.slug} ctaHref="/ibps-photo-resizer/" ctaLabel="Resize your IBPS photo" faqItems={FAQ_ITEMS}>
       <p>
         Per the official IBPS calendar, the <strong>IBPS PO 2026 prelims are on
         22–23 August</strong>, with registration opening on the notification a
@@ -143,24 +162,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "What are the IBPS PO 2026 photo size requirements?",
-            a: "The IBPS PO portal typically requires a JPG photo between 20 and 50 KB and approximately 200×230 pixels, with a plain light background. Always verify the exact numbers in the live official notification at ibps.in before applying, as they can vary slightly between cycles.",
-          },
-          {
-            q: "Can I use a PNG or HEIC file for the IBPS portal?",
-            a: "No. The IBPS portal accepts JPG/JPEG only. A PNG or HEIC file (the default format on iPhones) will be rejected at upload. The IBPS PO resizer on easyPhoto automatically outputs JPG, so no separate conversion is needed.",
-          },
-          {
-            q: "What happens if my photo is under 20 KB?",
-            a: "It is rejected. The portal enforces a minimum as well as a maximum — a 12 KB file is considered too low-quality. Use a resizer that targets the 20–50 KB band specifically, not one that just compresses to the smallest possible size.",
-          },
-          {
-            q: "Can I reuse the same photo and signature for IBPS Clerk and SBI PO?",
-            a: "Usually yes. IBPS Clerk, IBPS RRB, and SBI PO all use the same 20–50 KB photo and 10–20 KB signature specs. A file prepared for IBPS PO will pass the other portals too, as long as you confirm each notification before applying.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

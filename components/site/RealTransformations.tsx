@@ -4,8 +4,8 @@
  */
 
 const PAIRS = [
-  { before: "/images/sample2_before_1782052888740.png", after: "/images/sample2_after_1782052904856.png" },
-  { before: "/images/sample4_before_1782052955340.png", after: "/images/sample4_after_1782052969219.png" },
+  { before: "/images/sample2_before_1782052888740.webp", after: "/images/sample2_after_1782052904856.webp" },
+  { before: "/images/sample4_before_1782052955340.webp", after: "/images/sample4_after_1782052969219.webp" },
   { before: "/images/sample7_before_1782053057303.png", after: "/images/sample7_after_1782053075466.png" },
   { before: "/images/sample8_before_1782053095391.png", after: "/images/sample8_after_1782053120267.png" },
 ] as const;

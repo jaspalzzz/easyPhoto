@@ -3,7 +3,7 @@ import { ExternalLink } from "lucide-react";
 import { COUNTRY_SPECS, effectivePrintMm } from "@/lib/countrySpecs";
 import { PhotoTool } from "@/components/tool/PhotoTool";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, softwareApplicationSchema } from "@/lib/schema";
+import { breadcrumbSchema, softwareApplicationSchema, faqSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { kbPath } from "@/lib/kbTargets";
 import { Faq, type FaqItem } from "@/components/site/Faq";
@@ -95,6 +95,7 @@ export default function BabyPassportPhotoPage() {
               "Make a compliant baby or infant passport photo at home — exact size, clean white background, compliance-checked, free and private.",
             url: "/baby-passport-photo/",
           }),
+          faqSchema(BABY_FAQS),
         ]}
       />
 
@@ -209,7 +210,7 @@ export default function BabyPassportPhotoPage() {
       </section>
 
       <section>
-        <Faq items={BABY_FAQS} />
+        <Faq items={BABY_FAQS} noSchema />
       </section>
     </div>
   );
