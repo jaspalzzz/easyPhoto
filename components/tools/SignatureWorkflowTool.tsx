@@ -533,13 +533,13 @@ function Body({
         )}
 
         {processingError && (
-          <p className="border-l-2 border-red-500 bg-red-50/60 p-2 text-xs text-red-900 leading-normal">
+          <p className="border-l-2 border-red-500 bg-red-50/60 p-2 text-xs text-red-900 leading-normal dark:border-red-700 dark:bg-red-900/20 dark:text-red-300">
             {processingError}
           </p>
         )}
 
         {cropWarning && autoCrop && (
-          <p className="border-l-2 border-amber-500 bg-amber-50/60 p-2 text-xs text-amber-900 leading-normal">
+          <p className="border-l-2 border-amber-500 bg-amber-50/60 p-2 text-xs text-amber-900 leading-normal dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
             Auto-crop found no ink content — check your threshold settings.
           </p>
         )}
@@ -552,7 +552,7 @@ function Body({
             </div>
             
             {!out.underCap && resizeMode === "kb" && (
-              <p className="border-l-2 border-amber-500 bg-amber-50/60 p-2 text-xs text-amber-900 leading-normal">
+              <p className="border-l-2 border-amber-500 bg-amber-50/60 p-2 text-xs text-amber-900 leading-normal dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
                 Could not fit under {targetKb} KB without losing detail. Try a higher target limit or crop closer.
               </p>
             )}

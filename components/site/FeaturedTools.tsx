@@ -40,9 +40,9 @@ const MEDIUM_CARDS: Card[] = [
     includes: ["Photo + signature", "Rejection checker", "50+ exam specs"],
     href: "/tools/exam-package/",
     cta: "Build your exam kit",
-    iconBg: "bg-amber-50",
-    chipBg: "bg-amber-50",
-    chipText: "text-amber-700",
+    iconBg: "bg-amber-50 dark:bg-amber-900/20",
+    chipBg: "bg-amber-50 dark:bg-amber-900/20",
+    chipText: "text-amber-700 dark:text-amber-400",
     vtName: "feat-exam",
   },
   {
@@ -53,9 +53,9 @@ const MEDIUM_CARDS: Card[] = [
     includes: ["Transparent PNG", "Remove background", "Crop & resize"],
     href: "/tools/signature/",
     cta: "Prepare a signature",
-    iconBg: "bg-violet-50",
-    chipBg: "bg-violet-50",
-    chipText: "text-violet-600",
+    iconBg: "bg-violet-50 dark:bg-violet-900/20",
+    chipBg: "bg-violet-50 dark:bg-violet-900/20",
+    chipText: "text-violet-600 dark:text-violet-400",
     vtName: "feat-signature",
   },
 ];
@@ -175,8 +175,8 @@ export function FeaturedTools() {
             className="lift-card group flex flex-col gap-4 p-6 sm:flex-row sm:items-center lg:col-span-3"
             style={{ viewTransitionName: "feat-pdf" } as React.CSSProperties}
           >
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50">
-              <FileText className="h-5 w-5 text-emerald-600" strokeWidth={1.75} />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
+              <FileText className="h-5 w-5 text-emerald-600 dark:text-emerald-400" strokeWidth={1.75} />
             </div>
             <div className="min-w-0 flex-1">
               <h3 className="mb-1 text-[16px] font-bold text-ink">PDF Tools</h3>
@@ -186,7 +186,7 @@ export function FeaturedTools() {
             </div>
             <div className="flex flex-shrink-0 flex-wrap gap-1.5">
               {["Compress to KB", "Merge & split", "Sign", "Unlock password"].map((item) => (
-                <span key={item} className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-600">
+                <span key={item} className="rounded-full bg-emerald-50 dark:bg-emerald-900/20 px-2.5 py-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
                   {item}
                 </span>
               ))}

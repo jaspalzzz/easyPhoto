@@ -1,0 +1,388 @@
+{
+  "domain": "easyphoto.in",
+  "audit_date": "2026-06-21",
+  "auditor": "Claude Sonnet 4.6",
+  "stack": "Next.js 15 static export · Cloudflare Pages · India-primary market",
+  "summary": {
+    "health_score": 81,
+    "prior_score": 71,
+    "prior_date": "2026-06-18",
+    "delta": 10,
+    "business_type": "SaaS tool site — document photo and government form utilities, India-primary",
+    "sitemap_urls": 277,
+    "gsc_queries": 129,
+    "gsc_clicks": 7,
+    "crux_available": false,
+    "lighthouse_seo_mobile": 100,
+    "lighthouse_seo_desktop": 100,
+    "lighthouse_perf_mobile": 90,
+    "lighthouse_perf_desktop": 87,
+    "lcp_mobile_ms": 3500,
+    "lcp_desktop_ms": 700,
+    "tbt_mobile_ms": 30,
+    "tbt_desktop_ms": 300,
+    "cls": 0,
+    "top_findings": [
+      "Color contrast: 7 elements fail WCAG AA (gold #A87E10 at 3.58 ratio vs 4.5 minimum)",
+      "Meta description 184 chars (24 chars over 160-char limit — truncated mid-sentence in SERPs)",
+      "Mobile LCP 3.5s (Needs Improvement) — AdSense is primary culprit at 229KB/107ms",
+      "Desktop TBT 300ms — same AdSense cause, 6 long tasks on main thread",
+      "0 organic clicks from non-branded queries despite 129 indexed queries"
+    ],
+    "quick_wins": [
+      "Darken gold text #A87E10 → #7a5c06 for elements ≤13px (Lighthouse accessibility 96 → 99+)",
+      "Trim meta description to 155 chars ending on complete CTA",
+      "Rewrite titles for 4 GSC quick-win pages (pos 4–10, 0 clicks) to match search intent",
+      "Defer AdSense loading (drop mobile LCP from 3.5s → ~2.2s, performance score 90 → 95+)",
+      "Write signature cluster pillar blog post (7 tools, 0 editorial support)"
+    ],
+    "issues_fixed_since_baseline": [
+      "www duplicate content fixed (301 redirect working)",
+      "/_next/ disallowed in robots.txt",
+      "Homepage title updated (no longer cannibalizes /passport-photo/)",
+      "SoftwareApplication schema added to homepage",
+      "llms.txt created (comprehensive, 200 OK)",
+      "Lighthouse SEO: 100/100 mobile + desktop",
+      "AI crawlers explicitly allowed in robots.txt"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 82,
+      "weight": 22,
+      "what_works": [
+        "HTTPS + 2-year HSTS preload (preload-eligible)",
+        "www → non-www 301 redirect (FIXED since Jun 18)",
+        "robots.txt: all AI crawlers allowed; /_next/ disallowed (FIXED)",
+        "277-URL sitemap: 0 errors, 0 warnings",
+        "7 security headers (HSTS, CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, COEP, COOP)",
+        "Server response time 7–8ms (Cloudflare CDN, optimal India latency)",
+        "Static export: full HTML content crawlable without JS"
+      ],
+      "findings": [
+        {
+          "title": "Color contrast failures — 7 elements",
+          "severity": "High",
+          "description": "Gold brand color #A87E10 on #fcfbf8 background: ratio 3.58 (need 4.5 for normal text). Gold on white: 3.71. Affects eyebrow labels, stat text, country card dimension text at 11–13px.",
+          "recommendation": "Darken small-text gold from #A87E10 to #7a5c06 (ratio ~5.1). Only affects font-size ≤13px non-bold. Large bold gold headings can stay as-is.",
+          "effort": "low",
+          "impact": "high"
+        },
+        {
+          "title": "Meta description 184 characters (over 160 limit)",
+          "severity": "High",
+          "description": "Current meta description is 184 chars — Google truncates at ~160, cutting off mid-sentence. Reduces CTR from SERP.",
+          "recommendation": "Rewrite to 150–160 chars ending on complete CTA. Suggested: 'Free document photo tools for India — passport photos, visa photos, exam form resizing and government document images. Pick your country or exam and get started free.' (158 chars)",
+          "effort": "low",
+          "impact": "medium"
+        },
+        {
+          "title": "CSP uses unsafe-inline + unsafe-eval",
+          "severity": "Medium",
+          "description": "Lighthouse flags unsafe-inline and unsafe-eval in script-src as XSS risk. Required by Next.js hydration and WASM (MediaPipe). wasm-unsafe-eval already present.",
+          "recommendation": "Add require-trusted-types-for 'script' where innerHTML not used. Migrate to nonce-based CSP in Next.js config when ready. Not blocking ranking.",
+          "effort": "high",
+          "impact": "low"
+        },
+        {
+          "title": "Canonical trailing slash mismatch",
+          "severity": "Medium",
+          "description": "Declared: https://easyphoto.in/ (with slash). Google's chosen canonical: https://easyphoto.in (without slash). GSC inspection: match: false.",
+          "recommendation": "Ensure consistent trailing slash handling site-wide. Not causing indexing failure but signals inconsistency.",
+          "effort": "medium",
+          "impact": "low"
+        }
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "score": 78,
+      "weight": 10,
+      "what_works": [
+        "CLS: 0 (perfect) on both mobile and desktop",
+        "TTFB: 7–8ms (Cloudflare CDN serving from Singapore, optimal India latency)",
+        "Desktop LCP: 0.7s (Excellent)",
+        "Mobile TBT: 30ms (Excellent)",
+        "All /_next/static/ assets: Cache-Control max-age=31536000 immutable",
+        "next/image for all main content images",
+        "WASM models lazy-loaded from models.easyphoto.in R2 origin"
+      ],
+      "findings": [
+        {
+          "title": "Mobile LCP 3.5s — Needs Improvement",
+          "severity": "High",
+          "description": "Google LCP target: <2.5s (Good). Current: 3.5s. Primary causes: Google AdSense (229 KB, 107ms mobile main thread) + render-blocking CSS (470ms savings). Desktop LCP is 0.7s — mobile only.",
+          "recommendation": "Defer AdSense loading via Intersection Observer or DOMContentLoaded listener. Expected result: mobile LCP drops to ~2.2s (Good range). Alternatively, inline critical CSS to remove render-blocking 14.5 KB CSS file.",
+          "effort": "medium",
+          "impact": "high"
+        },
+        {
+          "title": "Desktop TBT 300ms — Needs Improvement",
+          "severity": "High",
+          "description": "Google TBT target: <200ms. Current desktop: 300ms. 6 long tasks; AdSense contributes 210ms on desktop main thread. Script evaluation: 722ms total.",
+          "recommendation": "Same AdSense deferral as above. Also investigate webpack bundle for splitting opportunities on heavy pages.",
+          "effort": "medium",
+          "impact": "medium"
+        },
+        {
+          "title": "No CrUX field data",
+          "severity": "Info",
+          "description": "Google CrUX shows insufficient Chrome traffic volume. No field-measured LCP/INP/CLS data. Site is too new (~7 clicks/28 days).",
+          "recommendation": "No action needed. Will unlock automatically as organic traffic grows past ~1,000 users/28 days.",
+          "effort": "none",
+          "impact": "none"
+        }
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 83,
+      "weight": 20,
+      "what_works": [
+        "Lighthouse SEO: 100/100 mobile + desktop",
+        "Homepage title: 'easyPhoto — Document Photo & Form-Resize Tools for India' (60 chars, no cannibalization)",
+        "H1: 'Document photos that get accepted' (clear, intent-matched)",
+        "Canonical: https://easyphoto.in/ present on homepage",
+        "OG image: present and valid",
+        "robots meta: index/follow on all pages",
+        "All internal links crawlable with descriptive anchor text"
+      ],
+      "findings": [
+        {
+          "title": "0 CTR on 4 pages at pos 4–10",
+          "severity": "High",
+          "description": "GSC shows 4 pages at position 4–10 with 6–2 impressions and 0 clicks: /voter-id-photo-resizer/ (eci photo resize), /exam-resizer/ssc-cpo/ (cpo photo), /exam-requirements/army-agniveer/ (army photo, army signature), /tools/exam-package/ (csir net signature size). All have 0 CTR. Title tags don't match exact query intent.",
+          "recommendation": "Rewrite title tags to exactly match GSC query: e.g., 'ECI Voter ID Photo Resizer — Resize to 100KB Online Free', 'SSC CPO Photo Size & Resize — 35×45mm Online'. First organic non-branded clicks are within reach with this change alone.",
+          "effort": "low",
+          "impact": "high"
+        }
+      ]
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 88,
+      "weight": 10,
+      "what_works": [
+        "Organization + WebSite in @graph block on all pages",
+        "SoftwareApplication on homepage (FIXED since Jun 18)",
+        "FAQPage on homepage and tool pages",
+        "BreadcrumbList on all tool and blog pages",
+        "BlogPosting with datePublished, dateModified, inLanguage: en-IN, author on all blog posts",
+        "CollectionPage on category/hub pages"
+      ],
+      "findings": [
+        {
+          "title": "Missing SearchAction on WebSite schema",
+          "severity": "Low",
+          "description": "WebSite schema has no potentialAction/SearchAction. Missed opportunity for Google Sitelinks Searchbox on branded queries.",
+          "recommendation": "Add SearchAction to WebSite schema pointing to exam-package or search route.",
+          "effort": "low",
+          "impact": "low"
+        },
+        {
+          "title": "sameAs has only Pinterest",
+          "severity": "Low",
+          "description": "organizationSchema sameAs: ['https://www.pinterest.com/easyphoto0604/']. Single social profile limits entity disambiguation in AI knowledge graphs.",
+          "recommendation": "Add YouTube, LinkedIn, X when accounts are created.",
+          "effort": "low",
+          "impact": "low"
+        }
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 75,
+      "weight": 23,
+      "what_works": [
+        "277 pages in sitemap (comprehensive coverage)",
+        "All blog posts have datePublished, dateModified, inLanguage: en-IN, author",
+        "Answer-first formatting across blog content",
+        "Official source citations with 'verified June 2026' language",
+        "Privacy-first positioning clearly articulated"
+      ],
+      "findings": [
+        {
+          "title": "Signature cluster — 7 tools, 0 editorial support",
+          "severity": "High",
+          "description": "7+ signature tool pages exist but no blog post covers 'how to prepare signature for exam applications'. Major gap for queries like 'ssb form signature format', 'nta exam signature requirements'.",
+          "recommendation": "Write /blog/how-to-sign-exam-application-forms-india/ (1,800–2,200 words) covering size requirements, color, white background, scanned vs digital, with links to all 7 tools.",
+          "effort": "medium",
+          "impact": "high"
+        },
+        {
+          "title": "PDF cluster — 8 tools, no hub",
+          "severity": "Medium",
+          "description": "8 PDF tools, 2 blog posts, no cross-linking between posts, no pillar page. Missing queries like 'document size for ssc application'.",
+          "recommendation": "Write /blog/how-to-prepare-documents-for-exam-applications-india/ (2,000–2,500 words) covering all portal file size limits with links to PDF tools.",
+          "effort": "medium",
+          "impact": "medium"
+        },
+        {
+          "title": "Zero inline images in blog posts",
+          "severity": "Medium",
+          "description": "All 26+ blog posts have no inline images — no process screenshots, no sample outputs, no before/after visuals. Every top-10 competitor has images.",
+          "recommendation": "Add 1 process screenshot or annotated sample output to the top 6 blog posts (by GSC impressions). Use next/image with width/height for CLS prevention.",
+          "effort": "medium",
+          "impact": "medium"
+        },
+        {
+          "title": "Keep reading not cluster-aware",
+          "severity": "Low",
+          "description": "BlogPostLayout shows same 2 posts for all articles regardless of topic. Exam readers see passport content.",
+          "recommendation": "Add cluster tag to BLOG_POSTS. Filter Keep Reading to same cluster. Reduces bounce, increases session depth.",
+          "effort": "medium",
+          "impact": "low"
+        }
+      ]
+    },
+    {
+      "name": "AI Search Readiness",
+      "score": 92,
+      "weight": 10,
+      "what_works": [
+        "llms.txt present and comprehensive (200 OK)",
+        "All AI crawlers explicitly allowed: GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot",
+        "Answer-first blog post formatting for AI extraction",
+        "Official source citations with 'verified June 2026' language",
+        "inLanguage: en-IN + author on all blog posts",
+        "Organization schema with knowsAbout array"
+      ],
+      "findings": [
+        {
+          "title": "llms-full.txt not present",
+          "severity": "Low",
+          "description": "llms.txt is good (~60 lines). A llms-full.txt with complete spec tables would increase AI citation frequency for spec queries ('what size is india passport photo?').",
+          "recommendation": "Create /llms-full.txt with complete spec tables for all supported countries and exam portals.",
+          "effort": "low",
+          "impact": "medium"
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 82,
+      "weight": 5,
+      "what_works": [
+        "next/image for all hero and tool sample images",
+        "OG image: present and valid on homepage",
+        "Static icons optimized (icon.svg, og.png via gen-icons.mjs)"
+      ],
+      "findings": [
+        {
+          "title": "No image sitemap extensions",
+          "severity": "Low",
+          "description": "Sitemap has no <image:image> tags. Flag images and tool sample outputs not discoverable via Google Images.",
+          "recommendation": "Add image:image tags to sitemap for country/tool pages with sample outputs.",
+          "effort": "medium",
+          "impact": "low"
+        }
+      ]
+    }
+  ],
+  "gsc_data": {
+    "property": "sc-domain:easyphoto.in",
+    "period_days": 28,
+    "total_clicks": 7,
+    "total_queries": 129,
+    "top_query": "easyphoto",
+    "top_query_clicks": 7,
+    "top_query_position": 1.9,
+    "quick_wins": [
+      {"query": "eci photo resize", "page": "/voter-id-photo-resizer/", "impressions": 6, "position": 6.5, "clicks": 0},
+      {"query": "cpo photo", "page": "/exam-resizer/ssc-cpo/", "impressions": 2, "position": 6.5, "clicks": 0},
+      {"query": "army signature", "page": "/exam-requirements/army-agniveer/", "impressions": 2, "position": 9.0, "clicks": 0},
+      {"query": "csir net signature size", "page": "/tools/exam-package/", "impressions": 2, "position": 8.5, "clicks": 0},
+      {"query": "army photo", "page": "/exam-requirements/army-agniveer/", "impressions": 1, "position": 3.0, "clicks": 0}
+    ]
+  },
+  "psi_data": {
+    "mobile": {
+      "performance": 90,
+      "accessibility": 96,
+      "best_practices": 96,
+      "seo": 100,
+      "lcp_ms": 3500,
+      "tbt_ms": 30,
+      "cls": 0,
+      "fcp_ms": 1600,
+      "ttfb_ms": 8
+    },
+    "desktop": {
+      "performance": 87,
+      "accessibility": 97,
+      "best_practices": 96,
+      "seo": 100,
+      "lcp_ms": 700,
+      "tbt_ms": 300,
+      "cls": 0,
+      "fcp_ms": 600,
+      "ttfb_ms": 7
+    }
+  },
+  "url_inspection": {
+    "url": "https://easyphoto.in",
+    "verdict": "PASS",
+    "coverage_state": "Submitted and indexed",
+    "last_crawl": "2026-06-20T23:58:32Z",
+    "crawled_as": "MOBILE",
+    "google_canonical": "https://easyphoto.in",
+    "user_canonical": "https://easyphoto.in/",
+    "canonical_match": false
+  },
+  "sitemap": {
+    "url": "https://easyphoto.in/sitemap.xml",
+    "submitted": "2026-06-09",
+    "urls_submitted": 277,
+    "errors": 0,
+    "warnings": 0
+  },
+  "backlinks": {
+    "common_crawl": "Not in crawl (domain too new)",
+    "referring_urls_in_gsc": ["https://easyphoto.in/blog/how-to-mask-aadhaar-before-sharing/", "http://easyphoto.in/", "https://www.pinterest.com/easyphoto0604/"]
+  },
+  "action_plan": {
+    "phases": [
+      {
+        "name": "Phase 1: Quick Wins",
+        "timeframe": "This week",
+        "estimated_score_gain": "+3–4 points",
+        "items": [
+          "Fix color contrast: #A87E10 → #7a5c06 for text ≤13px",
+          "Trim homepage meta description to 155 chars",
+          "Rewrite 4 quick-win page titles to match GSC query intent",
+          "Defer AdSense loading to drop mobile LCP below 2.5s"
+        ]
+      },
+      {
+        "name": "Phase 2: Content Authority",
+        "timeframe": "This month",
+        "estimated_score_gain": "+4–5 points",
+        "items": [
+          "Write signature cluster pillar blog post (1,800–2,200 words)",
+          "Write PDF cluster editorial hub (2,000–2,500 words)",
+          "Add 1 process screenshot to top 6 blog posts",
+          "Make Keep Reading cluster-aware"
+        ]
+      },
+      {
+        "name": "Phase 3: Technical Polish",
+        "timeframe": "Next 3 months",
+        "estimated_score_gain": "+3 points",
+        "items": [
+          "IndexNow ping on Cloudflare Pages deploy",
+          "Add SearchAction to WebSite schema",
+          "Add image sitemap extensions",
+          "Expand sameAs when additional social profiles created",
+          "Create llms-full.txt with complete spec tables"
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "report": "FULL-AUDIT-REPORT.md",
+    "action_plan": "ACTION-PLAN.md",
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/"
+  }
+}

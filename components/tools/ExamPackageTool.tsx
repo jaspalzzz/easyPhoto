@@ -691,7 +691,7 @@ function StepUpload({
           <AssetCard asset={asset} />
           {/* Amber warning: over cap (Fix 1 UI) */}
           {overCap && (
-            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-xs leading-relaxed text-amber-800">
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-xs leading-relaxed text-amber-800 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
               Still over the {targetKb} KB limit even after automatic resizing.
               Replace it with a tighter, higher-contrast{" "}
               {kind === "signature"
@@ -702,7 +702,7 @@ function StepUpload({
           )}
           {/* Amber warning: below minimum (Fix 1 UI) */}
           {!overCap && belowMin && (
-            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-xs leading-relaxed text-amber-800">
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-xs leading-relaxed text-amber-800 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
               File is below the {minKb} KB minimum required by this portal.
               Replace it with a higher-quality{" "}
               {kind === "signature" ? "signature scan" : "photo"} to continue.
@@ -743,7 +743,7 @@ function AssetCard({ asset, onDownload }: { asset: AssetResult; onDownload?: () 
       <p className="text-xs font-mono text-ink-soft">
         {asset.kind} · {formatKb(asset.bytes)} · {asset.width}×{asset.height}px{" "}
         {asset.compliant ? (
-          <span className="inline-flex items-center gap-1 text-emerald-600">
+          <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
             <Check className="h-3 w-3" strokeWidth={2.25} /> compliant
           </span>
         ) : (

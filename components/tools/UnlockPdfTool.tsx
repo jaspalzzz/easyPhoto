@@ -170,13 +170,13 @@ export function UnlockPdfTool() {
                 <LockOpen className="h-4 w-4" strokeWidth={1.75} /> Unlock
               </Button>
             </div>
-            {wrong && <p className="text-xs text-red-700">Incorrect password — try again.</p>}
+            {wrong && <p className="text-xs text-red-700 dark:text-red-400">Incorrect password — try again.</p>}
           </div>
         )}
 
         {done && !busy && (
           <div className="space-y-3">
-            <p className="flex items-center gap-2 rounded-md border border-green-200 bg-green-50 p-3 text-sm font-medium text-green-800">
+            <p className="flex items-center gap-2 rounded-md border border-green-200 bg-green-50 p-3 text-sm font-medium text-green-800 dark:border-green-800/50 dark:bg-green-900/20 dark:text-green-300">
               <LockOpen className="h-4 w-4" strokeWidth={1.75} /> Unlocked — your unprotected PDF has downloaded.
             </p>
             <div className="flex flex-wrap items-center gap-2">
@@ -224,7 +224,7 @@ export function UnlockPdfTool() {
         )}
 
         {error && (
-          <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>
+          <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300">{error}</p>
         )}
       </CardContent>
     </Card>

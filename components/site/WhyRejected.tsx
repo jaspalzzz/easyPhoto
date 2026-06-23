@@ -108,8 +108,8 @@ export function WhyRejected() {
             <div className="flex flex-1 flex-col divide-y divide-hairline">
               {REASONS.map(({ Icon, label, detail }) => (
                 <div key={label} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
-                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-red-100 bg-red-50">
-                    <Icon className="h-[18px] w-[18px] text-red-500" strokeWidth={1.75} />
+                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-red-100 dark:border-red-800/30 bg-red-50 dark:bg-red-900/20">
+                    <Icon className="h-[18px] w-[18px] text-red-500 dark:text-red-400" strokeWidth={1.75} />
                   </span>
                   <div>
                     <p className="text-[13px] font-semibold text-ink">{label}</p>
@@ -226,7 +226,7 @@ export function WhyRejected() {
         </div>
 
         {/* ── trust strip + CTA ── */}
-        <div className="mt-5 flex flex-col items-center gap-5 rounded-2xl border border-amber-100 bg-amber-50/40 p-6 sm:flex-row sm:gap-8">
+        <div className="mt-5 flex flex-col items-center gap-5 rounded-2xl border border-amber-100 dark:border-amber-800/30 bg-amber-50/40 dark:bg-amber-900/10 p-6 sm:flex-row sm:gap-8">
           <div className="grid flex-1 grid-cols-2 gap-4 sm:grid-cols-4">
             {TRUST_ITEMS.map(({ Icon, title, sub }) => (
               <div key={title} className="flex items-start gap-2.5">

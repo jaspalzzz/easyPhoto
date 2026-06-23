@@ -56,9 +56,9 @@ const STATUS_ICON = {
 } as const;
 
 const VERDICT = {
-  pass: { cls: "border-green-200 bg-green-50 text-green-800", text: "Looks good — likely to be accepted" },
-  warn: { cls: "border-amber-200 bg-amber-50 text-amber-800", text: "Check these before you upload" },
-  fail: { cls: "border-red-200 bg-red-50 text-red-700", text: "Will likely be rejected — fix below" },
+  pass: { cls: "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/20 dark:text-green-300", text: "Looks good — likely to be accepted" },
+  warn: { cls: "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-800/50 dark:bg-amber-900/20 dark:text-amber-300", text: "Check these before you upload" },
+  fail: { cls: "border-red-200 bg-red-50 text-red-700 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300", text: "Will likely be rejected — fix below" },
 } as const;
 
 export function ComplianceCheckerTool() {
@@ -221,7 +221,7 @@ export function ComplianceCheckerTool() {
         </p>
       )}
       {error && (
-        <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>
+        <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300">{error}</p>
       )}
 
       {report && (() => {

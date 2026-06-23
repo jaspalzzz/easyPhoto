@@ -212,7 +212,7 @@ export function PdfPageNumbersTool() {
             </Button>
 
             {done && (
-              <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+              <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:border-emerald-800/50 dark:bg-emerald-900/20 dark:text-emerald-300">
                 Done — your numbered PDF was downloaded. Text stays selectable; nothing was uploaded.
               </p>
             )}

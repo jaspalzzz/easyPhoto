@@ -146,12 +146,12 @@ export function JpgToPdfTool() {
         )}
 
         {addWarning && (
-          <div className="flex items-start justify-between gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          <div className="flex items-start justify-between gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
             <span>{addWarning}</span>
             <button
               onClick={() => setAddWarning(null)}
               aria-label="Dismiss warning"
-              className="mt-0.5 shrink-0 text-amber-600 hover:text-amber-900"
+              className="mt-0.5 shrink-0 text-amber-600 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-200"
             >
               <X className="h-3.5 w-3.5" strokeWidth={1.75} />
             </button>
@@ -159,12 +159,12 @@ export function JpgToPdfTool() {
         )}
 
         {error && (
-          <div className="flex items-start justify-between gap-2 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800">
+          <div className="flex items-start justify-between gap-2 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300">
             <span>{error}</span>
             <button
               onClick={() => setError(null)}
               aria-label="Dismiss error"
-              className="mt-0.5 shrink-0 text-red-600 hover:text-red-900"
+              className="mt-0.5 shrink-0 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200"
             >
               <X className="h-3.5 w-3.5" strokeWidth={1.75} />
             </button>

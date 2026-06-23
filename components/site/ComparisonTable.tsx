@@ -103,16 +103,16 @@ const NAVY = { background: "hsl(222 60% 8%)" } as const;
 function StudioValue({ v }: { v: RowSide }) {
   if (v.kind === "cross") {
     return (
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-100 text-[14px] font-bold leading-none text-red-500">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-[14px] font-bold leading-none text-red-500 dark:text-red-400">
         ✕
       </span>
     );
   }
   return (
     <div className="text-right">
-      <p className="text-[13px] font-bold leading-tight text-red-600">{v.primary}</p>
+      <p className="text-[13px] font-bold leading-tight text-red-600 dark:text-red-400">{v.primary}</p>
       {v.secondary && (
-        <p className="mt-0.5 text-[11px] leading-tight text-red-400">{v.secondary}</p>
+        <p className="mt-0.5 text-[11px] leading-tight text-red-400 dark:text-red-300">{v.secondary}</p>
       )}
     </div>
   );
@@ -128,7 +128,7 @@ function EasyValue({ v }: { v: RowSide }) {
   }
   const cls =
     v.kind === "gold" ? "text-cta" :
-    v.kind === "good" ? "text-emerald-600" :
+    v.kind === "good" ? "text-emerald-600 dark:text-emerald-400" :
     "text-ink";
   return (
     <div className="text-right">
@@ -175,7 +175,7 @@ export function ComparisonTable() {
               </span>
               <div>
                 <h3 className="text-[17px] font-bold text-ink">Photo Studio</h3>
-                <span className="mt-0.5 inline-block rounded-full bg-red-100 px-2.5 py-0.5 text-[11px] font-bold text-red-600">
+                <span className="mt-0.5 inline-block rounded-full bg-red-100 dark:bg-red-900/30 px-2.5 py-0.5 text-[11px] font-bold text-red-600 dark:text-red-400">
                   Traditional Way
                 </span>
               </div>
@@ -185,8 +185,8 @@ export function ComparisonTable() {
             <ul className="divide-y divide-hairline">
               {ROWS.map(({ Icon, label, studio }) => (
                 <li key={label} className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-rose-50">
-                    <Icon className="h-[17px] w-[17px] text-rose-400" strokeWidth={1.75} />
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-rose-50 dark:bg-rose-900/20">
+                    <Icon className="h-[17px] w-[17px] text-rose-400 dark:text-rose-300" strokeWidth={1.75} />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[12.5px] font-semibold leading-tight text-ink">{label}</p>
@@ -205,12 +205,12 @@ export function ComparisonTable() {
             <div className="relative flex items-center justify-center">
               {/* Dashed lines connecting to each card */}
               <div
-                className="absolute top-1/2 -translate-y-1/2 border-t-2 border-dashed border-slate-200"
+                className="absolute top-1/2 -translate-y-1/2 border-t-2 border-dashed border-slate-200 dark:border-slate-700"
                 style={{ left: "-12px", right: "50%", minWidth: 12 }}
                 aria-hidden="true"
               />
               <div
-                className="absolute top-1/2 -translate-y-1/2 border-t-2 border-dashed border-slate-200"
+                className="absolute top-1/2 -translate-y-1/2 border-t-2 border-dashed border-slate-200 dark:border-slate-700"
                 style={{ left: "50%", right: "-12px", minWidth: 12 }}
                 aria-hidden="true"
               />
@@ -227,7 +227,7 @@ export function ComparisonTable() {
 
           {/* VS divider — mobile only (horizontal between stacked cards) */}
           <div className="flex items-center gap-3 sm:hidden">
-            <div className="flex-1 border-t-2 border-dashed border-slate-200" aria-hidden="true" />
+            <div className="flex-1 border-t-2 border-dashed border-slate-200 dark:border-slate-700" aria-hidden="true" />
             <div
               className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[13px] font-black text-white shadow-md"
               style={NAVY}
@@ -235,7 +235,7 @@ export function ComparisonTable() {
             >
               VS
             </div>
-            <div className="flex-1 border-t-2 border-dashed border-slate-200" aria-hidden="true" />
+            <div className="flex-1 border-t-2 border-dashed border-slate-200 dark:border-slate-700" aria-hidden="true" />
           </div>
 
           {/* RIGHT — easyPhoto (green / smarter) */}
@@ -250,7 +250,7 @@ export function ComparisonTable() {
               </span>
               <div>
                 <h3 className="text-[17px] font-bold text-ink">easyPhoto</h3>
-                <span className="mt-0.5 inline-block rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700">
+                <span className="mt-0.5 inline-block rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
                   Smarter Way
                 </span>
               </div>
@@ -260,8 +260,8 @@ export function ComparisonTable() {
             <ul className="divide-y divide-hairline">
               {ROWS.map(({ Icon, label, easy }) => (
                 <li key={label} className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50">
-                    <Icon className="h-[17px] w-[17px] text-emerald-400" strokeWidth={1.75} />
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-900/20">
+                    <Icon className="h-[17px] w-[17px] text-emerald-400 dark:text-emerald-300" strokeWidth={1.75} />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[12.5px] font-semibold leading-tight text-ink">{label}</p>
@@ -284,8 +284,8 @@ export function ComparisonTable() {
           <div className="grid flex-1 grid-cols-2 gap-4">
             {TRUST_POINTS.map(({ Icon, label, desc }) => (
               <div key={label} className="flex items-start gap-2.5">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-50">
-                  <Icon className="h-[18px] w-[18px] text-amber-500" strokeWidth={1.75} />
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-50 dark:bg-amber-900/20">
+                  <Icon className="h-[18px] w-[18px] text-amber-500 dark:text-amber-400" strokeWidth={1.75} />
                 </span>
                 <div>
                   <p className="text-[12px] font-bold text-ink">{label}</p>
@@ -299,7 +299,7 @@ export function ComparisonTable() {
           <div className="flex shrink-0 flex-col items-center gap-1.5">
             <Link
               href="/passport-photo/"
-              className="inline-flex items-center gap-2 rounded-xl border-2 border-cta px-5 py-3 text-[13.5px] font-bold text-cta transition-colors hover:bg-amber-50"
+              className="inline-flex items-center gap-2 rounded-xl border-2 border-cta px-5 py-3 text-[13.5px] font-bold text-cta transition-colors hover:bg-amber-50 dark:hover:bg-amber-900/20"
             >
               <Gift className="h-4 w-4" />
               Try easyPhoto for Free

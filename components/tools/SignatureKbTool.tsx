@@ -122,7 +122,7 @@ function Body({ source, kb, toolName }: BodyProps) {
       </PreviewFrame>
 
       {error && (
-        <p className="rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300">
           {error}
         </p>
       )}
@@ -149,7 +149,7 @@ function Body({ source, kb, toolName }: BodyProps) {
             {out.height}px · transparent PNG
           </p>
           {!out.underCap && (
-            <p className="border-l-2 border-amber-500 pl-3 text-amber-700">
+            <p className="border-l-2 border-amber-500 pl-3 text-amber-700 dark:text-amber-300">
               Couldn&apos;t get under {kb} KB without losing too much detail.
               This is the smallest clean version. Try a tighter scan.
             </p>

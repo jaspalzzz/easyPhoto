@@ -91,8 +91,8 @@ export default function ExamCalendarPage() {
                     <span
                       className={
                         confirmed
-                          ? "inline-flex items-center gap-1 rounded-full bg-[hsl(142_55%_45%/0.12)] px-2 py-0.5 text-[11px] font-semibold text-[hsl(142_55%_28%)]"
-                          : "inline-flex items-center gap-1 rounded-full bg-[hsl(38_92%_50%/0.14)] px-2 py-0.5 text-[11px] font-semibold text-[hsl(32_80%_34%)]"
+                          ? "inline-flex items-center gap-1 rounded-full bg-[hsl(142_55%_45%/0.12)] px-2 py-0.5 text-[11px] font-semibold text-[hsl(142_55%_28%)] dark:bg-[hsl(142_55%_45%/0.20)] dark:text-[hsl(142_55%_60%)]"
+                          : "inline-flex items-center gap-1 rounded-full bg-[hsl(38_92%_50%/0.14)] px-2 py-0.5 text-[11px] font-semibold text-[hsl(32_80%_34%)] dark:bg-[hsl(38_92%_50%/0.20)] dark:text-[hsl(32_80%_62%)]"
                       }
                     >
                       {confirmed ? (

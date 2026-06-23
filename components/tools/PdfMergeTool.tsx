@@ -177,19 +177,19 @@ export function PdfMergeTool() {
 
         {/* Duplicate warning */}
         {duplicateWarning && (
-          <p className="border-l-2 border-amber-400 bg-amber-50 py-2 pl-3 pr-2 text-sm text-amber-700">
+          <p className="border-l-2 border-amber-400 bg-amber-50 py-2 pl-3 pr-2 text-sm text-amber-700 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
             {duplicateWarning}
           </p>
         )}
 
         {/* Success banner */}
         {mergedBlob && (
-          <div className="flex flex-col gap-3 rounded-md border border-green-200 bg-green-50 p-4">
-            <div className="flex items-center gap-2 text-green-700">
+          <div className="flex flex-col gap-3 rounded-md border border-green-200 bg-green-50 p-4 dark:border-green-800/50 dark:bg-green-900/20">
+            <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
               <CheckCircle2 className="h-5 w-5 shrink-0" strokeWidth={1.75} />
               <span className="font-semibold text-sm">Merge complete!</span>
             </div>
-            <p className="text-xs text-green-600">
+            <p className="text-xs text-green-600 dark:text-green-400">
               Your merged PDF has been downloaded. If the download was blocked, use the button below.
             </p>
             <div className="flex gap-2">
