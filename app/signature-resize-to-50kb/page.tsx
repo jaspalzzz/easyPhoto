@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import {
   breadcrumbSchema,
   softwareApplicationSchema,
+  faqSchema,
 } from "@/lib/schema";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
 import { Faq } from "@/components/site/Faq";
@@ -53,6 +54,7 @@ export default function Page() {
               "Free tool to compress a signature to under 50 KB with a transparent background, in your browser.",
             url: PATH,
           }),
+          faqSchema(faqItems),
         ]}
       />
 
@@ -114,7 +116,7 @@ export default function Page() {
       </section>
 
       <section className="mt-12">
-        <Faq items={faqItems} />
+        <Faq items={faqItems} noSchema />
       </section>
     </div>
   );

@@ -6,6 +6,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("schengen-europe-visa-photo-size")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "What size is a Schengen visa photo?",
+    a: "35 × 45 mm (the ICAO biometric standard), with the face filling 70–80% of the frame (about 32–36 mm chin to crown), a neutral expression, and taken within the last 6 months.",
+  },
+  {
+    q: "What background colour does a Schengen visa photo need?",
+    a: "It varies by country: Germany requires neutral/light grey, Italy specifies white, France wants a plain light colour, and the Netherlands accepts grey, light blue or white. Light grey is the safe universal choice.",
+  },
+  {
+    q: "Why does Germany reject white backgrounds?",
+    a: "German missions require a single, neutral light-grey background so the face separates cleanly for biometric checks; a pure-white photo is a common rejection. Use grey for any German (and most Schengen) application.",
+  },
+  {
+    q: "Is the Schengen photo the same for every country?",
+    a: "The size (35 × 45 mm) and face proportions are the same across the Schengen area, but the background-colour rule differs by country — that's the part most applicants get wrong.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -16,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         If you&apos;re applying for a Schengen visa or a European student/work
         visa, the photo is one of the easiest things to get wrong — and one of the
@@ -102,26 +121,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq
-          items={[
-            {
-              q: "What size is a Schengen visa photo?",
-              a: "35 × 45 mm (the ICAO biometric standard), with the face filling 70–80% of the frame (about 32–36 mm chin to crown), a neutral expression, and taken within the last 6 months.",
-            },
-            {
-              q: "What background colour does a Schengen visa photo need?",
-              a: "It varies by country: Germany requires neutral/light grey, Italy specifies white, France wants a plain light colour, and the Netherlands accepts grey, light blue or white. Light grey is the safe universal choice.",
-            },
-            {
-              q: "Why does Germany reject white backgrounds?",
-              a: "German missions require a single, neutral light-grey background so the face separates cleanly for biometric checks; a pure-white photo is a common rejection. Use grey for any German (and most Schengen) application.",
-            },
-            {
-              q: "Is the Schengen photo the same for every country?",
-              a: "The size (35 × 45 mm) and face proportions are the same across the Schengen area, but the background-colour rule differs by country — that's the part most applicants get wrong.",
-            },
-          ]}
-        />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

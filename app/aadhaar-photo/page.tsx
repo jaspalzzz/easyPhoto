@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, AlertTriangle, ShieldCheck, EyeOff, LockOpen } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, ORG_ID } from "@/lib/schema";
+import { breadcrumbSchema, ORG_ID, faqSchema } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 
@@ -48,6 +48,7 @@ export default function AadhaarPhotoPage() {
             name: `Aadhaar Photo — ${SITE_NAME}`,
             publisher: { "@id": ORG_ID },
           },
+          faqSchema(FAQS),
         ]}
       />
 
@@ -149,7 +150,7 @@ export default function AadhaarPhotoPage() {
       </p>
 
       <section>
-        <Faq items={FAQS} />
+        <Faq items={FAQS} noSchema />
       </section>
     </div>
   );

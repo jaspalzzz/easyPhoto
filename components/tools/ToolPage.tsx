@@ -6,7 +6,7 @@ import { ExploreTools } from "@/components/site/ExploreTools";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Faq, type FaqItem } from "@/components/site/Faq";
-import { breadcrumbSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
 
 /** Shared chrome for a tool page: breadcrumb, heading, body, related links. */
 export function ToolPage({
@@ -103,6 +103,7 @@ export function ToolPage({
               category: "MultimediaApplication",
               dateModified,
             }),
+            ...(faqItems && faqItems.length > 0 ? [faqSchema(faqItems)] : []),
           ]}
         />
       )}
@@ -155,7 +156,7 @@ export function ToolPage({
 
       {faqItems && faqItems.length > 0 && (
         <section className="mt-12">
-          <Faq items={faqItems} />
+          <Faq items={faqItems} noSchema />
         </section>
       )}
 

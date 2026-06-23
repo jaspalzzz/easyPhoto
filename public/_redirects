@@ -1,0 +1,4 @@
+# Cloudflare Pages redirect rules
+# Format: /source /destination status_code
+
+/india/ /india-passport-photo-maker/ 301

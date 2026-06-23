@@ -467,10 +467,12 @@ input[type="range"] {
   100% { transform: scale(1.5); opacity: 0; }
 }
 
-/* Green compliance scanning beam */
+/* Green compliance scanning beam — GPU-composited via translateY.
+   Parent container must declare container-type:size so 100cqh resolves
+   to the container's pixel height (not the 2px beam's own height). */
 @keyframes ep-scan-beam {
-  0%, 100% { top: 0%; }
-  50%       { top: calc(100% - 3px); }
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(calc(100cqh - 3px)); }
 }
 
 /* Subtle float for the hero visual cards */
@@ -480,7 +482,7 @@ input[type="range"] {
 }
 
 .animate-pulse-wave  { animation: ep-pulse-wave 2s infinite linear; }
-.animate-scan-beam   { animation: ep-scan-beam 3s infinite ease-in-out; }
+.animate-scan-beam   { animation: ep-scan-beam 3s infinite ease-in-out; will-change: transform; }
 .animate-float-slow  { animation: ep-float 4s ease-in-out infinite; }
 .animate-float-delay { animation: ep-float 4s ease-in-out infinite 1s; }
 

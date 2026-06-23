@@ -32,7 +32,15 @@ export const HOME_FAQ: FaqItem[] = [
   },
 ];
 
-export function Faq({ items = HOME_FAQ }: { items?: FaqItem[] }) {
+export function Faq({
+  items = HOME_FAQ,
+  noSchema = false,
+}: {
+  items?: FaqItem[];
+  /** Pass true when the parent already emits FAQPage in its @graph to avoid a
+   *  duplicate orphaned <script> block. The accordion is still rendered. */
+  noSchema?: boolean;
+}) {
   return (
     <section>
       <div className="border-b border-hairline pb-4">
@@ -53,7 +61,7 @@ export function Faq({ items = HOME_FAQ }: { items?: FaqItem[] }) {
           </details>
         ))}
       </div>
-      <FaqJsonLd items={items} />
+      {!noSchema && <FaqJsonLd items={items} />}
     </section>
   );
 }

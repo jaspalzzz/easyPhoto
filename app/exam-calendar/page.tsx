@@ -11,7 +11,7 @@ import {
 import { calendarSorted } from "@/lib/examCalendar";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 
 export const metadata = pageMetadata({
@@ -49,11 +49,14 @@ export default function ExamCalendarPage() {
   return (
     <div className="container max-w-4xl space-y-8 py-10">
       <JsonLd
-        schema={breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Exam Requirements", path: "/exam-requirements/" },
-          { name: "Exam Calendar", path: "/exam-calendar/" },
-        ])}
+        schema={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Exam Requirements", path: "/exam-requirements/" },
+            { name: "Exam Calendar", path: "/exam-calendar/" },
+          ]),
+          faqSchema(FAQS),
+        ]}
       />
 
       <header className="space-y-3 border-b border-hairline pb-7">
@@ -176,7 +179,7 @@ export default function ExamCalendarPage() {
       </section>
 
       <section>
-        <Faq items={FAQS} />
+        <Faq items={FAQS} noSchema />
       </section>
     </div>
   );

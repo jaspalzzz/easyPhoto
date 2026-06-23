@@ -123,6 +123,14 @@ export default function RootLayout({
       <head>
         {/* Anti-FOUC: apply stored/system theme BEFORE first paint */}
         <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('ep-theme'),d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(t==='dark'||(t!=='light'&&d))document.documentElement.classList.add('dark')}catch(_){}})()` }} />
+        {/* LCP preload — hero before-card is the largest above-fold image; early
+            fetch hint prevents the browser from discovering it late during HTML parse,
+            which is the primary mobile LCP bottleneck on this page. */}
+        <link rel="preload" as="image" href="/images/sample4_before_1782052955340.webp" fetchPriority="high" />
+        {/* AdSense connection warming — even with lazyOnload, establishing the
+            TCP+TLS handshake early saves ~200ms on first-ad impression. */}
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net" />
       </head>
       <body className="flex min-h-screen flex-col antialiased">
         <a

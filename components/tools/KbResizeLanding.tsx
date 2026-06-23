@@ -7,6 +7,7 @@ import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
   breadcrumbSchema,
+  faqSchema,
   softwareApplicationSchema,
   howToSchema,
 } from "@/lib/schema";
@@ -60,6 +61,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
               { name: "Compress and download", text: `We compress to under ${kb} KB at the best possible quality, then you download the result.` },
             ],
           }),
+          ...(faqItems.length > 0 ? [faqSchema(faqItems)] : []),
         ]}
       />
 
@@ -150,7 +152,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
       />
 
       <section className="mt-12">
-        <Faq items={faqItems} />
+        <Faq items={faqItems} noSchema />
       </section>
     </div>
   );

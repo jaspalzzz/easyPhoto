@@ -20,6 +20,7 @@ export function BeforeAfterSlider({
   afterLabel = "Compliant",
   caption,
   className = "",
+  priority = false,
 }: {
   beforeSrc: string;
   afterSrc: string;
@@ -27,6 +28,8 @@ export function BeforeAfterSlider({
   afterLabel?: string;
   caption?: string;
   className?: string;
+  /** When true, marks both images as high-priority LCP candidates. */
+  priority?: boolean;
 }) {
   const ref = React.useRef<HTMLDivElement>(null);
   const dragging = React.useRef(false);
@@ -79,6 +82,7 @@ export function BeforeAfterSlider({
             alt="Compliant passport photo after processing"
             className="h-full w-full object-cover object-top"
             draggable={false}
+            {...(priority ? { fetchPriority: "high" as const, loading: "eager" as const } : {})}
           />
         </div>
 
@@ -92,6 +96,7 @@ export function BeforeAfterSlider({
             alt="Original selfie before processing"
             className="h-full w-[100cqw] max-w-none object-cover object-top"
             draggable={false}
+            {...(priority ? { fetchPriority: "high" as const, loading: "eager" as const } : {})}
           />
         </div>
 

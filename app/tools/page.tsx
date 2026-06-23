@@ -6,7 +6,7 @@ import { ToolIcon } from "@/components/site/ToolIcon";
 import { ToolCard } from "@/components/site/ToolCard";
 import { TrustPills } from "@/components/site/TrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema } from "@/lib/schema";
+import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { ToolSearch } from "@/components/site/ToolSearch";
 
@@ -22,10 +22,18 @@ export default function ToolsHubPage() {
   return (
     <div className="container max-w-5xl py-12">
       <JsonLd
-        schema={breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Tools", path: "/tools/" },
-        ])}
+        schema={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Tools", path: "/tools/" },
+          ]),
+          collectionPageSchema({
+            name: "Free Image, PDF & Signature Tools",
+            description:
+              "Free in-browser tools: background remover, compress image to KB, resize photos, JPG to PDF, PDF to JPG and signature tools. Nothing is uploaded.",
+            url: "/tools/",
+          }),
+        ]}
       />
       <header className="space-y-4 text-center">
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -341,6 +349,52 @@ export default function ToolsHubPage() {
             <span className="font-semibold block text-foreground mb-0.5">🇪🇺 Schengen Maker</span>
             <span className="text-muted-foreground leading-normal">Full tool — ICAO compliant</span>
           </Link>
+        </div>
+      </section>
+
+      {/* Frequently asked questions */}
+      <section className="mt-12">
+        <h2 className="text-lg font-semibold mb-4">Frequently asked questions</h2>
+        <div className="space-y-5">
+          <div>
+            <h3 className="text-sm font-semibold text-ink mb-1">Are all these tools really free?</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Yes — every tool on this page is completely free with no credits, no sign-up, and no
+              hidden charges. Processing happens in your browser using your device&apos;s CPU and memory,
+              so the only resource used is your own hardware. easyPhoto earns nothing from the tools
+              themselves; the service is free as a matter of principle.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-ink mb-1">Why do my files never leave my device?</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              All image processing, PDF operations, and signature cropping run locally using
+              browser APIs — there is no server upload step. Your photos, documents, and signatures
+              are processed in-memory on your device and the result is served back to you as a
+              download. This is different from most online tools, which send files to a server for
+              processing and may store them for days or weeks.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-ink mb-1">What file formats do the tools accept?</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Image tools accept JPEG, PNG, and WebP. PDF tools handle both single-page and
+              multi-page PDFs up to the browser&apos;s memory limit (typically 50–100 MB depending on
+              the device). Output format matches the tool — passport and exam photos are saved as
+              JPEG, signatures as PNG, and PDFs remain in PDF format. No conversion happens
+              unless the tool specifically offers it.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-ink mb-1">How are the KB and pixel targets set?</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Every file-size and dimension limit comes directly from the official recruitment
+              portal or government notification. For exam tools, targets are read from the latest
+              official instructions — SSC, UPSC, IBPS, SBI, RRB, and NDA portals each publish
+              photo and signature size rules in their candidate handbooks, and easyPhoto checks
+              these each time a new exam cycle begins.
+            </p>
+          </div>
         </div>
       </section>
 

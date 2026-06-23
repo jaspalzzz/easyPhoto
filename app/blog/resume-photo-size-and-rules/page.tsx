@@ -6,6 +6,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("resume-photo-size-and-rules")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Is 35×45 mm the right size for a resume photo in India?",
+    a: "Yes. In India, the standard resume or bio-data photo is the same 35×45 mm (3.5×4.5 cm) passport-size photo used for government and exam forms. There is no separate 'resume size' — use the same passport-size photo everywhere.",
+  },
+  {
+    q: "Should I include a photo on my resume if I'm applying abroad?",
+    a: "It depends on the country. Omit the photo for applications to the US, UK, Canada and Australia, where many applicant-tracking systems reject CVs with photos to avoid unconscious bias. For India, Europe (most countries) and the Middle East, a photo is standard and expected.",
+  },
+  {
+    q: "What background colour works best for a resume photo?",
+    a: "A plain white or light grey background is the most professional choice and works for both printed CVs and digital uploads. Avoid busy rooms, patterns, or coloured walls — the background should not distract from your face.",
+  },
+  {
+    q: "Can I use the same photo for my resume and LinkedIn?",
+    a: "Yes, if it is a clear, front-facing headshot with a clean background. Use the resume photo maker for the 35×45 mm crop and the LinkedIn photo maker for the square 400×400 px crop — both tools work from the same original image.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -16,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         Should you put a photo on your resume? It depends entirely on where
         you&apos;re applying. In India and much of Asia, Europe and the Middle
@@ -115,24 +134,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Is 35×45 mm the right size for a resume photo in India?",
-            a: "Yes. In India, the standard resume or bio-data photo is the same 35×45 mm (3.5×4.5 cm) passport-size photo used for government and exam forms. There is no separate 'resume size' — use the same passport-size photo everywhere.",
-          },
-          {
-            q: "Should I include a photo on my resume if I'm applying abroad?",
-            a: "It depends on the country. Omit the photo for applications to the US, UK, Canada and Australia, where many applicant-tracking systems reject CVs with photos to avoid unconscious bias. For India, Europe (most countries) and the Middle East, a photo is standard and expected.",
-          },
-          {
-            q: "What background colour works best for a resume photo?",
-            a: "A plain white or light grey background is the most professional choice and works for both printed CVs and digital uploads. Avoid busy rooms, patterns, or coloured walls — the background should not distract from your face.",
-          },
-          {
-            q: "Can I use the same photo for my resume and LinkedIn?",
-            a: "Yes, if it is a clear, front-facing headshot with a clean background. Use the resume photo maker for the 35×45 mm crop and the LinkedIn photo maker for the square 400×400 px crop — both tools work from the same original image.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

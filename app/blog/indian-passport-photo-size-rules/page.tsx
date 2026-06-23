@@ -7,6 +7,33 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("indian-passport-photo-size-rules")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Is the Indian passport photo size 35×45 mm or 2×2 inches?",
+    a: "45×35 mm (4.5×3.5 cm) for the domestic Passport Seva process — a portrait rectangle. The 2×2 inch (51×51 mm) square is the US specification, not India's. Some international tools wrongly apply the US square to their India preset, which is a common rejection cause. For the online upload the digital size is exactly 630×810 px, which is the same 7:9 proportion as 45×35 mm.",
+  },
+  {
+    q: "What is the file size limit for the online passport photo upload?",
+    a: "The Passport Seva photo-upload spec requires a JPEG that is exactly 630×810 px and under 250 KB. Reported caps have varied (250/300/1024 KB across sources), so staying under 250 KB is the safe choice that satisfies all of them. Confirm the current limit on passportindia.gov.in before uploading.",
+  },
+  {
+    q: "Can I use a photo taken on my phone for an Indian passport?",
+    a: "Yes. A phone photo works if it meets the spec: plain white background, face filling 80–85% of the frame, head centred and straight, neutral expression, no glasses, and good even lighting. Take it against a brightly lit white surface, then crop to 45×35 mm. For the pasted paper photo you'll still need a real photo-lab print — a home computer printout is not accepted.",
+  },
+  {
+    q: "Why does Passport Seva reject computer-printed photos?",
+    a: "For the physical photo pasted on the form, Passport Seva requires a genuine photo-paper lab print and explicitly states that a photograph printed on a computer or inkjet printer will not be accepted. You can prepare and crop the image yourself, but get the final print done at a photo lab. This rule does not apply to the online upload, where you submit the JPEG directly.",
+  },
+  {
+    q: "Is the OCI card photo the same as the passport photo?",
+    a: "No. The OCI card photo is a 51×51 mm square on a light (not pure white) background — different in both shape and background from the 45×35 mm white passport photo. Reusing a passport photo for an OCI application is a common rejection. Prepare the OCI photo separately as a square.",
+  },
+  {
+    q: "Did the photo rules change in September 2025?",
+    a: "An ICAO-compliant photograph requirement took effect from 1 September 2025 for applications through Indian embassies and consulates abroad (the NRI route, often via VFS). It did not change the domestic Passport Seva Kendra spec, which already used the 45×35 mm white-background format. If you're applying inside India, follow the domestic rules; if abroad, confirm with your local mission.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -17,7 +44,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         The Indian passport photo spec confuses people because there are really
         two of them — one for the <strong>printed photo</strong> you paste on a
@@ -265,32 +292,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Is the Indian passport photo size 35×45 mm or 2×2 inches?",
-            a: "45×35 mm (4.5×3.5 cm) for the domestic Passport Seva process — a portrait rectangle. The 2×2 inch (51×51 mm) square is the US specification, not India's. Some international tools wrongly apply the US square to their India preset, which is a common rejection cause. For the online upload the digital size is exactly 630×810 px, which is the same 7:9 proportion as 45×35 mm.",
-          },
-          {
-            q: "What is the file size limit for the online passport photo upload?",
-            a: "The Passport Seva photo-upload spec requires a JPEG that is exactly 630×810 px and under 250 KB. Reported caps have varied (250/300/1024 KB across sources), so staying under 250 KB is the safe choice that satisfies all of them. Confirm the current limit on passportindia.gov.in before uploading.",
-          },
-          {
-            q: "Can I use a photo taken on my phone for an Indian passport?",
-            a: "Yes. A phone photo works if it meets the spec: plain white background, face filling 80–85% of the frame, head centred and straight, neutral expression, no glasses, and good even lighting. Take it against a brightly lit white surface, then crop to 45×35 mm. For the pasted paper photo you'll still need a real photo-lab print — a home computer printout is not accepted.",
-          },
-          {
-            q: "Why does Passport Seva reject computer-printed photos?",
-            a: "For the physical photo pasted on the form, Passport Seva requires a genuine photo-paper lab print and explicitly states that a photograph printed on a computer or inkjet printer will not be accepted. You can prepare and crop the image yourself, but get the final print done at a photo lab. This rule does not apply to the online upload, where you submit the JPEG directly.",
-          },
-          {
-            q: "Is the OCI card photo the same as the passport photo?",
-            a: "No. The OCI card photo is a 51×51 mm square on a light (not pure white) background — different in both shape and background from the 45×35 mm white passport photo. Reusing a passport photo for an OCI application is a common rejection. Prepare the OCI photo separately as a square.",
-          },
-          {
-            q: "Did the photo rules change in September 2025?",
-            a: "An ICAO-compliant photograph requirement took effect from 1 September 2025 for applications through Indian embassies and consulates abroad (the NRI route, often via VFS). It did not change the domestic Passport Seva Kendra spec, which already used the 45×35 mm white-background format. If you're applying inside India, follow the domestic rules; if abroad, confirm with your local mission.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

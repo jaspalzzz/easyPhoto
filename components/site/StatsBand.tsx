@@ -31,7 +31,9 @@ const STATS: Stat[] = [
 const NAVY = { background: "hsl(222 60% 8%)" } as const;
 
 function useCountUp(target: number, active: boolean, duration = 1100): number {
-  const [value, setValue] = React.useState(0);
+  // Initialize with the real target so the server-rendered HTML (what Googlebot
+  // crawls) shows the actual number, not the animation start-value of 0.
+  const [value, setValue] = React.useState(target);
   React.useEffect(() => {
     if (!active) return;
     const start = performance.now();

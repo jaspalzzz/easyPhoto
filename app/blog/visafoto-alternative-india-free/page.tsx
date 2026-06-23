@@ -6,6 +6,21 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("visafoto-alternative-india-free")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Is Visafoto safe to use?",
+    a: "Visafoto has been operating since 2009 and is a well-established service. \"Safe\" in the security sense is reasonable — they process photos for millions of users. The concern is not security but privacy: you are sending a biometric photo to a third-party server. That is a different risk assessment from using a tool that never receives your image.",
+  },
+  {
+    q: "Does easyPhoto produce photos that are accepted by Indian passport offices?",
+    a: "The tool uses the Passport Seva specification: 35×45 mm JPG, plain white background, face centred, under 1 MB. Meeting the stated spec is what determines acceptance — no tool (including Visafoto) can guarantee the physical photo print meets every counter officer's judgment. The digital upload spec is met.",
+  },
+  {
+    q: "What is the cheapest way to get a passport photo in India?",
+    a: "The cheapest digital option is free: easyPhoto, PassportSizePhoto.in, or IDPhoto4You all produce a compliant 35×45 mm JPG at no cost. For a physical printed photo, a local studio charges ₹30–₹80 for a set of six. For a digital photo for the Passport Seva portal, the free online tools are sufficient.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   description: post.description,
@@ -15,7 +30,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug="visafoto-alternative-india-free">
+    <BlogPostLayout slug="visafoto-alternative-india-free" faqItems={FAQ_ITEMS}>
       <p>
         Visafoto is accurate — it supports India&apos;s 35×45 mm passport spec, adds a human
         expert review, and guarantees compliance. It also charges ₹600 per photo (confirmed June
@@ -177,20 +192,7 @@ export default function Page() {
         for a full comparison of all free options.
       </p>
 
-      <Faq items={[
-        {
-          q: "Is Visafoto safe to use?",
-          a: "Visafoto has been operating since 2009 and is a well-established service. \"Safe\" in the security sense is reasonable — they process photos for millions of users. The concern is not security but privacy: you are sending a biometric photo to a third-party server. That is a different risk assessment from using a tool that never receives your image.",
-        },
-        {
-          q: "Does easyPhoto produce photos that are accepted by Indian passport offices?",
-          a: "The tool uses the Passport Seva specification: 35×45 mm JPG, plain white background, face centred, under 1 MB. Meeting the stated spec is what determines acceptance — no tool (including Visafoto) can guarantee the physical photo print meets every counter officer's judgment. The digital upload spec is met.",
-        },
-        {
-          q: "What is the cheapest way to get a passport photo in India?",
-          a: "The cheapest digital option is free: easyPhoto, PassportSizePhoto.in, or IDPhoto4You all produce a compliant 35×45 mm JPG at no cost. For a physical printed photo, a local studio charges ₹30–₹80 for a set of six. For a digital photo for the Passport Seva portal, the free online tools are sufficient.",
-        },
-      ]} />
+      <Faq items={FAQ_ITEMS} noSchema />
     </BlogPostLayout>
   );
 }

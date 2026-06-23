@@ -24,6 +24,13 @@ export function ToolSearch() {
   const [isOpen, setIsOpen] = React.useState(false);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
+  // Pre-populate from URL ?q= param — powers the WebSite SearchAction schema.
+  // window.location is only available on the client, so this runs post-mount only.
+  React.useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q) { setQuery(q); setIsOpen(true); }
+  }, []);
+
   // Index search items once
   const searchIndex = React.useMemo(() => {
     const items: SearchItem[] = [];

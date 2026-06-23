@@ -6,6 +6,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("why-exam-photo-signature-rejected")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Why does the portal say 'photo not as per specification' without explaining why?",
+    a: "Indian exam portals run automated validators that check file size, dimensions, format and sometimes image colour distribution. When any check fails, they return a generic rejection string rather than listing which check failed. Work through the six reasons above in order — file size band first, then format, then dimensions.",
+  },
+  {
+    q: "What is the most common reason exam photo uploads fail?",
+    a: "File size out of band. Most people know to compress a photo if it's too large, but they don't know portals also enforce a minimum. A photo compressed to 12 KB is rejected just as firmly as a 2 MB one. Use a resizer that targets the exact 20–50 KB band.",
+  },
+  {
+    q: "My phone saves photos as HEIC. How do I convert them to JPG for the portal?",
+    a: "On iPhone, go to Settings → Camera → Formats and switch from High Efficiency (HEIC) to Most Compatible (JPEG) before taking the photo. For existing HEIC files, use the easyPhoto format converter — it outputs a standard JPG ready for any exam portal.",
+  },
+  {
+    q: "Can I fix a photo that already has shadows or a non-white background?",
+    a: "Sometimes. The white background tool can replace an off-white or lightly coloured background with clean white. But heavy shadows on the face itself, a cluttered background or a blurry photo need a retake — no tool can recover lost detail from a poorly lit source image.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -16,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo">
+    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo" faqItems={FAQ_ITEMS}>
       <p>
         You upload your photo to the{" "}
         <a href="https://ssc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>{" "}
@@ -73,6 +92,81 @@ export default function Page() {
           </tr>
         </tbody>
       </table>
+
+      <h2>Exact specifications by exam</h2>
+      <p>
+        Each portal enforces its own numbers. Using the wrong spec — even for a
+        closely related exam — causes instant rejection. The table below covers
+        the most-searched exams as of the 2024–25 notification cycle; always
+        cross-check with the current official notification before submitting.
+      </p>
+      <table className="my-5 w-full border-collapse text-[13px]">
+        <thead>
+          <tr className="border-b border-hairline text-left">
+            <th className="py-2 pr-3 font-semibold text-ink">Exam</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Photo size (KB)</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Photo pixels</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Signature size (KB)</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Signature pixels</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Format</th>
+          </tr>
+        </thead>
+        <tbody className="text-ink-soft">
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">SSC CGL / CHSL / MTS</td>
+            <td className="py-2 pr-3">20–50 KB</td>
+            <td className="py-2 pr-3">350×450 px</td>
+            <td className="py-2 pr-3">10–20 KB</td>
+            <td className="py-2 pr-3">140×60 px</td>
+            <td className="py-2 pr-3">JPG</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">IBPS PO / Clerk / RRB</td>
+            <td className="py-2 pr-3">20–50 KB</td>
+            <td className="py-2 pr-3">200×230 px</td>
+            <td className="py-2 pr-3">10–20 KB</td>
+            <td className="py-2 pr-3">140×60 px</td>
+            <td className="py-2 pr-3">JPG</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">UPSC CSE / IFS</td>
+            <td className="py-2 pr-3">300 KB max</td>
+            <td className="py-2 pr-3">350×350 px min</td>
+            <td className="py-2 pr-3">300 KB max</td>
+            <td className="py-2 pr-3">350×350 px min</td>
+            <td className="py-2 pr-3">JPG</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">SBI PO / Clerk</td>
+            <td className="py-2 pr-3">20–50 KB</td>
+            <td className="py-2 pr-3">200×230 px</td>
+            <td className="py-2 pr-3">10–20 KB</td>
+            <td className="py-2 pr-3">140×60 px</td>
+            <td className="py-2 pr-3">JPG</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">RRB NTPC / Group D</td>
+            <td className="py-2 pr-3">15–40 KB</td>
+            <td className="py-2 pr-3">200×230 px</td>
+            <td className="py-2 pr-3">10–20 KB</td>
+            <td className="py-2 pr-3">140×60 px</td>
+            <td className="py-2 pr-3">JPG</td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">NDA / CDS (UPSC)</td>
+            <td className="py-2 pr-3">40 KB max</td>
+            <td className="py-2 pr-3">350×450 px</td>
+            <td className="py-2 pr-3">40 KB max</td>
+            <td className="py-2 pr-3">350×150 px</td>
+            <td className="py-2 pr-3">JPG</td>
+          </tr>
+        </tbody>
+      </table>
+      <p className="text-[13px] text-ink-soft">
+        Note: UPSC sets a maximum only — it does not enforce a minimum KB floor,
+        which is why UPSC rejections are rarer on file-size grounds than SSC or
+        IBPS ones.
+      </p>
 
       <h2>1. The file size is wrong — too big or too small</h2>
       <p>
@@ -151,6 +245,54 @@ export default function Page() {
         file specs are perfect. These can&apos;t be fixed by resizing — they need
         a better source photo (plain wall, even light, neutral face).
       </p>
+      <p>
+        The specific rules differ slightly by exam, but the following apply almost
+        universally across SSC, IBPS, UPSC, and RRB portals:
+      </p>
+      <ul>
+        <li>
+          <strong>Background must be white or off-white.</strong> Cream, light
+          grey, or any colour is usually rejected. A studio white-backdrop or a
+          plain white wall in good lighting is the safest choice. AI background
+          replacement tools can help but are not a substitute for a clean source.
+        </li>
+        <li>
+          <strong>No sunglasses, tinted lenses, or coloured frames.</strong> Clear
+          prescription glasses were historically allowed, but SSC specifically
+          banned them starting with the 2022 notification cycle. When in doubt,
+          remove glasses entirely.
+        </li>
+        <li>
+          <strong>Neutral, closed-mouth expression.</strong> A slight natural
+          smile is acceptable on some portals, but open-mouth smiles, raised
+          eyebrows, or squinting cause manual-review failures. Eyes must be
+          fully open and looking directly at the camera.
+        </li>
+        <li>
+          <strong>No cap, hat, or head covering</strong> (religious head coverings
+          are exempt on most portals but must not obscure the face or hairline).
+        </li>
+        <li>
+          <strong>Photo must be recent — typically within 6 months.</strong> The
+          date requirement on UPSC and Army photos exists specifically to prove
+          recency. Even without a printed date, a photo that looks clearly dated
+          (different hair, significant weight change) can be flagged at document
+          verification.
+        </li>
+        <li>
+          <strong>Face must occupy 70–80% of the frame.</strong> A photo taken
+          from too far away — where your shoulders or chest dominate — is rejected
+          because the face resolution is insufficient for biometric matching.
+        </li>
+      </ul>
+      <p>
+        The critical difference between this category and the previous five is
+        that file-spec errors are caught by the portal automatically and
+        immediately. Photo quality errors sometimes pass the automated upload
+        check only to be caught by a human reviewer during document verification
+        — which can happen weeks later, closer to the exam date, when there is
+        far less time to correct the application.
+      </p>
 
       <h2>The reliable order of operations</h2>
       <p>
@@ -173,25 +315,76 @@ export default function Page() {
         linked to the official notification so you can confirm before you submit.
       </p>
 
+      <h2>Before-you-submit checklist</h2>
+      <p>
+        Use this checklist immediately before uploading. If any item fails,
+        fix it — most take under two minutes with the right tool.
+      </p>
+
+      <div className="my-6 space-y-3">
+        <div className="rounded-lg border border-hairline bg-surface p-4">
+          <p className="!mt-0 text-[13px] font-semibold uppercase tracking-wide text-ink-soft">Photo file</p>
+          <ul className="!mt-2 space-y-1 text-[14px]">
+            <li>File is <strong>JPG/JPEG</strong> (not PNG, HEIC, or WebP)</li>
+            <li>File size is within your exam&apos;s exact KB band (e.g. <strong>20–50 KB for SSC</strong>, <strong>15–40 KB for RRB</strong>)</li>
+            <li>Pixel dimensions match the notification exactly (e.g. <strong>350×450 px for SSC</strong>, <strong>200×230 px for IBPS/SBI</strong>)</li>
+            <li>Background is plain <strong>white or off-white</strong> with no shadows</li>
+            <li>Face is centred, front-facing, fully visible — no hats, no glasses, no hair covering face</li>
+            <li>Expression is neutral with both eyes open</li>
+            <li>Photo is recent (taken within the last 6 months)</li>
+            <li>Name and date printed on photo <em>if required</em> (UPSC, Indian Army — check your notification)</li>
+          </ul>
+        </div>
+        <div className="rounded-lg border border-hairline bg-surface p-4">
+          <p className="!mt-0 text-[13px] font-semibold uppercase tracking-wide text-ink-soft">Signature file</p>
+          <ul className="!mt-2 space-y-1 text-[14px]">
+            <li>File is <strong>JPG/JPEG</strong></li>
+            <li>File size is within band (typically <strong>10–20 KB</strong> for SSC, IBPS, SBI, RRB)</li>
+            <li>Pixel dimensions match notification (typically <strong>140×60 px</strong>)</li>
+            <li>Background is <strong>pure white</strong> — no paper grain, no shadow, no grey tint</li>
+            <li>Signature is in <strong>black or blue ink</strong> only</li>
+            <li>Signature matches the name as registered — do not use initials if your full name is registered</li>
+          </ul>
+        </div>
+        <div className="rounded-lg border border-hairline bg-surface p-4">
+          <p className="!mt-0 text-[13px] font-semibold uppercase tracking-wide text-ink-soft">Before clicking Submit</p>
+          <ul className="!mt-2 space-y-1 text-[14px]">
+            <li>Preview the uploaded images in the portal — confirm they render correctly and are not blurry</li>
+            <li>Keep the original high-resolution photo and signature files; you will need them for document verification at the exam centre</li>
+            <li>Save or print the application form immediately after submission — edit windows often close within hours</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>Two stages where rejections happen — and why that matters</h2>
+      <p>
+        Knowing <em>when</em> a rejection can occur changes how urgently you need
+        to act. There are two distinct gates:
+      </p>
+      <p>
+        <strong>Gate 1 — automated portal validation (at upload).</strong> This
+        checks file size, pixel dimensions, format, and basic colour histogram.
+        Failures here are immediate: the page shows an error and you cannot
+        proceed. You fix and resubmit before the form closes. This is the gate
+        that catches reasons 1–4 above.
+      </p>
+      <p>
+        <strong>Gate 2 — manual review at document verification.</strong> This
+        happens on the exam day or during the document-verification stage (DV)
+        that follows the written exam. A human scrutinises the physical printout
+        of your form against original documents. Photo quality issues — wrong
+        background, glasses, expression, recency — are almost always caught here,
+        not at Gate 1. A rejection at this stage is far more costly: you may be
+        disqualified from a test you have already passed.
+      </p>
+      <p>
+        This is why fixing <em>only</em> the technical specs is not enough. A
+        photo that passes Gate 1 automatically but contains quality issues will
+        wait until DV to bite you.
+      </p>
+
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Why does the portal say 'photo not as per specification' without explaining why?",
-            a: "Indian exam portals run automated validators that check file size, dimensions, format and sometimes image colour distribution. When any check fails, they return a generic rejection string rather than listing which check failed. Work through the six reasons above in order — file size band first, then format, then dimensions.",
-          },
-          {
-            q: "What is the most common reason exam photo uploads fail?",
-            a: "File size out of band. Most people know to compress a photo if it's too large, but they don't know portals also enforce a minimum. A photo compressed to 12 KB is rejected just as firmly as a 2 MB one. Use a resizer that targets the exact 20–50 KB band.",
-          },
-          {
-            q: "My phone saves photos as HEIC. How do I convert them to JPG for the portal?",
-            a: "On iPhone, go to Settings → Camera → Formats and switch from High Efficiency (HEIC) to Most Compatible (JPEG) before taking the photo. For existing HEIC files, use the easyPhoto format converter — it outputs a standard JPG ready for any exam portal.",
-          },
-          {
-            q: "Can I fix a photo that already has shadows or a non-white background?",
-            a: "Sometimes. The white background tool can replace an off-white or lightly coloured background with clean white. But heavy shadows on the face itself, a cluttered background or a blurry photo need a retake — no tool can recover lost detail from a poorly lit source image.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

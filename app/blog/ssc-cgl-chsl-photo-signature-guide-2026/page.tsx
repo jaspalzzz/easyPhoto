@@ -6,6 +6,29 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("ssc-cgl-chsl-photo-signature-guide-2026")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Can I upload a saved photo from my phone gallery for SSC CGL?",
+    a: "No. The current SSC portal requires live photo capture — a webcam or phone camera opened directly through the application form. The option to upload an existing file is not available. Set up your background and lighting before opening the form.",
+  },
+  {
+    q: "What is the minimum file size for an SSC CGL photo?",
+    a: "20 KB. The portal enforces a band: files below 20 KB are rejected just as firmly as files above 50 KB. Use a resizer that targets the full 20–50 KB range, not one that simply compresses to the smallest possible size.",
+  },
+  {
+    q: "Why does SSC reject a signature written in all capital letters?",
+    a: "The SSC portal runs a pattern check that flags signatures written entirely in capital letters — a style considered inconsistent with a personal signature. Write your name in cursive or a flowing running hand. If you normally sign in block capitals, practise a simple connected version for the application.",
+  },
+  {
+    q: "Are SSC CGL and SSC CHSL photo requirements the same?",
+    a: "For the photo: yes — both currently require 20–50 KB JPG with a plain white background. For the signature, specifications have matched in recent cycles but can differ slightly per notification. Download the official CHSL notification from ssc.gov.in and check the photo/signature table before applying.",
+  },
+  {
+    q: "My iPhone saves photos as HEIC. Can I use that format for the SSC signature?",
+    a: "No. SSC portals accept JPG only. For photos taken on iPhone, use the SSC signature resizer — it accepts HEIC and outputs JPG automatically. Alternatively, switch your iPhone to JPEG mode in Settings → Camera → Formats before taking the photo.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -16,7 +39,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} ctaHref="/ssc-photo-resizer/" ctaLabel="Resize your SSC photo">
+    <BlogPostLayout slug={post.slug} ctaHref="/ssc-photo-resizer/" ctaLabel="Resize your SSC photo" faqItems={FAQ_ITEMS}>
       <p>
         If you&apos;ve applied for an SSC exam recently and tried to upload a
         saved photo, you already know the problem: the portal no longer lets
@@ -374,28 +397,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Can I upload a saved photo from my phone gallery for SSC CGL?",
-            a: "No. The current SSC portal requires live photo capture — a webcam or phone camera opened directly through the application form. The option to upload an existing file is not available. Set up your background and lighting before opening the form.",
-          },
-          {
-            q: "What is the minimum file size for an SSC CGL photo?",
-            a: "20 KB. The portal enforces a band: files below 20 KB are rejected just as firmly as files above 50 KB. Use a resizer that targets the full 20–50 KB range, not one that simply compresses to the smallest possible size.",
-          },
-          {
-            q: "Why does SSC reject a signature written in all capital letters?",
-            a: "The SSC portal runs a pattern check that flags signatures written entirely in capital letters — a style considered inconsistent with a personal signature. Write your name in cursive or a flowing running hand. If you normally sign in block capitals, practise a simple connected version for the application.",
-          },
-          {
-            q: "Are SSC CGL and SSC CHSL photo requirements the same?",
-            a: "For the photo: yes — both currently require 20–50 KB JPG with a plain white background. For the signature, specifications have matched in recent cycles but can differ slightly per notification. Download the official CHSL notification from ssc.gov.in and check the photo/signature table before applying.",
-          },
-          {
-            q: "My iPhone saves photos as HEIC. Can I use that format for the SSC signature?",
-            a: "No. SSC portals accept JPG only. For photos taken on iPhone, use the SSC signature resizer — it accepts HEIC and outputs JPG automatically. Alternatively, switch your iPhone to JPEG mode in Settings → Camera → Formats before taking the photo.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

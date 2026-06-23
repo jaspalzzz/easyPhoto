@@ -6,6 +6,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("passport-photo-size-by-country")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "What is the standard passport photo size?",
+    a: "There is no single standard. Most countries use 35×45 mm — including India, the UK, Australia and Schengen. The US uses 2×2 inches (51×51 mm, a square). Canada uses 50×70 mm, which is larger than the rest. Always check the requirement for your specific country.",
+  },
+  {
+    q: "Why does my self-cropped passport photo keep getting rejected?",
+    a: "Photo size and head size are two separate requirements. Even if you cut a 35×45 mm frame, the chin-to-crown head height must fall in a specific millimetre range. India, the UK and the US each have different ratios. The passport photo maker measures and adjusts your head position automatically.",
+  },
+  {
+    q: "Is a white background required for all countries?",
+    a: "No. The UK specifically requires light grey or cream — a white background fails. The US, India and Canada require white. Australia accepts white or plain light grey. The Schengen area prefers light grey. Using the wrong colour is one of the most common rejection reasons.",
+  },
+  {
+    q: "Can I use a passport photo for a visa application?",
+    a: "Sometimes, but not always. Visa photo requirements can differ from passport requirements even for the same country — for example, some consulates specify different background colours or head ratios. Use the visa photo maker and select the specific visa type to get the correct spec.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: `${post.title}`,
   titleAbsolute: true,
@@ -16,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         There is no single &quot;passport photo size.&quot; Each country sets its
         own dimensions <em>and</em> its own rule for how much of the frame your
@@ -142,24 +161,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "What is the standard passport photo size?",
-            a: "There is no single standard. Most countries use 35×45 mm — including India, the UK, Australia and Schengen. The US uses 2×2 inches (51×51 mm, a square). Canada uses 50×70 mm, which is larger than the rest. Always check the requirement for your specific country.",
-          },
-          {
-            q: "Why does my self-cropped passport photo keep getting rejected?",
-            a: "Photo size and head size are two separate requirements. Even if you cut a 35×45 mm frame, the chin-to-crown head height must fall in a specific millimetre range. India, the UK and the US each have different ratios. The passport photo maker measures and adjusts your head position automatically.",
-          },
-          {
-            q: "Is a white background required for all countries?",
-            a: "No. The UK specifically requires light grey or cream — a white background fails. The US, India and Canada require white. Australia accepts white or plain light grey. The Schengen area prefers light grey. Using the wrong colour is one of the most common rejection reasons.",
-          },
-          {
-            q: "Can I use a passport photo for a visa application?",
-            a: "Sometimes, but not always. Visa photo requirements can differ from passport requirements even for the same country — for example, some consulates specify different background colours or head ratios. Use the visa photo maker and select the specific visa type to get the correct spec.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

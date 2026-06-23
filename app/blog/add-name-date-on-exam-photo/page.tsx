@@ -7,6 +7,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("add-name-date-on-exam-photo")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Does UPSC really require the name and date to be on the photo?",
+    a: "Yes. UPSC's online application instructions require candidates to upload a photo with their name and the date the photograph was taken printed at the bottom. A photo without this text is rejected during document verification. Confirm in the current official notification at upsc.gov.in.",
+  },
+  {
+    q: "What date should I write on the photo — the application date or the photo date?",
+    a: "The date the photo was taken, not the date you apply. Most portals check that the photo is recent (usually within the last 6 months). If you took the photo specifically for this application, write today's date.",
+  },
+  {
+    q: "Can I handwrite the name and date on a printed photo?",
+    a: "For printed paper applications, yes — many UPSC and Army forms allow neat handwriting at the bottom. For online uploads, the text must be part of the digital image file. Use the photo with name & date tool for online submissions.",
+  },
+  {
+    q: "Should I add name and date for SSC or IBPS?",
+    a: "No. SSC and IBPS require a plain passport-size photo without any text overlay. Adding a name-and-date strip to a photo for these portals will cause rejection. Only add the text when the official notification explicitly asks for it.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -17,7 +36,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo">
+    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo" faqItems={FAQ_ITEMS}>
       <p>
         Some application forms don&apos;t just want a photo — they want your{" "}
         <strong>name and the date the photo was taken printed on the photo
@@ -147,24 +166,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Does UPSC really require the name and date to be on the photo?",
-            a: "Yes. UPSC's online application instructions require candidates to upload a photo with their name and the date the photograph was taken printed at the bottom. A photo without this text is rejected during document verification. Confirm in the current official notification at upsc.gov.in.",
-          },
-          {
-            q: "What date should I write on the photo — the application date or the photo date?",
-            a: "The date the photo was taken, not the date you apply. Most portals check that the photo is recent (usually within the last 6 months). If you took the photo specifically for this application, write today's date.",
-          },
-          {
-            q: "Can I handwrite the name and date on a printed photo?",
-            a: "For printed paper applications, yes — many UPSC and Army forms allow neat handwriting at the bottom. For online uploads, the text must be part of the digital image file. Use the photo with name & date tool for online submissions.",
-          },
-          {
-            q: "Should I add name and date for SSC or IBPS?",
-            a: "No. SSC and IBPS require a plain passport-size photo without any text overlay. Adding a name-and-date strip to a photo for these portals will cause rejection. Only add the text when the official notification explicitly asks for it.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

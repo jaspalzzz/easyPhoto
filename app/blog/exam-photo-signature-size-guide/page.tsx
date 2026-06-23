@@ -7,6 +7,33 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("exam-photo-signature-size-guide")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Can I use the same photo for SSC, IBPS and SBI in the same cycle?",
+    a: "Usually yes for KB, but not always for pixels. IBPS and SBI both use 200×230 px, so a photo sized for one passes the other. SSC CGL typically uses 275×354 px, which is a different dimension. You may need to resize in pixels (not just KB) when switching between SSC and banking portals. A photo that passes all KB checks will still be rejected if the pixel dimensions don't match.",
+  },
+  {
+    q: "Why do exam portals set a minimum file size as well as a maximum?",
+    a: "A minimum KB floor ensures the image has enough data to be clearly readable on screen and printable on the admit card. A photo compressed below roughly 10 KB at 200×230 px becomes noticeably blurry and unreliable for identity verification. The band (e.g. 20–50 KB) ensures images are both small enough to upload quickly and sharp enough to verify identity.",
+  },
+  {
+    q: "My signature scan looks grey or cream — will it be rejected?",
+    a: "Yes. Grey or cream background is the most common reason signatures fail. Most portals expect bright white. Use the signature resizer: it removes the paper background and whitens any grey or cream tone automatically. Photograph the signature near a window (not under yellow indoor lighting) to minimise the grey cast before processing.",
+  },
+  {
+    q: "UPSC asks for a square photo but my camera takes portrait shots. What should I do?",
+    a: "UPSC requires a minimum 350×350 px square, not a 35×45 mm portrait. Crop your photo to a 1:1 square with your head centred and face filling most of the frame, then resize to meet the KB requirement. The UPSC photo resizer applies the square crop and KB target in one step. Submitting a portrait photo to a UPSC portal — even one with the correct KB — will be rejected.",
+  },
+  {
+    q: "What format should I use — JPG or PNG?",
+    a: "JPG for almost every Indian exam portal: SSC, IBPS, SBI, UPSC and RRB all require JPG. NTA (NEET and JEE) is the exception — it accepts both JPG and PNG. If your phone saves photos as HEIC or WebP (common on newer iPhones and Android), convert to JPG before uploading. WebP and HEIC are rejected by all major Indian exam portals.",
+  },
+  {
+    q: "Do specs change between exam cycles?",
+    a: "Yes. KB bands, pixel dimensions, and background requirements can all change from one notification cycle to the next — even for the same exam. The specs in this guide are the most commonly reported current values, but always download the official notification PDF for the specific exam and cycle you are applying for. The official sources are ssc.gov.in, ibps.in, upsc.gov.in, indianrailways.gov.in and nta.ac.in.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: post.title,
   titleAbsolute: true,
@@ -17,7 +44,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo">
+    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo" faqItems={FAQ_ITEMS}>
       <p>
         Every Indian competitive exam and recruitment portal asks for a photo and
         a signature. Almost every candidate gets at least one of them wrong on the
@@ -555,32 +582,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Can I use the same photo for SSC, IBPS and SBI in the same cycle?",
-            a: "Usually yes for KB, but not always for pixels. IBPS and SBI both use 200×230 px, so a photo sized for one passes the other. SSC CGL typically uses 275×354 px, which is a different dimension. You may need to resize in pixels (not just KB) when switching between SSC and banking portals. A photo that passes all KB checks will still be rejected if the pixel dimensions don't match.",
-          },
-          {
-            q: "Why do exam portals set a minimum file size as well as a maximum?",
-            a: "A minimum KB floor ensures the image has enough data to be clearly readable on screen and printable on the admit card. A photo compressed below roughly 10 KB at 200×230 px becomes noticeably blurry and unreliable for identity verification. The band (e.g. 20–50 KB) ensures images are both small enough to upload quickly and sharp enough to verify identity.",
-          },
-          {
-            q: "My signature scan looks grey or cream — will it be rejected?",
-            a: "Yes. Grey or cream background is the most common reason signatures fail. Most portals expect bright white. Use the signature resizer: it removes the paper background and whitens any grey or cream tone automatically. Photograph the signature near a window (not under yellow indoor lighting) to minimise the grey cast before processing.",
-          },
-          {
-            q: "UPSC asks for a square photo but my camera takes portrait shots. What should I do?",
-            a: "UPSC requires a minimum 350×350 px square, not a 35×45 mm portrait. Crop your photo to a 1:1 square with your head centred and face filling most of the frame, then resize to meet the KB requirement. The UPSC photo resizer applies the square crop and KB target in one step. Submitting a portrait photo to a UPSC portal — even one with the correct KB — will be rejected.",
-          },
-          {
-            q: "What format should I use — JPG or PNG?",
-            a: "JPG for almost every Indian exam portal: SSC, IBPS, SBI, UPSC and RRB all require JPG. NTA (NEET and JEE) is the exception — it accepts both JPG and PNG. If your phone saves photos as HEIC or WebP (common on newer iPhones and Android), convert to JPG before uploading. WebP and HEIC are rejected by all major Indian exam portals.",
-          },
-          {
-            q: "Do specs change between exam cycles?",
-            a: "Yes. KB bands, pixel dimensions, and background requirements can all change from one notification cycle to the next — even for the same exam. The specs in this guide are the most commonly reported current values, but always download the official notification PDF for the specific exam and cycle you are applying for. The official sources are ssc.gov.in, ibps.in, upsc.gov.in, indianrailways.gov.in and nta.ac.in.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

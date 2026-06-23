@@ -19,6 +19,7 @@ import { PhotoTool } from "@/components/tool/PhotoTool";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
   breadcrumbSchema,
+  faqSchema,
   softwareApplicationSchema,
 } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
@@ -187,6 +188,7 @@ export default async function MakerPage({
             description: `Make a compliant ${spec.label} ${doc} photo in your browser — exact size, correct background, compliance-checked.`,
             url: `/${maker}/`,
           }),
+          faqSchema(faqItems),
         ]}
       />
       <nav className="flex flex-wrap items-center gap-1.5 text-[13px] text-ink-soft">
@@ -318,7 +320,7 @@ export default async function MakerPage({
       </section>
 
       <section>
-        <Faq items={faqItems} />
+        <Faq items={faqItems} noSchema />
       </section>
     </div>
   );

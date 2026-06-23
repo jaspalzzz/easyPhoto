@@ -7,6 +7,25 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("baby-and-infant-passport-photo-guide")!;
 
+const FAQ_ITEMS = [
+  {
+    q: "Do babies need to have their eyes open in a passport photo?",
+    a: "Most countries prefer open eyes but make allowances for very young infants. The U.S. State Department explicitly states that infant eyes do not need to be fully open. Aim for open eyes but don't discard a good photo if the eyes are slightly closed — the overall framing and background matter more.",
+  },
+  {
+    q: "Can a parent's hands be visible if they're supporting the baby?",
+    a: "No. The face must be clearly visible with no other people, hands, or props in the frame. If you need to support the baby's head, position your hands so they're out of frame or use a rolled towel hidden under the sheet.",
+  },
+  {
+    q: "What if the white sheet has shadows behind the baby's head?",
+    a: "Shadows are the main reason DIY baby photos fail. Use soft, diffuse daylight from the side and shoot in a well-lit room rather than under a ceiling light. If light shadows remain, the white background tool can often clean them without affecting the face.",
+  },
+  {
+    q: "How do I get a baby to look at the camera?",
+    a: "Attract their attention to just above the lens — a squeaky toy held by a helper above the camera works well. Timing helps more than positioning: take dozens of shots in a short burst and pick the best. A phone's burst mode makes this easy.",
+  },
+];
+
 export const metadata = pageMetadata({
   title: `${post.title}`,
   titleAbsolute: true,
@@ -17,7 +36,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
         A baby can&apos;t sit up on command, hold a neutral expression or look at
         a lens. Yet the photo still has to meet the same compliance rules as an
@@ -140,24 +159,7 @@ export default function Page() {
       </p>
 
       <div className="mt-12">
-        <Faq items={[
-          {
-            q: "Do babies need to have their eyes open in a passport photo?",
-            a: "Most countries prefer open eyes but make allowances for very young infants. The U.S. State Department explicitly states that infant eyes do not need to be fully open. Aim for open eyes but don't discard a good photo if the eyes are slightly closed — the overall framing and background matter more.",
-          },
-          {
-            q: "Can a parent's hands be visible if they're supporting the baby?",
-            a: "No. The face must be clearly visible with no other people, hands, or props in the frame. If you need to support the baby's head, position your hands so they're out of frame or use a rolled towel hidden under the sheet.",
-          },
-          {
-            q: "What if the white sheet has shadows behind the baby's head?",
-            a: "Shadows are the main reason DIY baby photos fail. Use soft, diffuse daylight from the side and shoot in a well-lit room rather than under a ceiling light. If light shadows remain, the white background tool can often clean them without affecting the face.",
-          },
-          {
-            q: "How do I get a baby to look at the camera?",
-            a: "Attract their attention to just above the lens — a squeaky toy held by a helper above the camera works well. Timing helps more than positioning: take dozens of shots in a short burst and pick the best. A phone's burst mode makes this easy.",
-          },
-        ]} />
+        <Faq items={FAQ_ITEMS} noSchema />
       </div>
     </BlogPostLayout>
   );

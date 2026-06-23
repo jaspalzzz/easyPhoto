@@ -6,7 +6,7 @@ import { PortalResizer } from "@/components/tools/PortalResizer";
 import { ExploreTools } from "@/components/site/ExploreTools";
 import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, softwareApplicationSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, softwareApplicationSchema } from "@/lib/schema";
 
 /**
  * Shared landing page for an Indian identity-document photo/signature resizer
@@ -45,6 +45,7 @@ export function DocPhotoResizerPage({
             description: `Resize a ${displayName} photo and signature to the exact size and KB the application requires, in your browser.`,
             url: path,
           }),
+          faqSchema(portalFaqItems(spec)),
         ]}
       />
 
@@ -86,7 +87,7 @@ export function DocPhotoResizerPage({
       />
 
       <section>
-        <Faq items={portalFaqItems(spec)} />
+        <Faq items={portalFaqItems(spec)} noSchema />
       </section>
 
       <p className="text-xs text-muted-foreground">

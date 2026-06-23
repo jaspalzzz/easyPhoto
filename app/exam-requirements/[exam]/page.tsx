@@ -15,7 +15,7 @@ import { dedicatedResizerLinks } from "@/lib/examResizers";
 import { SUB_EXAM_RESIZERS, RESIZER_YEAR } from "@/lib/subExamResizers";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { Faq } from "@/components/site/Faq";
 
 // One static page per exam (the cited Spec Database).
@@ -118,11 +118,14 @@ export default async function Page({
   return (
     <div className="container max-w-4xl space-y-8 py-10">
       <JsonLd
-        schema={breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Exam Requirements", path: "/exam-requirements/" },
-          { name: spec.name, path },
-        ])}
+        schema={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Exam Requirements", path: "/exam-requirements/" },
+            { name: spec.name, path },
+          ]),
+          faqSchema(faqItems),
+        ]}
       />
 
       <nav className="flex flex-wrap items-center gap-1.5 text-[13px] text-ink-soft">
@@ -293,7 +296,7 @@ export default async function Page({
       </section>
 
       <section>
-        <Faq items={faqItems} />
+        <Faq items={faqItems} noSchema />
       </section>
     </div>
   );

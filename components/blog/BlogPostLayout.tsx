@@ -5,7 +5,8 @@ import { getPost, relatedPosts } from "@/lib/blog";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { ReadingProgress } from "@/components/blog/ReadingProgress";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, ORG_ID } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, ORG_ID } from "@/lib/schema";
+import type { FaqItem } from "@/components/site/Faq";
 import { absoluteUrl } from "@/lib/seo";
 import { AUTHOR } from "@/lib/author";
 
@@ -15,11 +16,15 @@ export function BlogPostLayout({
   children,
   ctaHref = "/passport-photo/",
   ctaLabel = "Open the photo maker",
+  faqItems,
 }: {
   slug: string;
   children: React.ReactNode;
   ctaHref?: string;
   ctaLabel?: string;
+  /** When provided, emits FAQPage inside the post's @graph and suppresses the
+   *  orphaned standalone <script> from the inline <Faq noSchema> component. */
+  faqItems?: FaqItem[];
 }) {
   const post = getPost(slug);
   if (!post) notFound();
@@ -64,6 +69,10 @@ export function BlogPostLayout({
               },
               publisher: { "@id": ORG_ID },
             },
+            // FAQPage emitted here (not as a standalone <script>) when the
+            // caller passes faqItems — prevents the orphaned schema fragment
+            // that results from the inline <Faq> component's own JSON-LD.
+            ...(faqItems && faqItems.length > 0 ? [faqSchema(faqItems)] : []),
           ]}
         />
 

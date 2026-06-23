@@ -138,10 +138,9 @@ export function AiShowcase() {
             <div className="mb-5 flex items-center justify-center rounded-xl border border-hairline bg-paper py-5">
               <div className="relative h-[150px] w-[110px] sm:h-[190px] sm:w-[140px]">
                 <Image
-                  src="/images/sample2_before_1782052888740.png"
+                  src="/images/sample2_before_1782052888740.webp"
                   alt="Example selfie before AI processing"
                   fill
-                  priority
                   sizes="140px"
                   className="rounded-xl object-cover object-top"
                 />
@@ -339,7 +338,7 @@ export function AiShowcase() {
                   {/* Green dashed compliance border */}
                   <div className="absolute inset-0 z-10 rounded-xl border-2 border-dashed border-emerald-400 pointer-events-none" />
                   <Image
-                    src="/images/sample2_after_1782052904856.png"
+                    src="/images/sample2_after_1782052904856.webp"
                     alt="AI-corrected government-compliant passport photo"
                     fill
                     sizes="128px"

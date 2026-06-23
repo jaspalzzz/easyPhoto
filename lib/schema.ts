@@ -45,10 +45,18 @@ export function organizationSchema() {
       height: 512,
     },
     // Verified brand profiles — ties easyPhoto together as an entity for Google.
-    // Add more (Instagram, X, YouTube, Facebook, LinkedIn) here as they go live.
+    // Add more (Instagram, X, YouTube, Facebook) here as they go live.
     sameAs: [
       "https://www.pinterest.com/easyphoto0604/",
     ],
+    // Named founder strengthens entity disambiguation for AI knowledge graphs.
+    founder: {
+      "@type": "Person",
+      name: "Jaspal Kumar",
+      url: "https://www.linkedin.com/in/jaspal-jk/",
+      sameAs: ["https://www.linkedin.com/in/jaspal-jk/"],
+      jobTitle: "easyPhoto developer & document-spec researcher",
+    },
   };
 }
 
@@ -64,6 +72,16 @@ export function websiteSchema() {
     url: SITE_URL,
     publisher: { "@id": ORG_ID },
     inLanguage: "en-IN",
+    // Enables Google Sitelinks Searchbox for brand queries. The q= param is
+    // consumed client-side by ToolSearch on /tools/ page load.
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}tools/?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
   };
 }
 
