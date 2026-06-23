@@ -1,13 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Download, Printer, Globe, LayoutGrid, Loader2 } from "lucide-react";
+import { Download, Printer, Globe, LayoutGrid, Loader2, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
 import type { Preset } from "@/store/useToolStore";
 import { compressToCap, encode } from "@/lib/compress";
 import { generatePrintSheet, maxCopiesPerSheet } from "@/lib/printSheet";
-import { downloadBlob as download } from "@/lib/download";
+import { downloadBlob as download, shareFile } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 
 interface ExportPanelProps {
@@ -78,6 +78,8 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
     }
   };
 
+  const [digitalBlob, setDigitalBlob] = React.useState<Blob | null>(null);
+
   const onDigital = async () => {
     setBusy("digital");
     setDigitalInfo(null);
@@ -86,6 +88,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
         const res = await compressToCap(digital.canvas, capKb, {
           minDimensions: spec.digital.pxMin,
         });
+        setDigitalBlob(res.blob);
         download(res.blob, `${base}-passport-digital.jpg`);
         const downscaled =
           res.scale < 1 ? `, resized to ${res.width}×${res.height}px` : "";
@@ -102,6 +105,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
         );
       } else {
         const blob = await encode(digital.canvas, "image/jpeg", 0.92);
+        setDigitalBlob(blob);
         download(blob, `${base}-passport-digital.jpg`);
         setDigitalInfo({
           text: `${formatKb(blob.size)} (no portal size cap on record)`,
@@ -113,9 +117,58 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
     }
   };
 
+  const onShareDigital = async () => {
+    if (!digitalBlob) return;
+    await shareFile(digitalBlob, `${base}-passport-digital.jpg`, "Passport photo for upload");
+  };
+
   return (
     <div className="space-y-3.5">
       <h3 className="eyebrow">Download</h3>
+
+      {/* Online upload — first on mobile; this is the primary need for portal applicants */}
+      <div className="rounded-md border border-hairline">
+        <div className="flex items-center gap-2 border-b border-hairline px-3 py-2 text-[13px] font-semibold">
+          <Globe className="h-4 w-4 text-ink-soft" strokeWidth={1.75} /> Online upload
+        </div>
+        <div className="px-3 py-3">
+          <p className="spec mb-2.5 normal-case tracking-[0.06em]">
+            {digital.result.output.width}×{digital.result.output.height}px ·{" "}
+            {digital.dpi} dpi{capKb ? ` · ≤ ${capKb} KB` : ""}
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              id="digital-jpg-download-btn"
+              size="sm"
+              onClick={onDigital}
+              disabled={busy !== null}
+              aria-busy={busy === "digital"}
+              aria-label={busy === "digital" ? "Generating JPG for upload…" : "Download JPG for upload"}
+            >
+              {busy === "digital" ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : <Download className="h-4 w-4" strokeWidth={1.75} />} JPG for upload
+            </Button>
+            {digitalBlob && "share" in navigator && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={onShareDigital}
+                aria-label="Share JPG for upload"
+              >
+                <Share2 className="h-4 w-4" strokeWidth={1.75} /> Share
+              </Button>
+            )}
+          </div>
+          {digitalInfo && (
+            <p
+              className={`mt-2 text-xs leading-relaxed ${
+                digitalInfo.warn ? "text-amber-700" : "text-muted-foreground"
+              }`}
+            >
+              {digitalInfo.text}
+            </p>
+          )}
+        </div>
+      </div>
 
       <div className="rounded-md border border-hairline">
         <div className="flex items-center gap-2 border-b border-hairline px-3 py-2 text-[13px] font-semibold">
@@ -178,7 +231,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               <input
                 id="print-sheet-copies-input"
                 type="number"
-            inputMode="numeric"
+                inputMode="numeric"
                 min={1}
                 max={maxCapacity}
                 value={copies}
@@ -232,38 +285,6 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               )}
               Download PDF Print Sheet ({copies} copies)
             </Button>
-          )}
-        </div>
-      </div>
-
-      <div className="rounded-md border border-hairline">
-        <div className="flex items-center gap-2 border-b border-hairline px-3 py-2 text-[13px] font-semibold">
-          <Globe className="h-4 w-4 text-ink-soft" strokeWidth={1.75} /> Online
-          upload
-        </div>
-        <div className="px-3 py-3">
-          <p className="spec mb-2.5 normal-case tracking-[0.06em]">
-            {digital.result.output.width}×{digital.result.output.height}px ·{" "}
-            {digital.dpi} dpi{capKb ? ` · ≤ ${capKb} KB` : ""}
-          </p>
-          <Button
-            id="digital-jpg-download-btn"
-            size="sm"
-            onClick={onDigital}
-            disabled={busy !== null}
-            aria-busy={busy === "digital"}
-            aria-label={busy === "digital" ? "Generating JPG for upload…" : "Download JPG for upload"}
-          >
-            {busy === "digital" ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> : <Download className="h-4 w-4" strokeWidth={1.75} />} JPG for upload
-          </Button>
-          {digitalInfo && (
-            <p
-              className={`mt-2 text-xs leading-relaxed ${
-                digitalInfo.warn ? "text-amber-700" : "text-muted-foreground"
-              }`}
-            >
-              {digitalInfo.text}
-            </p>
           )}
         </div>
       </div>

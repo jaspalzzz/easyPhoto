@@ -312,6 +312,17 @@ export const BLOG_POSTS: BlogPost[] = [
       "Using the wrong background shade is a top reason photos bounce. Here's the right color for each country, and how to apply it.",
     readMins: 5,
   },
+  {
+    slug: "pan-card-photo-size",
+    title: "PAN Card Photo Size: Exact Dimensions, KB Limit & Signature Spec (NSDL / UTIITSL)",
+    description:
+      "PAN card photo is 25×35 mm, JPEG, max 50 KB for NSDL or 30 KB for UTIITSL. Signature specs differ too. Full portal-by-portal breakdown and a free resizer.",
+    date: "June 23, 2026",
+    dateISO: "2026-06-23",
+    excerpt:
+      "NSDL and UTIITSL accept the same physical 25×35 mm photo but different pixel dimensions and KB limits. Here's every spec, why they differ, and what gets photos rejected.",
+    readMins: 7,
+  },
 ];
 
 export function getPost(slug: string): BlogPost | undefined {
