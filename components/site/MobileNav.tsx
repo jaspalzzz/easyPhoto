@@ -6,10 +6,15 @@ import { usePathname } from "next/navigation";
 import {
   Menu, X, ArrowRight,
   Globe, GraduationCap, FileText, Aperture,
+  SquarePlus, Share,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { ToolIcon } from "@/components/site/ToolIcon";
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+}
 
 /** Top-level destinations mirrored from the desktop nav. */
 const PRIMARY_LINKS: { href: string; label: string }[] = [
@@ -68,6 +73,39 @@ const FOCUSABLE =
 export function MobileNav({ onDark = false }: { onDark?: boolean }) {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
+
+  // PWA install — independent of the one-time popup dismiss flag
+  const [installMode, setInstallMode] = React.useState<"hidden" | "native" | "ios">("hidden");
+  const deferredPrompt = React.useRef<BeforeInstallPromptEvent | null>(null);
+
+  React.useEffect(() => {
+    const ua = navigator.userAgent;
+    const standalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (navigator as unknown as { standalone?: boolean }).standalone === true;
+    if (standalone) return;
+
+    const isIosSafari =
+      /iPhone|iPad|iPod/.test(ua) &&
+      /Safari/.test(ua) &&
+      !/CriOS|FxiOS|EdgiOS|Instagram|FBAV/.test(ua);
+
+    if (isIosSafari) setInstallMode("ios");
+
+    const onBeforeInstall = (e: Event) => {
+      deferredPrompt.current = e as BeforeInstallPromptEvent;
+      setInstallMode("native");
+    };
+    window.addEventListener("beforeinstallprompt", onBeforeInstall);
+    return () => window.removeEventListener("beforeinstallprompt", onBeforeInstall);
+  }, []);
+
+  const handleInstall = async () => {
+    const p = deferredPrompt.current;
+    if (!p) return;
+    try { await p.prompt(); } catch { /* dismissed */ }
+    close();
+  };
 
   /** Ref for the hamburger trigger so focus can return to it on close. */
   const triggerRef = React.useRef<HTMLButtonElement>(null);
@@ -272,6 +310,27 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
                   </div>
                 ))}
               </div>
+              {/* ── Install app ── */}
+              {installMode !== "hidden" && (
+                <div className="mt-4 border-t border-hairline pt-4">
+                  {installMode === "native" ? (
+                    <button
+                      type="button"
+                      onClick={handleInstall}
+                      className="flex w-full items-center gap-2.5 rounded-md px-2 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-accent"
+                    >
+                      <SquarePlus className="h-5 w-5 shrink-0" strokeWidth={1.75} />
+                      Add easyPhoto to home screen
+                    </button>
+                  ) : (
+                    <p className="px-2 py-2 text-xs leading-relaxed text-muted-foreground">
+                      <Share className="mr-1 inline h-3.5 w-3.5 align-[-2px] text-brand" strokeWidth={2} />
+                      Tap <strong className="font-semibold text-ink">Share</strong> then{" "}
+                      <strong className="font-semibold text-ink">Add to Home Screen</strong> to install easyPhoto.
+                    </p>
+                  )}
+                </div>
+              )}
             </nav>
           </div>
         </div>

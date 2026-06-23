@@ -67,7 +67,6 @@ export function PwaInstallHint() {
     };
 
     const onBeforeInstall = (e: Event) => {
-      e.preventDefault(); // keep Chrome's mini-infobar quiet; we choose the moment
       deferredPrompt.current = e as BeforeInstallPromptEvent;
       maybeShow();
     };
