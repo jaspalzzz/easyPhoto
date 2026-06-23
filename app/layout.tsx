@@ -37,6 +37,7 @@ import { AnalyticsBeacon } from "@/components/site/AnalyticsBeacon";
 import { DownloadToast } from "@/components/site/DownloadToast";
 import { PwaInstallHint } from "@/components/site/PwaInstallHint";
 import { CommandPalette } from "@/components/site/CommandPalette";
+import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import {
@@ -116,8 +117,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${outfit.variable} ${display.variable} ${sans.variable} ${mono.variable}`}
     >
+      <head>
+        {/* Anti-FOUC: apply stored/system theme BEFORE first paint */}
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('ep-theme'),d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(t==='dark'||(t!=='light'&&d))document.documentElement.classList.add('dark')}catch(_){}})()` }} />
+      </head>
       <body className="flex min-h-screen flex-col antialiased">
         <a
           href="#main-content"
@@ -138,8 +144,9 @@ export default function RootLayout({
               <LogoMark className="h-9 w-9" onDark />
               <Wordmark className="text-[1.35rem]" tone="light" />
             </Link>
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
               <MainNav onDark />
+              <ThemeToggle />
               <MobileNav onDark />
             </div>
           </div>
