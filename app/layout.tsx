@@ -36,6 +36,7 @@ import { MobileNav } from "@/components/site/MobileNav";
 import { AnalyticsBeacon } from "@/components/site/AnalyticsBeacon";
 import { DownloadToast } from "@/components/site/DownloadToast";
 import { PwaInstallHint } from "@/components/site/PwaInstallHint";
+import { CommandPalette } from "@/components/site/CommandPalette";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import {
@@ -150,6 +151,7 @@ export default function RootLayout({
         <AnalyticsBeacon />
         <DownloadToast />
         <PwaInstallHint />
+        <CommandPalette />
         {/* AdSense runtime. Domain ownership is verified via public/ads.txt
             (pub-8825078307302402), so this script is NOT needed in the static
             HTML for verification — it only loads the ad-serving runtime. No ad

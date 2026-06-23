@@ -146,8 +146,17 @@ export function ToolSearch() {
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder="Search tools — try '20kb', 'signature', 'SSC'"
-          className="h-12 w-full rounded-xl border border-hairline bg-card pl-11 pr-4 text-[15px] font-medium text-ink shadow-[0_1px_2px_rgb(0_0_0/0.04),0_2px_10px_rgb(0_0_0/0.05)] outline-none transition-shadow placeholder:font-normal placeholder:text-muted-foreground focus:border-brand focus:shadow-[0_0_0_3px_hsl(174_72%_29%/0.14)]"
+          className="h-12 w-full rounded-xl border border-hairline bg-card pl-11 pr-16 text-[15px] font-medium text-ink shadow-[0_1px_2px_rgb(0_0_0/0.04),0_2px_10px_rgb(0_0_0/0.05)] outline-none transition-shadow placeholder:font-normal placeholder:text-muted-foreground focus:border-brand focus:shadow-[0_0_0_3px_hsl(174_72%_29%/0.14)]"
         />
+        {/* ⌘K badge — desktop only, opens the global command palette */}
+        <button
+          type="button"
+          aria-label="Open command palette"
+          onClick={() => document.dispatchEvent(new CustomEvent("cmd-palette-open"))}
+          className="pointer-events-auto absolute right-3 top-1/2 hidden -translate-y-1/2 items-center gap-0.5 rounded-md border border-hairline bg-paper px-1.5 py-0.5 text-[11px] font-semibold text-muted-foreground transition-colors hover:border-ink-soft hover:text-ink sm:flex"
+        >
+          <span className="text-[10px]">⌘</span>K
+        </button>
       </div>
 
       {isOpen && results.length > 0 && (
