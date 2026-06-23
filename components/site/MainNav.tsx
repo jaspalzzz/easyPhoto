@@ -45,8 +45,8 @@ const CATEGORY_CARDS = [
     href: "/passport-photo/",
     Icon: Globe,
     badge: "Most Used",
-    iconBg:   "bg-amber-100",
-    iconText: "text-amber-700",
+    iconBg:   "bg-amber-100 dark:bg-amber-900/30",
+    iconText: "text-amber-700 dark:text-amber-400",
   },
   {
     title: "Exam Applications",
@@ -54,8 +54,8 @@ const CATEGORY_CARDS = [
     href: "/tools/exam-package/",
     Icon: GraduationCap,
     badge: null,
-    iconBg:   "bg-blue-100",
-    iconText: "text-blue-700",
+    iconBg:   "bg-blue-100 dark:bg-blue-900/30",
+    iconText: "text-blue-700 dark:text-blue-400",
   },
   {
     title: "Signature Tools",
@@ -63,8 +63,8 @@ const CATEGORY_CARDS = [
     href: "/tools/signature/",
     Icon: PenLine,
     badge: null,
-    iconBg:   "bg-emerald-100",
-    iconText: "text-emerald-700",
+    iconBg:   "bg-emerald-100 dark:bg-emerald-900/30",
+    iconText: "text-emerald-700 dark:text-emerald-400",
   },
   {
     title: "PDF Tools",
@@ -72,8 +72,8 @@ const CATEGORY_CARDS = [
     href: "/tools/pdf/",
     Icon: FileText,
     badge: null,
-    iconBg:   "bg-violet-100",
-    iconText: "text-violet-700",
+    iconBg:   "bg-violet-100 dark:bg-violet-900/30",
+    iconText: "text-violet-700 dark:text-violet-400",
   },
 ] as const;
 
@@ -94,7 +94,7 @@ const MENU_COLUMNS: MenuColumn[] = [
     href: "/passport-photo/",
     viewAllLabel: "View all document tools",
     viewAllHref: "/passport-photo/",
-    tileBg: "bg-amber-100", tileText: "text-amber-700", barCls: "bg-amber-400",
+    tileBg: "bg-amber-100 dark:bg-amber-900/30", tileText: "text-amber-700 dark:text-amber-400", barCls: "bg-amber-400 dark:bg-amber-500",
     tools: [
       { title: "Passport Photo Maker",  tag: "All countries",        href: "/passport-photo/",            Icon: CreditCard   },
       { title: "LinkedIn Photo Maker",  tag: "Professional photos",  href: "/tools/linkedin-photo/",      Icon: UserCircle   },
@@ -109,7 +109,7 @@ const MENU_COLUMNS: MenuColumn[] = [
     href: "/tools/exam-package/",
     viewAllLabel: "View all exam tools",
     viewAllHref: "/tools/exam-package/",
-    tileBg: "bg-blue-100", tileText: "text-blue-700", barCls: "bg-blue-500",
+    tileBg: "bg-blue-100 dark:bg-blue-900/30", tileText: "text-blue-700 dark:text-blue-400", barCls: "bg-blue-500",
     tools: [
       { title: "Exam Application Kit",  tag: "All exam presets",     href: "/tools/exam-package/",        Icon: Package      },
       { title: "SSC Photo Tool",        tag: "SSC MTS, CGL, CHSL",  href: "/tools/form-resizer/ssc/",    Icon: GraduationCap},
@@ -124,7 +124,7 @@ const MENU_COLUMNS: MenuColumn[] = [
     href: "/tools/photo/",
     viewAllLabel: "View all image tools",
     viewAllHref: "/tools/photo/",
-    tileBg: "bg-emerald-100", tileText: "text-emerald-700", barCls: "bg-emerald-500",
+    tileBg: "bg-emerald-100 dark:bg-emerald-900/30", tileText: "text-emerald-700 dark:text-emerald-400", barCls: "bg-emerald-500",
     tools: [
       { title: "Background Remover",    tag: "Remove background",   href: "/tools/background-removal/",  Icon: Eraser       },
       { title: "Resize Image",          tag: "By pixels or mm",     href: "/tools/resize-dimensions/",   Icon: Maximize2    },
@@ -139,7 +139,7 @@ const MENU_COLUMNS: MenuColumn[] = [
     href: "/tools/pdf/",
     viewAllLabel: "View all PDF tools",
     viewAllHref: "/tools/pdf/",
-    tileBg: "bg-violet-100", tileText: "text-violet-700", barCls: "bg-violet-500",
+    tileBg: "bg-violet-100 dark:bg-violet-900/30", tileText: "text-violet-700 dark:text-violet-400", barCls: "bg-violet-500",
     tools: [
       { title: "Compress PDF",          tag: "Reduce PDF size",     href: "/tools/pdf-compress/",        Icon: FileDown     },
       { title: "Merge PDF",             tag: "Combine multiple",    href: "/tools/pdf-merge/",           Icon: Files        },
@@ -154,7 +154,7 @@ const MENU_COLUMNS: MenuColumn[] = [
     href: "/tools/signature/",
     viewAllLabel: "View all signature tools",
     viewAllHref: "/tools/signature/",
-    tileBg: "bg-orange-100", tileText: "text-orange-700", barCls: "bg-orange-500",
+    tileBg: "bg-orange-100 dark:bg-orange-900/30", tileText: "text-orange-700 dark:text-orange-400", barCls: "bg-orange-500",
     tools: [
       { title: "Transparent Signature", tag: "PNG with no bg",      href: "/tools/transparent-signature/", Icon: ImageOff   },
       { title: "Signature Resize",      tag: "Resize to any size",  href: "/tools/signature-resize/",    Icon: Maximize     },
@@ -167,10 +167,10 @@ const MENU_COLUMNS: MenuColumn[] = [
 
 /* ── Footer trust signals ─────────────────────────────────────────────── */
 const FOOTER_SIGNALS = [
-  { Icon: ShieldCheck, label: "100% Private",         sub: "Your files never leave your device", iconBg: "bg-amber-100",   iconText: "text-amber-700"  },
-  { Icon: Zap,         label: "Browser Processing",   sub: "No uploads, no waiting",             iconBg: "bg-blue-100",    iconText: "text-blue-700"   },
-  { Icon: Lock,        label: "No Data Stored",       sub: "We don't store your files",          iconBg: "bg-emerald-100", iconText: "text-emerald-700"},
-  { Icon: BadgeCheck,  label: "Government Compliant", sub: "Official guidelines followed",       iconBg: "bg-violet-100",  iconText: "text-violet-700" },
+  { Icon: ShieldCheck, label: "100% Private",         sub: "Your files never leave your device", iconBg: "bg-amber-100 dark:bg-amber-900/30",   iconText: "text-amber-700 dark:text-amber-400"  },
+  { Icon: Zap,         label: "Browser Processing",   sub: "No uploads, no waiting",             iconBg: "bg-blue-100 dark:bg-blue-900/30",     iconText: "text-blue-700 dark:text-blue-400"    },
+  { Icon: Lock,        label: "No Data Stored",       sub: "We don't store your files",          iconBg: "bg-emerald-100 dark:bg-emerald-900/30", iconText: "text-emerald-700 dark:text-emerald-400"},
+  { Icon: BadgeCheck,  label: "Government Compliant", sub: "Official guidelines followed",       iconBg: "bg-violet-100 dark:bg-violet-900/30", iconText: "text-violet-700 dark:text-violet-400" },
 ] as const;
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -299,7 +299,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
             {/* ── Search + Trending ─────────────────────────────────── */}
             <div className="flex items-center gap-4 border-b border-hairline bg-paper px-4 py-3">
               {/* Search */}
-              <div className="flex min-w-[220px] max-w-[280px] items-center gap-2.5 rounded-lg border border-hairline bg-white px-3 py-2 transition-all focus-within:border-brand/40 focus-within:ring-1 focus-within:ring-brand/20">
+              <div className="flex min-w-[220px] max-w-[280px] items-center gap-2.5 rounded-lg border border-hairline bg-surface px-3 py-2 transition-all focus-within:border-brand/40 focus-within:ring-1 focus-within:ring-brand/20">
                 <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground" strokeWidth={1.75} />
                 <input
                   ref={searchRef}
@@ -327,7 +327,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                       href={t.href}
                       onClick={close}
                       role="menuitem"
-                      className="shrink-0 rounded-full border border-hairline bg-white px-2.5 py-1 text-[11px] font-medium text-ink transition-colors hover:bg-accent"
+                      className="shrink-0 rounded-full border border-hairline bg-surface px-2.5 py-1 text-[11px] font-medium text-ink transition-colors hover:bg-accent"
                     >
                       {t.title}
                     </Link>
@@ -337,14 +337,14 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
             </div>
 
             {/* ── 4 Category shortcut cards ─────────────────────────── */}
-            <div className="grid grid-cols-4 gap-2 bg-white/60 px-4 py-2">
+            <div className="grid grid-cols-4 gap-2 bg-surface/60 px-4 py-2">
               {CATEGORY_CARDS.map(({ title, desc, href, Icon, badge, iconBg, iconText }) => (
                 <Link
                   key={href}
                   href={href}
                   onClick={close}
                   role="menuitem"
-                  className="group flex items-center gap-2.5 rounded-xl border border-hairline bg-white p-2.5 shadow-sm transition-all hover:border-hairline-strong hover:shadow-md"
+                  className="group flex items-center gap-2.5 rounded-xl border border-hairline bg-surface p-2.5 shadow-sm transition-all hover:border-hairline-strong hover:shadow-md"
                 >
                   {/* Compact icon circle */}
                   <span className={cn(
@@ -357,7 +357,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <p className="text-[12.5px] font-bold leading-tight text-ink">{title}</p>
                       {badge && (
-                        <span className="rounded-full bg-amber-100 px-1.5 py-[1px] text-[9px] font-bold uppercase tracking-wide text-amber-700">
+                        <span className="rounded-full bg-amber-100 dark:bg-amber-900/30 px-1.5 py-[1px] text-[9px] font-bold uppercase tracking-wide text-amber-700 dark:text-amber-400">
                           {badge}
                         </span>
                       )}
@@ -370,7 +370,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
             </div>
 
             {/* ── 5-column tool list ────────────────────────────────── */}
-            <div className="grid grid-cols-5 divide-x divide-hairline bg-white px-2 py-2">
+            <div className="grid grid-cols-5 divide-x divide-hairline bg-surface px-2 py-2">
               {MENU_COLUMNS.map((col) => (
                 <div key={col.label} className="flex flex-col px-3 py-2">
                   {/* Column header with color accent bar */}
@@ -454,7 +454,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                 href="/tools/"
                 onClick={close}
                 role="menuitem"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-hairline-strong bg-white px-3.5 py-2 text-[12px] font-bold text-ink shadow-sm transition-colors hover:bg-accent"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-hairline-strong bg-surface px-3.5 py-2 text-[12px] font-bold text-ink shadow-sm transition-colors hover:bg-accent"
               >
                 View all {READY_TOOLS.length} tools
                 <ArrowRight className="h-3.5 w-3.5" />

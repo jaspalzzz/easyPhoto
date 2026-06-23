@@ -101,8 +101,8 @@ export function BlogPostLayout({
         {/* Prose: 17px, generous line-height, high-contrast ink, a "lead" first
             paragraph — all tuned for readability and reading completion. */}
         <article
-          className="mt-9 text-[17px] leading-[1.75] text-[hsl(30_10%_24%)]
-            [&>p:first-of-type]:text-[19px] [&>p:first-of-type]:leading-relaxed [&>p:first-of-type]:text-[hsl(30_11%_20%)]
+          className="mt-9 text-[17px] leading-[1.75] text-ink-soft
+            [&>p:first-of-type]:text-[19px] [&>p:first-of-type]:leading-relaxed [&>p:first-of-type]:text-ink-soft
             [&_a]:font-medium [&_a]:text-brand [&_a]:underline [&_a]:decoration-brand/30 [&_a]:underline-offset-2 [&_a:hover]:decoration-brand
             [&_h2]:mb-2 [&_h2]:mt-11 [&_h2]:text-[1.45rem] [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-ink
             [&_li]:ml-1 [&_p]:mt-5 [&_strong]:font-semibold [&_strong]:text-ink
