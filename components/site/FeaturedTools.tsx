@@ -6,6 +6,7 @@ import {
   GraduationCap,
   PenLine,
   FileText,
+  ImageIcon,
 } from "lucide-react";
 
 /* ── data ─────────────────────────────────────────────────────────────── */
@@ -31,7 +32,13 @@ interface Card {
   vtName?: string;
 }
 
-const MEDIUM_CARDS: Card[] = [
+/*
+ * Grid layout (lg):
+ *   Row 1: [Hero 2-col] | [Exam 1-col]
+ *   Row 2: [Sig 1-col]  | [Image 1-col] | [PDF 1-col]
+ * All three bottom cards share the same vertical card pattern.
+ */
+const BOTTOM_CARDS: Card[] = [
   {
     icon: <GraduationCap className="h-5 w-5 text-amber-600" strokeWidth={1.75} />,
     title: "Exam Application Kit",
@@ -58,9 +65,68 @@ const MEDIUM_CARDS: Card[] = [
     chipText: "text-violet-600 dark:text-violet-400",
     vtName: "feat-signature",
   },
+  {
+    icon: <ImageIcon className="h-5 w-5 text-sky-600" strokeWidth={1.75} />,
+    title: "Image Processing",
+    outcome:
+      "Resize, compress or convert any photo to hit the exact KB or pixel limit every portal sets.",
+    includes: ["Resize to KB", "Resize dimensions", "JPG to PDF"],
+    href: "/tools/",
+    cta: "Open image tools",
+    iconBg: "bg-sky-50 dark:bg-sky-900/20",
+    chipBg: "bg-sky-50 dark:bg-sky-900/20",
+    chipText: "text-sky-600 dark:text-sky-400",
+    vtName: "feat-image",
+  },
+  {
+    icon: <FileText className="h-5 w-5 text-emerald-600 dark:text-emerald-400" strokeWidth={1.75} />,
+    title: "PDF Tools",
+    outcome:
+      "Compress, merge, split, sign and unlock PDFs to fit any portal upload limit — every file stays on your device.",
+    includes: ["Compress to KB", "Merge & split", "Sign", "Unlock password"],
+    href: "/tools/pdf/",
+    cta: "Open PDF tools",
+    iconBg: "bg-emerald-50 dark:bg-emerald-900/20",
+    chipBg: "bg-emerald-50 dark:bg-emerald-900/20",
+    chipText: "text-emerald-600 dark:text-emerald-400",
+    vtName: "feat-pdf",
+  },
 ];
 
 const NAVY = { background: "hsl(222 60% 8%)" } as const;
+
+/* ── shared card shell ─────────────────────────────────────────────────── */
+
+function BottomCard({ card }: { card: Card }) {
+  const { icon, title, outcome, includes, href, cta, iconBg, chipBg, chipText, vtName } = card;
+  return (
+    <Link
+      href={href}
+      className="lift-card group flex flex-col p-6"
+      {...(vtName ? { style: { viewTransitionName: vtName } as React.CSSProperties } : {})}
+    >
+      <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl ${iconBg}`}>
+        {icon}
+      </div>
+      <h3 className="mb-2 text-[15px] font-bold leading-tight text-ink">{title}</h3>
+      <p className="mb-4 flex-1 text-[12.5px] leading-relaxed text-muted-foreground">{outcome}</p>
+      <div className="mb-4 flex flex-wrap gap-1.5">
+        {includes.map((item) => (
+          <span
+            key={item}
+            className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${chipBg} ${chipText}`}
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+      <span className="flex items-center gap-1.5 text-[13px] font-bold text-brand">
+        {cta}
+        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+      </span>
+    </Link>
+  );
+}
 
 /* ── component ─────────────────────────────────────────────────────────── */
 
@@ -89,42 +155,41 @@ export function FeaturedTools() {
         </div>
 
         {/* ── Bento grid ────────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        {/*
+          Row 1 (lg): [Hero 2-col]  |  [Exam 1-col]
+          Row 2 (lg): [Sig 1-col]   |  [Image 1-col]  |  [PDF 1-col]
+          All four secondary cards share the same BottomCard shell.
+        */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
-          {/* 1. Hero card — Passport & Visa (2 cols × 2 rows on lg) */}
+          {/* 1. Hero — Passport & Visa (2 cols on lg) */}
           <Link
             href={PASSPORT.href}
-            className="lift-card group relative flex flex-col overflow-hidden p-7 lg:col-span-2 lg:row-span-2"
+            className="lift-card group relative flex flex-col overflow-hidden p-6 sm:col-span-2 lg:col-span-2"
             style={{ ...NAVY, viewTransitionName: "feat-passport" } as React.CSSProperties}
           >
-            {/* Subtle dot-grid depth layer */}
             <div className="bento-hero-bg pointer-events-none absolute inset-0" aria-hidden="true" />
 
-            {/* "Most popular" pill */}
-            <span className="relative mb-6 inline-flex w-fit items-center gap-1.5 rounded-full border border-cta/25 bg-cta/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-cta">
-              ✦ Most popular
-            </span>
-
-            {/* Icon */}
-            <div
-              className="relative mb-5 flex h-14 w-14 items-center justify-center rounded-2xl"
-              style={{ background: "rgba(255,255,255,0.06)" }}
-            >
-              <CreditCard className="h-7 w-7 text-cta" strokeWidth={1.5} />
+            {/* Pill + icon in same row */}
+            <div className="relative mb-5 flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-cta/25 bg-cta/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-cta">
+                ✦ Most popular
+              </span>
+              <div
+                className="flex h-10 w-10 items-center justify-center rounded-xl"
+                style={{ background: "rgba(255,255,255,0.06)" }}
+              >
+                <CreditCard className="h-5 w-5 text-cta" strokeWidth={1.5} />
+              </div>
             </div>
 
-            {/* Title */}
-            <h3 className="relative mb-3 text-[20px] font-bold leading-tight text-white lg:text-[24px]">
+            <h3 className="relative mb-2 text-[20px] font-bold leading-tight text-white lg:text-[22px]">
               Passport &amp; Visa Photo
             </h3>
-
-            {/* Outcome */}
-            <p className="relative mb-6 max-w-prose text-[13.5px] leading-relaxed text-white/55">
+            <p className="relative mb-4 text-[13px] leading-relaxed text-white/55">
               {PASSPORT.outcome}
             </p>
-
-            {/* Feature chips */}
-            <div className="relative mb-auto flex flex-wrap gap-2">
+            <div className="relative mb-5 flex flex-wrap gap-2">
               {PASSPORT.includes.map((item) => (
                 <span
                   key={item}
@@ -134,68 +199,16 @@ export function FeaturedTools() {
                 </span>
               ))}
             </div>
-
-            {/* CTA */}
-            <div className="relative mt-8 flex items-center gap-2 text-[14px] font-bold text-cta">
+            <div className="relative flex items-center gap-2 text-[13.5px] font-bold text-cta">
               {PASSPORT.cta}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </div>
           </Link>
 
-          {/* 2 & 3. Medium cards — Exam, Signature (1 col each, stack in col 3) */}
-          {MEDIUM_CARDS.map(({ icon, title, outcome, includes, href, cta, iconBg, chipBg, chipText, vtName }) => (
-            <Link
-              key={href}
-              href={href}
-              className="lift-card group flex flex-col p-6"
-              {...(vtName ? { style: { viewTransitionName: vtName } as React.CSSProperties } : {})}
-            >
-              <div className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${iconBg}`}>
-                {icon}
-              </div>
-              <h3 className="mb-2 text-[16px] font-bold leading-tight text-ink">{title}</h3>
-              <p className="mb-4 text-[13px] leading-relaxed text-muted-foreground">{outcome}</p>
-              <div className="mb-4 mt-auto flex flex-wrap gap-1.5">
-                {includes.map((item) => (
-                  <span key={item} className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${chipBg} ${chipText}`}>
-                    {item}
-                  </span>
-                ))}
-              </div>
-              <span className="flex items-center gap-1.5 text-[13px] font-bold text-brand">
-                {cta}
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-              </span>
-            </Link>
+          {/* 2–5. Secondary cards (Exam top-right; Sig + Image + PDF bottom row) */}
+          {BOTTOM_CARDS.map((card) => (
+            <BottomCard key={card.href} card={card} />
           ))}
-
-          {/* 4. Wide card — PDF Tools (spans full 3 cols, horizontal layout) */}
-          <Link
-            href="/tools/pdf/"
-            className="lift-card group flex flex-col gap-4 p-6 sm:flex-row sm:items-center lg:col-span-3"
-            style={{ viewTransitionName: "feat-pdf" } as React.CSSProperties}
-          >
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
-              <FileText className="h-5 w-5 text-emerald-600 dark:text-emerald-400" strokeWidth={1.75} />
-            </div>
-            <div className="min-w-0 flex-1">
-              <h3 className="mb-1 text-[16px] font-bold text-ink">PDF Tools</h3>
-              <p className="text-[13px] leading-relaxed text-muted-foreground">
-                Compress, merge, split, sign and unlock PDFs to fit any portal upload limit — every file stays on your device.
-              </p>
-            </div>
-            <div className="flex flex-shrink-0 flex-wrap gap-1.5">
-              {["Compress to KB", "Merge & split", "Sign", "Unlock password"].map((item) => (
-                <span key={item} className="rounded-full bg-emerald-50 dark:bg-emerald-900/20 px-2.5 py-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-                  {item}
-                </span>
-              ))}
-            </div>
-            <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-[13px] font-bold text-brand">
-              Open PDF tools
-              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-            </span>
-          </Link>
 
         </div>
 
