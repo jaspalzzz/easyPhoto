@@ -58,6 +58,34 @@
     --brand-muted: var(--brand-soft);
     --cta-muted: 44 80% 90%;          /* faint gold wash */
   }
+
+  /* ── Dark mode overrides (class strategy — toggled by ThemeToggle) ── */
+  .dark {
+    --paper:   222 35% 9%;            /* dark canvas — body background */
+    --surface: 222 28% 13%;           /* dark card surface — elevated above canvas */
+    --ink:     220 20% 93%;           /* near-white primary text */
+    --ink-soft: 220 15% 62%;          /* mid grey text */
+    --ink-faint: 220 12% 46%;         /* faint text / placeholders */
+
+    --hairline:        222 20% 21%;   /* dark hairline border */
+    --hairline-strong: 222 18% 30%;   /* stronger dark border */
+
+    /* Brand blue needs to be lighter to read on the dark canvas */
+    --brand:      212 75% 62%;        /* lighter navy/blue for dark bg */
+    --brand-soft: 212 38% 17%;        /* dark navy wash */
+
+    /* Gold CTA is universal — keep identical */
+    /* --cta stays */
+    /* --cta-foreground stays */
+
+    /* shadcn bridge tokens that are hardcoded in :root */
+    --secondary: 222 22% 18%;
+    --muted:     222 22% 16%;
+    --accent:    222 22% 18%;
+
+    --brand-foreground: 220 20% 93%;
+    --cta-muted: 44 50% 22%;          /* muted gold wash — darker in dark mode */
+  }
 }
 
 @layer base {
