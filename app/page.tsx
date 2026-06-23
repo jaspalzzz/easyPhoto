@@ -74,7 +74,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-10">
 
             {/* Left — value proposition */}
-            <div className="max-w-xl">
+            <div className="hero-enter max-w-xl">
               <span className="eyebrow">
                 Passport · Visa · ID Card · Exam — exact to the millimetre
               </span>
