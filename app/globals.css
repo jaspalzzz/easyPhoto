@@ -544,4 +544,38 @@ input[type="range"] {
   .ep-card-grid > *:nth-child(10) { --si: 9; }
   .ep-card-grid > *:nth-child(11) { --si: 10; }
   .ep-card-grid > *:nth-child(12) { --si: 11; }
+
+  /* Hero content staggered entry — children fade+rise on first paint */
+  .hero-enter > * {
+    transition: opacity 0.45s ease-out calc(var(--si, 0) * 70ms),
+                transform 0.45s ease-out calc(var(--si, 0) * 70ms);
+    @starting-style {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+  .hero-enter > *:nth-child(1) { --si: 0; }
+  .hero-enter > *:nth-child(2) { --si: 1; }
+  .hero-enter > *:nth-child(3) { --si: 2; }
+  .hero-enter > *:nth-child(4) { --si: 3; }
+  .hero-enter > *:nth-child(5) { --si: 4; }
+
+  /* Bento hero card subtle grid-dot background */
+  .bento-hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+    background-image: radial-gradient(circle, white 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+}
+
+/* View Transitions — uses the browser's native cross-fade between pages.
+   Custom ::view-transition-* animations intentionally omitted so the browser
+   default (opacity cross-fade, ~250ms) is used. Shared-element morph via
+   view-transition-name still works on individual elements. */
+@view-transition {
+  navigation: auto;
 }
