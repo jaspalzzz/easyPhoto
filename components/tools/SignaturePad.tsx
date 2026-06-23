@@ -77,6 +77,22 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
     return () => observer.disconnect();
   }, [activeTab]);
 
+  // React synthetic touch handlers are passive — e.preventDefault() inside them
+  // is a no-op on Android/iOS, so the page can scroll during drawing. Register
+  // non-passive listeners directly on the canvas DOM element to guarantee scroll
+  // prevention while the user is drawing.
+  React.useEffect(() => {
+    if (activeTab !== "draw" || !canvasRef.current) return;
+    const canvas = canvasRef.current;
+    const prevent = (e: TouchEvent) => { e.preventDefault(); };
+    canvas.addEventListener("touchstart", prevent, { passive: false });
+    canvas.addEventListener("touchmove", prevent, { passive: false });
+    return () => {
+      canvas.removeEventListener("touchstart", prevent);
+      canvas.removeEventListener("touchmove", prevent);
+    };
+  }, [activeTab]);
+
   const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
     if (!canvasRef.current) return null;
     const canvas = canvasRef.current;
