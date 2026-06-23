@@ -555,7 +555,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
               )}
             </Button>
             {exportError && (
-              <div className="flex items-center gap-2 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-700">
+              <div className="flex items-center gap-2 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-700 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{exportError}</span>
               </div>
@@ -573,15 +573,15 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
               <li>
                 · Status:{" "}
                 {result.underCap ? (
-                  <span className="text-emerald-700">Compliant size</span>
+                  <span className="text-emerald-700 dark:text-emerald-400">Compliant size</span>
                 ) : (
-                  <span className="text-amber-700">Over the {targetKb} KB limit</span>
+                  <span className="text-amber-700 dark:text-amber-300">Over the {targetKb} KB limit</span>
                 )}
               </li>
             </ul>
             {!result.underCap && (
               <div className="space-y-2 border-t border-hairline pt-2">
-                <p className="leading-relaxed text-amber-700">
+                <p className="leading-relaxed text-amber-700 dark:text-amber-300">
                   Still above the {targetKb} KB limit even after compression — your
                   portal may reject it. Try a smaller strip height or a higher
                   target, or download it anyway.

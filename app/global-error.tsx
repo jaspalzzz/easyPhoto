@@ -30,7 +30,7 @@ export default function GlobalError({
           <h1 style={{ fontSize: 22, margin: "0 0 8px" }}>
             easyPhoto hit an unexpected error
           </h1>
-          <p style={{ fontSize: 15, lineHeight: 1.6, color: "#6b6258" }}>
+          <p className="text-ink-soft" style={{ fontSize: 15, lineHeight: 1.6 }}>
             Your photo was never uploaded — it only existed in this tab&apos;s
             memory. Reloading is safe.
           </p>

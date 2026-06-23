@@ -41,21 +41,21 @@ const VALUES = [
   },
   {
     icon: Lock,
-    tile: "text-[hsl(142_55%_34%)] bg-[hsl(142_55%_34%)]/10",
+    tile: "text-[hsl(142_55%_34%)] bg-[hsl(142_55%_34%)]/10 dark:text-[hsl(142_55%_60%)] dark:bg-[hsl(142_55%_34%)]/20",
     title: "Privacy is the design",
     body:
       "Face detection, background removal, cropping, resizing, PDF conversion — every step runs on your own device. Your photos and documents are never uploaded, never stored, and gone when you close the tab. Not a setting; how it works.",
   },
   {
     icon: Gift,
-    tile: "text-[hsl(22_89%_50%)] bg-[hsl(22_89%_50%)]/10",
+    tile: "text-[hsl(22_89%_50%)] bg-[hsl(22_89%_50%)]/10 dark:text-[hsl(22_89%_68%)] dark:bg-[hsl(22_89%_50%)]/20",
     title: "Free, no catch",
     body:
       "No watermark, no account, no paywall on the download, and no upsell to a “pro” version of your own photo. The tools that are free stay free.",
   },
   {
     icon: BadgeCheck,
-    tile: "text-[hsl(215_70%_50%)] bg-[hsl(215_70%_50%)]/10",
+    tile: "text-[hsl(215_70%_50%)] bg-[hsl(215_70%_50%)]/10 dark:text-[hsl(215_70%_70%)] dark:bg-[hsl(215_70%_50%)]/20",
     title: "Honest about sources",
     body:
       "When a country's rules come from guidance rather than a confirmed primary portal, we say so on the page. A wrong number is a rejected photo — so we'd rather flag uncertainty than hide it.",
@@ -118,14 +118,14 @@ export default function AboutPage() {
       {/* The "why" — a short, human mission paragraph */}
       <section className="mt-12 max-w-2xl space-y-5">
         <h2 className="text-xl font-semibold tracking-tight text-ink">Why we built it</h2>
-        <p className="text-[17px] leading-[1.75] text-[hsl(30_10%_24%)]">
+        <p className="text-[17px] leading-[1.75] text-ink-soft">
           Getting a passport or visa photo rejected over a couple of millimetres,
           or the wrong shade of background, is a frustration most people have run
           into. Studio photos are expensive and slow. And the &quot;free&quot;
           online tools usually add a watermark, make you sign up, or quietly upload
           your face to a server you&apos;ll never hear about again.
         </p>
-        <p className="text-[17px] leading-[1.75] text-[hsl(30_10%_24%)]">
+        <p className="text-[17px] leading-[1.75] text-ink-soft">
           We wanted something that just gets the photo right — to the real spec —
           and never asks for your data to do it. That single idea decides every
           trade-off below.

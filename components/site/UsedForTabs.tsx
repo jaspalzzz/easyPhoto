@@ -13,7 +13,7 @@ const TABS = [
 export function UsedForTabs() {
   const [active, setActive] = useState("passport");
   return (
-    <section className="border-t border-hairline bg-white py-3">
+    <section className="border-t border-hairline bg-paper py-3">
       <div className="container">
         <div className="flex items-center gap-4 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
           <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -27,7 +27,7 @@ export function UsedForTabs() {
                 className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-semibold transition-colors duration-150 ${
                   active === tab.id
                     ? "bg-[hsl(222_60%_8%)] text-[hsl(var(--cta))]"
-                    : "bg-[hsl(38_26%_92%)] text-ink hover:bg-[hsl(38_26%_86%)]"
+                    : "bg-accent text-ink hover:bg-accent/80"
                 }`}
               >
                 <span>{tab.icon}</span>

@@ -47,7 +47,7 @@ export default function TermsPage() {
 
       {/* The one that matters most, surfaced up top */}
       <div className="mt-6 flex items-start gap-3 rounded-xl border border-[hsl(38_92%_50%/0.35)] bg-[hsl(38_92%_50%/0.08)] p-5">
-        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-[hsl(32_80%_42%)]" strokeWidth={1.9} />
+        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-[hsl(32_80%_42%)] dark:text-[hsl(32_80%_62%)]" strokeWidth={1.9} />
         <p className="text-[15px] leading-relaxed text-ink">
           <strong className="font-semibold">Always check your final photo against the current
           official requirements before you submit.</strong>{" "}

@@ -72,7 +72,7 @@ export default function AadhaarPhotoPage() {
 
       {/* The honest headline, up top */}
       <div className="flex items-start gap-3 rounded-xl border border-[hsl(38_92%_50%/0.35)] bg-[hsl(38_92%_50%/0.08)] p-5">
-        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-[hsl(32_80%_42%)]" strokeWidth={1.9} />
+        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-[hsl(32_80%_42%)] dark:text-[hsl(32_80%_62%)]" strokeWidth={1.9} />
         <p className="text-[15px] leading-relaxed text-ink">
           <strong className="font-semibold">You cannot upload or make your own
           Aadhaar photo.</strong>{" "}
@@ -111,7 +111,7 @@ export default function AadhaarPhotoPage() {
         </p>
         <div className="grid gap-3 sm:grid-cols-2">
           <Link href="/tools/mask-aadhaar/" className="ep-card group flex items-start gap-3 p-4">
-            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(142_55%_34%/0.12)] text-[hsl(142_55%_30%)]">
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(142_55%_34%/0.12)] text-[hsl(142_55%_30%)] dark:bg-[hsl(142_55%_34%/0.20)] dark:text-[hsl(142_55%_60%)]">
               <EyeOff className="h-5 w-5" strokeWidth={1.75} />
             </span>
             <span className="min-w-0">
@@ -126,7 +126,7 @@ export default function AadhaarPhotoPage() {
             </span>
           </Link>
           <Link href="/unlock-aadhaar-pdf/" className="ep-card group flex items-start gap-3 p-4">
-            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(215_70%_50%/0.12)] text-[hsl(215_70%_45%)]">
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(215_70%_50%/0.12)] text-[hsl(215_70%_45%)] dark:bg-[hsl(215_70%_50%/0.20)] dark:text-[hsl(215_70%_70%)]">
               <LockOpen className="h-5 w-5" strokeWidth={1.75} />
             </span>
             <span className="min-w-0">

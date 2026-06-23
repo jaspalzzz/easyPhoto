@@ -188,7 +188,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
       </div>
 
       {error && (
-        <p className="border-l-2 border-red-500 bg-red-50/60 py-2 pl-3 pr-2 text-red-900 text-sm">
+        <p className="border-l-2 border-red-500 bg-red-50/60 py-2 pl-3 pr-2 text-red-900 text-sm dark:border-red-700 dark:bg-red-900/20 dark:text-red-300">
           {error}
         </p>
       )}
@@ -222,14 +222,14 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
             ]}
           />
           {!result.underCap && (
-            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900">
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
               {formatKb(result.bytes)} is the smallest this image can go without
               turning blurry. Cropping closer to the subject usually fixes it —
               or use a slightly higher target if your form allows one.
             </p>
           )}
           {minWidth && minHeight && (result.width < minWidth || result.height < minHeight) && (
-            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900">
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
               Your original photo doesn&apos;t have enough pixels for this
               portal&apos;s {minWidth}×{minHeight}px minimum. Retake with your
               phone&apos;s main (back) camera, or use a less-cropped original.

@@ -121,7 +121,7 @@ export function PopularDocs() {
                   <Link
                     key={href}
                     href={href}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-2.5 py-1 text-[11.5px] font-medium text-ink transition-colors hover:border-hairline-strong hover:bg-white"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-2.5 py-1 text-[11.5px] font-medium text-ink transition-colors hover:border-hairline-strong hover:bg-surface"
                   >
                     <Flag country={id} className="h-3 w-[1.05rem] rounded-[2px]" />
                     {label}
@@ -141,7 +141,7 @@ export function PopularDocs() {
                   <Link
                     key={doc.href + doc.label}
                     href={doc.href}
-                    className="group flex items-center gap-3 rounded-xl border border-hairline bg-card p-3.5 transition-colors hover:border-hairline-strong hover:bg-white"
+                    className="group flex items-center gap-3 rounded-xl border border-hairline bg-card p-3.5 transition-colors hover:border-hairline-strong hover:bg-surface"
                   >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-soft">
                       <Globe className="h-4 w-4 text-brand" strokeWidth={1.75} />
@@ -174,7 +174,7 @@ export function PopularDocs() {
                   <Link
                     key={exam.href + exam.label}
                     href={exam.href}
-                    className="group flex items-center gap-3 rounded-xl border border-hairline bg-card p-3.5 transition-colors hover:border-hairline-strong hover:bg-white"
+                    className="group flex items-center gap-3 rounded-xl border border-hairline bg-card p-3.5 transition-colors hover:border-hairline-strong hover:bg-surface"
                   >
                     <span
                       className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[10px] font-black leading-none text-cta"

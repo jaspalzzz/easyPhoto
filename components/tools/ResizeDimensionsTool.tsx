@@ -162,7 +162,7 @@ function Body({ source }: { source: ToolSource }) {
       </div>
 
       {error && (
-        <p className="border-l-2 border-red-500 bg-red-50/60 py-2 pl-3 pr-2 text-sm text-red-900">
+        <p className="border-l-2 border-red-500 bg-red-50/60 py-2 pl-3 pr-2 text-sm text-red-900 dark:border-red-700 dark:bg-red-900/20 dark:text-red-300">
           {error}
         </p>
       )}

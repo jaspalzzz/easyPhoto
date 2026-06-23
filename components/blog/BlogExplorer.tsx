@@ -34,10 +34,10 @@ interface CatMeta { label: string; Icon: LucideIcon; tile: string }
 
 /* Cluster key → display label, icon, and category colour tile. */
 const CATS: Record<string, CatMeta> = {
-  passport:     { label: "Passport & Visa", Icon: BookUser,      tile: "bg-blue-50 text-blue-600"       },
-  exam:         { label: "Exams",           Icon: GraduationCap, tile: "bg-violet-50 text-violet-600"   },
-  pdf:          { label: "PDF & Docs",      Icon: FileText,      tile: "bg-rose-50 text-rose-600"       },
-  professional: { label: "Professional",    Icon: Briefcase,     tile: "bg-emerald-50 text-emerald-600" },
+  passport:     { label: "Passport & Visa", Icon: BookUser,      tile: "bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"           },
+  exam:         { label: "Exams",           Icon: GraduationCap, tile: "bg-violet-50 text-violet-600 dark:bg-violet-900/30 dark:text-violet-400"   },
+  pdf:          { label: "PDF & Docs",      Icon: FileText,      tile: "bg-rose-50 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400"           },
+  professional: { label: "Professional",    Icon: Briefcase,     tile: "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400" },
 };
 
 const TAB_ORDER = ["all", "passport", "exam", "pdf", "professional"] as const;

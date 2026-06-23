@@ -37,13 +37,13 @@ const HUD_TOPS = [22, 40, 62, 80] as const;
 
 interface AiCheck { label: string; tileBg: string; tileText: string; Icon: LucideIcon; }
 const AI_CHECKS: AiCheck[] = [
-  { label: "Head Size",     tileBg: "bg-blue-50",   tileText: "text-blue-500",   Icon: User      },
-  { label: "Background",    tileBg: "bg-purple-50", tileText: "text-purple-500", Icon: Focus     },
-  { label: "Face Centered", tileBg: "bg-sky-50",    tileText: "text-sky-500",    Icon: Eye       },
-  { label: "Eye Position",  tileBg: "bg-indigo-50", tileText: "text-indigo-500", Icon: Eye       },
-  { label: "Lighting",      tileBg: "bg-amber-50",  tileText: "text-amber-600",  Icon: Sun       },
-  { label: "Dimensions",    tileBg: "bg-orange-50", tileText: "text-orange-500", Icon: Maximize2 },
-  { label: "Image Quality", tileBg: "bg-pink-50",   tileText: "text-pink-500",   Icon: Aperture  },
+  { label: "Head Size",     tileBg: "bg-blue-50 dark:bg-blue-900/30",     tileText: "text-blue-500 dark:text-blue-400",     Icon: User      },
+  { label: "Background",    tileBg: "bg-purple-50 dark:bg-purple-900/30", tileText: "text-purple-500 dark:text-purple-400", Icon: Focus     },
+  { label: "Face Centered", tileBg: "bg-sky-50 dark:bg-sky-900/30",       tileText: "text-sky-500 dark:text-sky-400",       Icon: Eye       },
+  { label: "Eye Position",  tileBg: "bg-indigo-50 dark:bg-indigo-900/30", tileText: "text-indigo-500 dark:text-indigo-400", Icon: Eye       },
+  { label: "Lighting",      tileBg: "bg-amber-50 dark:bg-amber-900/30",   tileText: "text-amber-600 dark:text-amber-400",   Icon: Sun       },
+  { label: "Dimensions",    tileBg: "bg-orange-50 dark:bg-orange-900/30", tileText: "text-orange-500 dark:text-orange-400", Icon: Maximize2 },
+  { label: "Image Quality", tileBg: "bg-pink-50 dark:bg-pink-900/30",     tileText: "text-pink-500 dark:text-pink-400",     Icon: Aperture  },
 ];
 
 const MINI_STEPS = ["Scanning", "Analyzing", "Validating", "Optimizing"] as const;
@@ -115,12 +115,12 @@ export function AiShowcase() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-3">
 
           {/* ── LEFT — Your Selfie ── */}
-          <div className="flex flex-1 flex-col rounded-2xl border-2 border-red-100 bg-card p-5 shadow-[0_4px_28px_rgba(239,68,68,0.06)]">
+          <div className="flex flex-1 flex-col rounded-2xl border-2 border-red-100 dark:border-red-800/30 bg-card p-5 shadow-[0_4px_28px_rgba(239,68,68,0.06)]">
 
             {/* card header */}
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
                     stroke="#ef4444" strokeWidth="3" aria-hidden="true">
                     <line x1="18" y1="6" x2="6" y2="18" />
@@ -129,13 +129,13 @@ export function AiShowcase() {
                 </span>
                 <h3 className="text-[15px] font-bold text-ink">Your Selfie</h3>
               </div>
-              <span className="rounded-full bg-red-50 px-3 py-1 text-[10px] font-bold text-red-700">
+              <span className="rounded-full bg-red-50 dark:bg-red-900/20 px-3 py-1 text-[10px] font-bold text-red-700 dark:text-red-300">
                 Needs Improvement
               </span>
             </div>
 
             {/* Selfie with HUD scan-line overlay */}
-            <div className="mb-5 flex items-center justify-center rounded-xl border border-slate-100 bg-slate-50 py-5">
+            <div className="mb-5 flex items-center justify-center rounded-xl border border-hairline bg-paper py-5">
               <div className="relative h-[150px] w-[110px] sm:h-[190px] sm:w-[140px]">
                 <Image
                   src="/images/sample2_before_1782052888740.png"
@@ -169,7 +169,7 @@ export function AiShowcase() {
               {BEFORE_ISSUES.map(({ n, title, desc }) => (
                 <li key={n} className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-[10px] font-bold text-red-500">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-[10px] font-bold text-red-500">
                       {n}
                     </span>
                     <span className="text-[12.5px] font-bold text-red-500">{title}</span>
@@ -186,7 +186,7 @@ export function AiShowcase() {
           </div>
 
           {/* ── MIDDLE — AI Compliance Engine ── */}
-          <div className="flex flex-[1.2] flex-col rounded-2xl border-2 border-amber-100 bg-card p-5 shadow-[0_8px_36px_rgba(0,0,0,0.05)]">
+          <div className="flex flex-[1.2] flex-col rounded-2xl border-2 border-amber-100 dark:border-amber-800/30 bg-card p-5 shadow-[0_8px_36px_rgba(0,0,0,0.05)]">
 
             {/* card header */}
             <div className="mb-4 flex items-center justify-between">
@@ -196,7 +196,7 @@ export function AiShowcase() {
                 </span>
                 <h3 className="text-[15px] font-bold text-ink">AI Compliance Engine</h3>
               </div>
-              <span className="rounded-full border border-amber-100 bg-amber-50 px-3 py-1 text-[10px] font-bold text-amber-700">
+              <span className="rounded-full border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 text-[10px] font-bold text-amber-700 dark:text-amber-300">
                 Analyzing…
               </span>
             </div>
@@ -224,7 +224,7 @@ export function AiShowcase() {
                   <span className="mt-0.5 text-center text-[8px] font-semibold leading-tight text-muted-foreground">
                     Compliance<br />Score
                   </span>
-                  <span className="mt-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-emerald-600">
+                  <span className="mt-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-emerald-600 dark:text-emerald-300">
                     Excellent
                   </span>
                 </div>
@@ -258,7 +258,7 @@ export function AiShowcase() {
             </div>
 
             {/* Ready-for-submission banner */}
-            <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-amber-100 bg-amber-50 px-3 py-2.5">
+            <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-2.5">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" strokeWidth={2} />
               <div>
                 <p className="text-[12px] font-bold text-ink">Ready for Submission</p>
@@ -304,12 +304,12 @@ export function AiShowcase() {
           </div>
 
           {/* ── RIGHT — Compliant Photo ── */}
-          <div className="flex flex-1 flex-col rounded-2xl border-2 border-emerald-100 bg-card p-5 shadow-[0_4px_28px_rgba(16,185,129,0.06)]">
+          <div className="flex flex-1 flex-col rounded-2xl border-2 border-emerald-100 dark:border-emerald-800/30 bg-card p-5 shadow-[0_4px_28px_rgba(16,185,129,0.06)]">
 
             {/* card header */}
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
                     stroke="#10b981" strokeWidth="3" aria-hidden="true">
                     <polyline points="20 6 9 17 4 12" />
@@ -317,13 +317,13 @@ export function AiShowcase() {
                 </span>
                 <h3 className="text-[15px] font-bold text-ink">Compliant Photo</h3>
               </div>
-              <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-bold text-emerald-700">
+              <span className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
                 Ready to Submit
               </span>
             </div>
 
             {/* Compliant photo with dimension indicators */}
-            <div className="mb-4 flex items-center justify-center rounded-xl border border-slate-100 bg-slate-50 py-6">
+            <div className="mb-4 flex items-center justify-center rounded-xl border border-hairline bg-paper py-6">
               {/*
                 Outer wrapper provides space for the dimension indicators:
                   paddingRight  = space for the vertical "45 mm" ruler
@@ -376,8 +376,8 @@ export function AiShowcase() {
             </div>
 
             {/* Compliance banner */}
-            <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2.5">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" strokeWidth={2} />
+            <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-emerald-100 dark:border-emerald-800/30 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-2.5">
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" strokeWidth={2} />
               <div>
                 <p className="text-[12px] font-bold text-ink">100% Government Compliant</p>
                 <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
