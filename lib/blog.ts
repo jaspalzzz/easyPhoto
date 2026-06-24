@@ -92,9 +92,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "nda-cds-photo-signature-guide-2026",
-    title: "NDA & CDS Photo and Signature Requirements 2026 Guide",
+    title: "NDA & CDS 2026 Photo: Square Crop, Name Required — Exact Spec",
     description:
-      "NDA and CDS: 20–300 KB JPG, min 350×350 px square, plain white background, name and date required at bottom. Rejection checklist and free UPSC resizer.",
+      "NDA and CDS need a square photo (350×350 px min), your name and date at the bottom, and a 20–300 KB JPG. The square crop trips most applicants — full prep here.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     excerpt:
@@ -103,9 +103,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "ssc-cgl-chsl-photo-signature-guide-2026",
-    title: "SSC CGL / CHSL Photo & Signature Size Requirements 2026",
+    title: "SSC CGL & CHSL 2026 Photo: Live Capture Only — Spec & Resizer",
     description:
-      "SSC CGL and CHSL require a 20–50 KB JPG photo (live capture only, no gallery) and 10–20 KB signature. Spec table, rejection checklist, and free resizer.",
+      "SSC now blocks gallery uploads — your photo must be taken live on the portal. 20–50 KB JPG, 10–20 KB signature, 6 rejection reasons, and a free one-click resizer.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     excerpt:
@@ -114,9 +114,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "why-exam-photo-signature-rejected",
-    title: "Why Exam Photos & Signatures Get Rejected (and the Fix)",
+    title: "Exam Photo Rejected? 7 Reasons SSC, IBPS & UPSC Say No (2026)",
     description:
-      "SSC, IBPS and RRB portals reject for predictable reasons: wrong KB, wrong dimensions, signature background. Here's each rejection reason and the quick fix.",
+      "Wrong KB, wrong pixels, grey signature background — 7 reasons exam portals reject your upload and the exact one-click fix for each. Check before you submit.",
     date: "June 13, 2026",
     dateISO: "2026-06-13",
     excerpt:
@@ -125,9 +125,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "add-name-date-on-exam-photo",
-    title: "How to Add Name & Date on an Exam Photo (UPSC, Army)",
+    title: "How to Add Name & Date on Exam Photo Free — UPSC & Army 2026",
     description:
-      "UPSC and Indian Army require your name and photo date printed on the image itself. Here's the exact rule, when it's checked, and how to add it free.",
+      "UPSC and Indian Army reject photos without your name and photo date printed on them. Add both in under 60 seconds — free, no app, works on your phone.",
     date: "June 13, 2026",
     dateISO: "2026-06-13",
     excerpt:
@@ -213,9 +213,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "exam-photo-signature-size-guide",
-    title: "Photo & Signature Size for Govt Exams: SSC, UPSC, IBPS",
+    title: "Exam Photo & Signature Size 2026: SSC, UPSC, IBPS, RRB — Full Guide",
     description:
-      "Exact KB and pixel limits for SSC CGL, IBPS, SBI, UPSC, RRB and NTA exam photos and signatures — background rules, free resizer, and step-by-step prep guide.",
+      "Rejected for wrong KB or wrong pixels? Exact photo and signature limits for every major Indian exam — SSC, UPSC, IBPS, SBI, RRB, NTA. Free resizer included.",
     date: "June 8, 2026",
     dateISO: "2026-06-08",
     updatedISO: "2026-06-21",
