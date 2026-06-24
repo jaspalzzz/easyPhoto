@@ -53,6 +53,71 @@ export default function Page() {
         </ul>
       </div>
 
+      <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
+        <svg
+          viewBox="0 0 760 320"
+          style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif", display: "block" }}
+          role="img"
+          aria-label="Resume/CV document diagram showing the standard passport-size photo position and dimensions: 35×45 mm, top-right corner, plain white background"
+        >
+          <title>Standard resume photo size and placement — 35×45 mm passport-size photo, top-right corner</title>
+          <rect width="760" height="320" fill="#f9f8f6" />
+          {/* CV document card */}
+          <rect x="100" y="20" width="340" height="280" rx="6" fill="white" stroke="#e5e7eb" strokeWidth="1.5" />
+          {/* CV header band */}
+          <rect x="100" y="20" width="340" height="52" rx="6" fill="#163A6B" />
+          <rect x="100" y="52" width="340" height="20" fill="#163A6B" />
+          {/* Name placeholder */}
+          <rect x="118" y="34" width="140" height="10" rx="3" fill="white" opacity="0.9" />
+          <rect x="118" y="50" width="90" height="7" rx="3" fill="white" opacity="0.5" />
+          {/* Photo placeholder in header */}
+          <rect x="382" y="28" width="44" height="56" rx="3" fill="white" />
+          <rect x="382" y="28" width="44" height="56" rx="3" fill="none" stroke="#F4C63F" strokeWidth="2" />
+          {/* Face silhouette */}
+          <circle cx="404" cy="48" r="10" fill="#d1d5db" />
+          <path d="M388 84 Q404 72 420 84" fill="#d1d5db" />
+          {/* CV body lines */}
+          {[0,1,2,3,4,5].map(i => (
+            <rect key={i} x="118" y={90 + i * 22} width={i % 3 === 2 ? 120 : 220} height="8" rx="3" fill="#e5e7eb" />
+          ))}
+          <rect x="118" y="88" width="60" height="8" rx="3" fill="#F4C63F" opacity="0.7" />
+          {[0,1,2].map(i => (
+            <rect key={i} x="118" y={198 + i * 22} width={i === 1 ? 180 : 240} height="8" rx="3" fill="#e5e7eb" />
+          ))}
+          <rect x="118" y="196" width="70" height="8" rx="3" fill="#F4C63F" opacity="0.7" />
+          {/* Annotation: photo dimensions */}
+          <line x1="434" y1="28" x2="490" y2="18" stroke="#F4C63F" strokeWidth="1.5" strokeDasharray="4 2" />
+          <rect x="490" y="4" width="130" height="28" rx="4" fill="#163A6B" />
+          <text x="555" y="15" textAnchor="middle" fontSize="11" fill="white" fontWeight="700">35 × 45 mm</text>
+          <text x="555" y="28" textAnchor="middle" fontSize="10" fill="#F4C63F">(passport size)</text>
+          {/* Annotation: background */}
+          <line x1="382" y1="56" x2="330" y2="75" stroke="#163A6B" strokeWidth="1.5" strokeDasharray="4 2" />
+          <text x="310" y="88" textAnchor="middle" fontSize="10" fill="#6b7280">Plain white or</text>
+          <text x="310" y="100" textAnchor="middle" fontSize="10" fill="#6b7280">light grey bg</text>
+          {/* Right side — guidance panel */}
+          <rect x="470" y="20" width="220" height="280" rx="6" fill="white" stroke="#e5e7eb" strokeWidth="1.5" />
+          <rect x="470" y="20" width="220" height="34" rx="6" fill="#163A6B" />
+          <rect x="470" y="40" width="220" height="14" fill="#163A6B" />
+          <text x="580" y="42" textAnchor="middle" fontSize="12" fontWeight="700" fill="white">Photo Checklist</text>
+          {[
+            "✓  35 × 45 mm (3.5 × 4.5 cm)",
+            "✓  Plain white / light grey bg",
+            "✓  Colour photo, front-facing",
+            "✓  Taken within last 6 months",
+            "✓  10 – 50 KB for digital upload",
+            "✓  No glasses, neutral expression",
+          ].map((item, i) => (
+            <g key={i}>
+              <text x="486" y={74 + i * 36} fontSize="11" fill={i % 2 === 0 ? "#163A6B" : "#374151"} fontWeight={i % 2 === 0 ? "600" : "400"}>{item}</text>
+              {i < 5 && <line x1="486" y1={83 + i * 36} x2="674" y2={83 + i * 36} stroke="#f3f4f6" strokeWidth="1" />}
+            </g>
+          ))}
+        </svg>
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+          Standard resume/CV photo in India: 35×45 mm passport size, top-right corner, plain white or light grey background.
+        </figcaption>
+      </figure>
+
       <h2>Resume photo norms by region</h2>
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>

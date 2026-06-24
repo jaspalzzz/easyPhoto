@@ -23,6 +23,28 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "image-to-text-online-free-ocr",
+    title: "Image to Text Online Free — Extract Text from Any Photo (OCR)",
+    description:
+      "Upload a JPG, PNG, screenshot or scanned document and copy the text out in seconds — free OCR that runs in your browser, nothing uploaded. Supports English and Hindi.",
+    date: "June 24, 2026",
+    dateISO: "2026-06-24",
+    excerpt:
+      "A scanned certificate, a screenshot of a notice, a photo of a printed form — all have text locked inside a picture. Free in-browser OCR unlocks it in under 10 seconds without uploading anything.",
+    readMins: 5,
+  },
+  {
+    slug: "indian-passport-photo-requirements",
+    title: "Indian Passport Photo Requirements 2026: Full Compliance Checklist",
+    description:
+      "Every Indian passport photo requirement from Passport Seva: size, background, expression, glasses, print quality, digital upload spec, and OCI vs e-Visa differences.",
+    date: "June 24, 2026",
+    dateISO: "2026-06-24",
+    excerpt:
+      "45×35 mm print, 630×810 px JPEG under 250 KB for digital — but size is only the start. Here is the complete Indian passport photo compliance checklist, from background shade to the print-quality rule that catches most people.",
+    readMins: 10,
+  },
+  {
     slug: "indian-passport-photo-size-rules",
     title: "Indian Passport Photo Size & Rules (Passport Seva 2026)",
     description:
@@ -348,7 +370,9 @@ const CLUSTERS: Record<string, string[]> = {
     "add-name-date-on-exam-photo",
   ],
   passport: [
+    "indian-passport-photo-requirements",
     "indian-passport-photo-size-rules",
+    "pan-card-photo-size",
     "best-free-passport-photo-maker-india-2026",
     "visafoto-alternative-india-free",
     "cutout-pro-alternative-india",
@@ -364,6 +388,7 @@ const CLUSTERS: Record<string, string[]> = {
     "how-to-compress-pdf",
     "how-to-merge-pdf-free",
     "how-to-mask-aadhaar-before-sharing",
+    "image-to-text-online-free-ocr",
   ],
   professional: [
     "linkedin-profile-photo-size-and-tips",

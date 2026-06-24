@@ -111,6 +111,7 @@ export default function Page() {
         <li>Share over secure channels; avoid public/unknown upload sites.</li>
         <li>If a PDF is password-protected (like e-Aadhaar), open it with the <Link href="/unlock-aadhaar-pdf/">e-Aadhaar password</Link> first, then mask a screenshot.</li>
         <li>If the form caps the upload size, see <Link href="/blog/how-to-compress-pdf/">how to compress a PDF to an exact KB target</Link> after masking — the file stays on your device throughout.</li>
+        <li>Need to extract details from your Aadhaar card? The <Link href="/tools/aadhaar-ocr/">Aadhaar OCR tool</Link> reads the number, name, DOB and address from a card photo — entirely in your browser, nothing uploaded.</li>
       </ul>
 
       <div className="mt-12">

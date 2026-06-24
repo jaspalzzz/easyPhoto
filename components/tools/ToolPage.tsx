@@ -82,6 +82,12 @@ export function ToolPage({
             {title}
           </h1>
           <p className="text-[15px] leading-relaxed text-muted-foreground">{blurb}</p>
+          {dateModified && (
+            <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-[10px] font-bold text-brand">JK</span>
+              <span>Jaspal Kumar · easyPhoto developer &amp; document-spec researcher</span>
+            </p>
+          )}
         </div>
         {heroLeftBelow}
       </div>

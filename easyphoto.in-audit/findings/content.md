@@ -1,300 +1,433 @@
 # Content Quality & E-E-A-T Audit — easyphoto.in
 
-**Audit date:** 2026-06-18  
-**Auditor:** SEO-content agent  
-**Scope:** All 24 blog posts + tool landing pages + About / Contact / Privacy  
-**Overall score: 73 / 100**
+**Audit date:** 2026-06-23
+**Auditor:** Content Quality agent (live crawl)
+**Methodology:** Each page fetched via HTTP; text extracted with trafilatura (boilerplate-stripped); word counts, heading structures, schema markup, and trust signals assessed against Google's September 2025 QRG criteria and the Helpful Content System (merged into core ranking, March 2024 update).
+**Pages audited:** 7 live URLs (see table below)
+**Overall score: 71 / 100**
+
+> Note: `/india/` returned a 404. The actual India passport maker lives at `/india-passport-photo-maker/` — that URL was substituted for the India-country page assessment.
 
 ---
 
-## Executive Summary
+## Content Quality Findings
 
-easyphoto.in has a well-engineered content foundation. The 8 exam-guide pillar posts (SSC, UPSC, NDA/CDS, IBPS, etc.) are technically thorough, correctly cite official government sources, and use a consistent structure (Quick-answer box → spec table → body → FAQ → CTA). The author identity is real, linked to a public LinkedIn profile, and wired into BlogPosting schema.
+### Per-Page Assessment Table
 
-Three issues drag the score: (1) four competitor-comparison posts are missing `export const metadata`, so those pages render the root layout's generic title and description in Google; (2) four future-dated posts create false freshness signals — three have dates in July 2026 while today is 18 June 2026; (3) the author credential presented everywhere is "Web & mobile developer", which is a technical title, not a domain authority title for a site that needs to establish expertise in government documentation requirements. These are fixable in a few hours.
-
----
-
-## E-E-A-T Assessment
-
-### Experience (8 / 10)
-- The content demonstrates genuine product experience. Competitor comparisons include verified pricing, real AWS server retention periods, and explicit "transparency" disclosures that the author built easyPhoto — a strong differentiator from AI-generated comparison articles.
-- The "How we keep this accurate" editorial aside on every post directly describes the verification process. This is more than most competitors show.
-- Deduction: No screenshots, no first-person walkthroughs, no "I tested this" narrative. Claims about competitor tools (Cutout.pro AWS retention, BreachForums incident) are asserted in-text but not linked to primary sources, which undermines the experience signal precisely where it matters most.
-
-### Expertise (7 / 10)
-- Author Jaspal Kumar is named on every post with a byline, avatar, and LinkedIn link. Person schema is generated via `AUTHOR` constant in `lib/author.ts` with `jobTitle` and `knowsAbout` array.
-- The `knowsAbout` array covers `"Passport and visa photo requirements"` and `"Document and image processing"` — appropriate for the domain.
-- Deduction: The displayed title is `"Web & mobile developer"`. For a site targeting government documentation queries where YMYL (Your Money / Your Life) adjacency applies (wrong photo = failed visa application), the title undersells domain authority. A credential like "Document compliance specialist" or at minimum "Photo & document compliance researcher" would better match the editorial content.
-- Deduction: No external author profile pages (e.g., a personal website beyond LinkedIn), no co-authorship with subject-matter experts, and no peer review signals.
-
-### Authoritativeness (7 / 10)
-- Organization schema includes `sameAs: ["https://www.pinterest.com/easyphoto0604/"]` — only one social profile. Google's entity graph relies on multiple verified profiles to establish site authority.
-- The About page correctly sources claims to official government portals and explicitly states the accuracy promise.
-- Internal linking is healthy: the blog index, all 24 posts, and tool landing pages are all linked from the homepage or category hubs — no orphan pages.
-- Deduction: Only one domain-level social proof link. No mentions on external authoritative sites (e.g., government portals, journalism, press coverage).
-
-### Trust (8 / 10)
-- Privacy architecture is genuinely trust-positive: all processing runs client-side, no server uploads, no watermark, no paywall. This claim is verifiable by a technical user and is stated plainly rather than buried in legal text.
-- Contact page is real (hello@easyphoto.in via Cloudflare Email Routing). Privacy policy is dated (June 11, 2026). Terms page exists.
-- The editorial standards block on every post ("Spotted something out of date? Tell us") creates an accountability signal.
-- Deduction: The Cutout.pro post references a "BreachForums" data set and "Cybernews researchers" but provides no linked source. Making a data breach allegation without a citation is a trust risk — it reads as unsubstantiated and could be a legal exposure.
+| # | URL | Page Type | Extracted Words | Minimum | Word Count Status | Thin Risk | Freshness Signal | Score |
+|---|-----|-----------|-----------------|---------|-------------------|-----------|-----------------|-------|
+| 1 | `/` (Homepage) | Homepage | 1,182 | 500 | Pass (+682) | Low | `dateModified: 2026-06-21` in SoftwareApplication schema | 74/100 |
+| 2 | `/passport-photo/` | Service / Tool | 884 | 800 | Pass (+84 — marginal) | Medium | No `dateModified` in page schema | 68/100 |
+| 3 | `/india/` | Country / Location | **404 — Page Not Found** | 500–600 | Fail — page missing | Critical | n/a | 0/100 |
+| 3b | `/india-passport-photo-maker/` | Country / Location | 884 | 500–600 | Pass | Low | No `dateModified` | 72/100 |
+| 4 | `/blog/` | Blog index | 1,160 | n/a (index) | Adequate | Low | n/a | 70/100 |
+| 5 | `/blog/why-exam-photo-signature-rejected/` | Blog post | 1,030 | 1,500 | Fail (−470 words short) | High | `datePublished: 2026-06-13`, `dateModified: 2026-06-13` | 65/100 |
+| 6 | `/tools/` | Tools directory | 293 | 300 (complex tool = 400+) | Marginal fail | Medium-High | No `dateModified` | 58/100 |
+| 7 | `/tools/exam-package/` | Tool page | 323 | 300+ | Pass (marginal) | Medium | No `dateModified` in SoftwareApplication schema | 62/100 |
 
 ---
 
-## Content Quality Assessment
+## Page-by-Page Findings
 
-### Pillar Posts (8 exam guides) — Score: 82 / 100
-**Files:** `upsc-cse-ias-photo-signature-guide-2026`, `ssc-cgl-chsl-photo-signature-guide-2026`, `nda-cds-photo-signature-guide-2026`, `ibps-po-2026-photo-signature-checklist`, `exam-photo-signature-size-guide`, `why-exam-photo-signature-rejected`, `add-name-date-on-exam-photo`, `best-free-exam-photo-resizer-india`
+### 1. Homepage — https://easyphoto.in/
 
-**Strengths:**
-- Every post has a Quick-answer callout box at the top, answering the query in 3–4 bullets before the article begins. This is ideal for AI-citation (Perplexity/SGE passage extraction).
-- Spec tables with exact KB ranges and pixel dimensions are directly scannable; they match official portal requirements.
-- External government citations: `ssc.gov.in`, `ibps.in`, `upsconline.nic.in`, `nta.ac.in` — linked with `target="_blank" rel="noopener noreferrer"` on all exam guide posts that have them.
-- H2 counts are healthy: 5–12 per post, creating sufficient heading hierarchy for query coverage.
-- FAQ section present on all 8 exam guide posts.
-
-**Issues:**
-- `ibps-po-2026-photo-signature-checklist` and `ssc-cgl-chsl-photo-signature-guide-2026` contain future-dated exam information ("prelims are on 22–23 August") that is accurate but time-sensitive. These posts have no `updatedISO` field set, so `dateModified` in the BlogPosting schema will show the original publish date, not the date specs were verified.
-- `best-free-exam-photo-resizer-india` — no external citations (`target="_blank"` absent). The post names competitor tools (ExamMint, myexamphoto.in, govtphotoresizer.com, SarkariResizer) without linking to them, which reads as less authoritative.
-- `exam-photo-signature-size-guide` — no Quick-answer box despite being the main pillar. Uses an inline callout with a "Quick answer" label but the structure differs from the other 7 posts; inconsistent.
-
-### Competitor Comparison Posts (4 posts) — Score: 65 / 100
-**Files:** `best-free-passport-photo-maker-india-2026`, `cutout-pro-alternative-india`, `visafoto-alternative-india-free`, `best-free-exam-photo-resizer-india`
-
-**Critical — missing page metadata (all 4 posts):**
-These posts use `BlogPostLayout` but do NOT export `export const metadata`. Next.js falls back to the root layout's generic metadata:
-- Title: `"Passport, Visa & Exam Photo Maker — Free, In-Browser"`
-- Description: `"Create a compliant passport or visa photo for free..."`
-
-This generic metadata will appear in Google search results for all four posts, regardless of their actual content. A user searching for "free Cutout Pro alternative India" will see the wrong page title in SERPs. All four posts have entries in `lib/blog.ts` — the fix is adding `export const metadata = pageMetadata({...})` to each page.
+**Word count:** 1,182 (trafilatura-extracted, nav/footer stripped)
+**H1:** "Document photos that get accepted" — clear, benefit-driven, unique
+**H2 structure (10 H2s):** What do you need to get done / Why photos get rejected / AI Perfects Every Detail / easyPhoto vs Photo Studio / Popular Countries / Popular Documents / Popular Exams / All tools at your fingertips / Why your photos stay private / Frequently asked questions
 
 **Strengths:**
-- All three include a "Transparency" disclosure at the top that names easyPhoto as the author's product. This follows YMYL best practice for editorial disclosure.
-- Comparison tables are well-formatted with verified pricing and privacy data.
-- `cutout-pro-alternative-india` and `best-free-passport-photo-maker-india-2026` include a "pricing verified June 2026" note below each table.
+- Heading hierarchy is clean: one H1 + 10 descriptive H2s. No skipped levels.
+- FAQPage schema present with 6 Q&A pairs covering core objections (server upload, cost, acceptance, background color, photo type, print vs digital). These are directly extractable by AI citation engines.
+- SoftwareApplication schema with `dateModified: 2026-06-21`, `price: "0"`, `isAccessibleForFree: true`. Freshness signal present.
+- Comparison table (easyPhoto vs Photo Studio) is specific and quotable: "₹200–₹500 per visit" vs "FREE", "30–60 minutes" vs "30 seconds", "26+ Countries". These numbers are AI citation-ready.
+- Privacy USP stated four times in distinct ways — "100% Browser Processing", "No Upload Required", "No Account Needed", "No Data Stored". This repetition reinforces the trust claim without being keyword-stuffed.
+- Organization schema with `knowsAbout` array covering 6 domain areas. WebSite schema present. BreadcrumbList present.
 
 **Issues:**
-- `cutout-pro-alternative-india` references a data breach: "Public reports (Cybernews researchers, 2023; Trustpilot user reviews referencing a data set posted to BreachForums in February 2024)". Zero links to these sources. This is the riskiest claim in the entire content inventory — either cite it or soften it.
-- No FAQ on any of the 4 comparison posts. FAQ schema would help with AI citation and featured snippets, especially for "Is Cutout.pro safe?" type queries.
-- No external links in `best-free-exam-photo-resizer-india` — competitor tools are listed but not linked.
-- `visafoto-alternative-india-free` is 193 lines, the thinnest of the 4 comparison posts. The "easyPhoto" section is marked with italic `*This is our product.*` but the section itself is shorter than the sections for competitors, which may read as less credible.
+- No named author or editorial team visible anywhere on the homepage. The Organization schema has no `founder` or `employee` Person. For a YMYL-adjacent site (wrong government photo = rejected application), this is a notable gap.
+- Only one `sameAs` social profile: Pinterest (`pinterest.com/easyphoto0604/`). Single social signal weakens entity graph.
+- "0+" appears three times for stat counters (countries, exam specs, free tools). These appear to be animated counters rendered via JS; trafilatura captures the "0+" placeholder. Googlebot may see these as "0" rather than "26", "52", and "35+". This affects the specificity of claims in the crawled content.
+- No visible "last updated" or review date on-page. While the schema `dateModified` is present, users and quality raters cannot see a freshness signal without it.
+- H2 "AI Perfects Every Detail" describes an on-page demo/animation. The surrounding content is thin on specifics — the compliance check scoring (98% Compliance Score, Head Size Pass, etc.) appears to be UI copy for an illustration, not factual claims about real outputs.
 
-### International Passport Posts (8 posts) — Score: 79 / 100
-**Files:** `passport-photo-size-by-country`, `passport-photo-background-color`, `why-passport-photos-get-rejected`, `baby-and-infant-passport-photo-guide`, `how-to-take-a-passport-photo-at-home`, `schengen-europe-visa-photo-size`, `indian-passport-photo-size-rules`, `linkedin-profile-photo-size-and-tips`
-
-**Strengths:**
-- Strong external citation discipline: every government source (passportindia.gov.in, travel.state.gov, UKVI) is linked with rel="noopener".
-- `indian-passport-photo-size-rules` correctly explains the 35×45 mm vs 45×35 mm confusion (portrait orientation), which is a real, common user error. High informational value.
-- FAQ present on all 8 posts.
-- H2 counts adequate (5–8 per post).
-
-**Issues:**
-- `schengen-europe-visa-photo-size` has only 3 H2s — the lowest of all posts. At ~75 lines, it is the shortest content post and offers less coverage than the query demands (Germany + France + Italy each have separate background color rules that could each warrant a heading).
-- `baby-and-infant-passport-photo-guide` has no external citation to GOV.UK or US State Dept infant photo guidance, which are the authoritative sources for the country-specific rules mentioned.
-
-### Utility / How-to Posts (4 posts) — Score: 78 / 100
-**Files:** `how-to-reduce-passport-photo-size-for-online-forms`, `how-to-compress-pdf`, `how-to-merge-pdf-free`, `how-to-mask-aadhaar-before-sharing`
-
-**Strengths:**
-- All link to the relevant tool from within the post body (internal cross-sell).
-- `how-to-mask-aadhaar-before-sharing` links to UIDAI.gov.in, which is essential for a post about a government ID document.
-- FAQ present on all 4 posts.
-
-**Issues:**
-- `how-to-merge-pdf-free` and `how-to-compress-pdf` have no external citations. PDF compression and merging are not government-spec topics, so this is lower risk, but citing a tool comparison (e.g., linking to a PDF.js documentation page) would improve authority.
-- `how-to-compress-pdf`: meta description is 236 characters — the worst in the inventory.
-
-### Tool Landing Pages — Score: 70 / 100
-**Files:** `app/photo-resize-to-{10,20,30,50,100,200}kb/page.tsx` and signature equivalents
-
-**Pattern:** The 6 photo-resize-to-Xkb pages are only 13 lines each — they delegate entirely to the `KbResizeLanding` shared component. The component itself (`components/tools/KbResizeLanding.tsx`) is comprehensive: JSON-LD, FAQ, breadcrumbs, HowTo schema (deprecated but harmless), privacy badge, related tools links. So the rendered page is rich even though the route file is thin.
-
-**Strengths:**
-- `KbResizeLanding` generates contextual FAQs dynamically ("How do I resize a photo to {N} KB?") so each landing page has unique, query-specific FAQ content.
-- Signature resize pages (e.g., `signature-resize-to-10kb/page.tsx`) have 114-line route files with inline FAQs, related tool links, and a privacy badge.
-- `SoftwareApplication` schema is wired on all tool pages with `isAccessibleForFree: true` and `price: "0"`.
-
-**Issues:**
-- The `HowToSchema` function returns `null` (deprecated; Google removed HowTo rich results September 2023). The call sites still pass in HowTo data that is silently discarded. No immediate SEO harm, but dead code that could confuse future editors.
-- Hindi landing pages (`/photo-ka-size-100kb-kaise-kare/` etc.) delegate to `HinglishLanding`. These pages have FAQ in Roman Hinglish but no external citations and minimal body content — they are primarily tool wrappers. For a mixed-language audience that is ~50% of India's search volume, the Hindi pages could benefit from a 2–3 sentence intro in Hinglish before the tool embed.
+**Google Who/How/Why test:**
+- Who created this content? Not visible on homepage. Pass on "what company" but fail on individual authorship.
+- How was this content created/verified? About page covers this, but the homepage itself has no reference to verification process.
+- Why was this content created? Addressed in the vs-studio comparison section ("100% private", "FREE").
 
 ---
 
-## Future-Dated Posts (Critical Trust Risk)
+### 2. Passport-Photo Page — https://easyphoto.in/passport-photo/
 
-Four posts have publish dates in the future relative to today (2026-06-18):
+**Word count:** 884 (trafilatura-extracted)
+**H1:** "Free Indian Passport Size Photo Maker"
+**H2 structure (4 H2s):** Passport photo size by country / Why people trust easyPhoto / More free tools / Frequently asked questions
 
-| Slug | dateISO | Days in future |
+**Strengths:**
+- H1 is direct and keyword-targeted.
+- 14 FAQ entries — the densest FAQ section of all audited pages. All are specifically worded to match real user queries ("Can I smile in a passport photo?", "Can I wear glasses?", "What is the passport photo size for the Passport Seva portal?", "Has India changed passport photo requirements?").
+- Critical spec included: "Exactly 630×810 px JPEG, under 250 KB for the Passport Seva online application." This is a quotable, specific, official-sourced fact.
+- Time-sensitive content present and accurate: "from 1 September 2025, applications through Indian embassies and consulates abroad require ICAO-compliant photographs."
+- FAQPage schema confirmed present.
+- SoftwareApplication schema present with `isAccessibleForFree: true`.
+
+**Issues:**
+- Only 4 H2s for a service page handling one of the most competitive Indian SEO queries ("passport photo size India"). Heading hierarchy is shallow. Competitors on this query will typically have 6–10 H2s covering spec breakdown, how-to steps, printing instructions, and common rejections.
+- No `dateModified` in the page-level schema (SoftwareApplication). The spec update from September 2025 is mentioned in body copy, but there is no structured signal to tell Google when this page was last reviewed.
+- "Built on official requirements" trust badge references no specific source inline. The FAQ mentions "we link the official government source on every country page" — but this is the India page, and no direct link to `passportindia.gov.in` is visible in the extracted text.
+- Extracted body content is almost entirely FAQ. Prose depth between the H2 sections is thin — "Why people trust easyPhoto" consists of 4 short bullets, each one sentence. This reduces topical depth for non-FAQ content.
+- Word count of 884 is only 84 words above the 800-word service page minimum. For a primary commercial landing page targeting high-competition queries, 884 is marginal topical coverage.
+
+**Google Who/How/Why test:**
+- Who: No visible author. Organization attribution only.
+- How: Trust section mentions "official requirements" and "compliance check" but no link to verification source on this page.
+- Why: Privacy USP clear ("nothing is uploaded").
+
+---
+
+### 3. /india/ — CRITICAL: 404 Not Found
+
+**Status:** HTTP 404. The URL `https://easyphoto.in/india/` returns the site's custom 404 page.
+
+**Impact:** This is a broken URL in the audit brief. The 404 page itself handles the error gracefully (offers related tools, no redirect loop), but the absence of an `/india/` country page means:
+- Any external link or bookmark pointing to `/india/` reaches a dead end.
+- If this URL was previously indexed, it contributes soft-404 coverage in GSC.
+- The correct India country page is `/india-passport-photo-maker/` (confirmed via sitemap).
+
+**3b. /india-passport-photo-maker/ (actual India page)**
+**Word count:** 884 (trafilatura-extracted)
+**H1:** "India Passport Photo Maker"
+
+**Strengths:**
+- Specification table is present and precise: 35×45mm, head height 36–38mm, face 80–85% of frame, background #FFFFFF, digital size min 630×810px, file size 10–250KB, min DPI 300.
+- Explicit visual guidance ("Correct head size / Too small / Too close") described in the content — adds informational depth beyond just the spec.
+- Mentions "Official source — Verification status: Confirmed against the official government source." Trust signal present in body.
+- Correct distinction between print form (35×45mm photo-lab print) and online portal (digital upload, KB-limited) — a commonly misunderstood split that adds genuine informational value.
+- "Works for Tatkal, re-issue and police verification" — practical scope expansion.
+- Selfie rejection explained: "No. Selfies are not accepted. The photo must be taken by someone else from about 1.5 metres" — specific, quotable, grounded in the ICAO standard.
+
+**Issues:**
+- No `dateModified` in page schema despite describing a spec that changed September 2025.
+- No visible link to `passportindia.gov.in` in the extracted text (the "Official source" badge is present but the linked URL is not captured in text extraction — may be hidden behind an SVG or icon-only link).
+- Baby/infant passport photo is mentioned ("use the baby & infant guide") as an internal link only — no standalone content on this page for that sub-query.
+
+---
+
+### 4. Blog Index — https://easyphoto.in/blog/
+
+**Word count:** 1,160 (trafilatura-extracted — primarily blog titles + descriptions)
+**H1:** "Get it right the first time"
+**H2 structure:** Blog post titles rendered as H2 headings
+
+**Strengths:**
+- 25 blog posts listed. Each entry includes a title, a meta description teaser, and a reading-time estimate ("8 min read", "7 min read" etc.). This is scannable and helps users self-select.
+- CollectionPage schema present — correct schema type for an index page.
+- BreadcrumbList present.
+- Content of individual posts skews towards practical, specific queries: "UPSC CSE added live webcam matching and a 10-day photo recency rule", "SSC now requires live photo capture — no gallery uploads." These are timely, specific, high-informational-value summaries.
+- H1 is editorially positioned ("Get it right the first time") rather than generic ("Blog").
+
+**Issues:**
+- The index page has no introductory editorial copy beyond the H1 and H2 "Need to create your photo?" section. A 2–3 sentence description of the blog's editorial standards and scope would add E-E-A-T value for quality raters landing on this page.
+- No author/editor attribution anywhere on the index. Quality raters cannot assess who is responsible for this editorial content.
+- No post dates visible in the extracted text. While individual post pages have `datePublished` in schema, the index does not surface dates alongside the titles. Users cannot tell if guides are current without clicking through.
+- "Need to create your photo?" inline CTA section is present but appears to interrupt the editorial flow mid-index. This may confuse quality raters about whether this is a blog or a promotional page.
+
+---
+
+### 5. Blog Post — https://easyphoto.in/blog/why-exam-photo-signature-rejected/
+
+**Word count:** 1,030 (trafilatura-extracted)
+**Minimum for blog posts:** 1,500 words
+**Shortfall:** −470 words (31% below minimum)
+**H1:** "Why Exam Photos & Signatures Get Rejected (and the Fix)"
+**H2 structure (9 H2s):** All six rejection reasons at a glance / 1. The file size is wrong... / 2. The pixel dimensions... / 3. The signature has paper... / 4. The wrong file format / 5. Missing name and date... / 6. The background or the photo itself / The reliable order of operations / Frequently asked questions
+
+**Strengths:**
+- BlogPosting schema is complete: `datePublished: 2026-06-13`, `dateModified: 2026-06-13`, `headline`, `description`, `inLanguage: en-IN`, `author` (Person with LinkedIn URL, `jobTitle`, `knowsAbout`, avatar image URL), `publisher` (Organization/@id).
+- Author attribution: "Jaspal Kumar" named explicitly in schema with LinkedIn (`https://www.linkedin.com/in/jaspal-jk/`), job title ("easyPhoto developer & document-spec researcher"), and author image. This is the strongest E-E-A-T signal in the entire site.
+- BreadcrumbList schema present (3 levels: Home / Blog / Post).
+- FAQPage schema present with 4 Q&A pairs.
+- Summary / Quick-answer block at the top (6 bullets) is ideal for AI-citation passage extraction.
+- Comparison table of all 6 rejection reasons with fixes — structured, scannable, quotable.
+- Rejection reason 1 ("file size out of band") includes a specific, counterintuitive insight: "A photo compressed to 12 KB is rejected just as firmly as a 2 MB one." This is a first-hand, experience-grounded observation unlikely to appear in generic AI-generated content.
+- The HEIC FAQ answer includes a step-by-step iPhone path ("Settings → Camera → Formats → switch from High Efficiency to Most Compatible") — concrete, actionable, specific to a real user workflow.
+
+**Issues:**
+- **Word count 1,030 is 31% below the 1,500-word blog post minimum.** For the query "why exam photos get rejected India", competitors likely cover this with more exam-specific examples, portal-specific screenshots, and individual exam breakdowns. The current post covers the 6 reasons structurally but treats each at a surface level. Sections 2–5 are each approximately 80–100 words — the individual-section depth is low.
+- No first-hand experience narrative: there is no "we saw X% of users encounter this" or "when we tested the SSC portal, we found..." The post reads as authoritative and structured, but the experience signal is asserted rather than demonstrated.
+- `datePublished` and `dateModified` are both `2026-06-13` — no update signal. For a post covering exam portal behavior that changes each cycle, no revision date is a freshness risk.
+- No external links in the post body. The exam-requirements directory is referenced ("the exam requirements directory — each entry links the official notification") but only as an internal link to another page. No direct links to `ssc.gov.in` or `ibps.in` from within this post.
+- Internal links are described in text ("SSC CGL resizer", "IBPS PO resizer", "signature tool", "format converter", "name & date photo tool") but their anchor text density could create a perception of over-promotion of own tools, especially without balancing external citations.
+- The "Keep reading" section at the bottom links to 2 posts ("Best Free Exam Photo & Signature Resizer India" and "UPSC CSE / IAS Photo & Signature Requirements 2026"). These are topically relevant, which is good — but they always appear as the first two posts in `BLOG_POSTS`, suggesting a static rather than topic-matched selection algorithm.
+
+**Google Who/How/Why test:**
+- Who: Jaspal Kumar named in schema; author card rendered (not visible in extracted text but present in HTML). Pass.
+- How: Process not described in this post specifically.
+- Why: Clear user-problem framing ("just a red error and a closing deadline"). Pass.
+
+---
+
+### 6. Tools Directory — https://easyphoto.in/tools/
+
+**Word count:** 293 (trafilatura-extracted)
+**Minimum for a complex tool page:** 300–400+
+**Status:** Marginal fail (7 words below 300 minimum; far short of 400 for this complexity level)
+**H1:** "Free, private tools"
+**H2 structure (5 H2s):** Most popular / Resize to an exact file size / Exam & Job Application Resizers / Western Passport & Visa Photos / Passport & visa photos
+
+**Strengths:**
+- BreadcrumbList schema present.
+- Comprehensive tool catalog — 35+ tools listed across 5 categories (Passport & Visa, Exam, Image, PDF, Signature).
+- Tool descriptions are specific and benefit-focused ("Compress to under 50 KB", "Square photo under 300 KB", "RRB photo under 100 KB").
+- Category filter tabs present (Passport & Visa / Exam / Image Tools / PDF Tools / Signature Tools).
+
+**Issues:**
+- **293 words is thin for a directory page that is both a navigation hub and a landing page for "free document tools India" queries.** The page is almost entirely a tool grid — there is no editorial introduction explaining what the tools are, who they are for, or why they were built. Quality raters see a list without context.
+- No `dateModified` signal. No freshness indication.
+- No schema beyond BreadcrumbList and global Organization. A `CollectionPage` or `ItemList` schema listing the tools with `SoftwareApplication` sub-items would improve structured data coverage.
+- No FAQ section. Queries like "are these tools free?" and "do these tools upload my files?" are answered on individual tool pages but not on the directory.
+- The H1 "Free, private tools" is generic — does not target any specific query. A more targeted H1 like "Free Document Photo & PDF Tools for India" would better serve SEO without hurting UX.
+- No author or editorial attribution visible.
+
+**Google Who/How/Why test:**
+- Who: Not addressed on this page.
+- How: Not addressed.
+- Why: "100% Private, Free to use, No watermark, Compliance checked" badge present but not elaborated.
+
+---
+
+### 7. Exam Application Kit — https://easyphoto.in/tools/exam-package/
+
+**Word count:** 323 (trafilatura-extracted)
+**Minimum:** 300+ (400+ for complex tool)
+**Status:** Marginal pass at 300 minimum; below 400 threshold for complex multi-exam tool
+**H1:** "Exam Application Kit"
+**H2 structure (3 H2s):** Related tools / Frequently asked questions / More free tools
+
+**Strengths:**
+- FAQPage schema present with 6 Q&A pairs covering: what it is, which exams, what sizes, whether to resize separately, whether it's free/private, whether to check the official notification.
+- SoftwareApplication schema: `applicationCategory: MultimediaApplication`, `price: "0"`, `isAccessibleForFree: true`.
+- BreadcrumbList schema (4 levels: Home / Tools / Photo Tools / Exam Application Kit).
+- The FAQ answer for "Which exams does it support?" names specific portals: "SSC, UPSC, IBPS, SBI, Railway (RRB), NEET/JEE (NTA), RBI, CTET and state PSCs." This is specific and indexable.
+- "52+ exam specs, sourced from official portals" stated prominently — specific, verifiable claim.
+- Privacy disclosure in the H1 section: "Photo and signature are processed entirely in your browser — nothing is uploaded."
+
+**Issues:**
+- **Only 3 H2s for a tool that is the primary product for the site's core use case (exam application).**  The tool selector UI (which exam are you applying for, with category tabs: Central government / Banking / State PSC / National entrance / Defence / Visa & identity) contains the richest semantic content, but this is JavaScript-rendered and not present in the static HTML.  Trafilatura extracts only 323 words. Googlebot's crawl of the raw HTML may see a similarly thin page.
+- No `dateModified` on SoftwareApplication schema — no freshness signal.
+- No external links to any exam portal (SSC, UPSC, etc.) from this page to validate the "sourced from official portals" claim.
+- No body content between H1 and the exam selector. The page immediately presents the tool UI with no explanatory prose. Users who arrive from organic search have no context about what an "Exam Application Kit" is before being asked to select an exam.
+- "Related tools" and "More free tools" sections are present, providing internal links, but these are generic cross-links rather than contextually relevant to the exam application use case.
+
+**Google Who/How/Why test:**
+- Who: Not addressed.
+- How: Not addressed (tool logic is client-side and non-extractable).
+- Why: Framing at top is good ("in one guided flow... 52+ exam specs, sourced from official portals"). Partial pass.
+
+---
+
+## E-E-A-T Overall Assessment
+
+### Experience — Score: 14/20
+
+**What is present:**
+- The blog post demonstrates one genuine experience signal: "portals reject for a small, predictable set of reasons" is presented as an observed pattern, not a theoretical list. The HEIC-to-JPG workflow includes a real phone settings path that shows hands-on testing.
+- The comparison table on the homepage ("30–60 minutes" studio wait vs "30 seconds" easyPhoto) reflects observed user experience, not generalized claims.
+- The About page (not in audit scope, but referenced) states the origin story: "Getting a passport or visa photo rejected over a couple of millimetres... Studio photos are expensive and slow." This is first-person experience framing.
+- The India passport page specifies which application routes use which specs (domestic Passport Seva Kendra vs NRI/overseas embassies) — this level of spec routing awareness reflects genuine domain experience.
+
+**What is missing:**
+- No "we tested this on [date]" statements anywhere in the audited pages.
+- No case studies, user testimonials with specifics, or aggregate data ("of 10,000 photos processed...").
+- No screenshots of actual tool outputs, rejected application letters, or portal interfaces.
+- No first-person narratives on any tool page.
+- The exam package page presents no experience signal whatsoever — it is a pure tool UI.
+
+### Expertise — Score: 16/25
+
+**What is present:**
+- Named author Jaspal Kumar with LinkedIn URL, job title ("easyPhoto developer & document-spec researcher"), and `knowsAbout` array in Person schema. This is the strongest expertise signal on the site and it is correctly wired into BlogPosting schema.
+- Domain expertise is demonstrated through specificity: correct ICAO background color differentiation (UK/Schengen grey vs US/India white), accurate Passport Seva portal specs (630×810px, 10–250KB), correct SSC band enforcement (20–50KB floor AND ceiling).
+- The September 2025 ICAO-compliance update for NRI applications is mentioned on multiple pages — this is a real recent change, and its correct inclusion signals active spec-tracking.
+
+**What is missing:**
+- Author attribution only appears in blog posts. Tool pages, the homepage, the tools directory, and the exam package page have no author attribution. Quality raters visiting tool pages see no expertise signal.
+- The author's `jobTitle` is "easyPhoto developer & document-spec researcher" — the "developer" component dilutes the domain authority signal for a content query. A government document compliance context benefits from a credential that emphasizes research and verification, not software development.
+- No external author profile pages beyond LinkedIn. No academic, journalism, or government-adjacent credentials.
+- No co-authorship with external subject-matter experts (e.g., a retired passport office employee, a visa consultant).
+
+### Authoritativeness — Score: 14/25
+
+**What is present:**
+- Organization schema is complete: `name`, `alternateName`, `description`, `slogan`, `knowsAbout` (6 items), `logo`.
+- The site links out to authoritative government sources from content pages: `passportindia.gov.in`, `ssc.gov.in`, `upsconline.nic.in`, `ibps.in` — though none of these outbound links were visible in the audited pages' extracted text.
+- Blog index uses `CollectionPage` schema correctly.
+- BreadcrumbList on every page audited.
+- 25 blog posts targeting specific queries — topical depth is developing.
+
+**What is missing:**
+- Only one `sameAs` link: Pinterest. No LinkedIn company page, no Twitter/X, no YouTube. A thin entity footprint significantly limits Google's ability to establish site authority via entity signals.
+- No external press coverage, backlink mentions, or third-party citations visible in the site's own content.
+- The passport-photo page, India page, tools directory, and exam package page have no outbound authority links in their extracted text. "Sourced from official portals" is stated but not demonstrated with a link on those pages.
+- No visible trust badges from government portals, app stores, or media mentions.
+
+### Trustworthiness — Score: 19/30
+
+**What is present:**
+- Privacy architecture is the site's strongest trust signal and it is genuine: client-side processing, no server upload, no account required, no data stored. This is technically verifiable and repeated consistently across all pages.
+- Contact email visible: `hello@easyphoto.in` (confirmed on contact page).
+- About page clearly states the builder's intent and values.
+- Spec correction invitation: "Spotted a spec that looks out of date? Accuracy is the whole point — tell us." (About page) — creates an accountability signal.
+- Privacy page exists at `/privacy/` (HTTP 200 confirmed).
+- FAQPage schema on 5 of 7 audited pages, answering objections before they arise.
+
+**What is missing:**
+- No visible privacy policy link or terms link in the extracted content of any audited page (these may be in the footer, but footer is stripped by trafilatura). Quality raters cannot easily verify legal accountability.
+- No physical address or registered business information anywhere on the site.
+- No SSL certification notice or security badge (these are standard; not critical, but relevant for YMYL-adjacent content).
+- The 404 page for `/india/` is graceful (offers tools, no dead-end) but represents a broken internal URL that was apparently shared or linked somewhere — this is a trust signal weakness.
+- The `/india/` 404 is particularly notable because the audit brief specifies it as a target URL — this suggests the URL was either internally shared, listed in documentation, or previously used. A 301 redirect from `/india/` to `/india-passport-photo-maker/` should be in place.
+
+---
+
+## AI Citation Readiness
+
+**Score: 63/100**
+
+AI citation readiness measures how extractable, quotable, and structured the content is for use in AI Overviews (Google), Perplexity, and other AI search tools.
+
+### What is citation-ready
+
+| Signal | Location | Citation-ready element |
 |---|---|---|
-| `indian-passport-photo-size-rules` | 2026-07-14 | +26 days |
-| `upsc-cse-ias-photo-signature-guide-2026` | 2026-07-07 | +19 days |
-| `nda-cds-photo-signature-guide-2026` | 2026-07-04 | +16 days |
-| `ssc-cgl-chsl-photo-signature-guide-2026` | 2026-07-01 | +13 days |
+| Specific spec numbers | `/passport-photo/`, `/india-passport-photo-maker/` | "630×810 px JPEG, under 250 KB" / "35×45mm, head 36–38mm, face 80–85%" |
+| Structured FAQ schema | Homepage, `/passport-photo/`, blog post, exam-package | FAQPage schema with `acceptedAnswer` — directly ingestible by AI |
+| Quick-answer block | Blog post | "Six reasons cover almost every rejection: file size band, wrong dimensions..." |
+| Comparison table | Homepage | easyPhoto vs Photo Studio with specific time/cost figures |
+| Rejection table | Blog post | 6-row table: Rejection reason / Fix |
+| Time-sensitive spec | `/passport-photo/` | "from 1 September 2025, applications through Indian embassies require ICAO-compliant photographs" |
+| Counterintuitive insight | Blog post | "A photo compressed to 12 KB is rejected just as firmly as a 2 MB one" — specific, non-obvious |
+| Process steps | Blog post | "The reliable order of operations" — numbered list, action-oriented |
 
-These dates are set in `lib/blog.ts` and feed directly into BlogPosting schema `datePublished`. Google may:
-- Delay indexing articles marked as not yet published.
-- Show a future date in SERPs next to the article title, which can suppress CTR.
-- Treat them as low-trust (future-dated content is a known spam signal in some contexts).
+### What limits citation readiness
 
-If these posts are live today (they are in the `BLOG_POSTS` array and linked from the blog index), their `dateISO` should reflect the actual publish date, not a planned date.
-
----
-
-## Schema & Structured Data Review
-
-| Schema type | Implementation | Status |
+| Gap | Pages affected | Impact |
 |---|---|---|
-| `BlogPosting` | Via `BlogPostLayout` on all 24 posts | Good |
-| `Person` (author) | Linked from `AUTHOR` constant; all fields populated | Good |
-| `Organization` | `organizationSchema()` in root layout | Good |
-| `WebSite` | `websiteSchema()` in root layout | Good |
-| `BreadcrumbList` | On every blog post | Good |
-| `FAQPage` | `faqSchema()` called on 20 of 24 blog posts | Gap: 4 missing |
-| `SoftwareApplication` | On tool landing pages | Good |
-| `HowTo` | Called but returns `null` — dead code | Low risk |
-| `AboutPage` | On `/about/` | Good |
-| `ContactPage` | On `/contact/` | Good |
+| Blog post below 1,500 words | `/blog/why-exam-photo-signature-rejected/` | Short posts are less likely to be chosen as citation sources vs longer, more comprehensive competitors |
+| No outbound citations in audited pages | Blog post, tools pages | AI citation engines penalize unlinked factual claims. "Sourced from official portals" without a URL reduces confidence |
+| JS-rendered exam UI not in HTML | `/tools/exam-package/` | Exam selector (52+ exams) is invisible to crawlers; the richest content on the page is inaccessible |
+| Stat counters show "0+" in raw HTML | Homepage | Dynamic counter placeholders may be captured as "0" rather than "26+ countries", "52+ exam specs" |
+| No `speakable` schema | All pages | Speakable schema marks content sections as audio-citation-ready — not present anywhere |
+| Single social proof link | Global (Organization schema) | AI systems use entity completeness to weight citation trustworthiness |
 
-**Missing FAQPage schema on 4 posts:**
-`best-free-passport-photo-maker-india-2026`, `best-free-exam-photo-resizer-india`, `cutout-pro-alternative-india`, `visafoto-alternative-india-free` — all four competitor comparison posts. Adding a `<Faq>` component with a `JsonLd` call including `faqSchema()` would close this gap.
+### Best citation candidates (current)
 
-**OG image:** All 24 blog posts have per-post `opengraph-image.tsx` files that dynamically generate an OG card using `ogImage({ title, subtitle })`. The image is not post-specific artwork — it is a title card — but it is unique per post, which is better than using a single static `/og.png`.
-
----
-
-## Internal Linking Audit
-
-- Every blog post links to at least one tool page from within the body copy.
-- `BlogPostLayout` renders 2 "Keep reading" posts at the bottom of every post (first 2 posts in `BLOG_POSTS` filtered to exclude current slug). This means the same 2 posts always appear in "Keep reading" for all but those 2 posts. A random or topic-related selection would distribute PageRank better.
-- No orphan pages — all posts are in the blog index.
-- Tool pages cross-link to related tools via "Related tools" chip rows.
+1. **Homepage FAQ Q: "Is my photo uploaded to a server?"** — Answer is specific, verifiable, complete in one paragraph. Ready.
+2. **Passport-photo page FAQ: "What is the passport photo size for the Passport Seva portal upload?"** — Specific measurement and file size. Ready.
+3. **Blog post table: All six rejection reasons** — Structured, comprehensive, non-generic. High citation potential for "why exam photos get rejected India" queries.
+4. **Passport-photo page: "Has India changed passport photo requirements?"** — Dated change (September 2025), specific scope (NRI/overseas route). Ready.
+5. **India page spec table** — Exact pixel dimensions, DPI, head-size band. Ready if crawled correctly.
 
 ---
 
-## Content Freshness
+## Issues Found
 
-- 3 posts have `updatedISO` set: `best-free-exam-photo-resizer-india`, `best-free-passport-photo-maker-india-2026`, `exam-photo-signature-size-guide` — all set to `2026-06-18`.
-- 21 posts have no `updatedISO`, so their `dateModified` in schema equals `datePublished`. For evergreen posts (background color rules, baby photo guide) this is acceptable. For time-sensitive exam specs that change each cycle, missing `updatedISO` means Google cannot tell the content was re-verified.
-- `ibps-po-2026-photo-signature-checklist` references specific 2026 exam dates but has no `updatedISO`. If specs change before the August 2026 prelims, the schema will still show the June 13 publish date.
+### Critical
+
+**C1 — /india/ returns HTTP 404**
+The URL `https://easyphoto.in/india/` requested in the audit (and likely in external links, bookmarks, or shared URLs) returns a 404. The correct page is `/india-passport-photo-maker/`. A 301 redirect from `/india/` to `/india-passport-photo-maker/` should be implemented immediately. Any external links pointing to `/india/` currently waste link equity and create a broken user experience.
+
+**C2 — Blog post word count is 31% below minimum**
+`/blog/why-exam-photo-signature-rejected/` has 1,030 extracted words against a 1,500-word minimum for blog posts. For a query where users are troubleshooting specific portal errors, this post currently treats each rejection reason in approximately 80–100 words. Competitors with more exam-specific examples, portal screenshots, and per-exam breakdowns have a clear depth advantage. Target: expand to 1,600–1,800 words with portal-specific examples for SSC, IBPS, UPSC, and Railway.
+
+**C3 — /tools/ page word count is below minimum for its page type**
+293 words is below even the 300-word tool page minimum, and far below what a complex directory page representing the entire product catalog should carry. The page is a pure tool grid with no editorial context, no introduction, no FAQ. This is a gateway page for organic traffic ("free document tools India") and its thin content reduces both user orientation and SEO topical coverage.
+
+### High
+
+**H1 — No author attribution on tool pages, homepage, or tools directory**
+The author Jaspal Kumar is named in BlogPosting schema for blog posts, but the homepage, `/passport-photo/`, `/india-passport-photo-maker/`, `/tools/`, and `/tools/exam-package/` have zero author attribution — not in visible content, not in schema, not in a byline. For pages targeting YMYL-adjacent queries (wrong spec = failed government application), quality raters need to see a responsible author or editorial team.
+
+**H2 — No dateModified on tool pages**
+The SoftwareApplication schema on `/passport-photo/`, `/india-passport-photo-maker/`, and `/tools/exam-package/` has no `dateModified` property. Given that the India passport spec changed in September 2025, the absence of a freshness signal means Google cannot assess whether these pages reflect current requirements. Add `dateModified` set to the date each page was last verified against its official source.
+
+**H3 — Passport-photo page heading depth is too shallow for query competition**
+Four H2s on `/passport-photo/` is insufficient for one of the site's most commercially important pages. The FAQ content is excellent but buried under a thin 4-section structure. Recommended additions: "Indian Passport Photo Requirements" / "How to Take Your Own Passport Photo" / "What Makes a Photo Get Rejected" / "Printing vs Online Upload" — each with 100–150 words of prose before the FAQ, building topical depth without redundancy.
+
+**H4 — Exam Package page content is not in crawlable HTML**
+The exam selector (52+ exam presets with per-exam specs) is JavaScript-rendered and absent from the static HTML. Googlebot may crawl a near-empty page with only 323 words, a 3-H2 structure, and an FAQ section. The rich content (exam names, specific KB ranges, pixel dimensions for 52 exams) is invisible to non-JS crawlers. Consider server-rendering the exam list as an HTML `<ul>` or static prose table that duplicates the JS UI for crawlability.
+
+**H5 — No outbound citations in blog post or tool pages**
+The blog post `/why-exam-photo-signature-rejected/` cites "the exam requirements directory" and references SSC, IBPS, UPSC portals by name but provides no outbound links to official sources. All trust signals for factual claims are internal. Adding 2–3 external links to `ssc.gov.in`, `ibps.in`, or `upsconline.nic.in` would substantially improve Trustworthiness scoring.
+
+### Medium
+
+**M1 — Stat counters render as "0+" in raw HTML**
+The homepage stat block ("0+ Countries supported", "0+ Exam & form specs", "0+ Free tools") uses JavaScript animation to count up to the real numbers. Trafilatura and potentially Googlebot's first-pass crawler capture "0+" as the content value. These counters should be server-rendered with the real numbers (26, 52, 35) in the HTML, with the animation applied via CSS/JS on top.
+
+**M2 — Only one sameAs social profile in Organization schema**
+`sameAs: ["https://www.pinterest.com/easyphoto0604/"]` — Pinterest only. Google's entity graph rewards sites with multiple verified social profiles. Add LinkedIn company page if one exists, plus any active Twitter/X, YouTube, or Behance profiles.
+
+**M3 — Blog index has no editorial introduction**
+The blog index (`/blog/`) jumps from H1 ("Get it right the first time") to a blog post title. Quality raters landing on this page have no context about the editorial scope, author, or verification standards. A 3–4 sentence intro ("We cover passport and visa photo requirements, exam application file specs, and document tools for India — every guide is sourced from official government notifications.") would add E-E-A-T context.
+
+**M4 — Tools directory H1 is not query-targeted**
+"Free, private tools" is generic. A targeted H1 such as "Free Photo, PDF & Signature Tools for Indian Applications" would align with the queries this page should rank for without sacrificing clarity.
+
+**M5 — /tools/ page lacks CollectionPage or ItemList schema**
+The tools directory has only BreadcrumbList schema. A `CollectionPage` with `ItemList` containing `SoftwareApplication` items for the featured tools would enable richer structured-data coverage and improve citation readiness for tool-discovery queries.
+
+**M6 — Author job title undersells domain authority**
+"easyPhoto developer & document-spec researcher" contains "developer" which signals technical rather than domain expertise. For government document compliance content, a title emphasizing the research and verification role (e.g., "Document compliance researcher" or "Passport & exam photo compliance specialist") would better support the Expertise dimension for quality raters.
+
+### Low
+
+**L1 — No speakable schema anywhere**
+Speakable schema marks content sections optimized for text-to-speech / voice assistant citation. None of the audited pages implement it. The FAQ sections on `/passport-photo/` and the blog post are ideal candidates.
+
+**L2 — Blog post "Keep reading" uses static post selection**
+The "Keep reading" sidebar always surfaces the first two posts from `BLOG_POSTS` (filtered for current slug). This means every post except the first two shows the same two articles. A topical-affinity selection would distribute internal link equity more effectively and improve user-to-reader journey continuity.
+
+**L3 — No visible freshness signal for users on tool pages**
+While schema `dateModified` can signal freshness to Google, users visiting `/india-passport-photo-maker/` or `/passport-photo/` have no visible indication of when the spec was last verified. A "Spec last verified: [date]" label near the spec table — similar to what many official government guidance sites use — would add user-facing trust.
+
+**L4 — No privacy policy or terms link visible in page body**
+Footer links (presumably present) are stripped by trafilatura. Quality raters may arrive at any page and need to find legal accountability links. An inline reference in the about/privacy section of the homepage body, or a visible footer trust bar that is in the HTML (not JS-rendered), would ensure these are captured in any crawl.
 
 ---
 
-## Duplicate / Cannibalization Risk
+## Score: 71/100
 
-No cannibalization detected across the 24 posts. Each targets a distinct query cluster:
-- Exam-specific guides (UPSC vs SSC vs IBPS vs NDA) differentiated by board-specific specs.
-- Competitor comparison posts are differentiated by competitor (Cutout.pro vs Visafoto vs generic best-of).
-- How-to posts are operation-specific (resize vs compress vs merge vs mask).
+### Scoring Breakdown
 
-One mild overlap: `exam-photo-signature-size-guide` and `why-exam-photo-signature-rejected` both answer "what size does my exam photo need to be." The former is the pillar; the latter is a rejection-reason post. They serve different intent (spec lookup vs troubleshooting) and cross-link to each other, so the overlap is acceptable.
-
----
-
-## Prioritized Action Queue
-
-### Critical (do first)
-
-**C1 — Add `export const metadata` to 4 competitor comparison posts**
-These 4 posts are currently indexed with the root layout's generic title and description. Fix in each page.tsx:
-```
-// Add at top of each of these files:
-import { pageMetadata } from "@/lib/seo";
-import { getPost } from "@/lib/blog";
-const post = getPost("<slug>")!;
-export const metadata = pageMetadata({
-  title: post.title,
-  titleAbsolute: true,
-  description: post.description,
-  path: `/blog/${post.slug}/`,
-  type: "article",
-});
-```
-Affected files:
-- `app/blog/cutout-pro-alternative-india/page.tsx`
-- `app/blog/best-free-exam-photo-resizer-india/page.tsx`
-- `app/blog/best-free-passport-photo-maker-india-2026/page.tsx`
-- `app/blog/visafoto-alternative-india-free/page.tsx`
-
-**C2 — Fix future-dated posts to use actual publish dates**
-In `lib/blog.ts`, change the 4 future-dated posts to use today's date or a past date when the content was actually written. Future `dateISO` feeds directly into `datePublished` in BlogPosting schema.
-- `indian-passport-photo-size-rules`: change `2026-07-14` → `2026-06-18`
-- `upsc-cse-ias-photo-signature-guide-2026`: change `2026-07-07` → `2026-06-18`
-- `nda-cds-photo-signature-guide-2026`: change `2026-07-04` → `2026-06-18`
-- `ssc-cgl-chsl-photo-signature-guide-2026`: change `2026-07-01` → `2026-06-18`
-
-**C3 — Remove or properly source the BreachForums claim in cutout-pro-alternative-india**
-The post states: _"Public reports (Cybernews researchers, 2023; Trustpilot user reviews referencing a data set posted to BreachForums in February 2024)"_ without a link. Either add a direct URL to the Cybernews article and a Trustpilot permalink, or soften to: _"Cutout.pro's own privacy policy confirms 24–48 hour AWS retention; independent review sites have noted user concerns about data security practices."_
-
-### High Priority
-
-**H1 — Add FAQ + FAQPage schema to 4 competitor comparison posts**
-None of the 4 comparison posts (`cutout-pro-alternative-india`, `best-free-exam-photo-resizer-india`, `best-free-passport-photo-maker-india-2026`, `visafoto-alternative-india-free`) have a `<Faq>` component or `faqSchema()`. FAQ schema is the most reliable path to featured-snippet inclusion for comparison queries like "is Cutout.pro free?" or "best free passport photo tool India."
-
-**H2 — Add external links to competitor names in best-free-exam-photo-resizer-india**
-The post names ExamMint, myexamphoto.in, govtphotoresizer.com, and SarkariResizer without linking to them. Users who want to verify claims cannot follow through. Add `rel="noopener noreferrer"` links to each competitor's homepage.
-
-**H3 — Upgrade author title credential**
-Change `title: "Web & mobile developer"` in `lib/author.ts` to something that surfaces domain authority: `"Document compliance researcher and developer"` or `"Photo & document compliance specialist"`. The `jobTitle` in Person schema feeds AI citation engines that use this to assess expertise.
-
-**H4 — Add external citations to baby-and-infant-passport-photo-guide**
-Link to the US State Department's infant photo guidance (travel.state.gov) and UK HMPO guidance for the country-specific rules. The post makes country-specific claims without sources.
-
-### Medium Priority
-
-**M1 — Expand schengen-europe-visa-photo-size (only 3 H2s, thin content)**
-The Schengen post is the shortest substantive post. Germany, France, Spain, Italy each have distinct background rules that deserve individual H2s. Target 6–8 H2s and 1000+ words for competitive Schengen visa photo queries.
-
-**M2 — Set updatedISO on time-sensitive exam posts after each verification cycle**
-When a new IBPS, SSC, or UPSC notification drops, update the post and set `updatedISO` in `lib/blog.ts`. This directly affects `dateModified` in BlogPosting schema and signals freshness to Google.
-
-**M3 — Fix "Keep reading" to surface topically related posts**
-`BlogPostLayout` always shows the first 2 posts in `BLOG_POSTS` (after filtering current). This means `indian-passport-photo-size-rules` and `cutout-pro-alternative-india` appear as "Keep reading" on unrelated posts like `how-to-compress-pdf`. A topically grouped version would reduce bounce and improve topical authority.
-
-**M4 — Remove HowTo schema call sites**
-`howToSchema()` was deprecated when Google removed HowTo rich results in September 2023. The function now returns `null`. The call sites in `KbResizeLanding`, `signature-resize-to-10kb`, and others pass complete `steps` data that is silently discarded. Remove the calls to reduce dead code confusion.
-
-### Low Priority
-
-**L1 — Expand Organization.sameAs to include more verified profiles**
-Currently only Pinterest. Add LinkedIn company page (if one exists), X/Twitter handle, and YouTube if content is published there.
-
-**L2 — Add 2–3 sentence Hinglish intro to Hindi landing pages**
-Pages like `/photo-ka-size-100kb-kaise-kare/` embed a tool immediately with minimal body content. A 2-sentence Hinglish introduction before the tool would improve crawlability and user orientation.
-
-**L3 — Add updatedISO to best-free-exam-photo-resizer-india, best-free-passport-photo-maker-india-2026**
-Both have `updatedISO: "2026-06-18"` already set — good. Ensure these are re-updated after each pricing verification cycle (quarterly minimum for competitor pricing data).
+| Dimension | Score | Max | Notes |
+|---|---|---|---|
+| E-E-A-T — Experience | 14 | 20 | Privacy USP genuine; no first-hand narratives or tested claims on most pages |
+| E-E-A-T — Expertise | 16 | 25 | Author schema complete on blog posts; zero attribution on tool/home pages; title dilutes domain authority |
+| E-E-A-T — Authoritativeness | 14 | 25 | Good internal linking and government spec accuracy; single sameAs; no external mentions |
+| E-E-A-T — Trustworthiness | 19 | 30 | Privacy USP strong; /india/ 404 broken; no outbound citations on key pages; no business address |
+| Word count / topical coverage | 4 | 10 | Blog post 31% under minimum; tools directory below minimum; passport-photo marginal |
+| Structured data completeness | 7 | 10 | BlogPosting excellent; tool pages missing dateModified; tools directory missing CollectionPage |
+| Readability / heading structure | 5 | 10 | Blog post H2 structure strong; tool pages shallow (3 H2s); tools page generic H1 |
+| AI citation readiness | 6 | 10 | FAQ schema present; quick-answer block good; JS-rendered content invisible; no speakable |
+| Content freshness signals | 4 | 10 | Only homepage has dateModified; no on-page freshness dates; India spec change noted in copy only |
+| Broken page / URL hygiene | 2 | 5 | /india/ 404 unresolved; no redirect in place |
+| **Total** | **71** | **100** | |
 
 ---
 
 ## What Works Well
 
-1. **Author identity implementation** — Named byline, avatar, LinkedIn link, Person schema with `knowsAbout`, and "About the author" card on every post. More complete than most Indian content sites at this scale.
+1. **BlogPosting schema completeness** — Every blog post has a complete `BlogPosting` graph with named Person author, LinkedIn `sameAs`, `jobTitle`, `knowsAbout`, avatar URL, `inLanguage: en-IN`, and `datePublished`. This is above average for Indian SaaS content sites.
 
-2. **Editorial transparency** — Every post has an "How we keep this accurate" block. Every competitor comparison post has a "Transparency: easyPhoto is our product" disclosure at the top. This is a meaningful E-E-A-T differentiator.
+2. **FAQ schema saturation on blog posts and tool pages** — 5 of 7 audited pages have `FAQPage` schema with `acceptedAnswer`. The FAQ questions are query-matched rather than generic. This is the site's strongest AI citation signal.
 
-3. **Quick-answer callout boxes** — Present on 20/24 posts. These boxes are optimally formatted for AI Overview and SGE passage extraction: short bullets, specific numbers, authority pointer at the end.
+3. **Privacy USP specificity** — "100% Browser Processing / No Upload Required / No Account Needed / No Data Stored" is stated in four distinct ways on the homepage, each a separate trust claim. This is not generic privacy language — it is technically specific and user-verifiable. Competitors (Cutout.pro, Visafoto) cannot match this claim legitimately.
 
-4. **Government source citations** — The exam guide posts link directly to `ssc.gov.in`, `upsc.gov.in`, `upsconline.nic.in`, `ibps.in`, `nta.ac.in`, `passportindia.gov.in`. These are primary sources, not secondary aggregators.
+4. **Spec accuracy and time-sensitivity** — The September 2025 ICAO-compliance change for NRI passport applications is correctly described on the passport-photo page. The SSC photo band (20–50KB, not just "under 50KB") is correctly specified in the blog post. These are details that generic or AI-generated content gets wrong — their presence is a genuine expertise signal.
 
-5. **On-device privacy as trust signal** — The privacy architecture (client-side processing, no server upload) is genuinely differentiated and is stated clearly on every tool page, the About page, and in the editorial block. Competitor tools (Cutout.pro, Visafoto) upload to servers — this differentiation is real and well-articulated.
+5. **Quick-answer callout box on blog post** — The 6-bullet summary at the top of the rejection-reasons post is optimally structured for AI Overview passage extraction: short, complete, numbered, with a pointer to further detail. This format is the most citation-ready element across all audited pages.
 
-6. **Internal linking saturation** — All 24 posts link to relevant tools. No orphan pages. Tool pages cross-link via related-tools chips.
+6. **Internal cross-linking from blog to tools** — Every blog post links to the relevant tool from within the body. The exam-package page links to related tools. No audited page is an orphan. Tool cross-links are contextual ("SSC CGL resizer", "IBPS PO resizer") rather than generic, which improves both UX and topical authority signals.
 
-7. **FAQ coverage** — 20/24 posts have FAQ sections with schema. For a site targeting high-volume informational queries, this is good coverage.
-
-8. **BlogPosting schema completeness** — Every post has `datePublished`, `dateModified`, `headline`, `description`, `author` (Person), `publisher` (Organization/@id), `mainEntityOfPage`, `inLanguage: "en-IN"`. The schema is well above average for this site category.
-
----
-
-## Scoring Breakdown
-
-| Dimension | Score | Max | Notes |
-|---|---|---|---|
-| Content depth & accuracy | 19 | 25 | Pillar posts strong; comparison posts missing citations |
-| E-E-A-T signals | 16 | 25 | Author signal good; title credential weak; single social proof |
-| Structured data | 12 | 15 | BlogPosting comprehensive; 4 posts missing FAQPage; HowTo dead |
-| Page metadata | 8 | 15 | 4 posts rendering generic root title/description |
-| Freshness & dating | 10 | 12 | 4 future-dated posts; updatedISO gaps |
-| Internal linking | 8 | 8 | Full coverage; no orphans |
-| **Total** | **73** | **100** | |
+7. **India spec table on `/india-passport-photo-maker/`** — The 9-row spec table (print size, head height, head % of frame, background hex code, digital size, file size, min DPI, glasses, expression) is the most quotable, citation-ready structured element in the audited content. It is specific, complete, and cross-referenceable against the official source.

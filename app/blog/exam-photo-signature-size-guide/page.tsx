@@ -111,6 +111,50 @@ export default function Page() {
         </figcaption>
       </figure>
 
+      <figure className="my-8">
+        <svg viewBox="0 0 760 310" role="img" aria-label="Exam photo spec comparison: photo and signature pixel sizes for SSC, IBPS, UPSC and NTA" style={{maxWidth:"100%",height:"auto",fontFamily:"system-ui,sans-serif"}}>
+          <title>Exam Photo Spec Comparison</title>
+          <desc>Horizontal bars showing photo and signature KB limits for SSC CGL (photo 50KB, sig 30KB), IBPS PO (200KB, 50KB), UPSC CSE (300KB, 300KB), NTA NEET (200KB, 200KB)</desc>
+          {/* Header */}
+          <rect x="0" y="0" width="760" height="42" fill="#163A6B" rx="10"/>
+          <text x="380" y="27" textAnchor="middle" fill="#F4C63F" fontSize="14" fontWeight="700">Exam Photo &amp; Signature KB Limits — Quick Comparison</text>
+          {/* Grid lines */}
+          {[50,100,150,200,250,300].map(v => (
+            <g key={v}>
+              <line x1={200 + v * 1.4} y1="52" x2={200 + v * 1.4} y2="295" stroke="currentColor" strokeWidth="0.5" opacity="0.1"/>
+              <text x={200 + v * 1.4} y="305" textAnchor="middle" fontSize="9" fill="currentColor" opacity="0.5">{v}KB</text>
+            </g>
+          ))}
+          {/* Rows */}
+          {[
+            {exam:"SSC CGL / CHSL",photo:50,sig:30,photoPx:"275×354",sigPx:"140×60"},
+            {exam:"IBPS PO / Clerk",photo:200,sig:50,photoPx:"200×230",sigPx:"140×60"},
+            {exam:"UPSC CSE / IAS",photo:300,sig:300,photoPx:"350×350",sigPx:"350×140"},
+            {exam:"NTA NEET / JEE",photo:200,sig:200,photoPx:"Varies",sigPx:"Varies"},
+          ].map((row, i) => {
+            const y = 62 + i * 55;
+            return (
+              <g key={row.exam}>
+                <text x="195" y={y + 12} textAnchor="end" fontSize="11.5" fontWeight="600" fill="currentColor">{row.exam}</text>
+                {/* Photo bar */}
+                <rect x="200" y={y} width={row.photo * 1.4} height="16" rx="3" fill="#163A6B" opacity="0.85"/>
+                <text x={200 + row.photo * 1.4 + 5} y={y + 12} fontSize="10" fill="currentColor" opacity="0.7">Photo {row.photo}KB · {row.photoPx}px</text>
+                {/* Sig bar */}
+                <rect x="200" y={y + 20} width={row.sig * 1.4} height="12" rx="3" fill="#F4C63F" opacity="0.8"/>
+                <text x={200 + row.sig * 1.4 + 5} y={y + 30} fontSize="9.5" fill="currentColor" opacity="0.6">Sig {row.sig}KB · {row.sigPx}px</text>
+              </g>
+            );
+          })}
+          {/* Legend */}
+          <rect x="200" y="276" width="12" height="8" rx="1" fill="#163A6B" opacity="0.85"/>
+          <text x="218" y="284" fontSize="9.5" fill="currentColor" opacity="0.6">Photo limit</text>
+          <rect x="280" y="276" width="12" height="8" rx="1" fill="#F4C63F" opacity="0.8"/>
+          <text x="298" y="284" fontSize="9.5" fill="currentColor" opacity="0.6">Signature limit</text>
+          <text x="380" y="305" textAnchor="middle" fontSize="9" fill="currentColor" opacity="0.4">Source: ssc.gov.in, ibps.in, upsc.gov.in, nta.ac.in — verify current notification</text>
+        </svg>
+        <figcaption className="mt-2 text-center text-xs text-muted-foreground">KB limits vary by exam cycle — always confirm in the official notification PDF.</figcaption>
+      </figure>
+
       <h2>Spec table: photo and signature requirements by exam</h2>
       <p>
         The pixel dimensions below are the most commonly reported values for each

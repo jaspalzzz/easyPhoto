@@ -31,6 +31,64 @@ export default function Page() {
         something better, we say so.
       </p>
 
+      <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
+        <svg
+          viewBox="0 0 760 300"
+          style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif", display: "block" }}
+          role="img"
+          aria-label="Comparison chart: paid studio vs free online passport photo makers — cost, privacy, India spec accuracy"
+        >
+          <title>Passport photo maker comparison — paid studio photo vs free on-device tools</title>
+          <rect width="760" height="300" fill="#f9f8f6" />
+          {/* Left: Paid/Studio */}
+          <rect x="20" y="20" width="330" height="260" rx="8" fill="white" stroke="#e5e7eb" strokeWidth="1.5" />
+          <rect x="20" y="20" width="330" height="44" rx="8" fill="#6b7280" />
+          <rect x="20" y="50" width="330" height="14" fill="#6b7280" />
+          <text x="185" y="47" textAnchor="middle" fontSize="13" fontWeight="700" fill="white">Physical Studio / Generic Online Tool</text>
+          {/* Studio photo icon */}
+          <rect x="60" y="78" width="54" height="70" rx="4" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="1" />
+          <circle cx="87" cy="103" r="14" fill="#d1d5db" />
+          <path d="M67 148 Q87 130 107 148" fill="#d1d5db" />
+          <text x="87" y="165" textAnchor="middle" fontSize="10" fill="#6b7280">35×45 mm</text>
+          {/* Cons list */}
+          {[
+            ["✗ Costs ₹150 – ₹600 per print", "#dc2626"],
+            ["✗ Uploads your photo to a server", "#dc2626"],
+            ["✗ Often uses US spec, not India's", "#dc2626"],
+            ["✗ No exam portal presets (KB/px)", "#dc2626"],
+            ["✗ Retry = another fee", "#dc2626"],
+          ].map(([text, color], i) => (
+            <text key={i} x="130" y={90 + i * 34} fontSize="12" fill={color} fontWeight="500">{text}</text>
+          ))}
+          {/* Right: easyPhoto */}
+          <rect x="410" y="20" width="330" height="260" rx="8" fill="white" stroke="#163A6B" strokeWidth="2" />
+          <rect x="410" y="20" width="330" height="44" rx="8" fill="#163A6B" />
+          <rect x="410" y="50" width="330" height="14" fill="#163A6B" />
+          <text x="575" y="47" textAnchor="middle" fontSize="13" fontWeight="700" fill="white">easyPhoto — Free &amp; On-Device</text>
+          {/* easyPhoto icon */}
+          <rect x="450" y="78" width="54" height="70" rx="4" fill="#eff6ff" stroke="#163A6B" strokeWidth="1.5" />
+          <circle cx="477" cy="103" r="14" fill="#bfdbfe" />
+          <path d="M457 148 Q477 130 497 148" fill="#93c5fd" />
+          <text x="477" y="165" textAnchor="middle" fontSize="10" fill="#163A6B">35×45 mm</text>
+          {/* Pros list */}
+          {[
+            ["✓ Completely free, no sign-up", "#15803d"],
+            ["✓ On-device — nothing uploaded", "#15803d"],
+            ["✓ Exact Passport Seva 35×45 mm", "#15803d"],
+            ["✓ SSC / IBPS / UPSC KB presets", "#15803d"],
+            ["✓ Instant re-crop, any time", "#15803d"],
+          ].map(([text, color], i) => (
+            <text key={i} x="520" y={90 + i * 34} fontSize="12" fill={color} fontWeight="500">{text}</text>
+          ))}
+          {/* VS badge */}
+          <circle cx="380" cy="150" r="22" fill="#F4C63F" />
+          <text x="380" y="155" textAnchor="middle" fontSize="14" fontWeight="800" fill="#163A6B">VS</text>
+        </svg>
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+          Paid studio vs free on-device passport photo maker — cost, privacy and India spec accuracy compared.
+        </figcaption>
+      </figure>
+
       <h2>What the India passport photo spec actually requires</h2>
 
       <p>

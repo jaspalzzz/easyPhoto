@@ -69,7 +69,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Site-wide "last significant update". Bump MANUALLY on real content changes —
   // NOT new Date(), so lastmod reflects actual freshness instead of churning on
   // every build/deploy (which Google distrusts). Blog posts use their own date.
-  const LAST_UPDATED = "2026-06-23";
+  const LAST_UPDATED = "2026-06-24";
 
   // Exam pages carry the date their spec was last verified against the official
   // source (verifiedOn), so lastmod reflects real freshness per exam instead of

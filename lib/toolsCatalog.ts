@@ -117,13 +117,6 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         icon: "Calendar",
       },
       {
-        slug: "mask-aadhaar",
-        title: "Mask Aadhaar / Document",
-        blurb: "Hide the first 8 digits of your Aadhaar (or any sensitive detail) with a permanent black redaction — fully in your browser.",
-        ready: true,
-        icon: "EyeOff",
-      },
-      {
         slug: "print-sheet",
         title: "Passport Photo Print Sheet",
         blurb: "Tile 4, 6 or 8 passport photos on an A4 or 4×6 inch sheet — download for printing at any studio.",
@@ -174,6 +167,30 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         ready: true,
         icon: "RotateCw",
       },
+      {
+        slug: "face-centering",
+        title: "Face Centering AI",
+        blurb: "Upload a passport photo and get a visual overlay showing whether your face is horizontally centred. Also checks head tilt.",
+        ready: true,
+        popular: true,
+        icon: "Crosshair",
+      },
+      {
+        slug: "auto-crop",
+        title: "Auto-Crop to Passport Spec",
+        blurb: "AI detects your face and automatically crops and resizes your photo to the correct passport size for your country.",
+        ready: true,
+        popular: true,
+        icon: "Scan",
+      },
+      {
+        slug: "photo-rejection-check",
+        title: "Passport Photo Rejection Check",
+        blurb: "Check your passport photo against ICAO biometric criteria before you submit — face, centering, size, tilt, background.",
+        ready: true,
+        popular: true,
+        icon: "ShieldAlert",
+      },
     ],
   },
   {
@@ -182,22 +199,6 @@ export const TOOLS_CATALOG: ToolGroup[] = [
     tagline:
       "Free PDF utilities. Combine images into a PDF and export PDF pages back to images, privately.",
     tools: [
-      {
-        slug: "jpg-to-pdf",
-        title: "JPG to PDF",
-        blurb: "Combine images into a single PDF, one image per page.",
-        ready: true,
-        popular: true,
-        icon: "FileStack",
-      },
-      {
-        slug: "pdf-to-jpg",
-        title: "PDF to JPG",
-        blurb: "Export every page of a PDF as a high-quality JPG image.",
-        ready: true,
-        popular: true,
-        icon: "FileImage",
-      },
       {
         slug: "pdf-merge",
         title: "Merge PDF",
@@ -311,6 +312,102 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         ready: true,
         popular: true,
         icon: "PenLine",
+      },
+    ],
+  },
+  {
+    group: "Document Tools",
+    slug: "document",
+    tagline:
+      "Compress, convert, and redact government documents — Aadhaar, marksheets, certificates — ready for online portals.",
+    tools: [
+      {
+        slug: "compress-document",
+        title: "Compress Document to KB",
+        blurb:
+          "Shrink any document — JPG, PNG, or PDF — to an exact KB target. Auto-detects the format and applies the right compression in one step.",
+        ready: true,
+        popular: true,
+        icon: "FileDown",
+      },
+      {
+        slug: "mask-aadhaar",
+        title: "Mask Aadhaar / Document",
+        blurb:
+          "Hide the first 8 digits of your Aadhaar (or any sensitive detail) with a permanent black redaction — fully in your browser.",
+        ready: true,
+        popular: true,
+        icon: "EyeOff",
+      },
+      {
+        slug: "jpg-to-pdf",
+        title: "JPG / Images to PDF",
+        blurb: "Combine one or more images into a single PDF, one image per page.",
+        ready: true,
+        icon: "FileStack",
+      },
+      {
+        slug: "pdf-to-jpg",
+        title: "PDF to JPG",
+        blurb: "Export every page of a PDF as a high-quality JPG image.",
+        ready: true,
+        icon: "FileImage",
+      },
+      {
+        slug: "extract-pages",
+        title: "Extract PDF Pages",
+        blurb: "Select and pull specific pages from a PDF — certificate, marksheet page, or any section — into a new file.",
+        ready: true,
+        popular: true,
+        icon: "Scissors",
+      },
+      {
+        slug: "form-fill",
+        title: "Fill PDF Form",
+        blurb: "Upload a fillable AcroForm PDF, type into each field, and download the completed document.",
+        ready: true,
+        icon: "PenLine",
+      },
+    ],
+  },
+  {
+    group: "OCR Tools",
+    slug: "ocr",
+    tagline:
+      "Extract text from images, scans, and screenshots — English and Hindi — entirely on your device.",
+    tools: [
+      {
+        slug: "image-to-text",
+        title: "Image to Text (OCR)",
+        blurb:
+          "Upload a JPG, PNG, screenshot or scanned document and get the text out instantly. Supports English and Hindi.",
+        ready: true,
+        popular: true,
+        icon: "ScanText",
+      },
+      {
+        slug: "pdf-to-text",
+        title: "PDF to Text",
+        blurb: "Extract all embedded text from a PDF instantly — copy or download as .txt. Works on digital PDFs, not scans.",
+        ready: true,
+        popular: true,
+        icon: "FileText",
+      },
+      {
+        slug: "aadhaar-ocr",
+        title: "Aadhaar Card OCR",
+        blurb: "Upload a photo of your Aadhaar card and extract the number, name, DOB, gender and address — on-device.",
+        ready: true,
+        popular: true,
+        icon: "ScanLine",
+      },
+      {
+        slug: "pan-card-ocr",
+        title: "PAN Card OCR",
+        blurb: "Upload a photo of your PAN card and extract the PAN number, name, father's name and date of birth.",
+        ready: true,
+        popular: true,
+        icon: "CreditCard",
       },
     ],
   },

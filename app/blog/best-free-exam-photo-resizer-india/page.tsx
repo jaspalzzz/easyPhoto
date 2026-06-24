@@ -138,6 +138,46 @@ export default function Page() {
 
       <h2>Five tools compared</h2>
 
+      <figure className="my-8">
+        <svg viewBox="0 0 760 270" role="img" aria-label="Feature comparison of 5 free exam photo resizers: easyPhoto, ExamMint, myexamphoto, SarkariResizer, govtphotoresizer" style={{maxWidth:"100%",height:"auto",fontFamily:"system-ui,sans-serif"}}>
+          <title>Free Exam Photo Resizer Comparison</title>
+          <desc>Dot matrix comparing 5 tools across 6 features: easyPhoto supports all 6 including privacy, ExamMint has 5, myexamphoto 4, SarkariResizer 3, govtphotoresizer 3.</desc>
+          {/* Header row */}
+          <rect x="0" y="0" width="760" height="38" fill="#163A6B" rx="8"/>
+          <text x="185" y="24" textAnchor="end" fontSize="12" fontWeight="700" fill="#F4C63F">Feature</text>
+          {["easyPhoto","ExamMint","myexamphoto","SarkariResizer","govtphoto"].map((t,i) => (
+            <text key={t} x={220 + i * 108} y="24" textAnchor="middle" fontSize="10.5" fontWeight="700" fill="white">{t}</text>
+          ))}
+          {/* Feature rows */}
+          {[
+            {feat:"KB target resize",scores:[1,1,1,1,1]},
+            {feat:"Pixel resize",scores:[1,1,1,1,1]},
+            {feat:"40+ exam presets",scores:[1,1,0,0,0]},
+            {feat:"PDF / doc tools",scores:[1,0,1,0,0]},
+            {feat:"No upload (private)",scores:[1,0,0,0,0]},
+            {feat:"Signature resizer",scores:[1,1,1,1,0]},
+          ].map((row, i) => {
+            const y = 55 + i * 34;
+            return (
+              <g key={row.feat}>
+                <rect x="0" y={y - 14} width="760" height="34" fill={i % 2 === 0 ? "currentColor" : "none"} opacity="0.04"/>
+                <text x="185" y={y + 7} textAnchor="end" fontSize="11.5" fill="currentColor">{row.feat}</text>
+                {row.scores.map((s, j) => (
+                  <text key={j} x={220 + j * 108} y={y + 8} textAnchor="middle" fontSize="17" fill={s ? "#10b981" : "#ef4444"}>{s ? "✓" : "✗"}</text>
+                ))}
+              </g>
+            );
+          })}
+          {/* Score row */}
+          <rect x="0" y="254" width="760" height="16" fill="#163A6B" opacity="0.08" rx="0 0 8 8"/>
+          <text x="185" y="266" textAnchor="end" fontSize="11" fontWeight="700" fill="currentColor">Score (6 features)</text>
+          {[6,5,4,3,3].map((s,i) => (
+            <text key={i} x={220 + i * 108} y="266" textAnchor="middle" fontSize="11" fontWeight="700" fill="#163A6B">{s}/6</text>
+          ))}
+        </svg>
+        <figcaption className="mt-2 text-center text-xs text-muted-foreground">Feature comparison based on testing as of June 2026. Exam coverage and features change — verify before use.</figcaption>
+      </figure>
+
       <div className="my-8 overflow-x-auto rounded-xl border border-hairline text-sm">
         <table className="w-full border-collapse">
           <thead>

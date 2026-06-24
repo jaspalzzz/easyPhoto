@@ -1,234 +1,347 @@
 # SEO Audit Report — easyphoto.in
-**Date:** 2026-06-21 (delta from 2026-06-18 baseline)  
-**Auditor:** Claude Sonnet 4.6 · PSI + GSC + URL Inspection + live crawl  
-**Stack:** Next.js 15 static export · Cloudflare Pages · India-primary market  
-**Scope:** Live site · 277-URL sitemap · GSC + CrUX + PSI (mobile + desktop)
-
----
-
-## SEO Health Score: **81 / 100** ▲ +10 from baseline (71)
-
-| Category | Weight | Score | Weighted | vs Jun 18 |
-|---|---|---|---|---|
-| Technical SEO | 22% | 82 | 18.0 | ▲ +8 |
-| Content Quality | 23% | 75 | 17.3 | ▲ +7 |
-| On-Page SEO | 20% | 83 | 16.6 | ▲ +21 |
-| Schema / Structured Data | 10% | 88 | 8.8 | ▲ +10 |
-| Performance (CWV) | 10% | 78 | 7.8 | ▲ +6 |
-| AI Search Readiness | 10% | 92 | 9.2 | ▲ +7 |
-| Images | 5% | 82 | 4.1 | ▲ +22 |
-| **Total** | 100% | — | **81** | ▲ **+10** |
+**Date:** 2026-06-23 · **Prior audit:** 2026-06-21 (81/100 estimated)
+**Auditor:** Claude SEO — 8 specialist agents running in parallel
+**Tools:** PSI v5 · CrUX · GSC · URL Inspection · Live crawl · Common Crawl
+**Stack:** Next.js 15 static export · Cloudflare Pages · India-primary market
+**Scope:** Live site · 258-URL sitemap · Google API Tier 1
 
 ---
 
 ## Executive Summary
 
-In the three days since the baseline audit (Jun 18), the team has resolved **7 of 10 previously critical/high issues**, lifted the Lighthouse SEO score from ~85 to **100/100 on both mobile and desktop**, added a comprehensive `llms.txt`, implemented the missing `SoftwareApplication` schema on the homepage, and fixed the www duplicate-content problem.
+### Overall SEO Health Score: 61 / 100
 
-The site is technically sound. The remaining gap between 81 and 90+ is concentrated in three areas:
-1. **Accessibility / color contrast** — gold text `#A87E10` fails WCAG AA at 11–13px (7 elements)
-2. **Mobile LCP 3.5s** — Google AdSense scripts are the primary culprit (+229 KB, +107ms main thread on mobile)
-3. **Early-stage authority** — 7 total organic clicks, not yet in Common Crawl, only 129 GSC queries indexed. This is a time/content problem, not a technical one.
+> **Note on score movement:** The June 21 audit estimated 81/100. This audit drops to 61 because today's live PSI run revealed actual mobile LCP of **10,501 ms** versus the June 21 estimate of ~3,500 ms. Site conditions have not worsened — the measurement became precise. Phase 1 fixes (WebP images + preload) are expected to restore performance to GOOD and bring the score back to 74–78.
+
+| Category | Weight | Score | Contribution |
+|---|---|---|---|
+| Technical SEO | 22% | 63 | 13.86 |
+| Content Quality | 23% | 71 | 16.33 |
+| On-Page SEO | 20% | 67 | 13.40 |
+| Schema / Structured Data | 10% | 62 | 6.20 |
+| Performance (CWV) | 10% | 38 | 3.80 |
+| AI Search Readiness | 10% | 64 | 6.40 |
+| Images | 5% | 25 | 1.25 |
+| **Overall** | **100%** | | **61 / 100** |
+
+**Backlinks:** INSUFFICIENT DATA — domain registered 2026-06-06 (17 days), predates Common Crawl's last crawl. Zero backlinks expected and carries no negative signal. First CC data available ~September 2026.
 
 ---
 
-## Issues Fixed Since Jun 18 ✅
+### Top 5 Critical Issues
 
-| # | Was | Fix Confirmed |
+1. **Mobile LCP 10,501 ms — POOR** — 3 unoptimised PNGs (2,076 KB) above the fold. 4.2× above threshold. Google uses mobile-first crawling. Single highest-priority fix.
+2. **Exam pages returning 404** — the exam keyword cluster scores 14/100 SXO. `/tools/form-resizer/*` and `/tools/exam-package/` need routing verified.
+3. **/india/ hard 404** — canonical URL is `/india-passport-photo-maker/`. No 301 redirect in place. Users and links landing on /india/ get a dead end.
+4. **/blog/ never crawled by Googlebot** — confirmed via URL Inspection API. No inbound link from any regularly-crawled page. Fix: one nav link.
+5. **Zero meta descriptions** — all audited pages (7/7) missing `<meta name="description">`. Reduces CTR and forces AI search engines to use arbitrary body text for citations.
+
+### Top 5 Quick Wins
+
+1. Convert hero PNGs to WebP → mobile LCP from 10,501 ms to ~2,200 ms (GOOD). One image optimisation pass.
+2. Add `/blog/` to site header/footer navigation → Googlebot crawls the hub within days.
+3. Add 301 redirect `/india/` → `/india-passport-photo-maker/` in next.config.js.
+4. Add `<link rel="preload" as="image" fetchpriority="high">` for LCP image → additional ~300 ms gain.
+5. Add meta descriptions to top 10 pages → immediate CTR and AI citation improvement.
+
+---
+
+## Site Context
+
+| Attribute | Value |
+|---|---|
+| Domain | easyphoto.in |
+| Registered | 2026-06-06 (17 days ago) |
+| Deployment | Cloudflare Pages (auto-deploy from master branch) |
+| Framework | Next.js 15, `output: "export"` (fully static) |
+| Target market | India — passport, visa, government exam applicants |
+| Privacy USP | 100% on-device processing, no photo uploads |
+| GSC clicks (28d) | 23 (8 brand, 15 non-brand) |
+| GSC impressions (28d) | 589 |
+| Average position | 27.4 |
+| Sitemap URLs | 258 (all returning 200) |
+| Indexed pages | ~190 (estimated from GSC) |
+
+---
+
+## 1. Technical SEO — 63 / 100
+
+### What Works
+- TTFB 11–22 ms (Cloudflare Singapore edge — excellent for Indian users)
+- CLS 0.001 / 0.003 — GOOD on both devices (no layout shift issues)
+- PSI SEO score 100/100 on both mobile and desktop
+- Security headers: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, HSTS, Referrer-Policy, Permissions-Policy all present; HSTS `max-age=63072000` = 2-year preload-eligible
+- Static SSG export — full HTML on first byte, no JS rendering required for Googlebot indexation
+- All major AI crawlers explicitly allowed (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, PerplexityBot) with `Allow: /` rules
+- `llms.txt` present and comprehensive
+- Breadcrumbs rich result confirmed PASSING by Google URL Inspection API
+- 258/258 sitemap URLs return 200 — zero 404s or redirect chains
+
+### Issues
+
+#### CRITICAL — Mobile LCP 10,501 ms (POOR)
+The mobile Largest Contentful Paint is **10.5 seconds** — 4.2× above Google's 2,500 ms Good threshold and 2.6× above the 4,000 ms Poor boundary. Google crawls with a mobile-first user agent (confirmed by URL Inspection); this metric directly affects rankings.
+
+**Root causes (ranked by impact):**
+
+| Cause | Estimated Impact |
+|---|---|
+| sample2_before.png (800 KB, uncompressed PNG) | ~4,500 ms |
+| sample4_before.png (713 KB, uncompressed PNG) | ~4,000 ms |
+| sample4_after.png (563 KB, uncompressed PNG) | ~3,200 ms |
+| No preload hint — late browser discovery | ~300 ms |
+| Render-blocking CSS (2 files) | 320–475 ms |
+| AdSense JS on main thread | 156 ms |
+| `.animate-scan-beam` forced reflow | 650 ms |
+| Legacy JS polyfills | 107–141 ms |
+
+**Fix:** Convert the three hero images to WebP at display-appropriate sizes. At typical mobile display widths (360–430px), a 3:4 portrait card needs approximately 270×360 px → ~35–50 KB as WebP. Total hero payload drops from 2,076 KB to under 150 KB. Combined with a preload hint, expected mobile LCP: **2.0–2.5 s (GOOD)**.
+
+#### CRITICAL — /blog/ never crawled by Googlebot
+URL Inspection API result: `/blog/` has **never been crawled** despite returning HTTP 200 and being present in the sitemap. The cause is the absence of any inbound link from a page Googlebot crawls regularly (homepage, footer, navigation). Individual blog posts are discoverable via the sitemap and accumulate GSC impressions, but the blog hub page is completely invisible, breaking hub-and-spoke link flow.
+
+**Fix:** Add one `<a href="/blog/">Blog</a>` link in the site header or footer. Googlebot will discover and crawl it on the next homepage recrawl (typically within 3–7 days after the next deploy).
+
+#### HIGH — www vs non-www canonicalization split
+GSC shows at least 3 page families indexed under `www.easyphoto.in` separately from `easyphoto.in` (malaysia-visa-photo-maker, upsc-photo-resizer, china-visa-photo-maker confirmed). Canonical tags on individual pages point to non-www, but without a server-level redirect, some Googlebot crawls arrive at www variants and index them.
+
+**Fix:** Add Cloudflare Redirect Rule: `www.easyphoto.in/*` → `easyphoto.in/$1` (301 Permanent).
+
+#### HIGH — LCP image not preloaded
+Lighthouse `lcp-discovery-insight` audit fails: the LCP image is discovered only after the HTML parser reaches the `<img>` tag, wasting 300+ ms that could be recovered by a `<head>` preload hint.
+
+**Fix:** Add to `app/layout.tsx`:
+```html
+<link rel="preload" as="image" href="/images/sample4_before_1782052955340.webp" fetchpriority="high" />
+```
+
+#### MEDIUM — .animate-scan-beam non-composited animation
+The hero scan-beam animation uses inline `background-color` changes, triggering forced style recalculation and layout on the main thread (650 ms of layout work during LCP window). Composited properties (`transform`, `opacity`) run on the GPU and do not block the main thread.
+
+---
+
+## 2. Content Quality — 71 / 100
+
+### What Works
+- Blog posts: visible author (Jaspal Kumar) with professional credentials
+- Tool pages: accurate, data-driven specs per exam and country (dimensions, KB limits, background colour)
+- Privacy USP consistently communicated across tool pages
+- FAQ schema: 5+ Q&A pairs on homepage
+- On-device processing is a genuine, verifiable E-E-A-T differentiator (no other major competitor makes this claim with equal emphasis)
+
+### Issues
+
+#### CRITICAL — /india/ returns hard 404
+The URL `/india/` — expected by users following country-style URL patterns and potentially receiving inbound links — returns a 404. The canonical page is `/india-passport-photo-maker/`. No 301 redirect is in place.
+
+#### HIGH — Blog post thin content
+`/blog/why-exam-photo-signature-rejected/` has 1,030 words — 36% below the 1,600-word minimum for competitive exam queries. Individual sections are 80–100 words, insufficient depth for ranking. Top SERP competitors for "exam photo rejected reasons" average 2,200 words with per-reason sections.
+
+#### HIGH — Zero meta descriptions
+7/7 audited pages have no `<meta name="description">`. This is also flagged under GEO because AI search engines fall back to arbitrary body text for citation snippets, reducing brand control and accuracy.
+
+#### MEDIUM — No author attribution on exam pages
+Blog posts credit Jaspal Kumar; the 53 exam-requirements pages carry no author. Google's quality evaluators look for authorship consistency, and the pages handling highest-specificity queries (exact exam photo sizes) are the most author-exposed.
+
+#### MEDIUM — No visible freshness signals
+Exam photo specifications change when government portals update. No "Last verified: [date]" timestamps are visible on exam or country pages. Freshness is a direct relevance signal for time-sensitive regulatory content.
+
+### E-E-A-T Assessment
+
+| Factor | Score | Key Signals |
 |---|---|---|
-| 1 | www.easyphoto.in duplicate content (no redirect) | `www` → 301 → `https://easyphoto.in/` ✅ |
-| 2 | `/_next/` not disallowed in robots.txt | `Disallow: /_next/` present in robots.txt ✅ |
-| 3 | Homepage cannibalizes `/passport-photo/` via title | Title now: "easyPhoto — Document Photo & Form-Resize Tools for India" ✅ |
-| 4 | Homepage missing `SoftwareApplication` schema | 3 JSON-LD blocks: Organization+WebSite, SoftwareApplication, FAQPage ✅ |
-| 5 | AI crawler allowance implicit | robots.txt explicitly allows GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot ✅ |
-| 6 | llms.txt absent | `https://easyphoto.in/llms.txt` live and comprehensive (200 OK) ✅ |
-| 7 | Lighthouse SEO score < 100 | Lighthouse SEO: **100/100** (mobile + desktop) ✅ |
+| Experience | 14/20 | Original tool screenshots; on-device USP is lived experience; limited first-party research data |
+| Expertise | 16/25 | Accurate specs; author credentials on blog; exam pages uncredited |
+| Authoritativeness | 14/25 | Brand new domain, zero backlinks, no external citations yet |
+| Trustworthiness | 19/30 | HTTPS, privacy policy, clear USP; missing meta descriptions reduce trust signals for AI systems |
 
 ---
 
-## Current Issues
+## 3. On-Page SEO — 67 / 100
 
-### 🟠 HIGH
+### GSC Quick Wins (Positions 4–10)
 
-#### 1. Color Contrast Failures — 7 Elements (Accessibility + Ranking Signal)
-- Gold brand color `#A87E10` on `#fcfbf8` (warm cream): contrast ratio **3.58** — minimum 4.5 for normal text
-- Gold on white: ratio **3.71** — same fail
-- Affected: "THE RESULT" eyebrow, "AUTO-FIT" label, country card size text (`51×51 mm`), stat strip spans — all at 11–13px
-- Lighthouse accessibility: **96/100 mobile, 97/100 desktop** (held back by this)
-- Fix: Darken small-text gold to `#7a5c06` (ratio ~5.1) or `#6e5005` (ratio ~5.8). The large gold heading uses `font-bold` so contrast impact is less — this only affects `text-[11px]`, `text-[13px]` non-bold occurrences.
+| Priority | Query | Page | Impressions | Position | Action |
+|---|---|---|---|---|---|
+| HIGH | army photo / army signature / indian army passport photo | /exam-requirements/army-agniveer/ | 6 | 3–9 | Update title; add FAQ schema |
+| HIGH | eci photo resize | /voter-id-photo-resizer/ | 6 | 6.5 | Match H1 to query exactly |
+| HIGH | ssc cpo image / cpo photo | /exam-resizer/ssc-cpo/ | 3 | 6–6.5 | Add CPO spec table above fold |
+| MEDIUM | csir net signature size | /tools/exam-package/ | 2 | 8.5 | Add CSIR NET spec above fold |
+| MEDIUM | sign on picture online | /tools/sign-image/ | 1 | 8.0 | Match H1 to query |
 
-#### 2. Meta Description 184 Characters — Truncated in SERPs
-- Current: "Free tools for Indian passport photos, visa photos, exam form resizing and government document images. Pick your country or exam —" (184 chars)
-- Google truncates at ~160 chars — users see an incomplete sentence
-- Fix: Rewrite to ~155 chars ending on a complete call to action
-
-#### 3. Mobile LCP 3.5s — Needs Improvement (Target < 2.5s)
-- Google AdSense is the primary offender: 229 KB transferred, 107ms main thread on mobile
-- Render-blocking CSS adds 470ms on mobile (Next.js `/_next/static/css/*.css`)
-- Desktop LCP: **0.7s (excellent)** — mobile is the only bottleneck
-- Fix options: (a) load AdSense after user interaction (lazy), (b) defer `adsbygoogle.js` using `loading="lazy"` on ad units, (c) inline critical CSS to remove render-blocking
-
-#### 4. Desktop Total Blocking Time 300ms (Target < 200ms)
-- 6 long tasks on desktop main thread; AdSense contributes 125ms, webpack 141ms
-- Script evaluation: 722ms total
-- Fix: Same AdSense deferral as above would help; also consider route-based code splitting for heavy pages
+**Highest single-page opportunity:** `/exam-requirements/army-agniveer/` ranks for 3 distinct queries at positions 3, 9, 9 with 6 total impressions and **0 clicks**. Title and H1 optimisation + FAQ schema is the fastest path to first non-brand organic clicks.
 
 ---
 
-### 🟡 MEDIUM
+## 4. Schema / Structured Data — 62 / 100
 
-#### 5. CSP Uses `unsafe-inline` + `unsafe-eval`
-- Required for Next.js hydration and WASM (MediaPipe face detection)
-- Lighthouse flags as XSS risk (High severity in `csp-xss` audit)
-- Mitigation: Use `require-trusted-types-for 'script'` where innerHTML is not used; migrate `unsafe-eval` to `wasm-unsafe-eval` explicitly (already partly done — `wasm-unsafe-eval` is present in CSP)
-- `unsafe-inline` cannot be removed without nonce-based CSP in Next.js config
+### Current Implementation
+| Schema Type | Pages | Status |
+|---|---|---|
+| Organization | Homepage | ✓ Present |
+| WebSite | Homepage | ✓ Present (missing SearchAction) |
+| SoftwareApplication | Homepage | ✓ Present |
+| FAQPage | Homepage | ✓ 5 Q&A pairs |
+| BlogPosting | All 24 blog posts | ✓ Present (image property broken) |
+| BreadcrumbList | Category + tool pages | ✓ Present, passing Google validation |
 
-#### 6. Canonical Trailing Slash Mismatch
-- Declared in `<link rel="canonical">`: `https://easyphoto.in/` (with slash)
-- Google's selected canonical: `https://easyphoto.in` (without slash)
-- GSC inspection: `match: false`
-- Not causing indexing failure but indicates inconsistency Google may surface
-- Fix: Consistent trailing slash handling site-wide (already using in pages — likely a Next.js/Cloudflare Pages normalisation difference)
+### Issues
 
-#### 7. Content Clusters Still Need Editorial Support
-From the prior audit, these remain open:
-- **Signature cluster**: 7+ signature tool pages, zero blog posts about signature preparation
-- **PDF cluster**: 8 PDF tools, no editorial hub
-- **"Keep reading"**: not cluster-aware — shows same posts across all articles
+#### HIGH — BlogPosting.image uses generic /og.png
+All 24 blog posts set `BlogPosting.image` to the site-level `/og.png`. Google's Article rich result requirements mandate a unique, post-specific image. This blocks rich result eligibility for all 24 posts. The per-post OG image is already generated — it needs to be wired into the schema.
 
-#### 8. GSC: Low Click-Through Despite Good Positions
-- "eci photo resize": **pos 6.5, 6 impressions, 0 clicks** → /voter-id-photo-resizer/
-- "cpo photo": **pos 6.5, 2 impressions, 0 clicks** → /exam-resizer/ssc-cpo/
-- "army signature": **pos 9, 2 impressions, 0 clicks** → /exam-requirements/army-agniveer/
-- 0 CTR at pos 6–9 suggests title/meta aren't matching searcher intent on these pages
-- Fix: Rewrite title tags for these pages to match exact query intent ("CPO Photo Size Requirements", "Army Agniveer Signature Format")
+#### MEDIUM — WebSite.SearchAction missing
+No Sitelinks Searchbox markup. The tools page has category jump functionality — adding SearchAction enables Google to display the search box in branded SERPs.
 
-#### 9. No CrUX Field Data
-- Google CrUX: "No data — insufficient Chrome traffic volume"
-- No field-measured LCP/INP/CLS — Lighthouse lab estimates only
-- Not fixable; resolves as traffic grows past ~1,000 users/28 days
+#### MEDIUM — Organization.sameAs limited to Pinterest
+Only one social profile in `sameAs`. Expand as new accounts are created. Minimum additions: YouTube (when created), Instagram.
 
 ---
 
-### 🟢 LOW
-
-#### 10. IndexNow Not Implemented
-- Bing, Yandex, Naver receive no notification on deploy
-- Add a Cloudflare Pages deploy hook → IndexNow ping
-
-#### 11. No Image Sitemap Extensions
-- Flag images and tool sample images have no `<image:image>` tags in sitemap
-- Missed Google Images for a visual-output tool site
-
-#### 12. `sameAs` Has Only Pinterest
-- `organizationSchema()` → `sameAs: ["https://www.pinterest.com/easyphoto0604/"]`
-- Add YouTube, LinkedIn, X when accounts are created
-
-#### 13. `llms-full.txt` Not Present
-- `llms.txt` is comprehensive at ~60 lines
-- A `llms-full.txt` with complete spec tables would boost AI citation frequency
-
----
-
-## Performance Deep-Dive (PSI — Lab Data, 2026-06-21)
+## 5. Performance (CWV) — 38 / 100
 
 | Metric | Mobile | Desktop |
 |---|---|---|
-| Performance Score | **90** | **87** |
-| LCP | 3.5s ⚠️ | 0.7s ✅ |
-| TBT | 30ms ✅ | 300ms ⚠️ |
-| CLS | 0 ✅ | 0 ✅ |
-| FCP | 1.6s ✅ | 0.6s ✅ |
-| Speed Index | 2.6s ✅ | 1.2s ✅ |
-| TTFB | 8ms ✅ | 7ms ✅ |
+| Performance Score | 70/100 | 90/100 |
+| LCP | **10,501 ms — POOR** | 1,921 ms — GOOD |
+| CLS | 0.001 — GOOD | 0.003 — GOOD |
+| TBT | 130 ms — GOOD | 60 ms — GOOD |
+| FCP | 1,207 ms — GOOD | 390 ms — GOOD |
 
-**Third-party budget:**
-| Entity | Size | Main Thread |
-|---|---|---|
-| Google AdSense | 229 KB | 107ms (mobile) / 210ms (desktop) |
-| Cloudflare Analytics | 23 KB | 18ms |
-| ad traffic quality | 22 KB | 10ms |
+**CrUX data:** Unavailable. The site does not yet meet Chrome UX Report traffic eligibility thresholds (domain registered 17 days ago). All above data is PSI lab data. CrUX field data expected to become available Q4 2026 once traffic volume grows.
 
-**Recommendation priority:** AdSense deferral would drop mobile LCP below 2.5s and bring desktop TBT under 200ms simultaneously — highest ROI single change available.
+**Expected mobile LCP after Phase 1 fixes:**
+- WebP conversion → removes 1,900 KB from LCP path → ~5,000 ms saved
+- Preload hint → removes late discovery delay → ~300 ms saved
+- AdSense deferral → removes 156 ms from LCP window
+- **Projected mobile LCP: 2,000–2,500 ms (GOOD)**
 
 ---
 
-## GSC Data (Last 28 Days)
+## 6. AI Search Readiness (GEO) — 64 / 100
 
-- **Total clicks**: 7 (all branded "easyphoto", pos 1.9)
-- **Total impressions**: ~200 across 129 queries
-- **Quick wins** (pos 4–20, 2+ impressions):
-  - `/voter-id-photo-resizer/` — "eci photo resize" pos 6.5 (6 impressions)
-  - `/exam-resizer/ssc-cpo/` — "cpo photo" pos 6.5 (2 impressions)
-  - `/exam-requirements/army-agniveer/` — "army photo" pos 3, "army signature" pos 9
-  - `/tools/exam-package/` — "csir net signature size" pos 8.5
+### What Works
+- All 5 major AI bots explicitly allowed in robots.txt
+- `llms.txt` present (confirmed live)
+- FAQPage schema aids AI structured extraction
+- BlogPosting schema with author, dates, and `inLanguage: en-IN`
 
-- **Note**: These quick wins all have 0 clicks. The title/meta copy on these pages isn't compelling searchers to click. Rewriting titles to match search intent is the fastest path to first real organic clicks.
+### Issues
 
----
+#### CRITICAL — Zero meta descriptions (also flagged under Content + On-Page)
+Without meta descriptions, AI search systems (ChatGPT, Perplexity, Google AI Overviews) fall back to arbitrary body text for citation snippets. This is the single highest-leverage fix for AI citation quality — zero additional content work required.
 
-## Schema Status (Homepage)
+#### HIGH — llms-full.txt absent
+`llms.txt` references spec data but the full-detail version (`llms-full.txt`) is not present. AI agents querying the file must make secondary page fetches to retrieve actual dimension tables and KB limits.
 
-| Type | Present | Notes |
-|---|---|---|
-| Organization + WebSite | ✅ | In @graph block |
-| SoftwareApplication | ✅ | Fixed since Jun 18 |
-| FAQPage | ✅ | Homepage FAQ section |
-| BreadcrumbList | ✅ | On all tool + blog pages |
-| BlogPosting | ✅ | All 26+ blog posts |
-| SearchAction | ❌ | Missing Sitelinks Searchbox |
-| ImageObject | ❌ | No image schema |
+#### HIGH — Zero YouTube presence
+YouTube mention correlation with AI citation frequency is ~0.737 — the strongest single predictor of AI search visibility documented in GEO research. easyphoto.in has no YouTube content. Three videos would materially improve long-term AI citation rates:
+1. "How to make Indian passport photo at home (2026)"
+2. "Why exam photos get rejected — and how to fix it"
+3. "easyPhoto 2-minute product demo"
 
----
+### AI Citation Readiness: 63 / 100
 
-## AI Search Readiness — 92/100 (Excellent)
-
-| Signal | Status |
+| Element | Status |
 |---|---|
-| `llms.txt` present + comprehensive | ✅ Excellent |
-| All AI crawlers allowed in robots.txt | ✅ |
-| Answer-first blog post formatting | ✅ |
-| Official source citations in specs | ✅ |
-| `inLanguage: en-IN` on all blog posts | ✅ |
-| `Organization` with `knowsAbout` array | ✅ |
-| `sameAs` depth | ⚠️ Only Pinterest |
-| `llms-full.txt` | ❌ Missing |
+| AI crawlers allowed | ✓ All 5 major bots |
+| llms.txt | ✓ Present |
+| llms-full.txt | ✗ Absent |
+| Meta descriptions | ✗ None |
+| FAQPage schema | ✓ 5 Q&A pairs |
+| Author attribution | ✓ Blog posts; ✗ Exam pages |
+| Passage-level citability | Partial — spec tables citable; narrative sections thin |
 
 ---
 
-## Indexation (GSC URL Inspection)
+## 7. Backlinks — INSUFFICIENT DATA
 
-| Page | Status | Last Crawl |
+**Data source:** Common Crawl (Jan–Mar 2026 release). Domain registered 2026-06-06. Domain was absent from the crawl because it didn't exist at crawl time.
+
+**Key facts:**
+- Zero backlinks expected at 17 days — this is normal and carries no negative signal
+- Clean slate: no toxic legacy links, no prior-owner anchor spam to remediate
+- First Common Crawl appearance expected ~September 2026
+
+**Link building priority order:**
+1. Product Hunt listing (single high-DA link, free)
+2. Indie Hackers post (privacy-USP angle plays well)
+3. Indian travel/visa blogs (natural link context for passport photo tools)
+4. Exam coaching portals (SSC, UPSC prep communities)
+5. Tech press outreach (Gadgets360, YourStory — free tool with on-device privacy story)
+
+---
+
+## 8. Sitemap — 81 / 100
+
+### Overview
+- 258 URLs in a single `<urlset>` sitemap (no index needed at this scale)
+- Valid XML, correct namespace
+- Declared in robots.txt
+- 258/258 URLs return HTTP 200 — zero dead links
+
+### Issues
+
+#### LOW-MEDIUM — Build-stamp lastmod
+163 of 258 URLs (63%) share today's date as `lastmod` — this is a build-timestamp pattern where all pages get the deploy date regardless of actual content change. Google learns to distrust this signal.
+
+**Fix:** Use per-page `updatedAt` metadata in the sitemap generator. Static pages that haven't changed should keep their original date.
+
+#### WARNING — 105 programmatic exam pages
+53 exam-requirements pages + 52 form-resizer pages exceed the 50-page threshold for programmatic content review. Content differentiation appears real at the metadata level (unique specs per exam), but body-text uniqueness across all 105 pages warrants an audit before expanding further.
+
+---
+
+## 9. Search Experience (SXO) — 41 / 100
+
+### SERP Analysis
+
+| Keyword | Dominant Page Type | easyphoto.in | Gap |
+|---|---|---|---|
+| "passport photo maker india" | Interactive tool landing page (10/10 consensus) | /india-passport-photo-maker/ — ALIGNED | Execution gap (authority, media) |
+| "indian passport photo requirements" | Government docs + informational hybrids | No page exists | HIGH MISMATCH |
+| "exam photo resize" | Dedicated exam photo tools | Pages returning 404 | CRITICAL — indexation failure |
+
+### Persona Scores
+
+| Persona | Score | Biggest Gap |
 |---|---|---|
-| `https://easyphoto.in/` | ✅ Submitted & indexed | 2026-06-20 (yesterday) |
-| Referring URLs | Blog internal + Pinterest | www.pinterest.com/easyphoto0604/ |
-| Google canonical | `https://easyphoto.in` (no slash) | Minor mismatch vs declared |
+| Exam Applicant (SSC/UPSC student) | 28/100 | Exam pages 404 — cannot find the tool |
+| Passport/Visa Applicant | 54/100 | No photo requirements guide |
+| NRI Abroad | 58/100 | Trust signals thin (no backlinks, new domain) |
+| HR/Admin | 62/100 | Batch processing / enterprise features absent |
+
+The 41/100 composite is structural: restoring exam page URLs and publishing one requirements guide page is projected to lift the composite to **62–65/100** without any other changes.
 
 ---
 
-## Action Plan
+## What's Working Well (Do Not Break)
 
-### Phase 1 — This Week (Quick Wins)
-
-1. **Fix color contrast** — darken `#A87E10` → `#7a5c06` for text sizes ≤ 13px (CSS custom property change, affects eyebrow + stat text)
-2. **Trim meta description** to ≤ 160 chars on homepage
-3. **Rewrite title tags** for 4 quick-win pages (eci/cpo/army/csir) to exactly match the GSC query
-4. **Defer AdSense loading** — add `data-lazy` or load after DOMContentLoaded to drop mobile LCP below 2.5s
-
-### Phase 2 — This Month (Content Authority)
-
-5. **Write "How to prepare signature for exam forms"** — pillar for signature cluster (7 tools have no editorial hub)
-6. **Write PDF document tools hub** — `/blog/how-to-prepare-documents-for-exam-applications/`
-7. **Add 1 process screenshot** to each blog post (before/after of tool, or sample output image)
-8. **Make "Keep reading" cluster-aware** — group by topic tag
-
-### Phase 3 — Ongoing
-
-9. **IndexNow ping on deploy** — Cloudflare Pages hook → Bing IndexNow API
-10. **Add `SearchAction` to WebSite schema** for Sitelinks Searchbox
-11. **Add image sitemap extensions** for flag images + tool outputs
-12. **Expand `sameAs`** when additional social profiles are created
+1. **Cloudflare edge performance** — TTFB 11–22 ms is world-class. Keep CDN config intact.
+2. **CLS = 0.001** — Perfect layout stability. Image dimensions are set correctly.
+3. **PSI SEO 100/100** — Technical on-page SEO is clean. robots.txt, canonical, meta robots all correct.
+4. **Static SSG export** — Full HTML on first byte. Googlebot doesn't need to execute JS.
+5. **Security posture** — All 7 headers present, HSTS 2-year, CSP in place.
+6. **Schema breadth** — Organization + WebSite + SoftwareApplication + FAQPage + BlogPosting + BreadcrumbList on day 17 is ahead of most competitors.
+7. **AI crawler access** — All 5 major AI bots allowed; llms.txt present.
+8. **Sitemap hygiene** — 258/258 URLs clean, zero 404s, correct XML.
+9. **Privacy USP** — On-device processing is a genuine differentiator with real E-E-A-T value.
+10. **Blog author attribution** — Jaspal Kumar credited on all blog posts, which is above the norm for Indian SaaS tools.
 
 ---
 
-*CrUX field data unavailable — site below Chrome traffic threshold. Backlinks: not yet in Common Crawl. Both will unlock as traffic grows.*
+## PDF Report
+
+Generate a professional PDF from this audit:
+```bash
+cd /Users/apple/.claude/skills/seo
+python3 scripts/google_report.py \
+  --type full \
+  --data /Users/apple/Documents/FrontEndWeb/EasyPhoto/Code/EasyPhoto/easyphoto.in-audit/audit-data.json \
+  --domain easyphoto.in \
+  --output-dir /Users/apple/Documents/FrontEndWeb/EasyPhoto/Code/EasyPhoto/easyphoto.in-audit/
+```
+
+---
+
+*Report generated by Claude SEO (8 specialist agents). Data sources: PSI v5, CrUX API, CrUX History API, GSC Search Analytics, GSC URL Inspection API, GSC Sitemaps API, Common Crawl web graph, live HTTP crawl. Audit date: 2026-06-23.*

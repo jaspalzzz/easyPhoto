@@ -79,6 +79,53 @@ export default function Page() {
         </figcaption>
       </figure>
 
+      <figure className="my-8">
+        <svg viewBox="0 0 760 320" role="img" aria-label="Indian passport photo specification diagram: 45×35mm, white background, face 80-85% of frame" style={{maxWidth:"100%",height:"auto",fontFamily:"system-ui,sans-serif"}}>
+          <title>Indian Passport Photo Specification</title>
+          <desc>Diagram showing Indian passport photo: 45×35mm portrait, plain white background, face occupying 80–85% of frame height, uploaded as 630×810px JPEG under 250KB for Passport Seva portal.</desc>
+          {/* Background */}
+          <rect x="0" y="0" width="760" height="320" fill="none"/>
+          {/* Left: Photo frame */}
+          <rect x="40" y="30" width="210" height="270" rx="4" fill="white" stroke="#163A6B" strokeWidth="2.5"/>
+          {/* Face placeholder */}
+          <ellipse cx="145" cy="145" rx="68" ry="82" fill="#e8eef6"/>
+          <ellipse cx="145" cy="95" rx="38" ry="40" fill="#c9d6e8"/>
+          {/* Shoulder */}
+          <path d="M77 270 Q145 220 213 270" fill="#c9d6e8"/>
+          {/* Dimension arrows */}
+          <line x1="38" y1="30" x2="38" y2="300" stroke="#163A6B" strokeWidth="1.5" markerEnd="url(#arrowB)" markerStart="url(#arrowT)"/>
+          <text x="29" y="170" textAnchor="middle" fontSize="11" fill="#163A6B" fontWeight="700" transform="rotate(-90,29,170)">45 mm (height)</text>
+          <line x1="40" y1="312" x2="250" y2="312" stroke="#163A6B" strokeWidth="1.5"/>
+          <text x="145" y="320" textAnchor="middle" fontSize="11" fill="#163A6B" fontWeight="700">35 mm (width)</text>
+          {/* Head proportion line */}
+          <line x1="252" y1="63" x2="265" y2="63" stroke="#F4C63F" strokeWidth="1.5"/>
+          <line x1="252" y1="227" x2="265" y2="227" stroke="#F4C63F" strokeWidth="1.5"/>
+          <line x1="259" y1="63" x2="259" y2="227" stroke="#F4C63F" strokeWidth="1.5"/>
+          <text x="271" y="152" fontSize="10" fill="#F4C63F" fontWeight="700">80–85%</text>
+          <text x="271" y="165" fontSize="9.5" fill="currentColor" opacity="0.6">of height</text>
+          {/* Right: spec list */}
+          <rect x="340" y="20" width="380" height="280" rx="10" fill="#163A6B" opacity="0.06"/>
+          <text x="530" y="50" textAnchor="middle" fontSize="14" fontWeight="700" fill="#163A6B">Passport Seva Requirements</text>
+          {[
+            {label:"Print size",value:"45 × 35 mm (portrait)"},
+            {label:"Digital size",value:"630 × 810 px JPEG"},
+            {label:"File size",value:"Under 250 KB"},
+            {label:"Background",value:"Plain white (no shading)"},
+            {label:"Face coverage",value:"80–85% of frame height"},
+            {label:"Expression",value:"Neutral, eyes open, mouth closed"},
+            {label:"Glasses",value:"Not permitted"},
+            {label:"Print type",value:"Photo lab — no inkjet"},
+          ].map((row, i) => (
+            <g key={row.label}>
+              <text x="360" y={78 + i * 28} fontSize="11" fontWeight="600" fill="#163A6B">{row.label}</text>
+              <text x="490" y={78 + i * 28} fontSize="11" fill="currentColor" opacity="0.75">{row.value}</text>
+            </g>
+          ))}
+          <text x="530" y="306" textAnchor="middle" fontSize="9" fill="currentColor" opacity="0.4">Source: passportindia.gov.in · verify before applying</text>
+        </svg>
+        <figcaption className="mt-2 text-center text-xs text-muted-foreground">Indian Passport Seva photo spec — domestic applications. OCI and e-Visa use different dimensions.</figcaption>
+      </figure>
+
       <h2>What size is an Indian passport photo?</h2>
       <p>
         For the <strong>domestic Passport Seva</strong> process, the printed

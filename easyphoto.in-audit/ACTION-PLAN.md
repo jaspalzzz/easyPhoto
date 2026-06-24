@@ -1,7 +1,143 @@
-# Action Plan — easyphoto.in SEO Audit
-**Date:** 2026-06-21  
-**Score:** 81/100 → Target 88/100 after all phases  
-**Prior score (2026-06-18):** 71/100 — ▲+10 already achieved
+# SEO Action Plan — easyphoto.in
+**Updated:** 2026-06-23 · **Score:** 61/100 → Target 74–78 after Phase 1 → 86–90 after Phase 4
+**Note:** Prior plan (2026-06-21) used estimated PSI data (81/100). Live PSI run today revealed actual mobile LCP of 10,501 ms (POOR), causing a real score of 61/100. Phase 1 fixes address this directly.
+
+---
+
+## Phase 1: Critical Fixes — Week 1 (by 2026-06-30)
+*Expected score after: 74–78/100. These 6 fixes address 80% of the gap.*
+
+### P1.1 — Convert Hero PNG Images to WebP ⚡ HIGHEST IMPACT
+**File:** `public/images/` + `components/site/HeroVisual.tsx`
+**Effort:** 2–4 hours · **Impact:** Mobile LCP: 10,501 ms → ~2,200 ms (POOR → GOOD)
+
+The three above-fold PNGs total 2,076 KB. WebP at display size: ~35–50 KB each.
+
+```bash
+# Offline conversion (simplest for static export)
+cwebp -q 82 public/images/sample4_before_1782052955340.png -o public/images/sample4_before.webp
+cwebp -q 82 public/images/sample4_after_1782052969219.png -o public/images/sample4_after.webp
+cwebp -q 82 public/images/sample2_before.png -o public/images/sample2_before.webp
+```
+Update `HeroVisual.tsx` to reference `.webp` filenames.
+
+### P1.2 — Add LCP Image Preload Hint
+**File:** `app/layout.tsx` · **Effort:** 30 min · **Impact:** +~300 ms LCP gain
+
+```html
+<link rel="preload" as="image" href="/images/sample4_before.webp" fetchpriority="high" />
+```
+
+### P1.3 — Add /blog/ to Site Navigation
+**File:** `components/site/Header.tsx` or `Footer.tsx` · **Effort:** 30 min
+**Impact:** /blog/ hub indexed within 1–2 weeks; hub-and-spoke link flow restored
+
+The `/blog/` page has **never been crawled** (confirmed: GSC URL Inspection). Cause: no inbound link from any regularly-crawled page. One `<a href="/blog/">Blog</a>` in the nav fixes this.
+
+### P1.4 — 301 Redirect /india/ → /india-passport-photo-maker/
+**File:** `next.config.js` · **Effort:** 30 min · **Impact:** Fixes hard 404, preserves link equity
+
+```js
+async redirects() {
+  return [
+    { source: '/india/', destination: '/india-passport-photo-maker/', permanent: true },
+  ]
+}
+```
+
+### P1.5 — Verify Exam Page Routing
+**Files:** `next.config.js`, `app/tools/` directory · **Effort:** 1 hour
+**Impact:** Restores exam keyword cluster (SXO score 14/100 → 60+/100)
+
+SXO analysis: exam pages returning 404 make the entire exam keyword cluster invisible to Google. Verify and fix routing for:
+- `/tools/exam-package/`
+- `/tools/form-resizer/[exam]/`
+- `/tools/exam-resizer/[exam]/`
+
+### P1.6 — Add Meta Descriptions to Top 10 Pages
+**Files:** `app/**/page.tsx` (metadata export) · **Effort:** 2–4 hours
+**Impact:** CTR improvement + AI search citation quality
+
+All 7 audited pages have zero meta descriptions. Add via Next.js metadata API. Priority:
+1. `/` — "Free passport photo and document tools for India. Compliant photos for passport, visa, SSC, UPSC, and 50+ exams — everything runs in your browser, never uploaded."
+2. `/passport-photo/` — "Make a compliant passport photo online. Correct size, white background, ICAO-compliant — processed in your browser. No upload required."
+3. `/india-passport-photo-maker/` — "Indian passport photo: correct 51×51 mm size, white background, face guidelines met. Free online tool. Photo never leaves your device."
+4. `/tools/` — "Free document tools for India: passport photos, exam photo resize, sign PDF, remove background, compress PDF — all processed in your browser."
+5. `/blog/` — "Guides on Indian passport photos, exam photo requirements, and document compliance. Written by photo ID specialists."
+
+---
+
+## Phase 2: High-Impact SEO — Weeks 2–3 (by 2026-07-14)
+*Expected score after: 78–82/100.*
+
+### P2.1 — Cloudflare www → non-www Redirect (15 min)
+Cloudflare Dashboard → Rules → Redirect Rules: `www.easyphoto.in/*` → `https://easyphoto.in/$1` (301).
+GSC confirmed www-split indexation on at least 3 page families.
+
+### P2.2 — Fix BlogPosting.image — Per-Post OG Image (1 hour)
+All 24 blog posts use the generic site `/og.png`. Replace with per-post OG image URL in the BlogPosting schema. Blocks Article rich result eligibility for all 24 posts.
+
+### P2.3 — Optimise Army Agniveer Page (2 hours)
+GSC: 3 queries at positions 3–9, 6 impressions, **0 clicks**. Fastest path to first non-brand organic clicks.
+- New title: `Army Agniveer Photo & Signature Size Requirements 2026 | easyPhoto`
+- Add FAQPage schema with the 3 ranking queries as questions
+
+### P2.4 — Optimise Voter ID Photo Resizer H1 (1 hour)
+Highest impression count in pos 4–10 band: 6 impressions for "eci photo resize" at 6.5.
+- New H1: `ECI Photo Resize for Voter ID — Free Online Tool`
+- Add "eci photo resize" to meta description
+
+### P2.5 — Defer AdSense via IntersectionObserver (2 hours)
+AdSense loads 156 ms of main-thread work during the LCP window. Defer until ad slot enters viewport.
+
+### P2.6 — Fix .animate-scan-beam to Composited Properties (1 hour)
+`HeroVisual.tsx`: Replace background-color animation with `transform`/`opacity` (GPU compositor — eliminates 650 ms forced-reflow during page load).
+
+---
+
+## Phase 3: Content & Authority — Month 2 (by 2026-07-31)
+*Expected score after: 82–86/100.*
+
+| Action | File | Effort | Impact |
+|---|---|---|---|
+| Expand blog post to 1,800+ words | `content/blog/why-exam-photo-signature-rejected.mdx` | 3–4h | Meets blog minimum for exam queries |
+| Create `/indian-passport-photo-requirements/` guide (2,500 words) | New page | 1 day | Unlocks second SERP intent (currently no page) |
+| Author byline + last-verified date on all 53 exam pages | Exam page template | Half day | E-E-A-T consistency |
+| Create `llms-full.txt` with inline spec tables | `public/llms-full.txt` | Half day | AI agents get specs without secondary fetches |
+| Fix sitemap lastmod to use per-page `updatedAt` | Sitemap generator | 2h | Freshness signals accurate |
+| Add SearchAction to WebSite schema | Homepage schema | 1h | Sitelinks Searchbox eligibility |
+| Add 2+ inline images to top 5 blog posts | Blog MDX files | Half day | Media richness 4→9+/15 |
+
+---
+
+## Phase 4: Growth & Monitoring — Ongoing
+
+| Action | Notes |
+|---|---|
+| Weekly GSC review | Track army-agniveer pos 3 → clicks conversion |
+| Monthly PSI run | Verify mobile LCP stays GOOD after image fix |
+| Product Hunt listing | Highest-ROI first backlink (single high-DA link) |
+| Indie Hackers post | Privacy-first angle plays well |
+| Indian travel/visa/exam blog outreach | 5–10 emails/month |
+| YouTube channel — 3 core videos | Highest AI citation signal (correlation 0.737) |
+| Add GA4 property ID to Claude SEO config | Unlocks organic traffic tracking |
+| Run `/seo drift baseline` after Phase 1 deploy | Captures post-fix state as new baseline |
+
+---
+
+## Score Projection
+
+| Milestone | Score | Key Driver |
+|---|---|---|
+| Current | 61/100 | Mobile LCP 10,501 ms POOR |
+| After Phase 1 | 74–78/100 | LCP GOOD + blog indexed + meta descriptions |
+| After Phase 2 | 78–82/100 | www fixed + schema + GSC quick wins |
+| After Phase 3 | 82–86/100 | Content depth + authority signals |
+| After Phase 4 (6 months) | 86–90/100 | Backlinks + YouTube + CrUX field data |
+
+---
+
+*Updated 2026-06-23 from 8 specialist agents. Supersedes 2026-06-21 plan.*
 
 ---
 

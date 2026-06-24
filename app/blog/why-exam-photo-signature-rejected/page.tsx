@@ -318,7 +318,11 @@ export default function Page() {
       <h2>Before-you-submit checklist</h2>
       <p>
         Use this checklist immediately before uploading. If any item fails,
-        fix it — most take under two minutes with the right tool.
+        fix it — most take under two minutes with the right tool. For the photo
+        specifically, the free{" "}
+        <Link href="/tools/photo-rejection-check/">photo rejection predictor</Link>
+        {" "}runs 9 automated checks (centering, background, expression markers, tilt)
+        entirely on your device.
       </p>
 
       <div className="my-6 space-y-3">

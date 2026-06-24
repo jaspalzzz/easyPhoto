@@ -60,6 +60,61 @@ export default function Page() {
         </ul>
       </div>
 
+      <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
+        <svg
+          viewBox="0 0 760 340"
+          style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif", display: "block" }}
+          role="img"
+          aria-label="Infographic: common passport photo mistakes on the left, correct requirements on the right"
+        >
+          <title>Common passport photo rejection reasons vs. the correct requirements</title>
+          {/* Background */}
+          <rect width="760" height="340" fill="#f9f8f6" />
+          {/* Left panel — mistakes */}
+          <rect x="0" y="0" width="370" height="340" fill="#fff5f5" />
+          {/* Right panel — correct */}
+          <rect x="390" y="0" width="370" height="340" fill="#f0fdf4" />
+          {/* Centre divider */}
+          <rect x="368" y="0" width="24" height="340" fill="#f9f8f6" />
+          <text x="380" y="178" textAnchor="middle" fontSize="18" fontWeight="800" fill="#163A6B">VS</text>
+          {/* Left header */}
+          <rect x="0" y="0" width="370" height="44" fill="#ef4444" />
+          <text x="185" y="27" textAnchor="middle" fontSize="14" fontWeight="700" fill="white">Common Mistakes</text>
+          {/* Right header */}
+          <rect x="390" y="0" width="370" height="44" fill="#163A6B" />
+          <text x="575" y="27" textAnchor="middle" fontSize="14" fontWeight="700" fill="white">What&apos;s Required</text>
+          {/* Left items */}
+          {[
+            ["✗ Dark or coloured background", "Rooms, curtains, patterned walls"],
+            ["✗ Glasses or sunglasses", "Almost all countries have banned them"],
+            ["✗ Shadows on face or wall", "Flash or single-side lighting causes this"],
+            ["✗ File over 1 MB", "Most online portals cap at 20–500 KB"],
+            ["✗ Old photo (>6 months)", "System flags mismatches at the counter"],
+          ].map(([title, note], i) => (
+            <g key={i} transform={`translate(0, ${52 + i * 55})`}>
+              <text x="22" y="18" fontSize="13" fontWeight="700" fill="#b91c1c">{title}</text>
+              <text x="22" y="36" fontSize="11.5" fill="#6b7280">{note}</text>
+            </g>
+          ))}
+          {/* Right items */}
+          {[
+            ["✓ Plain white or light grey", "Light grey is safest — works for UK & Schengen"],
+            ["✓ Eyes fully visible, no glasses", "Relaxed, neutral expression, mouth closed"],
+            ["✓ Soft, even lighting", "Natural window light + gap behind you"],
+            ["✓ 20–50 KB for Indian portals", "Compress to exact KB target before upload"],
+            ["✓ Photo taken within 6 months", "Selfies or phone photos taken that day work"],
+          ].map(([title, note], i) => (
+            <g key={i} transform={`translate(390, ${52 + i * 55})`}>
+              <text x="22" y="18" fontSize="13" fontWeight="700" fill="#15803d">{title}</text>
+              <text x="22" y="36" fontSize="11.5" fill="#6b7280">{note}</text>
+            </g>
+          ))}
+        </svg>
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+          The six most common passport photo rejection reasons — and what to do instead.
+        </figcaption>
+      </figure>
+
       <h2>Wrong size or head proportion</h2>
       <p>
         The single most common cause. Each country specifies both the photo size
@@ -144,8 +199,11 @@ export default function Page() {
 
       <p>
         Get these six right and rejection becomes very unlikely. The fastest way
-        is to let the tool handle size, background and the compliance check, then
-        compress to your portal&apos;s limit.
+        is to let the tool handle size, background and the compliance check. Before
+        you print or upload, run your photo through the free{" "}
+        <Link href="/tools/photo-rejection-check/">passport photo rejection checker</Link>
+        {" "}— it tests face centering, background, tilt, and 6 other ICAO criteria
+        on your device without uploading anything.
       </p>
 
       <div className="mt-12">
