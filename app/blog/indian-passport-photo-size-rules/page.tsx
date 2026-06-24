@@ -129,8 +129,8 @@ export default function Page() {
       <h2>What size is an Indian passport photo?</h2>
       <p>
         For the <strong>domestic Passport Seva</strong> process, the printed
-        photograph is <strong>45&nbsp;×&nbsp;35&nbsp;mm (4.5&nbsp;×&nbsp;3.5&nbsp;cm)</strong>
-        — a portrait rectangle, taller than it is wide. This is not the US
+        photograph is <strong>45&nbsp;×&nbsp;35&nbsp;mm (4.5&nbsp;×&nbsp;3.5&nbsp;cm)</strong>.
+        A portrait rectangle, taller than it is wide. This is not the US
         2&nbsp;×&nbsp;2&nbsp;inch (51&nbsp;×&nbsp;51&nbsp;mm) square; several
         international tools wrongly apply the US size to their &ldquo;India&rdquo;
         preset, which is the most common reason an otherwise-good photo is rejected.
@@ -140,7 +140,7 @@ export default function Page() {
         photo-upload instructions require a digital image that is{" "}
         <strong>exactly 630&nbsp;×&nbsp;810&nbsp;px</strong> in JPEG format,{" "}
         <strong>under 250&nbsp;KB</strong>. That pixel ratio (630:810) is the same
-        7:9 proportion as the 45&nbsp;×&nbsp;35&nbsp;mm print — they are the same
+        7:9 proportion as the 45&nbsp;×&nbsp;35&nbsp;mm print; they are the same
         shape, just one is measured in millimetres and the other in pixels.
       </p>
       <div className="my-5 overflow-x-auto rounded-xl border border-hairline text-sm">
@@ -248,7 +248,7 @@ export default function Page() {
         One rule trips up people who make their own photos: for the{" "}
         <strong>pasted paper photograph</strong>, Passport Seva states that a
         photograph printed on a computer or inkjet printer will <em>not</em> be
-        accepted — it must be a genuine photo-paper lab print. You can absolutely
+        accepted. It must be a genuine photo-paper lab print. You can absolutely
         prepare and crop the photo yourself; you just need to get the final image
         printed at a photo lab (or use a print service) rather than running it
         through a home printer onto ordinary paper.

@@ -43,7 +43,7 @@ export default function Page() {
         <a href="https://ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>{" "}
         portal, click submit, and the
         page throws it back: <em>&quot;Photo is not as per specification.&quot;</em>{" "}
-        No detail, no reason — just a red error and a closing deadline. The good
+        No detail, no reason. Just a red error and a closing deadline. The good
         news: portals reject for a small, predictable set of reasons, and every
         one has a quick fix. Here&apos;s the full list.
       </p>
@@ -171,7 +171,7 @@ export default function Page() {
       <h2>1. The file size is wrong — too big or too small</h2>
       <p>
         This is the single most common rejection. Exam portals specify a{" "}
-        <strong>band</strong>, not just a ceiling — SSC wants the photo between
+        <strong>band</strong>, not just a ceiling: SSC wants the photo between
         20 and 50&nbsp;KB, the signature between 10 and 20&nbsp;KB. A 2&nbsp;MB
         phone photo is rejected for being too large; a heavily compressed
         12&nbsp;KB one is rejected for being <em>too small</em>. Most people only
@@ -214,7 +214,7 @@ export default function Page() {
       <h2>4. The wrong file format</h2>
       <p>
         Nearly every Indian portal wants <strong>JPG/JPEG</strong>. A PNG, a
-        WebP, or an iPhone HEIC file is rejected at upload — and phones now shoot
+        WebP, or an iPhone HEIC file is rejected at upload, and phones now shoot
         HEIC by default, so this catches a lot of people without warning.
       </p>
       <p>
@@ -242,7 +242,7 @@ export default function Page() {
       <p>
         A non-white background, heavy shadows, glasses glare, a smiling
         expression, or an old/blurry photo will fail a manual check even when the
-        file specs are perfect. These can&apos;t be fixed by resizing — they need
+        file specs are perfect. These can&apos;t be fixed by resizing; they need
         a better source photo (plain wall, even light, neutral face).
       </p>
       <p>
@@ -289,8 +289,8 @@ export default function Page() {
         The critical difference between this category and the previous five is
         that file-spec errors are caught by the portal automatically and
         immediately. Photo quality errors sometimes pass the automated upload
-        check only to be caught by a human reviewer during document verification
-        — which can happen weeks later, closer to the exam date, when there is
+        check only to be caught by a human reviewer during document verification,
+        which can happen weeks later, closer to the exam date, when there is
         far less time to correct the application.
       </p>
 
@@ -318,7 +318,7 @@ export default function Page() {
       <h2>Before-you-submit checklist</h2>
       <p>
         Use this checklist immediately before uploading. If any item fails,
-        fix it — most take under two minutes with the right tool. For the photo
+        fix it. Most take under two minutes with the right tool. For the photo
         specifically, the free{" "}
         <Link href="/tools/photo-rejection-check/">photo rejection predictor</Link>
         {" "}runs 9 automated checks (centering, background, expression markers, tilt)
@@ -347,7 +347,7 @@ export default function Page() {
             <li>Pixel dimensions match notification (typically <strong>140×60 px</strong>)</li>
             <li>Background is <strong>pure white</strong> — no paper grain, no shadow, no grey tint</li>
             <li>Signature is in <strong>black or blue ink</strong> only</li>
-            <li>Signature matches the name as registered — do not use initials if your full name is registered</li>
+            <li>Signature matches the name as registered; do not use initials if your full name is registered</li>
           </ul>
         </div>
         <div className="rounded-lg border border-hairline bg-surface p-4">

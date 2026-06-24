@@ -41,7 +41,7 @@ export default function Page() {
   return (
     <BlogPostLayout slug="best-free-exam-photo-resizer-india" ctaHref="/tools/exam-package/" ctaLabel="Try the exam photo tool" faqItems={FAQ_ITEMS}>
       <p>
-        Every Indian government exam portal specifies its own photo and signature size — not just
+        Every Indian government exam portal specifies its own photo and signature size: not just
         dimensions, but an exact kilobyte range.{" "}
         <Link href="/blog/ssc-cgl-chsl-photo-signature-guide-2026/" className="text-brand underline">SSC CGL</Link>{" "}
         wants a 275×354 px JPG between 20 KB and 50 KB. IBPS PO wants 200×230 px in the same KB range.{" "}
@@ -50,7 +50,7 @@ export default function Page() {
       </p>
 
       <p>
-        Five tools solve this specifically for Indian exam portals — all free, each with different
+        Five tools solve this specifically for Indian exam portals: all free, each with different
         coverage and trade-offs. Here is how they compare.
       </p>
 
@@ -77,7 +77,7 @@ export default function Page() {
 
       <p>
         The reason generic photo tools don&apos;t work is that exam portals care about kilobytes,
-        not just pixels. A standard photo tool resizes to dimensions — it doesn&apos;t target a
+        not just pixels. A standard photo tool resizes to dimensions. It doesn&apos;t target a
         KB ceiling. The table below shows how different each portal&apos;s spec is:
       </p>
 
@@ -244,7 +244,7 @@ export default function Page() {
         ExamMint Resizer (resizer.exammint.in) is the most comprehensive exam photo tool
         available. With 104+ exams across Central, State PSC, Banking, Police, Judiciary, and
         Admission categories, it covers more portals than any other free tool. It handles photo,
-        signature, and left thumb impression — the third document type required by some Railway
+        signature, and left thumb impression: the third document type required by some Railway
         boards. Processing is on-device (&quot;Your photos are processed locally in your browser
         and never uploaded to any server&quot;, confirmed on multiple pages), completely free,
         and works offline after initial page load.
@@ -290,7 +290,7 @@ export default function Page() {
       </p>
 
       <p>
-        easyPhoto covers 40+ exam portals — less than ExamMint&apos;s 104+, more than
+        easyPhoto covers 40+ exam portals: less than ExamMint&apos;s 104+, more than
         myexamphoto.in&apos;s ~13. Each spec includes a link to the official notification and a
         verified-on date so you can confirm which source the KB and pixel limits came from.
       </p>
@@ -300,7 +300,7 @@ export default function Page() {
         Passport Seva spec), the US, UK, Canada, Schengen, and 20+ other countries. PDF
         compression for marksheets and certificates. Aadhaar masking. Format conversion (HEIC
         to JPG, WebP to JPG). If your application process involves a passport photo for ID
-        proof, exam photo and signature, and PDF uploads of documents — easyPhoto handles all
+        proof, exam photo and signature, and PDF uploads of documents, easyPhoto handles all
         of it on-device with no upload.
       </p>
 
@@ -330,10 +330,10 @@ export default function Page() {
       </p>
 
       <p>
-        Two caveats worth knowing. First, processing is server-side — photos leave the device.
+        Two caveats worth knowing. First, processing is server-side: photos leave the device.
         The About page claims &quot;never stored after processing,&quot; but this is not backed
         by the privacy policy (which appears to be a default template with no technical detail).
-        Second, the passport photo tool outputs 600×600 px square — this matches an older square
+        Second, the passport photo tool outputs 600×600 px square. This matches an older square
         format and does not align with the Passport Seva portal&apos;s current 35×45 mm portrait
         spec. Do not use the passport tool here for an Indian passport application.
       </p>
@@ -365,7 +365,7 @@ export default function Page() {
         </li>
         <li>
           <strong>You only need SSC, RRB, DSSSB, UPSSSC, NEET, or CCC:</strong>{" "}
-          govtphotoresizer.com covers these six — but note it uses server-side processing and
+          govtphotoresizer.com covers these six, but note it uses server-side processing and
           its privacy policy does not confirm the &quot;no storage&quot; claim made on the About
           page.
         </li>

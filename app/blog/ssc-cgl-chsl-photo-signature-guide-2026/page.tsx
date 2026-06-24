@@ -129,8 +129,8 @@ export default function Page() {
       <h2>Why does SSC now require live photo capture — and what does that mean for you?</h2>
       <p>
         Since the current portal iteration, SSC no longer provides a file-upload
-        field for the photo. The application form opens a live camera interface
-        — you take the shot right there, and the portal saves it directly. The
+        field for the photo. The application form opens a live camera interface.
+        You take the shot right there, and the portal saves it directly. The
         reason is fraud prevention: live capture ensures the photo is recent,
         matches the candidate at the time of application, and cannot be someone
         else&apos;s image.
@@ -143,7 +143,7 @@ export default function Page() {
       <ul>
         <li>
           <strong>Background:</strong> sit in front of a plain white wall.
-          Not cream, not light grey — white. The portal&apos;s validator checks
+          Not cream, not light grey: white. The portal&apos;s validator checks
           this. If your wall is off-white or painted, hang a sheet or stand in
           front of a door.
         </li>
@@ -172,7 +172,7 @@ export default function Page() {
         The live capture produces the photo file internally; the SSC portal
         then resizes and compresses it to fit the 20–50&nbsp;KB band. Your
         job is to ensure the source image is correctly lit, correctly framed,
-        and against the right background — the system handles the file itself.
+        and against the right background; the system handles the file itself.
       </p>
 
       <h2>What background and dress code does the portal expect?</h2>
@@ -185,8 +185,8 @@ export default function Page() {
       </p>
       <ul>
         <li><strong>Background:</strong> plain white only. No patterns, no shadows, no furniture visible.</li>
-        <li><strong>Attire:</strong> formal — a plain, dark-coloured shirt or blouse reads cleanly. Avoid white tops in front of a white background, as the shoulder edges blur together.</li>
-        <li><strong>Glasses:</strong> strictly prohibited. Not just tinted lenses — all glasses, including prescription ones.</li>
+        <li><strong>Attire:</strong> formal. A plain, dark-coloured shirt or blouse reads cleanly. Avoid white tops in front of a white background, as the shoulder edges blur together.</li>
+        <li><strong>Glasses:</strong> strictly prohibited. Not just tinted lenses: all glasses, including prescription ones.</li>
         <li><strong>Head covering:</strong> banned except for religious reasons (turban, hijab). If worn consistently in your identity documents, it will be accepted; otherwise, remove it.</li>
         <li><strong>Expression:</strong> neutral, mouth closed, both eyes fully open. Looking directly at the camera.</li>
         <li><strong>Framing:</strong> head and the top of your shoulders should fill roughly 70–80% of the frame. Don&apos;t stand too far back.</li>
@@ -378,7 +378,7 @@ export default function Page() {
           <strong>Run it through the{" "}
           <Link href="/ssc-signature-resizer/">SSC signature resizer</Link></strong>.
           It removes the paper background, trims the edges, and outputs a clean
-          JPG in the 10–20&nbsp;KB band. Everything runs in your browser —
+          JPG in the 10–20&nbsp;KB band. Everything runs in your browser;
           your signature file is never uploaded to a server.
         </li>
         <li>

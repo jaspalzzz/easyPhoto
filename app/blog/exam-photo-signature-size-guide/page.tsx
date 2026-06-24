@@ -48,7 +48,7 @@ export default function Page() {
       <p>
         Every Indian competitive exam and recruitment portal asks for a photo and
         a signature. Almost every candidate gets at least one of them wrong on the
-        first try — wrong KB, wrong pixel dimensions, grey background on the
+        first try: wrong KB, wrong pixel dimensions, grey background on the
         signature, or a portrait photo where the portal expects a square. This
         guide covers the exact specs for every major exam, how the KB band works,
         how to prepare your signature correctly, and what to fix when the portal
@@ -59,7 +59,7 @@ export default function Page() {
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>Most exams want a <strong>20–50&nbsp;KB JPG photo</strong> and a <strong>10–20&nbsp;KB JPG signature</strong>.</li>
-          <li>Portals check a <em>band</em> — a photo under the minimum is rejected as firmly as one over the cap.</li>
+          <li>Portals check a <em>band</em>: a photo under the minimum is rejected as firmly as one over the cap.</li>
           <li>UPSC and NDA/CDS use a wider 20–300&nbsp;KB range and require a <em>square</em> photo (min 350×350&nbsp;px).</li>
           <li>NTA (NEET, JEE) allows up to 200&nbsp;KB and accepts JPG or PNG.</li>
           <li>Always confirm the exact KB and pixel figures in the official exam notification — they can change between cycles.</li>
@@ -284,7 +284,7 @@ export default function Page() {
         phone camera window, you take the shot in real time, and the system saves
         it directly. This means preparation shifts from &ldquo;have a resized file
         ready&rdquo; to &ldquo;have the right environment ready before you open
-        the form&rdquo; — clean white wall behind you, soft front lighting, formal
+        the form&rdquo;: clean white wall behind you, soft front lighting, formal
         dress. The signature, by contrast, is still uploaded as a scanned file.
       </p>
       <p>
@@ -359,7 +359,7 @@ export default function Page() {
         be within 10 days old at the time of upload, and the portal includes a live
         webcam matching step that compares your uploaded photo against your current
         appearance. The DAF (Detailed Application Form) also requires{" "}
-        <strong>three signatures on one page</strong>, each in a separate box —
+        <strong>three signatures on one page</strong>, each in a separate box;
         not a single signature submitted three times.
       </p>
       <p>
@@ -408,7 +408,7 @@ export default function Page() {
       <p>
         The National Testing Agency uses a more relaxed file size range than most
         other portals. For both NEET and JEE Main, the photo is a{" "}
-        <strong>JPG or PNG between 10&nbsp;KB and 200&nbsp;KB</strong> — and the
+        <strong>JPG or PNG between 10&nbsp;KB and 200&nbsp;KB</strong>; and the
         signature is between <strong>4&nbsp;KB and 30&nbsp;KB</strong> in JPG or
         PNG. This is the widest tolerance of any major exam portal; almost any
         clear phone photo will pass on KB alone.
@@ -442,7 +442,7 @@ export default function Page() {
 
       <h2>How to prepare a correct signature for exam forms</h2>
       <p>
-        The signature is the upload that fails most often — and the fix is almost
+        The signature is the upload that fails most often, and the fix is almost
         always the same: the background is grey or cream rather than white, or
         the signature is over-compressed into illegibility.
       </p>
@@ -451,7 +451,7 @@ export default function Page() {
         <li>
           <strong>Use the right materials.</strong> Sign on bright white unlined
           paper with a black ballpoint or gel pen. Avoid fountain pens (ink spread)
-          and pencil (too faint). The signature should be roughly 4&nbsp;×&nbsp;2&nbsp;cm —
+          and pencil (too faint). The signature should be roughly 4&nbsp;×&nbsp;2&nbsp;cm,
           matching the physical target most portals specify.
         </li>
         <li>
@@ -540,8 +540,8 @@ export default function Page() {
       <ul>
         <li>
           <strong>File too large (over the cap):</strong> compress to a specific
-          KB target. A general &ldquo;reduce quality&rdquo; slider is unreliable
-          — target a value like 35&nbsp;KB to land safely within the 20–50&nbsp;KB band.
+          KB target. A general &ldquo;reduce quality&rdquo; slider is unreliable;
+          target a value like 35&nbsp;KB to land safely within the 20–50&nbsp;KB band.
         </li>
         <li>
           <strong>File too small (under the minimum):</strong> the file was

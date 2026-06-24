@@ -39,7 +39,7 @@ export default function Page() {
           </li>
           <li>
             <strong>Required:</strong> your full name and the date of the
-            photograph must be printed as text at the bottom of the image —
+            photograph must be printed as text at the bottom of the image:
             mandatory for both NDA and CDS.
           </li>
           <li>
@@ -231,11 +231,11 @@ export default function Page() {
         This catches more candidates than you&apos;d expect. Someone applying
         to both IBPS PO and NDA&nbsp;II in the same window often prepares one
         photo file, uses it for the banking form, then uploads the same file to
-        the UPSC portal — and gets an error. The fix is the{" "}
+        the UPSC portal, and gets an error. The fix is the{" "}
         <Link href="/upsc-photo-resizer/">UPSC photo resizer</Link>, which
         outputs a square crop at the correct dimensions. In practice,
         &ldquo;square minimum&rdquo; means the face centred with equal space on
-        the left and right — a slightly wider field of view than a portrait
+        the left and right: a slightly wider field of view than a portrait
         passport crop.
       </p>
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -315,7 +315,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Attire:</strong> formal. A dark, solid-colour shirt reads
-          cleanly against a white background. Avoid white tops — shoulder edges
+          cleanly against a white background. Avoid white tops; shoulder edges
           blur into the background.
         </li>
         <li>
@@ -343,8 +343,8 @@ export default function Page() {
         </li>
         <li>
           <strong>Style:</strong> cursive or connected running hand. If you
-          normally sign in block capitals, practise a simple flowing version
-          — the portal flags all-capitals patterns.
+          normally sign in block capitals, practise a simple flowing version.
+          The portal flags all-capitals patterns.
         </li>
         <li>
           <strong>Photography:</strong> lay the paper flat, hold your phone
@@ -364,7 +364,7 @@ export default function Page() {
         Most rejections at the UPSC portal trace back to four causes: missing
         name and date text, a portrait crop instead of a square, a file below
         the 20&nbsp;KB minimum, and a non-white background. The portal returns
-        a generic error without specifying which check failed — so it pays to
+        a generic error without specifying which check failed, so it pays to
         fix all of these before uploading.
       </p>
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -455,7 +455,7 @@ export default function Page() {
         How to prepare your NDA and CDS photo and signature — complete workflow
       </h2>
       <p>
-        For the photo, do these steps in order — name and date first, resize
+        For the photo, do these steps in order: name and date first, resize
         second, so the text appears at the correct scale in the final file:
       </p>
       <ol>
@@ -492,7 +492,7 @@ export default function Page() {
           <strong>Sign on white A4 paper</strong> in black ink, cursive hand.
         </li>
         <li>
-          <strong>Photograph flat</strong> in even light — no shadows across
+          <strong>Photograph flat</strong> in even light, no shadows across
           the signature.
         </li>
         <li>

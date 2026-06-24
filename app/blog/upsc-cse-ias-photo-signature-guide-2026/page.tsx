@@ -40,12 +40,12 @@ export default function Page() {
           </li>
           <li>
             <strong>Required:</strong> your full name and date of photograph
-            printed at the bottom of the image — mandatory.
+            printed at the bottom of the image: mandatory.
           </li>
           <li>
             <strong>Signature:</strong> sign your name{" "}
             <em>three times vertically</em> on a single plain white sheet in
-            black ink — one file upload, three signatures.
+            black ink: one file upload, three signatures.
           </li>
           <li>
             Upload at the UPSC OTR portal:{" "}
@@ -210,7 +210,7 @@ export default function Page() {
 
       <h2>Does UPSC CSE require name and date on the photo?</h2>
       <p>
-        Yes — mandatory for CSE, just as for NDA and CDS. Your full name and
+        Yes, mandatory for CSE, just as for NDA and CDS. Your full name and
         the date the photograph was taken must appear as printed text at the
         bottom of the image file. This is added digitally before uploading; it
         is not handwritten on the back of a physical print.
@@ -220,7 +220,7 @@ export default function Page() {
         <Link href="/tools/photo-with-name-date/">
           photo-with-name-date tool
         </Link>{" "}
-        to add a clean strip at the bottom — it accepts the photo, takes your
+        to add a clean strip at the bottom. It accepts the photo, takes your
         name and the date in DD/MM/YYYY format, and outputs a correctly
         formatted JPG. Do this step before running the image through the{" "}
         <Link href="/upsc-photo-resizer/">UPSC photo resizer</Link>, so the
@@ -239,7 +239,7 @@ export default function Page() {
       <p>
         UPSC requires candidates to write their signature three times on a
         single sheet of white paper, with the three signatures arranged
-        vertically — one below the other. You photograph or scan this one sheet
+        vertically, one below the other. You photograph or scan this one sheet
         and upload it as a single image file. All three must be in black ink,
         cursive or running hand, and consistent with each other. The portal
         does not accept three separate files.
@@ -474,7 +474,7 @@ export default function Page() {
       <ol>
         <li>
           <strong>Take a fresh photo</strong> within 10 days of the
-          application window opening — plain white wall, no glasses, formal
+          application window opening: plain white wall, no glasses, formal
           attire, face filling at least 75% of the frame.
         </li>
         <li>
@@ -505,7 +505,7 @@ export default function Page() {
           A4 sheet in black ink, cursive hand, with even spacing between each.
         </li>
         <li>
-          <strong>Photograph flat</strong> in even light — no shadow should
+          <strong>Photograph flat</strong> in even light; no shadow should
           fall across any of the three signatures.
         </li>
         <li>

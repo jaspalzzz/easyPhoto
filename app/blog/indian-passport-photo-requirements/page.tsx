@@ -45,7 +45,7 @@ export default function Page() {
       <p>
         Getting your Indian passport photo wrong is one of the most common reasons
         applications stall at the Passport Seva Kendra counter. The officer checks
-        several things in under a minute — size, background, expression, print
+        several things in under a minute: size, background, expression, print
         quality, and whether your photo actually looks like you. This checklist
         covers every requirement so you arrive with a photo that passes.
       </p>
@@ -54,8 +54,8 @@ export default function Page() {
         <strong>Quick summary:</strong> the physical photo is <strong>45×35 mm</strong>{" "}
         (portrait), the digital upload for Passport Seva is <strong>630×810 px JPEG
         under 250 KB</strong>, the background must be <strong>plain white</strong>, glasses
-        are <strong>not permitted</strong>, and the print must come from a photo lab —
-        not an inkjet printer.
+        are <strong>not permitted</strong>, and the print must come from a photo lab.
+        Not an inkjet printer.
       </p>
 
       <h2>The 12-point Indian passport photo compliance checklist</h2>
@@ -109,7 +109,7 @@ export default function Page() {
 
       <p>
         India uses a <strong>portrait rectangle</strong>, not a square. The physical
-        photo is <strong>45 mm tall by 35 mm wide</strong> — this is the dimension that goes
+        photo is <strong>45 mm tall by 35 mm wide</strong>. This is the dimension that goes
         on paper application forms and the printed photos you hand to the PSK officer.
         For the Passport Seva online form, the digital spec is{" "}
         <strong>630 × 810 px (width × height) as a JPEG, under 250 KB</strong>. These are
@@ -120,21 +120,21 @@ export default function Page() {
         The portal sometimes states a 300 KB or even 1 MB ceiling in different help
         documents, but staying under 250 KB satisfies every version of the spec. If
         you submit a photo taken on a modern smartphone (typically 2–10 MB), you
-        must resize and compress it before uploading — the portal will reject
+        must resize and compress it before uploading; the portal will reject
         anything over the cap.
       </p>
 
       <p>
         You also need <strong>two printed physical photos</strong> for the PSK appointment:
         one for the officer and one to keep as a record. These are the 45×35 mm
-        prints — not the digital file.
+        prints, not the digital file.
       </p>
 
       <h2>Background requirements</h2>
 
       <p>
         The background must be <strong>plain white</strong>. Not cream, not light grey,
-        not off-white — white. There must be no pattern, texture, or gradient behind
+        not off-white. White. There must be no pattern, texture, or gradient behind
         you. This is stricter than many other countries: the UK accepts light grey,
         Canada accepts white or light grey, but India requires white.
       </p>
@@ -150,14 +150,14 @@ export default function Page() {
       <p>
         If your background is not white, you can use the{" "}
         <a href="/passport-photo/">free background replacer</a> to set it to white
-        automatically — no upload needed, runs entirely in your browser.
+        automatically; no upload needed, runs entirely in your browser.
       </p>
 
       <h2>Face size, position, and expression</h2>
 
       <p>
         Your face must fill <strong>80–85% of the photo height</strong>. This is the
-        ICAO biometric requirement — facial recognition systems need the face to
+        ICAO biometric requirement: facial recognition systems need the face to
         occupy a consistent proportion of the frame. A photo where the face is too
         small (common when taken from too far away) will be rejected.
       </p>
@@ -178,7 +178,7 @@ export default function Page() {
       <p>
         Smiling is the most common expression mistake. It is natural to smile for a
         camera, but passport photos require a neutral, relaxed expression. A slight
-        smile that does not show teeth is borderline — a visible tooth or dimple will
+        smile that does not show teeth is borderline; a visible tooth or dimple will
         get the photo rejected.
       </p>
 
@@ -201,7 +201,7 @@ export default function Page() {
       <h2>Head covering rule</h2>
 
       <p>
-        Head coverings are <strong>only permitted for religious reasons</strong> —
+        Head coverings are <strong>only permitted for religious reasons</strong>:
         turbans, hijabs, niqabs, and similar. Even when a head covering is worn for
         religious reasons, both ears must be visible, and the face from the forehead
         hairline to the chin must be completely uncovered. Wearing a cap, hat, or
@@ -217,7 +217,7 @@ export default function Page() {
       </p>
 
       <p>
-        This rule applies to the <em>physical</em> photos — not the digital upload.
+        This rule applies to the <em>physical</em> photos, not the digital upload.
         You can prepare, crop, and resize the image yourself, but take the final file
         to a photo lab for printing. Most chemists, stationery shops, and mobile
         photo studios can print a 45×35 mm photo from a file on your phone.
@@ -279,7 +279,7 @@ export default function Page() {
         The photo spec is the same as a fresh application. However, if your
         appearance has changed significantly since your old passport photo (weight
         change, surgery, age), the officer may take extra care to verify your
-        identity. Bring the best photo you can — not one from years ago repurposed.
+        identity. Bring the best photo you can, not one from years ago repurposed.
       </p>
 
       <h3>Police Verification Certificate (PVC)</h3>
@@ -288,7 +288,7 @@ export default function Page() {
         photo. For PVC, you typically submit a standard passport-size photo
         (45×35 mm) with your home address written on the back, but the officer
         collecting it may have additional local requirements. Confirm at your local
-        police station — the spec is not standardised nationally.
+        police station; the spec is not standardised nationally.
       </p>
 
       <h2>OCI card and Indian e-Visa: different requirements</h2>
@@ -346,7 +346,7 @@ export default function Page() {
 
       <p>
         If you are applying through VFS Global, confirm photo requirements on the VFS
-        portal for your country — some VFS centres have slightly different acceptance
+        portal for your country; some VFS centres have slightly different acceptance
         criteria (particularly around acceptable background shades) compared to the
         domestic PSK process.
       </p>
