@@ -31,10 +31,21 @@ function parseAadhaarFields(raw: string): AadhaarFields {
   const genderMatch = text.match(/\b(Male|Female|MALE|FEMALE)\b/i);
   const gender = genderMatch ? (genderMatch[1].toLowerCase() === "male" ? "Male" : "Female") : "";
 
-  // Name: typically the first line that doesn't contain digits or special labels
+  // Name: the first line that looks like an English proper name.
+  // Aadhaar cards print the name in Hindi first, then English on the next line.
+  // English-only OCR garbles Hindi into ASCII junk (e.g. "-r = Po") that
+  // contains chars like = | ~ which never appear in real names. Requiring
+  // the line to start with a letter and contain only name-safe chars (letters,
+  // spaces, hyphens, apostrophes, dots) skips all garbled Hindi lines and picks
+  // the clean English name instead.
   const skipPatterns = /aadhaar|government|india|unique|authority|dob|date|birth|year|male|female|address|help|enrolment/i;
   const nameLine = lines.find(
-    (l) => l.length > 2 && l.length < 60 && !/\d/.test(l) && !skipPatterns.test(l)
+    (l) =>
+      l.length > 2 &&
+      l.length < 60 &&
+      !/\d/.test(l) &&
+      !skipPatterns.test(l) &&
+      /^[A-Za-z][A-Za-z\s.'-]*$/.test(l)
   );
   const name = nameLine ?? "";
 
