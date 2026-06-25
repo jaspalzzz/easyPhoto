@@ -28,8 +28,9 @@ export async function removeBg(
     // fp16 balances quality vs. speed; default output is a transparent PNG.
     model: "isnet_fp16",
     // Self-hosted on R2 — keeps staticimgly.com out of the CSP and hides the
-    // model identity from competitors. Upload script: scripts/upload-imgly-to-r2.mjs
-    publicPath: "https://models.easyphoto.in/imgly/",
+    // model identity from competitors. Assets live under the seg/imgly/ prefix
+    // of the easyphoto-models bucket. Staging helper: scripts/prepare-imgly-folder.mjs
+    publicPath: "https://models.easyphoto.in/seg/imgly/",
     output: { format: "image/png" },
   });
 
