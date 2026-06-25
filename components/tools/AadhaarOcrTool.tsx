@@ -3,7 +3,7 @@
 import * as React from "react";
 import { FileUp, ShieldCheck, Loader2, BadgeCheck, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { recognizeFile, PSM } from "@/lib/ocr";
+import { recognizeFileDualPass } from "@/lib/ocr";
 import { parseAadhaarFields, type AadhaarFields } from "@/lib/aadhaarParse";
 import { cleanOcrText } from "@/lib/ocrTextClean";
 import { OcrResultField } from "@/components/tools/OcrResultField";
@@ -74,16 +74,18 @@ export function AadhaarOcrTool() {
     setError(null);
     setProgress(0);
     try {
-      // eng+hin: Aadhaar prints name/DOB in Hindi AND English. Recognising the
-      // Hindi as Devanagari (not garbled ASCII) is what makes the English name
-      // reliably extractable. Sparse PSM suits a card's scattered label/values.
-      const res = await recognizeFile(file, {
+      // Dual pass: Pass 1 (eng+hin, no whitelist) reads name/DOB/address
+      // including Hindi Devanagari; Pass 2 (digits-only whitelist) gives a
+      // clean digit stream for Verhoeff-validated number extraction.
+      // Deskew corrects tilted card photos before recognition.
+      const { primary, numeric } = await recognizeFileDualPass(file, {
         lang: "eng+hin",
-        params: { psm: PSM.SPARSE },
         onProgress: setProgress,
+        preprocess: { deskew: true },
+        secondPassWhitelist: "0123456789 ",
       });
-      setRawText(cleanOcrText(res.text));
-      setFields(parseAadhaarFields(res.text));
+      setRawText(cleanOcrText(primary.text));
+      setFields(parseAadhaarFields(primary.text, numeric.text));
       track({ name: "tool_success", tool: "aadhaar-ocr" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "OCR failed. Please try again.");

@@ -57,13 +57,29 @@ function extractPan(raw: string): { pan: string; valid: boolean } {
   return { pan: "", valid: false };
 }
 
-export function parsePanFields(raw: string): PanFields {
+/**
+ * Parse PAN card fields from OCR text.
+ *
+ * @param raw          Full-text OCR output. Used for name and father's name.
+ * @param alphanumRaw  Optional alphanumeric-whitelist second-pass OCR output.
+ *                     When provided, PAN number and DOB extraction uses this
+ *                     cleaner source — the restricted character set removes
+ *                     punctuation and symbol confusions that can obscure the
+ *                     AAAAA9999A pattern. Falls back to `raw` when omitted.
+ */
+export function parsePanFields(raw: string, alphanumRaw?: string): PanFields {
   const lines = raw.split("\n").map((l) => l.trim()).filter(Boolean);
 
-  const { pan, valid } = extractPan(raw);
+  // Prefer the clean alphanum pass for structured-field extraction.
+  const numText = alphanumRaw ?? raw;
+
+  const { pan, valid } = extractPan(numText);
   const panEntity = valid ? panEntityType(pan) : "";
 
-  const dobMatch = raw.match(/\b(\d{2})[\/\-.\s](\d{2})[\/\-.\s](\d{4})\b/);
+  // DOB from numeric pass first, then full text fallback.
+  const dobMatch =
+    numText.match(/\b(\d{2})[\/\-.\s](\d{2})[\/\-.\s](\d{4})\b/) ||
+    raw.match(/\b(\d{2})[\/\-.\s](\d{2})[\/\-.\s](\d{4})\b/);
   const dob = dobMatch ? `${dobMatch[1]}/${dobMatch[2]}/${dobMatch[3]}` : "";
 
   // Label-anchored extraction: value on the next non-empty line after a label.

@@ -156,6 +156,108 @@ export async function recognizeFile(
   return recognizeImage(source, lang, onProgress, params);
 }
 
+export interface DualPassResult {
+  /** Full-text pass: all characters, language-aware. Use for name/address. */
+  primary: OcrResult;
+  /** Whitelist pass: restricted character set. Use for number/ID field extraction. */
+  numeric: OcrResult;
+}
+
+export interface RecognizeFileDualPassOptions {
+  lang?: OcrLang;
+  onProgress?: (pct: number) => void;
+  preprocess?: PreprocessOptions | false;
+  /**
+   * Characters allowed in the second (whitelist) pass.
+   * Default: digits + space — sufficient for Aadhaar (12-digit number).
+   * For PAN, pass "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 " to cover the mixed format.
+   */
+  secondPassWhitelist?: string;
+}
+
+/**
+ * Two-pass OCR on a single worker.
+ *
+ * Pass 1 — full-language, no whitelist, PSM_SPARSE: reads everything on the
+ * card including name, DOB, address, and Hindi Devanagari.
+ *
+ * Pass 2 — restricted whitelist, PSM_SPARSE: the constrained character set
+ * means Tesseract can't swap O↔0 or I↔1 across classes, so structured fields
+ * (Aadhaar number, VID, PAN) come through cleaner. Parsers prefer Pass 2 text
+ * for those fields and fall back to Pass 1 for prose fields.
+ *
+ * Using one worker for both passes avoids a second model-load (~600 ms) and
+ * keeps total wall-clock time close to a single pass.
+ */
+export async function recognizeFileDualPass(
+  file: File,
+  {
+    lang = "eng",
+    onProgress,
+    preprocess = {},
+    secondPassWhitelist = "0123456789 ",
+  }: RecognizeFileDualPassOptions = {}
+): Promise<DualPassResult> {
+  const { createWorker } = await import("tesseract.js");
+
+  const source: Blob | HTMLCanvasElement =
+    preprocess === false
+      ? file
+      : await preprocessForOcr(file, preprocess as PreprocessOptions);
+
+  // Mutable progress state shared by the single logger closure.
+  const ps = { offset: 0, scale: 0.65 };
+
+  const w = await createWorker(lang, OEM_LSTM_ONLY, {
+    workerPath: "/tessdata/worker.min.js",
+    corePath: CORE_CDN,
+    logger: onProgress
+      ? (m: { status: string; progress: number }) => {
+          if (m.status === "recognizing text") {
+            onProgress(
+              Math.min(99, Math.round(ps.offset + m.progress * ps.scale * 100))
+            );
+          }
+        }
+      : undefined,
+  });
+
+  try {
+    // ── Pass 1: full text ──────────────────────────────────────────────────
+    ps.offset = 0;
+    ps.scale = 0.65;
+    await w.setParameters(
+      toTesseractParams({ psm: PSM.SPARSE, preserveInterwordSpaces: true })
+    );
+    const r1 = await w.recognize(source as Parameters<typeof w.recognize>[0]);
+    const primary: OcrResult = {
+      text: r1.data.text.trim(),
+      confidence: Math.round(r1.data.confidence),
+    };
+
+    // ── Pass 2: whitelist pass ─────────────────────────────────────────────
+    ps.offset = 65;
+    ps.scale = 0.30;
+    await w.setParameters(
+      toTesseractParams({
+        psm: PSM.SPARSE,
+        charWhitelist: secondPassWhitelist,
+        preserveInterwordSpaces: true,
+      })
+    );
+    const r2 = await w.recognize(source as Parameters<typeof w.recognize>[0]);
+    const numeric: OcrResult = {
+      text: r2.data.text.trim(),
+      confidence: Math.round(r2.data.confidence),
+    };
+
+    onProgress?.(100);
+    return { primary, numeric };
+  } finally {
+    await w.terminate();
+  }
+}
+
 export function terminateOcrWorker(): void {
   workerInstance?.terminate();
   workerInstance = null;

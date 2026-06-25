@@ -33,6 +33,14 @@ export interface PreprocessOptions {
   binarize?: boolean;
   /** Apply the 1%/99% percentile contrast stretch. Default true. */
   contrastStretch?: boolean;
+  /**
+   * Auto-detect and correct document skew via horizontal projection profiles.
+   * Scans –12° … +12° in 1° steps on a 200 px probe image, picks the angle
+   * that maximises row-projection variance (text lines most horizontal), then
+   * rotates the full-resolution canvas to correct. Safe to leave on for ID
+   * cards — adds <10 ms on a probe image. Default false.
+   */
+  deskew?: boolean;
 }
 
 const DEFAULTS: Required<PreprocessOptions> = {
@@ -40,6 +48,7 @@ const DEFAULTS: Required<PreprocessOptions> = {
   maxUpscale: 3,
   binarize: false,
   contrastStretch: true,
+  deskew: false,
 };
 
 /** Rec.601 luma — the conventional grayscale weighting for OCR. */
@@ -142,6 +151,103 @@ function toneMap(data: Uint8ClampedArray, opts: Required<PreprocessOptions>): vo
   }
 }
 
+/**
+ * Estimate the skew angle of a (already-grayscale) canvas using horizontal
+ * projection profiles. Scans –12 … +12° in 1° steps on a 200 px probe copy.
+ * Returns the angle (degrees) that should be APPLIED (not corrected) — i.e. if
+ * text is tilted +5° clockwise, this returns +5.
+ */
+export function estimateDeskewAngle(canvas: HTMLCanvasElement): number {
+  const PROBE_W = 200;
+  const PROBE_H = Math.max(1, Math.round((PROBE_W * canvas.height) / canvas.width));
+
+  const probe = document.createElement("canvas");
+  probe.width = PROBE_W;
+  probe.height = PROBE_H;
+  const pctx = probe.getContext("2d", { willReadFrequently: true });
+  if (!pctx) return 0;
+  pctx.drawImage(canvas, 0, 0, PROBE_W, PROBE_H);
+  const px = pctx.getImageData(0, 0, PROBE_W, PROBE_H).data;
+
+  const cx = PROBE_W / 2;
+  const cy = PROBE_H / 2;
+  let bestAngle = 0;
+  let bestVariance = -1;
+
+  for (let deg = -12; deg <= 12; deg++) {
+    const rad = (deg * Math.PI) / 180;
+    const cos = Math.cos(rad);
+    const sin = Math.sin(rad);
+
+    // Compute horizontal projection by sampling the probe with inverse rotation.
+    const projection = new Float32Array(PROBE_H);
+    for (let y = 0; y < PROBE_H; y++) {
+      let dark = 0;
+      for (let x = 0; x < PROBE_W; x++) {
+        const dx = x - cx;
+        const dy = y - cy;
+        // Inverse rotate: map rotated (x,y) → original (ox, oy)
+        const ox = Math.round(cos * dx + sin * dy + cx);
+        const oy = Math.round(-sin * dx + cos * dy + cy);
+        if (ox >= 0 && ox < PROBE_W && oy >= 0 && oy < PROBE_H) {
+          if (px[(oy * PROBE_W + ox) * 4] < 128) dark++;
+        }
+      }
+      projection[y] = dark;
+    }
+
+    let sum = 0;
+    for (let i = 0; i < projection.length; i++) sum += projection[i];
+    const mean = sum / projection.length;
+    let variance = 0;
+    for (let i = 0; i < projection.length; i++) {
+      const d = projection[i] - mean;
+      variance += d * d;
+    }
+
+    if (variance > bestVariance) {
+      bestVariance = variance;
+      bestAngle = deg;
+    }
+  }
+
+  return bestAngle;
+}
+
+/**
+ * Rotate `canvas` by `angleDeg` degrees, expanding the output canvas to fit
+ * the full rotated image (white background, no cropping). Returns the original
+ * canvas unchanged when |angleDeg| < 0.5°.
+ */
+export function deskewCanvas(
+  canvas: HTMLCanvasElement,
+  angleDeg: number
+): HTMLCanvasElement {
+  if (Math.abs(angleDeg) < 0.5) return canvas;
+
+  const rad = (-angleDeg * Math.PI) / 180; // negate: correct the detected tilt
+  const absCos = Math.abs(Math.cos(rad));
+  const absSin = Math.abs(Math.sin(rad));
+  const W = canvas.width;
+  const H = canvas.height;
+  const newW = Math.round(W * absCos + H * absSin);
+  const newH = Math.round(W * absSin + H * absCos);
+
+  const out = document.createElement("canvas");
+  out.width = newW;
+  out.height = newH;
+  const ctx = out.getContext("2d");
+  if (!ctx) return canvas;
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, newW, newH);
+  ctx.translate(newW / 2, newH / 2);
+  ctx.rotate(rad);
+  ctx.drawImage(canvas, -W / 2, -H / 2);
+
+  return out;
+}
+
 /** Otsu's method: threshold that maximises between-class variance. */
 function otsuThreshold(hist: Uint32Array, total: number): number {
   let sum = 0;
@@ -202,6 +308,11 @@ export async function preprocessForOcr(
     const imageData = ctx.getImageData(0, 0, width, height);
     toneMap(imageData.data, opts);
     ctx.putImageData(imageData, 0, 0);
+
+    if (opts.deskew) {
+      const angle = estimateDeskewAngle(canvas);
+      return deskewCanvas(canvas, angle);
+    }
 
     return canvas;
   } finally {

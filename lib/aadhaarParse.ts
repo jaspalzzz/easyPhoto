@@ -55,18 +55,33 @@ function findValidNumber(
   return "";
 }
 
-export function parseAadhaarFields(raw: string): AadhaarFields {
+/**
+ * Parse Aadhaar fields from OCR text.
+ *
+ * @param raw     Full-text OCR output (eng+hin). Used for name, gender, address.
+ * @param numericRaw  Optional digits-only second-pass OCR output. When provided,
+ *                    number and DOB extraction uses this cleaner source — the
+ *                    whitelist pass eliminates letter↔digit confusions (O↔0,
+ *                    I↔1) that can break Verhoeff validation. Falls back to
+ *                    `raw` when omitted (single-pass compatibility).
+ */
+export function parseAadhaarFields(raw: string, numericRaw?: string): AadhaarFields {
   const text = raw.replace(/\r/g, "");
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
 
+  // Prefer the clean numeric pass for number extraction; fall back to full text.
+  const numText = (numericRaw ?? raw).replace(/\r/g, "");
+
   // VID is 16 digits; resolve it first so its trailing 12 digits can't be
   // mistaken for an Aadhaar.
-  const vidDigits = findValidNumber(text, 16, isValidVid);
+  const vidDigits = findValidNumber(numText, 16, isValidVid);
   const vid = vidDigits ? formatAadhaar(vidDigits) : "";
 
   // Aadhaar: first checksum-valid 12-digit window not inside the VID.
-  const textWithoutVid = vidDigits ? text.replace(new RegExp(vidDigits.replace(/(\d{4})(?=\d)/g, "$1\\s?"), "g"), " ") : text;
-  const aadhaarDigits = findValidNumber(textWithoutVid, 12, isValidAadhaar);
+  const numTextWithoutVid = vidDigits
+    ? numText.replace(new RegExp(vidDigits.replace(/(\d{4})(?=\d)/g, "$1\\s?"), "g"), " ")
+    : numText;
+  const aadhaarDigits = findValidNumber(numTextWithoutVid, 12, isValidAadhaar);
   const aadhaarNumber = aadhaarDigits ? formatAadhaar(aadhaarDigits) : "";
   const aadhaarValid = aadhaarDigits !== "";
 
@@ -77,8 +92,9 @@ export function parseAadhaarFields(raw: string): AadhaarFields {
     if (m) aadhaarMasked = `XXXX XXXX ${m[1]}`;
   }
 
-  // DOB: DD/MM/YYYY (any separator) or a bare "Year of Birth: YYYY".
+  // DOB from numeric pass first (cleaner date digits), then full text fallback.
   const dobMatch =
+    numText.match(/\b(\d{2})[\/\-.\s](\d{2})[\/\-.\s](\d{4})\b/) ||
     text.match(/\b(\d{2})[\/\-.\s](\d{2})[\/\-.\s](\d{4})\b/) ||
     text.match(/Year\s*of\s*Birth\s*[:\-]?\s*(\d{4})/i);
   let dob = "";

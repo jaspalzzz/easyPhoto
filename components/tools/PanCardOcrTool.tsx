@@ -3,7 +3,7 @@
 import * as React from "react";
 import { FileUp, ShieldCheck, Loader2, BadgeCheck, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { recognizeFile, PSM } from "@/lib/ocr";
+import { recognizeFileDualPass } from "@/lib/ocr";
 import { parsePanFields, type PanFields } from "@/lib/panParse";
 import { cleanOcrText } from "@/lib/ocrTextClean";
 import { OcrResultField } from "@/components/tools/OcrResultField";
@@ -63,15 +63,17 @@ export function PanCardOcrTool() {
     setError(null);
     setProgress(0);
     try {
-      // PAN is English-only; preprocessing + sparse PSM handles the scattered
-      // label/value layout of the card.
-      const res = await recognizeFile(file, {
+      // Dual pass: Pass 1 reads all text for name/father/DOB labels; Pass 2
+      // uses an alphanumeric whitelist so the PAN AAAAA9999A pattern isn't
+      // broken by stray punctuation. Deskew corrects tilted card photos.
+      const { primary, numeric } = await recognizeFileDualPass(file, {
         lang: "eng",
-        params: { psm: PSM.SPARSE },
         onProgress: setProgress,
+        preprocess: { deskew: true },
+        secondPassWhitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ",
       });
-      setRawText(cleanOcrText(res.text));
-      setFields(parsePanFields(res.text));
+      setRawText(cleanOcrText(primary.text));
+      setFields(parsePanFields(primary.text, numeric.text));
       track({ name: "tool_success", tool: "pan-card-ocr" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "OCR failed. Please try again.");
