@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ShieldCheck, ExternalLink } from "lucide-react";
+import { ArrowLeft, BookOpen, ShieldCheck, ExternalLink } from "lucide-react";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { PortalResizer } from "@/components/tools/PortalResizer";
@@ -18,6 +18,8 @@ export function DocPhotoResizerPage({
   displayName,
   slug,
   intro,
+  learnMoreHref,
+  learnMoreLabel,
 }: {
   /** Key into PORTAL_PRESETS (the verified spec). */
   portalId: string;
@@ -27,6 +29,9 @@ export function DocPhotoResizerPage({
   slug: string;
   /** Unique lead paragraph. */
   intro: string;
+  /** Optional blog post that covers the full requirements. */
+  learnMoreHref?: string;
+  learnMoreLabel?: string;
 }) {
   const spec = getPortalSpec(portalId)!;
   const prov = specProvenance(spec);
@@ -76,6 +81,15 @@ export function DocPhotoResizerPage({
             </a>
           )}
         </p>
+        {learnMoreHref && (
+          <Link
+            href={learnMoreHref}
+            className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
+          >
+            <BookOpen className="h-4 w-4" strokeWidth={1.75} />
+            {learnMoreLabel ?? `Full ${displayName} photo requirements guide`}
+          </Link>
+        )}
       </header>
 
       <PortalResizer portalId={portalId} displayName={displayName} />

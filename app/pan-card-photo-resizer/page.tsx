@@ -18,6 +18,8 @@ export default function Page() {
       displayName="PAN card"
       slug="pan-card-photo-resizer"
       intro="Get your PAN card photo and signature to the exact size, dimensions and KB the online application (Protean-NSDL / UTIITSL) demands — auto-resized and checked, free, entirely in your browser."
+      learnMoreHref="/blog/pan-card-photo-size/"
+      learnMoreLabel="PAN card photo size & NSDL requirements guide →"
     />
   );
 }
