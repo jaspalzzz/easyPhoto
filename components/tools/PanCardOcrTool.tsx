@@ -1,55 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { FileUp, Copy, ShieldCheck, Loader2, CheckCircle2 } from "lucide-react";
+import { FileUp, ShieldCheck, Loader2, BadgeCheck, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { recognizeImage } from "@/lib/ocr";
+import { recognizeFile, PSM } from "@/lib/ocr";
+import { parsePanFields, type PanFields } from "@/lib/panParse";
+import { OcrResultField } from "@/components/tools/OcrResultField";
 import { track } from "@/lib/analytics";
 
-interface PanFields {
-  panNumber: string;
-  name: string;
-  fathersName: string;
-  dob: string;
-}
-
-function parsePanFields(raw: string): PanFields {
-  const lines = raw.split("\n").map((l) => l.trim()).filter(Boolean);
-
-  // PAN number: 5 letters + 4 digits + 1 letter (e.g. ABCDE1234F)
-  const panMatch = raw.match(/\b([A-Z]{5}[0-9]{4}[A-Z])\b/);
-  const panNumber = panMatch ? panMatch[1] : "";
-
-  // DOB: DD/MM/YYYY
-  const dobMatch = raw.match(/\b(\d{2}[\/\-]\d{2}[\/\-]\d{4})\b/);
-  const dob = dobMatch ? dobMatch[1] : "";
-
-  // Name and father's name: appear after their label lines
-  const nameIdx = lines.findIndex((l) => /^name$/i.test(l));
-  const name = nameIdx >= 0 && lines[nameIdx + 1] ? lines[nameIdx + 1] : "";
-
-  const fatherIdx = lines.findIndex((l) => /father('s)?\s+(name|'s)/i.test(l));
-  const fathersName = fatherIdx >= 0 && lines[fatherIdx + 1] ? lines[fatherIdx + 1] : "";
-
-  // Fallback: if label approach didn't work, guess from structure
-  // PAN cards typically have: Name on line before DOB, Father's name between them
-  if (!name && !fathersName) {
-    const skipPatterns = /income tax|government|india|pan|permanent|account|date|birth|dob/i;
-    const textLines = lines.filter(
-      (l) => l.length > 2 && l.length < 50 && !/\d/.test(l) && !skipPatterns.test(l)
-    );
-    return {
-      panNumber,
-      name: textLines[0] ?? "",
-      fathersName: textLines[1] ?? "",
-      dob,
-    };
-  }
-
-  return { panNumber, name, fathersName, dob };
-}
-
-const IMAGE_ACCEPT = ".jpg,.jpeg,.png,.webp,.bmp,.tiff,.tif";
+const IMAGE_ACCEPT = ".jpg,.jpeg,.png,.webp,.bmp,.tiff,.tif,.heic,.heif";
 
 export function PanCardOcrTool() {
   const [file, setFile] = React.useState<File | null>(null);
@@ -60,7 +19,6 @@ export function PanCardOcrTool() {
   const [error, setError] = React.useState<string | null>(null);
   const [rawText, setRawText] = React.useState<string | null>(null);
   const [fields, setFields] = React.useState<PanFields | null>(null);
-  const [copiedField, setCopiedField] = React.useState<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -72,8 +30,8 @@ export function PanCardOcrTool() {
   }, [preview]);
 
   const pick = (f: File) => {
-    if (!f.type.startsWith("image/") && !/\.(jpe?g|png|webp|bmp|tiff?)$/i.test(f.name)) {
-      setError("Please select an image of your PAN card (JPG, PNG, WebP).");
+    if (!f.type.startsWith("image/") && !/\.(jpe?g|png|webp|bmp|tiff?|heic|heif)$/i.test(f.name)) {
+      setError("Please select an image of your PAN card (JPG, PNG, WebP, HEIC).");
       return;
     }
     if (preview) URL.revokeObjectURL(preview);
@@ -104,28 +62,26 @@ export function PanCardOcrTool() {
     setError(null);
     setProgress(0);
     try {
-      const res = await recognizeImage(file, "eng", (pct) => setProgress(pct));
+      // PAN is English-only; preprocessing + sparse PSM handles the scattered
+      // label/value layout of the card.
+      const res = await recognizeFile(file, {
+        lang: "eng",
+        params: { psm: PSM.SPARSE },
+        onProgress: setProgress,
+      });
       setRawText(res.text);
       setFields(parsePanFields(res.text));
+      track({ name: "tool_success", tool: "pan-card-ocr" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "OCR failed. Please try again.");
+      track({ name: "tool_failure", tool: "pan-card-ocr", reason: "ocr-error" });
     } finally {
       setBusy(false);
     }
   };
 
-  const copyField = async (key: string, value: string) => {
-    await navigator.clipboard.writeText(value);
-    setCopiedField(key);
-    setTimeout(() => setCopiedField(null), 2000);
-  };
-
-  const FIELD_LABELS: { key: keyof PanFields; label: string }[] = [
-    { key: "panNumber", label: "PAN Number" },
-    { key: "name", label: "Name" },
-    { key: "fathersName", label: "Father's Name" },
-    { key: "dob", label: "Date of Birth" },
-  ];
+  const update = (key: keyof PanFields, value: string) =>
+    setFields((prev) => (prev ? { ...prev, [key]: value } : prev));
 
   return (
     <div className="space-y-5">
@@ -155,7 +111,7 @@ export function PanCardOcrTool() {
             <FileUp className="h-8 w-8 text-muted-foreground" />
             <div className="text-center">
               <p className="font-medium text-ink">Drop your PAN card photo here</p>
-              <p className="mt-1 text-sm text-muted-foreground">JPG, PNG, WebP — photo of the card or a scanned copy</p>
+              <p className="mt-1 text-sm text-muted-foreground">JPG, PNG, WebP, HEIC — a clear, straight photo or scan</p>
             </div>
           </>
         )}
@@ -166,10 +122,11 @@ export function PanCardOcrTool() {
       {busy && (
         <div className="space-y-2">
           <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-            <div className="h-full rounded-full bg-brand transition-all duration-300" style={{ width: `${progress}%` }} />
+            <div className="h-full rounded-full bg-brand transition-all duration-300" style={{ width: `${Math.max(4, progress)}%` }} />
           </div>
           <p className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Loader2 className="h-3.5 w-3.5 animate-spin" /> Reading PAN card details…
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            {progress < 5 ? "Loading OCR engine…" : progress < 95 ? "Reading PAN card details…" : "Finishing…"}
           </p>
         </div>
       )}
@@ -182,33 +139,29 @@ export function PanCardOcrTool() {
       {fields && (
         <div className="space-y-3">
           <p className="text-sm font-semibold text-ink">Extracted Fields</p>
+          <p className="text-xs text-muted-foreground">Tap any field to correct it before copying.</p>
+
           <div className="divide-y divide-hairline overflow-hidden rounded-xl border border-hairline">
-            {FIELD_LABELS.map(({ key, label }) => {
-              const value = fields[key];
-              return (
-                <div key={key} className="flex items-start gap-3 px-4 py-3">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
-                    <p className={`mt-0.5 font-medium font-mono ${value ? "text-ink" : "text-muted-foreground italic"}`}>
-                      {value || "Not detected"}
-                    </p>
-                  </div>
-                  {value && (
-                    <button
-                      onClick={() => copyField(key, value)}
-                      className="shrink-0 rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-ink"
-                      aria-label={`Copy ${label}`}
-                    >
-                      {copiedField === key ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </button>
-                  )}
-                </div>
-              );
-            })}
+            <OcrResultField
+              label="PAN Number"
+              value={fields.panNumber}
+              onChange={(v) => update("panNumber", v.toUpperCase())}
+              mono
+              badge={
+                fields.panValid ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
+                    <BadgeCheck className="h-3 w-3" /> Valid format{fields.panEntity ? ` · ${fields.panEntity}` : ""}
+                  </span>
+                ) : fields.panNumber ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-400">
+                    <AlertTriangle className="h-3 w-3" /> Verify format
+                  </span>
+                ) : undefined
+              }
+            />
+            <OcrResultField label="Name" value={fields.name} onChange={(v) => update("name", v)} />
+            <OcrResultField label="Father's Name" value={fields.fathersName} onChange={(v) => update("fathersName", v)} />
+            <OcrResultField label="Date of Birth" value={fields.dob} onChange={(v) => update("dob", v)} mono />
           </div>
 
           <details className="text-sm">

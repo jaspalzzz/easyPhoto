@@ -1,64 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { FileUp, Copy, ShieldCheck, Loader2, CheckCircle2 } from "lucide-react";
+import { FileUp, ShieldCheck, Loader2, BadgeCheck, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { recognizeImage } from "@/lib/ocr";
+import { recognizeFile, PSM } from "@/lib/ocr";
+import { parseAadhaarFields, type AadhaarFields } from "@/lib/aadhaarParse";
+import { OcrResultField } from "@/components/tools/OcrResultField";
 import { track } from "@/lib/analytics";
 
-interface AadhaarFields {
-  aadhaarNumber: string;
-  name: string;
-  dob: string;
-  gender: string;
-  address: string;
-}
+const IMAGE_ACCEPT = ".jpg,.jpeg,.png,.webp,.bmp,.tiff,.tif,.heic,.heif";
 
-function parseAadhaarFields(raw: string): AadhaarFields {
-  const text = raw.replace(/\n+/g, "\n");
-  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
-
-  // Aadhaar number: 12 digits in groups of 4 (printed as XXXX XXXX XXXX)
-  const numMatch = text.match(/\b(\d{4})\s+(\d{4})\s+(\d{4})\b/);
-  const aadhaarNumber = numMatch ? `${numMatch[1]} ${numMatch[2]} ${numMatch[3]}` : "";
-
-  // DOB: DD/MM/YYYY or DD-MM-YYYY or Year of Birth: YYYY
-  const dobMatch = text.match(/\b(\d{2}[\/\-]\d{2}[\/\-]\d{4})\b/) ||
-                   text.match(/Year\s+of\s+Birth[:\s]+(\d{4})/i);
-  const dob = dobMatch ? dobMatch[1] : "";
-
-  // Gender: Male, Female, MALE, FEMALE, M, F
-  const genderMatch = text.match(/\b(Male|Female|MALE|FEMALE)\b/i);
-  const gender = genderMatch ? (genderMatch[1].toLowerCase() === "male" ? "Male" : "Female") : "";
-
-  // Name: the first line that looks like an English proper name.
-  // Aadhaar cards print the name in Hindi first, then English on the next line.
-  // English-only OCR garbles Hindi into ASCII junk (e.g. "-r = Po") that
-  // contains chars like = | ~ which never appear in real names. Requiring
-  // the line to start with a letter and contain only name-safe chars (letters,
-  // spaces, hyphens, apostrophes, dots) skips all garbled Hindi lines and picks
-  // the clean English name instead.
-  const skipPatterns = /aadhaar|government|india|unique|authority|dob|date|birth|year|male|female|address|help|enrolment/i;
-  const nameLine = lines.find(
-    (l) =>
-      l.length > 2 &&
-      l.length < 60 &&
-      !/\d/.test(l) &&
-      !skipPatterns.test(l) &&
-      /^[A-Za-z][A-Za-z\s.'-]*$/.test(l)
-  );
-  const name = nameLine ?? "";
-
-  // Address: lines after "Address" or S/O, W/O, D/O
-  const addrIdx = lines.findIndex((l) => /\b(address|s\/o|w\/o|d\/o|house|flat|village|dist|pin)/i.test(l));
-  const address = addrIdx >= 0
-    ? lines.slice(addrIdx, addrIdx + 4).join(", ")
-    : "";
-
-  return { aadhaarNumber, name, dob, gender, address };
-}
-
-const IMAGE_ACCEPT = ".jpg,.jpeg,.png,.webp,.bmp,.tiff,.tif";
+const EMPTY: AadhaarFields = {
+  aadhaarNumber: "",
+  aadhaarValid: false,
+  aadhaarMasked: "",
+  vid: "",
+  name: "",
+  dob: "",
+  gender: "",
+  address: "",
+};
 
 export function AadhaarOcrTool() {
   const [file, setFile] = React.useState<File | null>(null);
@@ -69,7 +30,6 @@ export function AadhaarOcrTool() {
   const [error, setError] = React.useState<string | null>(null);
   const [rawText, setRawText] = React.useState<string | null>(null);
   const [fields, setFields] = React.useState<AadhaarFields | null>(null);
-  const [copiedField, setCopiedField] = React.useState<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -81,8 +41,8 @@ export function AadhaarOcrTool() {
   }, [preview]);
 
   const pick = (f: File) => {
-    if (!f.type.startsWith("image/") && !/\.(jpe?g|png|webp|bmp|tiff?)$/i.test(f.name)) {
-      setError("Please select an image of your Aadhaar card (JPG, PNG, WebP).");
+    if (!f.type.startsWith("image/") && !/\.(jpe?g|png|webp|bmp|tiff?|heic|heif)$/i.test(f.name)) {
+      setError("Please select an image of your Aadhaar card (JPG, PNG, WebP, HEIC).");
       return;
     }
     if (preview) URL.revokeObjectURL(preview);
@@ -113,29 +73,27 @@ export function AadhaarOcrTool() {
     setError(null);
     setProgress(0);
     try {
-      const res = await recognizeImage(file, "eng", (pct) => setProgress(pct));
+      // eng+hin: Aadhaar prints name/DOB in Hindi AND English. Recognising the
+      // Hindi as Devanagari (not garbled ASCII) is what makes the English name
+      // reliably extractable. Sparse PSM suits a card's scattered label/values.
+      const res = await recognizeFile(file, {
+        lang: "eng+hin",
+        params: { psm: PSM.SPARSE },
+        onProgress: setProgress,
+      });
       setRawText(res.text);
       setFields(parseAadhaarFields(res.text));
+      track({ name: "tool_success", tool: "aadhaar-ocr" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "OCR failed. Please try again.");
+      track({ name: "tool_failure", tool: "aadhaar-ocr", reason: "ocr-error" });
     } finally {
       setBusy(false);
     }
   };
 
-  const copyField = async (key: string, value: string) => {
-    await navigator.clipboard.writeText(value);
-    setCopiedField(key);
-    setTimeout(() => setCopiedField(null), 2000);
-  };
-
-  const FIELD_LABELS: { key: keyof AadhaarFields; label: string }[] = [
-    { key: "aadhaarNumber", label: "Aadhaar Number" },
-    { key: "name", label: "Name" },
-    { key: "dob", label: "Date of Birth" },
-    { key: "gender", label: "Gender" },
-    { key: "address", label: "Address" },
-  ];
+  const update = (key: keyof AadhaarFields, value: string) =>
+    setFields((prev) => (prev ? { ...prev, [key]: value } : prev));
 
   return (
     <div className="space-y-5">
@@ -165,7 +123,7 @@ export function AadhaarOcrTool() {
             <FileUp className="h-8 w-8 text-muted-foreground" />
             <div className="text-center">
               <p className="font-medium text-ink">Drop your Aadhaar card photo here</p>
-              <p className="mt-1 text-sm text-muted-foreground">JPG, PNG, WebP — front side preferred</p>
+              <p className="mt-1 text-sm text-muted-foreground">JPG, PNG, WebP, HEIC — front side, well-lit and straight</p>
             </div>
           </>
         )}
@@ -176,10 +134,11 @@ export function AadhaarOcrTool() {
       {busy && (
         <div className="space-y-2">
           <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-            <div className="h-full rounded-full bg-brand transition-all duration-300" style={{ width: `${progress}%` }} />
+            <div className="h-full rounded-full bg-brand transition-all duration-300" style={{ width: `${Math.max(4, progress)}%` }} />
           </div>
           <p className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Loader2 className="h-3.5 w-3.5 animate-spin" /> Reading Aadhaar details…
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            {progress < 5 ? "Loading OCR engine (English + Hindi)…" : progress < 95 ? "Reading Aadhaar details…" : "Finishing…"}
           </p>
         </div>
       )}
@@ -192,33 +151,35 @@ export function AadhaarOcrTool() {
       {fields && (
         <div className="space-y-3">
           <p className="text-sm font-semibold text-ink">Extracted Fields</p>
+          <p className="text-xs text-muted-foreground">Tap any field to correct it before copying.</p>
+
           <div className="divide-y divide-hairline overflow-hidden rounded-xl border border-hairline">
-            {FIELD_LABELS.map(({ key, label }) => {
-              const value = fields[key];
-              return (
-                <div key={key} className="flex items-start gap-3 px-4 py-3">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
-                    <p className={`mt-0.5 font-medium ${value ? "text-ink" : "text-muted-foreground italic"}`}>
-                      {value || "Not detected"}
-                    </p>
-                  </div>
-                  {value && (
-                    <button
-                      onClick={() => copyField(key, value)}
-                      className="shrink-0 rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-ink"
-                      aria-label={`Copy ${label}`}
-                    >
-                      {copiedField === key ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </button>
-                  )}
-                </div>
-              );
-            })}
+            <OcrResultField
+              label="Aadhaar Number"
+              value={fields.aadhaarNumber || fields.aadhaarMasked}
+              onChange={(v) => update("aadhaarNumber", v)}
+              mono
+              badge={
+                fields.aadhaarValid ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
+                    <BadgeCheck className="h-3 w-3" /> Checksum valid
+                  </span>
+                ) : fields.aadhaarMasked ? (
+                  <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">Masked card</span>
+                ) : fields.aadhaarNumber ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-400">
+                    <AlertTriangle className="h-3 w-3" /> Verify digits
+                  </span>
+                ) : undefined
+              }
+            />
+            {fields.vid && (
+              <OcrResultField label="VID" value={fields.vid} onChange={(v) => update("vid", v)} mono />
+            )}
+            <OcrResultField label="Name" value={fields.name} onChange={(v) => update("name", v)} />
+            <OcrResultField label="Date of Birth" value={fields.dob} onChange={(v) => update("dob", v)} mono />
+            <OcrResultField label="Gender" value={fields.gender} onChange={(v) => update("gender", v)} />
+            <OcrResultField label="Address" value={fields.address} onChange={(v) => update("address", v)} />
           </div>
 
           <details className="text-sm">

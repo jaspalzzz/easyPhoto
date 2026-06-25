@@ -3,7 +3,7 @@
 import * as React from "react";
 import { FileUp, Copy, Download, ShieldCheck, Loader2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { recognizeImage, type OcrLang } from "@/lib/ocr";
+import { recognizeFile, type OcrLang } from "@/lib/ocr";
 import { track } from "@/lib/analytics";
 
 const LANGS: { value: OcrLang; label: string }[] = [
@@ -70,7 +70,9 @@ export function ImageToTextTool() {
     setResult(null);
     setProgress(0);
     try {
-      const res = await recognizeImage(file, lang, setProgress);
+      // Preprocess (grayscale + upscale + contrast) lifts phone photos toward
+      // the ~300 DPI the engine expects — the main accuracy lever.
+      const res = await recognizeFile(file, { lang, onProgress: setProgress });
       setResult(res);
       track({ name: "tool_success", tool: "image-to-text" });
     } catch (err: unknown) {
