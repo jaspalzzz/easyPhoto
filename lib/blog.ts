@@ -345,6 +345,28 @@ export const BLOG_POSTS: BlogPost[] = [
       "NSDL and UTIITSL accept the same physical 25×35 mm photo but different pixel dimensions and KB limits. Here's every spec, why they differ, and what gets photos rejected.",
     readMins: 7,
   },
+  {
+    slug: "voter-id-photo-requirements-2026",
+    title: "Voter ID Photo Size & Requirements 2026 — NVSP Upload Spec",
+    description:
+      "NVSP (voters.eci.gov.in) requires a JPEG photo between 10 KB and 200 KB. Compress to under 100 KB to clear all state portals. Background, pixel size, and form-by-form guide.",
+    date: "June 25, 2026",
+    dateISO: "2026-06-25",
+    excerpt:
+      "The ECI portal accepts photos between 10 KB and 200 KB, but state ERO portals can be stricter. Here's every spec for Form 6, 6A, 8 and why photos get rejected.",
+    readMins: 6,
+  },
+  {
+    slug: "driving-licence-photo-size-sarathi",
+    title: "Driving Licence Photo Size for Sarathi Portal 2026 — RTO Upload Spec",
+    description:
+      "Sarathi (sarathi.parivahan.gov.in) requires a JPEG photo under 40 KB and signature under 20 KB. Full spec for LL, DL, renewal, and duplicate applications.",
+    date: "June 25, 2026",
+    dateISO: "2026-06-25",
+    excerpt:
+      "Sarathi's 40 KB photo limit is tighter than most government portals. Here's every requirement for Learner's Licence and Driving Licence applications, plus what causes rejections.",
+    readMins: 6,
+  },
 ];
 
 export function getPost(slug: string): BlogPost | undefined {
@@ -373,6 +395,8 @@ const CLUSTERS: Record<string, string[]> = {
     "indian-passport-photo-requirements",
     "indian-passport-photo-size-rules",
     "pan-card-photo-size",
+    "voter-id-photo-requirements-2026",
+    "driving-licence-photo-size-sarathi",
     "best-free-passport-photo-maker-india-2026",
     "visafoto-alternative-india-free",
     "cutout-pro-alternative-india",
