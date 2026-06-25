@@ -1,7 +1,26 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { mergePdfs, splitPdf } from "@/lib/pdfMergeSplit";
 import { reorderPdf, signPdf } from "@/lib/pdfEdit";
+
+// pdfjs-dist tries to set up a Web Worker via an http: URL which Node's ESM
+// loader rejects. The PDF tools under test (mergePdfs, splitPdf, reorderPdf,
+// signPdf) use pdf-lib — not pdfjs — for all mutations. pdfjs is only called
+// by assertPdfDecryptable to detect password-protection; our test PDFs are
+// unencrypted, so we can stub pdfjs to skip the worker entirely.
+vi.mock("pdfjs-dist", () => ({
+  GlobalWorkerOptions: { workerSrc: "" },
+  getDocument: vi.fn(() => ({
+    promise: Promise.resolve({
+      numPages: 1,
+      destroy: vi.fn(() => Promise.resolve()),
+      getPage: async () => ({
+        getViewport: () => ({ width: 100, height: 100, scale: 1 }),
+        render: () => ({ promise: Promise.resolve() }),
+      }),
+    }),
+  })),
+}));
 
 // jsdom's Blob/File lack arrayBuffer() (real browsers have it since 2020).
 // Polyfill so the lib's `file.arrayBuffer()` works under test.
