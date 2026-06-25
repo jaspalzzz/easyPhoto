@@ -346,6 +346,17 @@ export const BLOG_POSTS: BlogPost[] = [
     readMins: 7,
   },
   {
+    slug: "how-to-compress-photo-to-50kb",
+    title: "How to Compress a Photo to 50 KB — Exam & Government Portal Guide",
+    description:
+      "Compress any photo to an exact KB target — 50 KB, 40 KB, 20 KB — free and on-device. Includes file size limits for UPSC, SSC, IBPS, NTA, NSDL, NVSP, and Sarathi portals in one table.",
+    date: "June 25, 2026",
+    dateISO: "2026-06-25",
+    excerpt:
+      "Set the target KB and the tool adjusts JPEG quality automatically. Q80 ≈ 45 KB for a 413×531 px photo — perfect for most 50 KB portals. Start from a high-res original for best results.",
+    readMins: 6,
+  },
+  {
     slug: "what-is-dpi-and-how-to-change-it",
     title: "What Is DPI and How to Change It — Image Resolution Explained",
     description:
@@ -428,6 +439,7 @@ const CLUSTERS: Record<string, string[]> = {
     "indian-passport-photo-requirements",
     "indian-passport-photo-size-rules",
     "pan-card-photo-size",
+    "how-to-compress-photo-to-50kb",
     "how-to-print-passport-photos-at-home",
     "what-is-dpi-and-how-to-change-it",
     "how-to-remove-background-from-photo-free",
