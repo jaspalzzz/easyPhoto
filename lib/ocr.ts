@@ -10,12 +10,14 @@
 
 import type { Worker } from "tesseract.js";
 
-// Only the LSTM-optimised WASM variants — smaller and more accurate than full Tesseract.
-const CORE_CDN =
-  "https://cdn.jsdelivr.net/npm/tesseract.js-core@7/";
+// LSTM-only core from jsDelivr — tesseract.js v7 auto-picks the right SIMD
+// variant (relaxedsimd-lstm / simd-lstm / lstm) based on browser capability.
+const CORE_CDN = "https://cdn.jsdelivr.net/npm/tesseract.js-core@7/";
 
-const LANG_CDN =
-  "https://cdn.jsdelivr.net/npm/@tesseract.js-data/";
+// OEM 1 = LSTM_ONLY. Must be explicit — passing `undefined` makes the library
+// treat lstmOnly as false, loading the full legacy Tesseract core which does
+// not exist at this CDN path, hanging the worker indefinitely.
+const OEM_LSTM_ONLY = 1 as const;
 
 export type OcrLang = "eng" | "hin" | "eng+hin";
 
@@ -38,10 +40,11 @@ export async function getOcrWorker(lang: OcrLang = "eng"): Promise<Worker> {
   if (!workerPromise) {
     workerPromise = (async () => {
       const { createWorker } = await import("tesseract.js");
-      const w = await createWorker(lang, undefined, {
+      const w = await createWorker(lang, OEM_LSTM_ONLY, {
         workerPath: "/tessdata/worker.min.js",
         corePath: CORE_CDN,
-        langPath: LANG_CDN,
+        // langPath omitted → tesseract.js auto-resolves the correct jsDelivr
+        // URL for the LSTM-only traineddata (e.g. @tesseract.js-data/eng/4.0.0_best_int)
       });
       workerInstance = w;
       currentLang = lang;
@@ -66,10 +69,10 @@ export async function recognizeImage(
 
   // Spin up a fresh worker for each call so progress events are clean.
   // For batch use cases, callers can use getOcrWorker() directly.
-  const w = await createWorker(lang, undefined, {
+  const w = await createWorker(lang, OEM_LSTM_ONLY, {
     workerPath: "/tessdata/worker.min.js",
     corePath: CORE_CDN,
-    langPath: LANG_CDN,
+    // langPath omitted → auto-resolves correct jsDelivr URL for LSTM traineddata
     logger: onProgress
       ? (m: { status: string; progress: number }) => {
           if (m.status === "recognizing text") {
