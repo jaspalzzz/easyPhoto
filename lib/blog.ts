@@ -346,6 +346,17 @@ export const BLOG_POSTS: BlogPost[] = [
     readMins: 7,
   },
   {
+    slug: "what-is-dpi-and-how-to-change-it",
+    title: "What Is DPI and How to Change It — Image Resolution Explained",
+    description:
+      "DPI is a print metadata tag — not a measure of visual quality. Changing it doesn't alter pixels. Here's when it matters (NSDL/UTIITSL require 200 DPI), when it doesn't, and how to change it without re-encoding.",
+    date: "June 25, 2026",
+    dateISO: "2026-06-25",
+    excerpt:
+      "Most portals don't check DPI — they check file size and pixel dimensions. NSDL and UTIITSL are the main exceptions (200 DPI required). Changing the metadata tag in your browser takes seconds and doesn't re-encode the JPEG.",
+    readMins: 6,
+  },
+  {
     slug: "how-to-print-passport-photos-at-home",
     title: "How to Print Passport Photos at Home — Sheet Layout, DPI & Paper Guide",
     description:
@@ -418,6 +429,7 @@ const CLUSTERS: Record<string, string[]> = {
     "indian-passport-photo-size-rules",
     "pan-card-photo-size",
     "how-to-print-passport-photos-at-home",
+    "what-is-dpi-and-how-to-change-it",
     "how-to-remove-background-from-photo-free",
     "voter-id-photo-requirements-2026",
     "driving-licence-photo-size-sarathi",
