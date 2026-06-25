@@ -4,6 +4,7 @@ import * as React from "react";
 import { FileUp, Copy, Download, ShieldCheck, Loader2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { recognizeFile, type OcrLang } from "@/lib/ocr";
+import { cleanOcrText, detectIdCard } from "@/lib/ocrTextClean";
 import { track } from "@/lib/analytics";
 
 const LANGS: { value: OcrLang; label: string }[] = [
@@ -23,6 +24,8 @@ export function ImageToTextTool() {
   const [dragging, setDragging] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<{ text: string; confidence: number } | null>(null);
+  const [rawOcrText, setRawOcrText] = React.useState<string | null>(null);
+  const [cardHint, setCardHint] = React.useState<"aadhaar" | "pan" | null>(null);
   const [copied, setCopied] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -47,6 +50,8 @@ export function ImageToTextTool() {
     setPreview(URL.createObjectURL(f));
     setError(null);
     setResult(null);
+    setRawOcrText(null);
+    setCardHint(null);
     setProgress(0);
   };
 
@@ -73,7 +78,10 @@ export function ImageToTextTool() {
       // Preprocess (grayscale + upscale + contrast) lifts phone photos toward
       // the ~300 DPI the engine expects — the main accuracy lever.
       const res = await recognizeFile(file, { lang, onProgress: setProgress });
-      setResult(res);
+      const cleaned = cleanOcrText(res.text);
+      setRawOcrText(res.text);
+      setResult({ ...res, text: cleaned });
+      setCardHint(detectIdCard(res.text));
       track({ name: "tool_success", tool: "image-to-text" });
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "OCR failed. Please try a clearer image.");
@@ -211,6 +219,23 @@ export function ImageToTextTool() {
       {/* Result */}
       {result && (
         <div className="space-y-2">
+          {/* ID card detected — suggest dedicated tool */}
+          {cardHint && (
+            <div className="rounded-md border border-brand/30 bg-brand/5 px-3 py-2.5 text-xs text-ink">
+              <span className="font-semibold">
+                {cardHint === "aadhaar" ? "Aadhaar card detected." : "PAN card detected."}
+              </span>{" "}
+              For structured fields (number, name, DOB, address), use the{" "}
+              <a
+                href={cardHint === "aadhaar" ? "/tools/aadhaar-ocr" : "/tools/pan-card-ocr"}
+                className="font-semibold text-brand underline underline-offset-2 hover:opacity-80"
+              >
+                {cardHint === "aadhaar" ? "Aadhaar OCR" : "PAN Card OCR"}
+              </a>{" "}
+              tool — it extracts each field separately with validation.
+            </div>
+          )}
+
           <div className="flex items-center justify-between">
             <p className="text-xs font-semibold text-ink-soft uppercase tracking-wider">
               Extracted text
@@ -242,6 +267,22 @@ export function ImageToTextTool() {
             <p className="text-xs text-amber-700">
               No text found. Try a clearer image with good contrast and horizontal text.
             </p>
+          )}
+
+          {/* Raw OCR output — collapsed by default */}
+          {rawOcrText && rawOcrText !== result.text && (
+            <details className="text-xs">
+              <summary className="cursor-pointer text-muted-foreground hover:text-ink select-none">
+                Show raw OCR output
+              </summary>
+              <textarea
+                readOnly
+                value={rawOcrText}
+                rows={Math.min(14, Math.max(4, rawOcrText.split("\n").length + 1))}
+                className="mt-2 w-full resize-y rounded-md border border-hairline bg-accent/30 px-3 py-2 font-mono text-xs text-ink focus:outline-none"
+                aria-label="Raw OCR output"
+              />
+            </details>
           )}
         </div>
       )}

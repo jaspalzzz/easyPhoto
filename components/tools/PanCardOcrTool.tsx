@@ -5,6 +5,7 @@ import { FileUp, ShieldCheck, Loader2, BadgeCheck, AlertTriangle } from "lucide-
 import { Button } from "@/components/ui/button";
 import { recognizeFile, PSM } from "@/lib/ocr";
 import { parsePanFields, type PanFields } from "@/lib/panParse";
+import { cleanOcrText } from "@/lib/ocrTextClean";
 import { OcrResultField } from "@/components/tools/OcrResultField";
 import { track } from "@/lib/analytics";
 
@@ -69,7 +70,7 @@ export function PanCardOcrTool() {
         params: { psm: PSM.SPARSE },
         onProgress: setProgress,
       });
-      setRawText(res.text);
+      setRawText(cleanOcrText(res.text));
       setFields(parsePanFields(res.text));
       track({ name: "tool_success", tool: "pan-card-ocr" });
     } catch (err) {

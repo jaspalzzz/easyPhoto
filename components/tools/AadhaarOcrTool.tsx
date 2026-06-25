@@ -5,6 +5,7 @@ import { FileUp, ShieldCheck, Loader2, BadgeCheck, AlertTriangle } from "lucide-
 import { Button } from "@/components/ui/button";
 import { recognizeFile, PSM } from "@/lib/ocr";
 import { parseAadhaarFields, type AadhaarFields } from "@/lib/aadhaarParse";
+import { cleanOcrText } from "@/lib/ocrTextClean";
 import { OcrResultField } from "@/components/tools/OcrResultField";
 import { track } from "@/lib/analytics";
 
@@ -81,7 +82,7 @@ export function AadhaarOcrTool() {
         params: { psm: PSM.SPARSE },
         onProgress: setProgress,
       });
-      setRawText(res.text);
+      setRawText(cleanOcrText(res.text));
       setFields(parseAadhaarFields(res.text));
       track({ name: "tool_success", tool: "aadhaar-ocr" });
     } catch (err) {
