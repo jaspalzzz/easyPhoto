@@ -11,7 +11,6 @@ import {
   PORTAL_CATEGORY_LABEL,
 } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
-import { dedicatedResizerLinks } from "@/lib/examResizers";
 import { SUB_EXAM_RESIZERS, RESIZER_YEAR } from "@/lib/subExamResizers";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -111,7 +110,6 @@ export default async function Page({
   const sig = sigKb(spec);
   const path = `/exam-requirements/${exam}/`;
   const faqItems = portalFaqItems(spec);
-  const dedicated = dedicatedResizerLinks(exam);
   const related = relatedPortals(exam, 6);
   const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(exam)];
 
@@ -245,15 +243,6 @@ export default async function Page({
               Photo + signature kit
             </Link>
           )}
-          {dedicated.map((d) => (
-            <Link
-              key={d.path}
-              href={d.path}
-              className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50"
-            >
-              {d.kind === "photo" ? "Photo only" : "Signature only"}
-            </Link>
-          ))}
         </div>
       </section>
 

@@ -2,3 +2,25 @@
 # Format: /source /destination status_code
 
 /india/ /india-passport-photo-maker/ 301
+
+# Wave 2b: Dedicated portal resizer pages → form-resizer (consolidates 4→2 pages per portal).
+# The combined form-resizer at /tools/form-resizer/{portal}/ is noindexed;
+# /exam-requirements/{exam}/ remains the single indexed canonical per portal.
+/ctet-photo-resizer/ /tools/form-resizer/ctet/ 301
+/driving-licence-photo-resizer/ /tools/form-resizer/driving-licence/ 301
+/gate-photo-resizer/ /tools/form-resizer/gate/ 301
+/ibps-photo-resizer/ /tools/form-resizer/ibps/ 301
+/lic-photo-resizer/ /tools/form-resizer/lic/ 301
+/nabard-photo-resizer/ /tools/form-resizer/nabard/ 301
+/nda-photo-resizer/ /tools/form-resizer/nda/ 301
+/nta-photo-resizer/ /tools/form-resizer/nta/ 301
+/pan-card-photo-resizer/ /tools/form-resizer/pan/ 301
+/railway-photo-resizer/ /tools/form-resizer/rrb/ 301
+/rbi-photo-resizer/ /tools/form-resizer/rbi/ 301
+/sbi-po-photo-resizer/ /tools/form-resizer/sbi/ 301
+/ssc-photo-resizer/ /tools/form-resizer/ssc/ 301
+/ssc-signature-resizer/ /tools/form-resizer/ssc/ 301
+/tnpsc-photo-resizer/ /tools/form-resizer/tnpsc/ 301
+/upsc-photo-resizer/ /tools/form-resizer/upsc/ 301
+/upsc-signature-resizer/ /tools/form-resizer/upsc/ 301
+/voter-id-photo-resizer/ /tools/form-resizer/voter-id/ 301
