@@ -6,7 +6,6 @@ import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { PortalResizer } from "@/components/tools/PortalResizer";
 import { portalFaqItems } from "@/lib/faqs";
-import { dedicatedResizerLinks } from "@/lib/examResizers";
 import {
   relatedPortals,
   portalCategory,
@@ -51,7 +50,6 @@ export default async function Page({
   if (!spec) notFound();
 
   const hasSignature = spec.sigLimitKb !== undefined;
-  const dedicated = dedicatedResizerLinks(portal);
   const related = relatedPortals(portal, 6);
   const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(portal)];
 
@@ -100,29 +98,6 @@ export default async function Page({
         </Link>{" "}
         — official size, dimensions &amp; source.
       </p>
-
-      {dedicated.length > 0 && (
-        <section className="mt-8 rounded-lg border border-hairline bg-paper p-5">
-          <h2 className="text-base font-semibold tracking-tight">
-            Need just one document?
-          </h2>
-          <p className="mt-1 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            These dedicated tools focus on a single document, with the exact{" "}
-            {spec.name} specs and a verified-source check.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-1.5">
-            {dedicated.map((d) => (
-              <Link
-                key={d.path}
-                href={d.path}
-                className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
-              >
-                {d.kind === "photo" ? "Photo resizer" : "Signature resizer"}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* Cluster the matrix: link to topically related exam resizers. */}
       <section className="mt-8">
