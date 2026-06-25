@@ -346,6 +346,17 @@ export const BLOG_POSTS: BlogPost[] = [
     readMins: 7,
   },
   {
+    slug: "how-to-remove-background-from-photo-free",
+    title: "How to Remove Background from Photo Free — No Upload, No Watermark",
+    description:
+      "Remove any photo background in your browser — no server upload, no account, no watermark. AI runs on-device via WebGPU. White background for ID photos in one click.",
+    date: "June 25, 2026",
+    dateISO: "2026-06-25",
+    excerpt:
+      "The AI model runs entirely in your browser — nothing is uploaded to a server. Desktop uses RMBG-1.4 at 2048 px for sharp hair edges. White background for ID photos in one click.",
+    readMins: 6,
+  },
+  {
     slug: "voter-id-photo-requirements-2026",
     title: "Voter ID Photo Size & Requirements 2026 — NVSP Upload Spec",
     description:
@@ -395,6 +406,7 @@ const CLUSTERS: Record<string, string[]> = {
     "indian-passport-photo-requirements",
     "indian-passport-photo-size-rules",
     "pan-card-photo-size",
+    "how-to-remove-background-from-photo-free",
     "voter-id-photo-requirements-2026",
     "driving-licence-photo-size-sarathi",
     "best-free-passport-photo-maker-india-2026",
