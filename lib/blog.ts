@@ -346,6 +346,17 @@ export const BLOG_POSTS: BlogPost[] = [
     readMins: 7,
   },
   {
+    slug: "how-to-print-passport-photos-at-home",
+    title: "How to Print Passport Photos at Home — Sheet Layout, DPI & Paper Guide",
+    description:
+      "Tile 8 passport photos on a 4×6 inch sheet at 300 DPI — print at home for under ₹20. Step-by-step guide: paper, printer settings, cut lines, and why 'fit to page' ruins size.",
+    date: "June 25, 2026",
+    dateISO: "2026-06-25",
+    excerpt:
+      "Home-printed passport photos cost ₹3–₹8 per print vs ₹50–₹150 at a studio. The key is disabling 'fit to page' scaling, using photo paper, and starting with a correctly cropped image.",
+    readMins: 6,
+  },
+  {
     slug: "how-to-remove-background-from-photo-free",
     title: "How to Remove Background from Photo Free — No Upload, No Watermark",
     description:
@@ -406,6 +417,7 @@ const CLUSTERS: Record<string, string[]> = {
     "indian-passport-photo-requirements",
     "indian-passport-photo-size-rules",
     "pan-card-photo-size",
+    "how-to-print-passport-photos-at-home",
     "how-to-remove-background-from-photo-free",
     "voter-id-photo-requirements-2026",
     "driving-licence-photo-size-sarathi",
