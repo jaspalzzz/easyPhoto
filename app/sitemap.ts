@@ -40,14 +40,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/tools/",
     ...SIGNATURE_KB_TARGETS.map((kb) => sigKbPath(kb)),
-    "/nda-photo-resizer/",
-    "/ctet-photo-resizer/",
-    "/nta-photo-resizer/",
-    "/gate-photo-resizer/",
-    "/nabard-photo-resizer/",
-    "/rbi-photo-resizer/",
-    "/lic-photo-resizer/",
-    "/tnpsc-photo-resizer/",
     "/us-passport-photo/",
     "/uk-passport-photo/",
     "/canada-passport-photo/",
@@ -61,9 +53,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/exam-requirements/",
     "/exam-photo-size/",
     "/exam-calendar/",
-    "/pan-card-photo-resizer/",
-    "/voter-id-photo-resizer/",
-    "/driving-licence-photo-resizer/",
     "/aadhaar-photo/",
     ...KB_TARGETS.map((kb) => kbPath(kb)),
     ...PDF_KB_TARGETS.map((kb) => pdfKbPath(kb)),
@@ -78,14 +67,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/baby-passport-photo/",
     "/unlock-aadhaar-pdf/",
     "/visa-photo/",
-    "/ssc-photo-resizer/",
-    "/ssc-signature-resizer/",
     "/ssc-photo-with-name-date/",
-    "/upsc-photo-resizer/",
-    "/upsc-signature-resizer/",
-    "/railway-photo-resizer/",
-    "/ibps-photo-resizer/",
-    "/sbi-po-photo-resizer/",
   ];
 
   // Google ignores changeFrequency and priority — omit them for a leaner sitemap.
@@ -129,15 +111,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${SITE_URL}/exam-requirements/${key}/`,
       lastModified: examFreshness(key),
     })),
-    ...PORTAL_KEYS.map((key) => ({
-      url: `${SITE_URL}/tools/form-resizer/${key}/`,
-      lastModified: examFreshness(key),
-    })),
-
     // ── Blog posts — all have opengraph-image.tsx; use their own publish date ─
-    // Sub-exam resizers (/exam-resizer/*) are noindex — they duplicate the
-    // /exam-requirements/ intent and inherit the parent spec — so they are
-    // intentionally omitted from the sitemap (AdSense low-value audit).
+    // Portal form resizers (/tools/form-resizer/*) and sub-exam resizers
+    // (/exam-resizer/*) are noindex — they duplicate the /exam-requirements/
+    // intent and inherit the parent spec — so they are intentionally omitted
+    // from the sitemap. Legacy *-photo-resizer URLs redirect to the noindexed
+    // form resizers, so they are also omitted: sitemaps must list final,
+    // indexable canonical URLs only.
     ...BLOG_POSTS.map((p) => ({
       url: `${SITE_URL}/blog/${p.slug}/`,
       lastModified: p.updatedISO ?? p.dateISO,

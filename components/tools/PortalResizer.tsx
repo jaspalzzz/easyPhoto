@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
+import { specProvenance } from "@/lib/specRegistry";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
-import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle, ShieldCheck, Camera, PenLine } from "lucide-react";
+import { AlertCircle, AlertTriangle, Camera, ExternalLink, PenLine, ShieldCheck } from "lucide-react";
 
 export function PortalResizer({
   portalId,
@@ -34,6 +34,8 @@ export function PortalResizer({
 
   // Check if signature tools are required for this spec
   const hasSignature = spec.sigLimitKb !== undefined;
+  const provenance = specProvenance(spec);
+  const ProvenanceIcon = provenance.verified ? ShieldCheck : AlertTriangle;
 
   return (
     <div className="space-y-6">
@@ -41,6 +43,25 @@ export function PortalResizer({
       <div className="rounded-lg border border-brand bg-brand-soft/10 p-5">
         <h3 className="font-semibold text-brand text-base mb-1.5">{shownName} Requirements</h3>
         <p className="text-sm text-muted-foreground leading-relaxed mb-3">{spec.description}</p>
+        <p className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-ink-soft">
+          <ProvenanceIcon
+            className={`h-3.5 w-3.5 shrink-0 ${
+              provenance.verified ? "text-brand" : "text-amber-600 dark:text-amber-400"
+            }`}
+            strokeWidth={1.75}
+          />
+          <span>{provenance.label}.</span>
+          {provenance.url && (
+            <a
+              href={provenance.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-0.5 font-medium text-brand hover:underline"
+            >
+              Official source <ExternalLink className="h-3 w-3" />
+            </a>
+          )}
+        </p>
         <div className="flex flex-wrap gap-4 text-xs font-mono">
           <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
             <Camera className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
