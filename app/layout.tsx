@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import Script from "next/script";
 import { Space_Grotesk, Inter, JetBrains_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 
@@ -38,6 +37,7 @@ import { DownloadToast } from "@/components/site/DownloadToast";
 import { PwaInstallHint } from "@/components/site/PwaInstallHint";
 import { CommandPalette } from "@/components/site/CommandPalette";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
+import { AdSenseScript } from "@/components/site/AdSenseScript";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import {
@@ -167,21 +167,7 @@ export default function RootLayout({
         <DownloadToast />
         <PwaInstallHint />
         <CommandPalette />
-        {/* AdSense runtime. Domain ownership is verified via public/ads.txt
-            (pub-8825078307302402), so this script is NOT needed in the static
-            HTML for verification — it only loads the ad-serving runtime. No ad
-            units exist and Auto ads stay OFF, so nothing renders yet. We load it
-            lazyOnload (browser idle, after the page is interactive) so it never
-            competes with LCP on mobile. When ads are flipped on (at the agreed
-            traffic threshold, privacy-policy update same day), they still serve —
-            just initialize a moment later. Do NOT move this back to a blocking/
-            head <script>: that regresses mobile LCP for zero verification gain. */}
-        <Script
-          id="adsbygoogle-init"
-          strategy="lazyOnload"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8825078307302402"
-          crossOrigin="anonymous"
-        />
+        <AdSenseScript />
       </body>
     </html>
   );
