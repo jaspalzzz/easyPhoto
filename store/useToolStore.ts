@@ -13,6 +13,7 @@ import {
   detectFace,
   disposeLandmarker,
   FaceDetectionError,
+  NoFaceError,
   type DetectionResult,
 } from "@/lib/faceDetection";
 import {
@@ -81,6 +82,12 @@ export type ToolStatus =
   | "ready"
   | "error";
 
+/**
+ * Why processing failed — drives the recovery UI. "no-face" offers crop-and-
+ * retry; "timeout" offers a plain retry; "error" is a generic dead-end.
+ */
+export type ToolErrorKind = "no-face" | "timeout" | "error";
+
 export interface Preset {
   result: CropResult;
   canvas: HTMLCanvasElement;
@@ -92,6 +99,7 @@ interface ToolState {
   spec: CountrySpec | null;
   status: ToolStatus;
   error: string | null;
+  errorKind: ToolErrorKind | null;
 
   sourceUrl: string | null;
   sourceImage: HTMLImageElement | null;
@@ -122,6 +130,7 @@ interface ToolState {
   setContrast: (c: number) => void;
   processFile: (file: File) => Promise<void>;
   applyManualCrop: (cropRect: CropRect) => Promise<void>;
+  cropAndRetry: (cropRect: CropRect) => Promise<void>;
   recomputeAuto: () => Promise<void>;
   reset: () => void;
 }
@@ -130,6 +139,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
   spec: null,
   status: "idle",
   error: null,
+  errorKind: null,
   sourceUrl: null,
   sourceImage: null,
   sourceFile: null,
@@ -193,6 +203,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
     set({
       status: "loading",
       error: null,
+      errorKind: null,
       print: null,
       digital: null,
       measurements: null,
@@ -399,12 +410,19 @@ export const useToolStore = create<ToolState>((set, get) => ({
           : err instanceof Error
             ? err.message
             : "Something went wrong processing that photo.";
-      set({ status: "error", error: message });
+      // NoFaceError → crop-and-retry recovery; a bare FaceDetectionError here is
+      // the detection timeout; anything else is a generic/decode failure.
+      const errorKind: ToolErrorKind = err instanceof NoFaceError
+        ? "no-face"
+        : err instanceof FaceDetectionError
+          ? "timeout"
+          : "error";
+      set({ status: "error", error: message, errorKind });
       track({
         name: "tool_failure",
         tool: "passport-photo",
         device: dev,
-        reason: err instanceof FaceDetectionError ? "no-face" : "error",
+        reason: err instanceof NoFaceError ? "no-face" : "error",
       });
     }
   },
@@ -455,6 +473,55 @@ export const useToolStore = create<ToolState>((set, get) => ({
     });
   },
 
+  cropAndRetry: async (cropRect) => {
+    // Recovery path for a no-face result: the user boxes their head on the
+    // original photo; we crop that region and re-run the FULL pipeline on it.
+    // A tighter crop makes the face large enough for MediaPipe to detect — the
+    // common failure mode on full-body / wide / group shots.
+    const { sourceImage, sourceSize, sourceFile } = get();
+    if (!sourceImage || !sourceSize) return;
+
+    // Clamp the crop to the image bounds (the cropper can report a box that
+    // slightly overruns the natural edges).
+    const sx = Math.max(0, Math.min(cropRect.sx, sourceSize.width - 1));
+    const sy = Math.max(0, Math.min(cropRect.sy, sourceSize.height - 1));
+    const sw = Math.max(1, Math.min(cropRect.sw, sourceSize.width - sx));
+    const sh = Math.max(1, Math.min(cropRect.sh, sourceSize.height - sy));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(sw);
+    canvas.height = Math.round(sh);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      set({
+        status: "error",
+        error: "Couldn't prepare the crop. Try another photo.",
+        errorKind: "error",
+      });
+      return;
+    }
+    ctx.drawImage(sourceImage, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/png")
+    );
+    if (!blob) {
+      set({
+        status: "error",
+        error: "Couldn't prepare the crop. Try another photo.",
+        errorKind: "error",
+      });
+      return;
+    }
+
+    const baseName = sourceFile?.name?.replace(/\.[^.]+$/, "") ?? "photo";
+    const file = new File([blob], `${baseName}-cropped.png`, { type: "image/png" });
+    // Re-enter the standard pipeline — detection, segmentation, render, and all
+    // error handling are reused. If the crop still has no face, the user simply
+    // lands back on the recovery screen and can crop tighter or pick a new photo.
+    await get().processFile(file);
+  },
+
   recomputeAuto: async () => {
     await rebuildPresets(set, get);
   },
@@ -468,6 +535,7 @@ export const useToolStore = create<ToolState>((set, get) => ({
     set({
       status: "idle",
       error: null,
+      errorKind: null,
       sourceUrl: null,
       sourceImage: null,
       sourceFile: null,
