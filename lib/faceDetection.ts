@@ -122,8 +122,8 @@ export async function detectFace(
   const res = landmarker.detect(image);
   const faces = res?.faceLandmarks ?? [];
   if (faces.length === 0) {
-    throw new FaceDetectionError(
-      "No face detected. Use a clear, front-facing photo with the whole head visible."
+    throw new NoFaceError(
+      "No face detected. If this is a full-body or wide shot, crop in close to your head and shoulders, then retry."
     );
   }
 
@@ -181,5 +181,18 @@ export class FaceDetectionError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "FaceDetectionError";
+  }
+}
+
+/**
+ * Raised specifically when the model finds zero faces (distinct from a
+ * detection timeout, which uses the base FaceDetectionError). Lets the UI
+ * offer a crop-and-retry recovery path instead of a generic dead-end — a
+ * full-body or wide shot often just needs the head cropped in closer.
+ */
+export class NoFaceError extends FaceDetectionError {
+  constructor(message: string) {
+    super(message);
+    this.name = "NoFaceError";
   }
 }

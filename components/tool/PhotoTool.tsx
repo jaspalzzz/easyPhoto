@@ -21,6 +21,25 @@ import {
   isProductionReady,
   type CountrySpec,
 } from "@/lib/countrySpecs";
+import type { CropRect } from "@/lib/headPositioning";
+
+/**
+ * Seed a centered, aspect-locked crop box for the no-face recovery cropper.
+ * No landmarks exist yet (detection failed), so we just frame the middle of
+ * the photo and let the user drag it onto their head and shoulders.
+ */
+function recoveryCropSeed(
+  size: { width: number; height: number },
+  aspect: number
+): CropRect {
+  let sh = size.height * 0.85;
+  let sw = sh * aspect;
+  if (sw > size.width * 0.9) {
+    sw = size.width * 0.9;
+    sh = sw / aspect;
+  }
+  return { sx: (size.width - sw) / 2, sy: (size.height - sh) / 2, sw, sh };
+}
 
 const STATUS_LABEL: Record<string, string> = {
   loading: "Reading your photo…",
@@ -43,16 +62,20 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
   const {
     status,
     error,
+    errorKind,
     print,
     digital,
     composite,
     compositeUrl,
     sourceUrl,
+    sourceSize,
+    sourceFile,
     segmented,
     segmentationFailed,
     setSpec,
     processFile,
     applyManualCrop,
+    cropAndRetry,
     recomputeAuto,
     reset,
     brightness,
@@ -63,6 +86,8 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
 
   const [editing, setEditing] = React.useState(false);
   const [manual, setManual] = React.useState(false);
+  // Toggles the inline cropper inside the no-face recovery panel.
+  const [recovering, setRecovering] = React.useState(false);
 
   // Brightness/contrast sliders: the store setter triggers a full preset
   // rebuild (Pica resize + re-encode), far too heavy to run per drag tick.
@@ -101,6 +126,12 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
     return () => reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spec.id]);
+
+  // Never leave the recovery cropper toggled on once we're out of the error
+  // state (e.g. after a successful crop-and-retry).
+  React.useEffect(() => {
+    if (status !== "error") setRecovering(false);
+  }, [status]);
 
   const busy =
     status === "loading" ||
@@ -158,9 +189,62 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
               <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
               <span>{error}</span>
             </div>
-            <Button variant="outline" onClick={reset}>
-              <RotateCcw className="h-4 w-4" /> Try another photo
-            </Button>
+
+            {errorKind === "no-face" && sourceUrl && sourceSize ? (
+              recovering ? (
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    Drag the box over your head and shoulders, then apply —
+                    we&apos;ll re-detect on the cropped photo.
+                  </p>
+                  <Editor
+                    src={sourceUrl}
+                    aspectRatio={photoMm.width / photoMm.height}
+                    initialCrop={recoveryCropSeed(
+                      sourceSize,
+                      photoMm.width / photoMm.height
+                    )}
+                    onApply={async (crop) => {
+                      setRecovering(false);
+                      await cropAndRetry(crop);
+                    }}
+                    onCancel={() => setRecovering(false)}
+                  />
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="flex justify-center rounded-md border border-hairline bg-paper p-4">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={sourceUrl}
+                      alt="The photo you uploaded"
+                      className="max-h-[260px] w-auto rounded ring-1 ring-hairline-strong"
+                    />
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button variant="cta" onClick={() => setRecovering(true)}>
+                      <Crop className="h-4 w-4" /> Crop to your face &amp; retry
+                    </Button>
+                    <Button variant="outline" onClick={reset}>
+                      <RotateCcw className="h-4 w-4" /> Try another photo
+                    </Button>
+                  </div>
+                </div>
+              )
+            ) : errorKind === "timeout" && sourceFile ? (
+              <div className="flex flex-wrap gap-2">
+                <Button variant="cta" onClick={() => void processFile(sourceFile)}>
+                  <RotateCcw className="h-4 w-4" /> Retry
+                </Button>
+                <Button variant="outline" onClick={reset}>
+                  <RotateCcw className="h-4 w-4" /> Try another photo
+                </Button>
+              </div>
+            ) : (
+              <Button variant="outline" onClick={reset}>
+                <RotateCcw className="h-4 w-4" /> Try another photo
+              </Button>
+            )}
           </div>
         )}
 
