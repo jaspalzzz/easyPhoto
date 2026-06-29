@@ -309,7 +309,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
             ref={menuRef}
             id="tools-mega-menu"
             role="menu"
-            className="ep-fade-in absolute right-0 z-50 mt-1.5 w-[min(96vw,1220px)] overflow-hidden rounded-2xl border border-hairline bg-surface shadow-[0_8px_48px_rgba(0,0,0,0.14)]"
+            className="ep-fade-in absolute right-0 z-50 mt-1.5 w-[min(96vw,1220px)] max-h-[calc(100vh-72px)] overflow-x-hidden overflow-y-auto rounded-2xl border border-hairline bg-surface shadow-[0_8px_48px_rgba(0,0,0,0.14)]"
           >
 
             {/* ── Search + Trending ─────────────────────────────────── */}
