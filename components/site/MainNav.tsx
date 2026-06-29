@@ -182,6 +182,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
   const wrapRef = React.useRef<HTMLDivElement>(null);
+  const menuRef = React.useRef<HTMLDivElement>(null);
   const searchRef = React.useRef<HTMLInputElement>(null);
   const closeTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -218,6 +219,20 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
     () => () => { if (closeTimer.current) clearTimeout(closeTimer.current); },
     []
   );
+
+  // Clamp the mega-menu so it never overflows the left viewport edge.
+  // Problem: `absolute right-0` is relative to the small "Tools" button div,
+  // not the viewport. On ~1366px laptops or at 125% Windows DPI scaling the
+  // 1220px-wide panel can bleed off the left side. We measure after open and
+  // nudge the right offset until the left edge has at least 8px clearance.
+  React.useLayoutEffect(() => {
+    const el = menuRef.current;
+    if (!el) return;
+    if (!open) { el.style.right = ""; return; }
+    el.style.right = "";                              // reset any prior correction
+    const overflow = 8 - el.getBoundingClientRect().left; // px short of safe zone
+    if (overflow > 0) el.style.right = `${-overflow}px`;  // shift panel right
+  }, [open]);
 
   const openNow = () => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpen(true); };
   const closeSoon = () => { closeTimer.current = setTimeout(() => setOpen(false), 150); };
@@ -291,6 +306,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
 
         {open && (
           <div
+            ref={menuRef}
             id="tools-mega-menu"
             role="menu"
             className="ep-fade-in absolute right-0 z-50 mt-1.5 w-[min(96vw,1220px)] overflow-hidden rounded-2xl border border-hairline bg-surface shadow-[0_8px_48px_rgba(0,0,0,0.14)]"
