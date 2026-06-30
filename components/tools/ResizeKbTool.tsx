@@ -40,6 +40,9 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
     scale: number;
     underCap: boolean;
     blob: Blob;
+    /** The KB target this result was produced for (so the receipt/notes don't
+     *  go stale if the user edits the field without re-running). */
+    target: number;
   } | null>(null);
 
   React.useEffect(() => {
@@ -81,6 +84,12 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
         minDimensions,
         minKb,
         densityDpi,
+        // "Resize TO a size" tool: let the target actually bind. The default
+        // 0.95 ceiling means an already-small image lands byte-identical for
+        // every target above its q0.95/full-res size (e.g. 50 KB and 500 KB
+        // produced the same file). Allowing full quality lets a larger target
+        // keep more fidelity, so distinct targets give distinct results.
+        maxQuality: 1,
       });
       // Previous result URL is revoked by the cleanup effect on result change.
       setResult({
@@ -92,6 +101,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
         scale: res.scale,
         underCap: res.underCap,
         blob: res.blob,
+        target: targetKb,
       });
 
       const duration = typeof performance !== "undefined" ? performance.now() - t0 : 0;
@@ -117,7 +127,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
 
   const handleDownload = () => {
     if (!result) return;
-    downloadBlob(result.blob, `resized-${targetKb}kb.jpg`);
+    downloadBlob(result.blob, `resized-${result.target}kb.jpg`);
     track({
       name: "download",
       tool: toolName,
@@ -127,8 +137,21 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
 
   const handleShare = async () => {
     if (!result) return;
-    await shareFile(result.blob, `resized-${targetKb}kb.jpg`, "Resized photo");
+    await shareFile(result.blob, `resized-${result.target}kb.jpg`, "Resized photo");
   };
+
+  // The source is already at full quality + resolution yet still under the
+  // requested target — no portal band applies, so a bigger target can't
+  // produce a bigger file without enlarging the image. Surface this instead
+  // of silently returning a tiny file (the "50 KB and 500 KB look identical"
+  // confusion when the upload was already small).
+  const atFullFidelity =
+    !!result &&
+    result.underCap &&
+    !minKb &&
+    result.scale >= 0.999 &&
+    result.quality >= 0.999 &&
+    result.bytes < result.target * 1024 * 0.95;
 
   return (
     <div className="space-y-4">
@@ -197,13 +220,13 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
         <div className="space-y-3">
           {/* The compliance receipt — the verdict an applicant actually needs. */}
           <ComplianceReceipt
-            requirement={requirementLabel ?? `${targetKb} KB target`}
+            requirement={requirementLabel ?? `${result.target} KB target`}
             checks={[
               {
                 label: "File size",
                 value: minKb
-                  ? `${formatKb(result.bytes)} (needs ${minKb}–${targetKb} KB)`
-                  : `${formatKb(result.bytes)} (needs ≤ ${targetKb} KB)`,
+                  ? `${formatKb(result.bytes)} (needs ${minKb}–${result.target} KB)`
+                  : `${formatKb(result.bytes)} (needs ≤ ${result.target} KB)`,
                 ok:
                   result.underCap &&
                   (!minKb || result.bytes >= minKb * 1024),
@@ -226,6 +249,15 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
               {formatKb(result.bytes)} is the smallest this image can go without
               turning blurry. Cropping closer to the subject usually fixes it —
               or use a slightly higher target if your form allows one.
+            </p>
+          )}
+          {atFullFidelity && (
+            <p className="border-l-2 border-brand bg-brand-soft/50 py-2 pl-3 pr-2 text-sm text-foreground">
+              This image is already {formatKb(result.bytes)} at full quality —
+              comfortably under your {result.target} KB target, so there&apos;s
+              nothing to compress. A larger target can&apos;t make it bigger
+              without enlarging the image; pick a smaller target if you need to
+              shrink it further.
             </p>
           )}
           {minWidth && minHeight && (result.width < minWidth || result.height < minHeight) && (
