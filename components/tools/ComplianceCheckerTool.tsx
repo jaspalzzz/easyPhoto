@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { CheckCircle2, AlertTriangle, XCircle, Loader2, ArrowRight, Share2 } from "lucide-react";
 import { Uploader } from "@/components/tool/Uploader";
+import { useWorkflowHandoff } from "@/components/site/useWorkflowHandoff";
 import { allPortalSpecs, getPortalSpec } from "@/lib/specRegistry";
 import {
   checkCompliance,
@@ -69,6 +70,9 @@ export function ComplianceCheckerTool() {
   const [error, setError] = React.useState<string | null>(null);
   const [sharing, setSharing] = React.useState(false);
   const [photoChecks, setPhotoChecks] = React.useState<PhotoCheck[] | null>(null);
+  // Retain the checked file so a fix routes WITH the photo — no re-upload.
+  const [sourceFile, setSourceFile] = React.useState<File | null>(null);
+  const handoff = useWorkflowHandoff();
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "compliance-checker" });
@@ -83,6 +87,7 @@ export function ComplianceCheckerTool() {
     setError(null);
     setReport(null);
     setPhotoChecks(null);
+    setSourceFile(file);
     track({ name: "tool_start", tool: "compliance-checker", device: deviceClass() });
     const bmp = await createImageBitmap(file).catch(() => null);
     try {
@@ -284,7 +289,16 @@ export function ComplianceCheckerTool() {
                     {c.fix && c.status !== "pass" && (
                       <span className="mt-0.5 block text-xs text-brand">
                         →{" "}
-                        {c.href ? (
+                        {c.href && sourceFile ? (
+                          // Carry the checked photo straight into the fix tool.
+                          <button
+                            type="button"
+                            onClick={() => handoff(sourceFile, sourceFile.name, c.href!)}
+                            className="underline underline-offset-2"
+                          >
+                            {c.fix}
+                          </button>
+                        ) : c.href ? (
                           <Link href={c.href} className="underline underline-offset-2">
                             {c.fix}
                           </Link>
@@ -300,12 +314,25 @@ export function ComplianceCheckerTool() {
           )}
           <div className="flex flex-wrap gap-1.5 pt-1">
             {report.verdict !== "pass" && spec && (
-              <Link
-                href={`/tools/form-resizer/${spec.id}/`}
-                className="inline-flex items-center gap-1 rounded-md bg-cta px-3.5 py-2 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
-              >
-                Fix it — resize for {spec.name.split(" (")[0]} <ArrowRight className="h-4 w-4" />
-              </Link>
+              // Photo fixes carry the file into the form resizer (which auto-loads
+              // it into its photo slot). Signature stays a plain link to avoid
+              // landing in the wrong slot.
+              kind === "photo" && sourceFile ? (
+                <button
+                  type="button"
+                  onClick={() => handoff(sourceFile, sourceFile.name, `/tools/form-resizer/${spec.id}/`)}
+                  className="inline-flex items-center gap-1 rounded-md bg-cta px-3.5 py-2 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
+                >
+                  Fix it — resize for {spec.name.split(" (")[0]} <ArrowRight className="h-4 w-4" />
+                </button>
+              ) : (
+                <Link
+                  href={`/tools/form-resizer/${spec.id}/`}
+                  className="inline-flex items-center gap-1 rounded-md bg-cta px-3.5 py-2 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
+                >
+                  Fix it — resize for {spec.name.split(" (")[0]} <ArrowRight className="h-4 w-4" />
+                </Link>
+              )
             )}
             <button
               type="button"
