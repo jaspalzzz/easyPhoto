@@ -202,6 +202,12 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
     };
   }, [open]);
 
+  /* Close + clear search whenever the page changes (client-side nav) */
+  React.useEffect(() => {
+    setOpen(false);
+    setSearchVal("");
+  }, [pathname]);
+
   /* ⌘K / Ctrl+K → open and focus search */
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -429,7 +435,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                             {t.tag}
                           </p>
                         </div>
-                        <ArrowRight className="h-3 w-3 shrink-0 text-muted-foreground" />
+                        <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                       </Link>
                     ))}
                   </div>
@@ -442,7 +448,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                     className={cn("mt-3 flex items-center gap-1 text-[11px] font-bold hover:underline", col.tileText)}
                   >
                     {col.viewAllLabel}
-                    <ArrowRight className="h-3 w-3" />
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               ))}
