@@ -1,9 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Download, Share2, RefreshCcw } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Download, Share2, RefreshCcw, IdCard, Crop, Eraser, Minimize2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CameraCapture } from "@/components/tool/CameraCapture";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
+import { useToolStore } from "@/store/useToolStore";
 import { downloadBlob, shareFile } from "@/lib/download";
 import { track, deviceClass } from "@/lib/analytics";
 
@@ -13,6 +16,8 @@ import { track, deviceClass } from "@/lib/analytics";
  * download / share panel once a shot is confirmed.
  */
 export function CameraCaptureTool() {
+  const router = useRouter();
+  const setPendingFile = useToolStore((s) => s.setPendingFile);
   const [file, setFile] = React.useState<File | null>(null);
   const [resultUrl, setResultUrl] = React.useState<string | null>(null);
   const urlRef = React.useRef<string | null>(null);
@@ -56,6 +61,16 @@ export function CameraCaptureTool() {
     await shareFile(file, "camera-photo.jpg", "Camera photo");
   };
 
+  // Primary path: a freshly captured selfie almost always wants the passport
+  // maker. Hand the shot to the maker via the store (same mechanism the hero
+  // uploader uses) so it's already loaded — no re-pick.
+  const makePassport = () => {
+    if (!file) return;
+    setPendingFile(file);
+    track({ name: "tool_success", tool: "camera-capture", device: deviceClass() });
+    router.push("/passport-photo/");
+  };
+
   if (!file || !resultUrl) {
     return <CameraCapture onCapture={onCapture} confirmLabel="Use this photo" />;
   }
@@ -66,8 +81,14 @@ export function CameraCaptureTool() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={resultUrl} alt="Captured photo" className="h-full w-full object-cover" />
       </div>
+      {/* Primary next step — make a passport photo from the capture. */}
+      <Button variant="cta" className="mx-auto flex w-full max-w-sm" onClick={makePassport}>
+        <IdCard className="h-4 w-4" strokeWidth={1.75} /> Make a passport photo
+        <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
+      </Button>
+
       <div className="flex flex-wrap items-center justify-center gap-3">
-        <Button variant="cta" size="sm" onClick={handleDownload}>
+        <Button variant="outline" size="sm" onClick={handleDownload}>
           <Download className="h-4 w-4" strokeWidth={1.75} /> Download JPG
         </Button>
         {"share" in navigator && (
@@ -80,12 +101,21 @@ export function CameraCaptureTool() {
         </Button>
       </div>
       <p className="text-center text-xs text-muted-foreground">
-        Captured on your device — nothing was uploaded. Then crop to your exam&apos;s size with the{" "}
-        <a href="/tools/resize-kb/" className="underline underline-offset-2">
-          resize tools
-        </a>
-        .
+        Captured on your device — nothing was uploaded.
       </p>
+
+      {/* Other common follow-ups — the shot is handed off, no re-pick. */}
+      <div className="mx-auto w-full max-w-md">
+        <WorkflowNextSteps
+          getBlob={async () => file}
+          filename="camera-photo.jpg"
+          steps={[
+            { slug: "image-crop", label: "Crop photo", hint: "Trim or reframe the shot", icon: <Crop className="h-4 w-4" strokeWidth={1.75} /> },
+            { slug: "background-removal", label: "Remove background", hint: "Plain white background", icon: <Eraser className="h-4 w-4" strokeWidth={1.75} /> },
+            { slug: "resize-kb", label: "Resize to KB", hint: "Hit an upload size limit", icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} /> },
+          ]}
+        />
+      </div>
     </div>
   );
 }
