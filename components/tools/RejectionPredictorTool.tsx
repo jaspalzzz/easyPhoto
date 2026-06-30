@@ -10,6 +10,7 @@ import {
   RefreshCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useWorkflowHandoff } from "@/components/site/useWorkflowHandoff";
 import { track } from "@/lib/analytics";
 import { checkPhotoQuality, type PhotoCheck } from "@/lib/photoCheck";
 
@@ -51,6 +52,9 @@ export function RejectionPredictorTool() {
   const [checks, setChecks] = React.useState<PhotoCheck[] | null>(null);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  // Retain the analysed file so a fix routes WITH the photo — no re-upload.
+  const [sourceFile, setSourceFile] = React.useState<File | null>(null);
+  const handoff = useWorkflowHandoff();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const prevUrlRef = React.useRef<string | null>(null);
 
@@ -96,6 +100,7 @@ export function RejectionPredictorTool() {
       const result = await checkPhotoQuality(img, size);
       setChecks(result);
       setPreviewUrl(url);
+      setSourceFile(file);
       track({ name: "tool_success", tool: "photo-rejection-check" });
     } catch {
       URL.revokeObjectURL(url);
@@ -162,9 +167,11 @@ export function RejectionPredictorTool() {
                 <span className="text-muted-foreground">{c.detail}</span>
                 {c.fix && c.status !== "pass" && (
                   <span className="mt-0.5 block text-xs text-brand">
-                    → {c.href
-                      ? <a href={c.href} className="underline underline-offset-2">{c.fix}</a>
-                      : c.fix}
+                    → {c.href && sourceFile
+                      ? <button type="button" onClick={() => handoff(sourceFile, sourceFile.name, c.href!)} className="underline underline-offset-2">{c.fix}</button>
+                      : c.href
+                        ? <a href={c.href} className="underline underline-offset-2">{c.fix}</a>
+                        : c.fix}
                   </span>
                 )}
               </span>

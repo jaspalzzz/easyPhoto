@@ -3,6 +3,7 @@
 import * as React from "react";
 import { CheckCircle2, XCircle, AlertCircle, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useWorkflowHandoff } from "@/components/site/useWorkflowHandoff";
 import { PORTAL_PRESETS, PORTAL_KEYS } from "@/lib/portalPresets";
 import { track } from "@/lib/analytics";
 
@@ -131,6 +132,9 @@ export function PhotoValidatorTool() {
   const [result, setResult] = React.useState<ValidationResult | null>(null);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
   const [dragging, setDragging] = React.useState(false);
+  // Retain the validated file so an adjust routes WITH it — no re-upload.
+  const [sourceFile, setSourceFile] = React.useState<File | null>(null);
+  const handoff = useWorkflowHandoff();
   const prevPreviewRef = React.useRef<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -154,6 +158,7 @@ export function PhotoValidatorTool() {
       const r = runValidation(file, img.naturalWidth, img.naturalHeight);
       setResult(r);
       setPreviewUrl(objectUrl);
+      setSourceFile(file);
       track({ name: "tool_success", tool: "photo-validator" });
     };
     img.onerror = () => URL.revokeObjectURL(objectUrl);
@@ -281,9 +286,19 @@ export function PhotoValidatorTool() {
           </p>
           <p className="mt-0.5 text-xs text-amber-700 dark:text-amber-400">
             The file doesn&apos;t match the stored pixel dimensions or KB limits for any preset.
-            Use the <a href="/tools/resize-kb/" className="underline underline-offset-2">resize-to-KB</a> or{" "}
-            <a href="/tools/resize-dimensions/" className="underline underline-offset-2">resize-dimensions</a> tool to adjust,
-            then validate again.
+            Adjust with{" "}
+            {sourceFile ? (
+              <button type="button" onClick={() => handoff(sourceFile, sourceFile.name, "/tools/resize-kb/")} className="underline underline-offset-2">resize-to-KB</button>
+            ) : (
+              <a href="/tools/resize-kb/" className="underline underline-offset-2">resize-to-KB</a>
+            )}{" "}
+            or{" "}
+            {sourceFile ? (
+              <button type="button" onClick={() => handoff(sourceFile, sourceFile.name, "/tools/resize-dimensions/")} className="underline underline-offset-2">resize-dimensions</button>
+            ) : (
+              <a href="/tools/resize-dimensions/" className="underline underline-offset-2">resize-dimensions</a>
+            )}
+            , then validate again — your file carries over, no re-upload.
           </p>
         </div>
       )}
