@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Download, FileUp, ShieldCheck } from "lucide-react";
+import { Download, FileUp, ShieldCheck, Minimize2, Crop, Image as ImageIcon } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { Card, CardContent } from "@/components/ui/card";
 import { pdfToCanvases, PdfTooLargeError, PdfEncryptedError } from "@/lib/pdfToImages";
 import { canvasToBlob } from "@/lib/imaging";
@@ -196,6 +197,19 @@ export function PdfToJpgTool() {
                 </div>
               ))}
             </div>
+
+            {/* Single-page extracts flow straight into the image tools. */}
+            {pages.length === 1 && (
+              <WorkflowNextSteps
+                getBlob={async () => pages[0].blob}
+                filename="page-1.jpg"
+                steps={[
+                  { slug: "image-crop", label: "Crop image", hint: "Trim or reframe the page", icon: <Crop className="h-4 w-4" strokeWidth={1.75} /> },
+                  { slug: "resize-kb", label: "Resize to KB", hint: "Hit an upload size limit", icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} /> },
+                  { slug: "white-background", label: "White background", hint: "Clean plain background", icon: <ImageIcon className="h-4 w-4" strokeWidth={1.75} /> },
+                ]}
+              />
+            )}
           </>
         )}
       </CardContent>

@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, FileUp, Trash2, CheckCircle2, AlertCircle, FileImage, Archive, RefreshCw, ShieldCheck } from "lucide-react";
+import { Loader2, Download, FileUp, Trash2, CheckCircle2, AlertCircle, FileImage, Archive, RefreshCw, ShieldCheck, Minimize2, Crop } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { Card, CardContent } from "@/components/ui/card";
 import { canvasToBlob } from "@/lib/imaging";
 import { ensureDecodable } from "@/lib/heic";
@@ -263,6 +264,12 @@ export function FormatConverterTool({
   };
 
   const completedCount = items.filter((it) => it.status === "completed").length;
+  // When exactly one image was converted, the natural follow-ups (resize, crop)
+  // can take it directly — no re-upload. With a batch, users grab the ZIP.
+  const singleResult =
+    completedCount === 1
+      ? items.find((it) => it.status === "completed" && it.resultBlob)
+      : undefined;
 
   return (
     <Card>
@@ -521,6 +528,18 @@ export function FormatConverterTool({
                     Compresses all ready conversions into a ZIP for convenient download.
                   </p>
                 </div>
+              )}
+
+              {/* Single-image follow-ups — hand the converted file straight on. */}
+              {singleResult?.resultBlob && (
+                <WorkflowNextSteps
+                  getBlob={async () => singleResult.resultBlob!}
+                  filename={singleResult.name.replace(/\.[^/.]+$/, "") + (targetFormat === "image/jpeg" ? ".jpg" : targetFormat === "image/png" ? ".png" : ".webp")}
+                  steps={[
+                    { slug: "resize-kb", label: "Resize to KB", hint: "Hit an upload size limit", icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} /> },
+                    { slug: "image-crop", label: "Crop image", hint: "Trim or reframe", icon: <Crop className="h-4 w-4" strokeWidth={1.75} /> },
+                  ]}
+                />
               )}
             </div>
           </div>

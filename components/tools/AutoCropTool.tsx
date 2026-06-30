@@ -9,7 +9,9 @@ import {
   ShieldCheck,
   AlertTriangle,
 } from "lucide-react";
+import { Crop, Image as ImageIcon, Grid2x2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { track } from "@/lib/analytics";
 import { detectFace } from "@/lib/faceDetection";
 import { computeCrop, renderToCanvas } from "@/lib/headPositioning";
@@ -238,6 +240,24 @@ export function AutoCropTool() {
               <RefreshCcw className="h-4 w-4" strokeWidth={1.75} />
             </Button>
           </div>
+
+          <WorkflowNextSteps
+            getBlob={() =>
+              new Promise<Blob>((resolve, reject) =>
+                resultCanvas.toBlob(
+                  (b) => (b ? resolve(b) : reject(new Error("Could not export the crop."))),
+                  "image/jpeg",
+                  0.95
+                )
+              )
+            }
+            filename={`passport-photo-${specId}.jpg`}
+            steps={[
+              { slug: "resize-kb", label: "Resize to KB", hint: "Hit an upload size limit", icon: <Crop className="h-4 w-4" strokeWidth={1.75} /> },
+              { slug: "white-background", label: "White background", hint: "Clean plain background", icon: <ImageIcon className="h-4 w-4" strokeWidth={1.75} /> },
+              { slug: "print-sheet", label: "Print sheet", hint: "Tile copies for printing", icon: <Grid2x2 className="h-4 w-4" strokeWidth={1.75} /> },
+            ]}
+          />
         </div>
       )}
 

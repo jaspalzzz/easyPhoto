@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Download, ShieldCheck, Undo2, Trash2, FileUp, X } from "lucide-react";
+import { Download, ShieldCheck, Undo2, Trash2, FileUp, X, Minimize2, Crop } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { ensureDecodable } from "@/lib/heic";
 import { downloadBlob } from "@/lib/download";
 import { track, deviceClass } from "@/lib/analytics";
@@ -274,10 +275,13 @@ export function MaskDocumentTool() {
     setSelectedId(null);
   };
 
-  const exportMasked = async (type: "image/jpeg" | "image/png") => {
+  // Render the clean masked image (no selection chrome) to a blob. Shared by
+  // the download buttons and the workflow handoff so they're byte-identical.
+  const renderMaskedBlob = async (
+    type: "image/jpeg" | "image/png"
+  ): Promise<Blob | null> => {
     const canvas = canvasRef.current;
-    if (!canvas || !img) return;
-    // Redraw WITHOUT selection chrome so the green outline/handle never bakes in.
+    if (!canvas || !img) return null;
     const ctx = canvas.getContext("2d");
     if (ctx) {
       if (type === "image/jpeg") {
@@ -290,11 +294,15 @@ export function MaskDocumentTool() {
         ctx.fillRect(b.x, b.y, b.w, b.h);
       }
     }
-    const blob = await new Promise<Blob | null>((resolve) =>
+    // The canvas now shows the clean masked image — exactly what's exported;
+    // the selection chrome redraws on the next interaction.
+    return new Promise<Blob | null>((resolve) =>
       canvas.toBlob((b) => resolve(b), type, 0.92)
     );
-    // The canvas now shows the clean masked image (no selection chrome) — which
-    // is exactly what was exported; the chrome redraws on the next interaction.
+  };
+
+  const exportMasked = async (type: "image/jpeg" | "image/png") => {
+    const blob = await renderMaskedBlob(type);
     if (!blob) return;
     downloadBlob(blob, `masked-document.${type === "image/png" ? "png" : "jpg"}`);
     track({ name: "download", tool: "mask-document", format: type === "image/png" ? "png" : "jpg" });
@@ -392,6 +400,22 @@ export function MaskDocumentTool() {
           >
             Upload a different document
           </button>
+
+          {/* Once something is masked, flow the safe copy straight on. */}
+          {boxes.length > 0 && (
+            <WorkflowNextSteps
+              getBlob={async () => {
+                const b = await renderMaskedBlob("image/jpeg");
+                if (!b) throw new Error("Could not export the masked image.");
+                return b;
+              }}
+              filename="masked-document.jpg"
+              steps={[
+                { slug: "resize-kb", label: "Resize to KB", hint: "Hit an upload size limit", icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} /> },
+                { slug: "image-crop", label: "Crop image", hint: "Trim to just the card", icon: <Crop className="h-4 w-4" strokeWidth={1.75} /> },
+              ]}
+            />
+          )}
         </>
       )}
 
