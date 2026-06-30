@@ -1,11 +1,24 @@
 "use client";
 
 import * as React from "react";
-import { Download, Share2, FileDown } from "lucide-react";
+import { Cropper, type ReactCropperElement } from "react-cropper";
+import "cropperjs/dist/cropper.css";
+import { Download, Share2, FileDown, Crop, Check, X, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell } from "./ImageToolShell";
 import { downloadBlob, shareFile } from "@/lib/download";
 import { track, deviceClass } from "@/lib/analytics";
+import type { CropRect } from "@/lib/headPositioning";
+
+/** Per-photo refinements applied before tiling: an optional crop sub-rect (in
+ *  source pixels) plus brightness/contrast as percentages (100 = unchanged). */
+interface SheetAdjust {
+  cropRect: CropRect | null;
+  brightness: number;
+  contrast: number;
+}
+
+const NO_ADJUST: SheetAdjust = { cropRect: null, brightness: 100, contrast: 100 };
 
 type PaperSize = "a4" | "a5" | "4x6" | "5x6" | "4x4";
 type Count = 4 | 6 | 8;
@@ -63,7 +76,8 @@ function composeSheet(
   source: import("./ImageToolShell").ToolSource,
   paper: PaperSize,
   count: Count,
-  scale: number
+  scale: number,
+  adjust: SheetAdjust = NO_ADJUST
 ): HTMLCanvasElement {
   const p = PAPER[paper];
   const { cols, rows, cellW, cellH } = gridLayout(count, p.widthPx, p.heightPx);
@@ -78,8 +92,17 @@ function composeSheet(
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, p.widthPx, p.heightPx);
 
-  const srcW = source.size.width;
-  const srcH = source.size.height;
+  // Crop sub-rect (source px) drives both the cover-fit math and the draw
+  // source rectangle, so every tile shows exactly the cropped framing.
+  const cr = adjust.cropRect;
+  const sx0 = cr ? cr.sx : 0;
+  const sy0 = cr ? cr.sy : 0;
+  const srcW = cr ? cr.sw : source.size.width;
+  const srcH = cr ? cr.sh : source.size.height;
+  const filterStr =
+    adjust.brightness !== 100 || adjust.contrast !== 100
+      ? `brightness(${adjust.brightness}%) contrast(${adjust.contrast}%)`
+      : "none";
 
   for (let i = 0; i < count; i++) {
     const col = i % cols;
@@ -87,7 +110,7 @@ function composeSheet(
     const x = MARGIN + col * (cellW + GAP);
     const y = MARGIN + row * (cellH + GAP);
 
-    // Cover-fit the source image into the cell.
+    // Cover-fit the (cropped) source image into the cell.
     const fit = Math.max(cellW / srcW, cellH / srcH);
     const drawW = srcW * fit;
     const drawH = srcH * fit;
@@ -98,7 +121,14 @@ function composeSheet(
     ctx.beginPath();
     ctx.rect(x, y, cellW, cellH);
     ctx.clip();
-    ctx.drawImage(source.image, x + ox, y + oy, drawW, drawH);
+    // Brightness/contrast live in the saved state so the cut-guide stroke
+    // below (after restore) is never tinted.
+    ctx.filter = filterStr;
+    ctx.drawImage(
+      source.image,
+      sx0, sy0, srcW, srcH,
+      x + ox, y + oy, drawW, drawH
+    );
     ctx.restore();
 
     // Thin cut-guide around each cell.
@@ -123,12 +153,44 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
   const [pdfBusy, setPdfBusy] = React.useState(false);
   const [jpgBusy, setJpgBusy] = React.useState(false);
 
+  // Per-photo refinements applied before tiling.
+  const [brightness, setBrightness] = React.useState(100);
+  const [contrast, setContrast] = React.useState(100);
+  const [cropRect, setCropRect] = React.useState<CropRect | null>(null);
+  const [cropping, setCropping] = React.useState(false);
+  const cropperRef = React.useRef<ReactCropperElement>(null);
+
+  const adjust = React.useMemo<SheetAdjust>(
+    () => ({ cropRect, brightness, contrast }),
+    [cropRect, brightness, contrast]
+  );
+  const adjusted = !!cropRect || brightness !== 100 || contrast !== 100;
+
   React.useEffect(() => {
     track({ name: "tool_view", tool: "print-sheet" });
   }, []);
 
   const p = PAPER[paper];
   const layout = gridLayout(count, p.widthPx, p.heightPx);
+
+  const applyCrop = () => {
+    const cropper = cropperRef.current?.cropper;
+    if (!cropper) return;
+    const d = cropper.getData(true); // rounded, natural-image coordinates
+    // Guard against a degenerate / out-of-bounds selection.
+    const sw = Math.max(1, Math.min(d.width, source.size.width));
+    const sh = Math.max(1, Math.min(d.height, source.size.height));
+    const sx = Math.min(Math.max(0, d.x), source.size.width - sw);
+    const sy = Math.min(Math.max(0, d.y), source.size.height - sh);
+    setCropRect({ sx, sy, sw, sh });
+    setCropping(false);
+  };
+
+  const resetAdjust = () => {
+    setCropRect(null);
+    setBrightness(100);
+    setContrast(100);
+  };
 
   // Live preview — recompose a lightweight (640px-wide) sheet whenever the photo,
   // paper size, or count changes. Debounced so rapid toggles don't thrash, and
@@ -138,7 +200,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
     const t = setTimeout(() => {
       try {
         const previewScale = 640 / PAPER[paper].widthPx;
-        const canvas = composeSheet(source, paper, count, previewScale);
+        const canvas = composeSheet(source, paper, count, previewScale, adjust);
         if (!cancelled) setPreviewUrl(canvas.toDataURL("image/jpeg", 0.85));
       } catch (e) {
         console.error(e);
@@ -148,12 +210,12 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
       cancelled = true;
       clearTimeout(t);
     };
-  }, [source, paper, count]);
+  }, [source, paper, count, adjust]);
 
   const handleDownload = async () => {
     setJpgBusy(true);
     try {
-      const canvas = composeSheet(source, paper, count, 1); // full 300 DPI
+      const canvas = composeSheet(source, paper, count, 1, adjust); // full 300 DPI
       const blob = await canvasToBlob(canvas);
       downloadBlob(blob, `photo-sheet-${count}up-${paper}.jpg`);
       track({ name: "download", tool: "print-sheet", format: "jpg" });
@@ -168,7 +230,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
   const handleDownloadPdf = async () => {
     setPdfBusy(true);
     try {
-      const canvas = composeSheet(source, paper, count, 1); // full 300 DPI
+      const canvas = composeSheet(source, paper, count, 1, adjust); // full 300 DPI
       const dataUrl = canvas.toDataURL("image/jpeg", 0.94);
       const { jsPDF } = await import("jspdf");
       // px @ 300 DPI → mm, so the page is the true physical paper size.
@@ -188,7 +250,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
 
   const handleShare = async () => {
     try {
-      const canvas = composeSheet(source, paper, count, 1);
+      const canvas = composeSheet(source, paper, count, 1, adjust);
       const blob = await canvasToBlob(canvas);
       await shareFile(blob, `photo-sheet-${count}up.jpg`, "Photo print sheet");
     } catch (e) {
@@ -206,23 +268,65 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
             {p.label} · {count} photos · {layout.cols}×{layout.rows}
           </span>
         </div>
-        <div className="flex justify-center rounded-xl border border-hairline bg-accent/20 p-4">
-          {previewUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={previewUrl}
-              alt={`Print sheet preview — ${count} photos on ${p.label}`}
-              className="ep-fade-in max-h-[440px] w-auto rounded-md bg-white object-contain shadow-sm ring-1 ring-hairline"
+        {cropping ? (
+          <div className="space-y-3 rounded-xl border border-hairline bg-accent/20 p-4">
+            <p className="text-xs text-muted-foreground">
+              Drag to choose what appears in every photo on the sheet.
+            </p>
+            <Cropper
+              ref={cropperRef}
+              src={source.url}
+              style={{ height: "min(440px, 56vh)", width: "100%" }}
+              viewMode={1}
+              dragMode="move"
+              autoCropArea={1}
+              background={false}
+              responsive
+              checkOrientation={false}
+              guides
+              // Seed the box from any existing crop so re-cropping is additive.
+              ready={() => {
+                const cropper = cropperRef.current?.cropper;
+                if (cropper && cropRect) {
+                  cropper.setData({
+                    x: cropRect.sx,
+                    y: cropRect.sy,
+                    width: cropRect.sw,
+                    height: cropRect.sh,
+                  });
+                }
+              }}
             />
-          ) : (
-            <div className="flex h-[300px] w-full items-center justify-center text-sm text-muted-foreground">
-              Building preview…
+            <div className="flex gap-2">
+              <Button size="sm" variant="cta" onClick={applyCrop}>
+                <Check className="h-4 w-4" strokeWidth={1.75} /> Apply crop
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => setCropping(false)}>
+                <X className="h-4 w-4" strokeWidth={1.75} /> Cancel
+              </Button>
             </div>
-          )}
-        </div>
-        <p className="text-xs text-muted-foreground">
-          300 DPI · print-ready · grey guide lines mark the cut edges
-        </p>
+          </div>
+        ) : (
+          <>
+            <div className="flex justify-center rounded-xl border border-hairline bg-accent/20 p-4">
+              {previewUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={previewUrl}
+                  alt={`Print sheet preview — ${count} photos on ${p.label}`}
+                  className="ep-fade-in max-h-[440px] w-auto rounded-md bg-white object-contain shadow-sm ring-1 ring-hairline"
+                />
+              ) : (
+                <div className="flex h-[300px] w-full items-center justify-center text-sm text-muted-foreground">
+                  Building preview…
+                </div>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              300 DPI · print-ready · grey guide lines mark the cut edges
+            </p>
+          </>
+        )}
       </div>
 
       {/* ── Controls ─────────────────────────────────────────────────────── */}
@@ -265,6 +369,69 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
               </button>
             ))}
           </div>
+        </fieldset>
+
+        <fieldset className="border-t border-hairline pt-4">
+          <legend className="eyebrow mb-2 flex w-full items-center justify-between text-xs">
+            <span>Adjust photo</span>
+            {adjusted && (
+              <button
+                type="button"
+                onClick={resetAdjust}
+                className="inline-flex items-center gap-1 text-[11px] font-medium normal-case tracking-normal text-muted-foreground hover:text-foreground"
+              >
+                <RotateCcw className="h-3 w-3" strokeWidth={1.75} /> Reset
+              </button>
+            )}
+          </legend>
+
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full"
+            onClick={() => setCropping(true)}
+            disabled={cropping}
+          >
+            <Crop className="h-4 w-4" strokeWidth={1.75} />
+            {cropRect ? "Re-crop photo" : "Crop photo"}
+          </Button>
+
+          <div className="mt-3 space-y-3">
+            <label className="block text-xs">
+              <span className="mb-1 flex items-center justify-between text-muted-foreground">
+                <span className="font-semibold uppercase tracking-wide text-[10px]">Brightness</span>
+                <span className="tabular-nums">{brightness}%</span>
+              </span>
+              <input
+                type="range"
+                min={80}
+                max={120}
+                value={brightness}
+                onChange={(e) => setBrightness(Number(e.target.value))}
+                className="w-full cursor-pointer accent-brand"
+                aria-label="Brightness"
+              />
+            </label>
+            <label className="block text-xs">
+              <span className="mb-1 flex items-center justify-between text-muted-foreground">
+                <span className="font-semibold uppercase tracking-wide text-[10px]">Contrast</span>
+                <span className="tabular-nums">{contrast}%</span>
+              </span>
+              <input
+                type="range"
+                min={80}
+                max={120}
+                value={contrast}
+                onChange={(e) => setContrast(Number(e.target.value))}
+                className="w-full cursor-pointer accent-brand"
+                aria-label="Contrast"
+              />
+            </label>
+          </div>
+          <p className="mt-2 text-[11px] leading-snug text-muted-foreground">
+            Changes apply to every photo on the sheet. Keep edits light for ID
+            photos — strong adjustments can get a submission rejected.
+          </p>
         </fieldset>
 
         <div className="space-y-2 border-t border-hairline pt-4">
