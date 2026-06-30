@@ -6,6 +6,8 @@ import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
+import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
 import { downloadBlob } from "@/lib/download";
 import { SignaturePad } from "./SignaturePad";
@@ -37,6 +39,7 @@ export function SignPdfTool() {
   const [busy, setBusy] = React.useState(false);
   const [progress, setProgress] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
 
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const localCanvasRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -178,6 +181,12 @@ export function SignPdfTool() {
     });
   };
 
+  // Adding / moving / removing a signature invalidates a prior signed export,
+  // so the workflow handoff never carries a stale file.
+  React.useEffect(() => {
+    setResultBlob(null);
+  }, [signaturesPerPage]);
+
   const runExport = async () => {
     if (!pdfFile || canvasesRef.current.length === 0) return;
     setBusy(true);
@@ -200,6 +209,7 @@ export function SignPdfTool() {
         }));
       }
       const pdfBlob = await signPdf(pdfFile, map);
+      setResultBlob(pdfBlob);
 
       const baseName = pdfFile.name.replace(/\.[^/.]+$/, "");
       downloadBlob(pdfBlob, `${baseName}-signed.pdf`);
@@ -366,6 +376,14 @@ export function SignPdfTool() {
                   <Download className="h-4 w-4" /> Save PDF
                 </Button>
               </div>
+
+              {resultBlob && pdfFile && (
+                <WorkflowNextSteps
+                  getBlob={async () => resultBlob}
+                  filename={`${pdfFile.name.replace(/\.[^/.]+$/, "")}-signed.pdf`}
+                  steps={pdfNextSteps("sign-pdf")}
+                />
+              )}
 
               {/* Signature Creator Panel */}
               <div className="bg-paper border border-hairline rounded-md p-4 space-y-4">

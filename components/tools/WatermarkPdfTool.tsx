@@ -5,6 +5,8 @@ import { Download, FileUp, ShieldCheck } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
+import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
 import { PdfEncryptedError } from "@/lib/pdfToImages";
 import { watermarkPdf } from "@/lib/pdfAnnotate";
@@ -22,6 +24,7 @@ export function WatermarkPdfTool() {
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [done, setDone] = React.useState(false);
+  const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -35,6 +38,7 @@ export function WatermarkPdfTool() {
     }
     setError(null);
     setDone(false);
+    setResultBlob(null);
     setFile(f);
   };
 
@@ -50,6 +54,7 @@ export function WatermarkPdfTool() {
         opacity: opacity / 100,
         rotate: angle,
       });
+      setResultBlob(blob);
       downloadBlob(blob, `${file.name.replace(/\.[^/.]+$/, "")}-watermarked.pdf`);
       setDone(true);
       track({ name: "download", tool: "watermark-pdf", format: "pdf" });
@@ -194,6 +199,14 @@ export function WatermarkPdfTool() {
               <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:border-emerald-800/50 dark:bg-emerald-900/20 dark:text-emerald-300">
                 Done — your watermarked PDF was downloaded. Text stays selectable; nothing was uploaded.
               </p>
+            )}
+
+            {resultBlob && (
+              <WorkflowNextSteps
+                getBlob={async () => resultBlob}
+                filename={`${file.name.replace(/\.[^/.]+$/, "")}-watermarked.pdf`}
+                steps={pdfNextSteps("watermark-pdf")}
+              />
             )}
           </div>
         )}

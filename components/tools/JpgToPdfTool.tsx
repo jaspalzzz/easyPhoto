@@ -4,6 +4,8 @@ import * as React from "react";
 import { Loader2, Plus, X, FileText, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
+import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { imagesToPdf } from "@/lib/imagesToPdf";
 import { ensureDecodable } from "@/lib/heic";
 import { downloadBlob } from "@/lib/download";
@@ -18,6 +20,8 @@ export function JpgToPdfTool() {
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [addWarning, setAddWarning] = React.useState<string | null>(null);
+  // Holds the generated PDF so the workflow chain can hand it on, no re-upload.
+  const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   // Track latest items so the unmount cleanup can revoke every thumbnail URL.
@@ -57,6 +61,8 @@ export function JpgToPdfTool() {
       URL.revokeObjectURL(prev[i].url);
       return prev.filter((_, idx) => idx !== i);
     });
+    // Page set changed — the previous PDF no longer reflects it.
+    setResultBlob(null);
   };
 
   const generate = async () => {
@@ -64,6 +70,7 @@ export function JpgToPdfTool() {
     setError(null);
     try {
       const blob = await imagesToPdf(items.map((it) => it.file));
+      setResultBlob(blob);
       downloadBlob(blob, "images.pdf");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create PDF. Please try again.");
@@ -179,6 +186,14 @@ export function JpgToPdfTool() {
           )}
           Create PDF ({items.length} {items.length === 1 ? "page" : "pages"})
         </Button>
+
+        {resultBlob && (
+          <WorkflowNextSteps
+            getBlob={async () => resultBlob}
+            filename="images.pdf"
+            steps={pdfNextSteps("jpg-to-pdf")}
+          />
+        )}
       </CardContent>
     </Card>
   );

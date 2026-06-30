@@ -16,6 +16,8 @@ import {
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
+import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 
 const POSITIONS: { id: PageNumberPosition; label: string }[] = [
   { id: "top-left", label: "Top left" },
@@ -40,6 +42,7 @@ export function PdfPageNumbersTool() {
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [done, setDone] = React.useState(false);
+  const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -62,6 +65,7 @@ export function PdfPageNumbersTool() {
     }
     setError(null);
     setDone(false);
+    setResultBlob(null);
     setFile(f);
   };
 
@@ -77,6 +81,7 @@ export function PdfPageNumbersTool() {
         format,
         startAt: Math.max(0, startAt),
       });
+      setResultBlob(blob);
       downloadBlob(blob, `${file.name.replace(/\.[^/.]+$/, "")}-numbered.pdf`);
       setDone(true);
       track({ name: "download", tool: "pdf-page-numbers", format: "pdf" });
@@ -149,7 +154,7 @@ export function PdfPageNumbersTool() {
                 {file.name}{" "}
                 <span className="font-normal text-muted-foreground">· {formatKb(file.size)}</span>
               </h4>
-              <Button variant="ghost" size="sm" onClick={() => { setFile(null); setDone(false); }}>
+              <Button variant="ghost" size="sm" onClick={() => { setFile(null); setDone(false); setResultBlob(null); }}>
                 Choose another file
               </Button>
             </div>
@@ -215,6 +220,14 @@ export function PdfPageNumbersTool() {
               <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:border-emerald-800/50 dark:bg-emerald-900/20 dark:text-emerald-300">
                 Done — your numbered PDF was downloaded. Text stays selectable; nothing was uploaded.
               </p>
+            )}
+
+            {resultBlob && file && (
+              <WorkflowNextSteps
+                getBlob={async () => resultBlob}
+                filename={`${file.name.replace(/\.[^/.]+$/, "")}-numbered.pdf`}
+                steps={pdfNextSteps("pdf-page-numbers")}
+              />
             )}
           </div>
         )}
