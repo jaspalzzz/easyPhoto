@@ -5,6 +5,8 @@ import { Download, FileUp, ShieldCheck } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
+import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { pdfToCanvases, PdfTooLargeError, PdfEncryptedError } from "@/lib/pdfToImages";
 import { splitPdf } from "@/lib/pdfMergeSplit";
 import { downloadBlob } from "@/lib/download";
@@ -21,6 +23,7 @@ export function PdfSplitTool() {
   const [busy, setBusy] = React.useState(false);
   const [progress, setProgress] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const onFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,17 +70,21 @@ export function PdfSplitTool() {
     }
   };
 
+  // Any change to the page selection invalidates a previously extracted PDF.
   const toggleSelectPage = (index: number) => {
+    setResultBlob(null);
     setSelected((prev) =>
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index].sort((a, b) => a - b)
     );
   };
 
   const selectAll = () => {
+    setResultBlob(null);
     setSelected(pages.map((p) => p.index));
   };
 
   const selectNone = () => {
+    setResultBlob(null);
     setSelected([]);
   };
 
@@ -91,6 +98,7 @@ export function PdfSplitTool() {
         selected,
         (msg) => setProgress(msg)
       );
+      setResultBlob(splitBlob);
       downloadBlob(splitBlob, `${file.name.replace(/\.[^/.]+$/, "")}-extracted.pdf`);
     } catch (err) {
       console.error(err);
@@ -216,8 +224,16 @@ export function PdfSplitTool() {
               })}
             </div>
             
+            {resultBlob && file && (
+              <WorkflowNextSteps
+                getBlob={async () => resultBlob}
+                filename={`${file.name.replace(/\.[^/.]+$/, "")}-extracted.pdf`}
+                steps={pdfNextSteps("pdf-split")}
+              />
+            )}
+
             <div className="flex justify-end pt-2">
-              <Button variant="outline" size="sm" onClick={() => { setFile(null); setPages([]); setSelected([]); }}>
+              <Button variant="outline" size="sm" onClick={() => { setFile(null); setPages([]); setSelected([]); setResultBlob(null); }}>
                 Choose another file
               </Button>
             </div>

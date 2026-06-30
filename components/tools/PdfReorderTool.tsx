@@ -16,6 +16,8 @@ import {
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
+import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
 import { downloadBlob } from "@/lib/download";
 
@@ -72,6 +74,7 @@ export function PdfReorderTool() {
 
   // Fix 2: soft-delete — set of page ids pending confirmation.
   const [pendingDelete, setPendingDelete] = React.useState<Set<string>>(new Set());
+  const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
 
   // Cleanup canvases on unmount.
   React.useEffect(() => {
@@ -192,6 +195,12 @@ export function PdfReorderTool() {
     });
   };
 
+  // Any reorder / rotate / delete invalidates a previously exported PDF, so the
+  // workflow handoff never carries a stale file.
+  React.useEffect(() => {
+    setResultBlob(null);
+  }, [pages, pendingDelete]);
+
   const runExport = async () => {
     if (pages.length === 0 || !srcFile) {
       setError("No pages to export.");
@@ -211,6 +220,7 @@ export function PdfReorderTool() {
       );
 
       const baseName = fileName.replace(/\.[^/.]+$/, "");
+      setResultBlob(pdfBlob);
       downloadBlob(pdfBlob, `${baseName}-modified.pdf`);
     } catch (err) {
       console.error(err);
@@ -459,6 +469,14 @@ export function PdfReorderTool() {
                 );
               })}
             </div>
+
+            {resultBlob && (
+              <WorkflowNextSteps
+                getBlob={async () => resultBlob}
+                filename={`${fileName.replace(/\.[^/.]+$/, "")}-modified.pdf`}
+                steps={pdfNextSteps("pdf-reorder")}
+              />
+            )}
           </div>
         )}
 
