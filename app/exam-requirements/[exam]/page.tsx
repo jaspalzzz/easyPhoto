@@ -14,8 +14,10 @@ import { portalFaqItems } from "@/lib/faqs";
 import { SUB_EXAM_RESIZERS, RESIZER_YEAR } from "@/lib/subExamResizers";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, faqSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, webPageSchema } from "@/lib/schema";
 import { Faq } from "@/components/site/Faq";
+import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
+import { AUTHOR } from "@/lib/author";
 
 // One static page per exam (the cited Spec Database).
 export function generateStaticParams() {
@@ -122,6 +124,13 @@ export default async function Page({
             { name: "Exam Requirements", path: "/exam-requirements/" },
             { name: spec.name, path },
           ]),
+          webPageSchema({
+            name: `${spec.name} Photo${sig ? " & Signature" : ""} Size`,
+            description: spec.description,
+            url: path,
+            ...(prov.verifiedOn ? { dateModified: prov.verifiedOn } : {}),
+            author: { name: AUTHOR.name, url: AUTHOR.url },
+          }),
           faqSchema(faqItems),
         ]}
       />
@@ -141,6 +150,24 @@ export default async function Page({
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           {spec.description}
         </p>
+        {/* Reviewer byline — named-person E-E-A-T signal ("Who"), matching the
+            blog post treatment. Compact (no full author card) since this
+            template covers 50+ pages. */}
+        <div className="flex items-center gap-2">
+          <AuthorAvatar src={AUTHOR.photo} name={AUTHOR.name} className="h-6 w-6" />
+          <p className="text-xs text-ink-soft">
+            Reviewed by{" "}
+            <a
+              href={AUTHOR.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-ink hover:text-brand hover:underline"
+            >
+              {AUTHOR.name}
+            </a>
+            , {AUTHOR.title}
+          </p>
+        </div>
         {/* Provenance / trust signal */}
         <p className="flex flex-wrap items-center gap-1.5 text-xs text-ink-soft">
           <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
