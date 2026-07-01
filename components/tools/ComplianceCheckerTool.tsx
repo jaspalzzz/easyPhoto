@@ -171,9 +171,12 @@ export function ComplianceCheckerTool() {
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-end gap-4">
-        <label className="text-sm">
-          <span className="eyebrow mb-1 block">Exam / form</span>
+        <div className="text-sm">
+          <label htmlFor="compliance-exam-select" className="eyebrow mb-1 block">
+            Exam / form
+          </label>
           <select
+            id="compliance-exam-select"
             value={examId}
             onChange={(e) => {
               setExamId(e.target.value);
@@ -187,7 +190,7 @@ export function ComplianceCheckerTool() {
               </option>
             ))}
           </select>
-        </label>
+        </div>
         <div>
           <span className="eyebrow mb-1 block">Document</span>
           <div className="flex gap-1.5">

@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
 import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { MAKER_PAGES } from "@/lib/makerPages";
@@ -16,8 +15,9 @@ interface SearchItem {
   keywords: string[];
 }
 
+const RESULT_LIMIT = 8;
+
 export function ToolSearch() {
-  const router = useRouter();
   const [query, setQuery] = React.useState("");
   const [results, setResults] = React.useState<SearchItem[]>([]);
   const [totalMatches, setTotalMatches] = React.useState(0);
@@ -107,7 +107,7 @@ export function ToolSearch() {
       item.category.toLowerCase().includes(q)
     );
     setTotalMatches(filtered.length);
-    setResults(filtered.slice(0, 5)); // Limit to 5 results
+    setResults(filtered.slice(0, RESULT_LIMIT));
   }, [query, searchIndex]);
 
   // Keyboard navigation handler
@@ -188,9 +188,9 @@ export function ToolSearch() {
               </li>
             ))}
           </ul>
-          {totalMatches > 5 && (
+          {totalMatches > RESULT_LIMIT && (
             <p className="mt-1 border-t border-hairline px-3 py-2 text-center text-[11px] text-muted-foreground">
-              Showing 5 of {totalMatches} — keep typing to refine
+              Showing {RESULT_LIMIT} of {totalMatches} — add another word to narrow it down
             </p>
           )}
         </div>
