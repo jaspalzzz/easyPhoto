@@ -238,7 +238,7 @@ export function CompressDocumentTool() {
                   </span>
                 ) : (
                   <span className="ml-2 text-xs font-normal text-amber-700">
-                    Couldn't reach {targetKb} KB
+                    Couldn&apos;t reach {targetKb} KB
                   </span>
                 )}
               </p>

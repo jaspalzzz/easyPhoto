@@ -132,7 +132,7 @@ export default function Page() {
         This table is a snapshot; for the full, regularly-verified breakdown of
         every exam&apos;s photo and signature spec — KB bands, pixel sizes and the
         official source for each — see our{" "}
-        <a href="/blog/exam-photo-signature-size-guide/">exam photo &amp; signature size guide</a>,
+        <Link href="/blog/exam-photo-signature-size-guide/">exam photo &amp; signature size guide</Link>,
         the canonical reference we keep updated as portals change their rules.
       </p>
 

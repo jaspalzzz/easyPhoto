@@ -496,10 +496,10 @@ async function getRMBG(opts: {
     // model name leaks regardless of source.
     rmbgProcessorPromise = AutoProcessor.from_pretrained(SEG_ID, {
       // RMBG-1.4 ships no preprocessor recognised by AutoProcessor, so supply it.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       config: {
         ...RMBG_PREPROCESSOR,
         size: { width: opts.inputSize, height: opts.inputSize },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
     }).catch((e: unknown) => {
       rmbgProcessorPromise = null;

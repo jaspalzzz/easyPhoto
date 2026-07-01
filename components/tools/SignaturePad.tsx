@@ -240,9 +240,9 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
       }
       
       onSignatureReady(trimmed.toDataURL("image/png"));
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setUploadError(err?.message || "Couldn't find a signature in this image. Dark ink on plain white paper, photographed straight-on in good light, works best.");
+      setUploadError(err instanceof Error ? err.message : "Couldn't find a signature in this image. Dark ink on plain white paper, photographed straight-on in good light, works best.");
     } finally {
       setUploadLoading(false);
     }
@@ -385,7 +385,7 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
               e.preventDefault();
               if (e.dataTransfer.files && e.dataTransfer.files[0]) {
                 fileInputRef.current!.files = e.dataTransfer.files;
-                onImageUpload({ target: { files: e.dataTransfer.files } } as any);
+                onImageUpload({ target: { files: e.dataTransfer.files } } as unknown as React.ChangeEvent<HTMLInputElement>);
               }
             }}
             className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { Download, FileUp, ShieldCheck, Minimize2, Crop, Image as ImageIcon } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
@@ -152,7 +153,7 @@ export function PdfToJpgTool() {
             {error === "encrypted" ? (
               <>
                 This PDF is password-protected. Please unlock it first using the{" "}
-                <a href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</a>.
+                <Link href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</Link>.
               </>
             ) : error}
           </p>

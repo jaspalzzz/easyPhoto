@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { Download, Printer, Globe, LayoutGrid, Loader2, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
@@ -292,7 +293,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               <select
                 id="print-sheet-paper-size"
                 value={paperSize}
-                onChange={(e) => setPaperSize(e.target.value as any)}
+                onChange={(e) => setPaperSize(e.target.value as "4x6" | "5x7" | "a4" | "letter")}
                 className="w-full rounded border border-hairline bg-background p-1 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-brand"
               >
                 <option value="4x6">4×6″ Photo Sheet</option>
@@ -372,27 +373,27 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
           If your application portal has a strict file-size limit, compress this photo to an exact target (e.g., 20 KB or 50 KB) in one click.
         </p>
         <div className="flex flex-wrap gap-1.5 pt-1">
-          <a
+          <Link
             id="promo-compress-20kb"
             href="/photo-resize-to-20kb/"
             className="inline-flex min-h-10 items-center rounded-md px-3 py-2 bg-card border border-hairline hover:bg-accent/50 font-medium text-xs text-foreground transition-colors"
           >
             Compress to 20 KB
-          </a>
-          <a
+          </Link>
+          <Link
             id="promo-compress-50kb"
             href="/photo-resize-to-50kb/"
             className="inline-flex min-h-10 items-center rounded-md px-3 py-2 bg-card border border-hairline hover:bg-accent/50 font-medium text-xs text-foreground transition-colors"
           >
             Compress to 50 KB
-          </a>
-          <a
+          </Link>
+          <Link
             id="promo-compress-custom"
             href="/tools/resize-kb/"
             className="inline-flex min-h-10 items-center rounded-md px-3 py-2 bg-card border border-hairline hover:bg-accent/50 font-medium text-xs text-brand transition-colors"
           >
             Custom Size
-          </a>
+          </Link>
         </div>
       </div>
     </div>

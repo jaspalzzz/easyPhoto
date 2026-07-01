@@ -88,9 +88,9 @@ export function SignImageTool() {
       });
       
       setBaseImage(img);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setError(err?.message || "Could not read that image. Ensure it is not corrupted.");
+      setError(err instanceof Error ? err.message : "Could not read that image. Ensure it is not corrupted.");
       setBaseFile(null);
     } finally {
       setBusy(false);
@@ -161,7 +161,7 @@ export function SignImageTool() {
       const baseName = baseFile?.name.replace(/\.[^/.]+$/, "") || "signed-image";
       setExportedBlob(blob);
       downloadBlob(blob, `${baseName}-signed.jpg`);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
       setError("Failed to compile signed image. Please try again.");
     } finally {

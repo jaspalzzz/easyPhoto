@@ -17,7 +17,7 @@ export function cleanOcrText(raw: string): string {
   if (!raw) return raw;
 
   const lines = raw.split("\n").map((l) => {
-    let line = l
+    const line = l
       .trim()
       .replace(/  +/g, " ") // collapse internal multi-spaces
       .replace(RE_STRAY_EDGE, "") // strip stray leading/trailing brackets/pipes
