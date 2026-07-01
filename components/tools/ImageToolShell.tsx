@@ -119,11 +119,11 @@ export function ImageToolShell({
 
         {source && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <p className="spec normal-case tracking-[0.04em]">
+            <div className="flex items-center justify-between gap-3">
+              <p className="spec min-w-0 truncate normal-case tracking-[0.04em]">
                 {source.file.name} · {source.size.width}×{source.size.height}px
               </p>
-              <Button variant="ghost" size="sm" onClick={reset}>
+              <Button variant="ghost" size="sm" onClick={reset} className="shrink-0">
                 <RotateCcw className="h-4 w-4" strokeWidth={1.75} /> New image
               </Button>
             </div>
