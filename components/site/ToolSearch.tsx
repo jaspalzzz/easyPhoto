@@ -134,8 +134,21 @@ export function ToolSearch() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const showResults = isOpen && results.length > 0;
+
   return (
-    <div ref={wrapperRef} className="relative w-full max-w-md mx-auto">
+    <div ref={wrapperRef} className="relative z-50 w-full max-w-md mx-auto">
+      {/* Dims the rest of the page (catalog grid below) while results are
+          open, so the dropdown reads as the focused surface — discovery
+          feels faster when the eye isn't competing with the full catalog.
+          Click-to-dismiss; the search box itself sits above this (z-50). */}
+      {showResults && (
+        <div
+          aria-hidden="true"
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 z-40 bg-background/70 backdrop-blur-[1px] transition-opacity"
+        />
+      )}
       <div className="relative">
         <Search className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-ink-soft" strokeWidth={2} />
         <input
@@ -166,7 +179,7 @@ export function ToolSearch() {
         </button>
       </div>
 
-      {isOpen && results.length > 0 && (
+      {showResults && (
         <div className="absolute left-0 right-0 z-50 mt-2 overflow-hidden rounded-xl border border-hairline bg-card p-1.5 shadow-pop">
           <ul role="listbox" id="tool-search-listbox" className="space-y-0.5">
             {results.map((item) => (
