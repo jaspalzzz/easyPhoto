@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
 import type { Preset } from "@/store/useToolStore";
 import { compressToCap, encode } from "@/lib/compress";
-import { generatePrintSheet, maxCopiesPerSheet } from "@/lib/printSheet";
+import { generatePrintSheet, getSheetLayout, maxCopiesPerSheet } from "@/lib/printSheet";
 import { downloadBlob as download, shareFile } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 
@@ -39,6 +39,49 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
   React.useEffect(() => {
     setCopies(maxCapacity);
   }, [maxCapacity]);
+
+  // Live sheet-layout preview — same grid math generatePrintSheet() uses, so
+  // what the user sees here matches the PDF exactly (not a rough approximation).
+  const sheetLayout = React.useMemo(
+    () => getSheetLayout(photoMm, { paperSize, marginMm, gapMm }),
+    [photoMm.width, photoMm.height, paperSize, marginMm, gapMm]
+  );
+  const tileImageUrl = React.useMemo(
+    () => print.canvas.toDataURL("image/jpeg", 0.7),
+    [print.canvas]
+  );
+
+  // Tile positions in mm, centred on the sheet — mirrors generatePrintSheet()'s
+  // placement loop exactly so the preview matches the downloaded PDF.
+  const previewTiles = React.useMemo(() => {
+    const { cols, rows, sheet } = sheetLayout;
+    const pw = photoMm.width;
+    const ph = photoMm.height;
+    const blockW = cols * pw + (cols - 1) * gapMm;
+    const blockH = rows * ph + (rows - 1) * gapMm;
+    const startX = (sheet.w - blockW) / 2;
+    const startY = (sheet.h - blockH) / 2;
+    const tiles: { x: number; y: number; filled: boolean }[] = [];
+    let placed = 0;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        tiles.push({
+          x: startX + c * (pw + gapMm),
+          y: startY + r * (ph + gapMm),
+          filled: placed < copies,
+        });
+        placed++;
+      }
+    }
+    return tiles;
+  }, [sheetLayout, photoMm.width, photoMm.height, gapMm, copies]);
+
+  // Scale the mm sheet down to a small on-screen preview (longer side ≈ 180px).
+  const PREVIEW_MAX_PX = 180;
+  const previewScale =
+    PREVIEW_MAX_PX / Math.max(sheetLayout.sheet.w, sheetLayout.sheet.h);
+  const previewWidthPx = sheetLayout.sheet.w * previewScale;
+  const previewHeightPx = sheetLayout.sheet.h * previewScale;
 
   const onPrintJpg = async () => {
     setBusy("print-jpg");
@@ -210,6 +253,39 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
           <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-soft block">
             PDF Print Sheet Layout
           </span>
+
+          {/* Live preview — mirrors generatePrintSheet()'s exact tile placement,
+              so what's shown here is what the downloaded PDF looks like. */}
+          <div className="flex justify-center rounded-md border border-hairline bg-accent/20 py-3">
+            <div
+              className="relative bg-white shadow-sm"
+              style={{ width: previewWidthPx, height: previewHeightPx }}
+            >
+              {previewTiles.map((tile, i) => (
+                <div
+                  key={i}
+                  className={
+                    tile.filled
+                      ? "absolute border border-dashed border-ink-faint/60 bg-cover bg-center"
+                      : "absolute border border-dashed border-ink-faint/25"
+                  }
+                  style={{
+                    left: tile.x * previewScale,
+                    top: tile.y * previewScale,
+                    width: photoMm.width * previewScale,
+                    height: photoMm.height * previewScale,
+                    backgroundImage: tile.filled ? `url(${tileImageUrl})` : undefined,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+          <p className="text-center text-[11px] text-muted-foreground">
+            {sheetLayout.cols}×{sheetLayout.rows} grid on{" "}
+            {paperSize === "4x6" ? "4×6″" : paperSize === "5x7" ? "5×7″" : paperSize === "a4" ? "A4" : "Letter"} ·{" "}
+            {copies} of {maxCapacity} slots used
+          </p>
+
           <div className="grid grid-cols-2 gap-2.5 text-xs">
             <label className="block">
               <span className="text-muted-foreground block mb-0.5 text-[11px]">Paper Size</span>
