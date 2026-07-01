@@ -110,8 +110,12 @@ function composeSheet(
     const x = MARGIN + col * (cellW + GAP);
     const y = MARGIN + row * (cellH + GAP);
 
-    // Cover-fit the (cropped) source image into the cell.
-    const fit = Math.max(cellW / srcW, cellH / srcH);
+    // Contain-fit the (cropped) source image into the cell — the whole photo
+    // must stay visible. Cells aren't always the photo's aspect ratio (e.g. a
+    // square paper split into a 2x3 grid gives wide, non-square cells), and a
+    // cover-fit there would crop off the top/bottom of the face to fill the
+    // cell. Contain-fit only ever adds white padding, never trims the photo.
+    const fit = Math.min(cellW / srcW, cellH / srcH);
     const drawW = srcW * fit;
     const drawH = srcH * fit;
     const ox = (cellW - drawW) / 2;
