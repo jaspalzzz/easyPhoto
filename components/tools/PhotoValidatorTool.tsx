@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { CheckCircle2, XCircle, AlertCircle, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useWorkflowHandoff } from "@/components/site/useWorkflowHandoff";
@@ -290,13 +291,13 @@ export function PhotoValidatorTool() {
             {sourceFile ? (
               <button type="button" onClick={() => handoff(sourceFile, sourceFile.name, "/tools/resize-kb/")} className="underline underline-offset-2">resize-to-KB</button>
             ) : (
-              <a href="/tools/resize-kb/" className="underline underline-offset-2">resize-to-KB</a>
+              <Link href="/tools/resize-kb/" className="underline underline-offset-2">resize-to-KB</Link>
             )}{" "}
             or{" "}
             {sourceFile ? (
               <button type="button" onClick={() => handoff(sourceFile, sourceFile.name, "/tools/resize-dimensions/")} className="underline underline-offset-2">resize-dimensions</button>
             ) : (
-              <a href="/tools/resize-dimensions/" className="underline underline-offset-2">resize-dimensions</a>
+              <Link href="/tools/resize-dimensions/" className="underline underline-offset-2">resize-dimensions</Link>
             )}
             , then validate again — your file carries over, no re-upload.
           </p>

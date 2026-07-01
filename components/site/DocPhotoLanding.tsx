@@ -58,7 +58,6 @@ export function DocPhotoLanding({
         rel="preload"
         as="image"
         href="/images/sample8_before_1782053095391.webp"
-        // @ts-ignore — fetchPriority is valid HTML but not yet in React types
         fetchPriority="high"
       />
       <JsonLd

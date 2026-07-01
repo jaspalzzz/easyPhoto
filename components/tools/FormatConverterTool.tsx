@@ -201,7 +201,7 @@ export function FormatConverterTool({
               : it
           )
         );
-      } catch (err: any) {
+      } catch (err) {
         console.error("Error converting file:", item.name, err);
         setItems((prev) =>
           prev.map((it) =>
@@ -209,7 +209,7 @@ export function FormatConverterTool({
               ? {
                   ...it,
                   status: "failed",
-                  error: err?.message || "Conversion failed.",
+                  error: err instanceof Error ? err.message : "Conversion failed.",
                 }
               : it
           )

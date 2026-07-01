@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Download, FileUp, ShieldCheck, ChevronLeft, ChevronRight, PenLine, RotateCcw } from "lucide-react";
+import Link from "next/link";
+import { Download, FileUp, ShieldCheck, ChevronLeft, ChevronRight, PenLine } from "lucide-react";
 import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
@@ -92,8 +93,8 @@ export function SignPdfTool() {
       try {
         const probe = await pdfjs.getDocument({ data }).promise;
         await probe.destroy();
-      } catch (encErr: any) {
-        if (encErr?.name === "PasswordException") {
+      } catch (encErr) {
+        if (encErr instanceof Error && encErr.name === "PasswordException") {
           setError("encrypted");
           setPdfFile(null);
           return;
@@ -213,7 +214,7 @@ export function SignPdfTool() {
 
       const baseName = pdfFile.name.replace(/\.[^/.]+$/, "");
       downloadBlob(pdfBlob, `${baseName}-signed.pdf`);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
       setError("Failed to compile signed PDF. Please try again.");
     } finally {
@@ -287,7 +288,7 @@ export function SignPdfTool() {
             {error === "encrypted" ? (
               <>
                 This PDF is password-protected. Please unlock it first using the{" "}
-                <a href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</a>.
+                <Link href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</Link>.
               </>
             ) : error}
           </p>

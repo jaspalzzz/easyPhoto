@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import {
   CheckCircle2,
   AlertTriangle,
@@ -181,7 +182,7 @@ export function RejectionPredictorTool() {
 
         <p className="text-xs text-muted-foreground">
           Analysis covers ICAO biometric criteria: face detection, centering, head size, eye level, head visibility, and background. Pixel dimensions and file size are not checked here — use the{" "}
-          <a href="/tools/compliance-checker/" className="underline underline-offset-2">Compliance Checker</a>{" "}
+          <Link href="/tools/compliance-checker/" className="underline underline-offset-2">Compliance Checker</Link>{" "}
           to validate those against your specific exam or portal.
         </p>
 

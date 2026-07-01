@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { pageMetadata } from "@/lib/seo";
 import { getPost } from "@/lib/blog";
@@ -105,7 +106,7 @@ export default function Page() {
         This is a quick summary; for the complete, regularly-verified Passport Seva
         rules — print vs digital sizes, OCI and NRI differences, and the exact
         pixel and KB limits — see our{" "}
-        <a href="/blog/indian-passport-photo-size-rules/">Indian passport photo size &amp; rules</a>{" "}
+        <Link href="/blog/indian-passport-photo-size-rules/">Indian passport photo size &amp; rules</Link>{" "}
         guide, the canonical reference we keep updated.
       </p>
 
@@ -304,9 +305,9 @@ export default function Page() {
         Cutout.pro is genuinely strong at AI background removal for complex subjects: product
         photography, hair, transparent objects. For a one-off Indian passport photo, that
         capability is not needed and the credit pricing is poor value. See the dedicated{" "}
-        <a href="/blog/cutout-pro-alternative-india/" className="text-brand underline">
+        <Link href="/blog/cutout-pro-alternative-india/" className="text-brand underline">
           Cutout.pro alternatives post
-        </a>{" "}
+        </Link>{" "}
         for a full comparison including PassportMaker and PassportSizePhoto.in.
       </p>
 

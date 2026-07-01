@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import {
   Download,
   FileUp,
@@ -291,7 +292,7 @@ export function PdfReorderTool() {
             {error === "encrypted" ? (
               <>
                 This PDF is password-protected. Please unlock it first using the{" "}
-                <a href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</a>.
+                <Link href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</Link>.
               </>
             ) : error}
           </p>

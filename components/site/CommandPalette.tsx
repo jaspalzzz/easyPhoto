@@ -253,13 +253,13 @@ export function CommandPalette() {
           </ul>
         ) : query.trim() ? (
           <p className="px-4 py-8 text-center text-[13.5px] text-muted-foreground">
-            No tools found for <strong className="text-ink">"{query}"</strong>
+            No tools found for <strong className="text-ink">&quot;{query}&quot;</strong>
           </p>
         ) : (
           <p className="px-4 py-8 text-center text-[13.5px] text-muted-foreground">
-            Try <span className="text-ink">"passport"</span>,{" "}
-            <span className="text-ink">"SSC"</span>,{" "}
-            <span className="text-ink">"20kb"</span>…
+            Try <span className="text-ink">&quot;passport&quot;</span>,{" "}
+            <span className="text-ink">&quot;SSC&quot;</span>,{" "}
+            <span className="text-ink">&quot;20kb&quot;</span>…
           </p>
         )}
 

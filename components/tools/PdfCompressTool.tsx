@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { Download, FileUp, ShieldCheck, PenLine, Hash } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
@@ -135,7 +136,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
             {error === "encrypted" ? (
               <>
                 This PDF is password-protected. Please unlock it first using the{" "}
-                <a href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</a>.
+                <Link href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</Link>.
               </>
             ) : error}
           </p>

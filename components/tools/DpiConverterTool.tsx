@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { Download, RefreshCcw, Gauge, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -184,12 +185,12 @@ export function DpiConverterTool() {
           <p className="text-amber-800 dark:text-amber-300">
             DPI metadata editing applies to JPG files. Convert this image to JPG
             first with the{" "}
-            <a
+            <Link
               href="/tools/format-converter/"
               className="underline underline-offset-2"
             >
               format converter
-            </a>
+            </Link>
             , then come back.
           </p>
         </div>

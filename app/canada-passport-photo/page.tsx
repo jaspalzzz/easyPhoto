@@ -156,7 +156,7 @@ export default function Page() {
       {/* Sections */}
       <section className="space-y-8">
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold">What this photo covers (and what it doesn't)</h2>
+          <h2 className="text-lg font-semibold">What this photo covers (and what it doesn&apos;t)</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
             A 35×45mm white-background photo satisfies IRCC requirements for Canadian visitor visas,
             study permits, work permits, PR card renewals, Express Entry applications, citizenship

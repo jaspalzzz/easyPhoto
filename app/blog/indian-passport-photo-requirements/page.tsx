@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { getPost } from "@/lib/blog";
@@ -149,7 +150,7 @@ export default function Page() {
 
       <p>
         If your background is not white, you can use the{" "}
-        <a href="/passport-photo/">free background replacer</a> to set it to white
+        <Link href="/passport-photo/">free background replacer</Link> to set it to white
         automatically; no upload needed, runs entirely in your browser.
       </p>
 
@@ -245,7 +246,7 @@ export default function Page() {
         The officer does not measure the photo with a ruler — they check it visually.
         However, if your photo is obviously not 45×35 mm (too square, too wide, or
         too tall), it will fail this visual check. Use the free{" "}
-        <a href="/passport-photo/">passport photo maker</a> to crop to the exact
+        <Link href="/passport-photo/">passport photo maker</Link> to crop to the exact
         ratio before printing.
       </p>
 
@@ -329,7 +330,7 @@ export default function Page() {
       <p>
         Using a domestic passport photo for an OCI card application is one of the
         most common rejection causes for NRI applicants. The OCI photo is a square
-        (2×2 inches), not a portrait rectangle. Check the specific country's VFS or
+        (2×2 inches), not a portrait rectangle. Check the specific country&apos;s VFS or
         embassy instructions for the exact OCI digital dimensions and background
         shade required for your application.
       </p>
@@ -386,21 +387,21 @@ export default function Page() {
         <li>
           <strong>Check background.</strong> The wall behind you should appear white
           in the photo. If it shows any shade, use the{" "}
-          <a href="/passport-photo/">background replacer</a> to set it to white.
+          <Link href="/passport-photo/">background replacer</Link> to set it to white.
         </li>
         <li>
           <strong>Crop to the right ratio.</strong> Use the{" "}
-          <a href="/passport-photo/">free passport photo maker</a> — it crops to
+          <Link href="/passport-photo/">free passport photo maker</Link> — it crops to
           exactly 630×810 px with the face centred automatically.
         </li>
         <li>
           <strong>Check face coverage.</strong> Your face should fill 80–85% of the
           frame height. Use the{" "}
-          <a href="/tools/face-centering/">face centering checker</a> to verify.
+          <Link href="/tools/face-centering/">face centering checker</Link> to verify.
         </li>
         <li>
           <strong>Compress to under 250 KB.</strong> The{" "}
-          <a href="/tools/compress-photo/">photo compressor</a> lets you target an
+          <Link href="/tools/resize-kb/">photo compressor</Link> lets you target an
           exact KB ceiling without visible quality loss.
         </li>
         <li>
@@ -418,7 +419,7 @@ export default function Page() {
 
       <p>
         Before your PSK appointment, run your photo through the{" "}
-        <a href="/tools/photo-rejection-check/">Rejection Predictor</a> — it checks
+        <Link href="/tools/photo-rejection-check/">Rejection Predictor</Link> — it checks
         9 ICAO criteria (background, face coverage, tilt, lighting, expression
         markers) entirely on your device. If the tool flags an issue, fix it before
         you print. A reprinting is cheaper than rescheduling a PSK appointment.
