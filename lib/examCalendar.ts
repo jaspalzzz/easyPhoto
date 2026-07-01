@@ -38,16 +38,16 @@ export const EXAM_CALENDAR: ExamCalendarEntry[] = [
   {
     id: "ssc-chsl-2026",
     name: "SSC CHSL 2026",
-    event: "Tier 1 exam window (notification expected shortly before)",
+    event: "Tier 1 exam window (advertisement Apr 2026, closing May 2026 — both now past; exact exam date still unfixed)",
     window: "July – September 2026",
     startISO: "2026-07-01",
     status: "tentative",
     specPath: "/exam-requirements/ssc/",
     source: {
-      url: "https://ssc.gov.in/for-candidates/examination-calendar",
-      label: "SSC examination calendar 2026-27 (ssc.gov.in)",
+      url: "https://ssc.gov.in/api/attachment/uploads/masterData/ExamCalendar/Tentative_Calendar2026_27_08012026.pdf",
+      label: "SSC Tentative Calendar of Examinations 2026-27 (ssc.gov.in, dated 08.01.2026)",
     },
-    verifiedOn: "2026-06-12",
+    verifiedOn: "2026-07-01",
   },
   {
     id: "ibps-po-2026",
