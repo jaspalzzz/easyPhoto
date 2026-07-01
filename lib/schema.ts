@@ -167,6 +167,8 @@ export function webPageSchema(opts: {
   description: string;
   url: string;
   dateModified?: string;
+  /** Named-person reviewer/author — the "Who" E-E-A-T signal, same pattern as BlogPosting.author. */
+  author?: { name: string; url: string };
 }) {
   return {
     "@type": "WebPage",
@@ -176,5 +178,8 @@ export function webPageSchema(opts: {
     url: absoluteUrl(opts.url),
     isPartOf: { "@id": WEBSITE_ID },
     ...(opts.dateModified ? { dateModified: opts.dateModified } : {}),
+    ...(opts.author
+      ? { author: { "@type": "Person", name: opts.author.name, url: opts.author.url } }
+      : {}),
   };
 }
