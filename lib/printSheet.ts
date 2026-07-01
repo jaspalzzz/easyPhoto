@@ -104,6 +104,14 @@ export function maxCopiesPerSheet(
   return bestLayout(photoMm, opts).capacity;
 }
 
+/** Full grid layout (orientation, sheet size, cols/rows) — drives the live sheet preview. */
+export function getSheetLayout(
+  photoMm: { width: number; height: number },
+  opts?: Omit<PrintSheetOptions, "canvas" | "photoMm">
+): Layout {
+  return bestLayout(photoMm, opts);
+}
+
 /** Build a printable PDF; returns a Blob ready to download. */
 export async function generatePrintSheet(
   opts: PrintSheetOptions
