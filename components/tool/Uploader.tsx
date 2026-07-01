@@ -15,6 +15,8 @@ interface UploaderProps {
   title?: string;
   /** Secondary hint line. Override for non-photo inputs (e.g. signatures). */
   hint?: string;
+  /** Accessible name for the hidden file input used by the visible dropzone. */
+  inputLabel?: string;
   /**
    * Offer an in-browser "take a photo" option alongside upload. Enable for
    * photo capture (passport/visa maker, photo tools); leave off for non-photo
@@ -37,6 +39,7 @@ export function Uploader({
   className,
   title = "Drop a photo, or click to browse",
   hint = "A clear, front-facing photo works best",
+  inputLabel = "Upload image file",
   allowCamera = false,
 }: UploaderProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -118,6 +121,7 @@ export function Uploader({
           ref={inputRef}
           type="file"
           accept="image/*,.heic,.heif"
+          aria-label={inputLabel}
           className="hidden"
           onChange={(e) => pick(e.target.files)}
         />
