@@ -26,7 +26,7 @@ export default function PrivacyPage() {
             description:
               "How easyPhoto handles your data: it doesn't. Photos and PDFs are processed entirely in your browser and never uploaded.",
             url: "/privacy/",
-            dateModified: "2026-06-11",
+            dateModified: "2026-07-01",
           }),
         ]}
       />
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
         <h1 className="text-[2rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2.4rem]">
           Privacy Policy
         </h1>
-        <p className="text-sm text-muted-foreground">Last updated: June 11, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: July 1, 2026</p>
       </header>
 
       {/* The short version — highlighted so it's the first thing read */}
@@ -88,6 +88,16 @@ export default function PrivacyPage() {
           these pages may keep standard, short-lived technical logs (such as
           IP address and browser type) for the page requests themselves —
           never any image content. Your images still never leave your device.
+        </Section>
+
+        <Section title="Advertising">
+          EasyPhoto may show Google AdSense ads on content pages that do not
+          contain private user files. Google and its advertising partners may
+          use cookies or similar technologies to serve, limit, and measure ads.
+          You can learn about Google&apos;s advertising practices and control ad
+          personalisation in your Google ad settings. We do not place ads inside
+          upload areas, result previews, private document workflows, or pages
+          that contain your images or PDFs.
         </Section>
 
         <Section title="Accounts and payments">
