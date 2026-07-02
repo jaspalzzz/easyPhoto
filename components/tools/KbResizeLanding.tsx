@@ -12,6 +12,7 @@ import {
   howToSchema,
 } from "@/lib/schema";
 import { KB_TARGETS, kbPath, PHOTO_KB_USECASES } from "@/lib/kbTargets";
+import { KbExamLinks } from "@/components/tools/KbExamLinks";
 
 /** Landing page for "Resize image to N KB", preset to the target. */
 export function KbResizeLanding({ kb }: { kb: number }) {
@@ -23,7 +24,10 @@ export function KbResizeLanding({ kb }: { kb: number }) {
       q: `How do I resize a photo to ${kb} KB?`,
       a: `Upload your image above, keep the target at ${kb} KB (or change it), and click “Compress to size”. We lower the JPEG quality first and then the dimensions if needed, so the file lands under ${kb} KB, then you download it. Everything happens in your browser.`,
     },
-    {
+    // Size-specific quality answer (the trade-off genuinely differs per
+    // target); the old generic one-size answer is the fallback for any
+    // future target added without editorial content.
+    uc?.qualityFaq ?? {
       q: `Will resizing to ${kb} KB reduce quality?`,
       a: "Some quality is traded for the smaller size, but we keep the highest quality that still fits your target, so the photo stays as sharp as possible at that file size.",
     },
@@ -123,6 +127,8 @@ export function KbResizeLanding({ kb }: { kb: number }) {
           for exam forms. Always check the exact limit on your form, then set it above.
         </p>
       </section>
+
+      <KbExamLinks kind="photo" kb={kb} />
 
       <section className="mt-8">
         <h2 className="eyebrow mb-3">Need a different size?</h2>

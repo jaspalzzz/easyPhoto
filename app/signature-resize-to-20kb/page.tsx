@@ -10,6 +10,7 @@ import {
 import { SignatureKbTool } from "@/components/tools/SignatureKbTool";
 import { Faq } from "@/components/site/Faq";
 import { SIGNATURE_KB_USECASES } from "@/lib/kbTargets";
+import { KbExamLinks } from "@/components/tools/KbExamLinks";
 
 const PATH = "/signature-resize-to-20kb/";
 const uc = SIGNATURE_KB_USECASES[20];
@@ -25,6 +26,7 @@ export const metadata = pageMetadata({
 
 const faqItems = [
   uc.faq,
+  uc.qualityFaq,
   {
     q: "Why won't my signature upload to the form?",
     a: "Portals like UPSC, SSC and bank forms cap the signature file size (often 10–20 KB) and expect a clean background. A phone photo is usually far larger, so the upload is rejected.",
@@ -116,6 +118,8 @@ export default function Page() {
           <strong className="text-foreground">Tip:</strong> {uc.tip}
         </p>
       </section>
+
+      <KbExamLinks kind="signature" kb={20} />
 
       <section className="mt-8">
         <h2 className="mb-3 text-sm font-semibold tracking-tight">Related tools</h2>
