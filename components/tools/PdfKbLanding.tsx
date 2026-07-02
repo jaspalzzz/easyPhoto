@@ -23,7 +23,10 @@ export function PdfKbLanding({ kb }: { kb: number }) {
       q: `How do I compress a PDF to ${kb} KB?`,
       a: `Upload your PDF above, keep the target at ${kb} KB (or change it), and click compress. The pages are optimised to fit under ${kb} KB, then you download the result. Everything happens in your browser.`,
     },
-    {
+    // Size-specific quality answer (readability at 50 KB vs 500 KB is a
+    // genuinely different story); generic phrasing kept as the fallback for
+    // any future target added without editorial content.
+    uc?.qualityFaq ?? {
       q: `Will compressing to ${kb} KB reduce quality?`,
       a: `To meet a ${kb} KB target the pages are rendered to images, so the text is no longer selectable and very small targets look softer. We keep the best quality that still fits, so pick the largest size your form allows.`,
     },
