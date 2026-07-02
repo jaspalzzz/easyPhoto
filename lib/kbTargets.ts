@@ -36,6 +36,13 @@ export interface KbUseCase {
   tip: string;
   /** A lead FAQ unique to this size. */
   faq: { q: string; a: string };
+  /**
+   * Size-specific quality-tradeoff FAQ. Replaces the landing components'
+   * generic "will it reduce quality" answer — that answer is genuinely
+   * different per target (10 KB visibly softens a face; 200 KB doesn't),
+   * and the one-size-fits-all phrasing read as templated boilerplate.
+   */
+  qualityFaq: { q: string; a: string };
 }
 
 export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
@@ -53,6 +60,10 @@ export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
       q: "Is 10 KB too small for a clear face photo?",
       a: "It is tight. We keep the maximum quality that still fits 10 KB, but fine detail is lost at that size — if your form allows 20 KB or 50 KB, prefer that for a sharper photo.",
     },
+    qualityFaq: {
+      q: "How much quality is lost at 10 KB?",
+      a: "A fair amount of fine detail — hitting 10 KB usually needs heavy JPEG compression and often smaller dimensions too, so skin texture and hair detail soften noticeably. The face stays recognisable, which is what these strict portals are checking for.",
+    },
   },
   20: {
     heading: "Where a 20 KB photo is used",
@@ -67,6 +78,10 @@ export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
     faq: {
       q: "Which exams ask for a 20 KB photo?",
       a: "It is common across SSC, RRB and several state PSC and university forms. Always confirm the exact figure on your form, then set it above.",
+    },
+    qualityFaq: {
+      q: "Will a 20 KB photo still look sharp?",
+      a: "At typical exam dimensions (around 350×450 px) a 20 KB JPEG keeps the face clearly defined — the background and clothing lose subtle texture first. It reads perfectly well at the size portals actually display it.",
     },
   },
   30: {
@@ -83,6 +98,10 @@ export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
       q: "Is 30 KB enough for a sharp passport-style photo?",
       a: "Yes — at 30 KB a correctly cropped head-and-shoulders photo stays clear on screen and in print at ID size.",
     },
+    qualityFaq: {
+      q: "Will compressing to 30 KB reduce quality?",
+      a: "Barely, at exam dimensions — 30 KB gives enough headroom that compression artefacts are hard to spot without zooming in. It is a comfortable middle ground between the strict 20 KB band and the 50 KB default.",
+    },
   },
   50: {
     heading: "Where a 50 KB photo is used",
@@ -97,6 +116,10 @@ export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
     faq: {
       q: "Is 50 KB the standard exam photo size?",
       a: "For most Indian exams, yes — 50 KB is the most widely accepted photo cap. Confirm your form's exact limit, but 50 KB is the safe default.",
+    },
+    qualityFaq: {
+      q: "Will compressing to 50 KB reduce quality?",
+      a: "Not visibly for a passport-style photo — at the few-hundred-pixel dimensions exam portals use, 50 KB keeps the image essentially artefact-free. Quality only becomes a real concern below about 20 KB.",
     },
   },
   100: {
@@ -113,6 +136,10 @@ export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
       q: "Why do passport and visa forms allow 100 KB?",
       a: "Travel documents need a clearer face for verification, so they permit a larger file than exam forms. 100 KB keeps the photo sharp while meeting the cap.",
     },
+    qualityFaq: {
+      q: "Will compressing to 100 KB reduce quality?",
+      a: "No — for a portal-sized photo, 100 KB is generous. Even the larger 630×810 px Passport Seva format fits under 100 KB with no visible compression.",
+    },
   },
   200: {
     heading: "Where a 200 KB photo is used",
@@ -127,6 +154,10 @@ export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
     faq: {
       q: "Is 200 KB too large for an exam photo?",
       a: "Usually yes — most exams cap at 50 KB. Use 200 KB for visa documents, job portals or any field that explicitly allows it.",
+    },
+    qualityFaq: {
+      q: "Will compressing to 200 KB reduce quality?",
+      a: "No — 200 KB is more than a portal-sized photo needs. A photo only shrinks meaningfully to reach this cap when it starts out as a multi-megabyte camera image, and that reduction is invisible at upload dimensions.",
     },
   },
 };
@@ -146,6 +177,10 @@ export const PDF_KB_USECASES: Record<number, KbUseCase> = {
       q: "Can a marksheet really fit in 50 KB?",
       a: "A single page can. Multi-page marksheets should be split first — at 50 KB across many pages the text becomes too soft to read.",
     },
+    qualityFaq: {
+      q: "How readable is a PDF squeezed to 50 KB?",
+      a: "A single page stays readable — the text softens but remains clear at normal reading size. This is the one target where page count really matters: spreading 50 KB across several pages makes the text hard to read.",
+    },
   },
   100: {
     heading: "What fits in a 100 KB PDF",
@@ -160,6 +195,10 @@ export const PDF_KB_USECASES: Record<number, KbUseCase> = {
     faq: {
       q: "Is 100 KB the standard certificate size?",
       a: "For most exam and government portals, yes — 100 KB is the most common document cap. Confirm your form's exact limit before uploading.",
+    },
+    qualityFaq: {
+      q: "Will text stay sharp in a 100 KB PDF?",
+      a: "For one or two pages, yes — 100 KB keeps typical certificate and marksheet text clean. Dense small print or documents with many pages will start to soften; split those first.",
     },
   },
   200: {
@@ -176,6 +215,10 @@ export const PDF_KB_USECASES: Record<number, KbUseCase> = {
       q: "When should I use 200 KB instead of 100 KB?",
       a: "Use 200 KB when the portal allows it and your document has fine print or two pages — the extra headroom keeps the text readable.",
     },
+    qualityFaq: {
+      q: "How much quality does a 200 KB PDF keep?",
+      a: "Enough for fine print — seals, stamps and small text on a one-to-two-page document stay sharp at 200 KB. It is the size where compression stops being the limiting factor for typical certificates.",
+    },
   },
   500: {
     heading: "What fits in a 500 KB PDF",
@@ -190,6 +233,10 @@ export const PDF_KB_USECASES: Record<number, KbUseCase> = {
     faq: {
       q: "Will text stay selectable at 500 KB?",
       a: "To hit a fixed KB target the pages are rendered to images, so text isn't selectable — but at 500 KB it stays sharp and easy to read.",
+    },
+    qualityFaq: {
+      q: "Does compressing to 500 KB lose anything visible?",
+      a: "Very little — 500 KB comfortably holds several pages with crisp text. At this size the practical trade-off is the render-to-image step, not the compression itself.",
     },
   },
 };
@@ -209,6 +256,10 @@ export const SIGNATURE_KB_USECASES: Record<number, KbUseCase> = {
       q: "Which exams want a 10 KB signature?",
       a: "SSC, IBPS, SBI and RRB forms commonly cap the signature in the 10–20 KB range. Set the exact figure your form shows.",
     },
+    qualityFaq: {
+      q: "Will my signature stay crisp at 10 KB?",
+      a: "Usually yes — ink strokes on a clean background compress far better than a photo, so 10 KB typically keeps sharp edges. Only very faint, pencil-thin strokes risk thinning out; go over your signature with a bolder pen if that happens.",
+    },
   },
   20: {
     heading: "Where a 20 KB signature is used",
@@ -223,6 +274,10 @@ export const SIGNATURE_KB_USECASES: Record<number, KbUseCase> = {
     faq: {
       q: "Is 20 KB the usual signature size?",
       a: "Yes — 20 KB is the most common exam-signature cap. Confirm your form's limit, but 20 KB clears most portals.",
+    },
+    qualityFaq: {
+      q: "Will 20 KB reduce my signature's quality?",
+      a: "Rarely noticeably — 20 KB is comfortable for a trimmed signature. If the result looks blurry, the cause is almost always the original photo being out of focus or poorly lit, not the compression.",
     },
   },
   50: {
@@ -239,6 +294,10 @@ export const SIGNATURE_KB_USECASES: Record<number, KbUseCase> = {
       q: "When is a 50 KB signature needed?",
       a: "On portals that explicitly allow it — CSIR NET, some state PSCs and university forms. For SSC and bank forms, a smaller 10–20 KB signature is expected.",
     },
+    qualityFaq: {
+      q: "Does a 50 KB signature look better than a 20 KB one?",
+      a: "Slightly — at 50 KB the ink edges keep full smoothness with no compression artefacts at all. It only matters if your form allows it; the smaller caps still stay perfectly legible.",
+    },
   },
   100: {
     heading: "Where a 100 KB signature is used",
@@ -253,6 +312,10 @@ export const SIGNATURE_KB_USECASES: Record<number, KbUseCase> = {
     faq: {
       q: "Do any forms really want a 100 KB signature?",
       a: "Some do — UPSC and forms that accept a full signature sheet. Most exams, though, cap the signature at 10–20 KB, so check before using 100 KB.",
+    },
+    qualityFaq: {
+      q: "Why allow a signature as large as 100 KB?",
+      a: "Forms that print your signature on a certificate or accept a full scanned signature sheet want maximum fidelity — at 100 KB every stroke and pressure variation of the original ink survives intact.",
     },
   },
 };
