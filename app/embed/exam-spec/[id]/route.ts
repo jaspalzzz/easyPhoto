@@ -46,6 +46,7 @@ function renderEmbed(spec: PortalSpec): string {
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,follow">
 <title>${esc(short)} photo & signature size — easyPhoto</title>
 <style>
   :root{color-scheme:light}

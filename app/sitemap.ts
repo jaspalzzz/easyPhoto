@@ -115,9 +115,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Portal form resizers (/tools/form-resizer/*) and sub-exam resizers
     // (/exam-resizer/*) are noindex — they duplicate the /exam-requirements/
     // intent and inherit the parent spec — so they are intentionally omitted
-    // from the sitemap. Legacy *-photo-resizer URLs redirect to the noindexed
-    // form resizers, so they are also omitted: sitemaps must list final,
-    // indexable canonical URLs only.
+    // from the sitemap. Legacy *-photo-resizer URLs 301 to the indexable
+    // /exam-requirements/ authority pages, so they are also omitted: sitemaps
+    // must list final, indexable canonical URLs only.
     ...BLOG_POSTS.map((p) => ({
       url: `${SITE_URL}/blog/${p.slug}/`,
       lastModified: p.updatedISO ?? p.dateISO,
