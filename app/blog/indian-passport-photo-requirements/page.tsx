@@ -62,8 +62,10 @@ export default function Page() {
       <h2>The 12-point Indian passport photo compliance checklist</h2>
 
       <p>
-        The Ministry of External Affairs specifies these requirements through
-        passportindia.gov.in. Use this as a pre-submission checklist before you
+        The Ministry of External Affairs specifies these requirements through{" "}
+        <a href="https://www.passportindia.gov.in" target="_blank" rel="noopener noreferrer">
+          passportindia.gov.in
+        </a>. Use this as a pre-submission checklist before you
         print or upload.
       </p>
 
