@@ -13,6 +13,7 @@ import {
 import { portalFaqItems } from "@/lib/faqs";
 import { SUB_EXAM_RESIZERS, RESIZER_YEAR } from "@/lib/subExamResizers";
 import { pageMetadata } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/site";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, faqSchema, webPageSchema } from "@/lib/schema";
 import { Faq } from "@/components/site/Faq";
@@ -56,15 +57,30 @@ export async function generateMetadata({
   const spec = getPortalSpec(exam);
   if (!spec) return {};
   const sig = sigKb(spec);
+  // Short name (not the full spec.name, which can include a long parenthetical
+  // like "SSC (Staff Selection Commission)") — the full name plus dimensions
+  // for both photo and signature was pushing descriptions to 195-217 chars,
+  // well past the ~155-160 char SERP display width, so they were truncating.
+  const shortName = spec.name.split(" (")[0];
+  // Longer exam names (e.g. "Driving Licence", "Indian Navy Agniveer") push
+  // the title with " (Official)" past the ~60-char SERP budget once the
+  // " — easyPhoto" template suffix is appended. Drop that qualifier rather
+  // than truncate mid-word — the spec table's "Official source" badge and
+  // the meta description already carry the trust signal.
+  const titleBase = `${shortName} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR}`;
+  const titleWithOfficial = `${titleBase} (Official)`;
+  const fitsWithOfficial = `${titleWithOfficial} — ${SITE_NAME}`.length <= 60;
   return pageMetadata({
     // Short exam name keeps the SERP title under ~60 chars and matches how
     // people actually search ("SSC photo size", not the full commission name).
-    title: EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam] ?? `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR} (Official)`,
+    title:
+      EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam] ??
+      (fitsWithOfficial ? titleWithOfficial : titleBase),
     titleAbsolute: !!EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam],
     description:
-      `${spec.name}: photo ${photoKb(spec)} (${px(spec.photoWidthPx, spec.photoHeightPx)})` +
+      `${shortName}: photo ${photoKb(spec)} (${px(spec.photoWidthPx, spec.photoHeightPx)})` +
       (sig ? `, signature ${sig} (${px(spec.sigWidthPx, spec.sigHeightPx)})` : "") +
-      `. The exact size, dimensions & format for the application form — with the official source. Resize free, in your browser.`,
+      `. Exact size & format for the form — verified against the official source.`,
     path: `/exam-requirements/${exam}/`,
   });
 }
@@ -78,13 +94,20 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-const REJECTIONS = [
-  "File size over the limit — even 1 KB above the cap is auto-rejected by many portals.",
-  "Wrong pixel dimensions or aspect ratio.",
-  "Wrong file format (most portals want JPG/JPEG).",
-  "Signature uploaded with a white box / paper background instead of clean ink.",
-  "Old, blurry, or low-contrast photo, or wrong (non-white) background.",
-];
+function rejectionReasons(hasSignature: boolean): string[] {
+  const reasons = [
+    "File size over the limit — even 1 KB above the cap is auto-rejected by many portals.",
+    "Wrong pixel dimensions or aspect ratio.",
+    "Wrong file format (most portals want JPG/JPEG).",
+  ];
+  // Only applies to forms that actually take a signature upload — showing this
+  // for exams with photo-only uploads would be inaccurate, not just repetitive.
+  if (hasSignature) {
+    reasons.push("Signature uploaded with a white box / paper background instead of clean ink.");
+  }
+  reasons.push("Old, blurry, or low-contrast photo, or wrong (non-white) background.");
+  return reasons;
+}
 
 // Sub-exams that share the parent's ONE common photo/signature spec (e.g. SSC's
 // One-Time-Registration). Listing them captures the long-tail "ssc cgl photo
@@ -277,7 +300,7 @@ export default async function Page({
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Why {spec.name.split(" (")[0]} uploads get rejected</h2>
         <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-          {REJECTIONS.map((r) => (
+          {rejectionReasons(!!sig).map((r) => (
             <li key={r} className="flex items-start gap-2">
               <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-faint" strokeWidth={1.75} />
               {r}

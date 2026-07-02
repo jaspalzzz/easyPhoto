@@ -161,7 +161,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   },
   rrb: {
     id: "rrb",
-    name: "Railway Recruitment Board (RRB)",
+    // Acronym-first, matching every other entry's "SHORT (long form)"
+    // convention — the reversed order here made `.split(" (")[0])`
+    // (used for titles/meta descriptions/UI labels) pick the 26-char full
+    // name instead of "RRB", overflowing SERP title/description budgets.
+    name: "RRB (Railway Recruitment Board)",
     photoLimitKb: 50,
     photoMinKb: 20,
     sigLimitKb: 40,
