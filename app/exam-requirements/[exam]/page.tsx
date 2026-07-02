@@ -206,7 +206,7 @@ export default async function Page({
               <Row label="File size" value={sig} />
               <Row label="Dimensions" value={px(spec.sigWidthPx, spec.sigHeightPx)} />
               <Row label="Format" value="JPG / JPEG" />
-              <Row label="Ink" value="Black/blue on white paper" />
+              <Row label="Ink" value={spec.signatureInk ?? "Black/blue on white paper"} />
             </dl>
           ) : (
             <p className="text-sm text-muted-foreground">

@@ -55,6 +55,14 @@ export interface PortalSpec {
    */
   requiresNameDate?: boolean;
   /**
+   * Signature ink requirement, when the official source specifies one exactly
+   * (e.g. driving-licence and up-police confirm "black" only, not blue). Only
+   * set this when actually confirmed — the exam-requirements template falls
+   * back to "Black/blue on white paper" (the common default across specs)
+   * when this is unset, so leaving it unset is the honest default, not a bug.
+   */
+  signatureInk?: string;
+  /**
    * 1–2 sentences of ACCURATE, exam-specific context (conducting body, exams
    * covered, where/how the photo is uploaded, exam-specific rules). Surfaced as
    * unique on-page prose to differentiate the otherwise-templated per-exam
@@ -630,7 +638,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 413 / 531,
     sigAspectRatio: 413 / 177,
     description:
-      "Indian Army Agniveer registration (joinindianarmy.nic.in). Photo 20-50 KB JPEG, 413×531 px, with your NAME and the DATE the photo was taken printed at the bottom — Army-specific and checked at every stage. Signature 10-20 KB (413×177 px), black ink, running hand (block capitals are rejected at document verification).",
+      "Indian Army Agniveer registration (joinindianarmy.nic.in). Photo 20-50 KB JPEG, 413×531 px, with your NAME and the DATE the photo was taken printed at the bottom. Signature 10-20 KB (413×177 px), black ink, running hand. These figures could not be traced to any fetchable official document — the rally notification only specifies physical-photo requirements (3.5×3.5cm print), and the online-upload widget's own validation rules sit behind the login-gated candidate portal. Confirm against the current notification before applying.",
     source: {
       url: "https://joinindianarmy.nic.in",
       label: "Join Indian Army (joinindianarmy.nic.in)",
@@ -662,10 +670,15 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigLimitKb: 20,
     sigMinKb: 5,
     photoAspectRatio: 35 / 45,
+    signatureInk: "Black ink on white paper",
     description:
-      "Uttar Pradesh Police Recruitment & Promotion Board (UPPBPB) online registration — constable, SI and other posts. Photo 35×45 mm JPEG/JPG/JPE, 20-50 KB; signature 35×15 mm, 5-20 KB. Limits can change per recruitment notification — the portal validates at upload.",
-    source: { url: "https://uppbpb.gov.in", label: "UPPBPB (uppbpb.gov.in)" },
-    verification: "needs-review",
+      "Uttar Pradesh Police Recruitment & Promotion Board (UPPBPB) online registration — constable, SI and other posts. Photo 35×45 mm JPEG/JPG/JPE, 20-50 KB; signature 35×15 mm, 5-20 KB, black ink. Limits can change per recruitment notification — the portal validates at upload.",
+    source: {
+      url: "https://uppbpb.gov.in/FilesUploaded/Notice/CONSTABLE-VIGYAPTIc7be0cc8-3365-471e-9237-447c528d341a.pdf",
+      label: "UPPBPB Constable recruitment notification (uppbpb.gov.in)",
+    },
+    verification: "official",
+    verifiedOn: "2026-07-01",
   },
   // ---- Indian identity documents ----
   pan: {
@@ -695,18 +708,24 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     id: "driving-licence",
     name: "Driving Licence (Sarathi Parivahan)",
     photoLimitKb: 20,
+    photoMinKb: 10,
     sigLimitKb: 20,
     sigMinKb: 10,
     photoWidthPx: 420,
     photoHeightPx: 525,
+    sigWidthPx: 256,
+    sigHeightPx: 64,
     photoAspectRatio: 35 / 45,
+    sigAspectRatio: 256 / 64,
+    signatureInk: "Black pen on white paper",
     description:
-      "Driving licence / learner's licence application on the Sarathi Parivahan portal (sarathi.parivahan.gov.in). Photo 35×45 mm JPEG under 20 KB (commonly accepted at 420×525 px); signature JPEG 10-20 KB, black or blue ink on white paper. Some states enforce slightly different limits — the portal validates at upload, so check the message your state's portal shows.",
+      "Driving licence / learner's licence application on the Sarathi Parivahan portal (sarathi.parivahan.gov.in). Photo 35×45 mm (420×525 px), 10-20 KB; signature 256×64 px, 10-20 KB, black pen on white paper. This is a single national spec document, not a state-specific one.",
     source: {
-      url: "https://sarathi.parivahan.gov.in",
-      label: "Sarathi Parivahan (sarathi.parivahan.gov.in)",
+      url: "https://sarathi.parivahan.gov.in/sarathiservice/pdf/PhotoSign.pdf",
+      label: "Sarathi Parivahan — Photo and Signature Scan & Upload Process",
     },
-    verification: "needs-review",
+    verification: "official",
+    verifiedOn: "2026-07-01",
   },
   "voter-id": {
     id: "voter-id",
@@ -748,20 +767,24 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     id: "kerala-psc",
     name: "Kerala PSC (Thulasi Portal)",
     photoLimitKb: 30,
-    sigLimitKb: 20,
+    sigLimitKb: 30,
     photoWidthPx: 150,
     photoHeightPx: 200,
     sigWidthPx: 150,
-    sigHeightPx: 75,
+    sigHeightPx: 100,
     photoAspectRatio: 150 / 200,
-    sigAspectRatio: 2,
+    sigAspectRatio: 150 / 100,
     description:
-      "Kerala Public Service Commission (Thulasi portal — thulasi.psc.kerala.gov.in). Photo 150×200 px, under 30 KB, JPG/JPEG, plain light background, with the candidate's name and the date of photography printed at the bottom; signature 150×75 px, under 20 KB. The Thulasi portal is strict on file size — even 31 KB is rejected.",
-    source: { url: "https://thulasi.psc.kerala.gov.in", label: "Kerala PSC Thulasi portal" },
-    verification: "needs-review",
+      "Kerala Public Service Commission (Thulasi portal — thulasi.psc.kerala.gov.in). Photo 150×200 px, under 30 KB, JPG/JPEG, plain light background, with the candidate's name and the date of photography printed at the bottom; signature 150×100 px, under 30 KB. The Thulasi portal is strict on file size — even 1 KB over is rejected.",
+    source: {
+      url: "https://www.keralapsc.gov.in/sites/default/files/inline-files/otr.pdf",
+      label: "Kerala PSC One-Time Registration instructions",
+    },
+    verification: "official",
+    verifiedOn: "2026-07-01",
     requiresNameDate: true,
     context:
-      "Kerala Public Service Commission uses its own Thulasi portal for all recruitments. The photo and signature upload limits (150×200 px / 30 KB and 150×75 px / 20 KB) differ from the standard national exam pattern, and Kerala PSC requires your name and the date of photography printed on the photo — always verify against the current notification on thulasi.psc.kerala.gov.in.",
+      "Kerala Public Service Commission uses its own Thulasi portal for all recruitments. The photo and signature upload limits (150×200 px / 30 KB and 150×100 px / 30 KB) differ from the standard national exam pattern, and Kerala PSC requires your name and the date of photography printed on the photo.",
   },
 
   // ---------------------------------------------------------------------------
@@ -791,19 +814,18 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   dsssb: {
     id: "dsssb",
     name: "DSSSB (Delhi SSB)",
-    photoLimitKb: 50,
-    photoMinKb: 20,
-    sigLimitKb: 20,
+    photoLimitKb: 100,
+    photoMinKb: 25,
+    sigLimitKb: 50,
     sigMinKb: 10,
-    photoWidthPx: 200,
-    photoHeightPx: 230,
-    sigWidthPx: 140,
-    sigHeightPx: 60,
-    photoAspectRatio: 20 / 23,
-    sigAspectRatio: 14 / 6,
+    photoAspectRatio: 3.5 / 4.5,
+    sigAspectRatio: 3.5 / 1.5,
     description:
-      "Delhi Subordinate Services Selection Board online application (dsssb.delhi.gov.in). Photo 20-50 KB (200×230 px), JPG/JPEG, plain white background; signature 10-20 KB (140×60 px, black ink), JPG.",
-    source: { url: "https://dsssb.delhi.gov.in", label: "DSSSB (dsssb.delhi.gov.in)" },
+      "Delhi Subordinate Services Selection Board online application (dsssb.delhi.gov.in). Photo 25-100 KB (3.5×4.5 cm), JPG/JPEG, plain white/off-white background; signature 10-50 KB (3.5×1.5 cm), JPG/JPEG. The current 2026 advertisement gives no KB/pixel numbers at all (only qualitative background guidance) — these figures come from the most recent DSSSB instruction document with actual numbers, which is dated 2012. Confirm against the current notification before applying.",
+    source: {
+      url: "https://dsssbonline.nic.in/AdvtDetailFiles/doc_dsssb_english.pdf",
+      label: "DSSSB photo/signature instructions (dsssbonline.nic.in)",
+    },
     verification: "needs-review",
     context:
       "DSSSB (Delhi Subordinate Services Selection Board) recruits for posts under the Government of NCT of Delhi — TGT, PGT, various Group B and C posts. Photo and signature are uploaded on the online application portal.",
@@ -840,18 +862,16 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 20,
     sigLimitKb: 20,
     sigMinKb: 10,
-    photoWidthPx: 200,
-    photoHeightPx: 230,
-    sigWidthPx: 140,
-    sigHeightPx: 60,
-    photoAspectRatio: 20 / 23,
-    sigAspectRatio: 14 / 6,
+    sigAspectRatio: 6.0 / 2.0,
     description:
-      "BSF (Border Security Force) constable / HC / SI recruitment (rectt.bsf.gov.in). Photo 20-50 KB (200×230 px), plain white background, JPG; signature 10-20 KB (140×60 px, black ink), JPG.",
-    source: { url: "https://rectt.bsf.gov.in", label: "BSF Recruitment (rectt.bsf.gov.in)" },
+      "BSF (Border Security Force) Constable/HC/SI recruitment. Signature 10-20 KB, 6.0cm×2.0cm — confirmed via the SSC GD 2026 notice (SSC administers BSF's Constable GD hiring stream). That same notice describes the photo step as a live webcam capture through the application portal, not a file-size/dimension upload — so the 20-50 KB photo figure here is an unconfirmed standard-pattern assumption for BSF's own SI/HC recruitment (a separate stream from SSC GD), not something this source confirms.",
+    source: {
+      url: "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/notice_01122025.pdf",
+      label: "SSC GD Constable (CAPFs incl. BSF) 2026 notice",
+    },
     verification: "needs-review",
     context:
-      "BSF (Border Security Force) recruits Constable (GD/Tradesmen), Head Constable and Sub-Inspector posts via rectt.bsf.gov.in. Specs are consistent with the standard CAPF pattern but always confirm the current notification before applying.",
+      "BSF (Border Security Force) recruits Constable (GD/Tradesmen) via the common SSC GD exam, and Head Constable/Sub-Inspector through its own portal (rectt.bsf.gov.in) — the two streams may have different upload specs. Always confirm the current notification before applying.",
   },
 
   crpf: {
@@ -921,21 +941,17 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "Indian Navy Agniveer",
     photoLimitKb: 50,
     photoMinKb: 10,
-    sigLimitKb: 50,
-    sigMinKb: 10,
-    photoWidthPx: 413,
-    photoHeightPx: 531,
-    sigWidthPx: 413,
-    sigHeightPx: 177,
-    photoAspectRatio: 413 / 531,
-    sigAspectRatio: 413 / 177,
     description:
-      "Indian Navy Agniveer SSR / MR / CHEF recruitment (joinindiannavy.gov.in). Photo 10-50 KB JPEG, 413×531 px, passport-style with name and date at the bottom; signature 10-50 KB (413×177 px), black ink, running hand.",
-    source: { url: "https://joinindiannavy.gov.in", label: "Join Indian Navy (joinindiannavy.gov.in)" },
-    verification: "needs-review",
+      "Indian Navy Agniveer SSR/MR recruitment (joinindiannavy.gov.in). Photo 10-50 KB JPEG, passport-style, candidate holding a black slate with name and date of photograph written on it in white chalk. The official notification describes no separate signature upload step at all — earlier third-party figures for a 413×177 px signature could not be traced to any Navy document and have been removed rather than left unverified.",
+    source: {
+      url: "https://www.joinindiannavy.gov.in/files/agniveers/Advt_Agniveer_MR_01-23_English.pdf",
+      label: "Join Indian Navy Agniveer (MR) advertisement",
+    },
+    verification: "official",
+    verifiedOn: "2026-07-01",
     requiresNameDate: true,
     context:
-      "Indian Navy Agniveer (SSR, MR and CHEF) applications are submitted on joinindiannavy.gov.in. Like Army Agniveer, the photo must have the candidate's name and date printed at the bottom. Confirm exact specs in the current notification.",
+      "Indian Navy Agniveer (SSR/MR) applications are submitted on joinindiannavy.gov.in. Like Army Agniveer, the photo must show the candidate holding a slate with name and date written on it. No separate signature upload exists in the official notification.",
   },
 
   // ---------------------------------------------------------------------------
@@ -949,7 +965,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigLimitKb: 30,
     sigMinKb: 4,
     description:
-      "EPFO (Social Security Assistant / Inspector) recruitment administered by UPSC/IBPS. Photo 10-200 KB JPG/JPEG, light-shade plain background; signature 4-30 KB JPG/JPEG. These figures come from EPFO's most recent locatable SSA advertisement (2023) — no 2025/2026 SSA notification has been published on epfindia.gov.in as of this check, so confirm against the current notice before applying.",
+      "EPFO (Social Security Assistant / Inspector) recruitment administered by UPSC/IBPS. Photo 10-200 KB JPG/JPEG, light-shade plain background; signature 4-30 KB JPG/JPEG. These figures come from EPFO's most recent locatable SSA advertisement (2023) — re-checked 2026-07-01, EPFO's own recruitment page is still processing the 2023 cohort's postings and no newer SSA/Inspector notification has been published, so confirm against the current notice before applying.",
     source: {
       url: "https://www.epfindia.gov.in/site_docs/PDFs/Recruitments_PDFs/Advertisement_for_SSA_24032023.pdf",
       label: "EPFO SSA Advertisement (epfindia.gov.in, 2023)",
@@ -971,7 +987,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 60,
     sigAspectRatio: 14 / 6,
     description:
-      "FCI (Food Corporation of India) recruitment — AGM / JE / Watchman / Typist (fci.gov.in). Photo 4.5cm×3.5cm, colour, light background (the most recent locatable notice, 2022, states no photo KB limit — 20-50 KB is the standard pattern used elsewhere, not FCI-confirmed); signature 140×60 px, 10-20 KB, black or blue ink (confirmed). FCI's 2026 recruitment notification had not yet been published as of this check.",
+      "FCI (Food Corporation of India) recruitment — AGM / JE / Watchman / Typist (fci.gov.in). Photo 4.5cm×3.5cm, colour, light background (the most recent locatable notice, 2022, states no photo KB limit — 20-50 KB is the standard pattern used elsewhere, not FCI-confirmed); signature 140×60 px, 10-20 KB, black or blue ink (confirmed). FCI's 2026 recruitment notification has still not been published as of 2026-07-01 — press coverage now expects it in August 2026 (previously expected June 2026).",
     source: {
       url: "https://fci.gov.in/fci-storage/storage/app/uploads/653f851f7c7ba1698661663.pdf",
       label: "FCI Category III Advertisement (fci.gov.in, 2022)",
