@@ -9,6 +9,7 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
     "check:specs": "node scripts/check-specs.mjs",
     "freshness": "node scripts/freshness-audit.mjs",
     "indexnow": "node scripts/indexnow.mjs"
@@ -37,6 +38,7 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@types/node": "^22.10.5",
     "@types/pica": "^9.0.4",
     "@types/react": "^19.0.4",

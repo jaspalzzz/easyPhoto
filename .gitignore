@@ -2,8 +2,11 @@
 /.next
 /.next-verify
 /.next-preview
+/.next-e2e
 /out
 /build
+/test-results
+/playwright-report
 *.tsbuildinfo
 next-env.d.ts
 .DS_Store
