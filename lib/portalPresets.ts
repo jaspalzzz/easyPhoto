@@ -124,6 +124,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/photos.html", label: "US Dept. of State photo requirements" },
     verification: "official",
     verifiedOn: "2026-06-08",
+    context:
+      "The DS-160 is the online nonimmigrant visa application form for the United States; the photo is uploaded directly within the form on the US Department of State's travel.state.gov portal.",
   },
   "passport-seva": {
     id: "passport-seva",
@@ -142,6 +144,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://www.passportindia.gov.in", label: "Passport Seva (passportindia.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-08",
+    context:
+      "Passport Seva is the Ministry of External Affairs' online portal for Indian passport applications — the photo and signature are uploaded during the online form at passportindia.gov.in, ahead of the physical Passport Seva Kendra (PSK) appointment.",
   },
   oci: {
     id: "oci",
@@ -158,6 +162,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://ociservices.gov.in", label: "OCI Services (ociservices.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-08",
+    context:
+      "OCI (Overseas Citizen of India) registration is processed through the OCI Services portal at ociservices.gov.in, where the photo and signature are uploaded as part of the online application.",
   },
   rrb: {
     id: "rrb",
@@ -260,6 +266,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://opportunities.rbi.org.in", label: "RBI Opportunities (rbi.org.in)" },
     verification: "official",
     verifiedOn: "2026-06-08",
+    context:
+      "The Reserve Bank of India recruits Grade B Officers and Assistants through its own recruitment portal at opportunities.rbi.org.in, separate from the IBPS common exam used by most other public-sector banks.",
   },
   ctet: {
     id: "ctet",
@@ -278,6 +286,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://ctet.nic.in", label: "CTET (ctet.nic.in)" },
     verification: "official",
     verifiedOn: "2026-06-08",
+    context:
+      "CTET (Central Teacher Eligibility Test) is CBSE's national teacher-eligibility exam; the online application at ctet.nic.in validates photo and signature dimensions automatically at upload, so a mismatch is rejected immediately rather than at verification.",
   },
   uppsc: {
     id: "uppsc",
@@ -288,6 +298,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://uppsc.up.nic.in", label: "UPPSC (uppsc.up.nic.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "Uttar Pradesh Public Service Commission recruitments go through the state's OTR (One-Time Registration) portal; the official guideline specifies photo and signature size in centimetres and a maximum file size, without fixed pixel dimensions.",
   },
   bpsc: {
     id: "bpsc",
@@ -298,6 +310,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://bpsc.bihar.gov.in", label: "BPSC (bpsc.bihar.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "Bihar Public Service Commission captures the candidate's photograph live via webcam during the online application, rather than accepting an uploaded photo file — only the signature (in both Hindi and English) is uploaded as a file.",
   },
   mpsc: {
     id: "mpsc",
@@ -308,6 +322,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://mpsc.gov.in", label: "MPSC (mpsc.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "Maharashtra Public Service Commission's official instructions specify photo and signature size in centimetres with a 50 KB cap for both, and require a solid-colour photo background — no pixel dimensions or minimum file size are stated.",
   },
 
   // ---------------------------------------------------------------------------
@@ -330,6 +346,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://gate2026.iitg.ac.in", label: "GATE 2026 (IIT Guwahati)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "GATE (Graduate Aptitude Test in Engineering) is conducted by a different IIT or IISc each year; the photo file-size cap is set by that year's conducting institute (600 KB for GATE 2026, run by IIT Guwahati) and can change between editions.",
   },
   "ugc-net": {
     id: "ugc-net",
@@ -342,6 +360,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://ugcnet.nta.ac.in", label: "NTA UGC-NET (ugcnet.nta.ac.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "UGC-NET (National Eligibility Test) is conducted by NTA for eligibility as Assistant Professor and for Junior Research Fellowship; NTA specifies photo and signature file size and format but no fixed pixel dimensions.",
   },
   "csir-net": {
     id: "csir-net",
@@ -354,6 +374,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://csirnet.nta.ac.in", label: "NTA CSIR-NET (csirnet.nta.ac.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "The joint CSIR-UGC NET is conducted by NTA for eligibility in science and research fields; like UGC-NET, NTA specifies file size and format but no fixed pixel dimensions for the photo or signature.",
   },
 
   // ---------------------------------------------------------------------------
@@ -376,6 +398,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://upsconline.nic.in", label: "UPSC online (upsconline.nic.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "NDA (National Defence Academy) is conducted by UPSC via the same upsconline.nic.in One-Time Registration portal used for the Civil Services Exam, with its own photo and signature size band.",
   },
   cds: {
     id: "cds",
@@ -394,6 +418,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://upsconline.nic.in", label: "UPSC online (upsconline.nic.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "CDS (Combined Defence Services) is conducted by UPSC via the same upsconline.nic.in One-Time Registration portal used for the Civil Services Exam, with its own photo and signature size band.",
   },
   afcat: {
     id: "afcat",
@@ -406,6 +432,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://afcat.cdac.in", label: "AFCAT (afcat.cdac.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "AFCAT (Air Force Common Admission Test) recruits for the Indian Air Force's Flying and Ground Duty branches; the current notification specifies file size and format for the photo, signature and thumb impression, but no fixed pixel dimensions.",
   },
 
   // ---------------------------------------------------------------------------
@@ -428,6 +456,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://rpsc.rajasthan.gov.in", label: "RPSC (rpsc.rajasthan.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "Rajasthan Public Service Commission recruitment applications go through the state's SSO (Single Sign-On) Rajasthan portal, sharing the same photo and signature size band as several other UPSC-pattern state exams.",
   },
   tnpsc: {
     id: "tnpsc",
@@ -442,6 +472,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://tnpsc.gov.in", label: "TNPSC (tnpsc.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "Tamil Nadu Public Service Commission specifies a pixel range rather than a single fixed size for the photo and signature, and states no minimum file size — only the upper KB limit is enforced.",
   },
   kpsc: {
     id: "kpsc",
@@ -456,6 +488,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://kpsc.kar.nic.in", label: "KPSC (kpsc.kar.nic.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "Karnataka Public Service Commission's online application portal accepts a pixel range for the photo and signature and, unusually among state PSCs, allows PNG in addition to JPG/JPEG; specific exam notifications may set tighter limits than the general portal maximum.",
   },
   appsc: {
     id: "appsc",
@@ -467,6 +501,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "official",
     verifiedOn: "2026-06-10",
     requiresNameDate: true,
+    context:
+      "Andhra Pradesh Public Service Commission registration goes through the OTPR (One-Time Profile Registration) system; like SSC, APPSC requires the candidate's name and the date of photography printed on the photo itself.",
   },
   tgpsc: {
     id: "tgpsc",
@@ -479,6 +515,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://tgpsc.gov.in", label: "TGPSC (tgpsc.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "Telangana Public Service Commission (formerly combined with Andhra Pradesh's TSPSC) uses its own One-Time Registration portal; the official manual specifies size in centimetres and kilobytes, with no fixed pixel dimensions.",
   },
   wbpsc: {
     id: "wbpsc",
@@ -489,6 +527,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://wbpsc.gov.in", label: "WBPSC (wbpsc.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "West Bengal Public Service Commission's photo and signature limits can vary by notification — some WBPSC recruitments cap the photo at 100 KB instead of the 50 KB used here, so the current notification should be checked.",
   },
   gpsc: {
     id: "gpsc",
@@ -499,6 +539,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://gpsc.gujarat.gov.in", label: "GPSC (gpsc.gujarat.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "Gujarat Public Service Commission recruitment applications go through the OJAS portal; its 15 KB cap for both photo and signature is unusually strict compared to most other state PSCs.",
   },
   hpsc: {
     id: "hpsc",
@@ -513,6 +555,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://hpsc.gov.in", label: "HPSC (hpsc.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "Haryana Public Service Commission's online registration accepts a comparatively generous 500 KB limit for both photo and signature — well above the 20-100 KB range typical of most exam portals in this list.",
   },
 
   // ---------------------------------------------------------------------------
@@ -535,6 +579,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://nabard.org", label: "NABARD (nabard.org)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "NABARD (National Bank for Agriculture and Rural Development) recruitment for Grade A and Grade B officers is IBPS-administered on NABARD's behalf, using the same photo and signature spec as most IBPS-administered banking exams.",
   },
   lic: {
     id: "lic",
@@ -553,6 +599,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://licindia.in", label: "LIC India (licindia.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "LIC (Life Insurance Corporation of India) recruits Apprentice Development Officers (ADO) and Assistant Administrative Officers (AAO) through its own portal at licindia.in, using the same photo and signature spec as most banking-sector recruitments.",
   },
   niacl: {
     id: "niacl",
@@ -571,6 +619,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://www.newindia.co.in", label: "NIACL (newindia.co.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "NIACL (New India Assurance Company Limited) recruits Administrative Officers and Assistants through its own portal, using the same photo and signature spec as most banking and insurance-sector recruitments.",
   },
   irdai: {
     id: "irdai",
@@ -589,6 +639,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     source: { url: "https://irdai.gov.in", label: "IRDAI (irdai.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
+    context:
+      "IRDAI (Insurance Regulatory and Development Authority of India) recruits Assistant Managers through its own portal at irdai.gov.in, using the same photo and signature spec as most banking and insurance-sector recruitments.",
   },
   cat: {
     id: "cat",
@@ -606,6 +658,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-07-01",
+    context:
+      "CAT (Common Admission Test) is run by a different IIM each year for MBA admission to the IIMs and other participating institutes; the registration guide requires a recent (within 6 months) colour photo and explicitly disallows selfies.",
   },
   clat: {
     id: "clat",
@@ -627,6 +681,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       label: "Consortium of NLUs (consortiumofnlus.ac.in)",
     },
     verification: "needs-review",
+    context:
+      "CLAT (Common Law Admission Test) is run by the Consortium of National Law Universities for admission to NLUs across India; the photo and signature spec follows the common IBPS-pattern dimensions used by several other exams in this list.",
   },
   "army-agniveer": {
     id: "army-agniveer",
@@ -649,6 +705,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "needs-review",
     requiresNameDate: true,
+    context:
+      "Indian Army Agniveer applications are submitted on joinindianarmy.nic.in, and the photo must show the candidate's name and the date it was taken printed at the bottom — the same convention used by SSC and Navy Agniveer notifications.",
   },
   "airforce-agniveer": {
     id: "airforce-agniveer",
@@ -665,6 +723,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-06-11",
+    context:
+      "Agniveervayu (Indian Air Force) applications are submitted on agnipathvayu.cdac.in; uniquely among the entries here, the candidate photographs themselves holding a black slate with their name and the date written on it in white chalk, rather than having the text printed digitally onto the photo.",
   },
   "up-police": {
     id: "up-police",
@@ -683,6 +743,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-07-01",
+    context:
+      "UP Police (UPPBPB) recruits Constables, Sub-Inspectors and other posts under the Uttar Pradesh Police Recruitment & Promotion Board; limits are set per recruitment notification and the portal validates the file at upload, so re-check the current notification's numbers before applying.",
   },
   // ---- Indian identity documents ----
   pan: {
@@ -707,6 +769,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "official",
     verifiedOn: "2026-06-11",
     dpi: 200, // officially mandated scan resolution
+    context:
+      "A PAN card application (Form 49A or 49AA) can be filed through either Protean (formerly NSDL e-Gov) or UTIITSL — both processors enforce the same 200 DPI scan requirement and KB caps, so a photo and signature meeting this spec is accepted through either route.",
   },
   "driving-licence": {
     id: "driving-licence",
@@ -730,6 +794,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-07-01",
+    context:
+      "Driving licence and learner's licence applications nationwide go through the single Sarathi Parivahan portal (sarathi.parivahan.gov.in) — this is one national spec document, not a state-by-state one, even though the RTO issuing the licence is run by the state.",
   },
   "voter-id": {
     id: "voter-id",
@@ -744,6 +810,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-07-01",
+    context:
+      "Form 6 (new voter registration) is filed on the Election Commission of India's Voters' Service Portal; unlike most exam portals in this list, there is no separate signature upload — only the photo.",
   },
   cuet: {
     id: "cuet",
