@@ -239,6 +239,15 @@ export default async function Page({
         </div>
       </section>
 
+      {spec.context && (
+        <section className="space-y-2">
+          <h2 className="eyebrow">About this exam</h2>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            {spec.context}
+          </p>
+        </section>
+      )}
+
       {SUB_EXAMS[exam] && (
         <section className="space-y-3">
           <h2 className="eyebrow">Covers these {spec.name.split(" (")[0]} exams</h2>
