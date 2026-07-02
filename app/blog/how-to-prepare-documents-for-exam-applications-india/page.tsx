@@ -86,7 +86,7 @@ export default function Page() {
               Before
             </span>
             <Image
-              src="/images/sample2_before_1782052888740.png"
+              src="/images/sample2_before_1782052888740.webp"
               alt="Input selfie photo before AI correction — unsuitable for exam portal upload"
               width={400}
               height={400}
@@ -98,7 +98,7 @@ export default function Page() {
               After
             </span>
             <Image
-              src="/images/sample2_after_1782052904856.png"
+              src="/images/sample2_after_1782052904856.webp"
               alt="AI-corrected exam photo with white background and correct head framing — ready to upload"
               width={400}
               height={400}
