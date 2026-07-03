@@ -1,308 +1,182 @@
-# Schema Markup Audit — easyphoto.in
+# Schema.org / Structured Data Audit — easyphoto.in
 
-**Audit date:** 2026-06-18
-**Score:** 62 / 100
+**Audit date:** 2026-07-02
+**Method:** Live fetch (curl, static/server-rendered HTML — Next.js emits JSON-LD server-side, confirmed no Playwright rendering needed) + Python `json.loads()` validation of every `<script type="application/ld+json">` block on 4 sampled pages.
+**Prior baseline:** 2026-06-23, scored **62/100**.
 
----
+## Score: 88/100
 
-## Architecture Overview
-
-EasyPhoto uses a centralised schema architecture built on three files:
-
-- `lib/schema.ts` — all schema builder functions
-- `components/seo/JsonLd.tsx` — the `@graph` render component
-- `components/site/Faq.tsx` — secondary `FAQPage` emitter (inline, NOT using `JsonLd`)
-
-No microdata (`itemscope`/`itemtype`) or RDFa was found anywhere. The codebase is JSON-LD only — correct approach.
+Up 26 points from the 2026-06-23 baseline. All three claimed baseline fixes verified live with zero JSON syntax errors across 8 blocks / 4 pages. Remaining deductions: `Organization.sameAs` still single-platform, no `AggregateRating`/`Review` anywhere on the site, and a thinner `author` object on exam-requirements pages vs blog posts.
 
 ---
 
-## Schema Types Inventory
+## Fix-Verification Table (vs 2026-06-23 baseline)
 
-| Page / Component | Schema types emitted |
+| Baseline Finding | Claimed Fix | Live Verification (2026-07-02) | Status |
+|---|---|---|---|
+| `BlogPosting.image` was generic `/og.png` | Per-post `opengraph-image` URL | `/blog/indian-passport-photo-requirements/` → `image.url` = `https://easyphoto.in/blog/indian-passport-photo-requirements/opengraph-image` (ImageObject, 1200x630). Per-post, not generic. | VERIFIED |
+| `WebSite.SearchAction` missing | Added `SearchAction` | Present on all 4 pages sampled, valid `EntryPoint` + `query-input: required name=search_term_string` | VERIFIED |
+| `SearchAction.target.urlTemplate` missing slash (`easyphoto.intools/`) | Slash fix | `urlTemplate` = `https://easyphoto.in/tools/?q={search_term_string}`. Live-tested `https://easyphoto.in/tools/?q=test` → HTTP 200. | VERIFIED |
+| `Organization.sameAs` only Pinterest | *(not claimed fixed — flagged "likely unchanged")* | `sameAs`: `["https://www.pinterest.com/easyphoto0604/"]` — still Pinterest-only across all 4 pages sampled | CONFIRMED UNCHANGED |
+
+**New since baseline (not a fix, a genuine addition):** `exam-requirements/*` pages gained a `WebPage` block with `author` (Person: Jaspal Kumar) + `dateModified`. Confirmed present and valid on `/exam-requirements/ssc/`.
+
+---
+
+## Detection Results — Per Page
+
+### 1. Homepage — `https://easyphoto.in/`
+
+Two `<script type="application/ld+json">` blocks (both `@graph` arrays), both valid JSON. (Note: `application/ld+json` string appears 4 times in raw HTML — the other 2 occurrences are inside Next.js's serialized RSC flight-data payload, not real script tags; confirmed not a duplication defect.)
+
+**Block 1 — `Organization` + `WebSite`**
+- `Organization`: `@id`, `name`, `alternateName[3]`, `url`, `description`, `slogan`, `knowsAbout[6]`, `logo` (ImageObject, 512x512), `sameAs` (Pinterest only), `founder` (Person: Jaspal Kumar with `url`/`sameAs`/`jobTitle`)
+- `WebSite`: `@id`, `name`, `alternateName`, `url`, `publisher` (references Organization `@id`), `inLanguage: en-IN`, `potentialAction.SearchAction`
+
+**Block 2 — `SoftwareApplication` + `FAQPage`**
+- `SoftwareApplication`: `name`, `description`, `url`, `applicationCategory: UtilitiesApplication`, `operatingSystem`, `offers` (Offer, price 0 USD), `isAccessibleForFree: true`, `dateModified: 2026-06-21` (ISO 8601)
+- `FAQPage`: 6 `Question`/`Answer` pairs, well-formed
+
+| Check | Result |
 |---|---|
-| `app/layout.tsx` (global, every page) | Organization + WebSite |
-| `app/page.tsx` (homepage) | FAQPage (via `Faq`), howToSchema → null (dead) |
-| `app/[maker]/page.tsx` (~20 country pages) | BreadcrumbList + SoftwareApplication + FAQPage |
-| `components/blog/BlogPostLayout.tsx` (24 posts) | BreadcrumbList + BlogPosting |
-| Blog posts with `<Faq>` (10 posts) | BreadcrumbList + BlogPosting + FAQPage (duplicate script) |
-| `components/tools/ToolPage.tsx` (~20 tool + exam pages) | BreadcrumbList + SoftwareApplication + FAQPage |
-| `components/tools/KbResizeLanding.tsx` | BreadcrumbList + SoftwareApplication + howToSchema → null |
-| `components/tools/PdfKbLanding.tsx` | BreadcrumbList + SoftwareApplication + howToSchema → null |
-| `components/tools/DocPhotoLanding.tsx` | BreadcrumbList + SoftwareApplication + howToSchema → null + FAQPage |
-| `components/tools/DocPhotoResizerPage.tsx` (PAN, Voter ID, DL) | BreadcrumbList + SoftwareApplication + FAQPage |
-| `components/tools/CategoryPage.tsx` (3 category hubs) | BreadcrumbList + CollectionPage |
-| `app/exam-resizer/[exam]/page.tsx` | BreadcrumbList + SoftwareApplication + FAQPage |
-| `app/exam-requirements/[exam]/page.tsx` (~30 spec pages) | BreadcrumbList + FAQPage |
-| `app/exam-requirements/page.tsx` | BreadcrumbList only |
-| `app/exam-photo-size/page.tsx` | BreadcrumbList + FAQPage |
-| `app/exam-calendar/page.tsx` | BreadcrumbList + FAQPage |
-| `app/blog/page.tsx` | BreadcrumbList only |
-| `app/tools/page.tsx` | BreadcrumbList only |
-| `app/convert/page.tsx` | BreadcrumbList only |
-| `app/about/page.tsx` | BreadcrumbList + AboutPage |
-| `app/contact/page.tsx` | BreadcrumbList + ContactPage |
-| `app/disclaimer/page.tsx` | BreadcrumbList + WebPage |
-| `app/aadhaar-photo/page.tsx` | BreadcrumbList + WebPage + FAQPage |
-| `app/baby-passport-photo/page.tsx` | BreadcrumbList + SoftwareApplication + FAQPage |
-| `app/unlock-aadhaar-pdf/page.tsx` | BreadcrumbList + SoftwareApplication |
-| `app/privacy/page.tsx` | **NONE** |
-| `app/terms/page.tsx` | **NONE** |
+| `@context` = `https://schema.org` | PASS |
+| `@type` valid, no deprecated types | PASS |
+| Required properties present | PASS |
+| Absolute URLs | PASS |
+| ISO 8601 dates | PASS |
+| No placeholder text | PASS |
+| `SearchAction.target.urlTemplate` valid | PASS (slash-fix confirmed live) |
+| `json.loads()` succeeds | PASS |
+
+**FAQPage note (per standing rule):** Google retired FAQ rich results for all sites (2026-05-07). This is Info priority, not Critical — the markup still aids AI/LLM citation and entity resolution. No action required; do not recommend removal.
 
 ---
 
-## Critical Issues
+### 2. Blog post — `https://easyphoto.in/blog/indian-passport-photo-requirements/`
 
-### CRIT-1 — BlogPosting `image` hardcoded to generic `/og.png` across all 24 posts
+Two blocks: sitewide `Organization`+`WebSite` (identical to homepage) and `BreadcrumbList`+`BlogPosting`+`FAQPage`.
 
-**File:** `components/blog/BlogPostLayout.tsx` (line ~46)
+**`BlogPosting`:**
 
-Every BlogPosting schema emits:
+| Property | Value | Status |
+|---|---|---|
+| `headline` | "Indian Passport Photo Requirements 2026: Full Compliance Checklist" | PASS |
+| `description` | Present, non-generic | PASS |
+| `datePublished` | `2026-06-24` | PASS (ISO 8601) |
+| `dateModified` | `2026-06-24` | PASS (ISO 8601) |
+| `image` | ImageObject, `url: https://easyphoto.in/blog/indian-passport-photo-requirements/opengraph-image`, 1200x630 | PASS — **per-post, confirmed fixed** (was generic `/og.png` at baseline) |
+| `author` | Person — name, url, sameAs, image, jobTitle, knowsAbout, worksFor (`@id` ref) | PASS — full author entity |
+| `publisher` | References Organization `@id` | PASS |
+| `mainEntityOfPage` | Absolute URL | PASS |
+| `inLanguage` | `en-IN` | PASS |
+
+`BreadcrumbList`: 3-level, correct `position`/`name`/`item`, all absolute URLs.
+`FAQPage`: multiple Q&A pairs, well-formed (Info priority per FAQ rich-result retirement).
+
+**Validation:** `json.loads()` succeeds. No required properties missing. No placeholder text.
+
+---
+
+### 3. Exam requirements — `https://easyphoto.in/exam-requirements/ssc/`
+
+Two blocks: sitewide `Organization`+`WebSite`, and `BreadcrumbList`+`WebPage`+`FAQPage`.
+
+**`WebPage` (new since baseline):**
+
 ```json
-"image": { "@type": "ImageObject", "url": "https://easyphoto.in/og.png", "width": 1200, "height": 630 }
-```
-
-Each of the 24 blog posts has its own dynamically generated OG image served at `/blog/[slug]/opengraph-image`. Google's rich results for BlogPosting (Discover, Top Stories, image carousels) rely on a unique, representative image per post. Pointing all 24 to the same generic fallback image:
-- Disqualifies posts from image-carousel rich results
-- Makes Discover thumbnails identical across all posts
-- Fails Google's BlogPosting image uniqueness expectation
-
-**Fix:** Derive the per-post OG image URL in the schema builder:
-```ts
-image: { "@type": "ImageObject", url: absoluteUrl(`/blog/${post.slug}/opengraph-image`), width: 1200, height: 630 }
-```
-This requires passing `post.slug` into the schema call — it is already available in `BlogPostLayout`.
-
----
-
-## High Issues
-
-### HIGH-1 — Duplicate FAQPage script tags on 10 blog posts
-
-**Affected posts:** `indian-passport-photo-size-rules`, `how-to-reduce-passport-photo-size-for-online-forms`, `how-to-compress-pdf`, `resume-photo-size-and-rules`, `schengen-europe-visa-photo-size`, `baby-and-infant-passport-photo-guide`, `why-passport-photos-get-rejected`, `linkedin-profile-photo-size-and-tips`, `ibps-po-2026-photo-signature-checklist`, `exam-photo-signature-size-guide`
-
-Each of these pages ends up with 3 `<script type="application/ld+json">` blocks:
-1. Global layout `@graph` → Organization + WebSite
-2. BlogPostLayout `@graph` → BreadcrumbList + BlogPosting
-3. `<Faq>` component → standalone FAQPage (outside any `@graph`)
-
-The standalone FAQPage has no `@id` linkage to the BlogPosting. Google can parse multiple JSON-LD blocks on a page, but this fragmented structure means:
-- The FAQPage entity is orphaned (not connected to the BlogPosting via `mainEntity` or `@id`)
-- Rich result eligibility is reduced compared to a consolidated `@graph`
-
-**Fix:** Add a `faqItems` prop to `BlogPostLayout` and merge the FAQPage into the existing `@graph` alongside BreadcrumbList + BlogPosting. Remove the direct `<Faq>` schema emission from the individual blog page files.
-
----
-
-### HIGH-2 — No `SearchAction` on WebSite schema (missing SiteLinks Searchbox)
-
-**File:** `lib/schema.ts` — `websiteSchema()` function
-
-The `WebSite` schema has no `potentialAction`. The site has a working tool search UI (`components/site/ToolSearch.tsx`). Without `potentialAction`, Google cannot surface a sitelinks searchbox in brand SERPs.
-
-**Fix:**
-```ts
-potentialAction: {
-  "@type": "SearchAction",
-  "target": {
-    "@type": "EntryPoint",
-    "urlTemplate": "https://easyphoto.in/tools/?q={search_term_string}"
-  },
-  "query-input": "required name=search_term_string"
+{
+  "@type": "WebPage",
+  "@id": "https://easyphoto.in/exam-requirements/ssc/#webpage",
+  "name": "SSC (Staff Selection Commission) Photo & Signature Size",
+  "description": "Staff Selection Commission photo (20-50 KB, 3.5x4.5cm) and signature (10-20 KB, 4.0x2.0cm).",
+  "url": "https://easyphoto.in/exam-requirements/ssc/",
+  "isPartOf": { "@id": "https://easyphoto.in/#website" },
+  "dateModified": "2026-06-08",
+  "author": {
+    "@type": "Person",
+    "name": "Jaspal Kumar",
+    "url": "https://www.linkedin.com/in/jaspal-jk/"
+  }
 }
 ```
-Verify the `urlTemplate` matches the actual query parameter used by `ToolSearch`.
+
+Confirmed: `WebPage` type present, `author` is a `Person` (Jaspal Kumar) as claimed, `dateModified` is ISO 8601 and matches the sitemap `lastmod` for this exact URL (`2026-06-08` in both) — good internal consistency, real per-page date, not build-stamped.
+
+**Gap vs blog-post author object:** `WebPage.author` on exam pages carries only `name`+`url` — missing `sameAs`, `jobTitle`, `worksFor`, `image`, `knowsAbout` that `BlogPosting.author` carries on blog posts. Same Person entity, inconsistent completeness across templates (Info-level; doesn't break validation, but weakens entity-consistency signal).
+
+`BreadcrumbList`: 3-level, correct. `FAQPage`: 4 Q&A pairs, well-formed.
+
+**Validation:** `json.loads()` succeeds. All required properties present. No placeholders.
 
 ---
 
-## Medium Issues
+### 4. `https://easyphoto.in/passport-photo/`
 
-### MED-1 — `priceCurrency: "INR"` on SoftwareApplication for a global tool
+Two blocks: sitewide `Organization`+`WebSite`, and `BreadcrumbList`+`SoftwareApplication`+`FAQPage`.
 
-**File:** `lib/schema.ts` line ~103
+| Type | Notes |
+|---|---|
+| `BreadcrumbList` | 2-level (Home → tool page), valid |
+| `SoftwareApplication` | `@id`, name, description, url, `applicationCategory`, `operatingSystem`, `offers` (Offer, 0 USD), `isAccessibleForFree: true`, `dateModified: 2026-06-11` |
+| `FAQPage` | 5+ Q&A pairs, well-formed |
 
-```ts
-offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
-```
+**Note:** sitemap `lastmod` for this URL is `2026-06-25`, but `SoftwareApplication.dateModified` in the JSON-LD is `2026-06-11` — a 14-day mismatch. Not a validation failure (both are independently valid ISO 8601 dates), but the two freshness signals should agree.
 
-The site serves users globally (US, UK, Canada, Australia). Google's structured data docs say: if `price` is `"0"` and `isAccessibleForFree` is `true`, omit `priceCurrency`. Using `"INR"` on a free global tool may signal to Google that the tool is India-only, suppressing rich results in non-India SERPs.
-
-**Fix:** Remove `priceCurrency` entirely (the `Offer` price `"0"` + `isAccessibleForFree: true` on the parent is unambiguous), or change to `"USD"`.
-
----
-
-### MED-2 — `privacy/` and `terms/` pages have zero schema
-
-**Files:** `app/privacy/page.tsx`, `app/terms/page.tsx`
-
-Every other static page (disclaimer, about, contact, aadhaar-photo) has at minimum a BreadcrumbList + WebPage. The two legal pages are inconsistent and emit nothing.
-
-**Fix:** Add minimal `WebPage` schemas with `dateModified` to both pages, following the same pattern as `app/disclaimer/page.tsx`.
+**Validation:** `json.loads()` succeeds. No missing required properties. No placeholders.
 
 ---
 
-### MED-3 — Blog index, tools hub, and exam-requirements hub have only BreadcrumbList
+## Cross-Page Consistency
 
-**Files:** `app/blog/page.tsx`, `app/tools/page.tsx`, `app/exam-requirements/page.tsx`
-
-These three directory pages list many child items but emit only a BreadcrumbList. The category tool hubs (`/tools/photo/`, `/tools/pdf/`, `/tools/signature/`) already use `CollectionPage` correctly. The main hubs are inconsistent.
-
-**Fix:** Add `CollectionPage` schema (or `ItemList`) to these three pages, matching the existing pattern in `components/tools/CategoryPage.tsx`.
-
----
-
-### MED-4 — Exam calendar missing `Event` schema
-
-**File:** `app/exam-calendar/page.tsx`
-
-The exam calendar page contains structured event data: exam names, application windows, exam dates, admit card release dates, and official source URLs. Each entry could be an `Event` schema with `startDate`, `endDate`, `name`, `organizer`, and `url`.
-
-Google surfaces exam dates as rich results (especially for "[exam name] 2026 date" queries). The page already emits FAQPage but has no `Event` schema.
-
-**Fix:** Map each calendar entry to an `Event` schema block (or an `ItemList` of Events) and emit them via `JsonLd`. Requires ISO date formatting of the exam dates.
+- `Organization`/`WebSite` block is byte-identical across all 4 pages sampled — correctly implemented as a shared/global schema partial. Reduces drift risk.
+- No deprecated types found anywhere (`HowTo`, `SpecialAnnouncement`, `CourseInfo`, `EstimatedSalary`, `LearningVideo` — all absent, confirmed via grep across all 4 pages).
+- No Microdata or RDFa detected on any sampled page (`itemscope` / `typeof=` both absent) — JSON-LD only.
+- All `@context` values are `https://schema.org` (not `http://`) — correct.
+- No `AggregateRating` or `Review` schema found anywhere sampled — not a defect, but a missing opportunity (see below).
 
 ---
 
-## Low Issues
+## Outstanding Issues (by severity)
 
-### LOW-1 — `howToSchema()` calls at 4 sites are dead code
+### Info (no SERP impact, entity/AI-signal only)
+1. **FAQPage present on 4/4 sampled pages** — no Google rich-result benefit (retired 2026-05-07), but harmless and useful for AI/LLM citation. No action needed.
+2. **`WebPage.author` on exam-requirements pages is a thinner Person object** than `BlogPosting.author` on blog pages (missing `sameAs`, `jobTitle`, `worksFor`, `image`, `knowsAbout`). Recommend aligning to the fuller author object already used on blog posts, for consistent entity resolution — same person, same URL, different completeness.
+3. **`Organization.sameAs` still Pinterest-only.** Confirmed unchanged from baseline (flagged twice now). If the brand has other verifiable profiles (LinkedIn company page, X/Twitter, GitHub, YouTube), adding them strengthens entity disambiguation. Not required.
+4. **`SoftwareApplication.dateModified` vs sitemap `lastmod` drift** on `/passport-photo/` (2026-06-11 vs 2026-06-25) — cosmetic inconsistency, recommend syncing.
 
-**Files:** `app/page.tsx`, `components/tools/KbResizeLanding.tsx`, `components/tools/DocPhotoLanding.tsx`, `components/tools/PdfKbLanding.tsx`
-
-`howToSchema()` returns `null` (by design — Google deprecated HowTo rich results in Sept 2023). All four call sites pass full step data that is never rendered. This is dead code that adds maintenance confusion.
-
-**Fix:** Remove the `howToSchema()` calls from all four files. The function can remain as a documented no-op in `lib/schema.ts` for historical context.
-
----
-
-### LOW-2 — `FaqJsonLd` in `Faq.tsx` duplicates logic from `faqSchema()` in `lib/schema.ts`
-
-**File:** `components/site/Faq.tsx`
-
-Two parallel FAQPage implementations exist:
-1. `lib/schema.ts`: `faqSchema()` — returns a plain object for use in `@graph` via `JsonLd`
-2. `components/site/Faq.tsx`: `FaqJsonLd` — renders its own standalone `<script>` tag
-
-In practice the codebase uses `FaqJsonLd` everywhere, making `faqSchema()` appear unused. This split causes the FAQPage to always be a standalone block outside the `@graph`.
-
-**Fix:** Either refactor `Faq.tsx` to call `faqSchema()` + `JsonLd` (so FAQ merges into the `@graph`), or keep `FaqJsonLd` but add a way to pass FAQ data into `JsonLd` directly — which is required to fix HIGH-1 anyway.
+### Missing Opportunities (not defects, additive)
+- **No `AggregateRating`/`Review`** anywhere sampled. Legitimate rich-result opportunity on `SoftwareApplication` if the app has genuine user ratings — only with real aggregate data, never fabricated.
+- **No `VideoObject`** — not applicable without evidence of video assets; not flagged as a gap.
 
 ---
 
-### LOW-3 — `Organization.sameAs` has only one entry (Pinterest)
+## Recommended Fix — Align exam-page author object
 
-**File:** `lib/schema.ts` lines ~49–51
+Template-level change to `/exam-requirements/*` `WebPage.author` (applies to all exam-requirements pages, implement once in the shared partial):
 
-```ts
-sameAs: ["https://www.pinterest.com/easyphoto0604/"]
-```
-
-The code comment acknowledges more profiles should be added. A single Pinterest profile is weak for entity disambiguation. Google uses `sameAs` to connect the brand to Knowledge Graph nodes.
-
-**Fix:** Add any verified social/business profiles as they are created: LinkedIn company page, Instagram, YouTube, X, Crunchbase, etc.
-
----
-
-### LOW-4 — `AboutPage` not linked back to Organization entity
-
-**File:** `app/about/page.tsx`
-
-The AboutPage schema lacks an `about` property pointing to the Organization `@id`. This would explicitly tell Google "this page is about this organization."
-
-**Fix:**
-```ts
-about: { "@id": "https://easyphoto.in/#organization" }
+```json
+{
+  "@type": "Person",
+  "name": "Jaspal Kumar",
+  "url": "https://www.linkedin.com/in/jaspal-jk/",
+  "sameAs": ["https://www.linkedin.com/in/jaspal-jk/"],
+  "jobTitle": "easyPhoto developer & document-spec researcher",
+  "worksFor": { "@id": "https://easyphoto.in/#organization" }
+}
 ```
 
 ---
 
-### LOW-5 — `SoftwareApplication` missing `aggregateRating`
+## Score Breakdown
 
-**File:** `lib/schema.ts`
-
-`aggregateRating` is an optional property for `SoftwareApplication` that unlocks star rating display in search results. The site does not currently collect user ratings. This is a future opportunity once a rating mechanism is in place.
-
----
-
-## What Works Well
-
-- **BreadcrumbList coverage is excellent** — present on all tool, blog, country, exam, and static pages except privacy and terms.
-- **BlogPosting required fields** — `headline`, `datePublished`, `dateModified`, `author` (Person with `name`, `url`, `sameAs`, `image`, `jobTitle`, `knowsAbout`), `publisher` (via `@id` reference), `mainEntityOfPage` — all present and correctly structured.
-- **FAQPage schema is valid everywhere it appears** — `mainEntity` array, `Question` + `acceptedAnswer.text` all correctly formatted.
-- **SoftwareApplication schema** covers `applicationCategory`, `operatingSystem`, `offers`, and `@id` — meets Google's minimum requirements for app rich results.
-- **Organization schema** is comprehensive — `name`, `alternateName`, `url`, `description`, `slogan`, `knowsAbout`, `logo` (ImageObject with dimensions), `sameAs`, stable `@id`.
-- **No microdata or RDFa** — the codebase is 100% JSON-LD, the correct format.
-- **Centralised architecture** — `lib/schema.ts` + `JsonLd.tsx` makes schema consistent and auditable across pages.
-- **`@id` usage throughout** — entities reference each other via `@id` (e.g., BlogPosting `publisher` references Organization `@id`) enabling proper linked-data graph construction.
-- **No conflicting or contradictory schema types** — no page has two competing `@type` values for the same content.
-
----
-
-## Breadcrumb Coverage Map
-
-| Status | Pages |
-|---|---|
-| Present | All tool pages, all blog posts, all country maker pages, all exam pages, category hubs, blog/tools/convert hubs, about, contact, disclaimer, aadhaar-photo, baby-passport-photo, unlock-aadhaar-pdf |
-| Missing | `app/privacy/page.tsx`, `app/terms/page.tsx` |
-
-Breadcrumb chains are correctly 1-indexed with absolute URLs via `absoluteUrl()`.
-
----
-
-## Required Fields Validation Summary
-
-### BlogPosting (Google Rich Results)
-
-| Field | Status |
-|---|---|
-| `headline` | Pass |
-| `image` (unique per post) | **Fail** — all 24 posts share `/og.png` |
-| `datePublished` (ISO) | Pass |
-| `dateModified` (ISO) | Pass |
-| `author` (Person with name + url) | Pass |
-| `publisher` (via @id) | Pass |
-
-### SoftwareApplication (Google Rich Results)
-
-| Field | Status |
-|---|---|
-| `name` | Pass |
-| `applicationCategory` | Pass |
-| `operatingSystem` | Pass |
-| `offers` (Offer with price) | Pass (INR currency flag — see MED-1) |
-| `aggregateRating` | Optional — missing |
-
-### FAQPage (Google Rich Results)
-
-| Field | Status |
-|---|---|
-| `mainEntity` array | Pass |
-| Each `Question.name` | Pass |
-| Each `acceptedAnswer.text` | Pass |
-
-### BreadcrumbList (Google Rich Results)
-
-| Field | Status |
-|---|---|
-| `itemListElement` array | Pass |
-| 1-indexed `position` | Pass |
-| `name` per item | Pass |
-| Absolute `item` URL | Pass |
-
----
-
-## Priority Action List
-
-| Priority | Issue | Primary file(s) |
+| Category | Points | Notes |
 |---|---|---|
-| P1 | Fix BlogPosting `image` — use per-post OG URL not `/og.png` | `components/blog/BlogPostLayout.tsx` |
-| P1 | Merge blog FAQPage into `@graph` (fix duplicate script tags) | `BlogPostLayout.tsx`, 10 blog `page.tsx` files |
-| P2 | Add `SearchAction` to `websiteSchema()` | `lib/schema.ts` |
-| P2 | Add `WebPage` schema to `/privacy/` and `/terms/` | `app/privacy/page.tsx`, `app/terms/page.tsx` |
-| P2 | Add `Event` schema to exam calendar entries | `app/exam-calendar/page.tsx` |
-| P3 | Remove `priceCurrency: "INR"` from SoftwareApplication Offer | `lib/schema.ts` |
-| P3 | Add `CollectionPage` to `/blog/`, `/tools/`, `/exam-requirements/` | Three hub pages |
-| P3 | Remove dead `howToSchema()` call sites (4 files) | `app/page.tsx`, `KbResizeLanding.tsx`, `DocPhotoLanding.tsx`, `PdfKbLanding.tsx` |
-| P4 | Expand `Organization.sameAs` array | `lib/schema.ts` |
-| P4 | Add `about: { "@id": ORG_ID }` to AboutPage | `app/about/page.tsx` |
-| P4 | Unify FAQPage emission — remove `FaqJsonLd` standalone emitter | `components/site/Faq.tsx` |
+| Valid JSON-LD syntax (all pages) | 20/20 | Zero `json.loads()` failures across 4 pages / 8 blocks |
+| Correct `@context`/`@type`, no deprecated types | 15/15 | Clean |
+| Required properties present | 15/15 | All required props present on every type found |
+| SearchAction fix verified live | 15/15 | URL bug confirmed fixed and functional (live HTTP 200 test) |
+| BlogPosting.image per-post fix verified live | 15/15 | Confirmed on sampled post |
+| New WebPage+author on exam pages | 8/10 | Present and valid; thinner author object than blog template (-2) |
+| Organization.sameAs breadth | 0/5 | Still single-entry, unchanged from baseline (-5) |
+| AggregateRating/Review opportunity | 0/5 | Not implemented (informational, no baseline regression) |
+| **Total** | **88/100** | |

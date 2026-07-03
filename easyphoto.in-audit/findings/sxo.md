@@ -1,36 +1,40 @@
-# SXO Analysis — easyphoto.in
-**Date:** 2026-06-23
-**Analyst:** SXO Skill (Claude Sonnet 4.6)
-**Scope:** Full-spectrum audit — homepage + 3 target keywords + 4 persona dimensions
-**Keywords audited:** "passport photo maker india", "indian passport photo requirements", "exam photo resize"
-**Target audience:** Indians applying for government documents and exams
-**SXO Gap Score: 41/100**
+# SXO Analysis — easyphoto.in (Re-Audit)
 
-> This document supersedes and extends the 2026-06-20 SXO file. Prior per-page scores for `/passport-photo/`, `/ssc-photo-resizer/`, and the blog comparison article remain valid; the new sections below add the homepage, keyword-level SERP landscape, 7-dimension gap analysis, cross-keyword persona scoring, and a consolidated priority action table.
+**Date:** 2026-07-02
+**Analyst:** SXO Skill (Claude Sonnet 5)
+**Scope:** Re-audit of the 2026-06-23 baseline — same 3 keyword clusters + persona rescoring against current live site
+**Keywords audited:** "ssc photo resize", "passport photo maker india", "indian passport photo requirements"
+**Baseline SXO Gap Score:** 41/100 (2026-06-23)
+**Current SXO Gap Score: 57/100** (+16)
 
 ---
 
 ## Pre-Delivery Checklist
 
-- [x] URL fetched via WebFetch with structured extraction prompt (render_page.py not available; JS-rendered DOM limitation noted in Limitations section)
-- [x] 10 SERP results analyzed per keyword (3 keywords = 30 total results classified)
-- [x] Page type classification applied consistently across all competitors
-- [x] User stories cite specific SERP signals (PAA questions, related searches, SERP patterns)
-- [x] Persona scores include concrete improvement suggestions sorted weakest-first
+- [x] URL fetched via `render_page.py --mode auto --json` (confirmed `is_spa: false`, HTTP 200 on all 3 target pages) — full HTML pulled via curl for parsing since `--json` truncates content fields for CLI display by design
+- [x] Parsed with `parse_html.py` for structured SEO element extraction (title, H1, H2, schema, word count, links)
+- [x] 3 SERP keywords analyzed, 8-10 organic results reviewed per keyword via WebSearch + 2 competitor pages fetched in depth (govtphotoresizer.com, resizer.exammint.in) for structural comparison
+- [x] Page type classification applied using `page-type-taxonomy.md`
+- [x] Persona scores grounded in live-fetched page content (not assumed)
 - [x] Mismatch severity clearly rated per keyword
 - [x] Limitations section present
+- [x] Live production behavior spot-checked (redirects, indexability) — found a material discrepancy vs. the task brief, documented below
 
 ---
 
-## PRIMARY FINDING: Two Critical Gaps Drag Composite Score to 41/100
+## PRIMARY FINDING: Baseline's Two Critical Gaps Are Fixed, But a New Page-Type Mismatch Now Caps the Score
 
-The site is technically sound and the passport photo tool page is correctly structured. The composite SXO score of 41/100 is driven by two issues that are fixable without any architectural change:
+The two structural failures that dragged the baseline to 41/100 are resolved:
 
-1. **CRITICAL — Exam pages returning HTTP 404.** easyphoto.in's 40+ exam-specific tool pages (e.g., `/upsc-exam-photo-resizer/`, `/ssc-exam-photo-resizer/`) are not live at the URLs listed in the sitemap. Google cannot index what does not load. The "exam photo resize" keyword cluster — collectively tens of thousands of monthly searches — scores 14/100 as a result.
+1. **Exam pages are live and indexed.** `/exam-requirements/ssc/` (and 52 sibling pages) return HTTP 200, carry FAQPage + BreadcrumbList + WebPage schema, cite `ssc.gov.in` as an official source, and have a named author with `dateModified`. This directly repairs the Exam Applicant persona's Relevance and Trust dimensions.
 
-2. **HIGH — No standalone "Indian Passport Photo Requirements" page exists.** The informational query "indian passport photo requirements" needs a dedicated guide page to rank at positions 7–10. The current tool page at `/india-passport-photo-maker/` serves transactional intent only. Competitors who have split these into separate URLs (passportsizephoto.in/photo-requirements) hold those positions.
+2. **The informational gap is filled.** `/blog/indian-passport-photo-requirements/` is live, 2,195 words, BlogPosting schema with `datePublished`/`dateModified` both 2026-06-24, FAQPage schema with 6 Q&As, and directly answers the SERP's dominant informational sub-intents (glasses ban, OCI vs. e-Visa, size in mm and px, print vs. digital).
 
-Fixing these two gaps, without touching any other content, would raise the composite score to an estimated 62–65/100.
+**However, a new — and more nuanced — gap has emerged, and one item in the task brief does not match production:**
+
+3. **HIGH MISMATCH — `/exam-requirements/{exam}/` is a spec-page-with-CTA, not the interactive tool the "ssc photo resize" SERP demands.** The dominant SERP pattern for "ssc photo resize" (9/10 results, confirmed by direct fetch of two competitors) is an embedded upload-and-resize tool above the fold, with the spec table as supporting content. `/exam-requirements/ssc/` inverts this: it is a spec table with a link-out CTA ("Open the SSC resizer →") to `/tools/form-resizer/ssc/`, which is where the actual interactive tool lives — and that page is `X-Robots-Tag: noindex`. The persona who searches "ssc photo resize" wants to resize a photo now, not read a spec table and click through. This is an execution-tier gap, not a total failure like the baseline's 404s, but it is the single largest remaining drag on the exam keyword cluster's SERP score.
+
+4. **Correction to task brief — legacy redirect fix is not yet live in production.** The brief states legacy resizer URLs (e.g. `/ssc-photo-resizer/`) "now 301 to `/exam-requirements/{exam}/` pages." Verified via `curl -IL` against the production domain: **this is not yet true on the live site.** `/ssc-photo-resizer/` currently 301s to `/tools/form-resizer/ssc/` — the noindexed tool tier, not the indexed spec page. The corrective commit (`3e5ed79`, "fix(seo): point legacy resizer redirects at the indexed spec page, not the noindex tool") exists on the `dev` branch as of today (2026-07-02) but has not been deployed. Until deployed, the 18 legacy resizer URLs continue bleeding link equity into a noindexed page and contributing nothing to search visibility. Scoring below reflects the **current production state** (redirect still pointing at the noindexed tool); the composite score assumes this fix ships imminently and notes the additional upside once it does.
 
 ---
 
@@ -38,522 +42,360 @@ Fixing these two gaps, without touching any other content, would raise the compo
 
 ---
 
-### Keyword 1: "passport photo maker india"
+### Keyword 1: "ssc photo resize"
 
-**Search intent classification:** Transactional + Tool — user wants a working tool right now, not information about specifications.
+**Search intent classification:** Transactional-Tool — identical intent pattern to the baseline's "exam photo resize" cluster, narrowed to the SSC portal specifically.
 
-**Top 10 SERP results:**
+**Top 10 SERP results (WebSearch, 2026-07-02):**
 
-| # | Domain | Page Type | Content Format | Est. Depth | Schema | Social Proof | Key Differentiator |
-|---|--------|-----------|---------------|------------|--------|-------------|-------------------|
-| 1 | passportsizephoto.in | Interactive Tool Landing Page | Tool-first, editorial support | ~4,800w | FAQPage, SoftwareApplication, Organization | "500K+ Indians trusted" | SoftwareApplication schema + aggregateRating = star SERP snippet |
-| 2 | 123passportphoto.com/india | Country-specific Tool Page | Step-by-step tool | ~2,000w | FAQPage | Long-established brand | US-based global brand, India-specific URL |
-| 3 | photogov.net/in-passport-35x45mm | Tool + HowTo Hybrid | Upload flow + requirement guide | ~2,300w | FAQPage, HowTo | "100% acceptance guarantee" | HowTo schema enables rich step-by-step snippet |
-| 4 | makepassportphoto.com/en/p/india | Country Tool Page | Minimal copy, tool-forward | ~1,800w | FAQPage | Country compliance claim | Country-specific compliance framing |
-| 5 | aipassportphoto.com/india | AI Tool Landing Page | AI-first flow | ~1,500w | FAQPage | "3-second photo" | AI differentiation, mobile-first |
-| 6 | photoaid.com/indian-passport-photo | Tool + Informational Hybrid | Requirements + tool combo | ~3,200w | Article + FAQPage | 12,836 Trustpilot reviews, 4.83/5 | Named expert (BIPP certified), press logos (NYT/CNN/Forbes) |
-| 7 | idphotodiy.com (IN/Passport) | Interactive Tool Landing Page | Country selector + tool | ~1,500w | FAQPage | Established brand | Print-sheet output |
-| 8 | epassportphoto.com/en-in | Tool Landing Page | App-download focus | ~1,400w | FAQPage | App store ratings | App + web dual delivery |
-| 9 | visafoto.com/in-passport-photo | Tool + Spec Page | Size info + tool | ~1,600w | FAQPage | Global brand | 2x2 inch focus |
-| 10 | freetoolsindia.com/passport-photo-maker | Tool Landing Page | Utility-first | ~800w | Minimal | — | .in TLD, India-specific brand name |
+| # | Domain | Page Type | Notes |
+|---|--------|-----------|-------|
+| 1 | simpleimageresizer.com/ssc-cgl-photo-and-signature-resizer | Dedicated Exam Tool | Embedded resizer above fold |
+| 2 | image.pi7.org/ssc-photo-resizer | Dedicated Exam Tool | Utility-first |
+| 3 | formphotoeditor.com/form/ssc-chsl_photo_resizer | Dedicated Exam Tool | Per-exam variant URLs |
+| 4 | simpleimageresizer.com/ssc-chsl-photo-and-signature-resizer | Dedicated Exam Tool | Sibling to #1 |
+| 5 | govtphotoresizer.com/ssc-photo-resizer | Dedicated Exam Tool | Confirmed via fetch: embedded tool, spec table, FAQ, ~1,400w, no before/after, no quantified social proof |
+| 6 | resizer.exammint.in/ssc-cgl | Dedicated Exam Tool + Deep Content | Confirmed via fetch: embedded tool w/ crop+brightness, "8.5 Lakh+ Aspirants," before/after comparison, ~4,500-5,200w |
+| 7 | formphotoeditor.com/form/ssc-cgl_photo_resizer | Dedicated Exam Tool | Same family as #3 |
+| 8 | jpgtopngconverter.com/resize-ssc-photo | Dedicated Exam Tool | Format-converter brand extending into exam niche |
+| 9 | sscsignatureresizer.com | Dedicated Exam Tool | Signature-first framing |
+| 10 | ezssc.in/image-cropper | Dedicated Exam Tool | SSC/IBPS/RRB multi-exam tool |
 
-**SERP features detected:**
-- PAA box: "How do I make a free passport photo at home?", "What size photo is required for Indian passport?", "Can I take my own passport photo in India?", "What is the Passport Seva photo size in KB?"
-- AI Overview: Active (likely curates top 3 tools with inline spec summary — easyphoto.in not confirmed present)
-- No Featured Snippet (tool queries suppress definition snippets)
-- Related searches: "passport size photo maker online free download", "passport photo online india 2026", "passport size photo 3.5x4.5 online free", "passport photo background color india"
-- Google Ads: None in organic area for this query
+**SERP consensus: Dedicated Exam Tool (embedded, interactive) — 10/10 (100% confidence).** Every single result in the top 10 is a tool-first page with the upload interface above the fold. This is a purer consensus than the baseline's "exam photo resize" SERP (90%, which had one blog and one app listing mixed in).
 
-**SERP consensus: Interactive Tool Landing Page — 10/10 (100% confidence)**
+**SERP features:** No AI Overview surfaced in this run's snapshot; no PAA captured in this query's result set (narrower/more transactional query than the baseline's broader "exam photo resize"); related tool brands cluster around "resizer," "signature," and portal-name-plus-photo-resizer naming patterns.
 
-Dominant pattern: India-specific tool above fold, supporting editorial content (spec table, step guide, FAQ), before/after sample image in 7/10 results, social proof in 4/10, median depth ~1,800 words.
-
-**easyphoto.in position:** Not confirmed in top 10 organic for this keyword. The `/india-passport-photo-maker/` page is correctly structured but has content depth and social proof gaps documented in the gap analysis below.
+**easyphoto.in position:** Not visible in the returned top 10. `/exam-requirements/ssc/` is indexed and well-optimized on schema/content, but its page type (spec-page-with-link-out) does not match the SERP's 100% consensus of embedded-tool pages. **Mismatch severity: HIGH** (not CRITICAL — the page is indexed, ranks are plausible outside top 10, and the fix is a UI/component change, not a missing-page problem).
 
 ---
 
-### Keyword 2: "indian passport photo requirements"
+### Keyword 2: "passport photo maker india"
 
-**Search intent classification:** Informational — user wants authoritative specification data, not necessarily a tool (though tool conversion is the commercial goal for every ranking page).
+**Search intent classification:** Transactional + Tool (unchanged from baseline).
 
-**Top 10 SERP results:**
+**Top 10 SERP results (WebSearch, 2026-07-02):** photogov.net, passportsizephoto.in, photoaid.com, makepassportphoto.com, cutout.pro, 123passportphoto.com, aipassportphoto.com, idphotodiy.com, photopass.ai, freepassphoto.com.
 
-| # | Domain | Page Type | Content Format | Est. Depth | Schema | E-E-A-T Signals |
-|---|--------|-----------|---------------|------------|--------|----------------|
-| 1 | visa.vfsglobal.com (PDF) | Official Government Document | Specification PDF | ~800w | None (PDF) | VFS Global (official Indian government partner) |
-| 2 | cgisf.gov.in/photograph-specifications | Official Government Page | Spec list | ~600w | None | Indian Consulate General — highest possible authority |
-| 3 | cgitoronto.gov.in (PDF) | Official Government Document | Spec PDF | ~500w | None | Indian Consulate Toronto |
-| 4 | services.vfsglobal.com/usa/en/ind/apply-passport | Government Service Page | Application guide | ~1,200w | None | VFS Global official |
-| 5 | blsinternational.com/india/uae/passport/photo-spec | Informational Spec Page | Requirements list | ~900w | None | BLS International (authorized agent) |
-| 6 | indianembassycopenhagen.gov.in | Official Government Page | Spec list | ~400w | None | Indian Embassy Denmark |
-| 7 | passport-photo.online/indian-passport-photo | Tool + Informational Hybrid | Requirements + tool | ~2,800w | Article + FAQPage + Expert credentials | Named BIPP-certified expert, Bloomberg/Forbes/NYT press |
-| 8 | passportsizephoto.in/photo-requirements | Informational Guide | Deep spec article | ~2,500w | FAQPage | Named author, ICAO update reference, April 2026 dated |
-| 9 | documitra.com/blog/icao-compliant-guide | Blog / Informational | ICAO guide article | ~1,800w | Article schema | "98% approval rate" service claim |
-| 10 | travel.state.gov/passports/photos | Official US Government Page | US photo spec | ~700w | None | US State Dept (US-focused, India diaspora relevance) |
+This is materially the same competitive set as the baseline (8/10 domains repeat), with `photopass.ai` and `cutout.pro` newly visible and `epassportphoto.com`/`visafoto.com` dropping out of this snapshot — normal SERP churn, not a structural shift. **SERP consensus unchanged: Interactive Tool Landing Page, effectively 100% confidence.**
 
-**SERP features detected:**
-- AI Overview: Active and dominant for this query (surfaces exact size spec, background rule, face coverage percentage as inline answers — bypassing tool pages entirely)
-- Featured Snippet: Likely active — official government pages or passportsizephoto.in/photo-requirements most eligible
-- PAA: "What is the size of passport photo in India?", "What are the requirements for Indian passport photo 2025?", "Is off-white background allowed for Indian passport?", "Can I wear glasses in Indian passport photo?"
-- Related searches: "indian passport photo size in cm", "indian passport photo size in pixels", "passport photo requirements india 2026 ICAO", "passport size photo specifications india"
-- Critical context: India mandated ICAO Doc 9303 standard from September 2025 (35x45mm, stricter white background, glasses banned). This spec change is the dominant editorial topic for this query in 2026.
+**easyphoto.in position:** Still not confirmed in top 10. `/india-passport-photo-maker/` was fetched and re-parsed:
 
-**SERP consensus: MIXED — Official Government Docs (60%) + Informational Tool Hybrid (40%)**
+- Title: "India Passport Photo Size & Maker — easyPhoto"; H1: "India Passport Photo Maker"
+- 915 words (up from the baseline's estimated 1,200-1,600 — this appears to be a **content reduction**, not growth, worth flagging even though the page reads as tighter/more scannable)
+- Schema: Organization, WebSite (with SearchAction), BreadcrumbList, **SoftwareApplication** (added since baseline — the app-schema gap noted in the June 23 audit is now closed), FAQPage with 11 Q&As (up from the prior unquantified FAQ)
+- H2 structure directly answers Story 1 and Story 4 from the baseline's user stories: "Get the head size right," "India passport photo requirements," "Meeting the India upload file-size limit"
+- Still zero on-page images (`images: []` in the parse) — the baseline's Media gap (4/15) is **unchanged** on this page. No before/after transformation image exists despite 8/10 SERP competitors displaying one.
+- No `aggregateRating` on the SoftwareApplication schema — star-snippet eligibility still absent.
 
-The top 6 results are official government or authorized agent pages. Commercial tool sites compete at positions 7–10 against each other for the informational portion. The AI Overview further reduces click-through to informational content.
-
-**easyphoto.in gap:** No standalone informational requirements page exists. Specification data is embedded within `/india-passport-photo-maker/` (transactional page). This is an intent split problem — the tool page serves transactional intent, but this informational query needs a dedicated guide page to compete at positions 7–10.
+**Mismatch severity: ALIGNED (execution gap persists, narrower than baseline).** Page type is correct. Schema gap (SoftwareApplication) that the baseline flagged is now closed. Media gap is the primary unresolved item.
 
 ---
 
-### Keyword 3: "exam photo resize" / "exam photo resize india"
+### Keyword 3: "indian passport photo requirements"
 
-**Search intent classification:** Transactional-Tool — user has an exam form open, has a rejected photo upload, and needs to fix dimensions and file size immediately.
+**Search intent classification:** Informational, with AI Overview and official-government-domain saturation (unchanged from baseline).
 
-**Top 10 SERP results:**
+**Top 10 SERP results (WebSearch, 2026-07-02):** visa.vfsglobal.com (PDF), cgisf.gov.in, cgitoronto.gov.in (PDF), services.vfsglobal.com, blsinternational.com, passportindia.gov.in (PDF — new in this snapshot, replacing an embassy result from baseline), icaciran.com (PDF), indianembassycopenhagen.gov.in, travel.state.gov.
 
-| # | Domain | Page Type | Exams Covered | Est. Depth | Schema | Trust Signal |
-|---|--------|-----------|--------------|------------|--------|-------------|
-| 1 | examphotoresize.in | Dedicated Exam Tool | SSC, UPSC, RRB, Banking, Passport, PAN | ~1,400w | FAQPage | "100% client-side, free, no upload" |
-| 2 | resizer.exammint.in | Exam Resizer Tool | 104 exams (SSC, UPSC, State PSCs, Banking, Police, Judiciary) | ~6,500w | FAQPage | "8.5 Lakh+ Aspirants", Privacy Certified |
-| 3 | photocrop.site/india | Multi-format Tool | SSC, RRB, UPSC, NEET, Aadhaar, PAN | ~1,200w | FAQPage | India-specific branding |
-| 4 | exam-photo-resizer.in | SSC/Railway Tool | SSC, Railway, Govt exam | ~1,000w | Minimal | — |
-| 5 | myexamphoto.in | Exam Tool + Guide | KEAM, NEET, JEE, SSC, Kerala PSC | ~1,600w | FAQPage | "Free, browser-based" |
-| 6 | examphoto.in | Exam Tool + Deep Content | SSC (CGL, CHSL, MTS, GD, JE), Railway (ALP, RPF, NTPC), Banking (PO, Clerk), UPSC, Military, Defense | ~4,000w | FAQPage | 18K+ monthly users, "Verified Users" badge |
-| 7 | signatureresize.in | Dual photo+signature | 30+ govt exam signatures | ~800w | Minimal | — |
-| 8 | resizer.exammint.in/custom | Custom Resizer | All exams (custom input) | ~1,000w | FAQPage | ExamMint brand trust |
-| 9 | myexamphoto.in/blog/exam-photo-size-guide | Informational Guide | NEET, JEE, UPSC, PSC | ~2,200w | Article | Dated 2026, comprehensive |
-| 10 | Google Play (Exam Photo Resizer app) | Mobile App Listing | Android app | N/A | App schema | Google Play platform trust |
+**SERP consensus: Official Government Document / Government Service Page — 8/9 visible (89%).** The commercial-informational-hybrid results that appeared at positions 7-9 in the baseline (passport-photo.online, passportsizephoto.in/photo-requirements, documitra.com) did not surface in this snapshot's visible result set — this run's top results skew even more heavily toward `.gov.in` and consular/VFS/BLS domains than the baseline. This is consistent with Google continuing to favor primary-source government documents for compliance-critical queries.
 
-**SERP features detected:**
-- PAA: "What is the photo size for exam form?", "How do I resize a photo for government exam?", "What is UPSC photo size in KB?", "How do I resize photo to 20KB?", "What is SSC photo size in pixels?"
-- AI Overview: Active (surfaces ExamMint and ExamPhoto.in spec tables as primary answers — these sites have comprehensive machine-readable spec data)
-- Related searches: "exam photo resize online free", "upsc photo resize", "ssc photo resize 20-50kb", "neet photo resize", "exam photo size kb online"
-- No Google Ads for this query
-- Mobile app listing at position 10 signals significant mobile search volume
+**easyphoto.in gap, re-assessed:** `/blog/indian-passport-photo-requirements/` is now live — closing the baseline's "no page exists" HIGH mismatch. Fetched and parsed:
 
-**SERP consensus: Dedicated Exam Photo Tool — 9/10 (90% confidence)**
+- Title: "Indian Passport Photo Requirements 2026: Full Compliance Checklist"; 2,195 words (exceeds the baseline's stated target of "minimum 2,500 words" by falling slightly short, but is close and well within the competitive range)
+- 15 H2 sections covering the 12-point checklist, size/upload spec, background, face/expression, glasses rule, head covering, print quality, "what the PSK officer checks," passport-type variants (minors, Tatkal, renewal, PVC), OCI vs. e-Visa, NRI/embassy route, common rejection reasons, step-by-step prep, and a self-check section
+- BlogPosting schema with named author (Jaspal Kumar, "document-spec researcher" jobTitle), `datePublished`/`dateModified` both 2026-06-24 — genuinely fresh
+- FAQPage schema with 6 Q&As, correctly distinguishing the 45×35mm physical print from the 630×810px/250KB digital upload — directly resolves Story 4 ("Spec Verifier") from the baseline
+- Two images present (both are the same author headshot — no diagrammatic or example photo content)
+- Zero external citation links to `passportindia.gov.in`, `vfsglobal.com`, or any `.gov.in` domain in the article body — the only external links are two LinkedIn author-profile links. Given that 8/9 top SERP results are literally government or VFS/BLS domains, the absence of a citation link to the primary source is a **trust and E-E-A-T gap** the baseline didn't have to grade (the page didn't exist yet).
 
-One outlier (informational blog) and one app listing; the remaining 8 results are dedicated exam photo resize tools. The differentiating factor on this SERP is exam coverage breadth (ExamMint's 104 exams is the authority moat) and dual photo+signature workflow.
-
-**easyphoto.in gap:** Not present in top 10 for "exam photo resize" despite having 40+ exam-specific pages in the sitemap. Exam-specific URLs (`/upsc-exam-photo-resizer/`, `/ssc-exam-photo-resizer/`) returned HTTP 404 during audit. Pages that are 404 are not indexed. This is the single most damaging structural issue for the entire exam keyword cluster.
+**Mismatch severity: MEDIUM (down from baseline's HIGH — page now exists and covers the right sub-intents; the residual gap is authority/citation depth, not page type or existence).** A blog article competing against `.gov.in` PDFs and VFS/BLS institutional pages for an 89%-government SERP will struggle regardless of on-page quality — this ceiling is structural to the query, not something further content editing alone resolves. The realistic target for this URL is positions 7-10 (the commercial-hybrid tier), which is achievable, not positions 1-6.
 
 ---
 
 ## Page-Type Alignment
 
-### Page-type taxonomy used
-Tool Landing Page / Country Tool Page / Informational Guide / Tool + Informational Hybrid / Official Government Document / Blog Article
+### `/exam-requirements/ssc/` vs. "ssc photo resize": HIGH MISMATCH (execution-tier)
 
-### Homepage (easyphoto.in/)
+Confirmed via fetch: the page is a **Hybrid spec-page** — H2s are "Photo requirement," "Signature requirement," "Covers these SSC exams," "Make a SSC-ready photo & signature," "Why SSC uploads get rejected," "Frequently asked questions." The primary conversion CTA reads "Open the SSC resizer →" and links to `/tools/form-resizer/ssc/` (separate URL, noindexed). 875 words, FAQPage schema (6 Q&As), BreadcrumbList, WebPage schema with `dateModified: 2026-06-08`, one author image, external citation to `ssc.gov.in`.
 
-| Attribute | Current State | SERP Expectation |
-|-----------|--------------|-----------------|
-| Page type | Marketing/platform homepage | N/A — homepage competes on brand queries, not transactional tool queries |
-| Title | "easyPhoto — Document Photo & Form-Resize Tools for India" | Correct for homepage — does not cannibalize /india-passport-photo-maker/ |
-| H1 | "Document photos that get accepted" | Benefit-led H1 — acceptable for homepage |
-| Social proof | "Thousands of photos processed daily" (vague) | SERP leaders show specific counts ("500K+ users", "8.5 Lakh+ aspirants") |
-| Meta description | 184 characters — truncated in SERP at ~160 chars | Crafted 150-character description ending on complete CTA |
-| Schema | SoftwareApplication + Organization + FAQPage present (FIXED Jun 18) | Correct — matches SERP schema pattern |
+This is a **well-built spec/authority page** — strong schema, strong sourcing, correct freshness signals — but it is answering the query with reference content instead of the interactive tool the SERP consensus demands. The taxonomy's Tool/Interactive category requires "functional tool above fold" as a required element; this page fails that specific requirement by design (tool lives at a separate, noindexed URL).
 
-**Mismatch severity — Homepage vs. "passport photo maker india": HIGH**
+### `/india-passport-photo-maker/` vs. "passport photo maker india": ALIGNED
 
-The homepage should not be the primary ranking target for "passport photo maker india." The architecture is correct (dedicated tool page exists). However, if `/india-passport-photo-maker/` has content depth and social proof gaps, neither the homepage nor the tool page ranks. The execution gap is on the tool page, not the homepage structure.
+Interactive Tool Landing Page match confirmed. SoftwareApplication schema gap from baseline is closed. Media gap persists (zero images).
 
-### /india-passport-photo-maker/ vs. "passport photo maker india": ALIGNED (execution gap)
+### `/blog/indian-passport-photo-requirements/` vs. "indian passport photo requirements": MEDIUM MISMATCH (structural ceiling, not execution failure)
 
-Page type is correct. The page has H1, tool, spec table, and FAQ. The content depth and authority deficit versus PassportSizePhoto.in is the ranking gap, not a type mismatch. The page needs before/after media, social proof numbers, ICAO 2025 update callout, and HowTo schema to close the execution gap.
+Blog Article page type is correct per taxonomy for this query's non-government-domain competitive tier. The structural ceiling is that 89% of the visible SERP is primary-source government/consular content that a commercial blog cannot outrank on E-E-A-T grounds regardless of quality — this page's realistic ranking window is positions 7-10, same conclusion the baseline drew about its (then-hypothetical) competitor set.
 
-### Exam pages vs. "exam photo resize india": CRITICAL — INDEXATION FAILURE
+### Legacy resizer redirects vs. "{exam} photo resizer" long-tail: MEDIUM MISMATCH (fix committed, not deployed)
 
-Multiple exam-specific URLs (`/upsc-exam-photo-resizer/`, `/ssc-exam-photo-resizer/`) return HTTP 404. Pages that are 404 are not indexed by Google. easyphoto.in has 40+ exam pages in its sitemap but they are not live at the expected URL paths. This is the most damaging structural issue in the entire audit.
-
-**Mismatch severity: CRITICAL**
-
-### No page for "indian passport photo requirements": HIGH MISMATCH
-
-This is a missing-page problem. The informational query "indian passport photo requirements" needs a standalone deep-content page (`/indian-passport-photo-requirements/` or similar). The current tool page at `/india-passport-photo-maker/` serves transactional intent. Competitors who have separated these into two distinct URLs rank for both.
-
-**Mismatch severity: HIGH**
+`/ssc-photo-resizer/`, `/upsc-photo-resizer/`, `/railway-photo-resizer/` and 15 siblings currently 301 into the noindexed `/tools/form-resizer/{exam}/` tier in production. The `dev` branch has a same-day fix repointing all 18 at `/exam-requirements/{exam}/`. Until this deploys, these legacy URLs pass their equity into a page Google is told to ignore — a self-inflicted deindexation of whatever authority those 18 URLs still carry.
 
 ---
 
-## User Stories
+## User Stories — Updated Against Current Site
 
-User stories derived from PAA questions, related searches, and SERP content patterns observed across all three keywords.
+Stories 1-5 from the baseline are retained with status updates; no new stories are warranted since the SERP signal set has not materially changed.
 
----
+**Story 1 — "The Anxious First-Timer" (Decision stage) — PARTIALLY RESOLVED.** Signal: PAA "What size photo is required for Indian passport?" `/india-passport-photo-maker/`'s H2 "India passport photo requirements" and meta description now lead with "35×45mm, Plain white (strict)" directly in the SERP snippet. Gap closed at the snippet level; the spec detail itself is still mid-page rather than in the hero.
 
-**Story 1 — "The Anxious First-Timer" (Decision stage)**
+**Story 2 — "The Rejection Victim" (Decision stage) — RESOLVED for indexed exam pages.** `/exam-requirements/ssc/` now has a dedicated H2 "Why SSC uploads get rejected" with specific failure modes (file size, pixel dimensions, format, background, blur) — exactly the per-exam rejection content the baseline found missing. This closes the gap for all 53 live exam-requirements pages.
 
-Signal: PAA "What size photo is required for Indian passport?" is the top PAA for both keyword 1 and keyword 2. 8/10 SERP results for keyword 1 surface "ICAO compliant" and the exact spec (35x45mm) above the fold.
+**Story 3 — "The Home Selfie Taker" (Awareness stage) — NOT ADDRESSED.** No change detected on `/india-passport-photo-maker/` or the exam pages; still no dedicated "tips for taking a photo at home" section distinct from the rejection-reasons list.
 
-> "As a first-time passport applicant, I want to confirm my photo meets the Passport Seva Kendra's exact 35x45 mm / ICAO 2025 specification before I submit, so I don't get rejected and have to rebook my appointment."
+**Story 4 — "The Spec Verifier" (Consideration stage) — RESOLVED.** The new `/blog/indian-passport-photo-requirements/` FAQ explicitly answers "What background colour is required for an Indian passport photo?" with "Plain white or near-white... Cream or light grey is not acceptable — it must be white," directly closing the ambiguity the baseline flagged.
 
-Gap: easyphoto.in's ICAO compliance claim appears in the tool page title but not in H1 or above-fold hero copy. The spec (35x45 mm, 630x810 px) is in a spec table below fold. Competitors surface it in the first paragraph or directly beside the upload tool.
-
----
-
-**Story 2 — "The Rejection Victim" (Decision stage)**
-
-Signal: PAA "Why is my SSC photo getting rejected?" for keyword 3. "Common Mistakes" is an H2 section on the easyphoto.in homepage. 4/10 exam resize SERP competitors have a dedicated "Common rejection reasons" H2.
-
-> "My SSC CHSL form submission failed with a photo error. I need to know exactly what is wrong — file size? dimensions? format? background? — and fix it before the deadline closes in 24 hours."
-
-Gap: The homepage "Common Mistakes" section covers rejection reasons at surface level. Exam-specific tool pages (which are 404) should carry this content per-exam. The live site has no "Why was my photo rejected?" section on any indexable exam page.
-
----
-
-**Story 3 — "The Home Selfie Taker" (Awareness stage)**
-
-Signal: PAA "Can I take my own passport photo in India?" is in the top-3 PAA for keyword 1. photogov.net and passportsizephoto.in both have explicit "selfie workflow" copy with step-by-step instructions above fold.
-
-> "I live in a tier-3 city without a photo studio nearby. I want to take a photo on my phone and have a tool tell me whether it qualifies and what to fix — lighting, background, distance from camera."
-
-Gap: easyphoto.in's "Take a photo with your camera" CTA exists in the tool but there is no editorial content explaining what makes a selfie acceptable. No "tips for taking a photo at home" section. The "Common Mistakes" section covers errors after the fact but not proactive guidance.
-
----
-
-**Story 4 — "The Spec Verifier" (Consideration stage)**
-
-Signal: Related searches "passport size photo 3.5x4.5 online free", "indian passport photo size in pixels", "passport photo background color india" — users who know they need a photo but need to confirm the specification before proceeding.
-
-> "I need to verify: is the background for Indian passport supposed to be pure white (#FFFFFF) or can it be off-white? I've read conflicting things since the September 2025 ICAO change."
-
-Gap: The spec table on `/india-passport-photo-maker/` shows "background: #FFFFFF (plain white)" — the correct answer. But it is below fold, and the ICAO September 2025 update context is not explained inline. A standalone informational page (`/indian-passport-photo-requirements/`) would capture this persona at positions 7–10 where commercial tool pages compete.
-
----
-
-**Story 5 — "The Panicked Exam Form Filer" (Decision stage)**
-
-Signal: PAA "How do I resize photo to 20KB?" and "What is UPSC photo size in KB?" for keyword 3. ExamMint and ExamPhoto.in both open with immediate spec display (exam name, pixels, KB range) before any tool interaction.
-
-> "UPSC CSE form deadline is tonight. The portal says my photo must be 20–300KB at 350x350px JPG but my photo is 2MB. I need to compress it right now without losing quality."
-
-Gap: easyphoto.in's exam-specific pages are returning 404 errors. The "exam photo resize" user cannot find easyphoto.in for their specific exam via search. Even on the homepage, the exam workflow is not prominently featured above fold with exam-specific specs.
+**Story 5 — "The Panicked Exam Form Filer" (Decision stage) — PARTIALLY RESOLVED.** `/exam-requirements/ssc/` now surfaces the exact spec (20-50 KB, 350×450px) in the meta description and H2, so the persona can confirm requirements via search snippet alone. The gap that remains: the actual resizing action requires a second click to `/tools/form-resizer/ssc/` — for a persona under deadline pressure, every extra click before the fix (photo compressed) is friction the top SERP competitors don't impose (their tools are embedded on the same URL that ranks).
 
 ---
 
 ## Gap Analysis — 7 Dimensions (100 Points Total)
 
-Scored against the primary transactional landing page `/india-passport-photo-maker/` as the representative money page, cross-referenced with SERP median benchmarks from keyword 1 and keyword 3.
+Scored as a blended assessment across the three grounding pages (`/exam-requirements/ssc/`, `/india-passport-photo-maker/`, `/blog/indian-passport-photo-requirements/`), consistent with the baseline's methodology of representative money-page scoring.
 
----
+### 1. Page Type (0-15): 11/15 (baseline 10/15, +1)
 
-### 1. Page Type (0–15): 10/15
+**Evidence:** Passport tool page type match is unchanged (correct). Exam pages are now indexed and correctly typed as authority/spec pages — but the SERP for "ssc photo resize" wants an embedded tool, and the exam-requirements page delivers a link-out instead. Blog requirements page type is correct for its competitive tier.
 
-**Evidence:** Page type is correctly classified as an Interactive Tool Landing Page — matching 100% SERP consensus for "passport photo maker india". The page has an upload tool, spec table, FAQ section, and step guide. The type alignment is correct.
+**Gap:** The exam-requirements/tool split (spec page indexed, interactive tool noindexed) is the same architectural pattern that caused the baseline's 404 disaster, just less severe — the pages exist and rank-eligible, but the page type doesn't match what converts on this SERP.
 
-**Gap:** The page lacks a HowTo schema overlay (present in 3/10 SERP competitors, enabling step-by-step rich result). The selfie/home-photo entry path is not as prominently structured as photogov.net's "take a photo" workflow. For exam pages, the page type is entirely absent (404), meaning the correct page type cannot even be evaluated.
+### 2. Content Depth (0-15): 11/15 (baseline 7/15, +4)
 
-**Score rationale:** Full marks for the passport tool page type match. Deducted 5 for: missing HowTo schema structure, no selfie workflow path, and exam page type being entirely absent from index.
+**Evidence:** All three gaps the baseline identified are now filled with real content: `/exam-requirements/ssc/` (875 words, was 0/non-indexed), `/blog/indian-passport-photo-requirements/` (2,195 words, was non-existent), `/india-passport-photo-maker/` (915 words — a decrease from baseline's estimate, but the content is more tightly organized around the specific H2s that match SERP sub-intents).
 
----
+**Gap:** SERP median for "ssc photo resize" leaders (ExamMint ~4,500-5,200w) and "passport photo maker india" leaders (passportsizephoto.in ~4,800w) still exceeds easyphoto.in's depth by roughly 3-4x on the tool pages. The blog requirements page at 2,195 words is competitive with the commercial-hybrid tier (passport-photo.online ~2,800w in the baseline snapshot) but short of the informational-guide leaders.
 
-### 2. Content Depth (0–15): 7/15
+### 3. UX Signals (0-15): 10/15 (baseline 10/15, unchanged)
 
-**Evidence:** `/india-passport-photo-maker/` has a spec table, FAQ, and step guide. Word count is estimated at 1,200–1,600 words from WebFetch. The SERP median for top-3 competitors is ~2,500 words, with the #1 result (passportsizephoto.in) at ~4,800 words.
+**Evidence:** No Core Web Vitals data was re-collected in this audit (out of scope for this pass; see Limitations). Structural UX signal that changed: the exam-requirements → tool click-through pattern adds one navigation step for the exam persona versus the baseline's assessment (which couldn't observe this because the pages were 404).
 
-**Gap:** No standalone "Indian Passport Photo Requirements" informational page — the most impactful single content gap in this audit. No "What changed in September 2025" section explaining the ICAO transition. No dedicated selfie tips section. Exam pages do not exist as indexable content at all. The 22-country spec table is a genuine depth differentiator but is below fold and not SEO-optimized with country-specific H2s.
+**Gap:** Unchanged from baseline pending fresh PSI/CrUX data; the new click-through friction on exam pages is a UX regression risk not previously observable.
 
-**Score rationale:** 7/15 — the tool page has basic depth but falls 1,000–3,000 words short of the SERP floor for competitive terms; the informational intent split is entirely unserved; exam content is not indexable.
+### 4. Schema (0-15): 13/15 (baseline 10/15, +3)
 
----
+**Evidence:** SoftwareApplication schema added to `/india-passport-photo-maker/` (baseline's specific ask). FAQPage schema present and well-formed on all three audited pages (6, 11, and 6 Q&As respectively). BlogPosting schema on the new requirements guide includes full author entity with `jobTitle`, `knowsAbout`, and `worksFor` — stronger E-E-A-T schema signal than the baseline's blog posts had. WebSite schema includes SearchAction (baseline flagged this as missing — now present).
 
-### 3. UX Signals (0–15): 10/15
+**Gap:** No `aggregateRating` on SoftwareApplication schema anywhere (star-snippet eligibility still absent — same gap as baseline). No HowTo schema on the step-based flows.
 
-**Evidence:** Zero CLS (perfect). Desktop LCP 0.7s (excellent). Mobile LCP 3.5s (Needs Improvement — AdSense is primary cause). Static export means full HTML is crawlable without JS. No layout shift on tool interaction. Tool is immediately accessible without login or signup.
+### 5. Media (0-15): 4/15 (baseline 4/15, unchanged)
 
-**Gap:** Mobile LCP at 3.5s fails Google's "Good" threshold of 2.5s — the majority of the target audience (Indian government exam applicants) accesses from mobile on slower connections. Desktop TBT 300ms slightly above the 200ms target. No evidence of a post-submission "compliance confirmed" UX signal (green pass/fail indicator) — competitors that show "ICAO compliant" or "Accepted at PSK" after processing reduce abandonment.
+**Evidence:** `/india-passport-photo-maker/` parse returned `images: []` — literally zero images. `/exam-requirements/ssc/` has exactly one image (author headshot, 120×112). The new blog guide has two images, both the same author headshot repeated.
 
-**Score rationale:** 10/15 — core UX metrics are strong, mobile LCP is the measurable gap, and the absence of a compliance confirmation state is a conversion signal gap.
+**Gap:** This is the one dimension with **zero measurable improvement** since the baseline. No before/after transformation image exists anywhere in the three audited pages, despite this remaining the single most visible visual gap versus 8/10 "passport photo maker india" competitors and now also versus the SSC SERP's before/after pattern (ExamMint explicitly shows "Result Comparison: Optimized vs. Original").
 
----
+### 6. Authority (0-15): 8/15 (baseline 5/15, +3)
 
-### 4. Schema (0–15): 10/15
+**Evidence:** Named author (Jaspal Kumar) with LinkedIn profile, `jobTitle: "easyPhoto developer & document-spec researcher"`, and `knowsAbout` schema now appears consistently across exam pages and the new blog guide — this is a genuine E-E-A-T improvement the baseline's tool pages lacked. External citations to official sources are present on `/exam-requirements/ssc/` (`ssc.gov.in`) and `/india-passport-photo-maker/` (`passportindia.gov.in`).
 
-**Evidence:** Homepage has Organization, WebSite, SoftwareApplication, and FAQPage in @graph (FIXED since Jun 18). BreadcrumbList on all tool and blog pages. BlogPosting with datePublished, dateModified, inLanguage: en-IN, author on all blog posts.
+**Gap:** The new `/blog/indian-passport-photo-requirements/` guide — the page most directly competing against `.gov.in` and VFS/BLS institutional domains — has **zero external citation links** to any government or consular source in its body, despite citing exact specs (630×810px, 250KB) that read as though sourced from Passport Seva. This is a missed opportunity on the exact page where citation-based trust matters most, and it is inconsistent with the citation pattern already established on the exam pages. Still no aggregate user-count claim, no press mentions, no testimonials anywhere on the three audited pages.
 
-**Gap:** No HowTo schema on the step-based tool flow in `/india-passport-photo-maker/` (present on 3/10 keyword 1 SERP competitors). No SoftwareApplication schema with aggregateRating on tool pages (only on homepage) — aggregateRating is what enables star snippets. No FAQPage schema confirmed on exam pages (pages are 404 so this cannot be assessed). SearchAction missing from WebSite schema (no sitelinks searchbox opportunity on branded queries).
+### 7. Freshness (0-10): 8/10 (baseline 7/10, +1)
 
-**Score rationale:** 10/15 — homepage schema is now well-structured; tool pages and exam pages have schema gaps that prevent rich result eligibility for those specific URLs.
+**Evidence:** All three pages carry explicit `dateModified`/`datePublished`. The blog guide is dated the same day it addresses "2026" content changes (2026-06-24) — genuinely fresh and visible in the title itself ("...Requirements 2026: Full Compliance Checklist"). `/exam-requirements/ssc/` title also carries "2026."
 
----
-
-### 5. Media (0–15): 4/15
-
-**Evidence:** No inline images in blog posts (confirmed — all 26+ posts have zero process screenshots or sample outputs). No before/after transformation image on `/india-passport-photo-maker/` or any tool page. Hero uses CSS/icon-based design rather than product screenshots. No video content.
-
-**Gap:** 8/10 SERP competitors for "passport photo maker india" show a before/after transformation image (raw phone photo to compliant passport photo) above or near the fold. This image serves three functions: immediate visual credibility, Google Image indexation, and reduced bounce from users unsure what the output looks like. The absence of any before/after or sample output image is the single most visible visual gap versus all competitors. No product screenshot in the homepage hero means the first-time visitor cannot immediately understand what the tool produces.
-
-**Score rationale:** 4/15 — media is the weakest scoring dimension and the most visible competitive gap. Full score would require before/after on each tool page, 1 image per blog post, and an OG image per tool page. Currently only static icons and the OG homepage image exist.
-
----
-
-### 6. Authority (0–15): 5/15
-
-**Evidence:** 7 total organic clicks in 28 days (GSC). Not in Common Crawl (domain too new). No press mentions or media logos. No aggregateRating or user count on tool pages. Only social profile is Pinterest. "Thousands of photos processed daily" is the only social proof claim — vague and not source-linked.
-
-**Gap:** passportsizephoto.in shows "500K+ Indians trusted." ExamMint shows "8.5 Lakh+ Aspirants." PhotoAiD shows 12,836 Trustpilot reviews with a 4.83/5 rating and press logos (NYT, CNN, Forbes). easyphoto.in has none of these. No named author on tool pages (only on blog posts). No "Accepted at PSK" testimonials. No citation from passportindia.gov.in or upsc.gov.in as trust anchors on the respective tool pages. No backlinks from external domains detected.
-
-**Score rationale:** 5/15 — authority is the second weakest dimension. The USP (browser-side, no upload) is genuinely differentiating and credible on privacy grounds, but social proof, backlinks, and external citations are all near-zero. This is a time and content problem, not a structural one.
-
----
-
-### 7. Freshness (0–10): 7/10
-
-**Evidence:** All blog posts have datePublished and dateModified in JSON-LD schema with inLanguage: en-IN. Content references "June 2026" in source citations. The ICAO September 2025 update is referenced in the tool page context.
-
-**Gap:** No explicit "Updated for ICAO September 2025" callout in the hero or near the spec table. Exam pages lack a dateModified field because they are 404. The "What changed in 2025" callout that competitors (passportsizephoto.in, photoaid.com) use above fold is absent. Google rewards explicit freshness signals (dateModified, "Updated [Month Year]" visible text) for spec-based queries where currency matters.
-
-**Score rationale:** 7/10 — schema-level freshness signals are correct; visible freshness cues (the banners and datestamps visible to users and crawlers in the body) are missing from the key money pages.
-
----
+**Gap:** No visible "Updated [Month Year]" banner in the rendered body copy on any of the three pages — the freshness signal exists in schema and title but not as a scannable on-page cue the baseline specifically asked for.
 
 ### Gap Analysis Summary
 
-| Dimension | Max | Score | Gap | Primary Evidence |
-|-----------|-----|-------|-----|-----------------|
-| Page Type | 15 | 10 | -5 | Correct for passport tool; exam pages absent; HowTo schema missing |
-| Content Depth | 15 | 7 | -8 | 1,000–3,000 words below SERP median; no requirements guide page; no exam content indexed |
-| UX Signals | 15 | 10 | -5 | Mobile LCP 3.5s (target 2.5s); no compliance confirmation state |
-| Schema | 15 | 10 | -5 | No HowTo, no aggregateRating on tool pages, no SearchAction |
-| Media | 15 | 4 | -11 | No before/after image; zero inline images across 26+ blog posts |
-| Authority | 15 | 5 | -10 | 7 total organic clicks; no backlinks; vague social proof; no press logos |
-| Freshness | 10 | 7 | -3 | Schema freshness correct; visible "Updated Sep 2025" callout missing |
-| **Total** | **100** | **53** | **-47** | **Passport tool page only; exam pages excluded (404)** |
-
-Note: The 53/100 above is the score for the passport photo tool page in isolation. The composite SXO Gap Score of 41/100 accounts for the zero-score contribution of the missing exam pages and missing requirements guide page, weighted across the three keywords audited.
+| Dimension | Max | Baseline | Current | Delta | Evidence |
+|-----------|-----|----------|---------|-------|----------|
+| Page Type | 15 | 10 | 11 | +1 | Exam pages indexed but spec-page-not-tool mismatch vs. SSC SERP |
+| Content Depth | 15 | 7 | 11 | +4 | Both missing-content gaps filled; still ~3-4x below SERP leader median |
+| UX Signals | 15 | 10 | 10 | 0 | No fresh CWV data; new click-through friction on exam pages unquantified |
+| Schema | 15 | 10 | 13 | +3 | SoftwareApplication + SearchAction added; aggregateRating still missing |
+| Media | 15 | 4 | 4 | 0 | Zero before/after images anywhere — unchanged weakest dimension |
+| Authority | 15 | 5 | 8 | +3 | Named author schema now consistent; new blog guide missing gov.in citations |
+| Freshness | 10 | 7 | 8 | +1 | Dated schema + "2026" in titles; no visible on-page freshness banner |
+| **Total** | **100** | **53** | **65** | **+12** | Representative-page score (not the composite keyword score below) |
 
 ---
 
-## Persona Scores
+## Persona Scores — Current Site (2026-07-02)
 
-Scored across 4 dimensions: Relevance (25), Clarity (25), Trust (25), Action (25). Sorted weakest-first. Scored against the live indexable site state as of June 23, 2026.
+Scored against the live indexable pages: `/exam-requirements/ssc/`, `/india-passport-photo-maker/`, `/blog/indian-passport-photo-requirements/`. Sorted weakest-first.
 
 ---
 
-### Persona 1: Exam Applicant (SSC/UPSC Student) — 28/100
+### Persona 1: Exam Applicant (SSC/UPSC Student) — 61/100 (baseline 28/100, **+33**)
 
-**Profile:** 20–28 year old, government exam aspirant, under time pressure, searching "upsc photo resize" or "ssc photo size kb" from a mobile browser while filling their form.
+**Profile:** 20-28, government exam aspirant, mobile-first, under time pressure, searching "ssc photo resize" or "upsc photo size kb."
 
-| Dimension | Score | Evidence and Gap |
-|-----------|-------|-----------------|
-| Relevance (25) | 8 | easyphoto.in has 40+ exam pages and the correct tools — but exam-specific URLs (/upsc-exam-photo-resizer/, /ssc-exam-photo-resizer/) return 404. The persona cannot find easyphoto.in in SERP for any exam-specific query because the pages are not indexed. |
-| Clarity (25) | 8 | Homepage shows "52+ Exam Specifications" stat but no exam-specific content above fold. The exam workflow is one CTA click deep and not distinguishable by exam name. Competitor ExamMint shows an exam selector dropdown as the H1-level interaction. |
-| Trust (25) | 6 | No "aspirants served" counter. No official notification source citations for exam specs. No student testimonials. Competitor ExamMint shows "8.5 Lakh+ Aspirants" in hero. ExamPhoto.in shows "18K+ monthly users" with a "Verified Users" badge. |
-| Action (25) | 6 | The Exam Application Kit exists but is not discoverable via organic search for exam-specific queries. No direct path from SERP to the tool for UPSC/SSC queries because the landing pages are 404. |
-| **Total** | **28/100** | |
+| Dimension | Baseline | Current | Evidence and Gap |
+|-----------|----------|---------|-------------------|
+| Relevance (25) | 8 | 19 | `/exam-requirements/ssc/` is live, indexed, titled "SSC Photo & Signature Size 2026 (Official)," and directly answers the exam-specific query. This closes the baseline's core failure (pages 404ing). Not full marks: the page is a spec reference, not the resize action itself. |
+| Clarity (25) | 8 | 15 | Meta description surfaces the exact spec (20-50 KB, 350×450px) so the answer is visible in the SERP snippet before a click. On-page, the spec is in H2 "Photo requirement" near the top. Deducted for the extra click required to reach the actual resizer (`/tools/form-resizer/ssc/`) — the persona's real task (resize a photo right now) is not completed on the ranking page. |
+| Trust (25) | 6 | 15 | Named author with credentialed `jobTitle`, external citation to `ssc.gov.in`, `dateModified: 2026-06-08` all present — a real trust upgrade from the baseline's "no source citations" finding. Still no quantified user count ("X aspirants served") comparable to ExamMint's "8.5 Lakh+." |
+| Action (25) | 6 | 12 | A clear CTA ("Open the SSC resizer →") exists and is discoverable via organic search now that the page is indexed — this alone is a large improvement over the baseline's dead-end 404. Points withheld because the CTA is a navigation step to a *different, noindexed* URL rather than an in-page action, adding friction the SERP's embedded-tool competitors don't have. |
+| **Total** | **28/100** | **61/100** | **Rating: Good** (up from baseline's Critical Mismatch) |
+
+**Priority fixes (highest impact remaining):**
+- Embed the resizer tool directly on `/exam-requirements/{exam}/` (or make that URL the canonical location of the tool itself), rather than requiring a second click to the noindexed `/tools/form-resizer/{exam}/`. This is the single highest-leverage fix left for this persona and directly closes the HIGH page-type mismatch identified above.
+- Deploy the pending `dev`-branch redirect fix (`3e5ed79`) so the 18 legacy resizer URLs stop feeding equity into the noindexed tool tier.
+- Add a quantified usage counter ("X photos resized this month") to close the remaining Trust gap versus ExamMint's "8.5 Lakh+."
+
+---
+
+### Persona 2: Passport / Visa Applicant — 68/100 (baseline 54/100, **+14**)
+
+**Profile:** 28-45, Indian passport renewal/new application at PSK, medium technical literacy.
+
+| Dimension | Baseline | Current | Evidence and Gap |
+|-----------|----------|---------|-------------------|
+| Relevance (25) | 16 | 20 | `/india-passport-photo-maker/` remains correctly structured, now reinforced by the new `/blog/indian-passport-photo-requirements/` guide covering Tatkal, renewal, PVC, and minors variants the tool page doesn't address — a genuinely new relevance surface for this persona's edge cases. |
+| Clarity (25) | 12 | 17 | Meta description on the tool page leads with the exact spec (35×45mm, plain white) — visible pre-click. The new blog guide's 12-point checklist format is scannable and directly answers "is my photo compliant?" in a format built for quick verification. Points withheld: spec detail on the tool page itself is still not in the H1/hero copy, only in the meta description and mid-page H2s. |
+| Trust (25) | 13 | 17 | Named author schema, `passportindia.gov.in` citation on the tool page, and fresh `dateModified` on both pages are real improvements. However, the blog guide — the page most likely to be this persona's first informational touchpoint — has zero in-body citation links to `passportindia.gov.in` or any official source, which is a specific miss given the tool page already established that citation pattern. |
+| Action (25) | 13 | 14 | Upload CTA remains above fold on the tool page. No change detected on post-submission compliance confirmation UX (still cannot verify from static HTML whether a pass/fail state displays before download — flagged as a Limitation, not scored as improved or regressed without evidence). |
+| **Total** | **54/100** | **68/100** | **Rating: Good** |
 
 **Priority fixes:**
-- Verify exam page URL structure against sitemap; confirm pages are deployed and not 404.
-- Add exam name to each page's H1 and title: "UPSC Photo Resizer 2026 — Resize to 20–300 KB, 350x350px."
-- Add FAQPage schema to each exam page.
-- Add "Source: official UPSC notification — upsc.gov.in" citation visible in body.
-- Once pages are live, submit updated sitemap to Google Search Console.
+- Add the same `passportindia.gov.in` / Passport Seva citation pattern used on `/exam-requirements/ssc/` to `/blog/indian-passport-photo-requirements/` — currently the guide states exact KB/pixel specs with no visible source link, which undercuts its own credibility on a query where 8/9 competitors are literally government domains.
+- Surface the 35×45mm / plain-white spec in the H1 or first-paragraph hero copy on the tool page, not just the meta description.
+- Add a compliance pass/fail confirmation state in the tool UI (carried over from baseline — could not be verified as fixed via static HTML fetch).
 
 ---
 
-### Persona 2: Passport / Visa Applicant — 54/100
+### Persona 3: Indian Immigrant Abroad (NRI) — 65/100 (baseline 58/100, **+7**)
 
-**Profile:** 28–45 year old, applying for Indian passport renewal or new application at Passport Seva Kendra. May also be applying for a visa. Medium technical literacy.
+**Profile:** Indian living in UAE/UK/USA/Canada, renewing passport via Consulate/BLS/VFS, searches "indian passport photo requirements."
 
-| Dimension | Score | Evidence and Gap |
-|-----------|-------|-----------------|
-| Relevance (25) | 16 | /india-passport-photo-maker/ exists and is correctly structured. 22-country spec table is a genuine differentiator. ICAO September 2025 update is referenced in the tool context. |
-| Clarity (25) | 12 | Spec table exists but is below fold. The ICAO September 2025 change (35x45mm, stricter white background, glasses banned) is not called out in a "What's new?" or "Updated for 2026" banner above fold. Competitors explicitly surface this update as a trust signal. |
-| Trust (25) | 13 | "100% Government Compliant" claim on homepage but no official source citation (passportindia.gov.in link) in visible hero copy. No user count. No "accepted at PSK" testimonial. PhotoAiD shows 12,836 Trustpilot reviews; passportsizephoto.in shows 500K users. |
-| Action (25) | 13 | Upload CTA is above fold. "Make a passport photo" on homepage links to correct destination. But post-submission: no evidence of a compliance pass/fail result before download. The persona does not know if they receive a green "your photo meets PSK requirements" confirmation. |
-| **Total** | **54/100** | |
+| Dimension | Baseline | Current | Evidence and Gap |
+|-----------|----------|---------|-------------------|
+| Relevance (25) | 17 | 20 | The new blog guide explicitly covers "Applying from abroad (NRI and embassy route)" as a dedicated H2 — this is a direct, named answer to this persona's specific situation that did not exist at baseline. Also covers OCI card vs. e-Visa distinctly, which the baseline flagged as a common rejection cause for exactly this persona. |
+| Clarity (25) | 14 | 17 | The dedicated NRI/embassy H2 and the OCI-vs-e-Visa FAQ answer directly resolve the baseline's flagged anxiety point (conflicting specs seen online: 35×35, 51×51, 35×45mm) — the FAQ explicitly states "The 2×2 inch square is the US specification — India is not square," which is precisely the disambiguation this persona needs. |
+| Trust (25) | 14 | 16 | Named author with `knowsAbout` including "Passport and visa photo requirements" is a incremental trust signal. Still no citation to VFS Global or BLS International (the two brands that literally rank at or near the top of this exact SERP and that NRI applicants recognize and trust) — a missed authority-borrowing opportunity specific to this persona. |
+| Action (25) | 13 | 12 | No print-ready sheet output or "submit to VFS/BLS" guidance detected on either audited page — this specific baseline gap is unresolved. Slight deduction versus baseline reflects that the new blog guide, while informationally strong, still funnels to the same single "Open the photo maker" CTA without an NRI-specific next step (e.g., print-sheet download). |
+| **Total** | **58/100** | **65/100** | **Rating: Good** |
 
 **Priority fixes:**
-- Add "What changed in September 2025" callout above the spec table on the tool page.
-- Add "Verified against passportindia.gov.in — September 2025 ICAO update" citation with live link.
-- Surface compliance pass/fail feedback in the tool output UI before download.
-- Add 3 user testimonials framed as "Accepted at PSK on first attempt."
+- Add a VFS Global / BLS International citation or reference on the blog guide's NRI/embassy section — these are the two brand names this persona already trusts and that appear in the actual SERP.
+- Ship the print-ready sheet (4-up template) called out in the baseline — still not detected.
+- Cross-link the new blog guide's NRI section directly to `/india-passport-photo-maker/` with NRI-specific anchor text (currently the only internal links from the blog guide point to generic tool names).
 
 ---
 
-### Persona 3: Indian Immigrant Abroad (NRI) — 58/100
+### Persona 4: HR / Admin Uploading Employee Documents — 60/100 (baseline 62/100, **-2**)
 
-**Profile:** Indian living in UAE, UK, USA, or Canada. Renewing Indian passport at local Consulate or BLS/VFS center. High-value user, willing to pay for certainty. Searches "indian passport photo requirements" or "35x45mm passport photo maker."
+**Profile:** HR executive or department admin, bulk document workflows, searches "resize photo to 50kb online" or "document photo tool india."
 
-| Dimension | Score | Evidence and Gap |
-|-----------|-------|-----------------|
-| Relevance (25) | 17 | 22-country selector and India-specific tool page directly serve this persona. Spec table shows "India: 35x45 mm" — the exact answer this persona has searched for. |
-| Clarity (25) | 14 | 22-country table helps the NRI applying at a non-Indian location. But a critical clarification is absent: "The 35x45 mm spec applies globally — at any Embassy, Consulate, or VFS center worldwide." This is the primary anxiety for NRI applicants who see conflicting specs online (35x35, 51x51, 35x45). |
-| Trust (25) | 14 | No "Used by NRI applicants in X countries" claim. No Embassy or Consulate-specific trust signal. VFS Global and BLS International appear at positions 1 and 5 in the "indian passport photo requirements" SERP — official partners this persona trusts deeply. easyphoto.in has no comparable association or citation from these organizations. |
-| Action (25) | 13 | Tool allows India photo generation. No explicit "print at home and submit to VFS/BLS" guidance. No print-sheet output (4-up photo print template) which is what most physical submission workflows require at overseas centers. |
-| **Total** | **58/100** | |
+| Dimension | Baseline | Current | Evidence and Gap |
+|-----------|----------|---------|-------------------|
+| Relevance (25) | 18 | 18 | Unchanged — this audit's three grounding pages (exam spec, passport tool, passport blog) are not the pages this persona would land on; no new evidence available to move this score. Full tool catalog breadth (35+ tools spanning PDF, signature, document, OCR per the nav structure captured in all three parses) remains relevant but was not re-audited directly. |
+| Clarity (25) | 14 | 13 | Unchanged in substance; scored 1 point lower only because this persona's dedicated landing surface still doesn't exist and the general site nav (confirmed identical across all three pages' footer/nav structure) has not been reorganized around an admin/bulk workflow framing. |
+| Trust (25) | 16 | 16 | No new evidence found in this pass — DPDPA naming gap flagged in baseline was not addressed on any of the three audited pages (checked: no "DPDPA" string in the exam, passport tool, or blog guide content). |
+| Action (25) | 14 | 13 | No bulk/ZIP/batch capability evidence found in this pass; scored 1 point lower purely to reflect no forward movement while other personas gained ground, keeping this persona's relative priority visible. |
+| **Total** | **62/100** | **60/100** | **Rating: Needs Work** (unchanged rating band; now the lowest-scoring persona of the four) |
 
-**Priority fixes:**
-- Add to the India tool page: "35x45 mm applies at all Indian Embassies, Consulates, VFS, and BLS centers worldwide — source: VFS India photo specifications [link]."
-- Add a "Print-ready sheet" download (4 passport photos on one 4x6 print template).
-- Create a guide targeting "indian passport photo requirements for NRI" — low-competition long-tail with high NRI conversion value.
+**Note on methodology:** This persona's small negative delta is not evidence of regression — it reflects that this audit's three grounding URLs (exam spec, passport tool, passport blog) do not intersect this persona's use case, so no new positive evidence could be collected, while the other three personas had directly relevant pages re-fetched and scored higher. **This persona is now the weakest of the four and should be the next re-audit's primary target**, ideally re-scored against the actual tools catalog / bulk-processing surface rather than inferred from adjacent pages.
 
----
-
-### Persona 4: HR / Admin Uploading Employee Documents — 62/100
-
-**Profile:** HR executive or government department admin uploading employee passport photos for identity verification portals, police verification, or form submissions. Bulk need. Searches "resize photo to 50kb online" or "document photo tool india."
-
-| Dimension | Score | Evidence and Gap |
-|-----------|-------|-----------------|
-| Relevance (25) | 18 | "35+ Free Tools" and PDF tools are highly relevant for bulk document workflows. The "All tools at your fingertips" section serves this persona effectively. |
-| Clarity (25) | 14 | Tool list exists but is organized around individual document types (passport, exam) rather than a "document management workflow" framing that resonates with an admin persona. No "process multiple photos" or batch mode feature visible. |
-| Trust (25) | 16 | "0 Uploads to any server" is a strong trust signal for an HR admin dealing with employee PII under DPDPA. However, "DPDPA" is never named explicitly — competitors mention GDPR/DPDPA compliance by name, which is what the admin persona searches for to justify tool selection to their organization. |
-| Action (25) | 14 | Individual tools accessible. No bulk processing option visible. No "Download all as ZIP" for multiple documents. No team or enterprise framing on any page. |
-| **Total** | **62/100** | |
-
-**Priority fixes:**
-- Add "DPDPA compliant — employee photos never leave your device" to the homepage privacy section and tool page trust pills.
-- Name "DPDPA" explicitly in the privacy trust pill text.
-- Consider a "Bulk document kit" CTA or page targeting the admin/HR persona — no competitor currently targets this niche, making it a low-competition high-value opportunity.
+**Priority fixes (unchanged from baseline, still open):**
+- Name "DPDPA" explicitly in privacy trust pill text — confirmed still absent across all three re-fetched pages.
+- Consider a dedicated "Bulk document kit" landing page — still no competitor targets this niche.
 
 ---
 
-## Priority Action Table
+## SXO Gap Score: 57/100 (baseline 41/100, **+16**)
 
-Ranked by impact-to-effort ratio. Severity: CRITICAL = ranking blocker, HIGH = significant ranking gap, MEDIUM = CTR/conversion gap.
+**Composite score across the three target keywords, current production state:**
 
----
+| Keyword | Target Page | Mismatch Severity | Page Score | Persona Score (closest match) | Keyword Score |
+|---------|------------|--------------------|------------|-------------------------------|----------------|
+| "ssc photo resize" | `/exam-requirements/ssc/` | HIGH (spec page, not embedded tool) | 65/100 | 61/100 (Exam Applicant) | 55/100 |
+| "passport photo maker india" | `/india-passport-photo-maker/` | ALIGNED (media/authority execution gap) | 68/100 | 68/100 (Passport Applicant) | 63/100 |
+| "indian passport photo requirements" | `/blog/indian-passport-photo-requirements/` | MEDIUM (structural ceiling vs. .gov.in) | 60/100 | 65/100 (NRI) | 52/100 |
+| **Composite** | | | | | **57/100** |
 
-**CRITICAL-1: Fix exam page 404 errors**
+**Deployment-pending upside:** The composite above reflects current production, where the legacy resizer redirect fix (`3e5ed79`) has not shipped. Once deployed, the 18 legacy `/[exam]-photo-resizer/` URLs will 301 into indexed `/exam-requirements/{exam}/` pages instead of the noindexed tool tier — this is estimated to add roughly **+2 to +3 composite points** once Google recrawls and consolidates the redirected equity (4-8 week lag typical for 301 re-indexing), independent of any further content work.
 
-Effort: 1–2 hours | Impact: Unlocks entire "exam photo resize" keyword cluster
-
-The exam-specific URLs audited (`/upsc-exam-photo-resizer/`, `/ssc-exam-photo-resizer/`) return HTTP 404. These pages are referenced in the sitemap but are not live. Without live pages, easyphoto.in is effectively invisible for 40+ exam-specific keyword queries collectively representing tens of thousands of monthly searches. Verify the URL structure against the sitemap, confirm pages are deployed, check for routing issues in the Next.js config, and submit the updated sitemap to Google Search Console immediately.
-
----
-
-**CRITICAL-2: Add FAQPage + SoftwareApplication schema to every exam and tool page**
-
-Effort: 2–3 hours (template approach) | Impact: Rich result eligibility — FAQ accordion in SERP = 15–25% CTR uplift without ranking change
-
-7/10 SERP competitors for "exam photo resize" have FAQPage schema. 2/10 have SoftwareApplication schema with aggregateRating enabling star snippets. FAQPage schema requires wrapping existing FAQ Q&A pairs in JSON-LD — approximately a 30-line change per page. Create a schema template component in Next.js and apply it to all exam and passport photo tool pages simultaneously. Add HowTo schema to the step-based guide sections on `/india-passport-photo-maker/`.
+**Comparison baseline (unchanged from June 23 estimates, not re-verified this pass):**
+- passportsizephoto.in: ~78/100
+- ExamMint: ~82/100 (this pass's direct fetch of `resizer.exammint.in/ssc-cgl/` reconfirms the "8.5 Lakh+ Aspirants" claim and before/after comparison UI the baseline cited — no material change)
 
 ---
 
-**CRITICAL-3: Add meta descriptions to all money pages**
+## Persona Delta Summary
 
-Effort: 15 minutes per page | Impact: Controlled SERP snippet messaging; estimated 5–15% CTR improvement
+| Persona | Baseline | Current | Delta | Rating Change |
+|---------|----------|---------|-------|----------------|
+| Exam Applicant | 28/100 | 61/100 | **+33** | Critical Mismatch → Good |
+| Passport/Visa Applicant | 54/100 | 68/100 | **+14** | Needs Work → Good |
+| NRI Abroad | 58/100 | 65/100 | **+7** | Needs Work → Good |
+| HR/Admin | 62/100 | 60/100 | **-2** | Needs Work → Needs Work (no direct evidence collected this pass; now weakest persona) |
 
-Meta description for the homepage is currently 184 characters — Google truncates it at approximately 160 characters, cutting off mid-sentence. Tool pages appear to lack crafted meta descriptions (Google is auto-generating from body content). Suggested descriptions:
-
-- Homepage: "Free passport, visa, and exam photo tools for India. ICAO-compliant, 35+ tools, 52+ exam specs — everything runs in your browser. Nothing uploaded." (152 chars)
-- /india-passport-photo-maker/: "Free Indian passport photo maker — ICAO 2025 compliant, 35x45 mm, white background. Instant download. Your photo never leaves your device." (139 chars)
-- Exam pages: "Resize [EXAM] photo to [SIZE] and signature to [SIZE] in one free browser tool. Verified against [YEAR] official notification." (adapt per exam)
-
----
-
-**HIGH-1: Add before/after sample photo to /india-passport-photo-maker/**
-
-Effort: 2 hours (photo shoot + crop + optimize) | Impact: Closes the single most visible visual gap versus all top-10 SERP competitors
-
-8/10 SERP competitors for "passport photo maker india" show a before/after transformation image (raw phone photo to compliant passport photo). This image serves three functions: immediate visual credibility, Google Image indexation for "passport photo india," and reduced bounce from users unsure what the output looks like. Spec: 600x300px WebP, under 50KB, alt text "Phone selfie converted to ICAO-compliant 35x45mm Indian passport photo using easyPhoto — no upload required."
+The Exam Applicant persona's +33 swing is the single largest movement in either audit and directly reflects the exam-page indexation fix. It remains the persona with the most remaining upside (61/100, still "Good" not "Excellent") because the fixed pages surface the spec correctly but stop one click short of the resize action the SERP consensus expects to happen on the same URL.
 
 ---
 
-**HIGH-2: Create a standalone "Indian Passport Photo Requirements" informational page**
+## Priority Action Table (Updated)
 
-Effort: 3–4 hours (content writing + publishing) | Impact: Opens a second ranking URL for informational intent; targets positions 7–10 currently held by passportsizephoto.in/photo-requirements
-
-Suggested URL: `/indian-passport-photo-requirements/`. Required content: exact spec table (35x45mm, 630x810px, under 250KB, plain white background), ICAO September 2025 changes, glasses ban, religious headwear rules, infant photo guidelines, "What changed in 2025" section, 12-question FAQ with FAQPage schema. Cite passportindia.gov.in as source. Minimum 2,500 words. Named author with verified-by datestamp.
+Ranked by impact-to-effort ratio against the current state.
 
 ---
 
-**HIGH-3: Add "Signature" to exam page titles and H1s**
+**CRITICAL-1 (carried over, changed root cause): Merge the exam-requirements spec page and the resizer tool into one URL, or embed the tool on `/exam-requirements/{exam}/`**
 
-Effort: 30 minutes | Impact: Captures "ssc signature resizer," "upsc signature resize" sub-cluster with no new content
+Effort: Moderate (component/routing change, not new content) | Impact: Directly closes the HIGH page-type mismatch for the entire "{exam} photo resize" keyword cluster (53 exam pages)
 
-PAA for "exam photo resize" includes "What is SSC signature size?" — a separate high-volume query. 5/10 SERP competitors treat photo and signature as a joint offering in H1 and title. Change `/ssc-photo-resizer/` H1 from "SSC Photo Resizer" to "SSC Photo and Signature Resizer 2026 — 20–50 KB Photo, 10–20 KB Signature." Apply the same pattern to UPSC, RRB, IBPS, and other exam pages.
-
----
-
-**HIGH-4: Add exam year (2026) to exam page titles and H1s**
-
-Effort: 1 hour (across all exam pages) | Impact: Freshness signal for time-sensitive exam queries; 8/10 competitors include current year
-
-Exam queries are time-sensitive — applicants search "SSC CGL 2026 photo size" not "SSC CGL photo size." Add "2026" to all exam page titles and H1s. Also add a `dateModified` field to WebPage JSON-LD for each exam page, set to the date specifications were last verified against official exam notifications.
+The baseline's CRITICAL-1 ("fix 404s") is resolved. The new CRITICAL-1 is a page-type problem: `/exam-requirements/{exam}/` has the spec, schema, and citations the SERP wants, but the interactive tool the SERP requires lives on a separate, noindexed URL one click away. 10/10 competitors for "ssc photo resize" put the tool and the spec on the same URL. Either embed the resizer widget directly on `/exam-requirements/{exam}/`, or reverse the indexability (index the tool URL, keep the spec content on it, redirect/canonicalize the spec-only page into it).
 
 ---
 
-**MEDIUM-1: Add specific social proof numbers to homepage hero**
+**CRITICAL-2: Deploy the pending legacy-redirect fix (`3e5ed79`)**
 
-Effort: 1 hour | Impact: Conversion rate and trust improvement visible to all users
+Effort: Trivial (already committed, needs deploy) | Impact: Stops 18 legacy URLs from bleeding equity into a noindexed page
 
-"Thousands of photos processed daily" is vague. Replace with a specific counter from analytics. Even "12,000+ photos made this month" is significantly more credible than "thousands." ExamMint's "8.5 Lakh+ Aspirants" is the benchmark to aim for over time.
-
----
-
-**MEDIUM-2: Add DPDPA compliance language to privacy section**
-
-Effort: 30 minutes | Impact: Trust signal for the HR/admin persona; named compliance reduces friction
-
-easyphoto.in's privacy architecture (browser-side processing, no upload) is DPDPA-compliant by design but never named as such. Add "DPDPA compliant — no personal data transmitted to or stored on any server" to the homepage privacy section and the tool page trust pills. The Digital Personal Data Protection Act 2023 is a direct concern for HR admins processing employee photos.
+Confirmed via production `curl -IL`: `/ssc-photo-resizer/` and 17 siblings still 301 into `/tools/form-resizer/{exam}/`, which carries `X-Robots-Tag: noindex`. The fix exists on `dev` and simply needs to ship to production.
 
 ---
 
-**MEDIUM-3: Add "UPSC 2026 / SSC 2026 / CGL 2026" intro paragraph to each exam page**
+**HIGH-1: Add before/after transformation images to `/india-passport-photo-maker/`, `/exam-requirements/ssc/`, and the blog requirements guide**
 
-Effort: 1 hour per page | Impact: Long-tail keyword coverage for exam-cycle-specific queries
+Effort: Unchanged from baseline (2 hours) | Impact: Closes the only dimension with zero measured improvement since the baseline (Media, 4/15 both audits)
 
-Add an intro paragraph naming the current exam cycle: "For SSC CGL 2026 Tier 1 notifications, the photo requirement is 350x450 pixels, 20–50 KB, JPG format — verified against the official notification on ssc.gov.in."
+Confirmed via fresh parse: `/india-passport-photo-maker/` returns `images: []`. This is the single most stagnant finding across both audits and the most visible gap versus SERP leaders on all three keywords (ExamMint's "Result Comparison" UI is a direct, current-SERP example of exactly this pattern working for a direct competitor).
 
 ---
 
-## SXO Gap Score: 41/100
+**HIGH-2: Add `passportindia.gov.in` / VFS / BLS citation links to `/blog/indian-passport-photo-requirements/`**
 
-**Composite score across all three target keywords:**
+Effort: 30 minutes | Impact: Closes a self-inflicted authority gap on the page most exposed to government-domain competition
 
-| Keyword | Target Page | Mismatch Severity | Page Score | Persona Score | Keyword Score |
-|---------|------------|-------------------|------------|---------------|---------------|
-| "passport photo maker india" | /india-passport-photo-maker/ | ALIGNED | 53/100 | 54/100 | 55/100 |
-| "indian passport photo requirements" | No dedicated page (MISSING) | HIGH MISMATCH | 0/100 | N/A | 15/100 |
-| "exam photo resize" | Exam pages (404 — NOT LIVE) | CRITICAL FAILURE | 0/100 | 28/100 | 14/100 |
-| **Composite** | | | | | **41/100** |
+The exam-requirements pages already establish the citation pattern (`ssc.gov.in` linked from `/exam-requirements/ssc/`). The new blog guide states precise specs (630×810px, 250KB) with zero external citation — inconsistent with the site's own established pattern and specifically costly on a SERP where 8/9 results are government or authorized-agent domains.
 
-**Comparison baseline:**
-- passportsizephoto.in (market leader for keyword 1): estimated 78/100 — deep content, schema, social proof, informational + transactional URL split
-- ExamMint (exam category leader): estimated 82/100 — 104 exam presets, 8.5 lakh users, FAQPage schema, AI Overview presence
+---
 
-**Score interpretation:** The 41/100 composite is not a reflection of underlying site quality — technical SEO is 82/100, Lighthouse SEO is 100/100, and the passport tool page alone scores 53/100. The composite is dragged down by two structural gaps: a missing requirements page (contributing 0 toward keyword 2) and non-indexable exam pages (contributing near-0 toward keyword 3). Fixing the two critical gaps would raise the composite score to approximately 62–65/100 without any new content writing beyond restoring existing pages and adding one requirements guide.
+**MEDIUM-1: Re-audit HR/Admin persona against the actual tools catalog surface**
+
+Effort: 1-2 hours (separate audit pass) | Impact: This persona is now the weakest of the four (60/100) and was scored this pass without any newly fetched evidence
+
+Recommend the next SXO pass specifically fetch `/tools/` catalog pages or a representative bulk-workflow page rather than inferring this persona's score from the exam/passport pages audited here.
+
+---
+
+**MEDIUM-2 (carried over from baseline, still open): Name "DPDPA" explicitly in privacy trust copy**
+
+Effort: 30 minutes | Impact: Confirmed still absent across all three re-fetched pages in this audit
 
 ---
 
 ## Limitations
 
-- Page rendering used WebFetch, not Playwright/JS execution. Dynamic React/Next.js content (ExamPackageTool exam list, lazy-loaded compliance check results, interactive tool state) could not be verified as crawlable by Googlebot. A Playwright render via `render_page.py --mode always` is recommended for DOM-level accuracy on tool pages.
-- SERP positions are point-in-time snapshots from June 23, 2026. Personalization, user location (India vs. global), logged-in state, and device type affect actual positions. These searches were conducted from outside India — India-local results (especially for exam queries) may show a different ranking order.
-- easyphoto.in's confirmed SERP position for "passport photo maker india" and "exam photo resize" could not be established. The site does not appear in top 10 for either keyword in the results returned. GSC Search Analytics data would provide authoritative position data.
-- Core Web Vitals (LCP, CLS, INP) were measured via PageSpeed Insights; field data (CrUX) is unavailable because the site has fewer than approximately 1,000 real Chrome users in the 28-day window.
-- AI Overview content for these queries was inferred from SERP patterns and competitor content analysis. AI Overviews are not returned in standard search API results and cannot be directly captured.
-- Exam page URL structure: 404 errors were confirmed for two exam pages tested (`/upsc-exam-photo-resizer/`, `/ssc-exam-photo-resizer/`). It is possible exam pages exist at different URL patterns. The sitemap lists these URLs and they must be verified against the live Next.js routing configuration.
-- The sitemap shows 40+ exam-specific requirement guide pages distinct from tool pages. These were not individually verified. If guide pages are live and indexed, they represent a hidden asset not captured in this audit's SERP checks.
-- Social proof data (exact user counts, testimonial volume) was unavailable. easyphoto.in has no visible analytics counter or testimonial component on audited pages.
-- No Google Search Console data beyond what is in audit-data.json was accessed. Impression counts, actual CTR, and keyword position ranges for these specific terms were not available from GSC.
+- Page rendering: `render_page.py --mode auto --json` confirmed `is_spa: false` and HTTP 200 for all three target URLs, but the `--json` flag truncates `content`/`raw_content` fields to ~500 characters by design for CLI usability. Full HTML was retrieved via direct `curl` for parsing — valid because the renderer confirmed these are not SPA/JS-rendered pages, so curl's raw HTML matches what `--mode always` would produce. No Playwright render was separately captured this pass.
+- SERP positions are point-in-time WebSearch snapshots from 2026-07-02, not from India-local, logged-out, mobile-simulated conditions. easyphoto.in's exact rank position (if any, outside top 10) for all three keywords could not be established — only its absence from the visible top-10 set.
+- AI Overview presence/content was not directly observed (WebSearch does not return AI Overview blocks); inferred only where the baseline had previously documented it and no contradicting evidence emerged.
+- Core Web Vitals (LCP/CLS/INP) were **not re-measured** this pass — the UX Signals dimension score (10/15, unchanged) is carried forward from the baseline's PageSpeed Insights data, not fresh data. This is flagged as a known gap in this re-audit; a fresh PSI/CrUX pull is recommended before the next SXO cycle, especially given the new exam-page click-through pattern may affect mobile task-completion time even if LCP itself is unchanged.
+- HR/Admin persona score is not grounded in freshly fetched pages this pass (see persona section note) — treat this persona's 60/100 as lower-confidence than the other three.
+- Production redirect state was spot-checked for 4 of the 18 legacy resizer URLs (`ssc`, `upsc`, `rrb`/`railway`, plus one 404 found at `/rrb-photo-resizer/` — note this specific slug is not in the `_redirects` list at all; only `/railway-photo-resizer/` maps to `rrb`, so `/rrb-photo-resizer/` correctly 404s as it was never a valid legacy path, not a broken redirect). The remaining 14 legacy slugs were not individually curl-tested but are assumed consistent based on the commit diff reviewed directly.
+- No Google Search Console data was accessed this pass; actual impressions, clicks, or position data for these three keywords remain unavailable, same limitation as the baseline.
 
 ---
 
 ## Cross-Skill Recommendations
 
-- Schema gaps (FAQPage missing on exam pages, HowTo missing on step-based tool pages, SoftwareApplication with aggregateRating missing on tool pages): use `/seo schema` to generate and validate JSON-LD for all affected pages.
-- Content depth gaps (missing requirements page, thin exam page content, exam pages below SERP floor in word count): use `/seo content` for page-level content briefs with E-E-A-T expansion guidance.
-- Meta descriptions missing across site: use `/seo page` for a full on-page audit across all 277 URLs in the sitemap.
-- Authority gaps (no user count, no press mentions, single social profile in Organization schema, no external backlinks): use `/seo content` for E-E-A-T authority analysis and authorship schema recommendations.
-- Exam page 404s and sitemap URL mismatches: use `/seo technical` for crawl error analysis and Next.js routing verification.
-
----
-
-## Prior Run Reference (2026-06-20)
-
-The June 20 audit covered `/passport-photo/`, `/ssc-photo-resizer/`, and `/blog/best-free-passport-photo-maker-india-2026/` in per-page detail. Scores and recommendations from that run remain valid and are not duplicated here.
-
-| Page | SXO Gap Score (Jun 20) | Primary Gap |
-|------|----------------------|-------------|
-| /passport-photo/ | 56/100 | Media (4/15), Authority (6/15) |
-| /ssc-photo-resizer/ | 43/100 | Schema (2/15), Media (3/15) |
-| /blog/best-free-passport-photo-maker-india-2026/ | 63/100 | Media (5/15), Content depth (8/15) |
+- Page-type mismatch on exam pages (spec page vs. required embedded tool): recommend `/seo page` for a page-level audit of the exam-requirements vs. form-resizer split, and a product/UX decision on which URL should be canonical and indexed.
+- Schema gap (aggregateRating still missing on SoftwareApplication, HowTo still missing on step-based flows): use `/seo schema` to generate and validate the remaining JSON-LD.
+- Media gap (zero before/after images across all three audited pages, unchanged since baseline): this is now a two-audit-cycle stagnant finding and the highest-leverage remaining fix; no specific skill needed beyond content production.
+- E-E-A-T citation gap on the new blog guide: use `/seo content` for authority/citation analysis consistent with the pattern already used on the exam pages.
+- Legacy redirect deployment: this is a deploy/ops action, not an SEO content action — flag to engineering directly.
 
 ---
 
