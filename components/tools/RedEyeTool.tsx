@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Download, Share2, Undo2, Scissors, Minimize2, Crop } from "lucide-react";
+import { Download, Share2, Undo2, Scissors, Minimize2, Crop, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, type ToolSource } from "./ImageToolShell";
 import { downloadBlob, shareFile } from "@/lib/download";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { track, deviceClass } from "@/lib/analytics";
+import { detectFace, disposeLandmarker, type Point } from "@/lib/faceDetection";
 
 type Brush = "S" | "M" | "L";
 
@@ -59,11 +60,22 @@ function fixRedEyeAt(
   return changed;
 }
 
+/** How far a tap may land from a detected eye centre and still count as "on
+ *  the eye" — scaled to the inter-eye distance so it works at any face size. */
+const EYE_TAP_TOLERANCE_FRACTION = 0.35;
+
+type FaceState =
+  | { status: "detecting" }
+  | { status: "found"; left: Point; right: Point; tolerance: number }
+  | { status: "not-found" };
+
 function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [brush, setBrush] = React.useState<Brush>("M");
   const [edited, setEdited] = React.useState(false);
   const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
+  const [faceState, setFaceState] = React.useState<FaceState>({ status: "detecting" });
+  const [missedTap, setMissedTap] = React.useState(false);
 
   const draw = React.useCallback(() => {
     const canvas = canvasRef.current;
@@ -87,7 +99,49 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
     setResultBlob(null);
   }, [draw]);
 
+  // Without this, any strongly-red pixel anywhere in the photo (reddish-brown
+  // hair, warm skin tones) passes the crude colour heuristic below and gets
+  // "fixed" — visibly discolouring hair/skin on photos that don't show eyes
+  // at all, which is exactly what makes the tool look broken rather than
+  // just declining to do anything.
+  React.useEffect(() => {
+    let cancelled = false;
+    setFaceState({ status: "detecting" });
+    setMissedTap(false);
+    detectFace(source.image, source.size)
+      .then((det) => {
+        if (cancelled) return;
+        const eyeDist = Math.hypot(
+          det.rightEyeCenter.x - det.leftEyeCenter.x,
+          det.rightEyeCenter.y - det.leftEyeCenter.y
+        );
+        setFaceState({
+          status: "found",
+          left: det.leftEyeCenter,
+          right: det.rightEyeCenter,
+          tolerance: Math.max(20, eyeDist * EYE_TAP_TOLERANCE_FRACTION),
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setFaceState({ status: "not-found" });
+      })
+      .finally(() => {
+        // Model + wasm memory is heavy — free it once this tool is done with
+        // it rather than keeping it resident for the rest of the session.
+        void disposeLandmarker();
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [source]);
+
   const handleTap = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    // No detected face means no known eye position to validate against — and
+    // with no face, there's no red eye to fix. Rather than fall through to
+    // the old unguarded pixel-colour heuristic (which is what let this tool
+    // "fix" random reddish hair/skin pixels on photos with no eyes at all),
+    // decline entirely and point at the warning banner explaining why.
+    if (faceState.status === "detecting" || faceState.status === "not-found") return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -95,6 +149,20 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
     const rect = canvas.getBoundingClientRect();
     const cx = ((e.clientX - rect.left) / rect.width) * canvas.width;
     const cy = ((e.clientY - rect.top) / rect.height) * canvas.height;
+
+    // Gate the tap against the actual detected eye positions when we have
+    // them — a face was found, so we know where the eyes are, and a tap far
+    // from both isn't a red pupil no matter what the pixel colours say.
+    if (faceState.status === "found") {
+      const dLeft = Math.hypot(cx - faceState.left.x, cy - faceState.left.y);
+      const dRight = Math.hypot(cx - faceState.right.x, cy - faceState.right.y);
+      if (dLeft > faceState.tolerance && dRight > faceState.tolerance) {
+        setMissedTap(true);
+        return;
+      }
+    }
+    setMissedTap(false);
+
     const radius = Math.max(
       6,
       Math.round(Math.min(canvas.width, canvas.height) * BRUSH_FRACTION[brush])
@@ -143,9 +211,25 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
   return (
     <div className="space-y-4">
       <p className="rounded-lg border border-hairline bg-accent/30 px-4 py-2 text-sm text-muted-foreground">
-        Tap directly on each red pupil to fix it. Tap again to strengthen, or
-        adjust the brush size if the eye is larger.
+        {faceState.status === "detecting"
+          ? "Checking the photo for a face…"
+          : "Tap directly on each red pupil to fix it. Tap again to strengthen, or adjust the brush size if the eye is larger."}
       </p>
+
+      {faceState.status === "not-found" && (
+        <p className="flex items-start gap-2 rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.75} />
+          No face was detected in this photo, so there&apos;s nothing to check
+          eye positions against. Tapping is disabled here — upload a clear
+          photo with the eyes visible to use this tool.
+        </p>
+      )}
+
+      {missedTap && (
+        <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
+          That doesn&apos;t look like an eye — tap directly on the red pupil.
+        </p>
+      )}
 
       <fieldset>
         <legend className="eyebrow mb-2 block text-xs">Brush size</legend>
@@ -174,7 +258,9 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
           const touch = e.changedTouches[0];
           if (touch) handleTap({ clientX: touch.clientX, clientY: touch.clientY, currentTarget: e.currentTarget } as unknown as React.MouseEvent<HTMLCanvasElement>);
         }}
-        className="w-full max-w-md cursor-crosshair rounded-lg border border-hairline shadow-sm touch-none"
+        className={`w-full max-w-md rounded-lg border border-hairline shadow-sm touch-none ${
+          faceState.status === "found" ? "cursor-crosshair" : "cursor-not-allowed"
+        }`}
       />
 
       <div className="flex flex-wrap items-center gap-3">
