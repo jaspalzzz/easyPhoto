@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -190,8 +191,14 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
         <Menu className="h-6 w-6" />
       </button>
 
-      {open && (
-        <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Site menu">
+      {open && createPortal(
+        // Portalled to <body>, not rendered in place: this button sits inside
+        // the sticky header, which has its own z-40 stacking context — no
+        // z-index on a descendant can ever escape that to outrank sibling
+        // page content like the homepage search dropdown (ToolSearch, z-50
+        // at the root). Rendering into body puts the dialog in the root
+        // stacking context too, where z-[60] correctly outranks it.
+        <div className="fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-label="Site menu">
           {/* Backdrop */}
           <button
             type="button"
@@ -333,7 +340,8 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
               )}
             </nav>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
