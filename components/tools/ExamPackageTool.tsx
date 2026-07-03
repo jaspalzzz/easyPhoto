@@ -542,17 +542,24 @@ export function ExamPackageTool() {
                   )}
                 </div>
 
-                {/* Primary action: one portal-named ZIP with every file + a README */}
+                {/* Primary action: one portal-named ZIP with every file + a README.
+                    h-auto + whitespace-normal override the Button component's
+                    default single-line-fixed-height styling — with the
+                    "(photo + signature)" suffix, this text is long enough to
+                    overflow past the pill's edge on narrow phones instead of
+                    wrapping (button.tsx's base classes are whitespace-nowrap
+                    with no overflow clipping, so overflow was rendering
+                    visibly outside the button rather than being hidden). */}
                 <Button
                   variant="cta"
-                  className="w-full"
+                  className="h-auto w-full whitespace-normal py-3 text-center leading-snug"
                   onClick={downloadKit}
                   disabled={zipping}
                 >
                   {zipping ? (
-                    <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+                    <Loader2 className="h-4 w-4 shrink-0 animate-spin" strokeWidth={1.75} />
                   ) : (
-                    <Download className="h-4 w-4" strokeWidth={1.75} />
+                    <Download className="h-4 w-4 shrink-0" strokeWidth={1.75} />
                   )}
                   Download all as ZIP
                   {signature ? " (photo + signature)" : ""}
