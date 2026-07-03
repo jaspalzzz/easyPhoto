@@ -36,23 +36,49 @@ const NAME_SKIP =
 const NAME_SHAPE = /^[A-Za-z][A-Za-z\s.'-]*$/;
 
 /**
- * Pull every maximal digit-run (spaces allowed inside) and slide validity
- * windows over it. Returns the first window for which `validate` passes.
+ * Pull every maximal digit-run (spaces allowed inside) and find the best
+ * checksum-valid candidate of `windowLen` digits.
+ *
+ * Ranked, not first-match: Verhoeff passes ~1 in 10 random windows, and OCR
+ * text can contain several digit runs (numbers read from rotated passes,
+ * garbled strings, phone numbers). Sliding a window over a long run and
+ * returning the first checksum hit let junk beat the real number. Printed
+ * Aadhaar/VID numbers have structure we can rank by instead:
+ *   score 2 — the run is EXACTLY windowLen digits printed in the official
+ *             space-separated groups of 4 (how the card actually prints it)
+ *   score 1 — the run is exactly windowLen digits, grouping aside
+ *   score 0 — a window inside a longer run (last resort)
+ * Highest score wins; ties go to first occurrence.
  */
 function findValidNumber(
   text: string,
   windowLen: number,
   validate: (digits: string) => boolean
 ): string {
-  const groups = text.match(/[0-9][0-9\s]{6,}[0-9]/g) ?? [];
-  for (const g of groups) {
-    const digits = g.replace(/\D/g, "");
-    for (let i = 0; i + windowLen <= digits.length; i++) {
-      const candidate = digits.slice(i, i + windowLen);
-      if (validate(candidate)) return candidate;
+  const grouped = new RegExp(`^\\d{4}( \\d{4}){${windowLen / 4 - 1}}$`);
+  let best = "";
+  let bestScore = -1;
+  // Runs never cross a line break: joining digits across newlines fuses
+  // unrelated lines into one giant run whose sliding windows are exactly the
+  // random-digit lottery the scoring exists to avoid (and it destroys the
+  // exactly-N-digits signal for the real, cleanly-printed number).
+  for (const line of text.split(/\n/)) {
+    const groups = line.match(/[0-9][0-9 \t]{2,}[0-9]/g) ?? [];
+    for (const g of groups) {
+      const digits = g.replace(/\D/g, "");
+      for (let i = 0; i + windowLen <= digits.length; i++) {
+        const candidate = digits.slice(i, i + windowLen);
+        if (!validate(candidate)) continue;
+        const exact = digits.length === windowLen;
+        const score = exact && grouped.test(g.trim()) ? 2 : exact ? 1 : 0;
+        if (score > bestScore) {
+          best = candidate;
+          bestScore = score;
+        }
+      }
     }
   }
-  return "";
+  return best;
 }
 
 /**
