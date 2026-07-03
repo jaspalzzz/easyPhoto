@@ -389,7 +389,17 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
             <Cropper
               ref={cropperRef}
               src={source.url}
-              style={{ height: 320, width: "100%" }}
+              // A flat 320px starves the crop box's usable size for tall/narrow
+              // source photos (very common — phone camera portrait shots,
+              // uncropped screenshots): Cropper.js contain-fits the image
+              // inside this box, so for a narrow image the box's HEIGHT is
+              // what's actually limiting the rendered width, not its width.
+              // 320px rendered a 1080x2400 test image at only 144px wide,
+              // capping the aspect-locked crop box's max size well short of
+              // the 320px of height that was sitting unused. Matches the
+              // viewport-responsive convention PrintSheetTool already uses,
+              // sized a bit larger since cropping is this tool's primary task.
+              style={{ height: "min(480px, 60vh)", width: "100%" }}
               aspectRatio={activePreset.ar}
               viewMode={1}
               dragMode="move"
