@@ -173,6 +173,36 @@ export interface RecognizeFileDualPassOptions {
    * For PAN, pass "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 " to cover the mixed format.
    */
   secondPassWhitelist?: string;
+  /**
+   * Extra quarter-turn rotations (90 | 180 | 270, degrees clockwise) for the
+   * whitelist pass. Aadhaar prints its number VERTICALLY along the card edge
+   * on several layouts — unreadable in the normal orientation, clean once the
+   * canvas is turned. Each rotation's output is appended to `numeric.text`;
+   * downstream parsers checksum-gate every candidate, so text read from a
+   * "wrong" orientation costs nothing but the extra pass time.
+   * Requires preprocessing (source must be a canvas); ignored otherwise.
+   */
+  numericRotations?: Array<90 | 180 | 270>;
+}
+
+/** Confidence (0–100) below which the full-text pass is retried with a
+ *  different segmentation mode. SPARSE suits scattered ID-card layouts, but
+ *  on some cards SINGLE_BLOCK reads far better — when SPARSE comes back this
+ *  weak, the retry is usually the difference between fields and mush. */
+const RETRY_CONFIDENCE = 55;
+
+/** Rotate a canvas by a quarter-turn multiple (degrees clockwise). */
+function rotateQuarter(src: HTMLCanvasElement, deg: 90 | 180 | 270): HTMLCanvasElement {
+  const out = document.createElement("canvas");
+  const swap = deg !== 180;
+  out.width = swap ? src.height : src.width;
+  out.height = swap ? src.width : src.height;
+  const ctx = out.getContext("2d");
+  if (!ctx) return src;
+  ctx.translate(out.width / 2, out.height / 2);
+  ctx.rotate((deg * Math.PI) / 180);
+  ctx.drawImage(src, -src.width / 2, -src.height / 2);
+  return out;
 }
 
 /**
@@ -196,6 +226,7 @@ export async function recognizeFileDualPass(
     onProgress,
     preprocess = {},
     secondPassWhitelist = "0123456789 ",
+    numericRotations = [],
   }: RecognizeFileDualPassOptions = {}
 ): Promise<DualPassResult> {
   const { createWorker } = await import("tesseract.js");
@@ -205,8 +236,15 @@ export async function recognizeFileDualPass(
       ? file
       : await preprocessForOcr(file, preprocess as PreprocessOptions);
 
-  // Mutable progress state shared by the single logger closure.
-  const ps = { offset: 0, scale: 0.65 };
+  // Rotations need a canvas to turn; silently skip them for raw-file input.
+  const rotations = source instanceof HTMLCanvasElement ? numericRotations : [];
+
+  // Progress budget: 55% for the full-text pass (a low-confidence retry
+  // re-runs inside the same slice), the rest split across the whitelist
+  // pass and its rotations.
+  const numericPasses = 1 + rotations.length;
+  const numericScale = 0.45 / numericPasses;
+  const ps = { offset: 0, scale: 0.55 };
 
   const w = await createWorker(lang, OEM_LSTM_ONLY, {
     workerPath: "/tessdata/worker.min.js",
@@ -223,21 +261,29 @@ export async function recognizeFileDualPass(
   });
 
   try {
-    // ── Pass 1: full text ──────────────────────────────────────────────────
-    ps.offset = 0;
-    ps.scale = 0.65;
+    // ── Pass 1: full text (SPARSE, retry as SINGLE_BLOCK when weak) ────────
     await w.setParameters(
       toTesseractParams({ psm: PSM.SPARSE, preserveInterwordSpaces: true })
     );
     const r1 = await w.recognize(source as Parameters<typeof w.recognize>[0]);
-    const primary: OcrResult = {
+    let primary: OcrResult = {
       text: r1.data.text.trim(),
       confidence: Math.round(r1.data.confidence),
     };
 
-    // ── Pass 2: whitelist pass ─────────────────────────────────────────────
-    ps.offset = 65;
-    ps.scale = 0.30;
+    if (primary.confidence < RETRY_CONFIDENCE) {
+      await w.setParameters(
+        toTesseractParams({ psm: PSM.SINGLE_BLOCK, preserveInterwordSpaces: true })
+      );
+      const retry = await w.recognize(source as Parameters<typeof w.recognize>[0]);
+      const retried: OcrResult = {
+        text: retry.data.text.trim(),
+        confidence: Math.round(retry.data.confidence),
+      };
+      if (retried.confidence > primary.confidence) primary = retried;
+    }
+
+    // ── Pass 2: whitelist pass (+ optional quarter-turn rotations) ─────────
     await w.setParameters(
       toTesseractParams({
         psm: PSM.SPARSE,
@@ -245,10 +291,23 @@ export async function recognizeFileDualPass(
         preserveInterwordSpaces: true,
       })
     );
+
+    ps.offset = 55;
+    ps.scale = numericScale;
     const r2 = await w.recognize(source as Parameters<typeof w.recognize>[0]);
+    const numericTexts = [r2.data.text.trim()];
+    const numericConfidence = Math.round(r2.data.confidence);
+
+    for (const deg of rotations) {
+      ps.offset += numericScale * 100;
+      const rotated = rotateQuarter(source as HTMLCanvasElement, deg);
+      const rr = await w.recognize(rotated as Parameters<typeof w.recognize>[0]);
+      numericTexts.push(rr.data.text.trim());
+    }
+
     const numeric: OcrResult = {
-      text: r2.data.text.trim(),
-      confidence: Math.round(r2.data.confidence),
+      text: numericTexts.filter(Boolean).join("\n"),
+      confidence: numericConfidence,
     };
 
     onProgress?.(100);

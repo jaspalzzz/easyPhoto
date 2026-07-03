@@ -31,6 +31,7 @@ export function AadhaarOcrTool() {
   const [error, setError] = React.useState<string | null>(null);
   const [rawText, setRawText] = React.useState<string | null>(null);
   const [fields, setFields] = React.useState<AadhaarFields | null>(null);
+  const [confidence, setConfidence] = React.useState<number | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -52,6 +53,7 @@ export function AadhaarOcrTool() {
     setError(null);
     setRawText(null);
     setFields(null);
+    setConfidence(null);
     setProgress(0);
   };
 
@@ -76,15 +78,20 @@ export function AadhaarOcrTool() {
     try {
       // Dual pass: Pass 1 (eng+hin, no whitelist) reads name/DOB/address
       // including Hindi Devanagari; Pass 2 (digits-only whitelist) gives a
-      // clean digit stream for Verhoeff-validated number extraction.
+      // clean digit stream for Verhoeff-validated number extraction, and the
+      // 90°/270° rotations catch the number when it's printed vertically
+      // along the card edge (several Aadhaar layouts do this) — checksum
+      // gating makes text from a wrong orientation harmless.
       // Deskew corrects tilted card photos before recognition.
       const { primary, numeric } = await recognizeFileDualPass(file, {
         lang: "eng+hin",
         onProgress: setProgress,
         preprocess: { deskew: true },
         secondPassWhitelist: "0123456789 ",
+        numericRotations: [90, 270],
       });
       setRawText(cleanOcrText(primary.text));
+      setConfidence(primary.confidence);
       setFields(parseAadhaarFields(primary.text, numeric.text));
       track({ name: "tool_success", tool: "aadhaar-ocr" });
     } catch (err) {
@@ -153,6 +160,20 @@ export function AadhaarOcrTool() {
 
       {fields && (
         <div className="space-y-3">
+          {(confidence !== null && confidence < 55) ||
+          (!fields.aadhaarNumber && !fields.aadhaarMasked) ? (
+            <p className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.75} />
+              <span>
+                This photo was hard to read
+                {confidence !== null ? ` (read confidence ${confidence}%)` : ""} — the
+                fields below may be wrong or incomplete. For a reliable extraction,
+                retake with the card <strong>flat and straight-on</strong>, filling the
+                frame, in even light with <strong>no glare or busy background</strong>,
+                then try again.
+              </span>
+            </p>
+          ) : null}
           <p className="text-sm font-semibold text-ink">Extracted Fields</p>
           <p className="text-xs text-muted-foreground">Tap any field to correct it before copying.</p>
 
