@@ -25,9 +25,18 @@ interface BodyProps {
   densityDpi?: number;
   /** Named requirement for the compliance receipt, e.g. "SSC (Staff Selection Commission)". */
   requirementLabel?: string;
+  /** Reports the currently-loaded source up to a parent that embeds this tool
+   *  inline (e.g. a photo/signature tab switcher) so it can hand the same
+   *  file to a sibling tool instead of losing it on switch. */
+  onSourceChange?: (source: ToolSource | null) => void;
 }
 
-function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, densityDpi, requirementLabel }: BodyProps) {
+function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, densityDpi, requirementLabel, onSourceChange }: BodyProps) {
+  React.useEffect(() => {
+    onSourceChange?.(source);
+    return () => onSourceChange?.(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [source]);
   const [targetKb, setTargetKb] = React.useState(defaultKb);
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -314,6 +323,7 @@ export function ResizeKbTool({
   minKb,
   densityDpi,
   requirementLabel,
+  onSourceChange,
 }: {
   defaultKb?: number;
   toolName?: string;
@@ -325,6 +335,8 @@ export function ResizeKbTool({
   densityDpi?: number;
   /** Named requirement for the compliance receipt, e.g. "SSC (Staff Selection Commission)". */
   requirementLabel?: string;
+  /** See BodyProps.onSourceChange. */
+  onSourceChange?: (source: ToolSource | null) => void;
 }) {
   React.useEffect(() => {
     track({ name: "tool_view", tool: toolName });
@@ -342,6 +354,7 @@ export function ResizeKbTool({
           minKb={minKb}
           densityDpi={densityDpi}
           requirementLabel={requirementLabel}
+          onSourceChange={onSourceChange}
         />
       )}
     </ImageToolShell>

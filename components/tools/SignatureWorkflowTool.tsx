@@ -24,6 +24,10 @@ interface SignatureWorkflowProps {
   toolName?: string;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
+  /** Reports the currently-loaded source up to a parent that embeds this tool
+   *  inline (e.g. a photo/signature tab switcher) so it can hand the same
+   *  file to a sibling tool instead of losing it on switch. */
+  onSourceChange?: (source: ToolSource | null) => void;
 }
 
 function smoothCanvas(canvas: HTMLCanvasElement, radius: number): HTMLCanvasElement {
@@ -63,6 +67,7 @@ function Body({
   autoCropDefault = true,
   toolName = "signature-workflow",
   minKb,
+  onSourceChange,
 }: {
   source: ToolSource;
   defaultTab?: Tab;
@@ -70,7 +75,14 @@ function Body({
   autoCropDefault?: boolean;
   toolName?: string;
   minKb?: number;
+  onSourceChange?: (source: ToolSource | null) => void;
 }) {
+  React.useEffect(() => {
+    onSourceChange?.(source);
+    return () => onSourceChange?.(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [source]);
+
   // Tabs & Navigation
   const [activeTab, setActiveTab] = React.useState<Tab>(defaultTab);
 
@@ -983,6 +995,7 @@ export function SignatureWorkflowTool({
   autoCropDefault = true,
   toolName = "signature-workflow",
   minKb,
+  onSourceChange,
 }: SignatureWorkflowProps) {
   React.useEffect(() => {
     track({ name: "tool_view", tool: toolName });
@@ -998,6 +1011,7 @@ export function SignatureWorkflowTool({
           autoCropDefault={autoCropDefault}
           toolName={toolName}
           minKb={minKb}
+          onSourceChange={onSourceChange}
         />
       )}
     </ImageToolShell>
