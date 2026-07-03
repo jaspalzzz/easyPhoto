@@ -27,6 +27,10 @@ const FAQ_ITEMS = [
     q: "Can I increase DPI without losing quality?",
     a: "You can increase the DPI metadata value without affecting quality — that just tells printers to print smaller. To increase DPI while keeping the same print size, you need more pixels (upsampling). AI-based upsamplers (like waifu2x or Real-ESRGAN) can add plausible detail. Simple nearest-neighbour or bilinear upsampling produces blurry results.",
   },
+  {
+    q: "A portal says my PDF DPI should be 200 — what does that mean?",
+    a: "It means the pages inside your PDF should be scanned at 200 dots per inch — a resolution requirement for the scan, not a file-size one. An A4 page scanned at 200 DPI is roughly 1654×2339 pixels. If your scanner app lets you pick a resolution, choose 200 DPI (or 'medium/document quality') before scanning; a photo of the document taken from a normal distance with a modern phone camera usually exceeds 200 DPI already. Portals state this so the text in your document stays legible after their processing.",
+  },
 ];
 
 export const metadata = pageMetadata({

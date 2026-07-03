@@ -274,7 +274,7 @@ export default function Page() {
 
       <h2>Which tools make the process faster?</h2>
       <p>
-        Two tools cover the full workflow without requiring any account or
+        Three tools cover the full workflow without requiring any account or
         upload.
       </p>
 
@@ -291,6 +291,13 @@ export default function Page() {
           </Link>: removes the white background from a scanned signature and
           exports a transparent PNG sized for Army Agniveer or NDA portals. The
           same tool works for any portal that accepts PNG with transparency.
+        </li>
+        <li>
+          <Link href="/tools/sign-image/">Sign image tool</Link>: for the
+          different case where the signature goes <em>onto</em> an image — a
+          declaration photo, a scanned form page, or any document image that
+          must carry your signature. Draw it directly or place a transparent
+          signature PNG, position it, and download the signed image.
         </li>
       </ul>
 
