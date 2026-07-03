@@ -83,8 +83,10 @@ export function parsePanFields(raw: string, alphanumRaw?: string): PanFields {
   const dob = dobMatch ? `${dobMatch[1]}/${dobMatch[2]}/${dobMatch[3]}` : "";
 
   // Label-anchored extraction: value on the next non-empty line after a label.
-  const valueAfter = (labelRe: RegExp): string => {
-    const idx = lines.findIndex((l) => labelRe.test(l));
+  // `rejectLine` skips label lines we must not latch onto (used so the plain
+  // "Name" search doesn't match the "Father's Name" line).
+  const valueAfter = (labelRe: RegExp, rejectLine?: RegExp): string => {
+    const idx = lines.findIndex((l) => labelRe.test(l) && !rejectLine?.test(l));
     if (idx < 0) return "";
     // Some cards print "Name SACHIN" on one line; prefer inline, else next line.
     const inline = lines[idx].replace(labelRe, "").trim();
@@ -92,7 +94,13 @@ export function parsePanFields(raw: string, alphanumRaw?: string): PanFields {
     return lines[idx + 1] ?? "";
   };
 
-  let name = valueAfter(/^\s*name\b\s*:?-?\s*/i);
+  // Bilingual cards print "नाम / Name" and "पिता का नाम / Father's Name" — the
+  // English label is NOT at the start of the line, so the old "^name" anchor
+  // missed it entirely and the parser fell back to grabbing OCR header
+  // fragments (e.g. a garbled "DEPARTMENT" leftover) as the name. Match the
+  // label anywhere on the line, but keep the plain-name search from latching
+  // onto the father's-name line.
+  let name = valueAfter(/\bname\b\s*:?-?\s*/i, /father/i);
   let fathersName = valueAfter(/father'?s?\b.*name\s*:?-?\s*/i);
 
   // Structural fallback when labels weren't recognised: the two prominent
