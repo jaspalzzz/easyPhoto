@@ -5,6 +5,8 @@ import { PORTAL_PRESETS } from "@/lib/portalPresets";
 import { specProvenance } from "@/lib/specRegistry";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
+import type { ToolSource } from "@/components/tools/ImageToolShell";
+import { setWorkflowPayload } from "@/lib/workflowHandoff";
 import { AlertCircle, AlertTriangle, Camera, ExternalLink, PenLine, ShieldCheck } from "lucide-react";
 
 export function PortalResizer({
@@ -19,8 +21,25 @@ export function PortalResizer({
   const shownName = displayName ?? spec?.name.split(" (")[0];
   const [activeSubTool, setActiveSubTool] = React.useState<"photo" | "signature">("photo");
 
+  // The photo and signature sub-tools are two separate mounted components —
+  // switching tabs used to just unmount one and mount the other, silently
+  // dropping whatever the user had uploaded. This remembers the last-loaded
+  // file (from whichever tab is currently active) so it can be handed to the
+  // newly-active tab instead of forcing a re-upload.
+  const lastSourceRef = React.useRef<ToolSource | null>(null);
+  const handleSourceChange = React.useCallback((source: ToolSource | null) => {
+    if (source) lastSourceRef.current = source;
+  }, []);
+  const switchSubTool = (tool: "photo" | "signature") => {
+    if (tool !== activeSubTool && lastSourceRef.current) {
+      setWorkflowPayload(lastSourceRef.current.file, lastSourceRef.current.file.name);
+    }
+    setActiveSubTool(tool);
+  };
+
   React.useEffect(() => {
     setActiveSubTool("photo");
+    lastSourceRef.current = null;
   }, [portalId]);
 
   if (!spec) {
@@ -83,7 +102,7 @@ export function PortalResizer({
         <div className="flex border-b border-hairline gap-2">
           <button
             type="button"
-            onClick={() => setActiveSubTool("photo")}
+            onClick={() => switchSubTool("photo")}
             className={`border-b-2 px-4 py-2 text-sm font-semibold transition-all -mb-[2px] ${
               activeSubTool === "photo"
                 ? "border-brand text-brand"
@@ -94,7 +113,7 @@ export function PortalResizer({
           </button>
           <button
             type="button"
-            onClick={() => setActiveSubTool("signature")}
+            onClick={() => switchSubTool("signature")}
             className={`border-b-2 px-4 py-2 text-sm font-semibold transition-all -mb-[2px] ${
               activeSubTool === "signature"
                 ? "border-brand text-brand"
@@ -122,6 +141,7 @@ export function PortalResizer({
               densityDpi={spec.dpi}
               requirementLabel={shownName}
               toolName={`form-resizer-${portalId}`}
+              onSourceChange={handleSourceChange}
             />
           </div>
         ) : (
@@ -135,6 +155,7 @@ export function PortalResizer({
               defaultKb={spec.sigLimitKb}
               minKb={spec.sigMinKb}
               autoCropDefault={true}
+              onSourceChange={handleSourceChange}
             />
           </div>
         )}
