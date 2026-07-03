@@ -44,9 +44,12 @@ function aspectLabel(r: number): string {
   return `${r.toFixed(2)} : 1`;
 }
 
-const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {
-  "army-agniveer": "Army Agniveer Photo & Signature Size — Exact Specs & Resize Tool",
-};
+// Per-exam custom titles, bypassing the length-guarded template below
+// (titleAbsolute). Currently empty: the army-agniveer override that lived
+// here ran 64 chars (truncating in SERPs, and exempt from the length guard)
+// and GSC showed 110 impressions / 0 clicks at position 7.4 over 3 months —
+// the guarded template title performs the same job 11 chars shorter.
+const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {};
 
 export async function generateMetadata({
   params,
