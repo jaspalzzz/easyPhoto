@@ -41,29 +41,47 @@ const GAP = 24;
 // Margin around the sheet in pixels (~5 mm = 59 px)
 const MARGIN = 59;
 
+// Both grid orientations per count (e.g. 8 as 2×4 or 4×2) — which one wastes
+// less paper depends on how the resulting cell shape matches the source
+// photo's aspect ratio, so gridLayout picks between them per-photo rather
+// than always taking the first entry.
+const ORIENTATIONS: Record<Count, Array<{ cols: number; rows: number }>> = {
+  4: [{ cols: 2, rows: 2 }],
+  6: [
+    { cols: 2, rows: 3 },
+    { cols: 3, rows: 2 },
+  ],
+  8: [
+    { cols: 2, rows: 4 },
+    { cols: 4, rows: 2 },
+  ],
+};
+
+/** Fraction of a cell's area the photo actually covers once contain-fit — the
+ *  rest is the white padding a print shop pays paper for and cuts away. */
+function cellUtilization(cellW: number, cellH: number, photoAspect: number): number {
+  if (cellW <= 0 || cellH <= 0) return 0;
+  const fit = Math.min(cellW / photoAspect, cellH);
+  const drawW = photoAspect * fit;
+  const drawH = fit;
+  return (drawW * drawH) / (cellW * cellH);
+}
+
 function gridLayout(
   count: Count,
   paperW: number,
-  paperH: number
+  paperH: number,
+  photoAspect: number
 ): { cols: number; rows: number; cellW: number; cellH: number } {
-  const candidates: Array<{ cols: number; rows: number }> = [
-    { cols: 2, rows: 2 },
-    { cols: 2, rows: 3 },
-    { cols: 2, rows: 4 },
-    { cols: 3, rows: 2 },
-    { cols: 4, rows: 2 },
-  ];
-  for (const c of candidates) {
-    if (c.cols * c.rows === count) {
-      const cellW = Math.floor((paperW - 2 * MARGIN - (c.cols - 1) * GAP) / c.cols);
-      const cellH = Math.floor((paperH - 2 * MARGIN - (c.rows - 1) * GAP) / c.rows);
-      return { ...c, cellW, cellH };
-    }
+  let best: { cols: number; rows: number; cellW: number; cellH: number; score: number } | null = null;
+  for (const c of ORIENTATIONS[count]) {
+    const cellW = Math.floor((paperW - 2 * MARGIN - (c.cols - 1) * GAP) / c.cols);
+    const cellH = Math.floor((paperH - 2 * MARGIN - (c.rows - 1) * GAP) / c.rows);
+    const score = cellUtilization(cellW, cellH, photoAspect);
+    if (!best || score > best.score) best = { ...c, cellW, cellH, score };
   }
-  // fallback 2×2
-  const cols = 2, rows = Math.ceil(count / 2);
-  const cellW = Math.floor((paperW - 2 * MARGIN - (cols - 1) * GAP) / cols);
-  const cellH = Math.floor((paperH - 2 * MARGIN - (rows - 1) * GAP) / rows);
+  // ORIENTATIONS covers every Count value, so best is always set.
+  const { cols, rows, cellW, cellH } = best!;
   return { cols, rows, cellW, cellH };
 }
 
@@ -80,7 +98,16 @@ function composeSheet(
   adjust: SheetAdjust = NO_ADJUST
 ): HTMLCanvasElement {
   const p = PAPER[paper];
-  const { cols, rows, cellW, cellH } = gridLayout(count, p.widthPx, p.heightPx);
+
+  // Crop sub-rect (source px) drives both the cover-fit math and the draw
+  // source rectangle, so every tile shows exactly the cropped framing.
+  const cr = adjust.cropRect;
+  const sx0 = cr ? cr.sx : 0;
+  const sy0 = cr ? cr.sy : 0;
+  const srcW = cr ? cr.sw : source.size.width;
+  const srcH = cr ? cr.sh : source.size.height;
+
+  const { cols, cellW, cellH } = gridLayout(count, p.widthPx, p.heightPx, srcW / srcH);
 
   const canvas = document.createElement("canvas");
   canvas.width = Math.max(1, Math.round(p.widthPx * scale));
@@ -92,13 +119,6 @@ function composeSheet(
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, p.widthPx, p.heightPx);
 
-  // Crop sub-rect (source px) drives both the cover-fit math and the draw
-  // source rectangle, so every tile shows exactly the cropped framing.
-  const cr = adjust.cropRect;
-  const sx0 = cr ? cr.sx : 0;
-  const sy0 = cr ? cr.sy : 0;
-  const srcW = cr ? cr.sw : source.size.width;
-  const srcH = cr ? cr.sh : source.size.height;
   const filterStr =
     adjust.brightness !== 100 || adjust.contrast !== 100
       ? `brightness(${adjust.brightness}%) contrast(${adjust.contrast}%)`
@@ -175,7 +195,8 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
   }, []);
 
   const p = PAPER[paper];
-  const layout = gridLayout(count, p.widthPx, p.heightPx);
+  const photoAspect = cropRect ? cropRect.sw / cropRect.sh : source.size.width / source.size.height;
+  const layout = gridLayout(count, p.widthPx, p.heightPx, photoAspect);
 
   const applyCrop = () => {
     const cropper = cropperRef.current?.cropper;
