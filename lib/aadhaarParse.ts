@@ -73,8 +73,13 @@ export function parseAadhaarFields(raw: string, numericRaw?: string): AadhaarFie
   const numText = (numericRaw ?? raw).replace(/\r/g, "");
 
   // VID is 16 digits; resolve it first so its trailing 12 digits can't be
-  // mistaken for an Aadhaar.
-  const vidDigits = findValidNumber(numText, 16, isValidVid);
+  // mistaken for an Aadhaar. Only surface one when the card text actually
+  // labels a VID — without this gate, a stray 16-digit Verhoeff-valid run
+  // from garbled OCR was reported as a phantom VID on cards that have none
+  // printed at all (Verhoeff passes ~1 in 10 random runs, so weak OCR fires
+  // false positives).
+  const hasVidLabel = /\bvid\b|virtual\s*id/i.test(text);
+  const vidDigits = hasVidLabel ? findValidNumber(numText, 16, isValidVid) : "";
   const vid = vidDigits ? formatAadhaar(vidDigits) : "";
 
   // Aadhaar: first checksum-valid 12-digit window not inside the VID.
@@ -92,14 +97,43 @@ export function parseAadhaarFields(raw: string, numericRaw?: string): AadhaarFie
     if (m) aadhaarMasked = `XXXX XXXX ${m[1]}`;
   }
 
-  // DOB from numeric pass first (cleaner date digits), then full text fallback.
-  const dobMatch =
-    numText.match(/\b(\d{2})[\/\-.\s](\d{2})[\/\-.\s](\d{4})\b/) ||
-    text.match(/\b(\d{2})[\/\-.\s](\d{2})[\/\-.\s](\d{4})\b/) ||
-    text.match(/Year\s*of\s*Birth\s*[:\-]?\s*(\d{4})/i);
+  // DOB extraction, disambiguated by line context. Aadhaar cards print BOTH a
+  // date of birth AND an "Aadhaar no. issued: DD/MM/YYYY" line — the old
+  // numeric-pass-first logic took whichever date came first, which was often
+  // the issue date reported as the DOB. So: prefer a date on an explicit
+  // birth-labelled line, never take one from an "issued" line, and only fall
+  // back to the numeric pass when there's no issue date to be confused with
+  // (that pass has no labels to disambiguate).
+  const DATE_RE = /(\d{2})[\/\-.\s](\d{2})[\/\-.\s](\d{4})/;
+  const isIssuedLine = (l: string) => /issue|जारी/i.test(l);
+  const isBirthLine = (l: string) => /\bdob\b|birth|जन्म/i.test(l);
+
   let dob = "";
-  if (dobMatch) {
-    dob = dobMatch.length === 4 ? `${dobMatch[1]}/${dobMatch[2]}/${dobMatch[3]}` : dobMatch[1];
+  // 1) date on a birth-labelled line (and not an issued line)
+  for (const l of lines) {
+    if (isBirthLine(l) && !isIssuedLine(l)) {
+      const m = l.match(DATE_RE);
+      if (m) { dob = `${m[1]}/${m[2]}/${m[3]}`; break; }
+    }
+  }
+  // 2) "Year of Birth: YYYY" cards (no day/month printed)
+  if (!dob) {
+    const yob = text.match(/Year\s*of\s*Birth\s*[:\-]?\s*(\d{4})/i);
+    if (yob) dob = yob[1];
+  }
+  // 3) any date that isn't on an issued line
+  if (!dob) {
+    for (const l of lines) {
+      if (isIssuedLine(l)) continue;
+      const m = l.match(DATE_RE);
+      if (m) { dob = `${m[1]}/${m[2]}/${m[3]}`; break; }
+    }
+  }
+  // 4) numeric-pass fallback — only safe when the card has no issue date (the
+  //    numeric pass is label-less, so it can't tell DOB from issue date).
+  if (!dob && numericRaw && !lines.some(isIssuedLine)) {
+    const m = numText.match(DATE_RE);
+    if (m) dob = `${m[1]}/${m[2]}/${m[3]}`;
   }
 
   // Gender: English or Hindi (पुरुष = male, महिला = female).

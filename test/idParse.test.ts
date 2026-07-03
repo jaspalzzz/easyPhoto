@@ -7,6 +7,10 @@ import { verhoeffCheckDigit, formatAadhaar } from "@/lib/idValidation";
 const AADHAAR = "23412345123" + String(verhoeffCheckDigit("23412345123"));
 const AADHAAR_SPACED = formatAadhaar(AADHAAR);
 
+// A genuinely checksum-valid 16-digit VID (15 digits + Verhoeff check digit).
+const VID = "888811110000222" + String(verhoeffCheckDigit("888811110000222"));
+const VID_SPACED = formatAadhaar(VID);
+
 describe("parseAadhaarFields", () => {
   it("extracts a checksum-valid Aadhaar number from a realistic OCR dump", () => {
     // Mimics eng+hin output: Hindi name line first, English next, then number.
@@ -57,6 +61,39 @@ describe("parseAadhaarFields", () => {
     const f = parseAadhaarFields(["Ramesh Singh", "Year of Birth: 1985", "MALE", AADHAAR_SPACED].join("\n"));
     expect(f.dob).toBe("1985");
   });
+
+  it("does not mistake the 'Aadhaar issued' date for the date of birth", () => {
+    const raw = [
+      "Government of India",
+      "Aadhaar no. issued: 28/12/2011",
+      "Jaspal Kumar",
+      "जन्म तिथि/DOB: 02/11/1989",
+      "पुरुष/ MALE",
+      AADHAAR_SPACED,
+    ].join("\n");
+    expect(parseAadhaarFields(raw).dob).toBe("02/11/1989");
+  });
+
+  it("reports no DOB rather than the issue date when the real DOB is unreadable", () => {
+    const raw = [
+      "Government of India",
+      "Aadhaar no. issued: 28/12/2011",
+      "Jaspal Kumar",
+      "पुरुष/ MALE",
+      AADHAAR_SPACED,
+    ].join("\n");
+    expect(parseAadhaarFields(raw).dob).toBe("");
+  });
+
+  it("ignores an unlabelled 16-digit run instead of reporting a phantom VID", () => {
+    const raw = ["Jaspal Kumar", VID_SPACED, "MALE"].join("\n");
+    expect(parseAadhaarFields(raw).vid).toBe("");
+  });
+
+  it("reports the VID when the card actually labels one", () => {
+    const raw = ["Jaspal Kumar", `VID: ${VID_SPACED}`, "MALE"].join("\n");
+    expect(parseAadhaarFields(raw).vid).toBe(VID_SPACED);
+  });
 });
 
 describe("parsePanFields", () => {
@@ -96,5 +133,27 @@ describe("parsePanFields", () => {
     const f = parsePanFields(raw);
     expect(f.name).toBe("SACHIN KUMAR");
     expect(f.fathersName).toBe("RAMESH KUMAR");
+  });
+
+  it("reads bilingual 'नाम / Name' and 'पिता का नाम / Father's Name' labels", () => {
+    // The exact real-card layout that broke the old "^name" anchor and made
+    // the parser grab header fragments instead of the printed names.
+    const raw = [
+      "आयकर विभाग / INCOME TAX DEPARTMENT",
+      "भारत सरकार / GOVT. OF INDIA",
+      "स्थायी लेखा संख्या कार्ड / Permanent Account Number Card",
+      "CNEPT0762R",
+      "नाम / Name",
+      "TASHU",
+      "पिता का नाम / Father's Name",
+      "MAKHAN LAL",
+      "जन्म की तारीख / Date of Birth",
+      "09/10/2002",
+    ].join("\n");
+    const f = parsePanFields(raw);
+    expect(f.panNumber).toBe("CNEPT0762R");
+    expect(f.name).toBe("TASHU");
+    expect(f.fathersName).toBe("MAKHAN LAL");
+    expect(f.dob).toBe("09/10/2002");
   });
 });
