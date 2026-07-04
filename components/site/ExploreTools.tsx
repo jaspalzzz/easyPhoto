@@ -14,13 +14,16 @@ export function ExploreTools({
   subtitle = "No sign-up, no watermark, nothing leaves your device.",
   limit = 6,
   className,
+  excludeSlug,
 }: {
   heading?: string;
   subtitle?: string;
   limit?: number;
   className?: string;
+  /** Current page's tool slug — drop it so a tool never cross-links to itself. */
+  excludeSlug?: string;
 }) {
-  const tools = POPULAR_TOOLS.slice(0, limit);
+  const tools = POPULAR_TOOLS.filter((t) => t.slug !== excludeSlug).slice(0, limit);
   return (
     <section className={className}>
       <div className="flex items-end justify-between gap-4 border-b border-hairline pb-4">
