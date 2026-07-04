@@ -16,7 +16,11 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "PerplexityBot", allow: "/" },
       // Default: allow all other bots. Do not block /_next/ assets: Google
       // needs CSS and JavaScript access to render pages correctly.
-      { userAgent: "*", allow: "/" },
+      // /cdn-cgi/ is Cloudflare's auto-injected internal path (email
+      // obfuscation, challenges) — it 404s when crawled and shows up as
+      // "Not found" noise in Search Console. Cloudflare's own guidance is
+      // to disallow it.
+      { userAgent: "*", allow: "/", disallow: "/cdn-cgi/" },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
