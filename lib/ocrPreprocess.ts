@@ -56,6 +56,61 @@ function luma(r: number, g: number, b: number): number {
   return 0.299 * r + 0.587 * g + 0.114 * b;
 }
 
+export type GrayChannel = "luma" | "r" | "g" | "b";
+
+/**
+ * Pick the grayscale source with the most tonal spread (std dev), biased
+ * toward luma unless a single channel clearly beats it.
+ *
+ * Why: luma is right for neutral documents, but Indian ID cards print dark
+ * text over strongly-coloured art — PAN's cyan/blue guilloché is the worst
+ * case, where luma renders background and ink to similar mid-grays and the
+ * LSTM gets mush. In a single colour channel the same card separates cleanly
+ * (a cyan background is bright in G/B while the ink stays dark). Std dev over
+ * the channel is a cheap, robust proxy for that separation. The 15% margin
+ * keeps ordinary photos and scans on the well-tested luma path.
+ */
+export function bestGrayChannel(std: Record<GrayChannel, number>): GrayChannel {
+  let best: GrayChannel = "luma";
+  let bestStd = std.luma * 1.15;
+  for (const ch of ["r", "g", "b"] as const) {
+    if (std[ch] > bestStd) {
+      best = ch;
+      bestStd = std[ch];
+    }
+  }
+  return best;
+}
+
+/** Std dev of luma + each colour channel over a sparse pixel sample. */
+function channelStats(data: Uint8ClampedArray): Record<GrayChannel, number> {
+  const sums = { luma: 0, r: 0, g: 0, b: 0 };
+  const sqs = { luma: 0, r: 0, g: 0, b: 0 };
+  let count = 0;
+  // Every 8th pixel is plenty for global statistics and keeps this pass cheap.
+  for (let i = 0; i < data.length; i += 32) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const y = luma(r, g, b);
+    sums.luma += y; sqs.luma += y * y;
+    sums.r += r; sqs.r += r * r;
+    sums.g += g; sqs.g += g * g;
+    sums.b += b; sqs.b += b * b;
+    count++;
+  }
+  const std = (sum: number, sq: number) => {
+    const mean = sum / count;
+    return Math.sqrt(Math.max(0, sq / count - mean * mean));
+  };
+  return {
+    luma: std(sums.luma, sqs.luma),
+    r: std(sums.r, sqs.r),
+    g: std(sums.g, sqs.g),
+    b: std(sums.b, sqs.b),
+  };
+}
+
 /**
  * Decode `file` to an HTMLImageElement, honouring browser EXIF orientation.
  * Returns the element plus an object URL the caller must revoke.
@@ -99,10 +154,13 @@ function workingSize(
 function toneMap(data: Uint8ClampedArray, opts: Required<PreprocessOptions>): void {
   const n = data.length;
 
-  // 1) Grayscale via Rec.601 luma, building a histogram as we go.
+  // 1) Grayscale — from the channel with the best tonal separation (see
+  //    bestGrayChannel), building a histogram as we go.
+  const channel = bestGrayChannel(channelStats(data));
+  const offset = channel === "r" ? 0 : channel === "g" ? 1 : channel === "b" ? 2 : -1;
   const hist = new Uint32Array(256);
   for (let i = 0; i < n; i += 4) {
-    const y = luma(data[i], data[i + 1], data[i + 2]) | 0;
+    const y = offset >= 0 ? data[i + offset] : luma(data[i], data[i + 1], data[i + 2]) | 0;
     data[i] = data[i + 1] = data[i + 2] = y;
     hist[y]++;
   }

@@ -94,6 +94,31 @@ describe("parseAadhaarFields", () => {
     const raw = ["Jaspal Kumar", `VID: ${VID_SPACED}`, "MALE"].join("\n");
     expect(parseAadhaarFields(raw).vid).toBe(VID_SPACED);
   });
+
+  it("prefers the printed 4-4-4 grouped number over a checksum-lucky window in junk", () => {
+    // Rotated numeric passes add junk digit runs; ~1 in 10 random 12-digit
+    // windows passes Verhoeff. A junk run containing such a window must not
+    // beat the real number printed in the official grouping — even when the
+    // junk appears FIRST in the text.
+    const junkValid = "99887766554" + String(verhoeffCheckDigit("99887766554"));
+    const junkRun = `7${junkValid}9`; // 14-digit run; valid window inside
+    const raw = ["Jaspal Kumar", junkRun, "MALE", AADHAAR_SPACED].join("\n");
+    const f = parseAadhaarFields(raw);
+    expect(f.aadhaarNumber).toBe(AADHAAR_SPACED);
+  });
+
+  it("never fuses digit runs across line breaks (real rotated-pass fixture)", () => {
+    // Verbatim numeric-pass output captured from a live rotated-pass run: the
+    // true number sits cleanly on its own line, surrounded by junk digit
+    // lines. Joining runs across newlines used to create a 25-digit mega-run
+    // whose sliding window "895081090802" happened to pass Verhoeff and beat
+    // the real number.
+    const numeric =
+      "506 0 108\n\n95081\n\n0908 027111989\n\n81\n2341 2345 1235\n6  1\n\n2";
+    const raw = "Jaspal Kumar\nDOB: 02/11/1989\nMALE";
+    const f = parseAadhaarFields(raw, numeric);
+    expect(f.aadhaarNumber).toBe("2341 2345 1235");
+  });
 });
 
 describe("parsePanFields", () => {
@@ -133,6 +158,25 @@ describe("parsePanFields", () => {
     const f = parsePanFields(raw);
     expect(f.name).toBe("SACHIN KUMAR");
     expect(f.fathersName).toBe("RAMESH KUMAR");
+  });
+
+  it("never reports garbled header fragments as names (fallback is anchored below the header)", () => {
+    // The user-reported failure: a weak read shredded "INCOME TAX DEPARTMENT"
+    // into fragments that the old label-less fallback picked as names.
+    const raw = [
+      "WCOME TAX DEP",
+      "AX DER",
+      "ARTMENT",
+      "Permanent Account Number Card",
+      "CNEPT0762R",
+      "TASHU",
+      "MAKHAN LAL",
+      "09/10/2002",
+    ].join("\n");
+    const f = parsePanFields(raw);
+    expect(f.panNumber).toBe("CNEPT0762R");
+    expect(f.name).toBe("TASHU");
+    expect(f.fathersName).toBe("MAKHAN LAL");
   });
 
   it("reads bilingual 'नाम / Name' and 'पिता का नाम / Father's Name' labels", () => {

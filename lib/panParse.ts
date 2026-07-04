@@ -105,10 +105,20 @@ export function parsePanFields(raw: string, alphanumRaw?: string): PanFields {
 
   // Structural fallback when labels weren't recognised: the two prominent
   // all-caps Latin lines that aren't headings are Name then Father's Name.
+  // Only look BELOW the card's header block (the "Permanent Account Number"
+  // heading or the PAN itself — names are always printed after both). On a
+  // weak read the header comes through as fragments ("AX DER" from
+  // INCOME TAX DEPARTMENT) that slip past the keyword skip-list; without
+  // this anchor those fragments were reported as the holder's name.
   if (!name || !fathersName) {
-    const candidates = lines.filter(
-      (l) => l.length > 2 && l.length < 48 && !/\d/.test(l) && !NAME_SKIP.test(l) && /^[A-Za-z][A-Za-z\s.'-]*$/.test(l)
-    );
+    const headingIdx = lines.findIndex((l) => /permanent\s*account/i.test(l));
+    const panIdx = pan ? lines.findIndex((l) => l.toUpperCase().includes(pan)) : -1;
+    const start = Math.max(headingIdx, panIdx) + 1; // 0 when neither is present
+    const candidates = lines
+      .slice(start)
+      .filter(
+        (l) => l.length > 2 && l.length < 48 && !/\d/.test(l) && !NAME_SKIP.test(l) && /^[A-Za-z][A-Za-z\s.'-]*$/.test(l)
+      );
     if (!name) name = candidates[0] ?? "";
     if (!fathersName) fathersName = candidates.find((c) => c !== name) ?? "";
   }
