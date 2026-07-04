@@ -23,6 +23,17 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "indian-government-id-photo-requirements",
+    title: "Indian Government ID Photo Size 2026: PAN, Voter ID, DL & Aadhaar",
+    description:
+      "The exact photo size, KB limit and pixel dimensions for PAN, Voter ID, Driving Licence and Aadhaar online applications — one verified 2026 reference, every portal compared.",
+    date: "July 4, 2026",
+    dateISO: "2026-07-04",
+    excerpt:
+      "A PAN, a voter ID, an Aadhaar and a driving licence — four IDs, four portals, and no two accept the same photo file. Here is every 2026 spec, and the one photo that passes them all.",
+    readMins: 8,
+  },
+  {
     slug: "image-to-text-online-free-ocr",
     title: "Image to Text Online Free — Extract Text from Any Photo (OCR)",
     description:
