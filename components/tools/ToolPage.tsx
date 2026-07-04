@@ -172,6 +172,7 @@ export function ToolPage({
         className="mt-12 border-t border-hairline pt-10"
         heading="More free tools"
         subtitle="All on-device — nothing you open here is uploaded."
+        excludeSlug={slug}
       />
     </div>
   );
