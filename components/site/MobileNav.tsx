@@ -6,12 +6,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Menu, X, ArrowRight,
-  Globe, GraduationCap, FileText, Aperture,
   SquarePlus, Share,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
-import { ToolIcon } from "@/components/site/ToolIcon";
+import { MENU_COLUMNS } from "@/lib/toolMenu";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -22,49 +19,6 @@ const PRIMARY_LINKS: { href: string; label: string }[] = [
   { href: "/passport-photo/", label: "Passport" },
   { href: "/tools/exam-package/", label: "Exams" },
   { href: "/blog/", label: "Blog" },
-];
-
-/** Category cards shown at the top of the drawer for quick access. */
-const CATEGORY_CARDS: {
-  title: string;
-  count: string;
-  href: string;
-  Icon: LucideIcon;
-  iconBg: string;
-  iconText: string;
-}[] = [
-  {
-    title: "Passport & Visa",
-    count: "All countries",
-    href: "/passport-photo/",
-    Icon: Globe,
-    iconBg: "bg-amber-100 dark:bg-amber-900/30",
-    iconText: "text-amber-600 dark:text-amber-400",
-  },
-  {
-    title: "Exam Tools",
-    count: "SSC, UPSC, Banking",
-    href: "/tools/exam-package/",
-    Icon: GraduationCap,
-    iconBg: "bg-blue-100 dark:bg-blue-900/30",
-    iconText: "text-blue-600 dark:text-blue-400",
-  },
-  {
-    title: "PDF Tools",
-    count: "Compress, merge, split",
-    href: "/tools/pdf/",
-    Icon: FileText,
-    iconBg: "bg-violet-100 dark:bg-violet-900/30",
-    iconText: "text-violet-600 dark:text-violet-400",
-  },
-  {
-    title: "Image Tools",
-    count: "Resize, convert, BG",
-    href: "/tools/photo/",
-    Icon: Aperture,
-    iconBg: "bg-emerald-100 dark:bg-emerald-900/30",
-    iconText: "text-emerald-600 dark:text-emerald-400",
-  },
 ];
 
 /** Selectors for all naturally focusable elements (used by focus trap). */
@@ -225,29 +179,27 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
 
             <nav className="flex-1 overflow-y-auto px-4 py-4">
 
-              {/* ── Category cards ── */}
+              {/* ── Category quick-links — same 5 categories as the desktop
+                     mega-menu (both render from lib/toolMenu MENU_COLUMNS). ── */}
               <p className="mb-2.5 text-[10.5px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                 Browse by category
               </p>
               <div className="grid grid-cols-2 gap-2">
-                {CATEGORY_CARDS.map(({ title, count, href, Icon, iconBg, iconText }) => (
+                {MENU_COLUMNS.map((col) => (
                   <Link
-                    key={href}
-                    href={href}
+                    key={col.label}
+                    href={col.href}
                     onClick={close}
                     className="group flex items-center gap-2.5 rounded-xl border border-hairline bg-surface p-3 transition-colors hover:border-hairline-strong hover:bg-accent/40 active:scale-[.98]"
                   >
-                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${iconBg} ${iconText}`}>
-                      <Icon className="h-4.5 w-4.5" strokeWidth={1.75} />
+                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${col.tileBg} ${col.tileText}`}>
+                      <col.Icon className="h-4.5 w-4.5" strokeWidth={1.75} />
                     </span>
-                    <div className="min-w-0">
-                      <p className="text-[12px] font-bold leading-tight text-ink">{title}</p>
-                      <p className="mt-0.5 truncate text-[10px] leading-snug text-muted-foreground">{count}</p>
-                    </div>
+                    <p className="min-w-0 text-[12px] font-bold leading-tight text-ink">{col.label}</p>
                   </Link>
                 ))}
 
-                {/* "All tools" spans the full width as the 6th slot */}
+                {/* "All tools" spans the full width */}
                 <Link
                   href="/tools/"
                   onClick={close}
@@ -286,33 +238,34 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
                 </ul>
               </div>
 
+              {/* Detailed tool list — identical categories + tools to the
+                  desktop mega-menu, driven by the shared MENU_COLUMNS. */}
               <div className="mt-5 space-y-5 border-t border-hairline pt-5">
-                {TOOLS_CATALOG.map((group) => (
-                  <div key={group.slug}>
+                {MENU_COLUMNS.map((col) => (
+                  <div key={col.label}>
                     <Link
-                      href={`/tools/${group.slug}/`}
+                      href={col.viewAllHref}
                       onClick={close}
-                      className="mb-2 block text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-brand"
+                      className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground hover:text-brand"
                     >
-                      {group.group}
+                      <col.Icon className="h-3.5 w-3.5" strokeWidth={2} />
+                      {col.label}
                     </Link>
                     <ul className="space-y-0.5">
-                      {group.tools
-                        .filter((t) => t.ready)
-                        .map((t) => (
-                          <li key={t.slug}>
-                            <Link
-                              href={`/tools/${t.slug}/`}
-                              onClick={close}
-                              className="flex items-center gap-2.5 rounded-md px-2 py-2 text-sm text-foreground transition-colors hover:bg-accent/60"
-                            >
-                              <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded border border-hairline bg-card text-ink-soft">
-                                <ToolIcon name={t.icon} className="h-3.5 w-3.5" />
-                              </span>
-                              {t.title}
-                            </Link>
-                          </li>
-                        ))}
+                      {col.tools.map((t) => (
+                        <li key={t.href}>
+                          <Link
+                            href={t.href}
+                            onClick={close}
+                            className="flex items-center gap-2.5 rounded-md px-2 py-2 text-sm text-foreground transition-colors hover:bg-accent/60"
+                          >
+                            <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded border border-hairline bg-card text-ink-soft">
+                              <t.Icon className="h-3.5 w-3.5" strokeWidth={1.75} />
+                            </span>
+                            {t.title}
+                          </Link>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 ))}
