@@ -32,15 +32,27 @@
   Cache-Control: public, max-age=86400
 /logo.svg
   Cache-Control: public, max-age=86400
-/manifest.json
+# site.webmanifest is the real filename (app/layout.tsx manifest: "/site.webmanifest");
+# this rule previously targeted /manifest.json, which doesn't exist, so the
+# manifest shipped with no cache header at all. noindex for the same reason as
+# opengraph-image: it's an asset Google crawls but should never index as a page.
+/site.webmanifest
   Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex
 
 # Per-page Open Graph cards are emitted as EXTENSIONLESS files (…/opengraph-image).
 # With nosniff above, the host must declare the type explicitly or social/SERP
 # previews break. Cloudflare Pages reads this _headers file and applies it.
+# noindex: these are social-preview assets, not pages — Google crawls them
+# (they're in every page's og:image meta) and lists them under "Crawled -
+# currently not indexed" in Search Console, ~60 URLs of report noise that
+# looks like a content-quality problem but isn't. The header moves them to
+# the explicit "Excluded by noindex" bucket. Social platforms fetch preview
+# images directly and ignore robots headers, so link previews are unaffected.
 /*opengraph-image
   Content-Type: image/png
   Cache-Control: public, max-age=86400
+  X-Robots-Tag: noindex
 
 # The exam-calendar .ics is exported extensionless; declare its type so phones
 # hand it to the calendar app instead of showing raw text.
