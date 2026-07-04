@@ -7,10 +7,14 @@ import { SIGN_IMAGE_FAQ } from "@/lib/faqs";
 const tool = getTool("sign-image")!;
 
 export const metadata = pageMetadata({
-  title: "Sign Image & Photos Online — Draw or Add Signature",
+  // Leads with the exact head term this page already ranks page-1 for
+  // ("sign on image" / "sign on photo", ~120 impressions/90d in GSC) plus the
+  // transactional "add signature to photo" phrasing, and stays short enough
+  // that the "— easyPhoto" suffix keeps the rendered SERP title under 60 chars.
+  title: "Add Signature to Photo & Sign on Image Online",
   description:
-    "Overlay your signature image or draw a signature on any photo or scanned document offline. " +
-    "Completely client-side image signing with no server uploads.",
+    "Add your signature to any photo or image online — draw it or upload a signature file. " +
+    "Free, works fully in your browser, nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
