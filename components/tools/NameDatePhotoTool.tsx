@@ -73,7 +73,14 @@ const PRESETS: Preset[] = [
   presetFromSpec("ssc", "SSC Preset", "ssc"),
   presetFromSpec("upsc", "UPSC Preset", "upsc"),
   presetFromSpec("passport", "Passport Seva", "passport-seva"),
-  { id: "custom", name: "Custom / Free Resize", specId: null, width: null, height: null, ar: DEFAULT_AR, kb: 100 },
+  // Free-form crop: NaN is Cropper.js's "no aspect-ratio lock" value, so the
+  // box can be dragged to ANY size — including the full width/height of a tall
+  // screenshot or an odd source photo. The spec presets above stay locked to
+  // their exact photo ratio (that is their whole purpose); this is the escape
+  // hatch for anyone who needs to crop an arbitrary region. Was mistakenly
+  // pinned to DEFAULT_AR, which made "Free Resize" behave identically to a
+  // locked preset and blocked full-length cropping.
+  { id: "custom", name: "Custom / Free Resize", specId: null, width: null, height: null, ar: NaN, kb: 100 },
 ];
 
 interface RenderOptions {
