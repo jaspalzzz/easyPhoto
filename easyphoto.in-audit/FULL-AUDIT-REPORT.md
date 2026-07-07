@@ -1,347 +1,747 @@
-# SEO Audit Report — easyphoto.in
-**Date:** 2026-06-23 · **Prior audit:** 2026-06-21 (81/100 estimated)
-**Auditor:** Claude SEO — 8 specialist agents running in parallel
-**Tools:** PSI v5 · CrUX · GSC · URL Inspection · Live crawl · Common Crawl
-**Stack:** Next.js 15 static export · Cloudflare Pages · India-primary market
-**Scope:** Live site · 258-URL sitemap · Google API Tier 1
+# EasyPhoto SEO Audit & Growth Strategy
+
+**Website:** https://easyphoto.in/  
+**Audit date:** 2026-07-07  
+**Evidence files:** `easyphoto.in-audit/live-crawl-2026-07-07.json`, `easyphoto.in-audit/URL-INVENTORY-2026-07-07.md`  
+**Scope:** live crawl, sitemap, robots.txt, representative HTML/page metadata/schema, local source review, image assets, route/indexability behavior, programmatic SEO strategy.
+
+Reference standards used:
+
+- Google SEO Starter Guide: https://developers.google.com/search/docs/fundamentals/seo-starter-guide
+- Google sitemaps: https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview
+- Google robots.txt: https://developers.google.com/search/docs/crawling-indexing/robots/intro
+- Google structured data: https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data
+- Google image SEO: https://developers.google.com/search/docs/appearance/google-images
+- Google helpful content: https://developers.google.com/search/docs/fundamentals/creating-helpful-content
+- Google localized versions/hreflang: https://developers.google.com/search/docs/specialty/international/localized-versions
+- Google AdSense Program policies: https://support.google.com/adsense/answer/48182
 
 ---
 
-## Executive Summary
+## 1. Executive Summary
 
-### Overall SEO Health Score: 61 / 100
+EasyPhoto is in a much stronger technical state than the prior June 23 audit. The old critical items are now mostly resolved:
 
-> **Note on score movement:** The June 21 audit estimated 81/100. This audit drops to 61 because today's live PSI run revealed actual mobile LCP of **10,501 ms** versus the June 21 estimate of ~3,500 ms. Site conditions have not worsened — the measurement became precise. Phase 1 fixes (WebP images + preload) are expected to restore performance to GOOD and bring the score back to 74–78.
+- `www.easyphoto.in` 301s to `https://easyphoto.in/`.
+- `http://easyphoto.in/` 301s to HTTPS.
+- `/india/` 301s to `/india-passport-photo-maker/`.
+- `/blog/` is linked and included in the sitemap.
+- 214/214 sitemap URLs return HTTP 200.
+- Homepage, hubs, tools, blog, legal pages and exam pages have titles, meta descriptions, self-canonicals and JSON-LD blocks.
+- Duplicate/low-value Hinglish and form-resizer pages are live for users but `noindex, follow`.
+- The trust story is unusually strong: files are processed in-browser, legal pages exist, official source links are visible on requirement pages, and named author/reviewer signals are present.
 
-| Category | Weight | Score | Contribution |
-|---|---|---|---|
-| Technical SEO | 22% | 63 | 13.86 |
-| Content Quality | 23% | 71 | 16.33 |
-| On-Page SEO | 20% | 67 | 13.40 |
-| Schema / Structured Data | 10% | 62 | 6.20 |
-| Performance (CWV) | 10% | 38 | 3.80 |
-| AI Search Readiness | 10% | 64 | 6.40 |
-| Images | 5% | 25 | 1.25 |
-| **Overall** | **100%** | | **61 / 100** |
+The main remaining SEO risk is no longer basic crawlability. It is quality depth at scale. The site has enough programmatic pages to rank, but many country/exam pages are still template-heavy and under 1,300 words, with limited unique examples, source excerpts, rejection scenarios, screenshots and output previews. The next growth phase should protect quality while scaling.
 
-**Backlinks:** INSUFFICIENT DATA — domain registered 2026-06-06 (17 days), predates Common Crawl's last crawl. Zero backlinks expected and carries no negative signal. First CC data available ~September 2026.
+**Overall SEO readiness:** 82/100.
 
----
+## 2. SEO Scorecard
 
-### Top 5 Critical Issues
+| Area | Score | Notes |
+|---|---:|---|
+| Technical SEO | 88 | Strong redirects, HTTPS, security headers, static HTML, clean status codes. |
+| Indexing readiness | 90 | 214 sitemap URLs all 200; intentional noindex on duplicate tiers. |
+| Sitemap quality | 78 | Valid single sitemap with lastmod and image entries; should split by cluster as scale grows. |
+| Programmatic SEO readiness | 74 | Strong source databases; needs stricter quality thresholds before more pages. |
+| On-page SEO | 80 | Titles/descriptions/canonicals in place; some H1s are brand/product-first rather than query-first. |
+| Content quality | 76 | Good utility pages and helpful blog posts; exam/country pages need more unique depth. |
+| E-E-A-T | 84 | About/contact/legal/byline/source signals good; add editorial/corrections methodology. |
+| Official source authority | 82 | Source DB exists; some country specs still need visible verification dates per page. |
+| Schema SEO | 84 | Organization, WebSite SearchAction, FAQ, breadcrumbs, app/schema present; add ImageObject/WebPage primary images. |
+| GEO/AI search readiness | 80 | Good answerable specs; needs answer-first blocks and extractable tables on every page. |
+| Regional SEO | 82 | India exam coverage strong; Tier-1 passport/visa needs country hubs. |
+| Hreflang/i18n readiness | 58 | English-only is fine now; no hreflang needed until true localized variants exist. |
+| Image SEO | 72 | WebP hero fixed; blog PNGs are heavy; image sitemap exists for generated OG assets. |
+| SXO | 82 | Tool-first UX is good; add clearer above-fold requirement cards and output promises. |
+| Internal linking | 86 | Header/footer/tool links strong; add more contextual cluster links. |
+| AdSense SEO readiness | 80 | Policy-safe foundation; avoid ads on upload/result zones and thin programmatic pages. |
+| Overall SEO readiness | 82 | Ready to grow, but scale must be source-backed and QA-gated. |
 
-1. **Mobile LCP 10,501 ms — POOR** — 3 unoptimised PNGs (2,076 KB) above the fold. 4.2× above threshold. Google uses mobile-first crawling. Single highest-priority fix.
-2. **Exam pages returning 404** — the exam keyword cluster scores 14/100 SXO. `/tools/form-resizer/*` and `/tools/exam-package/` need routing verified.
-3. **/india/ hard 404** — canonical URL is `/india-passport-photo-maker/`. No 301 redirect in place. Users and links landing on /india/ get a dead end.
-4. **/blog/ never crawled by Googlebot** — confirmed via URL Inspection API. No inbound link from any regularly-crawled page. Fix: one nav link.
-5. **Zero meta descriptions** — all audited pages (7/7) missing `<meta name="description">`. Reduces CTR and forces AI search engines to use arbitrary body text for citations.
+## 3. Full URL Inventory
 
-### Top 5 Quick Wins
+Full inventory is in `easyphoto.in-audit/URL-INVENTORY-2026-07-07.md`.
 
-1. Convert hero PNGs to WebP → mobile LCP from 10,501 ms to ~2,200 ms (GOOD). One image optimisation pass.
-2. Add `/blog/` to site header/footer navigation → Googlebot crawls the hub within days.
-3. Add 301 redirect `/india/` → `/india-passport-photo-maker/` in next.config.js.
-4. Add `<link rel="preload" as="image" fetchpriority="high">` for LCP image → additional ~300 ms gain.
-5. Add meta descriptions to top 10 pages → immediate CTR and AI citation improvement.
+Summary:
 
----
+| URL set | Count | Status |
+|---|---:|---|
+| Sitemap page URLs | 214 | 214 return 200 |
+| Image sitemap entries | 122 | Generated OG image URLs listed |
+| Non-indexable duplicates sampled | 3 | 200 + `noindex, follow` |
+| Redirects sampled | 3 | `www`, HTTP and `/india/` all 301 |
+| Broken sitemap URLs | 0 | None found |
 
-## Site Context
+Important sampled pages:
 
-| Attribute | Value |
+| URL | Status | Title/Meta | Canonical | Schema blocks | Word count |
+|---|---:|---|---|---:|---:|
+| `/` | 200 | Present | Self | 4 | 1,887 |
+| `/tools/` | 200 | Present | Self | 4 | 1,883 |
+| `/passport-photo/` | 200 | Present | Self | 4 | 1,479 |
+| `/india-passport-photo-maker/` | 200 | Present | Self | 4 | 1,303 |
+| `/us-passport-photo-maker/` | 200 | Present | Self | 4 | 1,231 |
+| `/visa-photo/` | 200 | Present | Self | 4 | 1,210 |
+| `/tools/exam-package/` | 200 | Present | Self | 4 | 1,250 |
+| `/exam-requirements/ssc/` | 200 | Present | Self | 4 | 931 |
+| `/exam-requirements/army-agniveer/` | 200 | Present | Self | 4 | 950 |
+| `/blog/` | 200 | Present | Self | 4 | 2,248 |
+
+## 4. Critical Technical SEO Issues
+
+Issue: Programmatic duplicate tiers self-canonical while noindexed  
+Severity: Medium  
+URL: `/tools/form-resizer/ssc/`, `/exam-resizer/ssc-cpo/`, Hinglish duplicate pages  
+SEO category: Canonical/indexation  
+Evidence: Live crawl: `/tools/form-resizer/ssc/` returns 200, canonical to itself, robots `noindex, follow`; `/exam-resizer/ssc-cpo/` same pattern.  
+Why it matters: `noindex, follow` is acceptable for user utility pages, but self-canonical duplicate pages send weaker canonical-cluster signals than pointing to the authoritative requirement page.  
+Recommended fix: Keep `noindex, follow`, but set canonical to the matching indexable authority page where the intent is duplicate, e.g. `/exam-requirements/ssc/`.  
+Implementation notes: Update `generateMetadata` for `app/tools/form-resizer/[portal]/page.tsx` and `app/exam-resizer/[exam]/page.tsx` to accept a canonical override.  
+Expected impact: Cleaner duplicate consolidation and less low-value index noise.  
+Priority: P1  
+Retest method: Fetch page HTML and verify `robots=noindex, follow` plus canonical to indexable parent.
+
+Issue: Large blog/article PNG assets  
+Severity: Medium  
+URL: `public/images/*.png`, especially blog images from 517 KB to 713 KB  
+SEO category: Page speed/image SEO  
+Evidence: Local asset listing: `upsc-cse-ias-photo-signature-guide-2026.png` 713 KB, `passport-photo-background-color.png` 632 KB, `exam-photo-signature-size-guide.png` 630 KB.  
+Why it matters: Google image SEO guidance emphasizes fast, high-quality landing pages; large PNGs can hurt LCP and mobile data cost.  
+Recommended fix: Generate WebP/AVIF derivatives, use responsive `srcset`, and keep PNG only when transparency/lossless is necessary.  
+Implementation notes: Add a simple image optimization script and update blog layouts to prefer WebP.  
+Expected impact: Better mobile UX and image-search crawl efficiency.  
+Priority: P1  
+Retest method: `find public/images -size +250k` and PageSpeed Insights on top blog pages.
+
+Issue: Single sitemap is becoming too broad  
+Severity: Low now, Medium soon  
+URL: `/sitemap.xml`  
+SEO category: Sitemap/crawl management  
+Evidence: 214 page URLs and 122 image sitemap entries in one file. Current size is valid, but page types have different freshness cycles.  
+Why it matters: Clustered sitemaps make monitoring easier and help programmatic growth stay auditable.  
+Recommended fix: Split once page count exceeds ~300 or when launching the next programmatic cluster.  
+Implementation notes: Use a sitemap index with `sitemap-static.xml`, `sitemap-tools.xml`, `sitemap-passport-visa.xml`, `sitemap-exam-requirements.xml`, `sitemap-blog.xml`, `sitemap-images.xml`.  
+Expected impact: Easier GSC diagnosis and cleaner freshness signaling.  
+Priority: P2  
+Retest method: Submit sitemap index in GSC and check per-sitemap coverage.
+
+Issue: Country maker pages lack visible source freshness dates  
+Severity: Medium  
+URL: `/india-passport-photo-maker/`, `/us-passport-photo-maker/`, all `[maker]` pages  
+SEO category: E-E-A-T/official-source authority  
+Evidence: Country specs have `source` and `verified` in `lib/countrySpecs.ts`, but the live sampled pages expose source links and specs without a clear per-page "Last verified" date like exam pages.  
+Why it matters: Passport/visa requirements are regulated and change-sensitive; visible freshness reduces distrust and AI-citation ambiguity.  
+Recommended fix: Add "Official source" and "Last verified" rows to all country maker pages.  
+Implementation notes: Add `verifiedOn` to `CountrySpec` or a companion registry; render it in `[maker]/page.tsx` and schema `dateModified`.  
+Expected impact: Higher trust and safer AI/retrieval snippets.  
+Priority: P1  
+Retest method: Crawl a country page and confirm visible date + schema `dateModified`.
+
+Issue: Exam requirement pages are useful but thin for competitive queries  
+Severity: Medium  
+URL: `/exam-requirements/ssc/`, `/exam-requirements/army-agniveer/`, many exam pages  
+SEO category: Helpful content/programmatic SEO  
+Evidence: Live word count: SSC 931 words; Army Agniveer 950 words.  
+Why it matters: These pages target high-intent long-tail queries but still rely heavily on templated sections.  
+Recommended fix: Add exam-specific examples, portal upload steps, rejection screenshots/examples, official-source citation blocks, related sub-exam table and "what output this tool creates" section.  
+Implementation notes: Enhance the template with data-driven unique fields from `PortalSpec.context`, source snippets, and per-exam notes.  
+Expected impact: Better rankings and lower doorway/thin-page risk.  
+Priority: P1  
+Retest method: Crawl representative pages; target 1,400+ useful words without filler.
+
+## 5. Indexing And Crawlability Audit
+
+Indexing readiness score: 90/100.
+
+Pages to index:
+
+- Homepage and all primary hubs: `/`, `/tools/`, `/passport-photo/`, `/visa-photo/`, `/blog/`, `/exam-requirements/`.
+- All final country/passport/visa maker pages listed in the sitemap.
+- All canonical tool pages under `/tools/`.
+- All official-source-backed exam pages under `/exam-requirements/`.
+- High-quality blog posts with byline, sources and unique images.
+
+Pages to keep noindexed:
+
+- `/tools/form-resizer/*` if they duplicate `/exam-requirements/*`.
+- `/exam-resizer/*` if they duplicate parent exam requirements.
+- Hinglish duplicate pages until they become true Hindi/Hinglish localized content with unique value.
+- Any future upload/result/blob/generated private file URLs.
+
+Pages missing from sitemap:
+
+- No indexable pages were found missing from sitemap during sampled source review. Intentional noindex tiers are omitted.
+
+Pages to remove from sitemap:
+
+- None from the live 214-URL sitemap; all checked URLs return 200.
+
+Canonical cleanup plan:
+
+1. Keep all sitemap URLs self-canonical.
+2. For noindex duplicates, set canonical to parent authority page.
+3. Continue using trailing slash consistently.
+4. Keep host-level redirects at Cloudflare: `www` and HTTP to `https://easyphoto.in/`.
+
+## 6. Sitemap SEO Audit
+
+Sitemap quality score: 78/100.
+
+Current state:
+
+- `/sitemap.xml` is valid enough for Google discovery.
+- 214 page URLs, 214 unique, 214 return 200.
+- 122 image sitemap entries for generated OG image routes.
+- `lastmod` is stable, not churned by build time.
+- Programmatic noindex duplicate tiers are intentionally omitted.
+
+Recommended future sitemap structure:
+
+- `/sitemap-static.xml`: homepage, legal, about, contact, major hubs.
+- `/sitemap-tools.xml`: canonical utility tools.
+- `/sitemap-passport-visa.xml`: country passport/visa pages.
+- `/sitemap-exam-requirements.xml`: official exam/government requirement pages.
+- `/sitemap-blog.xml`: editorial posts.
+- `/sitemap-images.xml`: generated OG and future real sample/process images.
+- `/sitemap-index.xml`: submit this in GSC.
+
+Segment triggers:
+
+- Split when total URLs exceed 300.
+- Split immediately before launching a large country/exam expansion.
+- Keep `lastmod` tied to source verification or significant content changes, not deploy date.
+
+## 7. Programmatic SEO Strategy
+
+Programmatic SEO readiness: 74/100.
+
+Safe page creation rule: no page should exist unless it has unique tool output, official source backing, a visible requirement table, source date, examples/rejection guidance, and internal links to next actions.
+
+Priority clusters:
+
+| Cluster | Region | Intent | URL pattern | Data fields | Schema | Risk | Priority |
+|---|---|---|---|---|---|---|---|
+| Passport photo by country | Tier-1 + India | Make compliant passport photo | `/passport-photo/{country}/` or current `/{country}-passport-photo-maker/` | size, pixels, head %, bg, source, verifiedOn | WebApplication, FAQ, Breadcrumb | Medium duplicate risk | High |
+| Visa photo by country/type | US, UK, Canada, Schengen, UAE | Upload-ready visa photo | `/visa-photo/{country}/` or current maker slugs | consulate spec, file cap, print/digital, source | WebApplication, FAQ | High if unsupported | High |
+| India exam photo/signature | India | Exact exam upload specs | `/exam-requirements/{exam}/` | KB, px, format, signature, name/date, source | WebPage, FAQ, Breadcrumb | Medium thin-page risk | High |
+| File-size tools | Global + India | Compress under exact KB | `/photo-resize-to-{kb}kb/`, `/compress-pdf-to-{kb}kb/` | target, output format, use cases, related exams | WebApplication, FAQ | Low | High |
+| Document prep/OCR | India | Prepare scanned certificates | `/tools/{tool}/` + guides | file type, privacy, OCR limits, examples | SoftwareApplication | Medium YMYL/privacy | Medium |
+| Signature workflows | India | Clean/resize/crop signature | `/tools/signature-*` + guides | ink, bg, dimensions, KB, portal links | WebApplication, FAQ | Low | High |
+
+First new pages to build:
+
+1. `/dv-lottery-photo-checker/` with official US DV source and strict JPEG/600x600/KB checks.
+2. `/oci-photo-signature-tool/` with OCI source and square photo + signature output.
+3. `/pr-card-photo-tool/` only after official Canadian PR source is fully mapped.
+4. `/exam-requirements/neet/` and `/exam-requirements/jee-main/` only if distinct from current NTA parent and not duplicate.
+5. `/tools/scanned-certificate-to-pdf-under-500kb/` if the tool can actually generate the target output.
+
+## 8. Keyword And Topic Cluster Strategy
+
+| Cluster | Primary keyword | Secondary keywords | Target URL | Difficulty | Traffic | Required source | Opportunity |
+|---|---|---|---|---|---|---|---|
+| India passport | Indian passport photo size | passport seva photo 630x810, 35x45 mm passport photo | `/passport-photo/`, `/india-passport-photo-maker/` | Medium | High | Passport Seva | Strong if source/date visible |
+| US passport | US passport photo maker | 2x2 photo, 600x600 passport photo | `/us-passport-photo-maker/` | High | High | travel.state.gov | Needs stronger unique US content |
+| US visa | DS-160 photo requirements | US visa photo 600x600, under 240 KB | `/exam-requirements/ds160/`, `/us-visa-photo-maker/` | Medium | High | travel.state.gov | Add DS-160 upload troubleshooting |
+| SSC | SSC photo signature size | SSC CGL photo size, SSC CHSL signature size | `/exam-requirements/ssc/` | Medium | High | ssc.gov.in | Expand beyond 931 words |
+| Army | Army Agniveer photo signature size | army photo resize, name date photo | `/exam-requirements/army-agniveer/` | Medium | Medium | joinindianarmy.nic.in/source | Good quick-win page |
+| PDF compression | compress PDF to 100KB | certificate PDF under 100 KB | `/compress-pdf-to-100kb/` | High | High | Tool proof, not gov | Needs examples and quality limits |
+| Image KB | photo resize to 50KB | passport photo under 50 KB, exam photo 20 KB | `/photo-resize-to-50kb/` | High | High | Tool proof + exam links | Strong internal-link hub |
+| OCR | image to text online free | Hindi OCR, scanned certificate OCR | `/tools/image-to-text/`, `/blog/image-to-text-online-free-ocr/` | High | Medium | Tesseract/tool methodology | Privacy angle differentiates |
+
+## 9. Single Page / On-Page SEO Audit
+
+URL: https://easyphoto.in/  
+Current title: easyPhoto — Document Photo & Form-Resize Tools for India  
+Recommended title: easyPhoto — Passport, Visa, Exam Photo & PDF Tools  
+Current meta description: Good and concise.  
+Recommended meta description: Keep current.  
+Current H1: Document photos that get accepted  
+Recommended H1: Passport, Visa & Exam Photos That Get Accepted  
+Primary keyword: passport photo maker India  
+Secondary keywords: exam photo resize, visa photo maker, document photo tools  
+Search intent: choose a tool quickly  
+Content gaps: add "official sources used" mini block.  
+Official source gaps: source methodology link.  
+Schema recommendation: keep WebSite SearchAction; add WebPage primaryImageOfPage.  
+Internal links to add: `/exam-requirements/`, `/tools/compliance-checker/`.  
+Image optimization fix: avoid over-preloading many flag SVGs; keep only LCP/critical.  
+UX/SXO improvement: make tool search result matching clearer on mobile.  
+Priority: High  
+Ranking potential: High
+
+URL: https://easyphoto.in/passport-photo/  
+Current title: Free Indian Passport Photo Maker — ICAO Compliant, No Upload  
+Recommended title: Indian Passport Photo Maker — 630×810 px, 35×45 mm  
+Current meta description: Too long; likely truncates.  
+Recommended meta description: Make an Indian passport photo at 35×45 mm or 630×810 px JPG under 250 KB. Free, private, in-browser, with official Passport Seva guidance.  
+Current H1: Free Indian Passport Size Photo Maker  
+Recommended H1: Indian Passport Photo Maker  
+Primary keyword: Indian passport photo maker  
+Secondary keywords: passport seva photo size, 630x810 passport photo, 35x45 mm photo  
+Search intent: create upload-ready passport photo  
+Content gaps: official source/date card above fold.  
+Official source gaps: Passport Seva source should be more prominent.  
+Schema recommendation: WebApplication + FAQ + ImageObject.  
+Internal links to add: OCI, India e-Visa, Passport Seva exam requirement page.  
+Image optimization fix: ensure sample images use WebP and dimensions.  
+UX/SXO improvement: show "Output: 630×810 px JPG under 250 KB" above upload.  
+Priority: High  
+Ranking potential: High
+
+URL: https://easyphoto.in/india-passport-photo-maker/  
+Current title: India Passport Photo Size & Maker — easyPhoto  
+Recommended title: India Passport Photo Size 2026 — 35×45 mm Maker  
+Current meta description: Good but lacks verification date.  
+Recommended meta description: India passport photo requirements: 35×45 mm print, 630×810 px JPG upload, plain white background. Verified from Passport Seva; make one free.  
+Current H1: India Passport Photo Maker  
+Recommended H1: India Passport Photo Maker  
+Primary keyword: India passport photo size  
+Secondary keywords: Passport Seva photo size, 630x810 photo, passport photo white background  
+Search intent: exact requirement + tool  
+Content gaps: domestic vs NRI/VFS distinction deserves a dedicated block.  
+Official source gaps: add visible last verified date.  
+Schema recommendation: add `dateModified` and source citation in WebPage.  
+Internal links to add: `/blog/indian-passport-photo-requirements/`, `/tools/photo-rejection-check/`.  
+Image optimization fix: add an actual sample/preferred image, not only OG.  
+UX/SXO improvement: requirement summary before tool controls.  
+Priority: High  
+Ranking potential: High
+
+URL: https://easyphoto.in/us-passport-photo-maker/  
+Current title: United States Passport Photo Size & Maker — easyPhoto  
+Recommended title: US Passport Photo Maker — 2×2 Inch / 600×600 px  
+Current meta description: Good but could mention official source and no glasses.  
+Recommended meta description: Make a US passport photo: 2×2 inch, 600–1200 px square, white/off-white background, no glasses. Free in-browser tool, source-backed.  
+Current H1: United States Passport Photo Maker  
+Recommended H1: US Passport Photo Maker  
+Primary keyword: US passport photo maker  
+Secondary keywords: 2x2 passport photo, 600x600 passport photo, US passport photo requirements  
+Search intent: create/check passport photo  
+Content gaps: no-glasses, baby, online renewal and print differences.  
+Official source gaps: visible last verified date.  
+Schema recommendation: WebApplication + FAQ.  
+Internal links to add: DS-160, DV Lottery future page.  
+Image optimization fix: add US-specific preview.  
+UX/SXO improvement: show print and digital output options separately.  
+Priority: High  
+Ranking potential: Medium-high
+
+URL: https://easyphoto.in/tools/exam-package/  
+Current title: Exam Photo & Signature Resizer — SSC UPSC IBPS NEET All-in-One — easyPhoto  
+Recommended title: Exam Photo & Signature Resizer — SSC, UPSC, IBPS, NEET  
+Current meta description: Good.  
+Recommended meta description: Keep but add "official specs" if under 160 chars.  
+Current H1: Exam Application Kit  
+Recommended H1: Exam Photo & Signature Resizer  
+Primary keyword: exam photo signature resizer  
+Secondary keywords: SSC photo resize, UPSC photo resize, IBPS signature size  
+Search intent: guided tool  
+Content gaps: show supported exam table above fold.  
+Official source gaps: link to `/exam-requirements/`.  
+Schema recommendation: SoftwareApplication + FAQ + Breadcrumb.  
+Internal links to add: top exams and compliance checker.  
+Image optimization fix: compress any screenshots.  
+UX/SXO improvement: make "choose exam" the first visible action.  
+Priority: High  
+Ranking potential: High
+
+URL: https://easyphoto.in/exam-requirements/ssc/  
+Current title: SSC Photo & Signature Size 2026 (Official) — easyPhoto  
+Recommended title: SSC Photo & Signature Size 2026 — 20–50 KB, 350×450  
+Current meta description: Good.  
+Recommended meta description: SSC photo 20–50 KB, 350×450 px; signature 10–20 KB, 140×60 px. Verified from SSC source, with free resizer and rejection checks.  
+Current H1: SSC (Staff Selection Commission) Photo & Signature Size  
+Recommended H1: SSC Photo & Signature Size 2026  
+Primary keyword: SSC photo signature size  
+Secondary keywords: SSC CGL photo size, SSC CHSL signature size, SSC photo resize  
+Search intent: exact requirement and tool  
+Content gaps: live capture rule, name/date rule, CGL/CHSL/GD examples.  
+Official source gaps: quote source update date prominently.  
+Schema recommendation: FAQ remains; add WebPage `dateModified`.  
+Internal links to add: `/ssc-photo-with-name-date/`, `/tools/compliance-checker/`.  
+Image optimization fix: add annotated SSC output image.  
+UX/SXO improvement: show "Create SSC photo/signature now" after spec table.  
+Priority: High  
+Ranking potential: High
+
+URL: https://easyphoto.in/blog/indian-government-id-photo-requirements/  
+Current title: Indian Government ID Photo Size 2026: PAN, Voter ID, DL & Aadhaar  
+Recommended title: Keep current.  
+Current meta description: Strong.  
+Recommended meta description: Keep current.  
+Current H1: Same as title.  
+Recommended H1: Keep current.  
+Primary keyword: Indian government ID photo size  
+Secondary keywords: PAN photo size, voter ID photo size, driving licence photo size  
+Search intent: compare official requirements  
+Content gaps: add downloadable checklist/table image.  
+Official source gaps: ensure every row has source link and verified date.  
+Schema recommendation: BlogPosting + ItemList for compared IDs.  
+Internal links to add: tool CTA after each ID row.  
+Image optimization fix: WebP for inline images.  
+UX/SXO improvement: sticky "jump to PAN/Voter ID/DL/Aadhaar" on mobile.  
+Priority: Medium-high  
+Ranking potential: High
+
+## 10. E-E-A-T SEO Audit
+
+Score: 84/100.
+
+Strengths:
+
+- Privacy USP is real: code paths process files client-side.
+- About/contact/privacy/terms/disclaimer pages exist and are internally linked.
+- Disclaimer explicitly says not affiliated with government or exam bodies.
+- Blog and exam pages use named author/reviewer Jaspal Kumar.
+- Exam specs include source and verification date in the data model.
+
+Improvements:
+
+- Add `/methodology/` explaining how specs are collected, verified and updated.
+- Add `/corrections/` or a correction section on Contact.
+- Add visible "Last verified" to country maker pages.
+- Add a short "Acceptance not guaranteed" note near export/download, not only legal pages.
+- Add sample image licensing note in About or methodology.
+
+Safe wording:
+
+- Use "built to the published requirements", not "guaranteed accepted".
+- Use "independent tool", not "official passport/visa/exam tool".
+- Use "verify on the official portal before submitting" on every regulated page.
+
+## 11. Official Requirement Source Strategy
+
+The official-source database should become a product feature.
+
+Recommended spec data model:
+
+| Field | Purpose |
 |---|---|
-| Domain | easyphoto.in |
-| Registered | 2026-06-06 (17 days ago) |
-| Deployment | Cloudflare Pages (auto-deploy from master branch) |
-| Framework | Next.js 15, `output: "export"` (fully static) |
-| Target market | India — passport, visa, government exam applicants |
-| Privacy USP | 100% on-device processing, no photo uploads |
-| GSC clicks (28d) | 23 (8 brand, 15 non-brand) |
-| GSC impressions (28d) | 589 |
-| Average position | 27.4 |
-| Sitemap URLs | 258 (all returning 200) |
-| Indexed pages | ~190 (estimated from GSC) |
+| `source.url` | Primary official page/PDF |
+| `source.label` | Human-readable source |
+| `verifiedOn` | Last manual verification date |
+| `verificationStatus` | official / needs-review / stale |
+| `sourceExcerpt` | Short paraphrase of relevant requirement |
+| `changedFromPrevious` | Audit trail |
+| `nextReviewDue` | Monitoring workflow |
 
----
+Placement per page:
 
-## 1. Technical SEO — 63 / 100
+- Above-fold mini card: "Requirements used: [source], last verified [date]".
+- Full source block after spec table.
+- Footer/legal reminder: independent, no guarantee, verify before submitting.
 
-### What Works
-- TTFB 11–22 ms (Cloudflare Singapore edge — excellent for Indian users)
-- CLS 0.001 / 0.003 — GOOD on both devices (no layout shift issues)
-- PSI SEO score 100/100 on both mobile and desktop
-- Security headers: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, HSTS, Referrer-Policy, Permissions-Policy all present; HSTS `max-age=63072000` = 2-year preload-eligible
-- Static SSG export — full HTML on first byte, no JS rendering required for Googlebot indexation
-- All major AI crawlers explicitly allowed (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, PerplexityBot) with `Allow: /` rules
-- `llms.txt` present and comprehensive
-- Breadcrumbs rich result confirmed PASSING by Google URL Inspection API
-- 258/258 sitemap URLs return 200 — zero 404s or redirect chains
+Monitoring:
 
-### Issues
+- Weekly for active exam registrations.
+- Monthly for passport/visa top countries.
+- Quarterly for low-volume country pages.
+- Immediate review when GSC impressions spike for a spec page.
 
-#### CRITICAL — Mobile LCP 10,501 ms (POOR)
-The mobile Largest Contentful Paint is **10.5 seconds** — 4.2× above Google's 2,500 ms Good threshold and 2.6× above the 4,000 ms Poor boundary. Google crawls with a mobile-first user agent (confirmed by URL Inspection); this metric directly affects rankings.
+## 12. Schema SEO Audit
 
-**Root causes (ranked by impact):**
+Score: 84/100.
 
-| Cause | Estimated Impact |
-|---|---|
-| sample2_before.png (800 KB, uncompressed PNG) | ~4,500 ms |
-| sample4_before.png (713 KB, uncompressed PNG) | ~4,000 ms |
-| sample4_after.png (563 KB, uncompressed PNG) | ~3,200 ms |
-| No preload hint — late browser discovery | ~300 ms |
-| Render-blocking CSS (2 files) | 320–475 ms |
-| AdSense JS on main thread | 156 ms |
-| `.animate-scan-beam` forced reflow | 650 ms |
-| Legacy JS polyfills | 107–141 ms |
+Current implementation:
 
-**Fix:** Convert the three hero images to WebP at display-appropriate sizes. At typical mobile display widths (360–430px), a 3:4 portrait card needs approximately 270×360 px → ~35–50 KB as WebP. Total hero payload drops from 2,076 KB to under 150 KB. Combined with a preload hint, expected mobile LCP: **2.0–2.5 s (GOOD)**.
+- Organization schema with founder/person and `sameAs`.
+- WebSite schema with SearchAction: `/tools/?q={search_term_string}`.
+- BreadcrumbList on page types.
+- FAQPage on relevant pages.
+- SoftwareApplication for tools.
+- BlogPosting likely via blog layout.
 
-#### CRITICAL — /blog/ never crawled by Googlebot
-URL Inspection API result: `/blog/` has **never been crawled** despite returning HTTP 200 and being present in the sitemap. The cause is the absence of any inbound link from a page Googlebot crawls regularly (homepage, footer, navigation). Individual blog posts are discoverable via the sitemap and accumulate GSC impressions, but the blog hub page is completely invisible, breaking hub-and-spoke link flow.
+Recommended additions:
 
-**Fix:** Add one `<a href="/blog/">Blog</a>` link in the site header or footer. Googlebot will discover and crawl it on the next homepage recrawl (typically within 3–7 days after the next deploy).
+- Add WebPage `primaryImageOfPage` on tool/blog pages.
+- Add ImageObject for unique article images and generated OG cards.
+- Add `dateModified` to country maker pages once `verifiedOn` exists.
+- Keep avoiding Product schema unless there is a true product/offer review context.
+- Use FAQ only where Q&A is visible and useful; do not add spammy template FAQs.
 
-#### HIGH — www vs non-www canonicalization split
-GSC shows at least 3 page families indexed under `www.easyphoto.in` separately from `easyphoto.in` (malaysia-visa-photo-maker, upsc-photo-resizer, china-visa-photo-maker confirmed). Canonical tags on individual pages point to non-www, but without a server-level redirect, some Googlebot crawls arrive at www variants and index them.
+Tool page JSON-LD template:
 
-**Fix:** Add Cloudflare Redirect Rule: `www.easyphoto.in/*` → `easyphoto.in/$1` (301 Permanent).
-
-#### HIGH — LCP image not preloaded
-Lighthouse `lcp-discovery-insight` audit fails: the LCP image is discovered only after the HTML parser reaches the `<img>` tag, wasting 300+ ms that could be recovered by a `<head>` preload hint.
-
-**Fix:** Add to `app/layout.tsx`:
-```html
-<link rel="preload" as="image" href="/images/sample4_before_1782052955340.webp" fetchpriority="high" />
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "@id": "https://easyphoto.in/tools/example/#app",
+  "name": "Example Tool",
+  "url": "https://easyphoto.in/tools/example/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any modern web browser",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": { "@id": "https://easyphoto.in/#organization" }
+}
 ```
 
-#### MEDIUM — .animate-scan-beam non-composited animation
-The hero scan-beam animation uses inline `background-color` changes, triggering forced style recalculation and layout on the main thread (650 ms of layout work during LCP window). Composited properties (`transform`, `opacity`) run on the GPU and do not block the main thread.
+Validation:
 
----
+- Rich Results Test for FAQ/Breadcrumb/Article.
+- Schema Markup Validator for non-rich-result schema.
+- URL Inspection after deployment for rendered HTML.
 
-## 2. Content Quality — 71 / 100
+## 13. GEO / AI Search SEO Strategy
 
-### What Works
-- Blog posts: visible author (Jaspal Kumar) with professional credentials
-- Tool pages: accurate, data-driven specs per exam and country (dimensions, KB limits, background colour)
-- Privacy USP consistently communicated across tool pages
-- FAQ schema: 5+ Q&A pairs on homepage
-- On-device processing is a genuine, verifiable E-E-A-T differentiator (no other major competitor makes this claim with equal emphasis)
+Score: 80/100.
 
-### Issues
+What works:
 
-#### CRITICAL — /india/ returns hard 404
-The URL `/india/` — expected by users following country-style URL patterns and potentially receiving inbound links — returns a 404. The canonical page is `/india-passport-photo-maker/`. No 301 redirect is in place.
+- Specs are table-friendly and source-backed.
+- `llms.txt` and `llms-full.txt` exist.
+- Robots explicitly allows major AI crawlers.
+- Privacy and official-source positioning are easy for AI systems to summarize.
 
-#### HIGH — Blog post thin content
-`/blog/why-exam-photo-signature-rejected/` has 1,030 words — 36% below the 1,600-word minimum for competitive exam queries. Individual sections are 80–100 words, insufficient depth for ranking. Top SERP competitors for "exam photo rejected reasons" average 2,200 words with per-reason sections.
+Add to every country/exam page:
 
-#### HIGH — Zero meta descriptions
-7/7 audited pages have no `<meta name="description">`. This is also flagged under GEO because AI search engines fall back to arbitrary body text for citation snippets, reducing brand control and accuracy.
+- Answer-first block: "For [exam], upload a JPG photo [dimensions], [KB], [background]."
+- "Output this tool creates" block.
+- "Official source used" block.
+- Short rejection checklist.
+- One clear table with no hidden tabs required for the primary facts.
 
-#### MEDIUM — No author attribution on exam pages
-Blog posts credit Jaspal Kumar; the 53 exam-requirements pages carry no author. Google's quality evaluators look for authorship consistency, and the pages handling highest-specificity queries (exact exam photo sizes) are the most author-exposed.
+Pages most likely to earn AI citations:
 
-#### MEDIUM — No visible freshness signals
-Exam photo specifications change when government portals update. No "Last verified: [date]" timestamps are visible on exam or country pages. Freshness is a direct relevance signal for time-sensitive regulatory content.
+- `/blog/indian-government-id-photo-requirements/`
+- `/blog/indian-passport-photo-requirements/`
+- `/exam-requirements/ssc/`
+- `/exam-requirements/upsc/`
+- `/passport-photo/`
+- `/tools/image-to-text/`
 
-### E-E-A-T Assessment
+AI crawler strategy: allow for now. EasyPhoto benefits from citation/discovery more than content lockout at this stage.
 
-| Factor | Score | Key Signals |
+## 14. Local / Regional SEO Strategy
+
+Traditional local SEO is not a priority unless EasyPhoto launches a physical studio or local service. A Google Business Profile is not needed for the current product.
+
+Regional SEO is very important:
+
+- India: exam, government ID, Passport Seva, PAN, Aadhaar, driving licence.
+- Tier-1 countries: US, UK, Canada, Australia passport/visa.
+- Schengen/EU: visa photo requirements with country nuance.
+
+Safe regional hub model:
+
+- Country hub: `/passport-photo/` and `/visa-photo/`.
+- Exam hub: `/exam-requirements/`.
+- Document hub: `/tools/document/`.
+- Avoid state/city doorway pages unless there is a unique official state portal/spec and a working tool output.
+
+## 15. Hreflang / I18N SEO Strategy
+
+Score: 58/100, but this is not a critical problem yet.
+
+Current recommendation: do not implement hreflang for English-only pages.
+
+Why:
+
+- Country-specific English pages are not language alternates; they target different requirements.
+- Hinglish duplicates are currently noindexed, which is safer than pretending they are full Hindi alternates.
+- Hreflang adds maintenance burden and can create errors if canonical relationships are weak.
+
+Future structure:
+
+- English India default: existing URLs.
+- Hindi: `/hi/…` only when fully translated and uniquely useful.
+- x-default: homepage or relevant global hub.
+- Example: `/hi/passport-photo/` paired with `/passport-photo/`, not a noindexed Hinglish duplicate.
+
+## 16. Image SEO And Asset Optimization
+
+Score: 72/100.
+
+Strengths:
+
+- Hero WebP assets exist and homepage preloads an LCP WebP.
+- Generated OG image routes are listed in image sitemap entries.
+- Favicons/icons exist.
+- User-uploaded images are handled client-side, not public URLs.
+
+Issues:
+
+- Several blog PNGs are 500–713 KB.
+- Country maker pages sampled have zero in-content images, limiting image-search eligibility.
+- Image sitemap currently emphasizes OG images, not useful process/sample images.
+- Need better `primaryImageOfPage` and descriptive alt text strategy.
+
+Recommendations:
+
+- Convert blog PNGs to WebP/AVIF and use responsive sizes.
+- Add one unique annotated image per top country/exam page.
+- Keep decorative icons empty-alt; make sample/output images descriptive.
+- Never expose user-generated blob/download URLs to crawlers.
+- Add image QA to CI: fail new assets over 250 KB unless whitelisted.
+
+## 17. SXO / Search Experience Optimization
+
+Score: 82/100.
+
+What works:
+
+- Tool-first page architecture.
+- Strong privacy claims near upload components.
+- Clear download/export flows.
+- Internal tool discovery is strong.
+
+Improve:
+
+- Above-fold requirement card: exact dimensions, KB, format, background.
+- Above-fold output promise: "Downloads a JPG under X KB at Y×Z px."
+- Add source/verified badge near the first CTA.
+- Add one-step "Check before download" on regulated pages.
+- On mobile, keep upload/choose-exam action visible before long explainer content.
+- Avoid ad units near upload buttons, download buttons, or file picker controls.
+
+## 18. Content Quality Audit
+
+Score: 76/100.
+
+Thin/duplicative risk:
+
+- Noindex duplicate tiers are handled safely.
+- Indexable exam pages need more unique per-exam depth.
+- Country maker pages need more official-source differentiation.
+
+Content template for regulated pages:
+
+1. Answer-first spec summary.
+2. Tool/action above fold.
+3. Official source + last verified.
+4. Full spec table.
+5. Output formats the tool creates.
+6. Rejection reasons.
+7. Portal-specific upload notes.
+8. FAQs from real queries.
+9. Related tools and requirements.
+10. Disclaimer: independent, verify, no guarantee.
+
+## 19. Internal Linking Strategy
+
+Score: 86/100.
+
+Strengths:
+
+- Footer acts as a crawlable link sitemap.
+- Header links to Passport, Exams, Blog and Tools.
+- Tool catalog links are extensive.
+- Breadcrumbs are present.
+
+Add:
+
+- Contextual links from every exam page to exact KB tools.
+- "Related official requirements" widgets.
+- Country pages linking to passport vs visa variants and relevant blog guides.
+- Blog cluster-aware "keep reading" if not already fully implemented.
+- Internal links from high-authority blog posts to matching tool pages in first 300 words.
+
+## 20. Competitor And SERP Gap Analysis
+
+Competitor types:
+
+| Competitor | They do better | EasyPhoto can do better |
 |---|---|---|
-| Experience | 14/20 | Original tool screenshots; on-device USP is lived experience; limited first-party research data |
-| Expertise | 16/25 | Accurate specs; author credentials on blog; exam pages uncredited |
-| Authoritativeness | 14/25 | Brand new domain, zero backlinks, no external citations yet |
-| Trustworthiness | 19/30 | HTTPS, privacy policy, clear USP; missing meta descriptions reduce trust signals for AI systems |
+| Passport photo makers | Country landing depth, backlinks, paid trust | Privacy, no upload, source transparency, India exam coverage |
+| Visa photo makers | Broad visa coverage, mature authority | Free in-browser output, clearer source dates, fewer paywalls |
+| Government pages | Official authority | Usability, resizing, compression, plain-language summaries |
+| Exam prep sites | Query coverage, timely posts | Actual tool output, source database, no generic advice |
+| PDF/image tools | Broad utility, authority | India form context, on-device privacy, exact KB workflows |
+| OCR tools | Feature depth | Private OCR, document-prep context, Hindi/English utility |
 
----
+Avoid:
 
-## 3. On-Page SEO — 67 / 100
+- Competing on generic "image editor" terms first.
+- Creating unsupported visa pages without official sources.
+- Doorway pages for cities/states with no unique requirement.
 
-### GSC Quick Wins (Positions 4–10)
+## 21. AdSense + SEO Alignment
 
-| Priority | Query | Page | Impressions | Position | Action |
-|---|---|---|---|---|---|
-| HIGH | army photo / army signature / indian army passport photo | /exam-requirements/army-agniveer/ | 6 | 3–9 | Update title; add FAQ schema |
-| HIGH | eci photo resize | /voter-id-photo-resizer/ | 6 | 6.5 | Match H1 to query exactly |
-| HIGH | ssc cpo image / cpo photo | /exam-resizer/ssc-cpo/ | 3 | 6–6.5 | Add CPO spec table above fold |
-| MEDIUM | csir net signature size | /tools/exam-package/ | 2 | 8.5 | Add CSIR NET spec above fold |
-| MEDIUM | sign on picture online | /tools/sign-image/ | 1 | 8.0 | Match H1 to query |
+Score: 80/100.
 
-**Highest single-page opportunity:** `/exam-requirements/army-agniveer/` ranks for 3 distinct queries at positions 3, 9, 9 with 6 total impressions and **0 clicks**. Title and H1 optimisation + FAQ schema is the fastest path to first non-brand organic clicks.
+Safe:
 
----
+- Legal pages exist.
+- Content is not adult/unsafe.
+- Privacy statements are clear.
+- No fake download buttons seen in source review.
+- Tool value is real, not made-for-ads.
 
-## 4. Schema / Structured Data — 62 / 100
+Rules:
 
-### Current Implementation
-| Schema Type | Pages | Status |
-|---|---|---|
-| Organization | Homepage | ✓ Present |
-| WebSite | Homepage | ✓ Present (missing SearchAction) |
-| SoftwareApplication | Homepage | ✓ Present |
-| FAQPage | Homepage | ✓ 5 Q&A pairs |
-| BlogPosting | All 24 blog posts | ✓ Present (image property broken) |
-| BreadcrumbList | Category + tool pages | ✓ Present, passing Google validation |
+- No ads inside upload/dropzone/result/download controls.
+- No ads on pages under 800 useful words unless they are mature canonical tools with strong UX.
+- No ads on privacy-sensitive flows like Aadhaar OCR/masking until layout is reviewed.
+- Programmatic pages must pass source and uniqueness thresholds before ads.
+- Avoid interstitials/popups that block task completion.
 
-### Issues
+## 22. Implementation Roadmap
 
-#### HIGH — BlogPosting.image uses generic /og.png
-All 24 blog posts set `BlogPosting.image` to the site-level `/og.png`. Google's Article rich result requirements mandate a unique, post-specific image. This blocks rich result eligibility for all 24 posts. The per-post OG image is already generated — it needs to be wired into the schema.
+| Phase | Tasks | Owner | Priority | Impact | Effort | Dependencies | Metric |
+|---|---|---|---|---|---|---|---|
+| 1 Technical cleanup | Canonical parent for noindex duplicate tiers; image compression; country verified dates | Developer | P1 | High | 2–4 days | Source data update | Cleaner indexation, faster pages |
+| 2 E-E-A-T | Methodology page, corrections workflow, source citation component | Founder/SEO/Developer | P1 | High | 2–3 days | Copy approval | Trust and AI citations |
+| 3 On-page | Expand top 20 exam/country pages with unique source-backed blocks | SEO/Content | P1 | High | 2 weeks | Spec DB | Higher rankings |
+| 4 Programmatic foundation | New page QA checklist, sitemap segmentation, source monitor | Developer/SEO | P2 | High | 1 week | Phase 1 | Safe scaling |
+| 5 GEO/AI | Answer-first blocks, extractable tables, llms-full updates | SEO/Developer | P2 | Medium-high | 1 week | Content updates | AI citations |
+| 6 Regional/i18n | Hindi only after true translations; country hubs | SEO/Content | P3 | Medium | 1 month | QA process | Regional growth |
+| 7 SXO/growth | Mobile upload refinements, result preview, GSC experiments | Design/Developer/SEO | P2 | Medium-high | Ongoing | Analytics | CTR, task completion |
 
-#### MEDIUM — WebSite.SearchAction missing
-No Sitelinks Searchbox markup. The tools page has category jump functionality — adding SearchAction enables Google to display the search box in branded SERPs.
+## 23. Top 50 SEO Actions
 
-#### MEDIUM — Organization.sameAs limited to Pinterest
-Only one social profile in `sameAs`. Expand as new accounts are created. Minimum additions: YouTube (when created), Instagram.
+1. Set canonical parent URLs for noindex duplicate exam/form/Hinglish tiers.
+2. Add visible last verified date to country maker pages.
+3. Add source citation component to every regulated page.
+4. Convert large blog PNGs to WebP/AVIF.
+5. Add image-size CI guard for `public/images`.
+6. Add `primaryImageOfPage` schema.
+7. Add ImageObject schema for blog hero/process images.
+8. Split sitemap by cluster before next large expansion.
+9. Expand `/exam-requirements/ssc/` to 1,400+ useful words.
+10. Expand `/exam-requirements/army-agniveer/` with name/date and rejection examples.
+11. Expand `/india-passport-photo-maker/` with domestic vs NRI/VFS explanation.
+12. Rewrite `/passport-photo/` meta under 160 chars.
+13. Add output promise above upload on passport/visa/exam pages.
+14. Add official-source mini card above fold.
+15. Add source methodology page.
+16. Add corrections workflow.
+17. Add "acceptance not guaranteed" near download/export.
+18. Add top exam table to `/tools/exam-package/`.
+19. Add contextual links from KB pages to exams using that KB cap.
+20. Add country-page links to relevant blog guides.
+21. Add DS-160-specific troubleshooting section.
+22. Build DV Lottery page only with official spec and checker logic.
+23. Build OCI photo/signature page with official source.
+24. Avoid PR card/citizenship pages until source data is complete.
+25. Add process/sample images to top 10 pages.
+26. Add descriptive alt text to sample/output images.
+27. Avoid preloading non-critical flag icons above fold.
+28. Run PSI monthly for homepage and top 5 templates.
+29. Validate schema after every template change.
+30. Add GSC monitoring by sitemap cluster.
+31. Add source freshness audit to CI or weekly cron.
+32. Keep `llms-full.txt` synced with current spec DB.
+33. Add answer-first spec summaries to exam pages.
+34. Add answer-first spec summaries to country pages.
+35. Add rejection reason blocks per page type.
+36. Add "what the tool changes and does not change" methodology blocks.
+37. Add OCR/privacy limitation copy on OCR pages.
+38. Keep ads away from upload/result/download controls.
+39. Do not index generated result URLs.
+40. Do not create city/state pages without unique specs.
+41. Add YouTube/Pinterest/LinkedIn brand profiles when active and update `sameAs`.
+42. Add screenshots or GIFs for key workflows.
+43. Track top no-click GSC queries weekly.
+44. Improve titles for pages with impressions and CTR under 1%.
+45. Add comparison tables only where honest and evidence-based.
+46. Add backlinks via official-source/tool directories and founder posts.
+47. Refresh active exam pages during registration windows.
+48. Add `dateModified` only on real content/spec updates.
+49. Add language alternates only after full Hindi pages exist.
+50. Re-run `node scripts/live-seo-audit.mjs --out ... --inventory ...` after each release.
 
----
+## 24. Final Verdict
 
-## 5. Performance (CWV) — 38 / 100
+EasyPhoto is no longer fighting basic technical SEO problems. The live site is crawlable, indexable, fast enough to build on, structured, privacy-forward and internally linked. The growth opportunity is substantial because the product solves high-intent, annoying, AI-resistant tasks: "make this exact file acceptable for this exact portal."
 
-| Metric | Mobile | Desktop |
-|---|---|---|
-| Performance Score | 70/100 | 90/100 |
-| LCP | **10,501 ms — POOR** | 1,921 ms — GOOD |
-| CLS | 0.001 — GOOD | 0.003 — GOOD |
-| TBT | 130 ms — GOOD | 60 ms — GOOD |
-| FCP | 1,207 ms — GOOD | 390 ms — GOOD |
-
-**CrUX data:** Unavailable. The site does not yet meet Chrome UX Report traffic eligibility thresholds (domain registered 17 days ago). All above data is PSI lab data. CrUX field data expected to become available Q4 2026 once traffic volume grows.
-
-**Expected mobile LCP after Phase 1 fixes:**
-- WebP conversion → removes 1,900 KB from LCP path → ~5,000 ms saved
-- Preload hint → removes late discovery delay → ~300 ms saved
-- AdSense deferral → removes 156 ms from LCP window
-- **Projected mobile LCP: 2,000–2,500 ms (GOOD)**
-
----
-
-## 6. AI Search Readiness (GEO) — 64 / 100
-
-### What Works
-- All 5 major AI bots explicitly allowed in robots.txt
-- `llms.txt` present (confirmed live)
-- FAQPage schema aids AI structured extraction
-- BlogPosting schema with author, dates, and `inLanguage: en-IN`
-
-### Issues
-
-#### CRITICAL — Zero meta descriptions (also flagged under Content + On-Page)
-Without meta descriptions, AI search systems (ChatGPT, Perplexity, Google AI Overviews) fall back to arbitrary body text for citation snippets. This is the single highest-leverage fix for AI citation quality — zero additional content work required.
-
-#### HIGH — llms-full.txt absent
-`llms.txt` references spec data but the full-detail version (`llms-full.txt`) is not present. AI agents querying the file must make secondary page fetches to retrieve actual dimension tables and KB limits.
-
-#### HIGH — Zero YouTube presence
-YouTube mention correlation with AI citation frequency is ~0.737 — the strongest single predictor of AI search visibility documented in GEO research. easyphoto.in has no YouTube content. Three videos would materially improve long-term AI citation rates:
-1. "How to make Indian passport photo at home (2026)"
-2. "Why exam photos get rejected — and how to fix it"
-3. "easyPhoto 2-minute product demo"
-
-### AI Citation Readiness: 63 / 100
-
-| Element | Status |
-|---|---|
-| AI crawlers allowed | ✓ All 5 major bots |
-| llms.txt | ✓ Present |
-| llms-full.txt | ✗ Absent |
-| Meta descriptions | ✗ None |
-| FAQPage schema | ✓ 5 Q&A pairs |
-| Author attribution | ✓ Blog posts; ✗ Exam pages |
-| Passage-level citability | Partial — spec tables citable; narrative sections thin |
-
----
-
-## 7. Backlinks — INSUFFICIENT DATA
-
-**Data source:** Common Crawl (Jan–Mar 2026 release). Domain registered 2026-06-06. Domain was absent from the crawl because it didn't exist at crawl time.
-
-**Key facts:**
-- Zero backlinks expected at 17 days — this is normal and carries no negative signal
-- Clean slate: no toxic legacy links, no prior-owner anchor spam to remediate
-- First Common Crawl appearance expected ~September 2026
-
-**Link building priority order:**
-1. Product Hunt listing (single high-DA link, free)
-2. Indie Hackers post (privacy-USP angle plays well)
-3. Indian travel/visa blogs (natural link context for passport photo tools)
-4. Exam coaching portals (SSC, UPSC prep communities)
-5. Tech press outreach (Gadgets360, YourStory — free tool with on-device privacy story)
-
----
-
-## 8. Sitemap — 81 / 100
-
-### Overview
-- 258 URLs in a single `<urlset>` sitemap (no index needed at this scale)
-- Valid XML, correct namespace
-- Declared in robots.txt
-- 258/258 URLs return HTTP 200 — zero dead links
-
-### Issues
-
-#### LOW-MEDIUM — Build-stamp lastmod
-163 of 258 URLs (63%) share today's date as `lastmod` — this is a build-timestamp pattern where all pages get the deploy date regardless of actual content change. Google learns to distrust this signal.
-
-**Fix:** Use per-page `updatedAt` metadata in the sitemap generator. Static pages that haven't changed should keep their original date.
-
-#### WARNING — 105 programmatic exam pages
-53 exam-requirements pages + 52 form-resizer pages exceed the 50-page threshold for programmatic content review. Content differentiation appears real at the metadata level (unique specs per exam), but body-text uniqueness across all 105 pages warrants an audit before expanding further.
-
----
-
-## 9. Search Experience (SXO) — 41 / 100
-
-### SERP Analysis
-
-| Keyword | Dominant Page Type | easyphoto.in | Gap |
-|---|---|---|---|
-| "passport photo maker india" | Interactive tool landing page (10/10 consensus) | /india-passport-photo-maker/ — ALIGNED | Execution gap (authority, media) |
-| "indian passport photo requirements" | Government docs + informational hybrids | No page exists | HIGH MISMATCH |
-| "exam photo resize" | Dedicated exam photo tools | Pages returning 404 | CRITICAL — indexation failure |
-
-### Persona Scores
-
-| Persona | Score | Biggest Gap |
-|---|---|---|
-| Exam Applicant (SSC/UPSC student) | 28/100 | Exam pages 404 — cannot find the tool |
-| Passport/Visa Applicant | 54/100 | No photo requirements guide |
-| NRI Abroad | 58/100 | Trust signals thin (no backlinks, new domain) |
-| HR/Admin | 62/100 | Batch processing / enterprise features absent |
-
-The 41/100 composite is structural: restoring exam page URLs and publishing one requirements guide page is projected to lift the composite to **62–65/100** without any other changes.
-
----
-
-## What's Working Well (Do Not Break)
-
-1. **Cloudflare edge performance** — TTFB 11–22 ms is world-class. Keep CDN config intact.
-2. **CLS = 0.001** — Perfect layout stability. Image dimensions are set correctly.
-3. **PSI SEO 100/100** — Technical on-page SEO is clean. robots.txt, canonical, meta robots all correct.
-4. **Static SSG export** — Full HTML on first byte. Googlebot doesn't need to execute JS.
-5. **Security posture** — All 7 headers present, HSTS 2-year, CSP in place.
-6. **Schema breadth** — Organization + WebSite + SoftwareApplication + FAQPage + BlogPosting + BreadcrumbList on day 17 is ahead of most competitors.
-7. **AI crawler access** — All 5 major AI bots allowed; llms.txt present.
-8. **Sitemap hygiene** — 258/258 URLs clean, zero 404s, correct XML.
-9. **Privacy USP** — On-device processing is a genuine differentiator with real E-E-A-T value.
-10. **Blog author attribution** — Jaspal Kumar credited on all blog posts, which is above the norm for Indian SaaS tools.
-
----
-
-## PDF Report
-
-Generate a professional PDF from this audit:
-```bash
-cd /Users/apple/.claude/skills/seo
-python3 scripts/google_report.py \
-  --type full \
-  --data /Users/apple/Documents/FrontEndWeb/EasyPhoto/Code/EasyPhoto/easyphoto.in-audit/audit-data.json \
-  --domain easyphoto.in \
-  --output-dir /Users/apple/Documents/FrontEndWeb/EasyPhoto/Code/EasyPhoto/easyphoto.in-audit/
-```
-
----
-
-*Report generated by Claude SEO (8 specialist agents). Data sources: PSI v5, CrUX API, CrUX History API, GSC Search Analytics, GSC URL Inspection API, GSC Sitemaps API, Common Crawl web graph, live HTTP crawl. Audit date: 2026-06-23.*
+The main warning: do not scale programmatic pages faster than the official-source and uniqueness system can support. If every new page has a real tool output, a dated official source, a visible requirement table, unique examples, and clear privacy/trust language, EasyPhoto can become a defensible organic search product across India exam/government workflows and Tier-1 passport/visa photo queries.

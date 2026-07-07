@@ -1,0 +1,1788 @@
+{
+  "crawledAt": "2026-07-07T13:51:15.870Z",
+  "sitemap": {
+    "totalLocs": 214,
+    "pageUrls": 214,
+    "imageLocs": 122,
+    "uniquePageUrls": 214,
+    "firstLastmod": "2026-06-25",
+    "newestLastmod": "2026-07-04",
+    "oldestLastmod": "2026-06-02"
+  },
+  "pageUrls": [
+    "https://easyphoto.in/",
+    "https://easyphoto.in/tools/",
+    "https://easyphoto.in/signature-resize-to-10kb/",
+    "https://easyphoto.in/signature-resize-to-20kb/",
+    "https://easyphoto.in/signature-resize-to-50kb/",
+    "https://easyphoto.in/signature-resize-to-100kb/",
+    "https://easyphoto.in/us-passport-photo/",
+    "https://easyphoto.in/uk-passport-photo/",
+    "https://easyphoto.in/canada-passport-photo/",
+    "https://easyphoto.in/schengen-visa-photo/",
+    "https://easyphoto.in/blog/",
+    "https://easyphoto.in/about/",
+    "https://easyphoto.in/contact/",
+    "https://easyphoto.in/privacy/",
+    "https://easyphoto.in/terms/",
+    "https://easyphoto.in/disclaimer/",
+    "https://easyphoto.in/exam-requirements/",
+    "https://easyphoto.in/exam-photo-size/",
+    "https://easyphoto.in/exam-calendar/",
+    "https://easyphoto.in/aadhaar-photo/",
+    "https://easyphoto.in/photo-resize-to-10kb/",
+    "https://easyphoto.in/photo-resize-to-20kb/",
+    "https://easyphoto.in/photo-resize-to-30kb/",
+    "https://easyphoto.in/photo-resize-to-50kb/",
+    "https://easyphoto.in/photo-resize-to-100kb/",
+    "https://easyphoto.in/photo-resize-to-200kb/",
+    "https://easyphoto.in/compress-pdf-to-50kb/",
+    "https://easyphoto.in/compress-pdf-to-100kb/",
+    "https://easyphoto.in/compress-pdf-to-200kb/",
+    "https://easyphoto.in/compress-pdf-to-500kb/",
+    "https://easyphoto.in/convert/",
+    "https://easyphoto.in/convert/heic-to-jpg/",
+    "https://easyphoto.in/convert/heic-to-png/",
+    "https://easyphoto.in/convert/webp-to-jpg/",
+    "https://easyphoto.in/convert/webp-to-png/",
+    "https://easyphoto.in/convert/png-to-jpg/",
+    "https://easyphoto.in/convert/jpg-to-png/",
+    "https://easyphoto.in/convert/jpg-to-webp/",
+    "https://easyphoto.in/convert/png-to-webp/",
+    "https://easyphoto.in/convert/heic-to-webp/",
+    "https://easyphoto.in/passport-photo/",
+    "https://easyphoto.in/baby-passport-photo/",
+    "https://easyphoto.in/unlock-aadhaar-pdf/",
+    "https://easyphoto.in/visa-photo/",
+    "https://easyphoto.in/ssc-photo-with-name-date/",
+    "https://easyphoto.in/india-passport-photo-maker/",
+    "https://easyphoto.in/us-passport-photo-maker/",
+    "https://easyphoto.in/canada-passport-photo-maker/",
+    "https://easyphoto.in/uk-passport-photo-maker/",
+    "https://easyphoto.in/australia-passport-photo-maker/",
+    "https://easyphoto.in/pakistan-passport-photo-maker/",
+    "https://easyphoto.in/nepal-passport-photo-maker/",
+    "https://easyphoto.in/us-visa-photo-maker/",
+    "https://easyphoto.in/canada-visa-photo-maker/",
+    "https://easyphoto.in/uk-visa-photo-maker/",
+    "https://easyphoto.in/australia-visa-photo-maker/",
+    "https://easyphoto.in/schengen-visa-photo-maker/",
+    "https://easyphoto.in/uae-visa-photo-maker/",
+    "https://easyphoto.in/bahrain-visa-photo-maker/",
+    "https://easyphoto.in/kuwait-visa-photo-maker/",
+    "https://easyphoto.in/qatar-visa-photo-maker/",
+    "https://easyphoto.in/oman-visa-photo-maker/",
+    "https://easyphoto.in/germany-visa-photo-maker/",
+    "https://easyphoto.in/france-visa-photo-maker/",
+    "https://easyphoto.in/italy-visa-photo-maker/",
+    "https://easyphoto.in/spain-visa-photo-maker/",
+    "https://easyphoto.in/portugal-visa-photo-maker/",
+    "https://easyphoto.in/netherlands-visa-photo-maker/",
+    "https://easyphoto.in/ireland-visa-photo-maker/",
+    "https://easyphoto.in/china-visa-photo-maker/",
+    "https://easyphoto.in/singapore-visa-photo-maker/",
+    "https://easyphoto.in/new-zealand-visa-photo-maker/",
+    "https://easyphoto.in/japan-visa-photo-maker/",
+    "https://easyphoto.in/malaysia-visa-photo-maker/",
+    "https://easyphoto.in/india-visa-photo-maker/",
+    "https://easyphoto.in/saudi-visa-photo-maker/",
+    "https://easyphoto.in/tools/photo/",
+    "https://easyphoto.in/tools/pdf/",
+    "https://easyphoto.in/tools/signature/",
+    "https://easyphoto.in/tools/document/",
+    "https://easyphoto.in/tools/ocr/",
+    "https://easyphoto.in/tools/exam-package/",
+    "https://easyphoto.in/tools/compliance-checker/",
+    "https://easyphoto.in/tools/background-removal/",
+    "https://easyphoto.in/tools/resize-kb/",
+    "https://easyphoto.in/tools/resize-dimensions/",
+    "https://easyphoto.in/tools/image-crop/",
+    "https://easyphoto.in/tools/linkedin-photo/",
+    "https://easyphoto.in/tools/resume-photo/",
+    "https://easyphoto.in/tools/white-background/",
+    "https://easyphoto.in/tools/format-converter/",
+    "https://easyphoto.in/tools/photo-with-name-date/",
+    "https://easyphoto.in/tools/print-sheet/",
+    "https://easyphoto.in/tools/photo-validator/",
+    "https://easyphoto.in/tools/camera-capture/",
+    "https://easyphoto.in/tools/photo-signature-merge/",
+    "https://easyphoto.in/tools/dpi-converter/",
+    "https://easyphoto.in/tools/red-eye-removal/",
+    "https://easyphoto.in/tools/straighten-photo/",
+    "https://easyphoto.in/tools/face-centering/",
+    "https://easyphoto.in/tools/auto-crop/",
+    "https://easyphoto.in/tools/photo-rejection-check/",
+    "https://easyphoto.in/tools/pdf-merge/",
+    "https://easyphoto.in/tools/pdf-split/",
+    "https://easyphoto.in/tools/pdf-compress/",
+    "https://easyphoto.in/tools/unlock-pdf/",
+    "https://easyphoto.in/tools/pdf-reorder/",
+    "https://easyphoto.in/tools/sign-pdf/",
+    "https://easyphoto.in/tools/watermark-pdf/",
+    "https://easyphoto.in/tools/pdf-page-numbers/",
+    "https://easyphoto.in/tools/transparent-signature/",
+    "https://easyphoto.in/tools/signature-background-removal/",
+    "https://easyphoto.in/tools/signature-crop/",
+    "https://easyphoto.in/tools/signature-resize/",
+    "https://easyphoto.in/tools/signature-cleaner/",
+    "https://easyphoto.in/tools/sign-image/",
+    "https://easyphoto.in/tools/compress-document/",
+    "https://easyphoto.in/tools/mask-aadhaar/",
+    "https://easyphoto.in/tools/jpg-to-pdf/",
+    "https://easyphoto.in/tools/pdf-to-jpg/",
+    "https://easyphoto.in/tools/extract-pages/",
+    "https://easyphoto.in/tools/form-fill/",
+    "https://easyphoto.in/tools/image-to-text/",
+    "https://easyphoto.in/tools/pdf-to-text/",
+    "https://easyphoto.in/tools/aadhaar-ocr/",
+    "https://easyphoto.in/tools/pan-card-ocr/",
+    "https://easyphoto.in/exam-requirements/ssc/",
+    "https://easyphoto.in/exam-requirements/upsc/",
+    "https://easyphoto.in/exam-requirements/ds160/",
+    "https://easyphoto.in/exam-requirements/passport-seva/",
+    "https://easyphoto.in/exam-requirements/oci/",
+    "https://easyphoto.in/exam-requirements/rrb/",
+    "https://easyphoto.in/exam-requirements/ibps/",
+    "https://easyphoto.in/exam-requirements/sbi/",
+    "https://easyphoto.in/exam-requirements/nta/",
+    "https://easyphoto.in/exam-requirements/rbi/",
+    "https://easyphoto.in/exam-requirements/ctet/",
+    "https://easyphoto.in/exam-requirements/uppsc/",
+    "https://easyphoto.in/exam-requirements/bpsc/",
+    "https://easyphoto.in/exam-requirements/mpsc/",
+    "https://easyphoto.in/exam-requirements/gate/",
+    "https://easyphoto.in/exam-requirements/ugc-net/",
+    "https://easyphoto.in/exam-requirements/csir-net/",
+    "https://easyphoto.in/exam-requirements/nda/",
+    "https://easyphoto.in/exam-requirements/cds/",
+    "https://easyphoto.in/exam-requirements/afcat/",
+    "https://easyphoto.in/exam-requirements/rpsc/",
+    "https://easyphoto.in/exam-requirements/tnpsc/",
+    "https://easyphoto.in/exam-requirements/kpsc/",
+    "https://easyphoto.in/exam-requirements/appsc/",
+    "https://easyphoto.in/exam-requirements/tgpsc/",
+    "https://easyphoto.in/exam-requirements/wbpsc/",
+    "https://easyphoto.in/exam-requirements/gpsc/",
+    "https://easyphoto.in/exam-requirements/hpsc/",
+    "https://easyphoto.in/exam-requirements/nabard/",
+    "https://easyphoto.in/exam-requirements/lic/",
+    "https://easyphoto.in/exam-requirements/niacl/",
+    "https://easyphoto.in/exam-requirements/irdai/",
+    "https://easyphoto.in/exam-requirements/cat/",
+    "https://easyphoto.in/exam-requirements/clat/",
+    "https://easyphoto.in/exam-requirements/army-agniveer/",
+    "https://easyphoto.in/exam-requirements/airforce-agniveer/",
+    "https://easyphoto.in/exam-requirements/up-police/",
+    "https://easyphoto.in/exam-requirements/pan/",
+    "https://easyphoto.in/exam-requirements/driving-licence/",
+    "https://easyphoto.in/exam-requirements/voter-id/",
+    "https://easyphoto.in/exam-requirements/cuet/",
+    "https://easyphoto.in/exam-requirements/kerala-psc/",
+    "https://easyphoto.in/exam-requirements/ccc-nielit/",
+    "https://easyphoto.in/exam-requirements/dsssb/",
+    "https://easyphoto.in/exam-requirements/upsssc/",
+    "https://easyphoto.in/exam-requirements/bsf/",
+    "https://easyphoto.in/exam-requirements/crpf/",
+    "https://easyphoto.in/exam-requirements/cisf/",
+    "https://easyphoto.in/exam-requirements/itbp/",
+    "https://easyphoto.in/exam-requirements/navy-agniveer/",
+    "https://easyphoto.in/exam-requirements/epfo/",
+    "https://easyphoto.in/exam-requirements/fci/",
+    "https://easyphoto.in/blog/indian-government-id-photo-requirements/",
+    "https://easyphoto.in/blog/image-to-text-online-free-ocr/",
+    "https://easyphoto.in/blog/indian-passport-photo-requirements/",
+    "https://easyphoto.in/blog/indian-passport-photo-size-rules/",
+    "https://easyphoto.in/blog/cutout-pro-alternative-india/",
+    "https://easyphoto.in/blog/best-free-exam-photo-resizer-india/",
+    "https://easyphoto.in/blog/best-free-passport-photo-maker-india-2026/",
+    "https://easyphoto.in/blog/visafoto-alternative-india-free/",
+    "https://easyphoto.in/blog/upsc-cse-ias-photo-signature-guide-2026/",
+    "https://easyphoto.in/blog/nda-cds-photo-signature-guide-2026/",
+    "https://easyphoto.in/blog/ssc-cgl-chsl-photo-signature-guide-2026/",
+    "https://easyphoto.in/blog/why-exam-photo-signature-rejected/",
+    "https://easyphoto.in/blog/add-name-date-on-exam-photo/",
+    "https://easyphoto.in/blog/ibps-po-2026-photo-signature-checklist/",
+    "https://easyphoto.in/blog/schengen-europe-visa-photo-size/",
+    "https://easyphoto.in/blog/how-to-mask-aadhaar-before-sharing/",
+    "https://easyphoto.in/blog/how-to-sign-exam-application-forms-india/",
+    "https://easyphoto.in/blog/how-to-prepare-documents-for-exam-applications-india/",
+    "https://easyphoto.in/blog/how-to-compress-pdf/",
+    "https://easyphoto.in/blog/how-to-merge-pdf-free/",
+    "https://easyphoto.in/blog/exam-photo-signature-size-guide/",
+    "https://easyphoto.in/blog/linkedin-profile-photo-size-and-tips/",
+    "https://easyphoto.in/blog/resume-photo-size-and-rules/",
+    "https://easyphoto.in/blog/how-to-take-a-passport-photo-at-home/",
+    "https://easyphoto.in/blog/why-passport-photos-get-rejected/",
+    "https://easyphoto.in/blog/passport-photo-size-by-country/",
+    "https://easyphoto.in/blog/how-to-reduce-passport-photo-size-for-online-forms/",
+    "https://easyphoto.in/blog/baby-and-infant-passport-photo-guide/",
+    "https://easyphoto.in/blog/passport-photo-background-color/",
+    "https://easyphoto.in/blog/pan-card-photo-size/",
+    "https://easyphoto.in/blog/how-to-compress-photo-to-50kb/",
+    "https://easyphoto.in/blog/what-is-dpi-and-how-to-change-it/",
+    "https://easyphoto.in/blog/how-to-print-passport-photos-at-home/",
+    "https://easyphoto.in/blog/how-to-remove-background-from-photo-free/",
+    "https://easyphoto.in/blog/voter-id-photo-requirements-2026/",
+    "https://easyphoto.in/blog/driving-licence-photo-size-sarathi/"
+  ],
+  "sample": [
+    {
+      "url": "https://easyphoto.in/",
+      "status": 200,
+      "title": "easyPhoto — Document Photo &amp; Form-Resize Tools for India",
+      "description": "Free tools for Indian passport photos, visa photos and exam form resizing. Pick your country or exam — everything runs in your browser, nothing is uploaded.",
+      "canonical": "https://easyphoto.in/",
+      "robots": "",
+      "h1": "Document photos that get accepted",
+      "h2Count": 10,
+      "schemaBlocks": 4,
+      "wordCount": 1887,
+      "images": 31,
+      "links": 166
+    },
+    {
+      "url": "https://easyphoto.in/tools/",
+      "status": 200,
+      "title": "Free Image, PDF &amp; Signature Tools — easyPhoto",
+      "description": "Free in-browser tools: background remover, compress image to KB, resize photos, JPG to PDF, PDF to JPG and signature tools. Nothing is uploaded.",
+      "canonical": "https://easyphoto.in/tools/",
+      "robots": "",
+      "h1": "Free, private tools",
+      "h2Count": 6,
+      "schemaBlocks": 4,
+      "wordCount": 1883,
+      "images": 0,
+      "links": 185
+    },
+    {
+      "url": "https://easyphoto.in/passport-photo/",
+      "status": 200,
+      "title": "Free Indian Passport Photo Maker — ICAO Compliant, No Upload",
+      "description": "Make a compliant Indian passport photo free — 35×45 mm or exactly 630×810 px JPEG under 250 KB for Passport Seva. Also US, UK, Canada &amp; Australia. ICAO-compliant, 100% private, nothing uploaded.",
+      "canonical": "https://easyphoto.in/passport-photo/",
+      "robots": "",
+      "h1": "Free Indian Passport Size Photo Maker",
+      "h2Count": 4,
+      "schemaBlocks": 4,
+      "wordCount": 1479,
+      "images": 54,
+      "links": 125
+    },
+    {
+      "url": "https://easyphoto.in/india-passport-photo-maker/",
+      "status": 200,
+      "title": "India Passport Photo Size &amp; Maker — easyPhoto",
+      "description": "Exact India passport photo requirements: 35×45mm, Plain white (strict — Passport Seva checks luminance). Make one free in your browser — nothing uploaded.",
+      "canonical": "https://easyphoto.in/india-passport-photo-maker/",
+      "robots": "",
+      "h1": "India Passport Photo Maker",
+      "h2Count": 9,
+      "schemaBlocks": 4,
+      "wordCount": 1303,
+      "images": 0,
+      "links": 99
+    },
+    {
+      "url": "https://easyphoto.in/us-passport-photo-maker/",
+      "status": 200,
+      "title": "United States Passport Photo Size &amp; Maker — easyPhoto",
+      "description": "Exact United States passport photo requirements: 51×51mm, White or off-white. Make one free in your browser — nothing uploaded.",
+      "canonical": "https://easyphoto.in/us-passport-photo-maker/",
+      "robots": "",
+      "h1": "United States Passport Photo Maker",
+      "h2Count": 9,
+      "schemaBlocks": 4,
+      "wordCount": 1231,
+      "images": 0,
+      "links": 99
+    },
+    {
+      "url": "https://easyphoto.in/visa-photo/",
+      "status": 200,
+      "title": "Free Visa Photo Maker – Correct Size for Any Country",
+      "description": "Create a compliant visa photo online free. Exact dimensions &amp; background for US (DS-160), Canada, UK &amp; Schengen visas. In-browser, no upload.",
+      "canonical": "https://easyphoto.in/visa-photo/",
+      "robots": "",
+      "h1": "Free Visa Photo Maker",
+      "h2Count": 4,
+      "schemaBlocks": 4,
+      "wordCount": 1210,
+      "images": 50,
+      "links": 123
+    },
+    {
+      "url": "https://easyphoto.in/tools/exam-package/",
+      "status": 200,
+      "title": "Exam Photo &amp; Signature Resizer — SSC UPSC IBPS NEET All-in-One — easyPhoto",
+      "description": "Get an application-ready photo and signature for SSC, UPSC, IBPS, SBI, RRB, NEET/JEE and more — correct size, dimensions and KB in one guided flow. 100% private.",
+      "canonical": "https://easyphoto.in/tools/exam-package/",
+      "robots": "",
+      "h1": "Exam Application Kit",
+      "h2Count": 3,
+      "schemaBlocks": 4,
+      "wordCount": 1250,
+      "images": 2,
+      "links": 104
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/ssc/",
+      "status": 200,
+      "title": "SSC Photo &amp; Signature Size 2026 (Official) — easyPhoto",
+      "description": "SSC: photo 20–50 KB (350 × 450 px), signature 10–20 KB (140 × 60 px). Exact size &amp; format for the form — verified against the official source.",
+      "canonical": "https://easyphoto.in/exam-requirements/ssc/",
+      "robots": "",
+      "h1": "SSC (Staff Selection Commission) Photo &amp; Signature Size",
+      "h2Count": 8,
+      "schemaBlocks": 4,
+      "wordCount": 931,
+      "images": 1,
+      "links": 111
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/army-agniveer/",
+      "status": 200,
+      "title": "Army Agniveer Photo &amp; Signature Size 2026 — easyPhoto",
+      "description": "Army Agniveer: photo 20–50 KB (413 × 531 px), signature 10–20 KB (413 × 177 px). Exact size &amp; format for the form — verified against the official source.",
+      "canonical": "https://easyphoto.in/exam-requirements/army-agniveer/",
+      "robots": "",
+      "h1": "Army Agniveer (Indian Army CEE) Photo &amp; Signature Size",
+      "h2Count": 7,
+      "schemaBlocks": 4,
+      "wordCount": 950,
+      "images": 1,
+      "links": 104
+    },
+    {
+      "url": "https://easyphoto.in/blog/",
+      "status": 200,
+      "title": "Blog — Passport, Visa &amp; Photo Guides — easyPhoto",
+      "description": "Practical guides on passport and visa photos, file-size limits, signatures and image tools — how to get it right the first time.",
+      "canonical": "https://easyphoto.in/blog/",
+      "robots": "",
+      "h1": "Get it right the first time",
+      "h2Count": 3,
+      "schemaBlocks": 4,
+      "wordCount": 2248,
+      "images": 0,
+      "links": 135
+    },
+    {
+      "url": "https://easyphoto.in/blog/indian-government-id-photo-requirements/",
+      "status": 200,
+      "title": "Indian Government ID Photo Size 2026: PAN, Voter ID, DL &amp; Aadhaar",
+      "description": "The exact photo size, KB limit and pixel dimensions for PAN, Voter ID, Driving Licence and Aadhaar online applications — one verified 2026 reference, every portal compared.",
+      "canonical": "https://easyphoto.in/blog/indian-government-id-photo-requirements/",
+      "robots": "",
+      "h1": "Indian Government ID Photo Size 2026: PAN, Voter ID, DL &amp; Aadhaar",
+      "h2Count": 10,
+      "schemaBlocks": 4,
+      "wordCount": 2257,
+      "images": 2,
+      "links": 111
+    },
+    {
+      "url": "https://easyphoto.in/privacy/",
+      "status": 200,
+      "title": "Privacy Policy — easyPhoto",
+      "description": "How easyPhoto handles your data: it doesn&#x27;t. Photos and PDFs are processed entirely in your browser and never uploaded.",
+      "canonical": "https://easyphoto.in/privacy/",
+      "robots": "",
+      "h1": "Privacy Policy",
+      "h2Count": 7,
+      "schemaBlocks": 4,
+      "wordCount": 742,
+      "images": 0,
+      "links": 93
+    },
+    {
+      "url": "https://easyphoto.in/terms/",
+      "status": 200,
+      "title": "Terms of Use — easyPhoto",
+      "description": "Terms of use for easyPhoto — a free, in-browser passport/visa photo and image tool provided as-is. Always verify against official requirements.",
+      "canonical": "https://easyphoto.in/terms/",
+      "robots": "",
+      "h1": "Terms of Use",
+      "h2Count": 6,
+      "schemaBlocks": 4,
+      "wordCount": 652,
+      "images": 0,
+      "links": 93
+    },
+    {
+      "url": "https://easyphoto.in/disclaimer/",
+      "status": 200,
+      "title": "Disclaimer — easyPhoto",
+      "description": "easyPhoto is an independent, free tool. Specifications come from official sources but can change — always verify against the official portal before submitting. We are not affiliated with any government or exam body.",
+      "canonical": "https://easyphoto.in/disclaimer/",
+      "robots": "",
+      "h1": "Disclaimer",
+      "h2Count": 5,
+      "schemaBlocks": 4,
+      "wordCount": 679,
+      "images": 0,
+      "links": 95
+    },
+    {
+      "url": "https://easyphoto.in/contact/",
+      "status": 200,
+      "title": "Contact — easyPhoto",
+      "description": "Get in touch with EasyPhoto to report a photo-spec correction or a bug, or to ask a question. We read every message.",
+      "canonical": "https://easyphoto.in/contact/",
+      "robots": "",
+      "h1": "We read every message",
+      "h2Count": 3,
+      "schemaBlocks": 4,
+      "wordCount": 569,
+      "images": 0,
+      "links": 100
+    }
+  ],
+  "statusTests": [
+    {
+      "url": "https://www.easyphoto.in/",
+      "status": 301,
+      "location": "https://easyphoto.in/",
+      "canonical": "",
+      "robots": "",
+      "title": "301 Moved Permanently"
+    },
+    {
+      "url": "http://easyphoto.in/",
+      "status": 301,
+      "location": "https://easyphoto.in/",
+      "canonical": "",
+      "robots": "",
+      "title": "301 Moved Permanently"
+    },
+    {
+      "url": "https://easyphoto.in/india/",
+      "status": 301,
+      "location": "/india-passport-photo-maker/",
+      "canonical": "",
+      "robots": "",
+      "title": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/form-resizer/ssc/",
+      "status": 200,
+      "location": "",
+      "canonical": "https://easyphoto.in/tools/form-resizer/ssc/",
+      "robots": "noindex, follow",
+      "title": "SSC Photo &amp; Signature Resizer — easyPhoto"
+    },
+    {
+      "url": "https://easyphoto.in/exam-resizer/ssc-cpo/",
+      "status": 200,
+      "location": "",
+      "canonical": "https://easyphoto.in/exam-resizer/ssc-cpo/",
+      "robots": "noindex, follow",
+      "title": "SSC CPO Photo &amp; Signature Resize Tool — 35×45mm, JPG, Online Free"
+    },
+    {
+      "url": "https://easyphoto.in/photo-ka-size-50kb-kaise-kare/",
+      "status": 200,
+      "location": "",
+      "canonical": "https://easyphoto.in/photo-ka-size-50kb-kaise-kare/",
+      "robots": "noindex, follow",
+      "title": "Photo Ka Size 50KB Kaise Kare — Free Online Tool"
+    },
+    {
+      "url": "https://easyphoto.in/_next/static/test.js",
+      "status": 404,
+      "location": "",
+      "canonical": "",
+      "robots": "noindex",
+      "title": "Passport, Visa &amp; Exam Photo Maker — Free, In-Browser"
+    }
+  ],
+  "headResults": [
+    {
+      "url": "https://easyphoto.in/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/signature-resize-to-10kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/signature-resize-to-20kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/signature-resize-to-50kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/signature-resize-to-100kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/us-passport-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/uk-passport-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/canada-passport-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/schengen-visa-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/about/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/contact/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/privacy/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/terms/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/disclaimer/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-photo-size/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-calendar/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/aadhaar-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/photo-resize-to-10kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/photo-resize-to-20kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/photo-resize-to-30kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/photo-resize-to-50kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/photo-resize-to-100kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/photo-resize-to-200kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/compress-pdf-to-50kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/compress-pdf-to-100kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/compress-pdf-to-200kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/compress-pdf-to-500kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/convert/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/convert/heic-to-jpg/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/convert/heic-to-png/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/convert/webp-to-jpg/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/convert/webp-to-png/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/convert/png-to-jpg/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/convert/jpg-to-png/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/convert/jpg-to-webp/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/convert/png-to-webp/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/convert/heic-to-webp/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/passport-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/baby-passport-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/unlock-aadhaar-pdf/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/visa-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/ssc-photo-with-name-date/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/india-passport-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/us-passport-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/canada-passport-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/uk-passport-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/australia-passport-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/pakistan-passport-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/nepal-passport-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/us-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/canada-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/uk-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/australia-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/schengen-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/uae-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/bahrain-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/kuwait-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/qatar-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/oman-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/germany-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/france-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/italy-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/spain-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/portugal-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/netherlands-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/ireland-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/china-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/singapore-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/new-zealand-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/japan-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/malaysia-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/india-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/saudi-visa-photo-maker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/pdf/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/signature/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/document/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/ocr/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/exam-package/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/compliance-checker/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/background-removal/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/resize-kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/resize-dimensions/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/image-crop/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/linkedin-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/resume-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/white-background/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/format-converter/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/photo-with-name-date/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/print-sheet/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/photo-validator/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/camera-capture/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/photo-signature-merge/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/dpi-converter/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/red-eye-removal/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/straighten-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/face-centering/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/auto-crop/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/photo-rejection-check/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/pdf-merge/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/pdf-split/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/pdf-compress/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/unlock-pdf/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/pdf-reorder/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/sign-pdf/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/watermark-pdf/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/pdf-page-numbers/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/transparent-signature/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/signature-background-removal/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/signature-crop/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/signature-resize/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/signature-cleaner/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/sign-image/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/compress-document/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/mask-aadhaar/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/jpg-to-pdf/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/pdf-to-jpg/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/extract-pages/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/form-fill/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/image-to-text/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/pdf-to-text/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/aadhaar-ocr/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/tools/pan-card-ocr/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/ssc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/upsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/ds160/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/passport-seva/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/oci/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/rrb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/ibps/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/sbi/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/nta/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/rbi/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/ctet/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/uppsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/bpsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/mpsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/gate/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/ugc-net/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/csir-net/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/nda/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/cds/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/afcat/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/rpsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/tnpsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/kpsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/appsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/tgpsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/wbpsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/gpsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/hpsc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/nabard/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/lic/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/niacl/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/irdai/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/cat/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/clat/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/army-agniveer/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/airforce-agniveer/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/up-police/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/pan/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/driving-licence/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/voter-id/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/cuet/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/kerala-psc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/ccc-nielit/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/dsssb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/upsssc/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/bsf/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/crpf/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/cisf/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/itbp/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/navy-agniveer/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/epfo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/exam-requirements/fci/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/indian-government-id-photo-requirements/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/image-to-text-online-free-ocr/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/indian-passport-photo-requirements/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/indian-passport-photo-size-rules/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/cutout-pro-alternative-india/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/best-free-exam-photo-resizer-india/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/best-free-passport-photo-maker-india-2026/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/visafoto-alternative-india-free/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/upsc-cse-ias-photo-signature-guide-2026/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/nda-cds-photo-signature-guide-2026/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/ssc-cgl-chsl-photo-signature-guide-2026/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/why-exam-photo-signature-rejected/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/add-name-date-on-exam-photo/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/ibps-po-2026-photo-signature-checklist/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/schengen-europe-visa-photo-size/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/how-to-mask-aadhaar-before-sharing/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/how-to-sign-exam-application-forms-india/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/how-to-prepare-documents-for-exam-applications-india/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/how-to-compress-pdf/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/how-to-merge-pdf-free/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/exam-photo-signature-size-guide/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/linkedin-profile-photo-size-and-tips/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/resume-photo-size-and-rules/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/how-to-take-a-passport-photo-at-home/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/why-passport-photos-get-rejected/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/passport-photo-size-by-country/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/how-to-reduce-passport-photo-size-for-online-forms/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/baby-and-infant-passport-photo-guide/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/passport-photo-background-color/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/pan-card-photo-size/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/how-to-compress-photo-to-50kb/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/what-is-dpi-and-how-to-change-it/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/how-to-print-passport-photos-at-home/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/how-to-remove-background-from-photo-free/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/voter-id-photo-requirements-2026/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    },
+    {
+      "url": "https://easyphoto.in/blog/driving-licence-photo-size-sarathi/",
+      "status": 200,
+      "location": "",
+      "xRobots": ""
+    }
+  ],
+  "headStatusCounts": {
+    "200": 214
+  },
+  "headNon200": []
+}
