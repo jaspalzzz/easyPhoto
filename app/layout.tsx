@@ -141,8 +141,15 @@ export default function RootLayout({
         </a>
         {/* Site-wide structured data: brand + website */}
         <JsonLd schema={[organizationSchema(), websiteSchema()]} />
-        {/* Navy bureau header with the gold rule — the document-official signature. */}
-        <header className="sticky top-0 z-40 border-b-2 border-cta bg-[hsl(222_60%_8%)]">
+        {/* Navy bureau header with the gold rule — the document-official signature.
+            z-[55]: the desktop mega-menu dropdown lives inside this header, so
+            the header's OWN stacking context must outrank ToolSearch (z-50,
+            root-level on the homepage/tools page) or the mega-menu paints
+            underneath it no matter what z-index the dropdown itself claims —
+            two different stacking contexts compare at the ancestor level, not
+            the descendant's. Stays below z-[60] (CommandPalette, mobile drawer)
+            so true full-screen modals still cover the header. */}
+        <header className="sticky top-0 z-[55] border-b-2 border-cta bg-[hsl(222_60%_8%)]">
           <div className="container flex h-16 items-center justify-between">
             <Link
               href="/"
