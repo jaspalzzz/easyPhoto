@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { FileUp, Copy, Download, ShieldCheck, Loader2, CheckCircle2 } from "lucide-react";
+import { FileUp, Copy, Download, ShieldCheck, Loader2, CheckCircle2, RefreshCw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { recognizeFile, type OcrLang } from "@/lib/ocr";
 import { cleanOcrText, detectIdCard } from "@/lib/ocrTextClean";
@@ -53,6 +53,18 @@ export function ImageToTextTool() {
     setRawOcrText(null);
     setCardHint(null);
     setProgress(0);
+  };
+
+  const clearSelection = () => {
+    if (preview) URL.revokeObjectURL(preview);
+    setFile(null);
+    setPreview(null);
+    setError(null);
+    setResult(null);
+    setRawOcrText(null);
+    setCardHint(null);
+    setProgress(0);
+    setCopied(false);
   };
 
   const onInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,14 +130,14 @@ export function ImageToTextTool() {
             ? "border-brand bg-brand/5"
             : "border-hairline-strong bg-background hover:border-brand/40 hover:bg-accent/20"
         }`}
-        onClick={() => inputRef.current?.click()}
+        onClick={() => !preview && inputRef.current?.click()}
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && inputRef.current?.click()}
-        aria-label="Upload image for OCR"
+        role={preview ? undefined : "button"}
+        tabIndex={preview ? undefined : 0}
+        onKeyDown={(e) => !preview && e.key === "Enter" && inputRef.current?.click()}
+        aria-label={preview ? undefined : "Upload image for OCR"}
       >
         <input
           ref={inputRef}
@@ -135,14 +147,37 @@ export function ImageToTextTool() {
           onChange={onInput}
         />
         {preview ? (
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex w-full flex-col items-center gap-3 px-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={preview}
               alt="Preview"
               className="max-h-32 max-w-full rounded object-contain shadow"
             />
-            <p className="text-xs text-brand">Tap to change image</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  inputRef.current?.click();
+                }}
+              >
+                <RefreshCw className="h-4 w-4" strokeWidth={1.75} /> Replace image
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  clearSelection();
+                }}
+              >
+                <X className="h-4 w-4" strokeWidth={1.75} /> Remove
+              </Button>
+            </div>
           </div>
         ) : (
           <>

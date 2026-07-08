@@ -7,7 +7,7 @@ import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
-import { PdfEncryptedError } from "@/lib/pdfToImages";
+import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
 import { mergePdfs } from "@/lib/pdfMergeSplit";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
@@ -22,6 +22,7 @@ interface PdfFileItem {
 export function PdfMergeTool() {
   const [files, setFiles] = React.useState<PdfFileItem[]>([]);
   const [busy, setBusy] = React.useState(false);
+  const [checking, setChecking] = React.useState(false);
   const [progress, setProgress] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [mergedBlob, setMergedBlob] = React.useState<Blob | null>(null);
@@ -30,22 +31,47 @@ export function PdfMergeTool() {
 
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      addFiles(Array.from(e.target.files));
+      void addFiles(Array.from(e.target.files));
     }
+    e.target.value = "";
   };
 
-  const addFiles = (newFiles: File[]) => {
+  const addFiles = async (newFiles: File[]) => {
     const pdfs = newFiles.filter((f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf"));
     if (pdfs.length === 0) {
       setError("Please select valid PDF files.");
       return;
     }
+    setChecking(true);
     setError(null);
     setDuplicateWarning(null);
+    const decryptable: File[] = [];
+    let encryptedCount = 0;
+    try {
+      for (const file of pdfs) {
+        try {
+          await assertPdfDecryptable(file);
+          decryptable.push(file);
+        } catch (err) {
+          if (err instanceof PdfEncryptedError) encryptedCount++;
+          else throw err;
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Could not read one of these PDFs. Make sure every file is valid and unencrypted.");
+      return;
+    } finally {
+      setChecking(false);
+    }
+
+    if (encryptedCount > 0) setError("encrypted");
+    if (decryptable.length === 0) return;
+
     setFiles((prev) => {
       let skipped = 0;
       const toAdd: PdfFileItem[] = [];
-      for (const file of pdfs) {
+      for (const file of decryptable) {
         const isDuplicate = prev.some(
           (item) => item.name === file.name && item.size === file.size
         );
@@ -128,11 +154,11 @@ export function PdfMergeTool() {
         {/* Upload Zone */}
         <div
           role="button"
-          tabIndex={busy ? -1 : 0}
-          onClick={() => !busy && inputRef.current?.click()}
-          onKeyDown={(e) => !busy && (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
+          tabIndex={busy || checking ? -1 : 0}
+          onClick={() => !busy && !checking && inputRef.current?.click()}
+          onKeyDown={(e) => !busy && !checking && (e.key === "Enter" || e.key === " ") && inputRef.current?.click()}
           onDragOver={(e) => {
-            if (busy) return;
+            if (busy || checking) return;
             e.preventDefault();
             e.currentTarget.dataset.dragging = "1";
           }}
@@ -144,11 +170,11 @@ export function PdfMergeTool() {
           }}
           onDrop={(e) => {
             e.preventDefault();
-            if (!busy && e.dataTransfer.files) {
-              addFiles(Array.from(e.dataTransfer.files));
+            if (!busy && !checking && e.dataTransfer.files) {
+              void addFiles(Array.from(e.dataTransfer.files));
             }
           }}
-          className={`flex flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors${busy ? " pointer-events-none opacity-50 cursor-default" : " cursor-pointer hover:bg-accent/40"}`}
+          className={`flex flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors${busy || checking ? " pointer-events-none opacity-50 cursor-default" : " cursor-pointer hover:bg-accent/40"}`}
         >
           <FileUp className="h-8 w-8 text-brand" strokeWidth={1.75} />
           <p className="font-semibold tracking-tight">Select PDF files, or drop them here</p>
@@ -165,6 +191,8 @@ export function PdfMergeTool() {
             onChange={onFileSelect}
           />
         </div>
+
+        {checking && <ProcessingState label="Checking PDFs…" />}
 
         {/* Error message */}
         {error === "encrypted" ? (

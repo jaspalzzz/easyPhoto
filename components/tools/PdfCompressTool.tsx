@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { Download, FileUp, ShieldCheck, PenLine, Hash } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
@@ -9,7 +8,8 @@ import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { compressPdfToTarget, type PdfCompressResult } from "@/lib/pdfCompress";
-import { PdfEncryptedError } from "@/lib/pdfToImages";
+import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
+import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
@@ -20,6 +20,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
   const [file, setFile] = React.useState<File | null>(null);
   const [targetKb, setTargetKb] = React.useState<number>(defaultKb);
   const [busy, setBusy] = React.useState(false);
+  const [checking, setChecking] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
   const [progress, setProgress] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
@@ -35,20 +36,30 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
     const payload = consumeWorkflowPayload();
     if (payload) {
       const f = new File([payload.blob], payload.filename, { type: "application/pdf" });
-      pick(f);
+      void pick(f);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const pick = (f: File) => {
+  const pick = async (f: File) => {
     if (f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) {
       setError("Please select a valid PDF file.");
       return;
     }
+    setChecking(true);
     setError(null);
     setResult(null);
     setResultBlob(null);
-    setFile(f);
+    setFile(null);
+    try {
+      await assertPdfDecryptable(f);
+      setFile(f);
+    } catch (err) {
+      console.error(err);
+      if (err instanceof PdfEncryptedError) setError("encrypted");
+      else setError("Could not read this PDF. Make sure it is a valid, unencrypted file.");
+    } finally {
+      setChecking(false);
+    }
   };
 
   const run = async () => {
@@ -91,7 +102,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
   return (
     <Card>
       <CardContent className="space-y-5 p-6">
-        {!file && !busy && (
+        {!file && !busy && !checking && (
           <div
             id="pdf-compress-dropzone"
             role="button"
@@ -106,7 +117,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
             onDrop={(e) => {
               e.preventDefault();
               setDragging(false);
-              if (e.dataTransfer.files?.[0]) pick(e.dataTransfer.files[0]);
+              if (e.dataTransfer.files?.[0]) void pick(e.dataTransfer.files[0]);
             }}
             className={`flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed p-8 text-center transition-colors ${
               dragging
@@ -126,21 +137,23 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
               type="file"
               accept="application/pdf"
               className="hidden"
-              onChange={(e) => e.target.files?.[0] && pick(e.target.files[0])}
+              onChange={(e) => {
+                if (e.target.files?.[0]) void pick(e.target.files[0]);
+                e.target.value = "";
+              }}
             />
           </div>
         )}
 
-        {error && (
+        {error === "encrypted" ? (
+          <EncryptedPdfNotice />
+        ) : error ? (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
-            {error === "encrypted" ? (
-              <>
-                This PDF is password-protected. Please unlock it first using the{" "}
-                <Link href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</Link>.
-              </>
-            ) : error}
+            {error}
           </p>
-        )}
+        ) : null}
+
+        {checking && <ProcessingState label="Checking PDF…" />}
 
         {file && !busy && (
           <div className="space-y-5">

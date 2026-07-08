@@ -15,10 +15,38 @@ type Brush = "S" | "M" | "L";
 // right size whether the photo is 600px or 4000px wide.
 const BRUSH_FRACTION: Record<Brush, number> = { S: 0.02, M: 0.035, L: 0.055 };
 
+const MIN_RED_CLUSTER_FRACTION = 0.004;
+const INNER_CLUSTER_FRACTION = 0.35;
+
+export function redEyeReplacement(r: number, g: number, b: number): number | null {
+  const maxOther = Math.max(g, b);
+  const minOther = Math.min(g, b);
+  const redDominance = r - maxOther;
+
+  // Skin, eyelids and warm hair are reddish, but true flash red-eye has a
+  // much stronger red-channel spike with green/blue both well below red.
+  if (
+    r < 120 ||
+    redDominance < 55 ||
+    r - minOther < 75 ||
+    g > r * 0.48 ||
+    b > r * 0.55 ||
+    r < g * 1.55 ||
+    r < b * 1.55
+  ) {
+    return null;
+  }
+
+  // Pull the glow into a neutral dark pupil. Lowering only the red channel
+  // leaves green/blue behind, which was causing visible green marks.
+  const neutral = Math.round(((g + b) / 2) * 0.65);
+  return Math.max(14, Math.min(92, neutral));
+}
+
 /**
- * Reduce red-eye inside a circle: any strongly red pixel (the flash glow on the
- * retina) has its red channel pulled down to the green/blue average, which turns
- * the glow back into a natural dark pupil without touching skin or background.
+ * Reduce red-eye inside a circle: a real cluster of strongly red pixels (the
+ * flash glow on the retina) is replaced with neutral dark pupil pixels without
+ * touching ordinary skin, eyelid, iris or background colours.
  */
 function fixRedEyeAt(
   ctx: CanvasRenderingContext2D,
@@ -37,6 +65,10 @@ function fixRedEyeAt(
   const img = ctx.getImageData(x0, y0, w, h);
   const d = img.data;
   const r2 = radius * radius;
+  const innerR2 = Math.max(4, radius * INNER_CLUSTER_FRACTION) ** 2;
+  const candidates: Array<{ i: number; v: number }> = [];
+  let innerCandidates = 0;
+  let circlePixels = 0;
   let changed = false;
 
   for (let y = 0; y < h; y++) {
@@ -44,17 +76,28 @@ function fixRedEyeAt(
       const dx = x0 + x - cx;
       const dy = y0 + y - cy;
       if (dx * dx + dy * dy > r2) continue;
+      circlePixels++;
       const i = (y * w + x) * 4;
       const r = d[i];
       const g = d[i + 1];
       const b = d[i + 2];
-      // Red glow = red clearly dominant over green and blue.
-      if (r > 60 && r > g * 1.4 && r > b * 1.4) {
-        const avg = (g + b) >> 1;
-        d[i] = avg;
-        changed = true;
+      const replacement = redEyeReplacement(r, g, b);
+      if (replacement !== null) {
+        candidates.push({ i, v: replacement });
+        if (dx * dx + dy * dy <= innerR2) innerCandidates++;
       }
     }
+  }
+
+  const minCluster = Math.max(10, Math.round(circlePixels * MIN_RED_CLUSTER_FRACTION));
+  const minInnerCluster = Math.max(3, Math.round(minCluster * 0.25));
+  if (candidates.length < minCluster || innerCandidates < minInnerCluster) return false;
+
+  for (const { i, v } of candidates) {
+    d[i] = v;
+    d[i + 1] = v;
+    d[i + 2] = v;
+    changed = true;
   }
   if (changed) ctx.putImageData(img, x0, y0);
   return changed;
@@ -76,6 +119,7 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
   const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
   const [faceState, setFaceState] = React.useState<FaceState>({ status: "detecting" });
   const [missedTap, setMissedTap] = React.useState(false);
+  const [noRedTap, setNoRedTap] = React.useState(false);
 
   const draw = React.useCallback(() => {
     const canvas = canvasRef.current;
@@ -108,6 +152,7 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
     let cancelled = false;
     setFaceState({ status: "detecting" });
     setMissedTap(false);
+    setNoRedTap(false);
     detectFace(source.image, source.size)
       .then((det) => {
         if (cancelled) return;
@@ -158,10 +203,12 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
       const dRight = Math.hypot(cx - faceState.right.x, cy - faceState.right.y);
       if (dLeft > faceState.tolerance && dRight > faceState.tolerance) {
         setMissedTap(true);
+        setNoRedTap(false);
         return;
       }
     }
     setMissedTap(false);
+    setNoRedTap(false);
 
     const radius = Math.max(
       6,
@@ -171,6 +218,8 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
     if (changed) {
       setEdited(true);
       setResultBlob(null);
+    } else {
+      setNoRedTap(true);
     }
   };
 
@@ -213,7 +262,7 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
       <p className="rounded-lg border border-hairline bg-accent/30 px-4 py-2 text-sm text-muted-foreground">
         {faceState.status === "detecting"
           ? "Checking the photo for a face…"
-          : "Tap directly on each red pupil to fix it. Tap again to strengthen, or adjust the brush size if the eye is larger."}
+          : "Tap directly on a red flash pupil. Normal dark/brown eyes will not change."}
       </p>
 
       {faceState.status === "not-found" && (
@@ -228,6 +277,13 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
       {missedTap && (
         <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
           That doesn&apos;t look like an eye — tap directly on the red pupil.
+        </p>
+      )}
+
+      {noRedTap && (
+        <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
+          No red-eye was found at that spot. This tool only changes red flash
+          pupils, so normal eye colour and eyelids are left alone.
         </p>
       )}
 

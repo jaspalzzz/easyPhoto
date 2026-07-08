@@ -3,6 +3,7 @@
  * client-side via pdf-lib. Original page content (text, vectors, fonts) is
  * preserved; we never rasterize. Nothing is uploaded.
  */
+import { assertPdfDecryptable } from "./pdfToImages";
 
 /** One output page: which original page it is, and any user rotation to apply. */
 export interface ReorderItem {
@@ -19,6 +20,7 @@ export async function reorderPdf(
   items: ReorderItem[]
 ): Promise<Blob> {
   if (items.length === 0) throw new Error("No pages to export.");
+  await assertPdfDecryptable(file);
   const { PDFDocument, degrees } = await import("pdf-lib");
 
   const src = await PDFDocument.load(await file.arrayBuffer(), {
@@ -67,6 +69,7 @@ export async function signPdf(
   file: File,
   signaturesPerPage: Record<number, SignaturePlacement[]>
 ): Promise<Blob> {
+  await assertPdfDecryptable(file);
   const { PDFDocument } = await import("pdf-lib");
   const src = await PDFDocument.load(await file.arrayBuffer(), {
     ignoreEncryption: true,
