@@ -45,7 +45,7 @@ const ID_DOCS = [
   { label: "PAN Card",        sub: "Income Tax India",   href: "/tools/form-resizer/pan/"              },
   { label: "OCI Card",        sub: "Ministry of Home",   href: "/tools/form-resizer/oci/"              },
   { label: "Driving License", sub: "All States",         href: "/tools/form-resizer/driving-licence/"  },
-  { label: "Voter ID Card",   sub: "Election Commission",href: "/tools/form-resizer/voter-id/"         },
+  { label: "Voter ID Card",   sub: "Election Commission",href: "/exam-requirements/voter-id/"          },
 ];
 
 const POPULAR_EXAMS = [

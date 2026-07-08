@@ -29,9 +29,11 @@ export const metadata = pageMetadata({
 /* Quick-access chips shown below the hero search bar */
 const POPULAR_CHIPS = [
   { label: "Indian Passport",       href: "/passport-photo/"                  },
+  { label: "Voter ID",              href: "/exam-requirements/voter-id/"      },
   { label: "USA Visa",              href: visaPath("us")                      },
   { label: "SSC Photo",             href: "/ssc-photo-resizer/"               },
   { label: "UPSC Photo",            href: "/upsc-photo-resizer/"              },
+  { label: "Sign Image",            href: "/tools/sign-image/"                },
   { label: "Transparent Signature", href: "/tools/transparent-signature/"     },
 ];
 
@@ -39,6 +41,8 @@ const POPULAR_CHIPS = [
 const POPULAR_SEARCHES = [
   { label: "USA Visa Photo",        href: visaPath("us")                      },
   { label: "Indian Passport Photo", href: "/passport-photo/"                  },
+  { label: "Voter ID Photo Resizer",href: "/exam-requirements/voter-id/"      },
+  { label: "Sign on Image",         href: "/tools/sign-image/"                },
   { label: "Canada Visa Photo",     href: visaPath("canada")                  },
   { label: "UK Passport Photo",     href: passportPath("uk")                  },
   { label: "UPSC Photo Resize",     href: "/upsc-photo-resizer/"              },

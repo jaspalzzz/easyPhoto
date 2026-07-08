@@ -305,6 +305,32 @@ export default async function Page({
 
         <PortalResizer portalId={exam} />
 
+        {exam === "voter-id" && (
+          <div className="rounded-lg border border-hairline bg-card p-4">
+            <h3 className="text-sm font-semibold text-ink">
+              Voter ID photo guides
+            </h3>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              Need the full NVSP/ECI rules before upload? Read the{" "}
+              <Link
+                href="/blog/voter-id-photo-requirements-2026/"
+                className="font-medium text-brand hover:underline"
+              >
+                Voter ID photo requirements guide
+              </Link>
+              {" "}
+              and compare all ID-card limits in the{" "}
+              <Link
+                href="/blog/indian-government-id-photo-requirements/"
+                className="font-medium text-brand hover:underline"
+              >
+                Indian government ID photo guide
+              </Link>
+              .
+            </p>
+          </div>
+        )}
+
         {spec.requiresNameDate && (
           <div className="rounded-lg border border-amber-300 bg-amber-50/70 p-4 dark:border-amber-800 dark:bg-amber-950/30">
             <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
