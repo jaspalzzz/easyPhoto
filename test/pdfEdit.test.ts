@@ -80,6 +80,19 @@ describe("PDF tools — lossless via pdf-lib", () => {
     await expect(assertPdfDecryptable(file)).rejects.toBeInstanceOf(PdfEncryptedError);
   });
 
+  it("does not reject an owner-only encrypted PDF (no user password) that pdfjs can open", async () => {
+    // Regression guard: assertPdfDecryptable must only reject on a pdfjs
+    // PasswordException. It must NOT additionally probe with pdf-lib's own
+    // PDFDocument.load({ ignoreEncryption: false }) — pdf-lib flags a PDF as
+    // "encrypted" purely from the presence of a trailer /Encrypt dictionary,
+    // with no concept of owner-only vs user-password encryption, so that
+    // second check would reject print/copy-restricted-but-openable PDFs
+    // (common for government/bank forms) even though pdfjs opens them fine.
+    const file = new File(["%PDF-1.7"], "owner-encrypted.pdf", { type: "application/pdf" });
+
+    await expect(assertPdfDecryptable(file)).resolves.toBeUndefined();
+  });
+
   it("signPdf rejects password-protected PDFs before export", async () => {
     vi.mocked(getDocument).mockImplementationOnce(() => ({
       promise: new Promise((_, reject) => {
