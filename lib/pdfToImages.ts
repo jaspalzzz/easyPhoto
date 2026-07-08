@@ -72,15 +72,6 @@ export async function assertPdfDecryptable(file: File): Promise<void> {
     throw err;
   }
   await pdf.destroy();
-  const { PDFDocument } = await import("pdf-lib");
-  try {
-    await PDFDocument.load(data, { ignoreEncryption: false });
-  } catch (err: unknown) {
-    if (err instanceof Error && /encrypted/i.test(err.message)) {
-      throw new PdfEncryptedError();
-    }
-    throw err;
-  }
 }
 
 export async function pdfToCanvases(
