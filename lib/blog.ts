@@ -212,6 +212,17 @@ export const BLOG_POSTS: BlogPost[] = [
     readMins: 8,
   },
   {
+    slug: "how-to-sign-on-image-online",
+    title: "How to Sign on Image Online: Add a Signature to Any Photo",
+    description:
+      "Add a signature to a photo or image online: draw, upload a transparent signature PNG, place it, resize it and download the signed image in your browser.",
+    date: "July 8, 2026",
+    dateISO: "2026-07-08",
+    excerpt:
+      "Need to sign on an image, add a sign in photo, or place a signature on a JPG? Here is the clean workflow: make a transparent signature, place it on the image, and export privately.",
+    readMins: 5,
+  },
+  {
     slug: "how-to-prepare-documents-for-exam-applications-india",
     title: "How to Prepare Documents for Online Exam Applications in India",
     description:
@@ -435,11 +446,14 @@ export function getPost(slug: string): BlogPost | undefined {
  * post in exactly one cluster; any slug not listed falls back to array order.
  */
 const CLUSTERS: Record<string, string[]> = {
+  signature: [
+    "how-to-sign-on-image-online",
+    "how-to-sign-exam-application-forms-india",
+  ],
   exam: [
     "how-to-prepare-documents-for-exam-applications-india",
     "exam-photo-signature-size-guide",
     "best-free-exam-photo-resizer-india",
-    "how-to-sign-exam-application-forms-india",
     "upsc-cse-ias-photo-signature-guide-2026",
     "nda-cds-photo-signature-guide-2026",
     "ssc-cgl-chsl-photo-signature-guide-2026",

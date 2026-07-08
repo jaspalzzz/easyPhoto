@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { SignImageTool } from "@/components/tools/SignImageTool";
@@ -27,6 +28,16 @@ export default function Page() {
       faqItems={SIGN_IMAGE_FAQ}
       footnote="Signing runs entirely on your device. Your photos and signature data are never uploaded."
     >
+      <div className="mb-4 rounded-lg border border-brand/25 bg-brand-soft/15 px-4 py-3 text-sm text-ink">
+        Need the workflow first? Read{" "}
+        <Link
+          href="/blog/how-to-sign-on-image-online/"
+          className="font-medium text-brand hover:underline"
+        >
+          how to sign on an image or add a signature to a photo
+        </Link>
+        .
+      </div>
       <SignImageTool />
     </ToolPage>
   );
