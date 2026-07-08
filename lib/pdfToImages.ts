@@ -44,6 +44,15 @@ export class PdfEncryptedError extends Error {
  * this BEFORE pdf-lib's load({ ignoreEncryption: true }), which otherwise accepts
  * a locked PDF it can't decrypt and emits a broken/blank/encrypted file.
  * Owner-only encrypted PDFs (no user password) do NOT throw — pdfjs reads them.
+ *
+ * Deliberately does NOT also probe with pdf-lib's own PDFDocument.load(). pdf-lib
+ * flags a PDF as "encrypted" purely from the presence of a trailer /Encrypt
+ * dictionary (see PDFDocument.js: `isEncrypted = !!context.lookup(Encrypt)`) —
+ * it has no concept of owner-only vs user-password encryption, so a second
+ * ignoreEncryption:false check there would reject every owner-only-encrypted
+ * PDF too (common for government/bank forms: print/copy-restricted but openable
+ * with no password), even though pdfjs opens it fine and pdf-lib's own
+ * ignoreEncryption:true load handles it correctly. Keep this pdfjs-only.
  */
 export async function assertPdfDecryptable(file: File): Promise<void> {
   const pdfjs = await import("pdfjs-dist");
@@ -56,7 +65,8 @@ export async function assertPdfDecryptable(file: File): Promise<void> {
   try {
     pdf = await pdfjs.getDocument({ data }).promise;
   } catch (err: unknown) {
-    if (err instanceof Error && err.name === "PasswordException") {
+    const name = err instanceof Error ? err.name : (err as { name?: string })?.name;
+    if (name === "PasswordException") {
       throw new PdfEncryptedError();
     }
     throw err;

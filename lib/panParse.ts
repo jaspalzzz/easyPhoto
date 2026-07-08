@@ -21,6 +21,33 @@ export interface PanFields {
 
 const NAME_SKIP =
   /income\s*tax|government|india|govt|permanent|account|number|department|signature|date|birth|\bdob\b/i;
+const NAME_LABEL_ONLY = /^(name|father'?s?\s*name|date\s*of\s*birth)$/i;
+
+function cleanNameField(value: string): string {
+  const cleaned = value
+    .replace(/\s+/g, " ")
+    .replace(/^[^A-Za-z]+|[^A-Za-z.' -]+$/g, "")
+    .trim();
+  if (!cleaned) return "";
+
+  const tokens = cleaned.split(/\s+/).filter(Boolean);
+  if (tokens.length === 0) return "";
+
+  // OCR often turns Hindi label text into tiny repeated Latin fragments
+  // ("wir SE SE" was a real failure). A PAN-holder name should contain at
+  // least one substantial alphabetic token unless it is a short single name.
+  const hasSubstantialToken = tokens.some((t) => t.replace(/[^A-Za-z]/g, "").length >= 4);
+  const repeatedTinyToken = tokens.some((t, i) => {
+    const normalized = t.toUpperCase().replace(/[^A-Z]/g, "");
+    return normalized.length > 0 && normalized.length <= 2 && tokens
+      .slice(i + 1)
+      .some((other) => other.toUpperCase().replace(/[^A-Z]/g, "") === normalized);
+  });
+  if (tokens.length >= 3 && !hasSubstantialToken && /[a-z]/.test(cleaned)) return "";
+  if (repeatedTinyToken && !hasSubstantialToken) return "";
+
+  return cleaned.toUpperCase();
+}
 
 /**
  * Repair OCR confusions using PAN's fixed layout: positions 1–5 and 10 are
@@ -90,8 +117,8 @@ export function parsePanFields(raw: string, alphanumRaw?: string): PanFields {
     if (idx < 0) return "";
     // Some cards print "Name SACHIN" on one line; prefer inline, else next line.
     const inline = lines[idx].replace(labelRe, "").trim();
-    if (inline && /[A-Za-z]/.test(inline) && !NAME_SKIP.test(inline)) return inline;
-    return lines[idx + 1] ?? "";
+    if (inline && /[A-Za-z]/.test(inline) && !NAME_SKIP.test(inline)) return cleanNameField(inline);
+    return cleanNameField(lines[idx + 1] ?? "");
   };
 
   // Bilingual cards print "नाम / Name" and "पिता का नाम / Father's Name" — the
@@ -116,8 +143,15 @@ export function parsePanFields(raw: string, alphanumRaw?: string): PanFields {
     const start = Math.max(headingIdx, panIdx) + 1; // 0 when neither is present
     const candidates = lines
       .slice(start)
+      .map(cleanNameField)
       .filter(
-        (l) => l.length > 2 && l.length < 48 && !/\d/.test(l) && !NAME_SKIP.test(l) && /^[A-Za-z][A-Za-z\s.'-]*$/.test(l)
+        (l) =>
+          l.length > 2 &&
+          l.length < 48 &&
+          !/\d/.test(l) &&
+          !NAME_SKIP.test(l) &&
+          !NAME_LABEL_ONLY.test(l) &&
+          /^[A-Z][A-Z\s.'-]*$/.test(l)
       );
     if (!name) name = candidates[0] ?? "";
     if (!fathersName) fathersName = candidates.find((c) => c !== name) ?? "";

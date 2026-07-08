@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { Download, FileUp, ShieldCheck } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,7 @@ import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { pdfToCanvases, PdfTooLargeError, PdfEncryptedError } from "@/lib/pdfToImages";
 import { splitPdf } from "@/lib/pdfMergeSplit";
 import { downloadBlob } from "@/lib/download";
+import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
 
 interface PageItem {
   index: number;
@@ -30,8 +30,9 @@ export function PdfSplitTool() {
   const onFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      loadFile(selectedFile);
+      void loadFile(selectedFile);
     }
+    e.target.value = "";
   };
 
   const loadFile = async (selectedFile: File) => {
@@ -103,7 +104,8 @@ export function PdfSplitTool() {
       downloadBlob(splitBlob, `${file.name.replace(/\.[^/.]+$/, "")}-extracted.pdf`);
     } catch (err) {
       console.error(err);
-      setError("Could not extract pages. Make sure the file remains accessible.");
+      if (err instanceof PdfEncryptedError) setError("encrypted");
+      else setError("Could not extract pages. Make sure the file remains accessible.");
     } finally {
       setBusy(false);
       setProgress(null);
@@ -133,7 +135,7 @@ export function PdfSplitTool() {
             onDrop={(e) => {
               e.preventDefault();
               if (e.dataTransfer.files?.[0]) {
-                loadFile(e.dataTransfer.files[0]);
+                void loadFile(e.dataTransfer.files[0]);
               }
             }}
             className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
@@ -158,16 +160,13 @@ export function PdfSplitTool() {
         {busy && <ProcessingState label={progress ?? "Loading PDF details…"} />}
 
         {/* Error message */}
-        {error && (
+        {error === "encrypted" ? (
+          <EncryptedPdfNotice />
+        ) : error ? (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
-            {error === "encrypted" ? (
-              <>
-                This PDF is password-protected. Please unlock it first using the{" "}
-                <Link href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</Link>.
-              </>
-            ) : error}
+            {error}
           </p>
-        )}
+        ) : null}
 
         {/* Pages Grid */}
         {pages.length > 0 && !busy && (

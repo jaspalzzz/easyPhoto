@@ -200,4 +200,20 @@ describe("parsePanFields", () => {
     expect(f.fathersName).toBe("MAKHAN LAL");
     expect(f.dob).toBe("09/10/2002");
   });
+
+  it("does not fill father's name with repeated OCR fragments from a weak bilingual read", () => {
+    const raw = [
+      "नाम / Name",
+      "TASHU",
+      "पिता का नाम / Father's Name",
+      "wir SE SE",
+      "जन्म की तारीख / Date of Birth",
+      "09/10/2002",
+    ].join("\n");
+
+    const f = parsePanFields(raw);
+    expect(f.name).toBe("TASHU");
+    expect(f.fathersName).toBe("");
+    expect(f.dob).toBe("09/10/2002");
+  });
 });

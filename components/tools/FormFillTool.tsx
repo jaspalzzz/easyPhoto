@@ -5,6 +5,8 @@ import { FileUp, Download, ShieldCheck, Loader2, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { downloadBlob } from "@/lib/download";
+import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
+import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
 
 interface FormField {
   name: string;
@@ -13,6 +15,7 @@ interface FormField {
 }
 
 async function loadPdfFormFields(file: File): Promise<FormField[]> {
+  await assertPdfDecryptable(file);
   const { PDFDocument } = await import("pdf-lib");
   const bytes = await file.arrayBuffer();
   const pdf = await PDFDocument.load(bytes, { ignoreEncryption: true });
@@ -25,6 +28,7 @@ async function loadPdfFormFields(file: File): Promise<FormField[]> {
 }
 
 async function fillAndExport(file: File, fields: FormField[]): Promise<Blob> {
+  await assertPdfDecryptable(file);
   const { PDFDocument } = await import("pdf-lib");
   const bytes = await file.arrayBuffer();
   const pdf = await PDFDocument.load(bytes, { ignoreEncryption: true });
@@ -71,9 +75,9 @@ export function FormFillTool() {
       setError("Please select a PDF file.");
       return;
     }
-    setFile(f);
     setError(null);
     setFields(null);
+    setFile(null);
     setLoading(true);
     try {
       const detected = await loadPdfFormFields(f);
@@ -82,10 +86,15 @@ export function FormFillTool() {
           "No fillable form fields found in this PDF. This tool works with AcroForm PDFs (e.g. government application forms). Regular text PDFs cannot be filled this way."
         );
       } else {
+        setFile(f);
         setFields(detected);
       }
-    } catch {
-      setError("Could not read this PDF. Make sure it is not corrupted or password-protected.");
+    } catch (err) {
+      if (err instanceof PdfEncryptedError) {
+        setError("encrypted");
+      } else {
+        setError("Could not read this PDF. Make sure it is not corrupted.");
+      }
     } finally {
       setLoading(false);
     }
@@ -114,8 +123,12 @@ export function FormFillTool() {
     try {
       const blob = await fillAndExport(file, fields);
       downloadBlob(blob, file.name.replace(/\.pdf$/i, "-filled.pdf"));
-    } catch {
-      setError("Failed to fill and export the PDF. Please try again.");
+    } catch (err) {
+      if (err instanceof PdfEncryptedError) {
+        setError("encrypted");
+      } else {
+        setError("Failed to fill and export the PDF. Please try again.");
+      }
     } finally {
       setFilling(false);
     }
@@ -163,7 +176,11 @@ export function FormFillTool() {
         </p>
       )}
 
-      {error && <p className="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</p>}
+      {error === "encrypted" ? (
+        <EncryptedPdfNotice />
+      ) : error ? (
+        <p className="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</p>
+      ) : null}
 
       {fields && fields.length > 0 && (
         <div className="space-y-4">

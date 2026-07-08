@@ -7,7 +7,7 @@ import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
-import { PdfEncryptedError } from "@/lib/pdfToImages";
+import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
 import {
   addPageNumbers,
   type PageNumberPosition,
@@ -40,6 +40,7 @@ export function PdfPageNumbersTool() {
   const [format, setFormat] = React.useState<PageNumberFormat>("n");
   const [startAt, setStartAt] = React.useState(1);
   const [busy, setBusy] = React.useState(false);
+  const [checking, setChecking] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [done, setDone] = React.useState(false);
   const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
@@ -53,20 +54,30 @@ export function PdfPageNumbersTool() {
     const payload = consumeWorkflowPayload();
     if (payload) {
       const f = new File([payload.blob], payload.filename, { type: "application/pdf" });
-      pick(f);
+      void pick(f);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const pick = (f: File) => {
+  const pick = async (f: File) => {
     if (f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) {
       setError("Please select a valid PDF file.");
       return;
     }
+    setChecking(true);
     setError(null);
     setDone(false);
     setResultBlob(null);
-    setFile(f);
+    setFile(null);
+    try {
+      await assertPdfDecryptable(f);
+      setFile(f);
+    } catch (err) {
+      console.error(err);
+      if (err instanceof PdfEncryptedError) setError("encrypted");
+      else setError("Could not read this PDF. Make sure it is a valid, unencrypted file.");
+    } finally {
+      setChecking(false);
+    }
   };
 
   const run = async () => {
@@ -99,7 +110,7 @@ export function PdfPageNumbersTool() {
   return (
     <Card>
       <CardContent className="space-y-5 p-6">
-        {!file && !busy && (
+        {!file && !busy && !checking && (
           <div
             role="button"
             tabIndex={0}
@@ -117,7 +128,7 @@ export function PdfPageNumbersTool() {
             }}
             onDrop={(e) => {
               e.preventDefault();
-              if (e.dataTransfer.files?.[0]) pick(e.dataTransfer.files[0]);
+              if (e.dataTransfer.files?.[0]) void pick(e.dataTransfer.files[0]);
             }}
             className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
           >
@@ -132,7 +143,10 @@ export function PdfPageNumbersTool() {
               type="file"
               accept="application/pdf"
               className="hidden"
-              onChange={(e) => e.target.files?.[0] && pick(e.target.files[0])}
+              onChange={(e) => {
+                if (e.target.files?.[0]) void pick(e.target.files[0]);
+                e.target.value = "";
+              }}
             />
           </div>
         )}
@@ -145,6 +159,7 @@ export function PdfPageNumbersTool() {
           </p>
         ) : null}
 
+        {checking && <ProcessingState label="Checking PDF…" />}
         {busy && <ProcessingState label="Adding page numbers…" />}
 
         {file && !busy && (

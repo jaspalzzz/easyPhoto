@@ -42,6 +42,7 @@ export async function splitPdf(
 ): Promise<Blob> {
   if (selectedPages.length === 0)
     throw new Error("No pages selected to extract.");
+  await assertPdfDecryptable(file);
   const { PDFDocument } = await import("pdf-lib");
 
   onProgress?.("Extracting selected pages…");

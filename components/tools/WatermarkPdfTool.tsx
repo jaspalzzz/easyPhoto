@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
-import { PdfEncryptedError } from "@/lib/pdfToImages";
+import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
 import { watermarkPdf } from "@/lib/pdfAnnotate";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
@@ -22,6 +22,7 @@ export function WatermarkPdfTool() {
   const [opacity, setOpacity] = React.useState(22);
   const [angle, setAngle] = React.useState(45);
   const [busy, setBusy] = React.useState(false);
+  const [checking, setChecking] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [done, setDone] = React.useState(false);
   const [resultBlob, setResultBlob] = React.useState<Blob | null>(null);
@@ -31,15 +32,26 @@ export function WatermarkPdfTool() {
     track({ name: "tool_view", tool: "watermark-pdf" });
   }, []);
 
-  const pick = (f: File) => {
+  const pick = async (f: File) => {
     if (f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) {
       setError("Please select a valid PDF file.");
       return;
     }
+    setChecking(true);
     setError(null);
     setDone(false);
     setResultBlob(null);
-    setFile(f);
+    setFile(null);
+    try {
+      await assertPdfDecryptable(f);
+      setFile(f);
+    } catch (err) {
+      console.error(err);
+      if (err instanceof PdfEncryptedError) setError("encrypted");
+      else setError("Could not read this PDF. Make sure it is a valid, unencrypted file.");
+    } finally {
+      setChecking(false);
+    }
   };
 
   const run = async () => {
@@ -72,7 +84,7 @@ export function WatermarkPdfTool() {
   return (
     <Card>
       <CardContent className="space-y-5 p-6">
-        {!file && !busy && (
+        {!file && !busy && !checking && (
           <div
             role="button"
             tabIndex={0}
@@ -90,7 +102,7 @@ export function WatermarkPdfTool() {
             }}
             onDrop={(e) => {
               e.preventDefault();
-              if (e.dataTransfer.files?.[0]) pick(e.dataTransfer.files[0]);
+              if (e.dataTransfer.files?.[0]) void pick(e.dataTransfer.files[0]);
             }}
             className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
           >
@@ -105,7 +117,10 @@ export function WatermarkPdfTool() {
               type="file"
               accept="application/pdf"
               className="hidden"
-              onChange={(e) => e.target.files?.[0] && pick(e.target.files[0])}
+              onChange={(e) => {
+                if (e.target.files?.[0]) void pick(e.target.files[0]);
+                e.target.value = "";
+              }}
             />
           </div>
         )}
@@ -118,6 +133,7 @@ export function WatermarkPdfTool() {
           </p>
         ) : null}
 
+        {checking && <ProcessingState label="Checking PDF…" />}
         {busy && <ProcessingState label="Adding watermark…" />}
 
         {file && !busy && (

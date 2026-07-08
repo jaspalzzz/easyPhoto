@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { Download, FileUp, ShieldCheck, ChevronLeft, ChevronRight, PenLine } from "lucide-react";
 import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
 import { ProcessingState } from "@/components/site/ProcessingState";
@@ -9,10 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { pdfNextSteps } from "@/components/site/pdfNextSteps";
-import { pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
+import { assertPdfDecryptable, pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
 import { downloadBlob } from "@/lib/download";
 import { SignaturePad } from "./SignaturePad";
 import { SignatureOverlay, type Placement } from "./SignatureOverlay";
+import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
 import type { SignaturePlacement } from "@/lib/pdfEdit";
 
 interface PlacedSignature {
@@ -57,15 +57,15 @@ export function SignPdfTool() {
     const payload = consumeWorkflowPayload();
     if (payload) {
       const f = new File([payload.blob], payload.filename, { type: "application/pdf" });
-      loadPdf(f);
+      void loadPdf(f);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      loadPdf(e.target.files[0]);
+      void loadPdf(e.target.files[0]);
     }
+    e.target.value = "";
   };
 
   const loadPdf = async (file: File) => {
@@ -79,29 +79,13 @@ export function SignPdfTool() {
     canvasesRef.current = [];
     setPageCount(0);
     setSignaturesPerPage({});
-    setPdfFile(file);
+    setPdfFile(null);
     setActivePageIndex(0);
-    setProgress("Loading PDF pages...");
+    setResultBlob(null);
+    setProgress("Checking PDF...");
     try {
-      // Fix #3: detect password-protected PDFs before attempting to render
-      const pdfjs = await import("pdfjs-dist");
-      pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-        "pdfjs-dist/build/pdf.worker.min.mjs",
-        import.meta.url
-      ).toString();
-      const data = await file.arrayBuffer();
-      try {
-        const probe = await pdfjs.getDocument({ data }).promise;
-        await probe.destroy();
-      } catch (encErr) {
-        if (encErr instanceof Error && encErr.name === "PasswordException") {
-          setError("encrypted");
-          setPdfFile(null);
-          return;
-        }
-        throw encErr;
-      }
-
+      await assertPdfDecryptable(file);
+      setProgress("Loading PDF pages...");
       const canvases = await pdfToCanvases(file, {
         scale: 1.5, // 150 DPI is highly readable and fits on screen
         maxPages: 50,
@@ -110,6 +94,7 @@ export function SignPdfTool() {
         },
       });
       canvasesRef.current = canvases;
+      setPdfFile(file);
       setPageCount(canvases.length);
     } catch (err: unknown) {
       console.error(err);
@@ -216,7 +201,8 @@ export function SignPdfTool() {
       downloadBlob(pdfBlob, `${baseName}-signed.pdf`);
     } catch (err) {
       console.error(err);
-      setError("Failed to compile signed PDF. Please try again.");
+      if (err instanceof PdfEncryptedError) setError("encrypted");
+      else setError("Failed to compile signed PDF. Please try again.");
     } finally {
       setBusy(false);
       setProgress(null);
@@ -261,7 +247,7 @@ export function SignPdfTool() {
             onDrop={(e) => {
               e.preventDefault();
               if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                loadPdf(e.dataTransfer.files[0]);
+                void loadPdf(e.dataTransfer.files[0]);
               }
             }}
             className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
@@ -283,16 +269,13 @@ export function SignPdfTool() {
           </div>
         )}
 
-        {error && (
+        {error === "encrypted" ? (
+          <EncryptedPdfNotice />
+        ) : error ? (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
-            {error === "encrypted" ? (
-              <>
-                This PDF is password-protected. Please unlock it first using the{" "}
-                <Link href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</Link>.
-              </>
-            ) : error}
+            {error}
           </p>
-        )}
+        ) : null}
 
         {pdfFile && pageCount > 0 && (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_280px]">

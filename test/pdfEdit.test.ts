@@ -2,6 +2,9 @@ import { describe, it, expect, vi } from "vitest";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { mergePdfs, splitPdf } from "@/lib/pdfMergeSplit";
 import { reorderPdf, signPdf } from "@/lib/pdfEdit";
+import { addPageNumbers, watermarkPdf } from "@/lib/pdfAnnotate";
+import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
+import { getDocument } from "pdfjs-dist";
 
 // pdfjs-dist tries to set up a Web Worker via an http: URL which Node's ESM
 // loader rejects. The PDF tools under test (mergePdfs, splitPdf, reorderPdf,
@@ -65,6 +68,103 @@ const PNG_1x1 =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
 
 describe("PDF tools — lossless via pdf-lib", () => {
+  it("rejects password-protected PDFs before pdf-lib can emit broken output", async () => {
+    vi.mocked(getDocument).mockImplementationOnce(() => ({
+      promise: new Promise((_, reject) => {
+        queueMicrotask(() => reject({ name: "PasswordException" }));
+      }),
+    }) as ReturnType<typeof getDocument>);
+
+    const file = new File(["%PDF-1.7"], "locked.pdf", { type: "application/pdf" });
+
+    await expect(assertPdfDecryptable(file)).rejects.toBeInstanceOf(PdfEncryptedError);
+  });
+
+  it("does not probe with pdf-lib's own load — would reject owner-only encrypted PDFs it can't distinguish from user-password ones", async () => {
+    // Regression guard: assertPdfDecryptable must reject ONLY on a pdfjs
+    // PasswordException (mocked above to succeed by default, simulating a PDF
+    // pdfjs can open — including an owner-only encrypted one, since pdfjs only
+    // raises PasswordException when an *open* password is required).
+    //
+    // It must NOT additionally call pdf-lib's PDFDocument.load with
+    // ignoreEncryption:false as a second check: pdf-lib flags a PDF as
+    // "encrypted" purely from the presence of a trailer /Encrypt dictionary
+    // (PDFDocument.js: `isEncrypted = !!context.lookup(Encrypt)`), with zero
+    // concept of owner-only vs user-password encryption. A second check there
+    // would reject every owner-only-encrypted PDF too (print/copy-restricted
+    // but openable with no password — common for government/bank forms), even
+    // though pdfjs opens it fine. Asserting the spy was never called catches a
+    // reintroduction of that second check even with a garbage/unparsable test
+    // fixture (which wouldn't otherwise trip pdf-lib's real encryption check).
+    const loadSpy = vi.spyOn(PDFDocument, "load");
+    const file = new File(["%PDF-1.7"], "owner-encrypted.pdf", { type: "application/pdf" });
+
+    await expect(assertPdfDecryptable(file)).resolves.toBeUndefined();
+    expect(loadSpy).not.toHaveBeenCalled();
+
+    loadSpy.mockRestore();
+  });
+
+  it("signPdf rejects password-protected PDFs before export", async () => {
+    vi.mocked(getDocument).mockImplementationOnce(() => ({
+      promise: new Promise((_, reject) => {
+        queueMicrotask(() => reject({ name: "PasswordException" }));
+      }),
+    }) as ReturnType<typeof getDocument>);
+
+    const file = new File(["%PDF-1.7"], "locked.pdf", { type: "application/pdf" });
+
+    await expect(signPdf(file, {})).rejects.toBeInstanceOf(PdfEncryptedError);
+  });
+
+  it("reorderPdf rejects password-protected PDFs before export", async () => {
+    vi.mocked(getDocument).mockImplementationOnce(() => ({
+      promise: new Promise((_, reject) => {
+        queueMicrotask(() => reject({ name: "PasswordException" }));
+      }),
+    }) as ReturnType<typeof getDocument>);
+
+    const file = new File(["%PDF-1.7"], "locked.pdf", { type: "application/pdf" });
+
+    await expect(reorderPdf(file, [{ originalIndex: 0, rotation: 90 }])).rejects.toBeInstanceOf(PdfEncryptedError);
+  });
+
+  it("splitPdf rejects password-protected PDFs before export", async () => {
+    vi.mocked(getDocument).mockImplementationOnce(() => ({
+      promise: new Promise((_, reject) => {
+        queueMicrotask(() => reject({ name: "PasswordException" }));
+      }),
+    }) as ReturnType<typeof getDocument>);
+
+    const file = new File(["%PDF-1.7"], "locked.pdf", { type: "application/pdf" });
+
+    await expect(splitPdf(file, [0])).rejects.toBeInstanceOf(PdfEncryptedError);
+  });
+
+  it("watermarkPdf rejects password-protected PDFs before export", async () => {
+    vi.mocked(getDocument).mockImplementationOnce(() => ({
+      promise: new Promise((_, reject) => {
+        queueMicrotask(() => reject({ name: "PasswordException" }));
+      }),
+    }) as ReturnType<typeof getDocument>);
+
+    const file = new File(["%PDF-1.7"], "locked.pdf", { type: "application/pdf" });
+
+    await expect(watermarkPdf(file, { text: "DRAFT" })).rejects.toBeInstanceOf(PdfEncryptedError);
+  });
+
+  it("addPageNumbers rejects password-protected PDFs before export", async () => {
+    vi.mocked(getDocument).mockImplementationOnce(() => ({
+      promise: new Promise((_, reject) => {
+        queueMicrotask(() => reject({ name: "PasswordException" }));
+      }),
+    }) as ReturnType<typeof getDocument>);
+
+    const file = new File(["%PDF-1.7"], "locked.pdf", { type: "application/pdf" });
+
+    await expect(addPageNumbers(file)).rejects.toBeInstanceOf(PdfEncryptedError);
+  });
+
   it("merge keeps total page count and stays vector (small, not rasterized)", async () => {
     const out = await mergePdfs([
       await makePdfFile(["A1", "A2"]),

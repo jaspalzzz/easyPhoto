@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import {
   Download,
   FileUp,
@@ -19,8 +18,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { pdfNextSteps } from "@/components/site/pdfNextSteps";
-import { pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
+import { assertPdfDecryptable, pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
 import { downloadBlob } from "@/lib/download";
+import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
 
 // Fix 1: originalCanvas removed — canvases live in canvasesRef, not in state.
 interface PageItem {
@@ -86,8 +86,9 @@ export function PdfReorderTool() {
 
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      loadPdf(e.target.files[0]);
+      void loadPdf(e.target.files[0]);
     }
+    e.target.value = "";
   };
 
   const loadPdf = async (file: File) => {
@@ -101,10 +102,13 @@ export function PdfReorderTool() {
     // Fix 1: clear canvasesRef on reload.
     canvasesRef.current = [];
     setPendingDelete(new Set());
-    setSrcFile(file);
-    setFileName(file.name);
-    setProgress("Loading PDF pages...");
+    setSrcFile(null);
+    setFileName("");
+    setResultBlob(null);
+    setProgress("Checking PDF...");
     try {
+      await assertPdfDecryptable(file);
+      setProgress("Loading PDF pages...");
       const canvases = await pdfToCanvases(file, {
         scale: 1.5,
         maxPages: 100, // Allow up to 100 pages for reordering/rotation
@@ -115,6 +119,8 @@ export function PdfReorderTool() {
 
       // Fix 1: store canvases in ref, not in state.
       canvasesRef.current = canvases;
+      setSrcFile(file);
+      setFileName(file.name);
 
       const items: PageItem[] = canvases.map((canvas, index) => {
         const thumbUrl = makeThumbnail(canvas);
@@ -134,6 +140,7 @@ export function PdfReorderTool() {
       } else {
         setError((err instanceof Error && err.message) || "Could not load the PDF. Ensure it is not encrypted or corrupted.");
       }
+      setSrcFile(null);
       setFileName("");
     } finally {
       setBusy(false);
@@ -225,7 +232,8 @@ export function PdfReorderTool() {
       downloadBlob(pdfBlob, `${baseName}-modified.pdf`);
     } catch (err) {
       console.error(err);
-      setError("Could not compile the PDF. Please try again.");
+      if (err instanceof PdfEncryptedError) setError("encrypted");
+      else setError("Could not compile the PDF. Please try again.");
     } finally {
       setBusy(false);
       setProgress(null);
@@ -265,7 +273,7 @@ export function PdfReorderTool() {
             onDrop={(e) => {
               e.preventDefault();
               if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                loadPdf(e.dataTransfer.files[0]);
+                void loadPdf(e.dataTransfer.files[0]);
               }
             }}
             className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border border-dashed border-hairline-strong bg-paper p-8 text-center transition-colors hover:bg-accent/40"
@@ -287,16 +295,13 @@ export function PdfReorderTool() {
           </div>
         )}
 
-        {error && (
+        {error === "encrypted" ? (
+          <EncryptedPdfNotice />
+        ) : error ? (
           <p className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-sm text-destructive">
-            {error === "encrypted" ? (
-              <>
-                This PDF is password-protected. Please unlock it first using the{" "}
-                <Link href="/tools/unlock-pdf" className="underline font-medium">Unlock PDF tool</Link>.
-              </>
-            ) : error}
+            {error}
           </p>
-        )}
+        ) : null}
 
         {pages.length > 0 && (
           <div className="space-y-4">
