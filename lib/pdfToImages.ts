@@ -43,12 +43,19 @@ export class PdfEncryptedError extends Error {
  * then disposes. The lossless pdf-lib tools (watermark, page numbers, merge) use
  * this BEFORE pdf-lib's load({ ignoreEncryption: true }), which otherwise accepts
  * a locked PDF it can't decrypt and emits a broken/blank/encrypted file.
+ * Owner-only encrypted PDFs (no user password) do NOT throw — pdfjs reads them.
+ *
+ * Deliberately does NOT also probe with pdf-lib's own PDFDocument.load(). pdf-lib
+ * flags a PDF as "encrypted" purely from the presence of a trailer /Encrypt
+ * dictionary (see PDFDocument.js: `isEncrypted = !!context.lookup(Encrypt)`) —
+ * it has no concept of owner-only vs user-password encryption, so a second
+ * ignoreEncryption:false check there would reject every owner-only-encrypted
+ * PDF too (common for government/bank forms: print/copy-restricted but openable
+ * with no password), even though pdfjs opens it fine and pdf-lib's own
+ * ignoreEncryption:true load handles it correctly. Keep this pdfjs-only.
  */
 export async function assertPdfDecryptable(file: File): Promise<void> {
-  const [pdfjs, { PDFDocument }] = await Promise.all([
-    import("pdfjs-dist"),
-    import("pdf-lib"),
-  ]);
+  const pdfjs = await import("pdfjs-dist");
   pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     "pdfjs-dist/build/pdf.worker.min.mjs",
     import.meta.url
@@ -65,7 +72,7 @@ export async function assertPdfDecryptable(file: File): Promise<void> {
     throw err;
   }
   await pdf.destroy();
-
+  const { PDFDocument } = await import("pdf-lib");
   try {
     await PDFDocument.load(data, { ignoreEncryption: false });
   } catch (err: unknown) {
