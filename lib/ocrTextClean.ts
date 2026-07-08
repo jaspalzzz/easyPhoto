@@ -8,7 +8,7 @@
  * so positional heuristics work correctly).
  */
 
-const RE_NO_ALPHANUM = /^[^A-Za-z0-9]+$/;
+const RE_NO_ALPHANUM = /^[^\p{L}\p{N}]+$/u;
 const RE_BORDER = /^[-—–_=~•\.]{2,}$/;
 const RE_STRAY_EDGE = /^[\|\/\\\[\]{}<>]+|[\|\/\\\[\]{}<>]+$/g;
 

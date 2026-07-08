@@ -5,6 +5,8 @@ import { FileUp, Copy, Download, ShieldCheck, Loader2, CheckCircle2, FileText } 
 import { Button } from "@/components/ui/button";
 import { extractTextFromPdf } from "@/lib/pdfToText";
 import { track } from "@/lib/analytics";
+import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
+import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
 
 export function PdfToTextTool() {
   const [file, setFile] = React.useState<File | null>(null);
@@ -21,20 +23,32 @@ export function PdfToTextTool() {
     track({ name: "tool_view", tool: "pdf-to-text" });
   }, []);
 
-  const pick = (f: File) => {
+  const pick = async (f: File) => {
     if (f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) {
       setError("Please select a PDF file.");
       return;
     }
-    setFile(f);
     setError(null);
     setResult(null);
     setProgress(0);
+    setFile(null);
+    setBusy(true);
+    setProgressLabel("Checking PDF…");
+    try {
+      await assertPdfDecryptable(f);
+      setFile(f);
+    } catch (err) {
+      if (err instanceof PdfEncryptedError) setError("encrypted");
+      else setError("Could not read this PDF. Make sure it is a valid, unencrypted file.");
+    } finally {
+      setBusy(false);
+      setProgressLabel("");
+    }
   };
 
   const onInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
-    if (f) pick(f);
+    if (f) void pick(f);
     e.target.value = "";
   };
 
@@ -42,7 +56,7 @@ export function PdfToTextTool() {
     e.preventDefault();
     setDragging(false);
     const f = e.dataTransfer.files[0];
-    if (f) pick(f);
+    if (f) void pick(f);
   };
 
   const extract = async () => {
@@ -126,9 +140,11 @@ export function PdfToTextTool() {
         )}
       </div>
 
-      {error && (
+      {error === "encrypted" ? (
+        <EncryptedPdfNotice />
+      ) : error ? (
         <p className="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</p>
-      )}
+      ) : null}
 
       {busy && (
         <div className="space-y-2">

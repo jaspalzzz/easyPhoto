@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { FileUp, ShieldCheck, Loader2, BadgeCheck, AlertTriangle } from "lucide-react";
+import { FileUp, ShieldCheck, Loader2, BadgeCheck, AlertTriangle, RefreshCw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { recognizeFileDualPass } from "@/lib/ocr";
 import { parsePanFields, type PanFields } from "@/lib/panParse";
@@ -59,6 +59,17 @@ export function PanCardOcrTool() {
     if (f) pick(f);
   };
 
+  const clearSelection = () => {
+    if (preview) URL.revokeObjectURL(preview);
+    setFile(null);
+    setPreview(null);
+    setError(null);
+    setRawText(null);
+    setFields(null);
+    setConfidence(null);
+    setProgress(0);
+  };
+
   const run = async () => {
     if (!file) return;
     setBusy(true);
@@ -96,11 +107,11 @@ export function PanCardOcrTool() {
       </div>
 
       <div
-        role="button"
-        tabIndex={0}
-        aria-label="Upload PAN card image"
-        onClick={() => inputRef.current?.click()}
-        onKeyDown={(e) => e.key === "Enter" && inputRef.current?.click()}
+        role={preview ? undefined : "button"}
+        tabIndex={preview ? undefined : 0}
+        aria-label={preview ? undefined : "Upload PAN card image"}
+        onClick={preview ? undefined : () => inputRef.current?.click()}
+        onKeyDown={preview ? undefined : (e) => e.key === "Enter" && inputRef.current?.click()}
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
@@ -110,8 +121,38 @@ export function PanCardOcrTool() {
       >
         <input ref={inputRef} type="file" accept={IMAGE_ACCEPT} className="hidden" onChange={onInput} />
         {preview ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={preview} alt="PAN card preview" className="max-h-[200px] w-auto object-contain" />
+          <div className="flex w-full flex-col items-center gap-3 p-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={preview} alt="PAN card preview" className="max-h-[220px] w-auto object-contain" />
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={busy}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  inputRef.current?.click();
+                }}
+              >
+                <RefreshCw className="mr-2 h-3.5 w-3.5" />
+                Replace image
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={busy}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  clearSelection();
+                }}
+              >
+                <X className="mr-2 h-3.5 w-3.5" />
+                Remove
+              </Button>
+            </div>
+          </div>
         ) : (
           <>
             <FileUp className="h-8 w-8 text-muted-foreground" />

@@ -43,10 +43,12 @@ export class PdfEncryptedError extends Error {
  * then disposes. The lossless pdf-lib tools (watermark, page numbers, merge) use
  * this BEFORE pdf-lib's load({ ignoreEncryption: true }), which otherwise accepts
  * a locked PDF it can't decrypt and emits a broken/blank/encrypted file.
- * Owner-only encrypted PDFs (no user password) do NOT throw — pdfjs reads them.
  */
 export async function assertPdfDecryptable(file: File): Promise<void> {
-  const pdfjs = await import("pdfjs-dist");
+  const [pdfjs, { PDFDocument }] = await Promise.all([
+    import("pdfjs-dist"),
+    import("pdf-lib"),
+  ]);
   pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     "pdfjs-dist/build/pdf.worker.min.mjs",
     import.meta.url
@@ -56,12 +58,22 @@ export async function assertPdfDecryptable(file: File): Promise<void> {
   try {
     pdf = await pdfjs.getDocument({ data }).promise;
   } catch (err: unknown) {
-    if (err instanceof Error && err.name === "PasswordException") {
+    const name = err instanceof Error ? err.name : (err as { name?: string })?.name;
+    if (name === "PasswordException") {
       throw new PdfEncryptedError();
     }
     throw err;
   }
   await pdf.destroy();
+
+  try {
+    await PDFDocument.load(data, { ignoreEncryption: false });
+  } catch (err: unknown) {
+    if (err instanceof Error && /encrypted/i.test(err.message)) {
+      throw new PdfEncryptedError();
+    }
+    throw err;
+  }
 }
 
 export async function pdfToCanvases(
