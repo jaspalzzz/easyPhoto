@@ -407,6 +407,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "NVSP (voters.eci.gov.in) requires a JPEG photo between 10 KB and 200 KB. Compress to under 100 KB to clear all state portals. Background, pixel size, and form-by-form guide.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
+    updatedISO: "2026-07-08",
     excerpt:
       "The ECI portal accepts photos between 10 KB and 200 KB, but state ERO portals can be stricter. Here's every spec for Form 6, 6A, 8 and why photos get rejected.",
     readMins: 6,

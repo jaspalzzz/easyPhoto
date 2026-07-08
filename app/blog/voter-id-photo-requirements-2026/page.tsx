@@ -42,7 +42,7 @@ export default function Page() {
     <BlogPostLayout
       slug={post.slug}
       faqItems={FAQ_ITEMS}
-      ctaHref="/voter-id-photo-resizer/"
+      ctaHref="/exam-requirements/voter-id/"
       ctaLabel="Resize voter ID photo free"
     >
       <p>
@@ -129,7 +129,7 @@ export default function Page() {
 
       <p>
         The{" "}
-        <Link href="/voter-id-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/voter-id/" className="text-brand underline">
           voter ID photo resizer
         </Link>{" "}
         on easyPhoto compresses your photo to exactly 1–2&nbsp;KB under the 200&nbsp;KB
@@ -281,7 +281,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Crop and resize:</strong> Use the{" "}
-          <Link href="/voter-id-photo-resizer/" className="text-brand underline">
+          <Link href="/exam-requirements/voter-id/" className="text-brand underline">
             voter ID photo resizer
           </Link>{" "}
           to crop to a portrait rectangle and compress to under 100&nbsp;KB in JPEG
@@ -335,7 +335,12 @@ export default function Page() {
       </table>
 
       <p>
-        For PAN card specs, see the{" "}
+        The full side-by-side for all four IDs is in the{" "}
+        <Link href="/blog/indian-government-id-photo-requirements/" className="text-brand underline">
+          Indian government ID photo requirements
+        </Link>{" "}
+        guide — one reference for the exact size and KB limit of every portal. For
+        PAN card specs, see the{" "}
         <Link href="/blog/pan-card-photo-size/" className="text-brand underline">
           PAN card photo size guide
         </Link>
