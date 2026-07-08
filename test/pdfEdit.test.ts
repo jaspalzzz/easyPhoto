@@ -80,17 +80,29 @@ describe("PDF tools — lossless via pdf-lib", () => {
     await expect(assertPdfDecryptable(file)).rejects.toBeInstanceOf(PdfEncryptedError);
   });
 
-  it("does not reject an owner-only encrypted PDF (no user password) that pdfjs can open", async () => {
-    // Regression guard: assertPdfDecryptable must only reject on a pdfjs
-    // PasswordException. It must NOT additionally probe with pdf-lib's own
-    // PDFDocument.load({ ignoreEncryption: false }) — pdf-lib flags a PDF as
-    // "encrypted" purely from the presence of a trailer /Encrypt dictionary,
-    // with no concept of owner-only vs user-password encryption, so that
-    // second check would reject print/copy-restricted-but-openable PDFs
-    // (common for government/bank forms) even though pdfjs opens them fine.
+  it("does not probe with pdf-lib's own load — would reject owner-only encrypted PDFs it can't distinguish from user-password ones", async () => {
+    // Regression guard: assertPdfDecryptable must reject ONLY on a pdfjs
+    // PasswordException (mocked above to succeed by default, simulating a PDF
+    // pdfjs can open — including an owner-only encrypted one, since pdfjs only
+    // raises PasswordException when an *open* password is required).
+    //
+    // It must NOT additionally call pdf-lib's PDFDocument.load with
+    // ignoreEncryption:false as a second check: pdf-lib flags a PDF as
+    // "encrypted" purely from the presence of a trailer /Encrypt dictionary
+    // (PDFDocument.js: `isEncrypted = !!context.lookup(Encrypt)`), with zero
+    // concept of owner-only vs user-password encryption. A second check there
+    // would reject every owner-only-encrypted PDF too (print/copy-restricted
+    // but openable with no password — common for government/bank forms), even
+    // though pdfjs opens it fine. Asserting the spy was never called catches a
+    // reintroduction of that second check even with a garbage/unparsable test
+    // fixture (which wouldn't otherwise trip pdf-lib's real encryption check).
+    const loadSpy = vi.spyOn(PDFDocument, "load");
     const file = new File(["%PDF-1.7"], "owner-encrypted.pdf", { type: "application/pdf" });
 
     await expect(assertPdfDecryptable(file)).resolves.toBeUndefined();
+    expect(loadSpy).not.toHaveBeenCalled();
+
+    loadSpy.mockRestore();
   });
 
   it("signPdf rejects password-protected PDFs before export", async () => {
