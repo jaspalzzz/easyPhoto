@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, ShieldCheck, AlertTriangle, ArrowRight } from "lucide-react";
+import { ExternalLink, ShieldCheck, AlertTriangle } from "lucide-react";
 import { PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
 import {
   getPortalSpec,
@@ -19,6 +19,7 @@ import { breadcrumbSchema, faqSchema, webPageSchema } from "@/lib/schema";
 import { Faq } from "@/components/site/Faq";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { AUTHOR } from "@/lib/author";
+import { PortalResizer } from "@/components/tools/PortalResizer";
 
 // One static page per exam (the cited Spec Database).
 export function generateStaticParams() {
@@ -285,27 +286,54 @@ export default async function Page({
         </section>
       )}
 
-      {/* Transactional CTAs — AI Overviews answer "what size"; we win "do it". */}
-      <section className="rounded-lg border border-brand/25 bg-brand-soft/20 p-5 sm:p-6">
-        <h2 className="text-base font-semibold tracking-tight">
-          Make a {spec.name.split(" (")[0]}-ready photo{sig ? <> &amp; signature</> : null}
-        </h2>
-        <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Resize and compress to these exact limits, free and in your browser — nothing is uploaded.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          <Link
-            href={`/tools/form-resizer/${exam}/`}
-            className="inline-flex items-center gap-1 rounded-md bg-cta px-3.5 py-2 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
-          >
-            Open the {spec.name.split(" (")[0]} resizer <ArrowRight className="h-4 w-4" />
-          </Link>
-          {sig && (
-            <Link href="/tools/exam-package/" className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50">
-              Photo + signature kit
-            </Link>
-          )}
+      {/* Transactional tool — embedded, not linked out. AI Overviews answer
+          "what size"; hosting the resizer on this indexed URL lets the page win
+          "do it" queries ("<exam> photo resizer") too. Previously this section
+          linked to /tools/form-resizer/{exam}/, which is noindexed — so the
+          transactional ranking had no indexable page to migrate to. The H1
+          stays "Photo … Size" (protects the informational rankings); this H2
+          carries the "resize" intent. */}
+      <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
+        <div>
+          <h2 className="text-base font-semibold tracking-tight">
+            Resize your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null} to the exact size
+          </h2>
+          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Compress to these exact limits, free and in your browser — nothing is uploaded.
+          </p>
         </div>
+
+        <PortalResizer portalId={exam} />
+
+        {spec.requiresNameDate && (
+          <div className="rounded-lg border border-amber-300 bg-amber-50/70 p-4 dark:border-amber-800 dark:bg-amber-950/30">
+            <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+              This form needs your name &amp; date on the photo
+            </h3>
+            <p className="mt-1 text-sm leading-relaxed text-amber-800 dark:text-amber-300">
+              {spec.name.split(" (")[0]} requires the candidate&apos;s name and the
+              date of photography printed on the photo itself. After sizing it here,
+              add the strip with the{" "}
+              <Link
+                href="/tools/photo-with-name-date/"
+                className="font-medium underline underline-offset-2"
+              >
+                Photo with Name &amp; Date tool
+              </Link>
+              .
+            </p>
+          </div>
+        )}
+
+        {sig && (
+          <p className="text-sm text-muted-foreground">
+            Prefer a guided flow?{" "}
+            <Link href="/tools/exam-package/" className="font-medium text-brand hover:underline">
+              The photo + signature kit
+            </Link>{" "}
+            walks both documents through in one place.
+          </p>
+        )}
       </section>
 
       {/* Common rejection reasons — unique, useful, links the requirement to the fix */}
