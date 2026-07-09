@@ -1,447 +1,224 @@
 {
-  "domain": "easyphoto.in",
-  "audit_date": "2026-06-23",
-  "prior_audit_date": "2026-06-21",
-  "auditor": "Claude SEO — 8 specialist agents (Technical, Content, Schema, Sitemap, Google API, GEO, Backlinks, SXO)",
-  "stack": "Next.js 15 static export · Cloudflare Pages · India-primary market",
-  "google_api_tier": 1,
-  "backlink_tier": 0,
-  "domain_age_days": 17,
-  "domain_registered": "2026-06-06",
-  "crux_eligible": false,
-  "note": "Prior audit (2026-06-21) showed 81/100 using estimated PSI data. This audit uses live PSI run revealing actual mobile LCP of 10,501 ms (POOR), dropping technical and performance scores significantly.",
-
   "summary": {
-    "health_score": 61,
-    "prior_score": 81,
-    "delta": -20,
-    "delta_note": "Score drop reflects actual PSI data (mobile LCP 10,501 ms) vs June-21 estimate; site conditions unchanged.",
-    "business_type": "SaaS Tool — Document Photo & Form-Resize for India",
+    "health_score": 72,
+    "business_type": "Document-photo / PDF / signature utility SaaS (India-first, free, in-browser/no-upload)",
     "top_findings": [
-      "Mobile LCP 10,501 ms — POOR (4.2× threshold); 3 unoptimised PNG images = 2,076 KB above the fold",
-      "Exam pages returning 404 — entire exam keyword cluster (14/100 SXO score) invisible to Google",
-      "/india/ URL returns hard 404; needs 301 to /india-passport-photo-maker/",
-      "/blog/ hub page never crawled by Googlebot — no inbound link from any regularly-crawled page",
-      "Zero meta descriptions across all audited pages — reduces CTR and AI citation quality"
+      "Corrected prior baseline error: 'restore Disallow: /_next/' recommendation was wrong — that removal (2026-06-26) was a deliberate, correct fix for render-based indexing, not a regression.",
+      "Page-type framing gap on /exam-requirements/{exam}/: SERP consensus for '{exam} photo resizer' is ~90% Tool/Interactive; page title/H1 still read spec-first ('Photo Size') even after embedding the actual resizer tool. SXO verdict moved CRITICAL -> MEDIUM, not ALIGNED.",
+      "Zero outbound government-portal citation links on all 3 recent/new blog posts despite each claiming verification against an official source.",
+      "/tools/sign-image/ has zero images despite accelerating GSC demand (257 impressions, up from ~120) for 'sign on image'.",
+      "12 of 19 site-wide raster images remain unconverted PNGs (500-820 KB); hero/LCP fix was scoped narrowly and didn't extend to the rest of the inventory."
     ],
     "quick_wins": [
-      "Convert hero PNGs to WebP — expected mobile LCP drop from 10,501 ms to ~2,200 ms (GOOD)",
-      "Add /blog/ to site navigation — fixes Google's /blog/ indexation failure, zero content changes",
-      "301 redirect /india/ → /india-passport-photo-maker/ in next.config.js",
-      "Add <link rel='preload' as='image' fetchpriority='high'> for LCP image — ~300 ms further gain",
-      "Add meta descriptions to top 5 pages — immediate CTR and AI citation improvement"
+      "Add 1-2 outbound government-portal links per recent blog post (ECI/NSDL/Sarathi)",
+      "Add back-links from pan-card-photo-size and driving-licence-photo-size-sarathi to the Government ID pillar",
+      "Register a govId cluster entry in lib/blog.ts CLUSTERS map",
+      "Add a before/after image to /tools/sign-image/",
+      "Convert the remaining 12 oversized PNGs to WebP"
     ]
   },
-
-  "scores": {
-    "overall": 61,
-    "technical_seo": 63,
-    "content_quality": 71,
-    "on_page_seo": 67,
-    "schema": 62,
-    "performance_cwv": 38,
-    "ai_search_readiness": 64,
-    "images": 25,
-    "sitemap": 81,
-    "sxo_composite": 41,
-    "backlinks": null,
-    "backlinks_note": "INSUFFICIENT DATA — domain 17 days old, predates Common Crawl crawl; no Moz/Bing configured"
-  },
-
-  "weighted_calculation": {
-    "technical_seo": { "score": 63, "weight": 0.22, "contribution": 13.86 },
-    "content_quality": { "score": 71, "weight": 0.23, "contribution": 16.33 },
-    "on_page_seo": { "score": 67, "weight": 0.20, "contribution": 13.40 },
-    "schema": { "score": 62, "weight": 0.10, "contribution": 6.20 },
-    "performance_cwv": { "score": 38, "weight": 0.10, "contribution": 3.80 },
-    "ai_search_readiness": { "score": 64, "weight": 0.10, "contribution": 6.40 },
-    "images": { "score": 25, "weight": 0.05, "contribution": 1.25 },
-    "total": 61.24
-  },
-
-  "cwv": {
-    "source": "PageSpeed Insights Lab Data — CrUX ineligible (insufficient Chrome traffic at 17 days)",
-    "mobile": {
-      "performance_score": 70,
-      "lcp_ms": 10501,
-      "lcp_rating": "POOR",
-      "cls": 0.001,
-      "cls_rating": "GOOD",
-      "tbt_ms": 130,
-      "tbt_rating": "GOOD",
-      "fcp_ms": 1207,
-      "fcp_rating": "GOOD"
-    },
-    "desktop": {
-      "performance_score": 90,
-      "lcp_ms": 1921,
-      "lcp_rating": "GOOD",
-      "cls": 0.003,
-      "cls_rating": "GOOD",
-      "tbt_ms": 60,
-      "tbt_rating": "GOOD",
-      "fcp_ms": 390,
-      "fcp_rating": "GOOD"
-    },
-    "lcp_root_causes": [
-      "sample2_before.png 800 KB (uncompressed PNG, above fold)",
-      "sample4_before.png 713 KB (uncompressed PNG, above fold)",
-      "sample4_after.png 563 KB (uncompressed PNG, above fold)",
-      "No preload hint — late browser discovery",
-      "Render-blocking CSS 320-475 ms",
-      "AdSense main-thread 156 ms",
-      ".animate-scan-beam forced reflow 650 ms",
-      "Legacy JS polyfills 107-141 ms",
-      "DOM: 1,954 nodes"
-    ]
-  },
-
-  "gsc": {
-    "property": "sc-domain:easyphoto.in",
-    "window_days": 28,
-    "window": "2026-05-26 to 2026-06-20",
-    "total_clicks": 23,
-    "total_impressions": 589,
-    "avg_ctr_pct": 3.9,
-    "avg_position": 27.4,
-    "brand_clicks": 8,
-    "non_brand_clicks": 15,
-    "query_page_combinations": 190,
-    "top_opportunity_page": "/exam-requirements/army-agniveer/",
-    "top_opportunity_note": "3 queries at positions 3-9 with 6 total impressions and 0 clicks — highest single-page opportunity",
-    "sitemap_status": "Active, 0 errors, 240 URLs submitted 2026-06-09"
-  },
-
-  "indexation": {
-    "homepage": { "status": "Indexed", "last_crawled": "2026-06-22", "crawled_as": "Mobile" },
-    "passport_photo": { "status": "Indexed", "last_crawled": "2026-06-20", "crawled_as": "Mobile", "rich_results": "Breadcrumbs PASS" },
-    "india": { "status": "NEVER CRAWLED", "note": "URL returns 404 — canonical page is /india-passport-photo-maker/" },
-    "blog": { "status": "NEVER CRAWLED", "note": "Returns 200, in sitemap, but no inbound link from crawled pages" },
-    "www_split": true,
-    "www_split_note": "At least 3 page families indexed under www.easyphoto.in separately"
-  },
-
+  "domain": "easyphoto.in",
+  "audit_date": "2026-07-09",
+  "prior_audit_date": "2026-07-07",
+  "auditor": "Claude — 5 parallel specialist re-audits (Technical, Content/E-E-A-T, SXO, Cluster, Visual) + direct live verification of every finding",
   "categories": [
     {
       "name": "Technical SEO",
-      "score": 63,
-      "weight": 0.22,
+      "score": 82,
       "what_works": [
-        "TTFB 11-22 ms (Cloudflare Singapore edge — excellent for India)",
-        "CLS 0.001/0.003 GOOD on both devices",
-        "PSI SEO score 100/100 on both devices",
-        "Security: all 7 major headers present, 2-year HSTS preload-eligible",
-        "Static SSG — full content on first byte, no JS rendering for indexation",
-        "AI crawlers explicitly allowed in robots.txt (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot)",
-        "Breadcrumbs rich result passing (confirmed by Google URL Inspection API)",
-        "258/258 sitemap URLs return 200"
+        "All 3 redirects (www->apex, http->https, legacy voter-id URL) verified live, 301, single-hop",
+        "Sitemap 215/215 URLs return 200, trailing-slash/HTTPS/lowercase consistent, duplicate tiers correctly excluded",
+        "Duplicate tool tiers (/tools/form-resizer/*, /exam-resizer/*) correctly noindex,follow",
+        "howToSchema() null-emission bug fixed; BlogPosting.image now per-post; WebSite.SearchAction present",
+        "SSR/SSG confirmed: full content in raw HTML, no client-only rendering dependency"
       ],
       "findings": [
         {
-          "title": "Mobile LCP 10,501 ms — POOR",
-          "severity": "Critical",
-          "description": "4.2× above the 2,500 ms Good threshold. Root cause: 3 raw PNGs above the fold totaling 2,076 KB. Secondary causes: no preload hint, render-blocking CSS (320-475 ms), AdSense main thread (156 ms), non-composited animation (650 ms reflow), legacy JS polyfills (107-141 ms).",
-          "recommendation": "Convert hero images to WebP at display size (<50 KB each). Add fetchpriority=high preload in app/layout.tsx. Defer AdSense. Fix .animate-scan-beam to use transform/opacity.",
-          "effort": "Medium (2-4 hours)",
-          "expected_impact": "Mobile LCP from 10,501 ms to ~2,200 ms (GOOD)"
+          "title": "Prior baseline's 'restore /_next/ disallow' recommendation is incorrect",
+          "severity": "Info",
+          "description": "git log -p app/robots.ts confirms the disallow was deliberately removed 2026-06-26 with correct reasoning: Google needs CSS/JS access to render pages; blocking /_next/ can hurt render-based indexing and mobile-friendliness evaluation.",
+          "recommendation": "No action. Do not re-add the disallow. Baseline (2026-06-23) simply predates this correct fix."
         },
         {
-          "title": "/blog/ hub page never crawled by Googlebot",
-          "severity": "Critical",
-          "description": "Confirmed via URL Inspection API. Page returns 200, is in sitemap with correct lastmod, but has never been crawled. No inbound link from any regularly-crawled page (homepage nav, footer, or body content).",
-          "recommendation": "Add /blog/ link to site navigation header or footer. One link from homepage triggers Googlebot crawl within days.",
-          "effort": "Low (30 minutes)",
-          "expected_impact": "/blog/ indexed within 1-2 weeks; hub-and-spoke link flow restored"
-        },
-        {
-          "title": "www vs non-www canonicalization split",
-          "severity": "High",
-          "description": "GSC shows at least 3 page families indexed under both www.easyphoto.in and easyphoto.in simultaneously, diluting link equity.",
-          "recommendation": "Add Cloudflare Redirect Rule: www.easyphoto.in/* → easyphoto.in/$1 (301 permanent).",
-          "effort": "Low (15 minutes)",
-          "expected_impact": "Consolidated link equity within 30 days"
-        },
-        {
-          "title": "LCP image discovery — no preload hint",
-          "severity": "High",
-          "description": "Lighthouse lcp-discovery-insight: browser discovers LCP image only after HTML parse + render, not from <head>.",
-          "recommendation": "Add <link rel='preload' as='image' href='/images/sample4_before_[hash].webp' fetchpriority='high'> in app/layout.tsx.",
-          "effort": "Low (30 minutes)",
-          "expected_impact": "~300 ms LCP improvement on top of WebP conversion"
-        },
-        {
-          "title": ".animate-scan-beam non-composited animation",
-          "severity": "Medium",
-          "description": "Inline background-color animation causes 650 ms of forced style/layout work during page load.",
-          "recommendation": "Replace with transform/opacity animation to run on GPU compositor thread.",
-          "effort": "Low (1 hour)",
-          "expected_impact": "650 ms TBT reduction"
+          "title": "IndexNow not implemented",
+          "severity": "Low",
+          "description": "/indexnow.txt and /.well-known/indexnow both return 404, confirmed live.",
+          "recommendation": "Implement IndexNow key file for faster Bing/Yandex indexing of new content."
         }
       ]
     },
     {
       "name": "Content Quality",
-      "score": 71,
-      "weight": 0.23,
+      "score": 74,
       "what_works": [
-        "Blog posts have visible author (Jaspal Kumar) with credentials",
-        "Tool pages: accurate per-exam/country specs (dimensions, KB limits, background colour)",
-        "Privacy USP clearly stated on tool pages ('processed in your browser, never uploaded')",
-        "FAQPage schema with 5+ Q&A pairs",
-        "On-device processing angle is a genuine E-E-A-T differentiator"
+        "Government ID pillar: 1,601 words, 10 H2s, 4-portal comparison table, FAQ schema, real freshness gap (published 06-25, modified 07-08)",
+        "Voter ID spoke refresh shows genuine freshness signal (not same-day stamping)",
+        "Exam-requirement sample pages clear word-count floors even after resizer embed (voter-id 634w, ssc 636w, driving-licence 686w)",
+        "Consistent author/reviewer schema across all recent content"
       ],
       "findings": [
         {
-          "title": "/india/ URL returns 404",
-          "severity": "Critical",
-          "description": "Hard 404 on a URL that users expect and that may have inbound links. Correct URL is /india-passport-photo-maker/.",
-          "recommendation": "Add to next.config.js redirects: { source: '/india/', destination: '/india-passport-photo-maker/', permanent: true }. Audit all /{country}/ shorthand patterns.",
-          "effort": "Low (30 minutes)"
-        },
-        {
-          "title": "Blog post thin — /blog/why-exam-photo-signature-rejected/",
+          "title": "how-to-sign-on-image-online is thin for a blog post",
           "severity": "High",
-          "description": "1,030 words — 36% below the 1,600-word minimum for competitive exam queries. Sections are 80-100 words each.",
-          "recommendation": "Expand to 1,800+ words: per-rejection-reason section with step-by-step fix, spec table, and embedded tool CTA.",
-          "effort": "Medium (3-4 hours)"
+          "description": "661 words vs. the 1,500-word blog minimum; each of 7 H2 sections is 1-3 sentences with no stats or case examples.",
+          "recommendation": "Expand with a troubleshooting section or reclassify as a tool-support how-to (300+ word minimum, already clears that)."
         },
         {
-          "title": "Zero meta descriptions site-wide",
+          "title": "Zero outbound government-portal citation links",
           "severity": "High",
-          "description": "No <meta name='description'> on any of the 7 audited pages. Google and AI search engines fall back to arbitrary body text.",
-          "recommendation": "Add unique meta descriptions (150-160 chars) to all pages via Next.js metadata API. Start: homepage, /passport-photo/, /india-passport-photo-maker/, top 5 exam pages.",
-          "effort": "Medium (2-4 hours)"
+          "description": "No href to any .gov.in/nic.in/nsdl.com/utiitsl.com/eci.gov.in domain found in rendered HTML of the 3 recent/new posts, despite text claiming 'verified against the official source'.",
+          "recommendation": "Add 1-2 direct outbound links per post to the specific portal cited."
         },
         {
-          "title": "No author attribution on exam pages",
+          "title": "Author jobTitle undersells research/verification angle",
           "severity": "Medium",
-          "description": "Blog posts credit Jaspal Kumar; all 53 exam-requirements pages have no author. E-E-A-T inconsistency.",
-          "recommendation": "Add author byline + last-verified date to all exam-requirements pages.",
-          "effort": "Medium (half day)"
+          "description": "'easyPhoto developer & document-spec researcher' propagated to 3 more pages, same dilution flagged in the 06-23 baseline.",
+          "recommendation": "Rename to emphasize research/verification over development."
         }
       ]
     },
     {
       "name": "On-Page SEO",
-      "score": 67,
-      "weight": 0.20,
+      "score": 64,
       "what_works": [
-        "PSI SEO 100/100 on mobile and desktop",
-        "Canonical tags present and correct on indexed pages",
-        "Heading hierarchy correct (H1 → H2 → H3)"
+        "Titles/meta/canonicals/JSON-LD present on all sampled pages"
       ],
       "findings": [
         {
-          "title": "Meta descriptions missing site-wide",
-          "severity": "Critical",
-          "description": "Absent on all audited pages. Direct CTR and snippet quality impact.",
-          "recommendation": "Add via Next.js metadata export on each page.",
-          "effort": "Medium (2-4 hours)"
-        },
-        {
-          "title": "Army Agniveer page: 3 ranking queries, 0 clicks",
-          "severity": "High",
-          "description": "GSC: /exam-requirements/army-agniveer/ has 6 impressions at positions 3-9 across 3 queries (army photo, army signature, indian army passport photo) with zero clicks. Title/H1 mismatch.",
-          "recommendation": "Update title: 'Army Agniveer Photo & Signature Size Requirements 2026 | easyPhoto'. Add FAQPage schema using those 3 queries as questions.",
-          "effort": "Low (2 hours)"
-        },
-        {
-          "title": "ECI photo resize page at pos 6.5 with 6 impressions, 0 clicks",
-          "severity": "High",
-          "description": "Highest impression count in the positions 4-10 band. Title mismatch with query 'eci photo resize'.",
-          "recommendation": "Update H1 to: 'ECI Photo Resize for Voter ID — Free Online Tool'. Ensure meta description includes 'eci photo resize'.",
-          "effort": "Low (1 hour)"
+          "title": "Score reflects a template-level title-length check plus live GSC field data, not a regression",
+          "severity": "Medium",
+          "description": "Down from 67 (06-23 baseline) because this pass ran a check the baseline didn't (title overflow across the exam-page pattern) and confirmed a page-specific CTR failure with real field data.",
+          "recommendation": "Carried forward from the 07-02 on-page refresh; see that findings file for the specific overflow cases."
         }
       ]
     },
     {
-      "name": "Schema / Structured Data",
+      "name": "Schema",
       "score": 62,
-      "weight": 0.10,
       "what_works": [
-        "Organization, WebSite, SoftwareApplication schemas on homepage",
-        "FAQPage schema with 5 Q&A pairs",
-        "BlogPosting schema on all 24 blog posts (author, dates, inLanguage: en-IN)",
-        "BreadcrumbList on category and tool pages",
-        "Breadcrumbs rich result confirmed passing by Google"
+        "4 JSON-LD blocks confirmed live today on every sampled page (homepage, sign-image, voter-id, both new blog posts)"
       ],
       "findings": [
         {
-          "title": "BlogPosting.image using generic /og.png",
-          "severity": "High",
-          "description": "All 24 blog posts use the site-level /og.png as image. Google requires a unique per-post image for Article rich result eligibility.",
-          "recommendation": "Wire per-post OG image URL into BlogPosting.image property (already generated per-post — 1-line schema change).",
-          "effort": "Low (1 hour)"
-        },
-        {
-          "title": "WebSite.SearchAction missing",
-          "severity": "Medium",
-          "description": "No Sitelinks Searchbox markup.",
-          "recommendation": "Add SearchAction with target URL pattern to WebSite schema.",
-          "effort": "Low (1 hour)"
-        },
-        {
-          "title": "Organization.sameAs limited to Pinterest only",
-          "severity": "Medium",
-          "description": "Missing all other social profiles and directories.",
-          "recommendation": "Add YouTube, Instagram, LinkedIn once those accounts are created.",
-          "effort": "Low (ongoing)"
+          "title": "No deep schema validation run this cycle",
+          "severity": "Info",
+          "description": "Only live presence was re-verified; the 62/100 score is carried forward from the 2026-06-18 baseline.",
+          "recommendation": "Run a full schema validation pass (Rich Results Test / schema.org validator) on the next audit cycle."
         }
       ]
     },
     {
-      "name": "Performance (CWV)",
-      "score": 38,
-      "weight": 0.10,
+      "name": "Performance",
+      "score": 85,
       "what_works": [
-        "Desktop LCP 1,921 ms — GOOD",
-        "CLS GOOD on both devices",
-        "TBT GOOD on both devices",
-        "TTFB 11-22 ms"
+        "LCP 1,881ms (Good), CLS 0.00 (Good), INP 125ms (Good) — all 3 ranking Core Web Vitals pass on real CrUX field data",
+        "Hero image converted to WebP with fetchPriority=high + preload, addressing the prior Critical mobile-LCP finding at the source level"
       ],
       "findings": [
         {
-          "title": "Mobile LCP 10,501 ms — POOR",
-          "severity": "Critical",
-          "description": "Single biggest ranking risk. Google uses mobile-first crawling. Indian 4G users will experience real-world LCP worse than the lab test.",
-          "recommendation": "WebP hero images + preload hint is the primary fix. Expected result: GOOD after single deploy.",
-          "effort": "Medium (2-4 hours)"
+          "title": "FCP and TTFB are marginally over Google's threshold",
+          "severity": "Low",
+          "description": "FCP 1,822ms (22ms over the 1,800ms Good threshold); TTFB 864ms (64ms over the 800ms Good threshold). Neither is a ranking Core Web Vital.",
+          "recommendation": "Monitor; not urgent given both are barely over and the ranking trio all pass."
         }
       ]
     },
     {
       "name": "AI Search Readiness",
       "score": 64,
-      "weight": 0.10,
       "what_works": [
-        "All 5 major AI crawlers explicitly allowed in robots.txt",
-        "llms.txt present and comprehensive",
-        "FAQPage schema aids AI extraction",
-        "BlogPosting with author + dates on all posts"
+        "GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, PerplexityBot all explicitly allowed in robots.txt, re-verified live",
+        "llms.txt returns 200"
       ],
       "findings": [
         {
-          "title": "Zero meta descriptions — AI citation fallback to arbitrary text",
-          "severity": "Critical",
-          "description": "Without meta descriptions, AI systems extract arbitrary body text as summaries, reducing citation accuracy.",
-          "recommendation": "Add meta descriptions to all pages.",
-          "effort": "Medium (2-4 hours)"
-        },
-        {
-          "title": "llms-full.txt absent",
-          "severity": "High",
-          "description": "llms.txt exists but llms-full.txt is absent. AI agents must make secondary fetches for spec data.",
-          "recommendation": "Create llms-full.txt with inline spec tables for all 24 country presets and 52 exam portals.",
-          "effort": "Medium (half day)"
-        },
-        {
-          "title": "Zero YouTube presence",
-          "severity": "High",
-          "description": "YouTube mention correlation with AI citation frequency ~0.737 — strongest single predictor. Zero YouTube content.",
-          "recommendation": "Publish 3 core videos. Highest long-term AI citation ROI.",
-          "effort": "High (ongoing)"
+          "title": "No deep passage-citability re-audit run this cycle",
+          "severity": "Info",
+          "description": "Score carried forward from 2026-06-23 baseline; only crawler access was re-verified live.",
+          "recommendation": "Run a full GEO re-audit (passage-level citability, entity clarity) on the next cycle."
         }
       ]
     },
     {
       "name": "Images",
-      "score": 25,
-      "weight": 0.05,
+      "score": 52,
       "what_works": [
-        "Alt text present on hero images",
-        "Image dimensions set (no CLS from images)"
+        "Hero/LCP image pair fixed: WebP, confirmed via CrUX field data",
+        "Alt text and CLS-prevention patterns solid site-wide"
       ],
       "findings": [
         {
-          "title": "3 hero PNG images totaling 2,076 KB",
-          "severity": "Critical",
-          "description": "sample2_before (800 KB), sample4_before (713 KB), sample4_after (563 KB) serve full-resolution originals to all devices. WebP at display size: ~40-60 KB each.",
-          "recommendation": "Convert to WebP using Next.js <Image> with sizes prop, or offline conversion to static WebP. Target: <60 KB per image.",
-          "effort": "Medium (2-4 hours)"
-        },
-        {
-          "title": "Zero inline images in blog posts",
-          "severity": "High",
-          "description": "0 inline images across 26 blog posts. SERP competitors use 3-8 images per post.",
-          "recommendation": "Add 2+ screenshots or diagrams per blog post. Start with top 5 GSC-impressioned posts.",
-          "effort": "High (ongoing)"
+          "title": "12 of 19 referenced raster images still unconverted PNGs",
+          "severity": "Medium",
+          "description": "500-820 KB each, including one homepage section image and 7 across blog posts. The hero fix was scoped narrowly to the LCP-critical pair and didn't extend to the rest of the inventory.",
+          "recommendation": "Convert remaining PNGs to WebP/AVIF, prioritizing the homepage section image and highest-traffic blog posts."
         }
       ]
     }
   ],
-
+  "separate_scores": {
+    "sxo_gap_score": {
+      "value": 58,
+      "note": "Separate from the SEO Health Score per SXO methodology. Up from 41 (exam cluster only, 06-23 baseline).",
+      "pages": [
+        { "page": "/exam-requirements/voter-id/", "score": 63, "verdict": "MEDIUM mismatch (down from CRITICAL) — tool now embedded but title/H1 still spec-first vs. SERP's tool-first consensus" },
+        { "page": "/tools/sign-image/", "score": 52, "verdict": "ALIGNED page type; execution-depth gap (zero images, 296 words)" }
+      ]
+    },
+    "cluster_health": {
+      "value": 7,
+      "scale": 10,
+      "note": "Up from ~5.5. Government ID pillar/spoke relationship is clean (verified: no cannibalization). Two structural gaps found: 2 of 3 spokes missing mandatory back-link to pillar (verified), and the two passport pillar posts have zero cross-links and restate identical specs (verified, worse than baseline)."
+    }
+  },
   "action_plan": {
     "phases": [
       {
         "name": "Phase 1: Critical Fixes",
-        "timeframe": "Week 1 — by 2026-06-30",
-        "expected_score_after": "74-78",
+        "timeframe": "This week",
         "items": [
-          { "action": "Convert hero PNGs to WebP (sample2_before, sample4_before, sample4_after)", "effort": "2-4h", "impact": "Mobile LCP: 10,501ms → ~2,200ms (GOOD)", "file": "public/images/ + components/site/HeroVisual.tsx" },
-          { "action": "Add LCP image preload hint", "effort": "30m", "impact": "+300ms LCP gain", "file": "app/layout.tsx" },
-          { "action": "Add /blog/ link to site navigation", "effort": "30m", "impact": "/blog/ indexed within 1-2 weeks", "file": "components/site/Header.tsx or Footer.tsx" },
-          { "action": "301 redirect /india/ → /india-passport-photo-maker/", "effort": "30m", "impact": "Fixes 404, preserves link equity", "file": "next.config.js" },
-          { "action": "Verify exam page routing (/tools/exam-package/, /tools/form-resizer/*)", "effort": "1h", "impact": "Restores exam keyword cluster (SXO 14→60+)", "file": "next.config.js / app/tools/" },
-          { "action": "Add meta descriptions to top 10 pages", "effort": "2-4h", "impact": "CTR improvement + AI citation quality", "file": "app/**/page.tsx (metadata export)" }
+          "Add outbound government-portal citation links to the 3 recent blog posts",
+          "Add back-links from pan-card-photo-size and driving-licence-photo-size-sarathi to the Government ID pillar",
+          "Register a govId entry in lib/blog.ts CLUSTERS map",
+          "Add a before/after image to /tools/sign-image/",
+          "Convert remaining 12 unconverted PNGs to WebP"
         ]
       },
       {
-        "name": "Phase 2: High-Impact SEO",
-        "timeframe": "Weeks 2-3 — by 2026-07-14",
-        "expected_score_after": "78-82",
+        "name": "Phase 2: High-Impact Improvements",
+        "timeframe": "Weeks 2-4",
         "items": [
-          { "action": "Cloudflare Redirect Rule: www → non-www (301)", "effort": "15m", "impact": "Consolidated link equity" },
-          { "action": "Fix BlogPosting.image — per-post OG image URL", "effort": "1h", "impact": "Article rich result eligibility for 24 posts" },
-          { "action": "Optimise /exam-requirements/army-agniveer/ title + FAQ schema", "effort": "2h", "impact": "Pos 3-9 → expected clicks from 0 to 3-5/month" },
-          { "action": "Optimise /voter-id-photo-resizer/ H1 for 'eci photo resize'", "effort": "1h", "impact": "Highest impressions in pos 4-10 band" },
-          { "action": "Defer AdSense via IntersectionObserver", "effort": "2h", "impact": "156ms LCP window saving" },
-          { "action": "Fix .animate-scan-beam to use transform/opacity", "effort": "1h", "impact": "650ms TBT reduction" }
+          "Test voter-id title-vs-intent change on ONE page (not template-wide) and watch GSC 2-3 weeks before any wider rollout",
+          "Resolve indian-passport-photo-requirements vs indian-passport-photo-size-rules duplication",
+          "Decide: expand how-to-sign-on-image-online to blog depth, or reclassify as a lighter tool-support page"
         ]
       },
       {
         "name": "Phase 3: Content & Authority",
-        "timeframe": "Month 2 — by 2026-07-31",
-        "expected_score_after": "82-86",
+        "timeframe": "Ongoing",
         "items": [
-          { "action": "Expand /blog/why-exam-photo-signature-rejected/ to 1,800+ words", "effort": "3-4h", "impact": "Competitive blog post minimum met" },
-          { "action": "Create /indian-passport-photo-requirements/ informational guide (2,500 words)", "effort": "1 day", "impact": "Unlocks 'indian passport photo requirements' SERP intent (currently no page)" },
-          { "action": "Add author byline + last-verified date to all 53 exam-requirements pages", "effort": "Half day", "impact": "E-E-A-T consistency across all exam pages" },
-          { "action": "Create llms-full.txt with inline spec tables", "effort": "Half day", "impact": "AI agents get specs without secondary fetches" },
-          { "action": "Add SearchAction to WebSite schema", "effort": "1h", "impact": "Sitelinks Searchbox eligibility" },
-          { "action": "Fix lastmod to use per-page content updatedAt (not build timestamp)", "effort": "2h", "impact": "Sitemap freshness signals accurate" },
-          { "action": "Add 2+ inline images to top 5 blog posts", "effort": "Half day", "impact": "Media richness score from 4/15 to 9+/15" }
+          "IndexNow implementation",
+          "Build /exam-requirements/aadhaar/ for pattern parity with the other 3 Gov-ID documents",
+          "Author jobTitle wording refresh",
+          "Full 50-page programmatic-duplication ratio check across /exam-requirements/*",
+          "Off-page/backlinks: still Tier 0 (no Moz key) — the biggest lever outside code, not actionable from this repo"
         ]
       },
       {
-        "name": "Phase 4: Growth & Monitoring",
+        "name": "Phase 4: Monitoring & Iteration",
         "timeframe": "Ongoing",
         "items": [
-          { "action": "Weekly GSC review — track army-agniveer click conversion", "effort": "30m/week" },
-          { "action": "Monthly PSI run — verify mobile LCP stays GOOD", "effort": "30m/month" },
-          { "action": "Product Hunt / Indie Hackers listing for first backlinks", "effort": "2-4h" },
-          { "action": "Outreach to Indian travel/visa/exam blogs (link building)", "effort": "Ongoing" },
-          { "action": "Launch YouTube channel — 3 core videos", "effort": "High (ongoing)" },
-          { "action": "Add GA4 property ID to Claude SEO config for organic traffic tracking", "effort": "15m" },
-          { "action": "Run /seo drift baseline once Phase 1 fixes are deployed", "effort": "30m" }
+          "Re-pull GSC 28-day data and refresh KEYWORD-MAP-2026-07.md after each deploy",
+          "Watch the voter-id title test specifically for 2-3 weeks",
+          "Re-run CrUX pull monthly for a CWV trend line"
         ]
       }
     ]
   },
-
   "artifacts": {
     "findings_dir": "findings/",
-    "screenshots_dir": "findings/screenshots/",
-    "findings_files": {
-      "technical": "findings/technical.md",
-      "content": "findings/content.md",
-      "schema": "findings/schema.md",
-      "sitemap": "findings/sitemap.md",
-      "google_api": "findings/google-api.md",
-      "geo": "findings/geo.md",
-      "backlinks": "findings/backlinks.md",
-      "sxo": "findings/sxo.md",
-      "cluster": "findings/cluster.md",
-      "performance": "findings/performance.md"
-    }
+    "full_report": "FULL-AUDIT-REPORT-2026-07-09.md",
+    "action_plan": "ACTION-PLAN.md",
+    "keyword_map": "KEYWORD-MAP-2026-07.md"
   }
 }
