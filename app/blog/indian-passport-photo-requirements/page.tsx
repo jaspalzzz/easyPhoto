@@ -56,7 +56,12 @@ export default function Page() {
         (portrait), the digital upload for Passport Seva is <strong>630×810 px JPEG
         under 250 KB</strong>, the background must be <strong>plain white</strong>, glasses
         are <strong>not permitted</strong>, and the print must come from a photo lab.
-        Not an inkjet printer.
+        Not an inkjet printer. For just the size and dimension numbers on their own,
+        see the{" "}
+        <Link href="/blog/indian-passport-photo-size-rules/">
+          Indian passport photo size &amp; rules reference
+        </Link>
+        .
       </p>
 
       <h2>The 12-point Indian passport photo compliance checklist</h2>
