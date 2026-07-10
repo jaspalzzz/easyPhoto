@@ -46,11 +46,26 @@ function aspectLabel(r: number): string {
 }
 
 // Per-exam custom titles, bypassing the length-guarded template below
-// (titleAbsolute). Currently empty: the army-agniveer override that lived
-// here ran 64 chars (truncating in SERPs, and exempt from the length guard)
-// and GSC showed 110 impressions / 0 clicks at position 7.4 over 3 months —
-// the guarded template title performs the same job 11 chars shorter.
-const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {};
+// (titleAbsolute). These are the FULL SERP title (brand suffix included),
+// so keep each ≤ 60 chars to avoid truncation — the army-agniveer override
+// that used to live here ran 64 chars (truncating) with a vague "longer is
+// better" rationale and got 110 impr / 0 clicks at pos 7.4, which is why the
+// blind-length approach was abandoned.
+//
+// voter-id: MONITORED SXO EXPERIMENT (added 2026-07-10). SERP-backwards
+// analysis (2026-07-09 audit) found "voter id photo resizer" is won ~90% by
+// Tool/Interactive pages, while this page — which now embeds a real resizer —
+// still titles itself "Photo Size" (informational). Hypothesis: appending
+// "& Resizer" to the EXISTING "Photo Size" head term (not replacing it) lets
+// the page match the transactional SERP intent without sacrificing the
+// informational "voter id photo size" queries it already ranks for. Scoped to
+// this ONE page on purpose. Review the GSC CTR/position for
+// /exam-requirements/voter-id/ around 2026-07-31; if it doesn't improve,
+// revert this single line (the template default is the fallback). Do NOT roll
+// this out to the other 49 exam pages until this test reads positive.
+const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {
+  "voter-id": "Voter ID Photo Size & Resizer 2026 (Official) — easyPhoto",
+};
 
 export async function generateMetadata({
   params,
