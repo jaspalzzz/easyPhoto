@@ -99,7 +99,7 @@ export default function Page() {
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
-          src="/images/add-name-date-on-exam-photo.png"
+          src="/images/add-name-date-on-exam-photo.webp"
           alt="Before and after exam photo showing a plain passport photo transformed into one with name (ADITYA VERMA) and date (25/06/2026) added at the bottom"
           width={1024}
           height={1024}
