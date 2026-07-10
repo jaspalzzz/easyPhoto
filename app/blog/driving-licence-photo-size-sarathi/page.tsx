@@ -49,7 +49,15 @@ export default function Page() {
         India had over 20&nbsp;crore valid driving licences in circulation as of
         2024 (Ministry of Road Transport and Highways, Vahan data portal). Every
         new licence, renewal, and address-change application now goes through the
-        Sarathi portal (sarathi.parivahan.gov.in), and every one of them requires a
+        <a
+          href="https://sarathi.parivahan.gov.in"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          Sarathi portal (sarathi.parivahan.gov.in)
+        </a>
+        , and every one of them requires a
         photo and signature upload. The file-size limits on Sarathi are tighter than
         most other government portals — 40&nbsp;KB for the photo, 20&nbsp;KB for the
         signature — and the portal rejects files automatically without a manual
@@ -296,7 +304,11 @@ export default function Page() {
         <Link href="/blog/pan-card-photo-size/" className="text-brand underline">
           PAN card photo size guide
         </Link>{" "}
-        — the KB limits and pixel specs differ significantly across these portals.
+        — the KB limits and pixel specs differ significantly across these portals. The{" "}
+        <Link href="/blog/indian-government-id-photo-requirements/" className="text-brand underline">
+          Indian government ID photo requirements guide
+        </Link>{" "}
+        compares all four documents side by side.
       </p>
 
       <div className="mt-12">

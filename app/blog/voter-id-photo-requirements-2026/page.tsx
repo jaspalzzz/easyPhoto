@@ -84,7 +84,16 @@ export default function Page() {
         The Election Commission of India does not specify a fixed pixel dimension
         the way the passport office does. What it mandates is a{" "}
         <strong>recent, passport-size colour photograph</strong> uploaded as a JPEG.
-        On the national NVSP portal (voters.eci.gov.in), the file must be{" "}
+        On the national{" "}
+        <a
+          href="https://voters.eci.gov.in"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          NVSP portal (voters.eci.gov.in)
+        </a>
+        , the file must be{" "}
         <strong>between 10&nbsp;KB and 200&nbsp;KB</strong>. Many state Electoral
         Registration Officer (ERO) portals tighten this to 50&nbsp;KB or 100&nbsp;KB,
         so compressing to under 100&nbsp;KB covers all state portals safely.
@@ -319,7 +328,7 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             ["Voter ID (EPIC)", "voters.eci.gov.in", "200 KB", "≥200×240 px"],
-            ["PAN (NSDL)", "onlineservices.nsdl.com", "50 KB", "197×276 px"],
+            ["PAN (NSDL)", "onlineservices.proteantech.in", "50 KB", "197×276 px"],
             ["PAN (UTIITSL)", "myutiitsl.com", "30 KB", "213×213 px (square)"],
             ["Aadhaar update", "myaadhaar.uidai.gov.in", "50 KB", "≥200×200 px"],
             ["Driving Licence", "sarathi.parivahan.gov.in", "40 KB", "≥200×230 px"],
