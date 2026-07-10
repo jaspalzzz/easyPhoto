@@ -23,6 +23,14 @@ const FAQ_ITEMS = [
     q: "Is my signature uploaded?",
     a: "No. The image and signature are processed locally in your browser; they are not uploaded to a server.",
   },
+  {
+    q: "What file size should a signed image be for a portal upload?",
+    a: "It depends on the portal — most Indian exam and government portals want JPEG and cap the file between 20 KB and 200 KB. Signing adds slightly to the file, so if the signed image goes over the limit, compress it back to the target with a resize-to-KB tool before submitting.",
+  },
+  {
+    q: "Will signing reduce my photo's quality?",
+    a: "Placing a signature layer doesn't degrade the photo itself — the signature is drawn on top. Quality only drops if you later compress the exported JPEG hard to hit a small KB limit. Export at the size the upload actually needs rather than the smallest possible.",
+  },
 ];
 
 export const metadata = pageMetadata({
@@ -75,6 +83,39 @@ export default function Page() {
           </li>
         </ul>
       </div>
+
+      <h2>When do you actually need to sign on an image?</h2>
+      <p>
+        More often than you&apos;d expect. Because so many forms are now shared and
+        submitted as pictures rather than editable PDFs, the situations where you
+        need a signature <em>on an image</em> are common:
+      </p>
+      <ul className="my-4 list-disc space-y-1.5 pl-5 text-[15px]">
+        <li>
+          A <strong>scanned or photographed form</strong> — a bank KYC page,
+          declaration, or undertaking that arrived as a JPG and has to go back signed.
+        </li>
+        <li>
+          An <strong>exam or job application</strong> asking for a signed photo or a
+          signed declaration image uploaded alongside the photo.
+        </li>
+        <li>
+          A <strong>self-attested document copy</strong> — a marksheet, ID or
+          certificate scan where you sign across your own copy before sharing.
+        </li>
+        <li>
+          A <strong>letter or agreement</strong> received as an image (a WhatsApp
+          photo of a rent or offer letter) that needs a quick visible signature.
+        </li>
+        <li>
+          Any case where the portal only accepts <strong>JPG or PNG</strong>, so a
+          signed PDF wouldn&apos;t be accepted in the first place.
+        </li>
+      </ul>
+      <p>
+        In each of these the base file is already an image, so the goal is simply to
+        place a clean signature on top and export the same format.
+      </p>
 
       <h2>When should you sign on an image instead of a PDF?</h2>
       <p>
@@ -171,6 +212,59 @@ export default function Page() {
           signature cleaner
         </Link>{" "}
         before placing it on the image.
+      </p>
+
+      <h2>Common problems when signing an image — and how to fix each</h2>
+      <p>
+        Most issues come down to the signature layer, not the photo. Here are the
+        ones that come up most often and the fix for each.
+      </p>
+
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead>
+          <tr className="border-b border-hairline text-left">
+            <th className="py-2 pr-4 font-semibold text-ink">Problem</th>
+            <th className="py-2 font-semibold text-ink">Fix</th>
+          </tr>
+        </thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["A white box sits behind the signature", "Convert the signature to a transparent PNG before placing it, so only the ink shows."],
+            ["The signature is blurry or pixelated", "Re-scan or re-photograph it in good, even light at higher resolution; a tiny signature scaled up will always look soft."],
+            ["The signature is too big or too small", "Resize it after placing — it should sit on the signature line with a clear margin, not overlap the face or edges."],
+            ["You can barely see the signature", "It's probably over a dark part of the photo. Move it onto a lighter area, or use a darker ink signature for contrast."],
+            ["The signed file is rejected for being too large", "Signing can push a JPEG/PNG over a portal's KB limit. Compress the exported file to the required size afterwards."],
+            ["The portal only accepts JPEG", "Export the signed image as JPG rather than PNG — but note a JPG can't keep a transparent signature background, so flatten it onto the photo first."],
+          ].map(([problem, fix]) => (
+            <tr key={problem} className="border-b border-hairline/60">
+              <td className="py-2 pr-4 font-medium text-ink">{problem}</td>
+              <td className="py-2">{fix}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>What file size and format do portals accept for a signed image?</h2>
+      <p>
+        There is no single answer — it depends on where you upload the signed
+        image. Exam and government portals each set their own limit, and signing
+        adds a little to the file, so it&apos;s worth checking before you submit.
+        Most Indian portals want <strong>JPEG</strong> and cap the file at a low
+        KB size (many between 20&nbsp;KB and 200&nbsp;KB).
+      </p>
+      <p>
+        If your signed image is over the limit, resize it to the exact target with
+        the{" "}
+        <Link href="/tools/resize-kb/">
+          compress-to-KB tool
+        </Link>{" "}
+        — it brings a JPG or PNG under a chosen KB size in your browser. For the
+        exact photo and signature limits of specific documents (PAN, Voter ID,
+        Driving Licence, Aadhaar), the{" "}
+        <Link href="/blog/indian-government-id-photo-requirements/">
+          Indian government ID photo requirements guide
+        </Link>{" "}
+        lists each portal&apos;s cap.
       </p>
 
       <h2>Privacy: does the image upload anywhere?</h2>
