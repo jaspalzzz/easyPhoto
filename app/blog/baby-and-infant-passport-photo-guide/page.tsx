@@ -117,7 +117,7 @@ export default function Page() {
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
-          src="/images/baby-and-infant-passport-photo-guide.png"
+          src="/images/baby-and-infant-passport-photo-guide.webp"
           alt="Illustrated diagram of the lay-down passport photo method for babies: white sheet, baby lying flat facing up, adult holding smartphone directly above at 90 degrees"
           width={1024}
           height={1024}

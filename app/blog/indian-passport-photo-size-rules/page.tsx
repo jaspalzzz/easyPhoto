@@ -68,7 +68,7 @@ export default function Page() {
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
-          src="/images/indian-passport-photo-size-rules.png"
+          src="/images/indian-passport-photo-size-rules.webp"
           alt="Indian passport photo size diagram showing 35×45 mm frame, face height zone of 25–35 mm, and compliance requirements"
           width={760}
           height={760}

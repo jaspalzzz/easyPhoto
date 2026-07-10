@@ -273,7 +273,7 @@ export default function Page() {
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
-          src="/images/upsc-cse-ias-photo-signature-guide-2026.png"
+          src="/images/upsc-cse-ias-photo-signature-guide-2026.webp"
           alt="UPSC CSE/IAS signature sheet layout showing three 6 cm × 3 cm boxes arranged vertically on A4 paper, each containing the candidate's signature"
           width={760}
           height={760}

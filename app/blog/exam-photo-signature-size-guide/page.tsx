@@ -100,7 +100,7 @@ export default function Page() {
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
-          src="/images/exam-photo-signature-size-guide.png"
+          src="/images/exam-photo-signature-size-guide.webp"
           alt="Exam photo acceptance criteria side-by-side: accepted photo with white background and 50 KB vs rejected photo with dark background and 1.2 MB file size"
           width={760}
           height={760}

@@ -62,7 +62,7 @@ export default function Page() {
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
-          src="/images/best-free-exam-photo-resizer-india.png"
+          src="/images/best-free-exam-photo-resizer-india.webp"
           alt="easyPhoto exam photo resizer interface showing UPSC CSE Passport preset selected, 88 KB output at 413×531 px, with face visible and UPSC rule checklist passed"
           width={1024}
           height={1024}

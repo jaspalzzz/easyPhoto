@@ -73,7 +73,7 @@ export default function Page() {
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
-          src="/images/passport-photo-background-color.png"
+          src="/images/passport-photo-background-color.webp"
           alt="Professional portrait background comparison showing white (India/US), light grey (UK), and cream backgrounds side by side"
           width={1024}
           height={1024}
