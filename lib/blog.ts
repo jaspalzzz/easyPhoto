@@ -446,6 +446,12 @@ export function getPost(slug: string): BlogPost | undefined {
  * post in exactly one cluster; any slug not listed falls back to array order.
  */
 const CLUSTERS: Record<string, string[]> = {
+  govId: [
+    "indian-government-id-photo-requirements",
+    "pan-card-photo-size",
+    "voter-id-photo-requirements-2026",
+    "driving-licence-photo-size-sarathi",
+  ],
   signature: [
     "how-to-sign-on-image-online",
     "how-to-sign-exam-application-forms-india",
@@ -464,13 +470,10 @@ const CLUSTERS: Record<string, string[]> = {
   passport: [
     "indian-passport-photo-requirements",
     "indian-passport-photo-size-rules",
-    "pan-card-photo-size",
     "how-to-compress-photo-to-50kb",
     "how-to-print-passport-photos-at-home",
     "what-is-dpi-and-how-to-change-it",
     "how-to-remove-background-from-photo-free",
-    "voter-id-photo-requirements-2026",
-    "driving-licence-photo-size-sarathi",
     "best-free-passport-photo-maker-india-2026",
     "visafoto-alternative-india-free",
     "cutout-pro-alternative-india",

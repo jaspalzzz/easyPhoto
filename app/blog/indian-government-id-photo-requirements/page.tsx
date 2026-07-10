@@ -98,7 +98,7 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             ["Voter ID (EPIC)", "voters.eci.gov.in", "200 KB", "≥200×240 px", "JPEG"],
-            ["PAN (NSDL / Protean)", "onlineservices.nsdl.com", "50 KB", "197×276 px", "JPEG"],
+            ["PAN (NSDL / Protean)", "onlineservices.proteantech.in", "50 KB", "197×276 px", "JPEG"],
             ["PAN (UTIITSL)", "myutiitsl.com", "30 KB", "213×213 px (square)", "JPEG"],
             ["Aadhaar update", "myaadhaar.uidai.gov.in", "50 KB", "≥200×200 px", "JPEG"],
             ["Driving Licence", "sarathi.parivahan.gov.in", "40 KB", "≥200×230 px", "JPEG"],
@@ -194,9 +194,26 @@ export default function Page() {
 
       <p>
         PAN is the one ID with <strong>two</strong> valid portals, and they disagree
-        on the crop. Via <strong>NSDL / Protean</strong> the photo is a portrait
+        on the crop. Via{" "}
+        <a
+          href="https://www.onlineservices.proteantech.in/paam/endUserRegisterContact.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          <strong>NSDL / Protean</strong>
+        </a>{" "}
+        the photo is a portrait
         197×276&nbsp;px JPEG under <strong>50&nbsp;KB</strong>. Via{" "}
-        <strong>UTIITSL</strong> it is a <em>square</em> 213×213&nbsp;px JPEG under a
+        <a
+          href="https://www.myutiitsl.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          <strong>UTIITSL</strong>
+        </a>{" "}
+        it is a <em>square</em> 213×213&nbsp;px JPEG under a
         tighter <strong>30&nbsp;KB</strong>. Both want a white background and a
         forward-facing colour headshot. The square requirement is the one people
         miss — a portrait crop is rejected by UTIITSL.
@@ -217,8 +234,16 @@ export default function Page() {
       <h2>Voter ID (EPIC) photo requirements</h2>
 
       <p>
-        The Election Commission&apos;s NVSP portal (voters.eci.gov.in) is the most
-        forgiving on size: a colour JPEG between <strong>10&nbsp;KB and 200&nbsp;KB</strong>
+        The Election Commission&apos;s{" "}
+        <a
+          href="https://voters.eci.gov.in"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          NVSP portal (voters.eci.gov.in)
+        </a>{" "}
+        is the most forgiving on size: a colour JPEG between <strong>10&nbsp;KB and 200&nbsp;KB</strong>
         , at least 200×240&nbsp;px, on a plain white or light background. It applies to
         Form&nbsp;6 (new enrollment), Form&nbsp;6A (overseas voters) and Form&nbsp;8
         (corrections). Even though 200&nbsp;KB is generous, several state ERO portals
@@ -240,7 +265,16 @@ export default function Page() {
       <h2>Driving licence photo requirements</h2>
 
       <p>
-        The Sarathi portal (sarathi.parivahan.gov.in) has the tightest realistic cap
+        The{" "}
+        <a
+          href="https://sarathi.parivahan.gov.in"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          Sarathi portal (sarathi.parivahan.gov.in)
+        </a>{" "}
+        has the tightest realistic cap
         of the four everyday IDs: a colour JPEG under <strong>40&nbsp;KB</strong>, at
         least 200×230&nbsp;px, white background. It applies to a learner&apos;s
         licence, a permanent licence, and renewal. Because 40&nbsp;KB is so tight, a
@@ -264,7 +298,15 @@ export default function Page() {
       <p>
         Unlike a new PAN or licence, an Aadhaar photo is normally captured at an
         enrolment centre. But when you request a photo update online through{" "}
-        <strong>myAadhaar</strong> (myaadhaar.uidai.gov.in), the uploaded JPEG must be
+        <a
+          href="https://myaadhaar.uidai.gov.in"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          <strong>myAadhaar</strong> (myaadhaar.uidai.gov.in)
+        </a>
+        , the uploaded JPEG must be
         under <strong>50&nbsp;KB</strong> and at least 200×200&nbsp;px, colour, on a
         plain background. Note that a fresh biometric photo update often still requires
         a centre visit — the online route mainly covers correcting an existing entry.

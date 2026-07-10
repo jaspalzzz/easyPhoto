@@ -241,11 +241,28 @@ export default function Page() {
 
       <p>
         Both portals process PAN applications on behalf of the Income Tax Department
-        but run independent technology stacks. NSDL (now Protean e-Governance) built
-        its upload system around a portrait rectangle that matches the physical
-        25×35&nbsp;mm print format at 200&nbsp;DPI. UTIITSL later rebuilt its portal
-        with a square crop optimised for biometric face-matching algorithms, which
-        work more reliably on standardised square inputs at higher DPI.
+        but run independent technology stacks.{" "}
+        <a
+          href="https://www.onlineservices.proteantech.in/paam/endUserRegisterContact.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          NSDL (now Protean e-Governance)
+        </a>{" "}
+        built its upload system around a portrait rectangle that matches the physical
+        25×35&nbsp;mm print format at 200&nbsp;DPI.{" "}
+        <a
+          href="https://www.myutiitsl.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          UTIITSL
+        </a>{" "}
+        later rebuilt its portal with a square crop optimised for biometric
+        face-matching algorithms, which work more reliably on standardised square
+        inputs at higher DPI.
       </p>
 
       <p>
@@ -352,11 +369,16 @@ export default function Page() {
       </p>
 
       <p>
-        Need the specs for other government documents too? The{" "}
+        Need the specs for other Indian government IDs too? The{" "}
+        <Link href="/blog/indian-government-id-photo-requirements/" className="text-brand underline">
+          Indian government ID photo requirements guide
+        </Link>{" "}
+        compares PAN, Voter ID, Driving Licence and Aadhaar in one place. For exam
+        application forms specifically, the{" "}
         <Link href="/blog/exam-photo-signature-size-guide/" className="text-brand underline">
           exam photo and signature size guide
         </Link>{" "}
-        covers SSC, IBPS, UPSC, SBI, RRB and more — same approach, portal-by-portal.
+        covers SSC, IBPS, UPSC, SBI, RRB and more.
       </p>
 
       <div className="mt-12">
