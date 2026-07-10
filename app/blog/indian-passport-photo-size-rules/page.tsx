@@ -54,6 +54,16 @@ export default function Page() {
         every rule, where each applies, and how to make a compliant photo for free.
       </p>
 
+      <p>
+        This guide focuses on the exact <strong>size and dimension</strong> rules.
+        For the complete pre-application checklist — background, expression, glasses,
+        print quality and the reasons photos get rejected at the counter — see the{" "}
+        <Link href="/blog/indian-passport-photo-requirements/">
+          full Indian passport photo requirements checklist
+        </Link>
+        .
+      </p>
+
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
