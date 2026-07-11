@@ -218,10 +218,10 @@ export default function Page() {
           viewBox="0 0 560 240"
           style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif" }}
           role="img"
-          aria-label="Horizontal bar chart comparing photo KB limits: Sarathi DL 40 KB, NVSP Voter ID 200 KB, NSDL PAN 50 KB, UTIITSL PAN 30 KB, Aadhaar update 50 KB"
+          aria-label="Horizontal bar chart comparing photo KB limits across Indian government online upload portals: Sarathi DL 40 KB, NVSP Voter ID 200 KB, NSDL PAN 50 KB, UTIITSL PAN 30 KB"
         >
-          <title>Photo KB limit comparison — Indian government portals</title>
-          <desc>Sarathi portal (driving licence) has the tightest limit at 40 KB. NVSP voter ID portal allows up to 200 KB. NSDL PAN allows 50 KB, UTIITSL PAN 30 KB, Aadhaar update 50 KB.</desc>
+          <title>Photo KB limit comparison — Indian government online upload portals</title>
+          <desc>Sarathi portal (driving licence) has the tightest limit at 40 KB. NVSP voter ID portal allows up to 200 KB. NSDL PAN allows 50 KB, UTIITSL PAN 30 KB. Aadhaar is not shown — its photo is captured at a centre, not uploaded.</desc>
 
           {[0, 50, 100, 150, 200].map((v) => {
             const x = 170 + (v / 220) * 360;
@@ -237,7 +237,6 @@ export default function Page() {
             { label: "Sarathi (DL)", val: 40, color: "#f97316" },
             { label: "UTIITSL (PAN)", val: 30, color: "#38bdf8" },
             { label: "NSDL (PAN)", val: 50, color: "#38bdf8" },
-            { label: "Aadhaar update", val: 50, color: "#a78bfa" },
             { label: "NVSP (Voter ID)", val: 200, color: "#22c55e" },
           ].map(({ label, val, color }, i) => {
             const y = 28 + i * 34;

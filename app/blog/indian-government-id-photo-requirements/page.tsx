@@ -9,19 +9,19 @@ const post = getPost("indian-government-id-photo-requirements")!;
 const FAQ_ITEMS = [
   {
     q: "Is the photo size the same for all Indian government IDs?",
-    a: "No. Each portal sets its own limit. Voter ID (NVSP) allows up to 200 KB, PAN via NSDL caps at 50 KB, PAN via UTIITSL at 30 KB, Aadhaar update at 50 KB, and the driving licence (Sarathi) at just 40 KB. Pixel dimensions differ too. One photo compressed to under 30 KB clears every one of these portals.",
+    a: "No. Each portal sets its own limit. Voter ID (NVSP) allows up to 200 KB, PAN via NSDL caps at 50 KB, PAN via UTIITSL at 30 KB, and the driving licence (Sarathi) at just 40 KB. Pixel dimensions differ too. One photo compressed to under 30 KB clears every one of these online upload portals. Aadhaar is the exception: its photo is captured in person at an Aadhaar Seva Kendra — UIDAI does not allow an Aadhaar photo to be uploaded online.",
   },
   {
     q: "Which Indian government portal has the strictest photo size limit?",
-    a: "UTIITSL for PAN cards is the tightest at 30 KB, followed by the Sarathi driving-licence portal at 40 KB. If you compress a single JPEG to under 30 KB on a plain white background at roughly 200×250 px, it will pass all major portals — voter ID, PAN, Aadhaar, and driving licence — without a separate photo for each.",
+    a: "UTIITSL for PAN cards is the tightest at 30 KB, followed by the Sarathi driving-licence portal at 40 KB. If you compress a single JPEG to under 30 KB on a plain white background at roughly 200×250 px, it will pass every portal that accepts an online photo upload — voter ID, PAN, and driving licence — without a separate photo for each.",
   },
   {
     q: "What file format do Indian government ID applications need?",
-    a: "Every major portal — NVSP (voter ID), NSDL and UTIITSL (PAN), UIDAI (Aadhaar), and Sarathi (driving licence) — requires JPEG / JPG. PNG, PDF, WEBP and HEIC are rejected. If your phone saves photos as HEIC or PNG, convert to JPEG before uploading. All portals also require a colour photo; black-and-white is rejected.",
+    a: "Every major online upload portal — NVSP (voter ID), NSDL and UTIITSL (PAN), and Sarathi (driving licence) — requires JPEG / JPG. PNG, PDF, WEBP and HEIC are rejected. If your phone saves photos as HEIC or PNG, convert to JPEG before uploading. All portals also require a colour photo; black-and-white is rejected. (Aadhaar photos are captured at a centre, so there is no file to upload for them.)",
   },
   {
-    q: "Can I use the same photo for my PAN card, voter ID, Aadhaar and driving licence?",
-    a: "Yes, if you prepare it to the strictest common spec: a recent colour JPEG on a plain white background, roughly 200×250 px portrait, compressed to under 30 KB. That single file satisfies the KB cap and pixel minimum of all four portals. The only exception is UTIITSL's square (213×213 px) PAN crop, which needs a square version.",
+    q: "Can I use the same photo for my PAN card, voter ID and driving licence?",
+    a: "Yes, if you prepare it to the strictest common spec: a recent colour JPEG on a plain white background, roughly 200×250 px portrait, compressed to under 30 KB. That single file satisfies the KB cap and pixel minimum of all three online portals. The one exception is UTIITSL's square (213×213 px) PAN crop, which needs a square version. Aadhaar isn't in this list because its photo is taken at a centre, not uploaded.",
   },
   {
     q: "Why do government ID photos get rejected online?",
@@ -71,9 +71,10 @@ export default function Page() {
           <strong>plain white background</strong>, roughly{" "}
           <strong>200×250&nbsp;px</strong> portrait, compressed to{" "}
           <strong>under 30&nbsp;KB</strong>. That single file clears the KB cap and
-          pixel minimum of the voter ID, PAN, Aadhaar and driving-licence portals.
-          The only extra you may need is a square (213×213&nbsp;px) crop for a PAN
-          card via UTIITSL.
+          pixel minimum of the <strong>voter ID, PAN and driving-licence</strong>{" "}
+          portals. The only extra you may need is a square (213×213&nbsp;px) crop for
+          a PAN card via UTIITSL. Aadhaar is the exception — its photo is captured in
+          person at a centre, not uploaded (see below).
         </p>
       </div>
 
@@ -82,7 +83,9 @@ export default function Page() {
       <p>
         These are the current requirements for the online application or update
         form of each ID, verified against the respective government portal. The KB
-        limit is the number that rejects most uploads, so it is listed first.
+        limit is the number that rejects most uploads, so it is listed first. Note
+        that <strong>Aadhaar</strong> is different from the rest — its photo is
+        taken in person at an Aadhaar Seva Kendra, not uploaded online.
       </p>
 
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -100,8 +103,8 @@ export default function Page() {
             ["Voter ID (EPIC)", "voters.eci.gov.in", "200 KB", "≥200×240 px", "JPEG"],
             ["PAN (NSDL / Protean)", "onlineservices.proteantech.in", "50 KB", "197×276 px", "JPEG"],
             ["PAN (UTIITSL)", "myutiitsl.com", "30 KB", "213×213 px (square)", "JPEG"],
-            ["Aadhaar update", "myaadhaar.uidai.gov.in", "50 KB", "≥200×200 px", "JPEG"],
             ["Driving Licence", "sarathi.parivahan.gov.in", "40 KB", "≥200×230 px", "JPEG"],
+            ["Aadhaar (photo)", "Aadhaar Seva Kendra — in person", "No online upload", "Captured at centre", "—"],
           ].map(([doc, portal, kb, px, fmt]) => (
             <tr key={doc} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{doc}</td>
@@ -140,20 +143,22 @@ export default function Page() {
         staying sharp enough to meet each portal&apos;s pixel minimum.
       </p>
 
-      {/* CHART: KB limit comparison across the 5 portals */}
+      {/* CHART: KB limit comparison across the online-upload portals (Aadhaar
+          excluded — its photo is captured at a centre, not uploaded). */}
       <figure className="my-8">
         <svg
-          viewBox="0 0 560 300"
+          viewBox="0 0 560 254"
           style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif" }}
           role="img"
-          aria-label="Bar chart comparing maximum photo file size across Indian government ID portals: UTIITSL PAN 30 KB, Sarathi driving licence 40 KB, NSDL PAN 50 KB, Aadhaar update 50 KB, voter ID 200 KB"
+          aria-label="Bar chart comparing maximum photo file size across Indian government ID online upload portals: UTIITSL PAN 30 KB, Sarathi driving licence 40 KB, NSDL PAN 50 KB, voter ID 200 KB"
         >
-          <title>Maximum photo file size by Indian government ID portal</title>
+          <title>Maximum photo file size by Indian government ID online upload portal</title>
           <desc>
             UTIITSL (PAN) has the tightest limit at 30 KB, then Sarathi (driving
-            licence) at 40 KB, NSDL (PAN) and Aadhaar update both at 50 KB, and the
-            NVSP voter ID portal at 200 KB. Compressing to under 30 KB clears them
-            all. Source: respective government portals, 2026.
+            licence) at 40 KB, NSDL (PAN) at 50 KB, and the NVSP voter ID portal at
+            200 KB. Compressing to under 30 KB clears them all. Aadhaar is not shown
+            because its photo is captured at a centre, not uploaded. Source:
+            respective government portals, 2026.
           </desc>
 
           {(() => {
@@ -161,7 +166,6 @@ export default function Page() {
               ["PAN — UTIITSL", 30, "#f97316"],
               ["Driving Licence", 40, "#38bdf8"],
               ["PAN — NSDL", 50, "#a78bfa"],
-              ["Aadhaar update", 50, "#a78bfa"],
               ["Voter ID (EPIC)", 200, "#22c55e"],
             ] as const;
             const x0 = 140;
@@ -184,8 +188,8 @@ export default function Page() {
             });
           })()}
 
-          <text x="280" y="290" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.35">
-            Source: NVSP, NSDL, UTIITSL, UIDAI &amp; Sarathi portals (2026)
+          <text x="280" y="244" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.35">
+            Source: NVSP, NSDL, UTIITSL &amp; Sarathi portals (2026)
           </text>
         </svg>
       </figure>
@@ -296,20 +300,32 @@ export default function Page() {
       <h2>Aadhaar photo requirements</h2>
 
       <p>
-        Unlike a new PAN or licence, an Aadhaar photo is normally captured at an
-        enrolment centre. But when you request a photo update online through{" "}
+        Aadhaar is the exception among the four. Your Aadhaar photograph{" "}
+        <strong>cannot be updated online</strong> and there is no file to prepare or
+        upload for it. Because the photo is a biometric field, UIDAI requires it to
+        be captured in person at an{" "}
+        <a
+          href="https://uidai.gov.in/en/my-aadhaar/update-aadhaar.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          Aadhaar Seva Kendra
+        </a>{" "}
+        (or an authorised enrolment centre), where it is taken live under controlled
+        lighting and background. The{" "}
         <a
           href="https://myaadhaar.uidai.gov.in"
           target="_blank"
           rel="noopener noreferrer"
           className="text-brand underline"
         >
-          <strong>myAadhaar</strong> (myaadhaar.uidai.gov.in)
-        </a>
-        , the uploaded JPEG must be
-        under <strong>50&nbsp;KB</strong> and at least 200×200&nbsp;px, colour, on a
-        plain background. Note that a fresh biometric photo update often still requires
-        a centre visit — the online route mainly covers correcting an existing entry.
+          myAadhaar
+        </a>{" "}
+        portal lets you update your name, address, date of birth, gender and language
+        online — but the photograph, fingerprints, iris and registered mobile number
+        all need a centre visit. So no resizing or KB target applies to an Aadhaar
+        photo; just book a slot and have it taken there.
       </p>
 
       <p>
