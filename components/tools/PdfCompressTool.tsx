@@ -76,8 +76,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
       setResultBlob(res.blob);
       // Fix 3: only auto-download when the compressed file is actually smaller
       if (res.bytes < file.size) {
-        downloadBlob(res.blob, `${file.name.replace(/\.[^/.]+$/, "")}-compressed.pdf`);
-        track({ name: "download", tool: "pdf-compress", format: "pdf" });
+        downloadBlob(res.blob, `${file.name.replace(/\.[^/.]+$/, "")}-compressed.pdf`, "pdf-compress");
       }
       track({
         name: "tool_success",
@@ -247,7 +246,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
                     variant="outline"
                     size="sm"
                     className="mt-2 w-full"
-                    onClick={() => downloadBlob(resultBlob, file.name)}
+                    onClick={() => downloadBlob(resultBlob, file.name, "pdf-compress")}
                   >
                     <Download className="h-3.5 w-3.5" /> Download PDF ({formatKb(file.size)})
                   </Button>
@@ -263,7 +262,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
                   variant="outline"
                   size="sm"
                   className="mt-2 w-full"
-                  onClick={() => downloadBlob(resultBlob, `${file.name.replace(/\.[^/.]+$/, "")}-compressed.pdf`)}
+                  onClick={() => downloadBlob(resultBlob, `${file.name.replace(/\.[^/.]+$/, "")}-compressed.pdf`, "pdf-compress")}
                 >
                   <Download className="h-3.5 w-3.5" /> Download compressed PDF
                 </Button>

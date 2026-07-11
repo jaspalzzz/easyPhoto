@@ -9,6 +9,9 @@ import { trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
+import { track, deviceClass } from "@/lib/analytics";
+
+const TOOL = "signature-crop";
 
 function Body({ source }: { source: ToolSource }) {
   const [padding, setPadding] = React.useState(12);
@@ -22,36 +25,47 @@ function Body({ source }: { source: ToolSource }) {
   const [busy, setBusy] = React.useState(false);
 
   React.useEffect(() => {
+    track({ name: "tool_start", tool: TOOL, device: deviceClass() });
+  }, [source]);
+
+  React.useEffect(() => {
     let cancelled = false;
     async function run() {
       setBusy(true);
       // Yield to the browser so the spinner can paint before heavy work begins
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
       if (cancelled) return;
-      const canvas = imageToCanvas(source.image, source.size.width, source.size.height);
-      const { canvas: cropped, bbox } = trimToContent(canvas, {
-        mode: "luma",
-        threshold: dThreshold,
-        padding: dPadding,
-      });
-      if (cancelled) return;
-      if (!bbox) {
-        setEmpty(true);
-        setOut(null);
-      } else {
-        setEmpty(false);
-        // Object URL, not a base64 data URI — a data URI holds a ~1.37×
-        // copy of the image as a JS string for every preview.
-        const blob = await canvasToBlob(cropped, "image/png");
-        if (cancelled) return;
-        setOut({
-          url: URL.createObjectURL(blob),
-          canvas: cropped,
-          w: cropped.width,
-          h: cropped.height,
+      try {
+        const canvas = imageToCanvas(source.image, source.size.width, source.size.height);
+        const { canvas: cropped, bbox } = trimToContent(canvas, {
+          mode: "luma",
+          threshold: dThreshold,
+          padding: dPadding,
         });
+        if (cancelled) return;
+        if (!bbox) {
+          setEmpty(true);
+          setOut(null);
+          track({ name: "tool_failure", tool: TOOL, device: deviceClass(), reason: "no-ink" });
+        } else {
+          setEmpty(false);
+          const blob = await canvasToBlob(cropped, "image/png");
+          if (cancelled) return;
+          setOut({
+            url: URL.createObjectURL(blob),
+            canvas: cropped,
+            w: cropped.width,
+            h: cropped.height,
+          });
+          track({ name: "tool_success", tool: TOOL, device: deviceClass() });
+        }
+      } catch {
+        if (!cancelled) {
+          track({ name: "tool_failure", tool: TOOL, device: deviceClass(), reason: "crop" });
+        }
+      } finally {
+        if (!cancelled) setBusy(false);
       }
-      setBusy(false);
     }
     run();
     return () => { cancelled = true; };
@@ -69,7 +83,7 @@ function Body({ source }: { source: ToolSource }) {
     if (!out) return;
     const src = type === "image/jpeg" ? flattenForJpeg(out.canvas) : out.canvas;
     const blob = await canvasToBlob(src, type, 0.95);
-    downloadBlob(blob, `signature-cropped.${type === "image/png" ? "png" : "jpg"}`);
+    downloadBlob(blob, `signature-cropped.${type === "image/png" ? "png" : "jpg"}`, TOOL);
   };
 
   return (
@@ -203,5 +217,8 @@ function Body({ source }: { source: ToolSource }) {
 }
 
 export function SignatureCropTool() {
+  React.useEffect(() => {
+    track({ name: "tool_view", tool: TOOL });
+  }, []);
   return <ImageToolShell>{(source) => <Body source={source} />}</ImageToolShell>;
 }

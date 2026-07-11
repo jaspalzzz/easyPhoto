@@ -5,7 +5,9 @@
  * (mounted in the layout) can confirm the save — downloads are otherwise
  * silent, and on mobile users genuinely can't tell whether they worked.
  */
-export function downloadBlob(blob: Blob, filename: string): void {
+import { track } from "@/lib/analytics";
+
+export function downloadBlob(blob: Blob, filename: string, tool?: string): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -27,6 +29,11 @@ export function downloadBlob(blob: Blob, filename: string): void {
       detail: { filename, bytes: blob.size },
     })
   );
+
+  if (tool) {
+    const extension = filename.split(".").pop()?.toLowerCase();
+    track({ name: "download", tool, format: extension?.slice(0, 12) });
+  }
 }
 
 /**

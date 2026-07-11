@@ -473,12 +473,7 @@ function Body({
   const handleDownload = () => {
     if (!out) return;
     const ext = bgFormat === "jpeg" ? "jpg" : "png";
-    downloadBlob(out.blob, `signature-processed.${ext}`);
-    track({
-      name: "download",
-      tool: toolName,
-      format: ext,
-    });
+    downloadBlob(out.blob, `signature-processed.${ext}`, toolName);
   };
 
   return (

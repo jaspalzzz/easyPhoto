@@ -100,12 +100,7 @@ function Body({ source, kb, toolName }: BodyProps) {
 
   const handleDownload = () => {
     if (!out) return;
-    downloadBlob(out.blob, `signature-${kb}kb.png`);
-    track({
-      name: "download",
-      tool: toolName,
-      format: "png",
-    });
+    downloadBlob(out.blob, `signature-${kb}kb.png`, toolName);
   };
 
   return (

@@ -136,12 +136,7 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
 
   const handleDownload = () => {
     if (!result) return;
-    downloadBlob(result.blob, `resized-${result.target}kb.jpg`);
-    track({
-      name: "download",
-      tool: toolName,
-      format: "jpg",
-    });
+    downloadBlob(result.blob, `resized-${result.target}kb.jpg`, toolName);
   };
 
   const handleShare = async () => {

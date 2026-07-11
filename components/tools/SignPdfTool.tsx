@@ -10,6 +10,9 @@ import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { assertPdfDecryptable, pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
 import { downloadBlob } from "@/lib/download";
+import { track, deviceClass } from "@/lib/analytics";
+
+const TOOL = "sign-pdf";
 import { SignaturePad } from "./SignaturePad";
 import { SignatureOverlay, type Placement } from "./SignatureOverlay";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
@@ -45,6 +48,10 @@ export function SignPdfTool() {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const localCanvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    track({ name: "tool_view", tool: TOOL });
+  }, []);
 
   // Fix #1: cleanup canvases on unmount
   React.useEffect(() => {
@@ -83,6 +90,7 @@ export function SignPdfTool() {
     setActivePageIndex(0);
     setResultBlob(null);
     setProgress("Checking PDF...");
+    track({ name: "tool_start", tool: TOOL, device: deviceClass() });
     try {
       await assertPdfDecryptable(file);
       setProgress("Loading PDF pages...");
@@ -104,6 +112,7 @@ export function SignPdfTool() {
         setError((err instanceof Error && err.message) || "Could not load the PDF. Make sure it is not encrypted.");
       }
       setPdfFile(null);
+      track({ name: "tool_failure", tool: TOOL, device: deviceClass(), reason: err instanceof PdfEncryptedError ? "encrypted" : "decode" });
     } finally {
       setBusy(false);
       setProgress(null);
@@ -196,13 +205,15 @@ export function SignPdfTool() {
       }
       const pdfBlob = await signPdf(pdfFile, map);
       setResultBlob(pdfBlob);
+      track({ name: "tool_success", tool: TOOL, device: deviceClass() });
 
       const baseName = pdfFile.name.replace(/\.[^/.]+$/, "");
-      downloadBlob(pdfBlob, `${baseName}-signed.pdf`);
+      downloadBlob(pdfBlob, `${baseName}-signed.pdf`, TOOL);
     } catch (err) {
       console.error(err);
       if (err instanceof PdfEncryptedError) setError("encrypted");
       else setError("Failed to compile signed PDF. Please try again.");
+      track({ name: "tool_failure", tool: TOOL, device: deviceClass(), reason: err instanceof PdfEncryptedError ? "encrypted" : "render" });
     } finally {
       setBusy(false);
       setProgress(null);

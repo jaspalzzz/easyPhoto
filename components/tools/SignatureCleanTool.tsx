@@ -9,6 +9,9 @@ import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
+import { track, deviceClass } from "@/lib/analytics";
+
+const TOOL = "signature-cleaner";
 
 interface Options {
   /** Auto-crop tight to the ink after removing the paper. */
@@ -27,6 +30,10 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
   const debouncedThreshold = useDebouncedValue(threshold, 150);
 
   React.useEffect(() => {
+    track({ name: "tool_start", tool: TOOL, device: deviceClass() });
+  }, [source]);
+
+  React.useEffect(() => {
     try {
       setError(null);
       const base = imageToCanvas(source.image, source.size.width, source.size.height);
@@ -39,16 +46,18 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
         result = trimToContent(result, { mode: "alpha", padding: 12 }).canvas;
       }
       setOut({ url: result.toDataURL("image/png"), canvas: result });
+      track({ name: "tool_success", tool: TOOL, device: deviceClass() });
     } catch (err) {
       console.error(err);
       setError(err instanceof Error ? err.message : "Failed to process image. Please try again.");
+      track({ name: "tool_failure", tool: TOOL, device: deviceClass(), reason: "process" });
     }
   }, [source, debouncedThreshold, darken, options.autoCrop, options.allowDarken]);
 
   const onDownload = async () => {
     if (!out) return;
     const blob = await canvasToBlob(out.canvas, "image/png");
-    downloadBlob(blob, options.filename);
+    downloadBlob(blob, options.filename, TOOL);
   };
 
   return (
@@ -127,6 +136,9 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
 }
 
 export function SignatureCleanTool(props: Options) {
+  React.useEffect(() => {
+    track({ name: "tool_view", tool: TOOL });
+  }, []);
   return (
     <ImageToolShell>{(source) => <Body source={source} options={props} />}</ImageToolShell>
   );

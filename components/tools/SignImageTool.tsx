@@ -11,6 +11,9 @@ import { ensureDecodable } from "@/lib/heic";
 import { downloadBlob } from "@/lib/download";
 import { SignaturePad } from "./SignaturePad";
 import { SignatureOverlay, type Placement } from "./SignatureOverlay";
+import { track, deviceClass } from "@/lib/analytics";
+
+const TOOL = "sign-image";
 
 interface PlacedSignature {
   id: string;
@@ -36,6 +39,10 @@ export function SignImageTool() {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   // Tracks the current base-image object URL so it can be revoked at the right time
   const baseObjectUrlRef = React.useRef<string | null>(null);
+
+  React.useEffect(() => {
+    track({ name: "tool_view", tool: TOOL });
+  }, []);
 
   // Clean up object URL on unmount
   React.useEffect(() => {
@@ -63,6 +70,7 @@ export function SignImageTool() {
     setBusy(true);
     setPlacements([]);
     setBaseFile(file);
+    track({ name: "tool_start", tool: TOOL, device: deviceClass() });
     try {
       const decodable = await ensureDecodable(file);
       
@@ -92,6 +100,7 @@ export function SignImageTool() {
       console.error(err);
       setError(err instanceof Error ? err.message : "Could not read that image. Ensure it is not corrupted.");
       setBaseFile(null);
+      track({ name: "tool_failure", tool: TOOL, device: deviceClass(), reason: "decode" });
     } finally {
       setBusy(false);
     }
@@ -160,10 +169,12 @@ export function SignImageTool() {
       const blob = await canvasToBlob(canvas, "image/jpeg", 0.95);
       const baseName = baseFile?.name.replace(/\.[^/.]+$/, "") || "signed-image";
       setExportedBlob(blob);
-      downloadBlob(blob, `${baseName}-signed.jpg`);
+      track({ name: "tool_success", tool: TOOL, device: deviceClass() });
+      downloadBlob(blob, `${baseName}-signed.jpg`, TOOL);
     } catch (err) {
       console.error(err);
       setError("Failed to compile signed image. Please try again.");
+      track({ name: "tool_failure", tool: TOOL, device: deviceClass(), reason: "render" });
     } finally {
       setBusy(false);
     }
