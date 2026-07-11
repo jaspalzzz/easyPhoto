@@ -19,8 +19,8 @@ import { ExploreTools } from "@/components/site/ExploreTools";
 export const metadata = pageMetadata({
   title: "About",
   description:
-    "EasyPhoto makes compliant passport, visa and ID photos, plus image and " +
-    "PDF tools, free and entirely in your browser. Here's why we built it.",
+    "How EasyPhoto researches document-photo requirements, identifies its " +
+    "sources, reviews specifications, and checks files privately in your browser.",
   path: "/about/",
 });
 
@@ -35,9 +35,9 @@ const VALUES = [
   {
     icon: Ruler,
     tile: "text-brand bg-brand/10",
-    title: "Accurate to the millimetre",
+    title: "Specifications you can inspect",
     body:
-      "Each country's photo size, head height and background colour come from its official government source — linked on every page. We size your head to the required band, set the correct background, then run a compliance check before you download.",
+      "Each specification links to its published source. We identify whether it comes from an official government portal or from secondary guidance, then use the recorded dimensions and limits when preparing your file.",
   },
   {
     icon: Lock,
@@ -94,9 +94,9 @@ export default function AboutPage() {
           A passport photo should never cost you the application
         </h1>
         <p className="max-w-2xl text-pretty text-[17px] leading-relaxed text-muted-foreground">
-          EasyPhoto turns any photo into a compliant passport, visa or exam photo —
-          to each country&apos;s actual specification — free, private, and entirely
-          in your browser. Here&apos;s why we built it that way.
+          EasyPhoto helps prepare passport, visa and exam photos against published
+          requirements — free, private, and entirely in your browser. Here&apos;s why
+          we built it that way and how we research the specifications we use.
         </p>
       </header>
 
@@ -126,10 +126,79 @@ export default function AboutPage() {
           your face to a server you&apos;ll never hear about again.
         </p>
         <p className="text-[17px] leading-[1.75] text-ink-soft">
-          We wanted something that just gets the photo right — to the real spec —
-          and never asks for your data to do it. That single idea decides every
-          trade-off below.
+          We wanted something that applies documented sizes and measurable checks
+          without asking for your data. Final acceptance always belongs to the
+          authority receiving the application, so we show the source and any
+          uncertainty instead of promising an outcome.
         </p>
+      </section>
+
+      {/* Research methodology — how specification claims are produced and maintained */}
+      <section className="mt-12 border-t border-hairline pt-10">
+        <span className="eyebrow text-brand">Research methodology</span>
+        <h2 className="mt-2 text-xl font-semibold tracking-tight text-ink">
+          How we research and verify requirements
+        </h2>
+        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+          A specification is a research record, not an acceptance guarantee. These
+          are the rules we follow when adding or updating one.
+        </p>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="ep-card p-6">
+            <h3 className="text-base font-semibold tracking-tight text-ink">
+              Official and secondary sources
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              We prefer the authority&apos;s portal, notification or published
+              instructions. If a primary source is unavailable or does not state a
+              required value, we may record reputable secondary guidance and label
+              it as such. We do not present secondary guidance as government-issued.
+            </p>
+          </div>
+
+          <div className="ep-card p-6">
+            <h3 className="text-base font-semibold tracking-tight text-ink">
+              Verification and review dates
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              We compare the recorded dimensions, file-size limits, format and
+              background instructions with the cited source. Where our registry has
+              a confirmed review date, specification pages display that
+              last-reviewed date. Undated or secondary records remain identified as
+              needing stronger verification rather than receiving a made-up date.
+            </p>
+          </div>
+
+          <div className="ep-card p-6">
+            <h3 className="text-base font-semibold tracking-tight text-ink">
+              Deterministic and heuristic checks
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Pixel dimensions, aspect ratio, encoded file size, format and DPI are
+              deterministic checks: the browser can measure them directly. Face
+              position, head framing, background uniformity, lighting and image
+              quality depend on detection or sampling heuristics. Those results are
+              warnings and measurements, not proof that an authority will accept a
+              photo.
+            </p>
+          </div>
+
+          <div className="ep-card p-6">
+            <h3 className="text-base font-semibold tracking-tight text-ink">
+              Corrections policy
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Requirements change. If you find a newer notification or a portal
+              value that differs from ours, send the page or document through our{" "}
+              <Link href="/contact/" className="font-medium text-brand hover:underline">
+                contact page
+              </Link>
+              . We check the cited evidence, update the registry and review date when
+              warranted, and retain uncertainty when the available sources conflict.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Values as premium cards */}
@@ -160,9 +229,9 @@ export default function AboutPage() {
       {/* Pull-quote / promise — authenticity */}
       <figure className="mt-12 rounded-2xl border border-brand/20 bg-brand-soft/20 p-7 sm:p-9">
         <blockquote className="text-pretty text-xl font-medium leading-snug tracking-tight text-ink sm:text-2xl">
-          &ldquo;Accuracy is the whole point. A wrong number isn&apos;t a typo —
-          it&apos;s a rejected photo and a wasted application window. So we&apos;d
-          rather show our sources than ask you to trust us.&rdquo;
+          &ldquo;Accuracy is the whole point. A wrong number can waste an application
+          window. So we&apos;d rather show our sources and their limits than ask you
+          to trust us.&rdquo;
         </blockquote>
         <figcaption className="mt-4 flex items-center gap-2 text-sm text-ink-soft">
           <ShieldCheck className="h-4 w-4 text-brand" strokeWidth={2} />
