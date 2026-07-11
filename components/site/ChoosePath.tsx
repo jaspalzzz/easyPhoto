@@ -170,7 +170,7 @@ export function ChoosePath() {
             <span className="mark-gold text-ink">meet the published specs</span>
           </h2>
           <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
-            Pick your path — every size, background and file limit is taken from the official source.
+            Pick your path — exam and passport specs come straight from the official source; the utilities do the file work.
           </p>
         </div>
 
