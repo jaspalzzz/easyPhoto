@@ -1,5 +1,5 @@
 /**
- * AiShowcase — "AI Perfects Every Detail"
+ * AiShowcase — "AI Corrects Measurable Details"
  * 3-card comparison (selfie → AI engine → compliant) + 4-step flow bar
  * Adapted from design template; palette: site tokens + semantic red/amber/emerald
  */
@@ -53,7 +53,7 @@ const FLOW_STEPS: FlowStep[] = [
   { n: 1, title: "Upload",              desc: "Upload your selfie from any device",                    Icon: Upload     },
   { n: 2, title: "AI Analyzes",         desc: "Our AI measures your photo against the published spec",  Icon: Cpu        },
   { n: 3, title: "Checks Complete",     desc: "Helps identify common rejection risks before you submit", Icon: ShieldCheck },
-  { n: 4, title: "Download",            desc: "Get your perfect photo in seconds",                     Icon: Download   },
+  { n: 4, title: "Download",            desc: "Download your prepared photo in seconds",               Icon: Download   },
 ];
 
 const TRUST_PILLS = [
@@ -100,13 +100,16 @@ export function AiShowcase() {
         {/* ── heading ── */}
         <div className="mb-10 text-center">
           <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-            AI Photo Perfection
+            AI Photo Correction
           </p>
           <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
-            <span className="text-cta">AI</span> Perfects Every Detail
+            <span className="text-cta">AI</span> Corrects Measurable Details
           </h2>
           <p className="mt-3 text-[14.5px] text-muted-foreground">
-            From any selfie to a photo checked against published requirements — in seconds
+            From any selfie to a photo checked against published requirements — in seconds.
+            <span className="mt-1 block text-[12.5px] text-ink-faint">
+              Example walkthrough below, shown with a sample photo.
+            </span>
           </p>
         </div>
 
@@ -339,7 +342,7 @@ export function AiShowcase() {
                   <div className="absolute inset-0 z-10 rounded-xl border-2 border-dashed border-emerald-400 pointer-events-none" />
                   <Image
                     src="/images/sample2_after_1782052904856.webp"
-                    alt="AI-corrected government-compliant passport photo"
+                    alt="Sample AI-corrected passport photo that passes the listed checks"
                     fill
                     sizes="128px"
                     className="object-cover object-top"

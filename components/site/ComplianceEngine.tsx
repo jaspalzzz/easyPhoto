@@ -6,6 +6,9 @@
  *
  * The checklist mirrors the REAL checks the engine runs (lib/photoCheck.ts +
  * lib/compliance.ts) — keep the two in sync; never list a check we don't run.
+ * The full 10-check suite runs in /tools/compliance-checker/ and
+ * /tools/photo-rejection-check/ — NOT automatically on every tool's output,
+ * so the copy below must not claim "every photo" gets all 10 checks.
  */
 
 const CHECKS = [
@@ -24,7 +27,7 @@ export function ComplianceEngine() {
           AI Compliance Check
         </h2>
         <p className="mb-10 text-center text-[14px] text-muted-foreground">
-          Every photo is measured against 10 checks from the published requirements before you download.
+          Run any photo through 10 checks from the published requirements with our free compliance checker.
         </p>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-[0.75fr_1.25fr_1fr] md:gap-8">

@@ -158,8 +158,8 @@ export function ComparisonTable() {
             Photo Studio
           </h2>
           <p className="mt-3 text-[14.5px] text-muted-foreground">
-            See why thousands choose easyPhoto to create perfect,
-            government-compliant photos — without leaving home.
+            See how easyPhoto compares with a studio visit for creating
+            spec-checked document photos — without leaving home.
           </p>
         </div>
 
@@ -306,7 +306,7 @@ export function ComparisonTable() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <p className="text-[11px] text-muted-foreground">
-              No signup.&nbsp; No payment.&nbsp; Just perfect photos.
+              No signup.&nbsp; No payment.&nbsp; Just spec-checked photos.
             </p>
           </div>
 
