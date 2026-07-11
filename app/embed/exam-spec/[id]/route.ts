@@ -1,9 +1,10 @@
 /**
- * Embeddable exam spec widget — the backlink engine.
- * ---------------------------------------------------
+ * Embeddable exam spec widget — referral and brand exposure.
+ * ----------------------------------------------------------
  * A self-contained, chrome-free HTML card per exam portal that coaching blogs
- * and exam sites can <iframe> into their pages. Every embed carries a do-follow
- * link back to easyPhoto, so each placement is a backlink earned passively.
+ * and exam sites can <iframe> into their pages. The framed card links users back
+ * to easyPhoto; the separate parent-document anchor in the copied snippet is the
+ * conventional backlink to the canonical exam-requirements page.
  *
  * Why a Route Handler (not a page): it renders raw HTML with ZERO site layout
  * (no header/footer/CSS bundle), inline styles only, ~3 KB. Statically exported
