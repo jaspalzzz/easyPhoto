@@ -330,8 +330,8 @@ export default function Page() {
             ["Voter ID (EPIC)", "voters.eci.gov.in", "200 KB", "≥200×240 px"],
             ["PAN (NSDL)", "onlineservices.proteantech.in", "50 KB", "197×276 px"],
             ["PAN (UTIITSL)", "myutiitsl.com", "30 KB", "213×213 px (square)"],
-            ["Aadhaar update", "myaadhaar.uidai.gov.in", "50 KB", "≥200×200 px"],
             ["Driving Licence", "sarathi.parivahan.gov.in", "40 KB", "≥200×230 px"],
+            ["Aadhaar (photo)", "Aadhaar Seva Kendra (in person)", "No online upload", "Captured at centre"],
           ].map(([doc, portal, kb, px]) => (
             <tr key={doc} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{doc}</td>

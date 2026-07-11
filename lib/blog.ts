@@ -30,7 +30,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "July 4, 2026",
     dateISO: "2026-07-04",
     excerpt:
-      "A PAN, a voter ID, an Aadhaar and a driving licence — four IDs, four portals, and no two accept the same photo file. Here is every 2026 spec, and the one photo that passes them all.",
+      "A PAN, a voter ID, an Aadhaar and a driving licence — and no two portals accept the same photo. Here is every 2026 spec, the one file that passes the online portals, and why Aadhaar is the exception.",
     readMins: 8,
   },
   {
