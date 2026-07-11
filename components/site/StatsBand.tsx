@@ -25,7 +25,7 @@ const STATS: Stat[] = [
   { Icon: Globe,      num: LAUNCH_ORDER.length, suffix: "+", label: "Countries supported", sub: "Passport & visa specs"           },
   { Icon: FileCheck2, num: PORTAL_KEYS.length,  suffix: "+", label: "Exam & form specs",   sub: "SSC, UPSC, Railway & more"       },
   { Icon: Wrench,     num: READY_TOOLS.length,  suffix: "+", label: "Free tools",          sub: "Photo, PDF & signature"          },
-  { Icon: Landmark,   num: 100,                 suffix: "%", label: "Government-sourced",  sub: "Every spec from official portals" },
+  { Icon: Landmark,   num: 100,                 suffix: "%", label: "Source documented",   sub: "Published source linked for every spec" },
 ];
 
 const NAVY = { background: "hsl(222 60% 8%)" } as const;
@@ -85,7 +85,7 @@ export function StatsBand() {
   return (
     <div className="pt-8 sm:pt-10">
       <p className="mb-5 text-[10.5px] font-bold uppercase tracking-widest text-muted-foreground">
-        Built on official government specifications — not opinions
+        Built on documented, published specifications — not opinions
       </p>
       <dl
         ref={dlRef}

@@ -305,7 +305,7 @@ export function AiShowcase() {
             <EmeraldArrow />
           </div>
 
-          {/* ── RIGHT — Compliant Photo ── */}
+          {/* ── RIGHT — Spec-checked Photo ── */}
           <div className="flex flex-1 flex-col rounded-2xl border-2 border-emerald-100 dark:border-emerald-800/30 bg-card p-5 shadow-[0_4px_28px_rgba(16,185,129,0.06)]">
 
             {/* card header */}
@@ -317,14 +317,14 @@ export function AiShowcase() {
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </span>
-                <h3 className="text-[15px] font-bold text-ink">Compliant Photo</h3>
+                <h3 className="text-[15px] font-bold text-ink">Spec-checked Photo</h3>
               </div>
               <span className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
                 No Detectable Issues
               </span>
             </div>
 
-            {/* Compliant photo with dimension indicators */}
+            {/* Spec-checked photo with dimension indicators */}
             <div className="mb-4 flex items-center justify-center rounded-xl border border-hairline bg-paper py-6">
               {/*
                 Outer wrapper provides space for the dimension indicators:

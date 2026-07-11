@@ -40,7 +40,7 @@ interface TrustItem { Icon: LucideIcon; title: string; sub: string; }
 const TRUST_ITEMS: TrustItem[] = [
   { Icon: ShieldCheck, title: "Spec-Checked",      sub: "Passes all measurable checks"          },
   { Icon: Lock,        title: "100% Private",      sub: "Your photos never leave your device"   },
-  { Icon: Zap,         title: "Instant Results",   sub: "Get compliant photos in seconds"       },
+  { Icon: Zap,         title: "Instant Results",   sub: "Prepare spec-checked photos in seconds" },
   { Icon: Users,       title: "No Account Needed", sub: "Free to use — no signup, no watermark" },
 ];
 
@@ -87,8 +87,8 @@ export function WhyRejected() {
             <span className="text-cta">rejected</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[14.5px] leading-relaxed text-muted-foreground">
-            Most applications get rejected due to these common mistakes.
-            easyPhoto automatically fixes them for you.
+            Most applications get rejected over these common mistakes.
+            easyPhoto flags them and auto-corrects size, background and framing.
           </p>
         </div>
 
@@ -177,7 +177,7 @@ export function WhyRejected() {
               <div className="mb-3 flex items-center gap-1.5">
                 <CheckCircle2 className="h-[15px] w-[15px] text-cta" strokeWidth={2} />
                 <h3 className="text-[13px] font-semibold text-brand">
-                  Compliant photo
+                  Spec-checked photo
                   <span className="ml-1 font-medium text-muted-foreground">(No detectable issues)</span>
                 </h3>
               </div>

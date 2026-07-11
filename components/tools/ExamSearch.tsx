@@ -25,7 +25,7 @@ export function ExamSearchProvider({ children }: { children: React.ReactNode }) 
 const POPULAR = ["SSC", "UPSC", "IBPS", "Railway", "NEET", "PAN"];
 
 const TRUST = [
-  { Icon: Landmark, text: "52+ exam specs, sourced from official portals" },
+  { Icon: Landmark, text: "52+ exam specs, each with a published source" },
   { Icon: Lock,     text: "100% private — nothing is uploaded" },
   { Icon: Gift,     text: "Free, with no sign-up required" },
 ];
