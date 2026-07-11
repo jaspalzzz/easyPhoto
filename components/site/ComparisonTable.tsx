@@ -66,8 +66,8 @@ const ROWS: CompRow[] = [
   {
     Icon: ShieldCheck,
     label: "Compliance Check",
-    studio: { sub: "No guarantee of acceptance",        primary: "✗",            kind: "cross" },
-    easy:   { sub: "AI verifies before you download",   primary: "✓",            kind: "check" },
+    studio: { sub: "No spec check before printing",     primary: "✗",            kind: "cross" },
+    easy:   { sub: "Checks run before you download",    primary: "✓",            kind: "check" },
   },
   {
     Icon: Layers,
@@ -90,8 +90,8 @@ const ROWS: CompRow[] = [
 ];
 
 const TRUST_POINTS: TrustPoint[] = [
-  { Icon: Sparkles,    label: "AI-Powered Accuracy",       desc: "Advanced AI ensures perfect size, lighting and framing."         },
-  { Icon: ShieldCheck, label: "100% Government Compliant", desc: "Follows official guidelines for every country & exam."           },
+  { Icon: Sparkles,    label: "AI-Powered Corrections",      desc: "AI helps fix size, lighting and framing automatically."          },
+  { Icon: ShieldCheck, label: "Checked Against Published Specs", desc: "Every country & exam spec cites its official source."        },
   { Icon: Lock,        label: "Your Privacy First",        desc: "We process everything in your browser. No uploads."              },
   { Icon: Zap,         label: "Instant & Free",            desc: "From upload to download in under 30 seconds."                   },
 ];
@@ -158,8 +158,8 @@ export function ComparisonTable() {
             Photo Studio
           </h2>
           <p className="mt-3 text-[14.5px] text-muted-foreground">
-            See why thousands choose easyPhoto to create perfect,
-            government-compliant photos — without leaving home.
+            See how easyPhoto compares with a studio visit for creating
+            spec-checked document photos — without leaving home.
           </p>
         </div>
 
@@ -306,7 +306,7 @@ export function ComparisonTable() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <p className="text-[11px] text-muted-foreground">
-              No signup.&nbsp; No payment.&nbsp; Just perfect photos.
+              No signup.&nbsp; No payment.&nbsp; Just spec-checked photos.
             </p>
           </div>
 

@@ -2,15 +2,21 @@
  * ComplianceEngine — light-themed, matches the site's paper design system
  * Left: photo with green scan frame + animated beam
  * Center: 10-item checklist in ep-card
- * Right: 100% score in ep-card
+ * Right: check-results card in ep-card
+ *
+ * The checklist mirrors the REAL checks the engine runs (lib/photoCheck.ts +
+ * lib/compliance.ts) — keep the two in sync; never list a check we don't run.
+ * The full 10-check suite runs in /tools/compliance-checker/ and
+ * /tools/photo-rejection-check/ — NOT automatically on every tool's output,
+ * so the copy below must not claim "every photo" gets all 10 checks.
  */
 
 const CHECKS = [
-  "Face Position",      "Brightness",
-  "Eye Height",         "Contrast",
-  "Background Color",   "Shadow Detection",
-  "Head Size",          "Expression",
-  "Resolution",         "Pose & Alignment",
+  "Face Detected",      "Head Size",
+  "One Person Only",    "Eyes Level",
+  "Head Centred",       "Whole Head Visible",
+  "Plain Background",   "Even Lighting",
+  "File Size & Format", "Dimensions",
 ];
 
 export function ComplianceEngine() {
@@ -21,7 +27,7 @@ export function ComplianceEngine() {
           AI Compliance Check
         </h2>
         <p className="mb-10 text-center text-[14px] text-muted-foreground">
-          Every photo is verified against 10 official criteria before you download.
+          Run any photo through 10 checks from the published requirements with our free compliance checker.
         </p>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-[0.75fr_1.25fr_1fr] md:gap-8">
@@ -62,23 +68,23 @@ export function ComplianceEngine() {
             </div>
           </div>
 
-          {/* Right — score */}
+          {/* Right — check results */}
           <div className="ep-card flex flex-col items-center justify-center p-6 text-center">
             <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
-              Compliance Score
+              Checks Passed
             </p>
             <div className="mb-3 text-[56px] font-black leading-none text-[#00c853]"
               style={{ fontFamily: "var(--font-outfit, sans-serif)" }}>
-              100%
+              10/10
             </div>
             <div className="mb-4 h-2 w-full overflow-hidden rounded-full bg-hairline">
               <div className="h-full rounded-full bg-[#00c853]" style={{ width: "100%" }} />
             </div>
             <p className="mb-5 text-[13px] leading-relaxed text-muted-foreground">
-              Your photo meets all official requirements.
+              All measurable checks pass. Always verify against the current official notice.
             </p>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-4 py-2 text-[12px] font-semibold text-ink">
-              🛡️ Government Compliant
+              🛡️ Checked against published requirements
             </span>
           </div>
 

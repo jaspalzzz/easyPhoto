@@ -1,5 +1,5 @@
 /**
- * AiShowcase — "AI Perfects Every Detail"
+ * AiShowcase — "AI Corrects Measurable Details"
  * 3-card comparison (selfie → AI engine → compliant) + 4-step flow bar
  * Adapted from design template; palette: site tokens + semantic red/amber/emerald
  */
@@ -51,9 +51,9 @@ const MINI_STEPS = ["Scanning", "Analyzing", "Validating", "Optimizing"] as cons
 interface FlowStep { n: number; title: string; desc: string; Icon: LucideIcon; }
 const FLOW_STEPS: FlowStep[] = [
   { n: 1, title: "Upload",              desc: "Upload your selfie from any device",                    Icon: Upload     },
-  { n: 2, title: "AI Analyzes",         desc: "Our AI checks every detail against official standards", Icon: Cpu        },
-  { n: 3, title: "Compliance Verified", desc: "We ensure 100% compliance so you never get rejected",   Icon: ShieldCheck },
-  { n: 4, title: "Download",            desc: "Get your perfect photo in seconds",                     Icon: Download   },
+  { n: 2, title: "AI Analyzes",         desc: "Our AI measures your photo against the published spec",  Icon: Cpu        },
+  { n: 3, title: "Checks Complete",     desc: "Helps identify common rejection risks before you submit", Icon: ShieldCheck },
+  { n: 4, title: "Download",            desc: "Download your prepared photo in seconds",               Icon: Download   },
 ];
 
 const TRUST_PILLS = [
@@ -100,13 +100,16 @@ export function AiShowcase() {
         {/* ── heading ── */}
         <div className="mb-10 text-center">
           <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-            AI Photo Perfection
+            AI Photo Correction
           </p>
           <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
-            <span className="text-cta">AI</span> Perfects Every Detail
+            <span className="text-cta">AI</span> Corrects Measurable Details
           </h2>
           <p className="mt-3 text-[14.5px] text-muted-foreground">
-            From any selfie to 100% government-compliant photo in seconds
+            From any selfie to a photo checked against published requirements — in seconds.
+            <span className="mt-1 block text-[12.5px] text-ink-faint">
+              Example walkthrough below, shown with a sample photo.
+            </span>
           </p>
         </div>
 
@@ -211,20 +214,20 @@ export function AiShowcase() {
                   {/* Inner dashed ring */}
                   <circle cx="75" cy="75" r="54" fill="none" stroke="#e2e8f0"
                     strokeWidth="1" strokeDasharray="4,3" />
-                  {/* Progress arc — amber, 98% ≈ strokeDashoffset=8 */}
+                  {/* Progress arc — amber, full ring: all 7 itemized checks pass */}
                   <circle cx="75" cy="75" r="62" fill="none"
                     stroke="#f59e0b" strokeWidth="6"
-                    strokeDasharray="390" strokeDashoffset="8"
+                    strokeDasharray="390" strokeDashoffset="0"
                     strokeLinecap="round" transform="rotate(-90 75 75)" />
                 </svg>
                 {/* Centered text overlay */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-[1.5rem] font-black leading-none text-emerald-500">98%</span>
+                  <span className="text-[1.5rem] font-black leading-none text-emerald-500">7/7</span>
                   <span className="mt-0.5 text-center text-[8px] font-semibold leading-tight text-muted-foreground">
-                    Compliance<br />Score
+                    Checks<br />Passed
                   </span>
                   <span className="mt-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-emerald-600 dark:text-emerald-300">
-                    Excellent
+                    All Pass
                   </span>
                 </div>
               </div>
@@ -256,13 +259,13 @@ export function AiShowcase() {
               </div>
             </div>
 
-            {/* Ready-for-submission banner */}
+            {/* Check-results banner */}
             <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-2.5">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" strokeWidth={2} />
               <div>
-                <p className="text-[12px] font-bold text-ink">Ready for Submission</p>
+                <p className="text-[12px] font-bold text-ink">All Measurable Checks Pass</p>
                 <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
-                  Meets 100% government standards for passport, visa, ID &amp; more.
+                  Measured against the published specs for passport, visa, ID &amp; more.
                 </p>
               </div>
             </div>
@@ -317,7 +320,7 @@ export function AiShowcase() {
                 <h3 className="text-[15px] font-bold text-ink">Compliant Photo</h3>
               </div>
               <span className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-                Ready to Submit
+                No Detectable Issues
               </span>
             </div>
 
@@ -339,7 +342,7 @@ export function AiShowcase() {
                   <div className="absolute inset-0 z-10 rounded-xl border-2 border-dashed border-emerald-400 pointer-events-none" />
                   <Image
                     src="/images/sample2_after_1782052904856.webp"
-                    alt="AI-corrected government-compliant passport photo"
+                    alt="Sample AI-corrected passport photo that passes the listed checks"
                     fill
                     sizes="128px"
                     className="object-cover object-top"
@@ -378,9 +381,9 @@ export function AiShowcase() {
             <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-emerald-100 dark:border-emerald-800/30 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-2.5">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" strokeWidth={2} />
               <div>
-                <p className="text-[12px] font-bold text-ink">100% Government Compliant</p>
+                <p className="text-[12px] font-bold text-ink">Checked Against Published Requirements</p>
                 <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
-                  Accepted for Passport, Visa, OCI, ID and all official documents.
+                  Prepared for the published requirements of passport, visa, OCI and ID documents.
                 </p>
               </div>
             </div>

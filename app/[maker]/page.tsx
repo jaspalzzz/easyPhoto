@@ -222,7 +222,7 @@ export default async function MakerPage({
           <span>{spec.dpiMin} dpi min</span>
         </div>
         <p className="text-xs text-ink-faint">
-          Accepted for: {spec.documents.join(", ")}.
+          Prepared for the published requirements of: {spec.documents.join(", ")}.
         </p>
       </header>
 

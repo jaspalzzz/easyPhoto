@@ -38,10 +38,10 @@ const RESULTS = [
 
 interface TrustItem { Icon: LucideIcon; title: string; sub: string; }
 const TRUST_ITEMS: TrustItem[] = [
-  { Icon: ShieldCheck, title: "100% Compliant",  sub: "Matches official requirements"        },
-  { Icon: Lock,        title: "100% Private",     sub: "Your photos never leave your device"  },
-  { Icon: Zap,         title: "Instant Results",  sub: "Get compliant photos in seconds"      },
-  { Icon: Users,       title: "Trusted by Many",  sub: "Thousands of photos processed daily"  },
+  { Icon: ShieldCheck, title: "Spec-Checked",      sub: "Passes all measurable checks"          },
+  { Icon: Lock,        title: "100% Private",      sub: "Your photos never leave your device"   },
+  { Icon: Zap,         title: "Instant Results",   sub: "Get compliant photos in seconds"       },
+  { Icon: Users,       title: "No Account Needed", sub: "Free to use — no signup, no watermark" },
 ];
 
 const NAVY = { background: "hsl(222 60% 8%)" } as const;
@@ -169,7 +169,7 @@ export function WhyRejected() {
             <GoldArrow />
           </div>
 
-          {/* ── RIGHT — compliant photo + compliance score ── */}
+          {/* ── RIGHT — compliant photo + check results ── */}
           <div className="flex h-full flex-col gap-4">
 
             {/* Photo card */}
@@ -178,14 +178,14 @@ export function WhyRejected() {
                 <CheckCircle2 className="h-[15px] w-[15px] text-cta" strokeWidth={2} />
                 <h3 className="text-[13px] font-semibold text-brand">
                   Compliant photo
-                  <span className="ml-1 font-medium text-muted-foreground">(Ready to submit)</span>
+                  <span className="ml-1 font-medium text-muted-foreground">(No detectable issues)</span>
                 </h3>
               </div>
               <div className="flex justify-center">
                 <div className="w-[140px] overflow-hidden rounded-xl border border-hairline">
                   <Image
                     src="/images/sample6_after_1782053037309.webp"
-                    alt="AI-corrected government-compliant passport photo"
+                    alt="Sample AI-corrected passport photo that passes the listed checks"
                     width={140}
                     height={187}
                     className="h-[187px] w-[140px] object-cover object-top"
@@ -194,7 +194,7 @@ export function WhyRejected() {
               </div>
             </div>
 
-            {/* Compliance score card — grows to fill remaining height */}
+            {/* Check-results card — grows to fill remaining height */}
             <div className="flex flex-1 flex-col rounded-2xl border border-hairline bg-card p-5">
               <div className="mb-4 flex items-center gap-3">
                 <div
@@ -204,9 +204,9 @@ export function WhyRejected() {
                   <ShieldCheck className="h-7 w-7 text-cta" strokeWidth={1.75} />
                 </div>
                 <div>
-                  <p className="text-[2.2rem] font-black leading-none tracking-tight text-ink">98%</p>
-                  <p className="text-[12.5px] font-bold text-ink">Compliance Score</p>
-                  <p className="text-[11px] text-muted-foreground">Photo is ready to submit</p>
+                  <p className="text-[2.2rem] font-black leading-none tracking-tight text-ink">6/6</p>
+                  <p className="text-[12.5px] font-bold text-ink">Checks Passed</p>
+                  <p className="text-[11px] text-muted-foreground">No detectable issues found</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-x-3 gap-y-2">

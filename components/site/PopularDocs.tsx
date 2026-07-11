@@ -62,7 +62,7 @@ const POPULAR_EXAMS = [
 const STATS = [
   { Icon: Globe,       value: `${LAUNCH_ORDER.length}+`, label: "Countries Supported",       sub: "Official government specs"         },
   { Icon: BookOpen,    value: `${PORTAL_KEYS.length}+`,  label: "Exam Specifications",       sub: "SSC, UPSC, Railway, Banking & more"},
-  { Icon: ShieldCheck, value: "100%",                    label: "Government Compliant",      sub: "Every spec sourced officially"     },
+  { Icon: ShieldCheck, value: "Official",                label: "Spec Sources",              sub: "Checked against published requirements" },
   { Icon: Wrench,      value: `${READY_TOOLS.length}+`,  label: "Free Tools",                sub: "Photo, PDF, signature & more"      },
   { Icon: Lock,        value: "0",                       label: "Uploads to any server",     sub: "Everything runs in your browser"   },
 ];

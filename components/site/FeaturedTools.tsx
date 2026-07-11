@@ -16,7 +16,7 @@ const PASSPORT = {
   cta: "Make a passport photo",
   includes: ["All countries", "Take with camera", "Print sheet", "Name & date strip"],
   outcome:
-    "Turn any selfie into a government-compliant photo for any country, exam or ID — auto-cropped, sized and background-corrected.",
+    "Turn any selfie into a photo prepared to the published spec for your country, exam or ID — auto-cropped, sized and background-corrected.",
 };
 
 interface Card {
