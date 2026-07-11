@@ -116,6 +116,7 @@ export function SignImageTool() {
         y: 40,
         width: 30, // 30% width
         height: 12, // automatically matches aspect on mount
+        rotation: 0, // upright; user can rotate via the handle
       },
     };
     setPlacements((prev) => [...prev, newSig]);
@@ -162,8 +163,21 @@ export function SignImageTool() {
         const y = (sig.placement.y / 100) * canvas.height;
         const w = (sig.placement.width / 100) * canvas.width;
         const h = (sig.placement.height / 100) * canvas.height;
+        const rotation = sig.placement.rotation ?? 0;
 
-        ctx.drawImage(img, x, y, w, h);
+        if (rotation) {
+          // Rotate around the placement's centre, matching the on-screen
+          // CSS `transform: rotate()` (which spins about the box centre).
+          const cx = x + w / 2;
+          const cy = y + h / 2;
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate((rotation * Math.PI) / 180);
+          ctx.drawImage(img, -w / 2, -h / 2, w, h);
+          ctx.restore();
+        } else {
+          ctx.drawImage(img, x, y, w, h);
+        }
       }
 
       const blob = await canvasToBlob(canvas, "image/jpeg", 0.95);
@@ -278,6 +292,7 @@ export function SignImageTool() {
                       signatureUrl={sig.signatureUrl}
                       placement={sig.placement}
                       parentRef={containerRef}
+                      allowRotation
                       onPlacementChange={(p) => updatePlacement(sig.id, p)}
                       onDelete={() => deleteSignature(sig.id)}
                     />
