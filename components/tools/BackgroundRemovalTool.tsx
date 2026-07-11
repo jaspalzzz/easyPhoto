@@ -11,6 +11,9 @@ import { removeBgSmart } from "@/lib/segmentation";
 import { canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
 import { withTimeout } from "@/lib/withTimeout";
+import { track, deviceClass } from "@/lib/analytics";
+
+const TOOL = "background-removal";
 
 function Body({ source }: { source: ToolSource }) {
   const [busy, setBusy] = React.useState(false);
@@ -30,6 +33,7 @@ function Body({ source }: { source: ToolSource }) {
   // Auto-run on load — background removal is the whole point of this tool.
   React.useEffect(() => {
     let cancelled = false;
+    track({ name: "tool_start", tool: TOOL, device: deviceClass() });
     (async () => {
       setBusy(true);
       setError(null);
@@ -43,8 +47,12 @@ function Body({ source }: { source: ToolSource }) {
         const blob = await canvasToBlob(cutout, "image/png");
         if (cancelled) return;
         setUrl(URL.createObjectURL(blob));
+        track({ name: "tool_success", tool: TOOL, device: deviceClass() });
       } catch {
-        if (!cancelled) setError("Background removal didn't finish — the first run can take a little longer on a slow connection. Wait a moment and try again; your photo is safe on your device.");
+        if (!cancelled) {
+          setError("Background removal didn't finish — the first run can take a little longer on a slow connection. Wait a moment and try again; your photo is safe on your device.");
+          track({ name: "tool_failure", tool: TOOL, device: deviceClass(), reason: "remove-bg" });
+        }
       } finally {
         if (!cancelled) setBusy(false);
       }
@@ -57,7 +65,7 @@ function Body({ source }: { source: ToolSource }) {
   const onDownload = async () => {
     if (!canvasRef.current) return;
     const blob = await canvasToBlob(canvasRef.current, "image/png");
-    downloadBlob(blob, "background-removed.png");
+    downloadBlob(blob, "background-removed.png", TOOL);
   };
 
   if (busy)
@@ -135,5 +143,8 @@ function Body({ source }: { source: ToolSource }) {
 }
 
 export function BackgroundRemovalTool() {
+  React.useEffect(() => {
+    track({ name: "tool_view", tool: TOOL });
+  }, []);
   return <ImageToolShell>{(source) => <Body source={source} />}</ImageToolShell>;
 }

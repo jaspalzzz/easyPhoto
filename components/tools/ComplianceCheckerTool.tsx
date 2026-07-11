@@ -158,7 +158,7 @@ export function ComplianceCheckerTool() {
         await navigator.share({ ...shareData, files: [file] });
         track({ name: "compliance_share", tool: "compliance-checker", method: "native" });
       } else {
-        downloadBlob(blob, file.name);
+        downloadBlob(blob, file.name, "compliance-checker");
         track({ name: "compliance_share", tool: "compliance-checker", method: "download" });
       }
     } catch {

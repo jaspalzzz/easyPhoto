@@ -223,8 +223,7 @@ export function ExamPackageTool() {
 
   const download = (asset: AssetResult) => {
     const ext = asset.kind === "signature" ? "png" : "jpg";
-    downloadBlob(asset.blob, `${examId}-${asset.kind}.${ext}`);
-    track({ name: "download", tool: "exam-package", format: ext });
+    downloadBlob(asset.blob, `${examId}-${asset.kind}.${ext}`, "exam-package");
   };
 
   const [zipping, setZipping] = React.useState(false);
@@ -267,8 +266,7 @@ export function ExamPackageTool() {
       zip.file(`${base}-README.txt`, readme);
 
       const blob = await zip.generateAsync({ type: "blob" });
-      downloadBlob(blob, `${base}-application-kit.zip`);
-      track({ name: "download", tool: "exam-package", format: "zip" });
+      downloadBlob(blob, `${base}-application-kit.zip`, "exam-package");
     } catch (e) {
       console.error(e);
       setError("Could not build the ZIP. Download the files individually below.");

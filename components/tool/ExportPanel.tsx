@@ -88,7 +88,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
     setBusy("print-jpg");
     try {
       const blob = await encode(print.canvas, "image/jpeg", 0.95);
-      download(blob, `${base}-passport-print-${print.dpi}dpi.jpg`);
+      download(blob, `${base}-passport-print-${print.dpi}dpi.jpg`, "passport-photo");
     } finally {
       setBusy(null);
     }
@@ -98,7 +98,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
     setBusy("print-png");
     try {
       const blob = await encode(print.canvas, "image/png");
-      download(blob, `${base}-passport-print-${print.dpi}dpi.png`);
+      download(blob, `${base}-passport-print-${print.dpi}dpi.png`, "passport-photo");
     } finally {
       setBusy(null);
     }
@@ -116,7 +116,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
         marginMm,
         gapMm,
       });
-      download(blob, `${base}-passport-${paperSize}-print-sheet.pdf`);
+      download(blob, `${base}-passport-${paperSize}-print-sheet.pdf`, "passport-photo");
     } finally {
       setBusy(null);
     }
@@ -133,7 +133,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
           minDimensions: spec.digital.pxMin,
         });
         setDigitalBlob(res.blob);
-        download(res.blob, `${base}-passport-digital.jpg`);
+        download(res.blob, `${base}-passport-digital.jpg`, "passport-photo");
         const downscaled =
           res.scale < 1 ? `, resized to ${res.width}×${res.height}px` : "";
         setDigitalInfo(
@@ -150,7 +150,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
       } else {
         const blob = await encode(digital.canvas, "image/jpeg", 0.92);
         setDigitalBlob(blob);
-        download(blob, `${base}-passport-digital.jpg`);
+        download(blob, `${base}-passport-digital.jpg`, "passport-photo");
         setDigitalInfo({
           text: `${formatKb(blob.size)} (no portal size cap on record)`,
           warn: false,

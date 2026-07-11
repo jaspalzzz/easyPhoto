@@ -10,6 +10,9 @@ import { removeBgSmart, compositeFull } from "@/lib/segmentation";
 import { canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
 import { withTimeout } from "@/lib/withTimeout";
+import { track, deviceClass } from "@/lib/analytics";
+
+const TOOL = "white-background";
 
 const PRESETS = ["#FFFFFF", "#F5F5F5", "#DCDCDC", "#EFEAD9", "#A4C8E1"];
 
@@ -26,6 +29,7 @@ function Body({ source }: { source: ToolSource }) {
   // Cut out once on load; re-compositing on colour change is cheap.
   React.useEffect(() => {
     let cancelled = false;
+    track({ name: "tool_start", tool: TOOL, device: deviceClass() });
     (async () => {
       setBusy(true);
       setError(null);
@@ -38,7 +42,10 @@ function Body({ source }: { source: ToolSource }) {
         if (cancelled) return;
         cutoutRef.current = cutout;
       } catch {
-        if (!cancelled) setError("Background removal failed. Try another image.");
+        if (!cancelled) {
+          setError("Background removal failed. Try another image.");
+          track({ name: "tool_failure", tool: TOOL, device: deviceClass(), reason: "remove-bg" });
+        }
       } finally {
         if (!cancelled) setBusy(false);
       }
@@ -61,6 +68,7 @@ function Body({ source }: { source: ToolSource }) {
       if (prevUrlRef.current) URL.revokeObjectURL(prevUrlRef.current);
       prevUrlRef.current = newUrl;
       setUrl(newUrl);
+      track({ name: "tool_success", tool: TOOL, device: deviceClass() });
     })();
     return () => {
       cancelled = true;
@@ -70,7 +78,7 @@ function Body({ source }: { source: ToolSource }) {
   const onDownload = async (type: "image/png" | "image/jpeg") => {
     if (!outRef.current) return;
     const blob = await canvasToBlob(outRef.current, type, 0.95);
-    downloadBlob(blob, `solid-background.${type === "image/png" ? "png" : "jpg"}`);
+    downloadBlob(blob, `solid-background.${type === "image/png" ? "png" : "jpg"}`, TOOL);
   };
 
   if (busy)
@@ -175,5 +183,8 @@ function Body({ source }: { source: ToolSource }) {
 }
 
 export function WhiteBackgroundTool() {
+  React.useEffect(() => {
+    track({ name: "tool_view", tool: TOOL });
+  }, []);
   return <ImageToolShell>{(source) => <Body source={source} />}</ImageToolShell>;
 }

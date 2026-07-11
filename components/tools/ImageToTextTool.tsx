@@ -5,7 +5,10 @@ import { FileUp, Copy, Download, ShieldCheck, Loader2, CheckCircle2, RefreshCw, 
 import { Button } from "@/components/ui/button";
 import { recognizeFile, type OcrLang } from "@/lib/ocr";
 import { cleanOcrText, detectIdCard } from "@/lib/ocrTextClean";
-import { track } from "@/lib/analytics";
+import { track, deviceClass } from "@/lib/analytics";
+import { downloadBlob } from "@/lib/download";
+
+const TOOL = "image-to-text";
 
 const LANGS: { value: OcrLang; label: string }[] = [
   { value: "eng", label: "English" },
@@ -30,7 +33,7 @@ export function ImageToTextTool() {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
-    track({ name: "tool_view", tool: "image-to-text" });
+    track({ name: "tool_view", tool: TOOL });
   }, []);
 
   // Revoke preview URL on cleanup
@@ -86,6 +89,7 @@ export function ImageToTextTool() {
     setError(null);
     setResult(null);
     setProgress(0);
+    track({ name: "tool_start", tool: TOOL, device: deviceClass() });
     try {
       // Preprocess (grayscale + upscale + contrast) lifts phone photos toward
       // the ~300 DPI the engine expects — the main accuracy lever.
@@ -94,10 +98,10 @@ export function ImageToTextTool() {
       setRawOcrText(res.text);
       setResult({ ...res, text: cleaned });
       setCardHint(detectIdCard(res.text));
-      track({ name: "tool_success", tool: "image-to-text" });
+      track({ name: "tool_success", tool: TOOL, device: deviceClass() });
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "OCR failed. Please try a clearer image.");
-      track({ name: "tool_failure", tool: "image-to-text", reason: "ocr-error" });
+      track({ name: "tool_failure", tool: TOOL, device: deviceClass(), reason: "ocr-error" });
     } finally {
       setBusy(false);
     }
@@ -113,12 +117,11 @@ export function ImageToTextTool() {
   const download = () => {
     if (!result) return;
     const blob = new Blob([result.text], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = (file?.name.replace(/\.[^.]+$/, "") ?? "ocr-result") + ".txt";
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadBlob(
+      blob,
+      (file?.name.replace(/\.[^.]+$/, "") ?? "ocr-result") + ".txt",
+      TOOL
+    );
   };
 
   return (

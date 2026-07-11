@@ -258,17 +258,24 @@ function Body({ source }: { source: ToolSource }) {
     let cancelled = false;
     let url: string | null = null;
     async function run() {
-      const out = cropCanvas(false);
-      if (!out) {
-        setPreview(null);
-        setSize(null);
-        return;
+      try {
+        const out = cropCanvas(false);
+        if (!out) {
+          setPreview(null);
+          setSize(null);
+          return;
+        }
+        const blob = await canvasToBlob(out, "image/png");
+        if (cancelled) return;
+        url = URL.createObjectURL(blob);
+        setPreview(url);
+        setSize({ bytes: blob.size, type: "png" });
+        track({ name: "tool_success", tool: "signature-manual-crop", device: deviceClass() });
+      } catch {
+        if (!cancelled) {
+          track({ name: "tool_failure", tool: "signature-manual-crop", device: deviceClass(), reason: "crop" });
+        }
       }
-      const blob = await canvasToBlob(out, "image/png");
-      if (cancelled) return;
-      url = URL.createObjectURL(blob);
-      setPreview(url);
-      setSize({ bytes: blob.size, type: "png" });
     }
     run();
     return () => {
@@ -284,8 +291,7 @@ function Body({ source }: { source: ToolSource }) {
     const out = cropCanvas(type === "image/jpeg");
     if (!out) return;
     const blob = await canvasToBlob(out, type, 0.95);
-    downloadBlob(blob, `signature-cropped.${type === "image/png" ? "png" : "jpg"}`);
-    track({ name: "download", tool: "signature-manual-crop", format: type === "image/png" ? "png" : "jpg" });
+    downloadBlob(blob, `signature-cropped.${type === "image/png" ? "png" : "jpg"}`, "signature-manual-crop");
   };
 
   const hasCrop = !!crop && crop.w >= MIN_CROP && crop.h >= MIN_CROP;

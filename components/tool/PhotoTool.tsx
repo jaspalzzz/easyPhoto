@@ -22,6 +22,7 @@ import {
   type CountrySpec,
 } from "@/lib/countrySpecs";
 import type { CropRect } from "@/lib/headPositioning";
+import { track } from "@/lib/analytics";
 
 /**
  * Seed a centered, aspect-locked crop box for the no-face recovery cropper.
@@ -59,6 +60,9 @@ const MAKER_STEPS: ScanStep[] = [
  * The embeddable tool, pre-set to one country. Used on each /[country] page.
  */
 export function PhotoTool({ spec }: { spec: CountrySpec }) {
+  React.useEffect(() => {
+    track({ name: "tool_view", tool: "passport-photo" });
+  }, []);
   const {
     status,
     error,
