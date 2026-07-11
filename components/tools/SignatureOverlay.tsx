@@ -8,6 +8,12 @@ export interface Placement {
   y: number; // percentage (0-100) relative to parent height
   width: number; // percentage (5-100) relative to parent width
   height: number; // percentage (5-100) relative to parent height
+  /**
+   * Clockwise rotation in degrees around the placement's centre. Optional so
+   * existing consumers (and SignPdf, which does not apply rotation on export)
+   * keep working unchanged; treated as 0 when absent.
+   */
+  rotation?: number;
 }
 
 interface SignatureOverlayProps {
@@ -16,6 +22,8 @@ interface SignatureOverlayProps {
   onPlacementChange: (placement: Placement) => void;
   onDelete: () => void;
   parentRef: React.RefObject<HTMLDivElement | null>;
+  /** Show the rotate handle + enable rotation keys. Off by default. */
+  allowRotation?: boolean;
 }
 
 export function SignatureOverlay({
@@ -24,9 +32,10 @@ export function SignatureOverlay({
   onPlacementChange,
   onDelete,
   parentRef,
+  allowRotation = false,
 }: SignatureOverlayProps) {
   const [dragState, setDragState] = React.useState<{
-    type: "drag" | "resize";
+    type: "drag" | "resize" | "rotate";
     startX: number;
     startY: number;
     startPlacement: Placement;
@@ -86,7 +95,7 @@ export function SignatureOverlay({
 
   const handlePointerDown = (
     e: React.MouseEvent | React.TouchEvent,
-    type: "drag" | "resize"
+    type: "drag" | "resize" | "rotate"
   ) => {
     e.preventDefault();
     e.stopPropagation();
@@ -181,6 +190,20 @@ export function SignatureOverlay({
           width: newWidth,
           height: newHeight,
         });
+      } else if (dragState.type === "rotate") {
+        // Rotation is absolute (angle from the box centre to the pointer), so
+        // there is no accumulation drift. The box rotates around its centre, so
+        // the centre is stable while rotating.
+        const centerX =
+          parentRect.left + ((placement.x + placement.width / 2) / 100) * parentW;
+        const centerY =
+          parentRect.top + ((placement.y + placement.height / 2) / 100) * parentH;
+        // Handle sits directly above centre (12 o'clock) at 0°, so add 90°.
+        const angle =
+          Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI) + 90;
+        // Normalise to (-180, 180] for a clean readout.
+        const normalized = ((Math.round(angle) + 180) % 360 + 360) % 360 - 180;
+        onPlacementChange({ ...placement, rotation: normalized });
       }
     };
 
@@ -210,6 +233,8 @@ export function SignatureOverlay({
         top: `${placement.y}%`,
         width: `${placement.width}%`,
         height: `${placement.height}%`,
+        transform: `rotate(${placement.rotation ?? 0}deg)`,
+        transformOrigin: "center center",
         border: "1.5px dashed var(--brand)",
         cursor: "move",
         userSelect: "none",
@@ -219,8 +244,19 @@ export function SignatureOverlay({
       onTouchStart={(e) => handlePointerDown(e, "drag")}
       tabIndex={0}
       role="group"
-      aria-label="Signature overlay — use arrow keys to reposition"
+      aria-label={
+        allowRotation
+          ? "Signature overlay — arrow keys reposition, [ and ] rotate"
+          : "Signature overlay — use arrow keys to reposition"
+      }
       onKeyDown={(e) => {
+        if (allowRotation && (e.key === "[" || e.key === "]")) {
+          e.preventDefault();
+          const delta = e.key === "]" ? 1 : -1;
+          const next = ((placement.rotation ?? 0) + delta + 180 + 360) % 360 - 180;
+          onPlacementChange({ ...placement, rotation: next });
+          return;
+        }
         const STEP = 1; // 1% per key press
         let newX = placement.x;
         let newY = placement.y;
@@ -245,6 +281,28 @@ export function SignatureOverlay({
         onMouseDown={(e) => handlePointerDown(e, "resize")}
         onTouchStart={(e) => handlePointerDown(e, "resize")}
       />
+
+      {/* Rotate Handle: Top Centre (drag to spin; [ / ] fine-tune 1°) */}
+      {allowRotation && (
+        <>
+          {/* Connector line from the box edge up to the handle */}
+          <div className="pointer-events-none absolute left-1/2 -top-6 h-6 w-px -translate-x-1/2 bg-brand/60" />
+          <div
+            className="absolute left-1/2 -top-[30px] h-3.5 w-3.5 -translate-x-1/2 rounded-full border border-white bg-brand shadow-sm"
+            style={{ cursor: dragState?.type === "rotate" ? "grabbing" : "grab" }}
+            onMouseDown={(e) => handlePointerDown(e, "rotate")}
+            onTouchStart={(e) => handlePointerDown(e, "rotate")}
+            title="Drag to rotate ( [ and ] to fine-tune )"
+            aria-label="Rotate signature"
+          />
+          {/* Live angle readout while rotating or when tilted */}
+          {(dragState?.type === "rotate" || (placement.rotation ?? 0) !== 0) && (
+            <span className="pointer-events-none absolute left-1/2 -top-[52px] -translate-x-1/2 rounded bg-brand px-1.5 py-0.5 text-[10px] font-semibold tabular-nums text-white shadow-sm">
+              {Math.round(placement.rotation ?? 0)}°
+            </span>
+          )}
+        </>
+      )}
 
       {/* Delete button: Top Right */}
       <button
