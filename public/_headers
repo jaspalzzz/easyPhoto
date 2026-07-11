@@ -65,8 +65,9 @@
 /tools/form-resizer/*
   X-Robots-Tag: noindex, follow
 
-# Embeddable exam-spec widgets (the backlink engine). Exported extensionless via
-# a Route Handler, so declare text/html. CRITICAL: override the site-wide
+# Embeddable exam-spec widgets for referral and brand exposure. The copied
+# snippet's parent-document anchor provides the conventional backlink. Exported
+# extensionless via a Route Handler, so declare text/html. CRITICAL: override the site-wide
 # `frame-ancestors 'none'` so third-party sites can actually <iframe> these —
 # the whole point is to be embedded anywhere. CORP cross-origin keeps them
 # loadable by embedders that run a strict COEP. Self-contained inline-styled

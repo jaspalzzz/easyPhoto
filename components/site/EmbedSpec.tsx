@@ -5,9 +5,9 @@ import { Code2, Check, Copy } from "lucide-react";
 
 /**
  * "Embed this spec" affordance — gives coaching blogs and exam sites a
- * copy-paste <iframe> for the spec widget at /embed/exam-spec/{id}. Every
- * placement is a backlink, so this is the user-facing half of the backlink
- * engine. Free to embed; a link back is the (passive) price.
+ * copy-paste widget at /embed/exam-spec/{id}. The iframe provides referral and
+ * brand exposure; the conventional parent-document attribution anchor links to
+ * the indexable exam-requirements page.
  */
 export function EmbedSpec({
   id,
@@ -21,7 +21,11 @@ export function EmbedSpec({
   const [copied, setCopied] = useState(false);
   const short = name.split(" (")[0];
   const height = hasSig ? 330 : 240;
-  const code = `<iframe src="https://easyphoto.in/embed/exam-spec/${id}" width="360" height="${height}" loading="lazy" style="border:0;max-width:100%" title="${short} photo${hasSig ? " & signature" : ""} size — easyPhoto"></iframe>`;
+  // `id` is the canonical exam slug: both this embed and
+  // /exam-requirements/[exam] are generated from PORTAL_KEYS, and the caller
+  // passes the registry's spec.id. Keep the attribution as literal parent-page
+  // HTML so hosts publish a conventional crawlable anchor alongside the iframe.
+  const code = `<iframe src="https://easyphoto.in/embed/exam-spec/${id}" width="360" height="${height}" loading="lazy" style="border:0;max-width:100%" title="${short} photo${hasSig ? " & signature" : ""} size — easyPhoto"></iframe>\n<p><a href="https://easyphoto.in/exam-requirements/${id}/">${short} photo${hasSig ? " and signature" : ""} requirements — easyPhoto</a></p>`;
 
   const copy = async () => {
     try {
