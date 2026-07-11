@@ -333,8 +333,9 @@ export default function Page() {
         <Link href="/blog/how-to-mask-aadhaar-before-sharing/" className="text-brand underline">
           how to mask your Aadhaar number
         </Link>{" "}
-        first — UIDAI recommends masking the first eight digits on any shared copy. To
-        hit the 50&nbsp;KB photo cap, the{" "}
+        first — UIDAI recommends masking the first eight digits on any shared copy. If
+        you need to compress an Aadhaar <em>card scan</em> to a KB limit for a document
+        upload, the{" "}
         <Link href="/tools/resize-kb/" className="text-brand underline">
           compress-to-KB tool
         </Link>{" "}
@@ -345,7 +346,12 @@ export default function Page() {
 
       <p>
         You do not need a studio or four separate photos. One good capture, prepared
-        to the strictest spec, works everywhere:
+        to the strictest spec, works everywhere. (For a focused look at just how the
+        three online IDs differ, see{" "}
+        <Link href="/blog/pan-vs-voter-id-vs-driving-licence-photo/" className="text-brand underline">
+          PAN vs voter ID vs driving licence photo
+        </Link>
+        .) The steps:
       </p>
 
       <ol className="my-4 space-y-3 text-[15px]">

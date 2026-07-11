@@ -23,6 +23,17 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "pan-vs-voter-id-vs-driving-licence-photo",
+    title: "PAN vs Voter ID vs Driving Licence Photo: What's Different (2026)",
+    description:
+      "The KB limit swings from 30 KB (PAN/UTIITSL) to 200 KB (voter ID) — 6.7× — and only PAN needs a square crop. A side-by-side of all three photo specs, and the one file that passes all.",
+    date: "July 10, 2026",
+    dateISO: "2026-07-10",
+    excerpt:
+      "The three IDs look like they'd take the same photo — they don't. The KB cap ranges 6.7× across them and only one needs a square crop. Here's exactly what differs, and the single file that clears all three.",
+    readMins: 7,
+  },
+  {
     slug: "indian-government-id-photo-requirements",
     title: "Indian Government ID Photo Size 2026: PAN, Voter ID, DL & Aadhaar",
     description:
