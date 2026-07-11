@@ -119,6 +119,7 @@ export function ExamPackageTool() {
   };
 
   const chooseExam = (id: string) => {
+    track({ name: "exam_select", exam: id });
     // Switching to a DIFFERENT exam invalidates already-processed assets — they
     // were sized/compressed to the previous spec's limits — so clear them.
     if (id !== examId) {

@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
 import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { MAKER_PAGES } from "@/lib/makerPages";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
+import { track, type SearchSurface } from "@/lib/analytics";
 
 interface CmdItem {
   title: string;
@@ -82,11 +83,20 @@ const MAX_RESULTS = 8;
 
 export function CommandPalette() {
   const router = useRouter();
+  const pathname = usePathname();
+  const surface: SearchSurface = pathname === "/"
+    ? "homepage"
+    : pathname.startsWith("/blog")
+      ? "blog"
+      : pathname.startsWith("/exam-requirements") || pathname.includes("photo-resizer")
+        ? "exam"
+        : "tools";
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const listRef = React.useRef<HTMLUListElement>(null);
+  const noResultReportedRef = React.useRef(false);
 
   const index = React.useMemo(buildIndex, []);
 
@@ -126,18 +136,31 @@ export function CommandPalette() {
     }
   }, [open]);
 
+  function reportNoResult() {
+    if (query.trim() && results.length === 0 && !noResultReportedRef.current) {
+      noResultReportedRef.current = true;
+      track({ name: "search_use", surface, result: "no_result" });
+    }
+  }
+
+  function closePalette() {
+    reportNoResult();
+    setOpen(false);
+  }
+
   /* ── Global keyboard shortcut: ⌘K / Ctrl+K ── */
   React.useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        setOpen((o) => !o);
+        if (open) closePalette();
+        else setOpen(true);
       }
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape" && open) closePalette();
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [open, query, results, surface]);
 
   /* ── Custom event from ToolSearch's ⌘K badge ── */
   React.useEffect(() => {
@@ -153,6 +176,7 @@ export function CommandPalette() {
   }, [open]);
 
   function navigate(path: string) {
+    track({ name: "search_use", surface, result: "selected" });
     setOpen(false);
     router.push(path);
   }
@@ -167,6 +191,9 @@ export function CommandPalette() {
     } else if (e.key === "Enter" && results.length > 0) {
       e.preventDefault();
       navigate(results[selectedIndex].path);
+    } else if (e.key === "Enter" && query.trim()) {
+      e.preventDefault();
+      reportNoResult();
     }
   }
 
@@ -177,7 +204,7 @@ export function CommandPalette() {
     <div
       role="presentation"
       className="fixed inset-0 z-[60] flex items-start justify-center px-4 pt-[12vh]"
-      onClick={() => setOpen(false)}
+      onClick={closePalette}
       style={{ background: "hsl(222 60% 8% / 0.65)", backdropFilter: "blur(4px)" }}
     >
       {/* Panel — stop propagation so clicking inside doesn't close */}
@@ -195,7 +222,10 @@ export function CommandPalette() {
             ref={inputRef}
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              noResultReportedRef.current = false;
+              setQuery(e.target.value);
+            }}
             onKeyDown={onInputKeyDown}
             placeholder="Search tools, countries, exams…"
             className="min-w-0 flex-1 bg-transparent text-[15px] font-medium text-ink outline-none placeholder:font-normal placeholder:text-muted-foreground"
@@ -203,7 +233,7 @@ export function CommandPalette() {
             aria-controls="cp-listbox"
           />
           <button
-            onClick={() => setOpen(false)}
+            onClick={closePalette}
             aria-label="Close"
             className="rounded-md border border-hairline px-1.5 py-0.5 text-[11px] font-semibold text-muted-foreground hover:border-ink-soft hover:text-ink"
           >

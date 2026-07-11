@@ -26,12 +26,39 @@ const ALLOWED_EVENTS = new Set([
   "tool_success",
   "tool_failure",
   "download",
+  "compliance_share",
+  // Acquisition / navigation funnel.
+  "path_select",
+  "search_use",
+  "exam_select",
+  "country_select",
+  "related_tool_click",
 ]);
 
 const ALLOWED_DEVICE = new Set(["desktop", "android", "ios"]);
+// Bounded enums for the nav events — never trust the client, even our own.
+const ALLOWED_PATH = new Set(["exam", "passport", "utilities"]);
+const ALLOWED_SURFACE = new Set(["homepage", "tools", "exam", "blog"]);
+const ALLOWED_RESULT = new Set(["selected", "no_result"]);
+const ALLOWED_METHOD = new Set(["native", "download"]);
 
 function str(v: unknown, max: number): string {
   return typeof v === "string" ? v.slice(0, max) : "";
+}
+
+/** Keep one value only if it's in the allow-list; otherwise drop it. */
+function pick(set: Set<string>, v: unknown): string {
+  return set.has(String(v)) ? String(v) : "";
+}
+
+/** Bound a registry identifier to a safe slug — no free-form text can survive. */
+function slug(v: unknown, max: number): string {
+  return typeof v === "string"
+    ? v
+        .toLowerCase()
+        .replace(/[^a-z0-9-]/g, "")
+        .slice(0, max)
+    : "";
 }
 
 function ms(v: unknown): number {
@@ -72,19 +99,36 @@ export const onRequestPost = async (context: {
     const device = ALLOWED_DEVICE.has(String(event.device))
       ? String(event.device)
       : "";
-    const country = str(request.cf?.country, 2);
+    const cfCountry = str(request.cf?.country, 2);
+
+    // format (download) and method (compliance_share) share a "variant" column.
+    const variant = str(event.format, 12) || pick(ALLOWED_METHOD, event.method);
+
+    // Navigation events have no `tool`. `navSubject` folds the single subject
+    // of each nav event (path/surface/exam/selected-country/related-destination)
+    // into one column so "what did they pick" is one query; validated per type.
+    const navSubject =
+      pick(ALLOWED_PATH, event.path) ||
+      pick(ALLOWED_SURFACE, event.surface) ||
+      slug(event.exam, 48) ||
+      slug(event.country, 24) || // country_select subject, not the cf country
+      slug(event.to, 48);
 
     env.ANALYTICS.writeDataPoint({
-      // One index (used for adaptive sampling) — group by tool.
-      indexes: [str(event.tool, 48) || "unknown"],
+      // One index (used for adaptive sampling) — group by tool, or by event
+      // name for navigation events that carry no tool.
+      indexes: [str(event.tool, 48) || str(event.name, 16) || "unknown"],
       blobs: [
-        str(event.name, 16), // 1: event name
-        str(event.tool, 48), // 2: tool
-        device, //              3: device class
+        str(event.name, 16), //  1: event name
+        str(event.tool, 48), //  2: tool
+        device, //               3: device class
         str(event.engine, 16), // 4: engine
         str(event.reason, 32), // 5: failure reason
-        str(event.format, 12), // 6: download format
-        country, //             7: coarse country
+        variant, //              6: download format / share method
+        cfCountry, //            7: coarse country (edge, no identifier)
+        navSubject, //           8: nav subject (path/surface/exam/country/dest)
+        slug(event.from, 48), // 9: nav source (related_tool_click origin)
+        pick(ALLOWED_RESULT, event.result), // 10: search_use outcome
       ],
       doubles: [
         ms(event.ms), // 1: processing time (ms)

@@ -2,11 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
 import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { MAKER_PAGES } from "@/lib/makerPages";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
+import { track, type SearchSurface } from "@/lib/analytics";
 
 interface SearchItem {
   title: string;
@@ -18,11 +20,26 @@ interface SearchItem {
 const RESULT_LIMIT = 8;
 
 export function ToolSearch() {
+  const pathname = usePathname();
+  const surface: SearchSurface = pathname === "/" ? "homepage" : "tools";
   const [query, setQuery] = React.useState("");
   const [results, setResults] = React.useState<SearchItem[]>([]);
   const [totalMatches, setTotalMatches] = React.useState(0);
   const [isOpen, setIsOpen] = React.useState(false);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
+  const noResultReportedRef = React.useRef(false);
+
+  function reportNoResult() {
+    if (query.trim() && results.length === 0 && !noResultReportedRef.current) {
+      noResultReportedRef.current = true;
+      track({ name: "search_use", surface, result: "no_result" });
+    }
+  }
+
+  function closeSearch() {
+    reportNoResult();
+    setIsOpen(false);
+  }
 
   // Pre-populate from URL ?q= param — powers the WebSite SearchAction schema.
   // window.location is only available on the client, so this runs post-mount only.
@@ -113,13 +130,16 @@ export function ToolSearch() {
   // Keyboard navigation handler
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Escape") {
-      setIsOpen(false);
+      closeSearch();
       setQuery("");
     } else if (e.key === "ArrowDown" && isOpen && results.length > 0) {
       e.preventDefault();
       const listbox = document.getElementById("tool-search-listbox");
       const first = listbox?.querySelector<HTMLAnchorElement>("a");
       first?.focus();
+    } else if (e.key === "Enter" && query.trim() && results.length === 0) {
+      e.preventDefault();
+      reportNoResult();
     }
   }
 
@@ -127,12 +147,12 @@ export function ToolSearch() {
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        closeSearch();
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [query, results, surface]);
 
   const showResults = isOpen && results.length > 0;
 
@@ -160,6 +180,7 @@ export function ToolSearch() {
           aria-label="Search tools"
           value={query}
           onChange={(e) => {
+            noResultReportedRef.current = false;
             setQuery(e.target.value);
             setIsOpen(true);
           }}
@@ -187,6 +208,7 @@ export function ToolSearch() {
                 <Link
                   href={item.path}
                   onClick={() => {
+                    track({ name: "search_use", surface, result: "selected" });
                     setQuery("");
                     setIsOpen(false);
                   }}
