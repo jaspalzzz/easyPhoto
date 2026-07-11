@@ -79,7 +79,7 @@ export function ComplianceReceipt({
       <p className="mt-3 flex items-start gap-1.5 border-t border-ink/10 pt-2.5 text-xs text-ink-soft">
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
         {allOk
-          ? "Ready to submit. The file is on your device only — nothing was uploaded."
+          ? "No detectable issues found. The file is on your device only — nothing was uploaded."
           : "Fix the marked line before submitting — portals reject on exactly these checks."}
       </p>
     </div>

@@ -60,7 +60,7 @@ export const CONVERT_PAIRS: ConvertPair[] = [
     reason:
       "WebP images saved from the web often won't open in older editors or upload to forms — JPG works everywhere.",
     detail:
-      "WebP is built for fast-loading websites, which is why images you save from the web often arrive in this format. Many upload forms, older software and some printers still reject it. Converting to JPG — the most universally accepted photo format — guarantees the image opens and uploads anywhere, with a quality slider to balance sharpness against file size.",
+      "WebP is built for fast-loading websites, which is why images you save from the web often arrive in this format. Many upload forms, older software and some printers still reject it. Converting to JPG — the most universally accepted photo format — means the image opens and uploads almost anywhere, with a quality slider to balance sharpness against file size.",
   },
   {
     slug: "webp-to-png",
