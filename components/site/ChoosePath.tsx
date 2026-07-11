@@ -56,7 +56,7 @@ const PATHS: Path[] = [
         Exam &amp; Government <span className="whitespace-nowrap">Applications</span>
       </>
     ),
-    desc: `Photo, signature and document sizes for ${EXAM_COUNT}+ Indian exam and recruitment forms — each checked against its official notice.`,
+    desc: `Photo, signature and document sizes for ${EXAM_COUNT}+ Indian exam and recruitment forms — each checked against its published requirements.`,
     href: "/exam-requirements/",
     cta: "Find your exam or form",
     chips: [

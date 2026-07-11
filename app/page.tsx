@@ -87,7 +87,7 @@ export default function HomePage() {
                 Passport · Visa · ID Card · Exam — exact to the millimetre
               </span>
               <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
-                Document photos,{" "}
+                Document photos{" "}
                 <span className="mark-gold"><span className="text-gradient-brand">prepared to spec</span></span>
               </h1>
               <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">

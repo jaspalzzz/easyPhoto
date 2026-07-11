@@ -85,7 +85,7 @@ export function StatsBand() {
   return (
     <div className="pt-8 sm:pt-10">
       <p className="mb-5 text-[10.5px] font-bold uppercase tracking-widest text-muted-foreground">
-        Built on official government specifications — not opinions
+        Built on documented, published specifications — not opinions
       </p>
       <dl
         ref={dlRef}
