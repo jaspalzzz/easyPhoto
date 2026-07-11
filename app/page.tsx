@@ -4,6 +4,7 @@ import { passportPath, visaPath } from "@/lib/makerPages";
 import { TrustPills } from "@/components/site/TrustStrip";
 import { HeroVisual } from "@/components/site/HeroVisual";
 import { StatsBand } from "@/components/site/StatsBand";
+import { ChoosePath } from "@/components/site/ChoosePath";
 import { FeaturedTools } from "@/components/site/FeaturedTools";
 import { AiShowcase } from "@/components/site/AiShowcase";
 import { PopularDocs } from "@/components/site/PopularDocs";
@@ -126,6 +127,9 @@ export default function HomePage() {
           <StatsBand />
         </div>
       </section>
+
+      {/* ── CHOOSE YOUR PATH — three-path hierarchy (exam / passport / tools) ─ */}
+      <ChoosePath />
 
       {/* ── FEATURED TOOLS — "Everything you need in one place" ─────── */}
       <FeaturedTools />
