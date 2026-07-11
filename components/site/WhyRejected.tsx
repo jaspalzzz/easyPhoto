@@ -87,8 +87,8 @@ export function WhyRejected() {
             <span className="text-cta">rejected</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[14.5px] leading-relaxed text-muted-foreground">
-            Most applications get rejected due to these common mistakes.
-            easyPhoto automatically fixes them for you.
+            Most applications get rejected over these common mistakes.
+            easyPhoto flags them and auto-corrects size, background and framing.
           </p>
         </div>
 
