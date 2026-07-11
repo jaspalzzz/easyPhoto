@@ -91,7 +91,7 @@ const ROWS: CompRow[] = [
 
 const TRUST_POINTS: TrustPoint[] = [
   { Icon: Sparkles,    label: "AI-Powered Corrections",      desc: "AI helps fix size, lighting and framing automatically."          },
-  { Icon: ShieldCheck, label: "Checked Against Published Specs", desc: "Every country & exam spec cites its official source."        },
+  { Icon: ShieldCheck, label: "Checked Against Published Specs", desc: "Every country & exam spec cites its published source."       },
   { Icon: Lock,        label: "Your Privacy First",        desc: "We process everything in your browser. No uploads."              },
   { Icon: Zap,         label: "Instant & Free",            desc: "From upload to download in under 30 seconds."                   },
 ];

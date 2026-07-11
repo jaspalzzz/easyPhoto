@@ -10,7 +10,7 @@ const AI_CHECKS = [
   "BG Removed",
   "Exact Size",
   "Face Aligned",
-  "Compliant",
+  "Spec-checked",
 ];
 
 export function HeroVisual() {
@@ -20,7 +20,7 @@ export function HeroVisual() {
       {/* ── Card 1: Your Selfie (wrong) ────────────────────────────── */}
       <div className="animate-float-slow flex flex-col rounded-2xl border border-hairline bg-white p-2 shadow-[0_12px_36px_rgba(0,0,0,0.09)] dark:bg-card dark:shadow-[0_12px_36px_rgba(0,0,0,0.4)] min-[360px]:p-3 sm:p-4">
         <span className="mb-3 inline-flex w-fit items-center gap-1 whitespace-nowrap rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[9px] font-bold sm:gap-1.5 sm:px-3 sm:py-1 sm:text-[12px] text-red-600 dark:border-red-800 dark:bg-red-950/40 dark:text-red-400">
-          <span>✕</span> Not Compliant
+          <span>✕</span> Issues found
         </span>
 
         <div className="relative overflow-hidden rounded-xl bg-white" style={{ aspectRatio: "3/4" }}>
@@ -85,16 +85,16 @@ export function HeroVisual() {
         </p>
       </div>
 
-      {/* ── Card 2: Compliant Photo (correct) ─────────────────────── */}
+      {/* ── Card 2: Spec-checked Photo (correct) ──────────────────── */}
       <div className="animate-float-delay flex flex-col rounded-2xl border border-hairline bg-white p-2 shadow-[0_12px_36px_rgba(0,0,0,0.09)] dark:bg-card dark:shadow-[0_12px_36px_rgba(0,0,0,0.4)] min-[360px]:p-3 sm:p-4">
         <span className="mb-3 inline-flex w-fit items-center gap-1 whitespace-nowrap rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[9px] font-bold sm:gap-1.5 sm:px-3 sm:py-1 sm:text-[12px] text-emerald-600 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400">
-          <span>✓</span> Compliant
+          <span>✓</span> Spec-checked
         </span>
 
         <div className="relative overflow-hidden rounded-xl bg-white [container-type:size]" style={{ aspectRatio: "3/4" }}>
           <img
             src="/images/sample4_after_1782052969219.webp"
-            alt="Compliant passport photo — after AI processing"
+            alt="Passport photo prepared to spec — after AI processing"
             className="h-full w-full object-cover object-top"
           />
           <div className="pointer-events-none absolute inset-0 rounded-xl border-2 border-emerald-400 shadow-[inset_0_0_16px_rgba(16,185,129,0.12)]" />

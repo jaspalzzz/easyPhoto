@@ -166,8 +166,8 @@ export function ChoosePath() {
         {/* Broad promise — passport and exam users both belong here */}
         <div className="mx-auto mb-8 max-w-2xl text-center">
           <h2 className="text-[1.7rem] font-bold tracking-tight text-ink sm:text-[2rem]">
-            Application photos &amp; documents that{" "}
-            <span className="mark-gold text-ink">meet the published specs</span>
+            Application photos &amp; documents that meet the{" "}
+            <span className="mark-gold whitespace-nowrap text-ink">published specs</span>
           </h2>
           <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
             Pick your path — each exam and passport spec cites its published source, so you can check it yourself.

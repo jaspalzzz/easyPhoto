@@ -40,7 +40,7 @@ interface TrustItem { Icon: LucideIcon; title: string; sub: string; }
 const TRUST_ITEMS: TrustItem[] = [
   { Icon: ShieldCheck, title: "Spec-Checked",      sub: "Passes all measurable checks"          },
   { Icon: Lock,        title: "100% Private",      sub: "Your photos never leave your device"   },
-  { Icon: Zap,         title: "Instant Results",   sub: "Get compliant photos in seconds"       },
+  { Icon: Zap,         title: "Instant Results",   sub: "Prepare spec-checked photos in seconds" },
   { Icon: Users,       title: "No Account Needed", sub: "Free to use — no signup, no watermark" },
 ];
 
