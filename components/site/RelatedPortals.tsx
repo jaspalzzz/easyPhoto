@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { relatedPortals } from "@/lib/specRegistry";
+import { TrackedLink } from "@/components/site/TrackedLink";
 
 /**
  * Sibling-portal cross-links — completes the exam hub-and-spoke: every resizer
@@ -26,16 +27,17 @@ export function RelatedPortals({ portalId }: { portalId: string }) {
               ? `${p.photoMinKb}–${p.photoLimitKb} KB`
               : `≤ ${p.photoLimitKb} KB`;
           return (
-            <Link
+            <TrackedLink
               key={p.id}
               href={`/exam-requirements/${p.id}/`}
+              event={{ name: "related_tool_click", from: portalId, to: p.id }}
               className="ep-card flex items-baseline justify-between gap-3 p-3.5"
             >
               <span className="text-sm font-semibold text-ink">{short}</span>
               <span className="font-mono text-[12px] tabular-nums text-ink-soft">
                 {photo}
               </span>
-            </Link>
+            </TrackedLink>
           );
         })}
       </div>

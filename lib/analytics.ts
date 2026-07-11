@@ -19,6 +19,12 @@
 /** Coarse device class — no fingerprinting, just routing/diagnostics buckets. */
 export type DeviceClass = "desktop" | "android" | "ios";
 
+/** Homepage three-path selector — bounded so no free-form value can leak. */
+export type HomepagePath = "exam" | "passport" | "utilities";
+
+/** Which search surface an event fired on (never the query text itself). */
+export type SearchSurface = "homepage" | "tools" | "exam" | "blog";
+
 /** Which on-device engine handled a job (for success/failure diagnostics). */
 export type EngineLabel =
   | "isnet"
@@ -47,7 +53,22 @@ export type AnalyticsEvent =
       reason?: string;
     }
   | { name: "download"; tool: string; format?: string }
-  | { name: "compliance_share"; tool: string; method: "native" | "download" };
+  | { name: "compliance_share"; tool: string; method: "native" | "download" }
+  // ── Acquisition / navigation funnel ──────────────────────────────────────
+  // All fields are stable SLUGS or bounded enums — never free-form user input.
+  // `search_use` deliberately carries NO query text (would be PII); only the
+  // surface it fired on and whether a suggestion was taken, so the privacy
+  // invariant holds. exam/country/from/to are registry slugs, re-validated at
+  // the collector.
+  | { name: "path_select"; path: HomepagePath }
+  | {
+      name: "search_use";
+      surface: SearchSurface;
+      result: "selected" | "no_result";
+    }
+  | { name: "exam_select"; exam: string }
+  | { name: "country_select"; country: string }
+  | { name: "related_tool_click"; from: string; to: string };
 
 export type AnalyticsSink = (event: AnalyticsEvent) => void;
 

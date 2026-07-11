@@ -1,5 +1,4 @@
 import * as React from "react";
-import Link from "next/link";
 import {
   ArrowRight,
   GraduationCap,
@@ -10,6 +9,8 @@ import {
 import { PORTAL_KEYS } from "@/lib/portalPresets";
 import { LAUNCH_ORDER } from "@/lib/countrySpecs";
 import { READY_TOOLS } from "@/lib/toolsCatalog";
+import { TrackedLink } from "@/components/site/TrackedLink";
+import type { HomepagePath } from "@/lib/analytics";
 
 /*
  * ChoosePath — the three-path homepage hierarchy.
@@ -31,6 +32,7 @@ const COUNTRY_COUNT = LAUNCH_ORDER.length;
 const TOOL_COUNT = READY_TOOLS.length;
 
 interface Path {
+  analyticsPath: HomepagePath;
   Icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   eyebrow: string;
   title: React.ReactNode;
@@ -49,6 +51,7 @@ interface Path {
 
 const PATHS: Path[] = [
   {
+    analyticsPath: "exam",
     Icon: GraduationCap,
     eyebrow: "Exam & Government",
     title: (
@@ -72,6 +75,7 @@ const PATHS: Path[] = [
     featured: true,
   },
   {
+    analyticsPath: "passport",
     Icon: Plane,
     eyebrow: "Passport & Visa",
     title: <>Passport &amp; Visa Photos</>,
@@ -90,6 +94,7 @@ const PATHS: Path[] = [
     chipHover: "hover:border-sky-300 hover:text-sky-700 dark:hover:text-sky-300",
   },
   {
+    analyticsPath: "utilities",
     Icon: Wrench,
     eyebrow: "Document Utilities",
     title: <>Document Utilities</>,
@@ -110,7 +115,7 @@ const PATHS: Path[] = [
 ];
 
 function PathCard({ path }: { path: Path }) {
-  const { Icon, eyebrow, title, desc, href, cta, chips, iconBg, iconText, chipHover, featured } = path;
+  const { analyticsPath, Icon, eyebrow, title, desc, href, cta, chips, iconBg, iconText, chipHover, featured } = path;
   return (
     <div
       className={`lift-card flex flex-col p-6 ${
@@ -138,23 +143,25 @@ function PathCard({ path }: { path: Path }) {
       {/* Sub-links — the most-searched entries for this path */}
       <div className="mb-5 flex flex-wrap gap-1.5">
         {chips.map((c) => (
-          <Link
+          <TrackedLink
             key={c.href + c.label}
             href={c.href}
+            event={{ name: "path_select", path: analyticsPath }}
             className={`rounded-full border border-hairline bg-card px-2.5 py-1 text-[11.5px] font-medium text-ink-soft transition-colors ${chipHover}`}
           >
             {c.label}
-          </Link>
+          </TrackedLink>
         ))}
       </div>
 
-      <Link
+      <TrackedLink
         href={href}
+        event={{ name: "path_select", path: analyticsPath }}
         className="group/cta flex items-center gap-1.5 text-[13px] font-bold text-brand hover:underline"
       >
         {cta}
         <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/cta:translate-x-1" />
-      </Link>
+      </TrackedLink>
     </div>
   );
 }

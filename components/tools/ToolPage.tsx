@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { relatedTools, getTool, categoryOf, toolColorCategory } from "@/lib/toolsCatalog";
 import { ToolIconTile } from "@/components/site/ToolIcon";
@@ -7,6 +6,7 @@ import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { breadcrumbSchema, faqSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
+import { TrackedLink } from "@/components/site/TrackedLink";
 
 /** Shared chrome for a tool page: breadcrumb, heading, body, related links. */
 export function ToolPage({
@@ -144,9 +144,10 @@ export function ToolPage({
           <h2 className="eyebrow mb-4">Related tools</h2>
           <div className="grid gap-3 sm:grid-cols-3">
             {related.map((t) => (
-              <Link
+              <TrackedLink
                 key={t.slug}
                 href={`/tools/${t.slug}/`}
+                event={{ name: "related_tool_click", from: slug!, to: t.slug }}
                 className="ep-card group flex items-center gap-3 p-4"
               >
                 <ToolIconTile name={t.icon} category={toolColorCategory(t.slug)} size="sm" />
@@ -154,7 +155,7 @@ export function ToolPage({
                   {t.title}
                 </span>
                 <ArrowRight className="ml-auto h-3.5 w-3.5 shrink-0 text-ink-faint opacity-0 transition-opacity group-hover:text-brand group-hover:opacity-100" strokeWidth={1.75} />
-              </Link>
+              </TrackedLink>
             ))}
           </div>
         </section>

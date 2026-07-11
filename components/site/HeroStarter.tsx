@@ -7,8 +7,10 @@ import { Flag } from "@/components/site/Flag";
 import { useToolStore } from "@/store/useToolStore";
 import { hubCountries } from "@/lib/makerPages";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 interface Opt {
+  key: string;
   flag: string;
   label: string;
   path: string;
@@ -34,7 +36,7 @@ export function HeroStarter({
   // "size by country" grid can never drift apart. "primary" (homepage) behaves
   // like the passport hub: every launch country.
   const opts: Opt[] = hubCountries(kind === "visa" ? "visa" : "passport").map(
-    (c) => ({ flag: c.flag, label: c.label, path: c.path })
+    (c) => ({ key: c.key, flag: c.flag, label: c.label, path: c.path })
   );
 
   const [sel, setSel] = React.useState(opts[0]?.path ?? "");
@@ -65,9 +67,12 @@ export function HeroStarter({
         <div className="mt-3 flex flex-wrap gap-1.5">
           {visible.map((o) => (
             <button
-              key={o.path}
+              key={o.key}
               type="button"
-              onClick={() => setSel(o.path)}
+              onClick={() => {
+                setSel(o.path);
+                track({ name: "country_select", country: o.key });
+              }}
               aria-pressed={sel === o.path}
               className={cn(
                 "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
