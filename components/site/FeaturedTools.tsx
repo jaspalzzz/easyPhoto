@@ -172,7 +172,7 @@ export function FeaturedTools() {
 
             {/* Pill + icon in same row */}
             <div className="relative mb-5 flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-cta/25 bg-cta/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-cta">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-cta bg-cta px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-cta-foreground">
                 ✦ Most popular
               </span>
               <div

@@ -79,6 +79,7 @@ const config: Config = {
         },
         cta: {
           DEFAULT: "hsl(var(--cta))",
+          text: "hsl(var(--cta-text))",
           foreground: "hsl(var(--cta-foreground))",
           muted: "hsl(var(--cta-muted))",
         },
