@@ -52,11 +52,11 @@ function useCountUp(target: number, active: boolean, duration = 1100): number {
  * <section> as its bottom "foundation row", visually anchored to the hero.
  */
 export function StatsBand() {
-  const dlRef = React.useRef<HTMLDListElement>(null);
+  const statsRef = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState(false);
 
   React.useEffect(() => {
-    const el = dlRef.current;
+    const el = statsRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
@@ -87,8 +87,10 @@ export function StatsBand() {
       <p className="mb-5 text-[10.5px] font-bold uppercase tracking-widest text-muted-foreground">
         Built on documented, published specifications — not opinions
       </p>
-      <dl
-        ref={dlRef}
+      <div
+        ref={statsRef}
+        role="group"
+        aria-label="Site coverage statistics"
         className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-4 sm:gap-y-0 sm:divide-x sm:divide-hairline"
       >
         {STATS.map(({ Icon, label, sub }, i) => (
@@ -99,16 +101,16 @@ export function StatsBand() {
             >
               <Icon className="h-4.5 w-4.5 text-cta" strokeWidth={1.75} />
             </span>
-            <div>
-              <dt className="text-[1.45rem] font-black leading-none tracking-tight text-ink">
+            <div role="group" aria-label={`${displayValues[i]} ${label}. ${sub}`}>
+              <span aria-hidden="true" className="block text-[1.45rem] font-black leading-none tracking-tight text-ink">
                 {displayValues[i]}
-              </dt>
-              <dd className="mt-0.5 text-[11.5px] font-bold leading-tight text-ink">{label}</dd>
-              <dd className="text-[10px] leading-snug text-muted-foreground">{sub}</dd>
+              </span>
+              <span aria-hidden="true" className="mt-0.5 block text-[11.5px] font-bold leading-tight text-ink">{label}</span>
+              <span aria-hidden="true" className="block text-[10px] leading-snug text-muted-foreground">{sub}</span>
             </div>
           </div>
         ))}
-      </dl>
+      </div>
     </div>
   );
 }
