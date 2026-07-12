@@ -32,6 +32,15 @@ Shared-engine note: the voter-ID resizer is `PortalResizer` → `ResizeKbTool`
 wired with the ECI spec, so every `*-photo-resizer` / `form-resizer/{portal}`
 page shares the same certified compressor.
 
+## Exam application kit (the combined high-intent workflow)
+
+| Tool | Route | Certified behaviour | Spec |
+|------|-------|---------------------|------|
+| Exam package | `/tools/exam-package/` | Full wizard: pick exam (SSC) → photo → signature → **valid ZIP** containing a real JPEG photo (magic bytes), a real PNG signature, and a README | `e2e/exam-package.spec.ts` |
+
+This is the highest-intent workflow an applicant completes end-to-end; the test
+asserts on the actual bundled ZIP contents, not just that a download fired.
+
 ## Not yet certified (next passes)
 - Sign image: signature **placement accuracy** (lands where dropped) and resize.
 - Multi-signature composition.
