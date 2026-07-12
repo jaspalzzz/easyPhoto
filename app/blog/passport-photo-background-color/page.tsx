@@ -39,14 +39,15 @@ export default function Page() {
         </ul>
       </div>
 
-      <h2>Tested before and after</h2>
+      <h2>Before and after: what actually changes</h2>
       <p>
-        We ran the 1024 × 1024 px comparison image below through easyPhoto&apos;s{" "}
-        <Link href="/tools/white-background/">background tool</Link>. Selecting
-        white produced a 1024 × 1024 px output: the background changed while the
-        canvas dimensions stayed fixed. For an actual application, the next step
-        is country-specific cropping—for example, India&apos;s recorded print frame
-        is 35 × 45 mm, while the U.S. frame is 2 × 2 inches (51 × 51 mm).
+        easyPhoto&apos;s{" "}
+        <Link href="/tools/white-background/">background tool</Link> replaces the
+        background while keeping your canvas dimensions fixed—select white and a
+        1024 × 1024 px photo stays 1024 × 1024 px, with only the background
+        changed. For an actual application, the next step is country-specific
+        cropping—for example, India&apos;s recorded print frame is 35 × 45 mm, while
+        the U.S. frame is 2 × 2 inches (51 × 51 mm).
       </p>
 
       <h2>Background color by country</h2>

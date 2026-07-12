@@ -58,14 +58,14 @@ export default function Page() {
         </ul>
       </div>
 
-      <h2>Tested before and after</h2>
+      <h2>Before and after: what actually changes</h2>
       <p>
-        We tested the <Link href="/tools/photo-with-name-date/">name-and-date tool</Link>{" "}
-        with a 1024 × 1024 px sample, entered a fictional name and a fixed photo
-        date, and exported as JPG. The result retained a square frame and placed
-        the text in a separate light strip below the face area. For UPSC, we then
-        checked the output against the square-photo workflow in the{" "}
-        <Link href="/exam-requirements/upsc/">UPSC requirement page</Link>; always
+        The <Link href="/tools/photo-with-name-date/">name-and-date tool</Link>{" "}
+        keeps your photo&apos;s frame and adds the name and date in a separate light
+        strip below the face area—so a square 1024 × 1024 px photo stays square,
+        with the text placed under it rather than over your face. Check the output
+        against the square-photo workflow on the{" "}
+        <Link href="/exam-requirements/upsc/">UPSC requirement page</Link>, and always
         recheck the current notice on the{" "}
         <a href="https://upsconline.nic.in" target="_blank" rel="noopener noreferrer">official UPSC application portal</a>.
       </p>

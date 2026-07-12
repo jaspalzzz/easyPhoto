@@ -87,14 +87,14 @@ export default function Page() {
         </ul>
       </div>
 
-      <h2>Tested before and after</h2>
+      <h2>Before and after: what actually changes</h2>
       <p>
-        We tested the <Link href="/tools/sign-image/">Sign Image tool</Link> with a
-        synthetic 800 × 500 px PNG document and a transparent signature layer.
-        The downloaded JPG remained 800 × 500 px: placing the signature changed
-        the pixels inside the image, but did not crop or resize the document.
-        That is the key check before uploading—open the download and confirm both
-        the signature position and the unchanged canvas dimensions.
+        The <Link href="/tools/sign-image/">Sign Image tool</Link> preserves your
+        document&apos;s dimensions. An 800 × 500 px upload downloads as an 800 × 500 px
+        JPG—placing the signature changes the pixels <em>inside</em> the image, but
+        it does not crop or resize the document. That is the key check before
+        uploading: open the download and confirm both the signature position and
+        the unchanged canvas dimensions.
       </p>
 
       <h2>When do you actually need to sign on an image?</h2>
