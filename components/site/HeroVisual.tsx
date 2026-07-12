@@ -91,7 +91,7 @@ export function HeroVisual() {
           <span>✓</span> Spec-checked
         </span>
 
-        <div className="relative overflow-hidden rounded-xl bg-white [container-type:size]" style={{ aspectRatio: "3/4" }}>
+        <div className="relative overflow-hidden rounded-xl bg-white" style={{ aspectRatio: "3/4" }}>
           <img
             src="/images/sample4_after_384.webp"
             alt="Passport photo prepared to spec — after AI processing"
