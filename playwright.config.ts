@@ -6,6 +6,14 @@ import { defineConfig, devices } from "@playwright/test";
  * in isolation, but nothing previously exercised a tool end-to-end the way a
  * user actually would.
  */
+// A distinctive, project-specific port. 3100 previously collided with an
+// unrelated Next.js project on the same machine — `reuseExistingServer`
+// blindly trusts *anything* answering on the port, so tests silently ran
+// against the wrong app with no error, surfacing later as inexplicable
+// mid-suite connection failures. Override via E2E_PORT if this ever collides.
+const PORT = Number(process.env.E2E_PORT) || 39217;
+const BASE_URL = `http://127.0.0.1:${PORT}`;
+
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
@@ -18,7 +26,7 @@ export default defineConfig({
   reporter: [["list"]],
   timeout: 60_000,
   use: {
-    baseURL: "http://127.0.0.1:3100",
+    baseURL: BASE_URL,
     trace: "retain-on-failure",
   },
   projects: [
@@ -31,10 +39,15 @@ export default defineConfig({
   // consistently under Playwright's real browser either way, and dev avoids
   // needing a fresh `next build` before every local test run.
   webServer: {
-    command: "npm run dev -- --port 3100",
-    url: "http://127.0.0.1:3100",
+    command: `npm run dev -- --port ${PORT}`,
+    url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,
     env: { NEXT_DIST_DIR: ".next-e2e" },
+    // Surface a real dev-server crash instead of swallowing it — a failure
+    // that only shows up as a downstream ERR_CONNECTION_REFUSED is not
+    // trustworthy; we need the server's own stderr to diagnose it.
+    stdout: "pipe",
+    stderr: "pipe",
   },
 });
