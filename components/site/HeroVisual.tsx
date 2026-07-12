@@ -96,6 +96,7 @@ export function HeroVisual() {
             src="/images/sample4_after_384.webp"
             alt="Passport photo prepared to spec — after AI processing"
             className="h-full w-full object-cover object-top"
+            fetchPriority="high"
           />
           <div className="pointer-events-none absolute inset-0 rounded-xl border-2 border-emerald-400 shadow-[inset_0_0_16px_rgba(16,185,129,0.12)]" />
           <div

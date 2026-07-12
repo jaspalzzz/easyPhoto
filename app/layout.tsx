@@ -123,9 +123,12 @@ export default function RootLayout({
       <head>
         {/* Anti-FOUC: apply stored/system theme BEFORE first paint */}
         <script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem('ep-theme'),d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(t==='dark'||(t!=='light'&&d))document.documentElement.classList.add('dark')}catch(_){}})()` }} />
-        {/* LCP preload — hero before-card is the largest above-fold image; early
-            fetch hint prevents the browser from discovering it late during HTML parse,
-            which is the primary mobile LCP bottleneck on this page. */}
+        {/* LCP preload — the hero after-card image is the measured mobile LCP
+            element (verified via the Performance API), so it is preloaded with
+            high priority; the before-card sits beside it above the fold and is
+            preloaded too. Early fetch hints stop the browser discovering them
+            late during HTML parse — the primary mobile LCP bottleneck here. */}
+        <link rel="preload" as="image" href="/images/sample4_after_384.webp" fetchPriority="high" />
         <link rel="preload" as="image" href="/images/sample4_before_384.webp" fetchPriority="high" />
         {/* AdSense connection warming — even with lazyOnload, establishing the
             TCP+TLS handshake early saves ~200ms on first-ad impression. */}
