@@ -9,7 +9,7 @@ const post = getPost("passport-photo-size-by-country")!;
 const FAQ_ITEMS = [
   {
     q: "What is the standard passport photo size?",
-    a: "There is no single standard. Most countries use 35×45 mm — including India, the UK, Australia and Schengen. The US uses 2×2 inches (51×51 mm, a square). Canada uses 50×70 mm, which is larger than the rest. Always check the requirement for your specific country.",
+    a: "There is no single standard. India and the UK use 35×45 mm, while the US uses 2×2 inches (51×51 mm). Canada's printed passport photo is 50×70 mm and requires a commercial photographer's certification and guarantor signature. Always check the current requirement for the document and submission channel.",
   },
   {
     q: "Why does my self-cropped passport photo keep getting rejected?",
@@ -36,6 +36,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
+      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
       <p>
         There is no single &quot;passport photo size.&quot; Each country sets its
         own dimensions <em>and</em> its own rule for how much of the frame your
@@ -51,6 +52,16 @@ export default function Page() {
           <li>Background colour varies: the UK requires light grey or cream, not white.</li>
         </ul>
       </div>
+
+      <h2>Concrete output example</h2>
+      <p>
+        The same original portrait produces different deterministic frames when the
+        country changes. The verified US preset downloads as a 51×51&nbsp;mm square
+        with a 25–35&nbsp;mm head band; the verified UK preset downloads as
+        35×45&nbsp;mm with a 29–34&nbsp;mm band. The tool crops around the face for
+        the selected proportions instead of stretching one country&apos;s result into
+        another country&apos;s dimensions.
+      </p>
 
       <h2>Passport photo sizes by country</h2>
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -76,7 +87,7 @@ export default function Page() {
               <Link href="/india-passport-photo-maker/" className="text-brand underline">India</Link>
             </td>
             <td className="py-2 pr-3">35×45&nbsp;mm</td>
-            <td className="py-2 pr-3">~80% of frame</td>
+            <td className="py-2 pr-3">80–85% of frame</td>
             <td className="py-2 pr-3">White</td>
           </tr>
           <tr className="border-b border-hairline/60">
@@ -89,15 +100,15 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
-              <Link href="/canada-passport-photo-maker/" className="text-brand underline">Canada</Link>
+              Canada
             </td>
             <td className="py-2 pr-3">50×70&nbsp;mm</td>
             <td className="py-2 pr-3">31–36&nbsp;mm</td>
-            <td className="py-2 pr-3">White</td>
+            <td className="py-2 pr-3">White or light-coloured</td>
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
-              <Link href="/australia-passport-photo-maker/" className="text-brand underline">Australia</Link>
+              Australia
             </td>
             <td className="py-2 pr-3">35×45&nbsp;mm</td>
             <td className="py-2 pr-3">32–36&nbsp;mm</td>
@@ -105,11 +116,11 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
-              <Link href="/schengen-visa-photo-maker/" className="text-brand underline">Schengen (EU visa)</Link>
+              Schengen (EU visa)
             </td>
             <td className="py-2 pr-3">35×45&nbsp;mm</td>
             <td className="py-2 pr-3">32–36&nbsp;mm</td>
-            <td className="py-2 pr-3">Light grey preferred</td>
+            <td className="py-2 pr-3">Light, uniform</td>
           </tr>
         </tbody>
       </table>
@@ -119,7 +130,10 @@ export default function Page() {
         {" "}·{" "}
         <a href="https://www.gov.uk/photos-for-passports" className="text-brand underline" target="_blank" rel="noopener noreferrer">GOV.UK</a>
         {" "}·{" "}
-        <a href="https://passportindia.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">Passport Seva</a>
+        <a href="https://www.passportindia.gov.in/" className="text-brand underline" target="_blank" rel="noopener noreferrer">Passport Seva</a>
+        {" "}·{" "}<a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html" className="text-brand underline" target="_blank" rel="noopener noreferrer">Canada.ca</a>
+        {" "}·{" "}<a href="https://www.passports.gov.au/help/passport-photos" className="text-brand underline" target="_blank" rel="noopener noreferrer">Australian Passport Office</a>
+        {" "}·{" "}<a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02009R0810-20200202" className="text-brand underline" target="_blank" rel="noopener noreferrer">EU Visa Code</a>
       </p>
 
       <h2>Why head size matters as much as photo size</h2>
@@ -145,20 +159,24 @@ export default function Page() {
         Rather than measuring millimetres by hand, upload your photo to the{" "}
         <Link href="/passport-photo/">passport photo maker</Link>, pick your
         country, and it crops your head to the precise required band and applies
-        the correct background automatically. Applying for a visa instead? Use
-        the <Link href="/visa-photo/">visa photo maker</Link>, which can differ
-        from the passport spec for the same country.
+        the correct background automatically. Applying for a visa instead? Select
+        the visa document rather than assuming the passport crop is interchangeable.
       </p>
 
       <h2>Don&apos;t forget the upload file size</h2>
       <p>
         Once the dimensions are right, the last hurdle is the portal&apos;s file
-        cap. Compress the finished image to the limit with{" "}
-        <Link href="/photo-resize-to-20kb/">resize to 20&nbsp;KB</Link>,{" "}
-        <Link href="/photo-resize-to-50kb/">50&nbsp;KB</Link> or a{" "}
-        <Link href="/tools/resize-kb/">custom KB target</Link>. It all runs in
-        your browser, with nothing uploaded.
+        cap. Enter the current portal&apos;s stated limit only after the crop is
+        correct. It all runs in your browser, with nothing uploaded.
       </p>
+
+      <h2>Troubleshooting country-size mismatches</h2>
+      <table className="my-5 w-full border-collapse text-[14px]"><thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead><tbody className="text-ink-soft">{[
+        ["Correct outer size, wrong head scale", "Re-crop using the country's chin-to-crown band; do not resize the whole photo alone."],
+        ["White background rejected", "Use the selected authority's published colour; UK requires light grey or cream."],
+        ["Canadian printed passport submission refused", "Use a commercial photographer and obtain the required certification and guarantor signature."],
+        ["Portal rejects a visually correct image", "Check that portal's current pixel, format and file-size fields in addition to print dimensions."],
+      ].map(([failure, fix]) => <tr key={failure} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{failure}</td><td className="py-2">{fix}</td></tr>)}</tbody></table>
 
       <div className="mt-12">
         <Faq items={FAQ_ITEMS} noSchema />
