@@ -158,7 +158,7 @@ export default function Page() {
       <p>
         Babies move, so you&apos;ll rarely frame it perfectly in-camera. Upload
         your best shot to the{" "}
-        use the baby passport photo maker, and
+        <Link href="/baby-passport-photo/">baby passport photo maker</Link>, and
         it crops to the correct head size and sets the right background. See the
         exact rules on your country page, such as{" "}
         <Link href="/us-passport-photo-maker/">the US requirement page</Link>. If a stray shadow or

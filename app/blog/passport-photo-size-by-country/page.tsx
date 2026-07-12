@@ -108,7 +108,7 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
-              Australia
+              <Link href="/australia-passport-photo-maker/" className="text-brand underline">Australia</Link>
             </td>
             <td className="py-2 pr-3">35×45&nbsp;mm</td>
             <td className="py-2 pr-3">32–36&nbsp;mm</td>
@@ -116,7 +116,7 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
-              Schengen (EU visa)
+              <Link href="/schengen-visa-photo-maker/" className="text-brand underline">Schengen (EU visa)</Link>
             </td>
             <td className="py-2 pr-3">35×45&nbsp;mm</td>
             <td className="py-2 pr-3">32–36&nbsp;mm</td>

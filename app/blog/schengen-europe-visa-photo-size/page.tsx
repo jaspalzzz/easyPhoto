@@ -83,21 +83,22 @@ export default function Page() {
           <tr className="border-b border-hairline text-left">
             <th className="py-2 pr-3 font-semibold text-ink">Country</th>
             <th className="py-2 pr-3 font-semibold text-ink">Background</th>
-            <th className="py-2 font-semibold text-ink">Make photo</th>
+            <th className="py-2 font-semibold text-ink">Make · source</th>
           </tr>
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["Germany", "Neutral / light grey (not pure white)", "https://www.germany.info/resource/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf"],
-            ["France", "Plain light-coloured", "https://france-visas.gouv.fr/documents/d/france-visas/iso_iec_fv_visa_photograph_requirements_en"],
-            ["Italy", "White", "https://italyvms.com/photo-requirements/"],
-            ["Netherlands", "Light grey, light blue or white", "https://www.netherlandsworldwide.nl/passport-id-card/photo-requirements"],
-          ].map(([c, bg, href]) => (
+            ["Germany", "Neutral / light grey (not pure white)", "/germany-visa-photo-maker/", "https://www.germany.info/resource/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf"],
+            ["France", "Plain light-coloured", "/france-visa-photo-maker/", "https://france-visas.gouv.fr/documents/d/france-visas/iso_iec_fv_visa_photograph_requirements_en"],
+            ["Italy", "White", "/italy-visa-photo-maker/", "https://italyvms.com/photo-requirements/"],
+            ["Netherlands", "Light grey, light blue or white", "/netherlands-visa-photo-maker/", "https://www.netherlandsworldwide.nl/passport-id-card/photo-requirements"],
+          ].map(([c, bg, maker, href]) => (
             <tr key={c} className="border-b border-hairline/60">
               <td className="py-2 pr-3 font-medium text-ink">{c}</td>
               <td className="py-2 pr-3">{bg}</td>
               <td className="py-2">
-                <a href={href} target="_blank" rel="noopener noreferrer">Official source</a>
+                <Link href={maker}>Make&nbsp;→</Link>{" "}·{" "}
+                <a href={href} target="_blank" rel="noopener noreferrer">source</a>
               </td>
             </tr>
           ))}

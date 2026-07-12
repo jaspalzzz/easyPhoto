@@ -123,7 +123,8 @@ export default function Page() {
         Need to fit an exact width and height too? Use{" "}
         <Link href="/tools/resize-dimensions/">resize dimensions</Link> first,
         then compress. For a signature upload, the{" "}
-        use the signature tool that matches the portal&apos;s stated format and size.
+        <Link href="/signature-resize-to-20kb/">signature resizer</Link> does the
+        same job while matching the portal&apos;s stated format and size.
       </p>
 
       <h2>Get the photo right first</h2>
