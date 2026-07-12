@@ -41,6 +41,16 @@ page shares the same certified compressor.
 This is the highest-intent workflow an applicant completes end-to-end; the test
 asserts on the actual bundled ZIP contents, not just that a download fired.
 
+## Tier-1 passport maker (the higher-RPM segment)
+
+| Tool | Route | Certified behaviour | Spec |
+|------|-------|---------------------|------|
+| US passport maker | `/us-passport-photo-maker/` | Full ML pipeline (detect face → remove background → crop to spec) exports a **square** 2×2 photo ≥600px — proving the country spec drives output geometry | `e2e/passport-maker.spec.ts` |
+
+Shared-engine note: every country maker is `PhotoTool` wired to a `CountrySpec`,
+so the US test certifies the mechanism; UK/Canada/AU/EU differ only in spec data
+(e.g. UK 35×45mm portrait). Extend by asserting each country's expected aspect.
+
 ## Not yet certified (next passes)
 - Sign image: signature **placement accuracy** (lands where dropped) and resize.
 - Multi-signature composition.
