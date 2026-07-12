@@ -21,6 +21,17 @@ the same `SignatureWorkflowTool` as transparent-signature / signature-resize,
 so the transparent + resize tests exercise both branches (clean-to-PNG and KB
 compression) of that engine.
 
+## Resize-KB + voter-ID cluster (the other GSC click cluster)
+
+| Tool | Route | Certified behaviour | Spec |
+|------|-------|---------------------|------|
+| Resize to KB | `/tools/resize-kb/` | Downloaded file genuinely stays under the target and decodes; a very tight 10 KB target still yields a valid, non-corrupt image | `e2e/resize-portal.spec.ts` |
+| Voter-ID photo resizer | `/voter-id-photo-resizer/` | Surfaces the ECI Form 6 spec (~2 MB / 2048 KB — the "voter id photo size in mb" answer) and binds output to a set target | `e2e/resize-portal.spec.ts` |
+
+Shared-engine note: the voter-ID resizer is `PortalResizer` → `ResizeKbTool`
+wired with the ECI spec, so every `*-photo-resizer` / `form-resizer/{portal}`
+page shares the same certified compressor.
+
 ## Not yet certified (next passes)
 - Sign image: signature **placement accuracy** (lands where dropped) and resize.
 - Multi-signature composition.
