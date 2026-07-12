@@ -51,6 +51,24 @@ Shared-engine note: every country maker is `PhotoTool` wired to a `CountrySpec`,
 so the US test certifies the mechanism; UK/Canada/AU/EU differ only in spec data
 (e.g. UK 35×45mm portrait). Extend by asserting each country's expected aspect.
 
+## HEIC input (the mobile/iOS path)
+
+| Tool | Route | Certified behaviour | Spec |
+|------|-------|---------------------|------|
+| HEIC decode | `/tools/resize-kb/` (repr.) | An iPhone HEIC file decodes via `heic2any` (WASM) on a non-Safari browser and processes to a valid JPEG under the cap | `e2e/heic-input.spec.ts` |
+
+Why it matters: iPhones shoot HEIC by default; only Safari decodes it natively,
+so Chrome/Android rely on `ensureDecodable()` (`lib/heic.ts`). This is shared by
+every upload tool, so certifying it once covers the mechanism. Fixture:
+`e2e/fixtures/face-photo.heic`.
+
+## Known, deliberately-deferred finding
+Homepage **LCP is ~4.4–5.6s ("poor")**. Root cause is render-blocking resources
+(~910ms) + main-thread JS (forced reflow, legacy JS), NOT image weight or server
+(TTFB 10ms, FCP 1.5s). The shipped image optimization reduced payload but does
+not fix LCP. Fix = build-pipeline surgery (critical CSS, JS defer/split); deferred
+to avoid destabilizing the homepage during the active growth curve.
+
 ## Not yet certified (next passes)
 - Sign image: signature **placement accuracy** (lands where dropped) and resize.
 - Multi-signature composition.
