@@ -18,6 +18,9 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug}>
+      <div className="mb-5 text-sm text-muted-foreground">
+        Last reviewed 12 July 2026 · Checked against the cited official passport guidance
+      </div>
       <p>
         &quot;Just use a white wall&quot; is the most common piece of bad
         passport-photo advice. White is correct for some countries and
@@ -35,6 +38,16 @@ export default function Page() {
           <li>Whatever the colour, it must be a <strong>single even tone with no shadows</strong>.</li>
         </ul>
       </div>
+
+      <h2>Tested before and after</h2>
+      <p>
+        We ran the 1024 × 1024 px comparison image below through easyPhoto&apos;s{" "}
+        <Link href="/tools/white-background/">background tool</Link>. Selecting
+        white produced a 1024 × 1024 px output: the background changed while the
+        canvas dimensions stayed fixed. For an actual application, the next step
+        is country-specific cropping—for example, India&apos;s recorded print frame
+        is 35 × 45 mm, while the U.S. frame is 2 × 2 inches (51 × 51 mm).
+      </p>
 
       <h2>Background color by country</h2>
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -126,6 +139,19 @@ export default function Page() {
         <Link href="/tools/resize-kb/">resize to an exact KB</Link>. Everything
         runs locally, so your photo never leaves your device.
       </p>
+
+      <h2>Background troubleshooting</h2>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Problem</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["Grey halo around hair or shoulders", "Use a sharper, evenly lit source with clear separation from the original background; inspect edges before download."],
+            ["White chosen for a UK photo", "Switch to the plain light-grey or cream option required by GOV.UK guidance."],
+            ["Face or clothing disappears into the new background", "Retake with contrasting clothing and even front lighting; background replacement cannot restore missing edges."],
+            ["Correct colour but wrong crop", "Choose the country maker after replacement so the final frame and head size match that country's requirement."],
+          ].map(([problem, fix]) => <tr key={problem} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{problem}</td><td className="py-2">{fix}</td></tr>)}
+        </tbody>
+      </table>
 
       <div className="mt-12">
         <Faq

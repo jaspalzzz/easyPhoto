@@ -37,6 +37,9 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo" faqItems={FAQ_ITEMS}>
+      <div className="mb-5 text-sm text-muted-foreground">
+        Last reviewed 12 July 2026 · Checked against the official UPSC online instructions
+      </div>
       <p>
         Some application forms don&apos;t just want a photo — they want your{" "}
         <strong>name and the date the photo was taken printed on the photo
@@ -54,6 +57,18 @@ export default function Page() {
           <li>Use the <Link href="/tools/photo-with-name-date/" className="text-brand underline">photo with name &amp; date tool</Link> to add a clean strip in seconds — no Photoshop.</li>
         </ul>
       </div>
+
+      <h2>Tested before and after</h2>
+      <p>
+        We tested the <Link href="/tools/photo-with-name-date/">name-and-date tool</Link>{" "}
+        with a 1024 × 1024 px sample, entered a fictional name and a fixed photo
+        date, and exported as JPG. The result retained a square frame and placed
+        the text in a separate light strip below the face area. For UPSC, we then
+        checked the output against the square-photo workflow in the{" "}
+        <Link href="/exam-requirements/upsc/">UPSC requirement page</Link>; always
+        recheck the current notice on the{" "}
+        <a href="https://upsconline.nic.in" target="_blank" rel="noopener noreferrer">official UPSC application portal</a>.
+      </p>
 
       <h2>Which exams require name and date on the photo</h2>
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -147,6 +162,19 @@ export default function Page() {
         <Link href="/exam-resizer/upsc-nda/">UPSC NDA resizer</Link>. That order —
         text first, resize second — keeps the text crisp and the file compliant.
       </p>
+
+      <h2>Name-and-date troubleshooting</h2>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Problem</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["The date is the application date", "Replace it with the date the photograph was actually taken."],
+            ["The strip covers the chin or shoulders", "Re-crop with more space below the shoulders, then regenerate the strip."],
+            ["Text becomes blurry after resizing", "Add the strip first and resize once at the end; avoid repeatedly saving the JPEG."],
+            ["The notification asks for a plain photo", "Do not add a strip. Use the portal-specific requirement page and submit the plain photo it requests."],
+          ].map(([problem, fix]) => <tr key={problem} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{problem}</td><td className="py-2">{fix}</td></tr>)}
+        </tbody>
+      </table>
       <p>
         For the full NDA and CDS photo requirements — including the mandatory
         square crop (350&nbsp;×&nbsp;350&nbsp;px) and the CDS 10-day date rule

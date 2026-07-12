@@ -36,6 +36,9 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
+      <div className="mb-5 text-sm text-muted-foreground">
+        Last reviewed 12 July 2026 · Tested with the current easyPhoto PDF Compress tool
+      </div>
       <p>
         Upload a marksheet to an exam portal and the page rejects it: &quot;file
         too large.&quot; The PDF is 2&nbsp;MB; the portal wants 50&nbsp;KB. That
@@ -52,6 +55,18 @@ export default function Page() {
           <li>For very tight limits (&lt;50&nbsp;KB), scan in <strong>greyscale</strong> and extract only the required pages first.</li>
         </ul>
       </div>
+
+      <h2>Tested before and after</h2>
+      <p>
+        In a reproducible test, we made a 3-page A4 PDF from colour document
+        images, selected <strong>Under 100 KB</strong> in the{" "}
+        <Link href="/tools/pdf-compress/">PDF Compress tool</Link>, and checked the
+        downloaded file. It stayed a 3-page A4 PDF and landed below the selected
+        100 KB cap. The pages became image-based, so text selection was no longer
+        available; that is the tool&apos;s deliberate trade-off for a tight size cap.
+        Results vary with page detail, so the honest test is the size shown for
+        your own download and a visual check at normal reading zoom.
+      </p>
 
       <h2>Common KB limits by portal type</h2>
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -152,6 +167,19 @@ export default function Page() {
         </li>
       </ul>
 
+      <h2>PDF compression troubleshooting</h2>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Result</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["Fine print is hard to read", "Use a higher KB target, or extract only the required pages so each page gets more of the size budget."],
+            ["The PDF is already below the target", "Keep the original; the tool avoids rasterising a file that already fits."],
+            ["A password error appears", "Unlock the PDF with its password before compression."],
+            ["The output is still over an unusually tight cap", "Remove blank pages, scan in greyscale, and retry with only the pages the portal requests."],
+          ].map(([result, fix]) => <tr key={result} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{result}</td><td className="py-2">{fix}</td></tr>)}
+        </tbody>
+      </table>
+
       <h2>Checking what the portal actually needs</h2>
       <p>
         The{" "}
@@ -160,6 +188,8 @@ export default function Page() {
         <a href="https://upsc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">UPSC</a>,
         IBPS, SBI, Railway, NTA (NEET/JEE) and other major portals — each with a
         link to the official notification so you can verify before you upload.
+        For UPSC applications, confirm the current document instructions on the{" "}
+        <a href="https://upsconline.nic.in" target="_blank" rel="noopener noreferrer">official UPSC online portal</a>.
       </p>
 
       <p>

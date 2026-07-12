@@ -36,6 +36,9 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
+      <div className="mb-5 text-sm text-muted-foreground">
+        Last reviewed 12 July 2026 · Tested with the current easyPhoto PDF Merge tool
+      </div>
       <p>
         Exam applications, visa packets and job portfolios often need several
         documents bundled into a single PDF. You could pay for a desktop tool or
@@ -51,6 +54,16 @@ export default function Page() {
           <li>If the result is over the portal&apos;s KB limit, compress it immediately with the <Link href="/tools/pdf-compress/" className="text-brand underline">PDF compress tool</Link>.</li>
         </ul>
       </div>
+
+      <h2>Tested before and after</h2>
+      <p>
+        We created two plain test PDFs—one 1-page file and one 2-page file—and
+        merged them with the <Link href="/tools/pdf-merge/">PDF Merge tool</Link>.
+        The download contained 3 pages in the selected file order. Text remained
+        selectable because the merger copies original PDF pages rather than
+        turning them into screenshots. File size is not expected to equal the
+        simple sum of the inputs because the output has one rebuilt PDF container.
+      </p>
 
       <h2>When you need to merge PDFs</h2>
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -131,6 +144,19 @@ export default function Page() {
         individual pages or ranges. Useful when a form wants each document
         separately and you only have a combined scan.
       </p>
+
+      <h2>PDF merge troubleshooting</h2>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">What to do</th></tr></thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["A file is password-protected", "Unlock it with the password first, then add the unlocked copy to the merge queue."],
+            ["Pages are in the wrong order", "Move whole files up or down in the queue before merging; verify the downloaded page sequence."],
+            ["The merged file exceeds an upload cap", "Compress the merged download to the exact limit only after the page order is final."],
+            ["The browser runs out of memory", "Close other tabs and merge smaller batches; very large scanned PDFs consume memory while being checked."],
+          ].map(([failure, fix]) => <tr key={failure} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{failure}</td><td className="py-2">{fix}</td></tr>)}
+        </tbody>
+      </table>
 
       <h2>Privacy: your documents never leave your device</h2>
       <p>
