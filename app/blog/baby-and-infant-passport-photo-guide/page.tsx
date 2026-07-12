@@ -37,6 +37,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
+      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
       <p>
         A baby can&apos;t sit up on command, hold a neutral expression or look at
         a lens. Yet the photo still has to meet the same compliance rules as an
@@ -54,6 +55,16 @@ export default function Page() {
           <li>Upload to the <Link href="/baby-passport-photo/" className="text-brand underline">baby passport photo maker</Link> to crop automatically to the correct size and background.</li>
         </ul>
       </div>
+
+      <h2>Concrete output example</h2>
+      <p>
+        A wide phone photo of a baby lying on a sheet can be cropped to the selected
+        preset without stretching the face. With the verified US preset, the output
+        is a 51×51&nbsp;mm square and keeps the chin-to-crown height inside the
+        registry&apos;s 25–35&nbsp;mm band. The official U.S. guidance also states that
+        an infant&apos;s eyes do not have to be fully open. Always select the actual
+        destination country because its dimensions and infant exceptions may differ.
+      </p>
 
       <h2>What&apos;s relaxed for babies — and what isn&apos;t</h2>
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -83,7 +94,7 @@ export default function Page() {
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">Props / support</td>
             <td className="py-2 pr-3">Nothing visible</td>
-            <td className="py-2 pr-3">Car seat allowed if plain; parent must not be visible</td>
+            <td className="py-2 pr-3">No visible support or parent; follow the destination authority&apos;s infant guidance</td>
           </tr>
         </tbody>
       </table>
@@ -135,6 +146,14 @@ export default function Page() {
         to their eye level and snap when they look toward the lens.
       </p>
 
+      <h2>Troubleshooting baby passport photos</h2>
+      <table className="my-5 w-full border-collapse text-[14px]"><thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead><tbody className="text-ink-soft">{[
+        ["Hands or a support are visible", "Lay the baby flat and keep support beneath the sheet and outside the frame."],
+        ["Sheet creates grey shadows", "Use diffuse daylight, smooth the sheet and move the light so it falls evenly."],
+        ["Face is blurred", "Use burst mode in bright light and select a sharp frame before cropping."],
+        ["Head is too close to an edge", "Retake from directly overhead with clear space around the hair and shoulders."],
+      ].map(([failure, fix]) => <tr key={failure} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{failure}</td><td className="py-2">{fix}</td></tr>)}</tbody></table>
+
       <h2>Crop and clean it up</h2>
       <p>
         Babies move, so you&apos;ll rarely frame it perfectly in-camera. Upload
@@ -142,9 +161,7 @@ export default function Page() {
         <Link href="/baby-passport-photo/">baby passport photo maker</Link>, and
         it crops to the correct head size and sets the right background. See the
         exact rules on your country page, such as{" "}
-        <Link href="/us-passport-photo-maker/">US</Link>,{" "}
-        <Link href="/india-passport-photo-maker/">India</Link> or{" "}
-        <Link href="/uk-passport-photo-maker/">UK</Link>. If a stray shadow or
+        <Link href="/us-passport-photo-maker/">the US requirement page</Link>. If a stray shadow or
         off-white sheet shows, the{" "}
         <Link href="/tools/white-background/">white background tool</Link>{" "}
         cleans it up.
@@ -153,8 +170,7 @@ export default function Page() {
       <h2>Then size it for the portal</h2>
       <p>
         For online applications, compress the final image to the upload limit
-        with <Link href="/photo-resize-to-50kb/">resize to 50&nbsp;KB</Link> or
-        a <Link href="/tools/resize-kb/">custom target</Link>. As always, the
+        with a <Link href="/tools/resize-kb/">custom target</Link>. As always, the
         photo stays on your device.
       </p>
 

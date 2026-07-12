@@ -36,6 +36,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
+      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
       <p>
         If you&apos;re applying for a Schengen visa or a European student/work
         visa, the photo is one of the easiest things to get wrong — and one of the
@@ -52,6 +53,16 @@ export default function Page() {
           <li><strong>Light grey is the safe universal choice</strong> (accepted everywhere, including Switzerland, which rejects white).</li>
         </ul>
       </div>
+
+      <h2>Concrete output example</h2>
+      <p>
+        The Schengen preset produces a 35×45&nbsp;mm JPG. At the registry&apos;s
+        300&nbsp;DPI reference, that corresponds to approximately 413×531&nbsp;px;
+        an input portrait of any larger dimensions is cropped to that aspect ratio
+        rather than stretched. The file-size limit is deliberately not stated as a
+        single number because <code>countrySpecs.ts</code> records it as varying by
+        consulate or VFS portal. Confirm the current upload limit before compressing.
+      </p>
 
       <h2>The standard Schengen photo size</h2>
       <ul>
@@ -72,23 +83,22 @@ export default function Page() {
           <tr className="border-b border-hairline text-left">
             <th className="py-2 pr-3 font-semibold text-ink">Country</th>
             <th className="py-2 pr-3 font-semibold text-ink">Background</th>
-            <th className="py-2 font-semibold text-ink">Make photo</th>
+            <th className="py-2 font-semibold text-ink">Make · source</th>
           </tr>
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["Germany", "Neutral / light grey (rejects pure white)", "/germany-visa-photo-maker/"],
-            ["France", "Plain light-coloured (light grey is safe)", "/france-visa-photo-maker/"],
-            ["Italy", "White", "/italy-visa-photo-maker/"],
-            ["Netherlands", "Light grey, light blue or white", "/netherlands-visa-photo-maker/"],
-            ["Switzerland", "Grey (rejects white)", ""],
-            ["Ireland (non-Schengen, same 35×45 mm)", "Light grey, cream or white", "/ireland-visa-photo-maker/"],
-          ].map(([c, bg, href]) => (
+            ["Germany", "Neutral / light grey (not pure white)", "/germany-visa-photo-maker/", "https://www.germany.info/resource/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf"],
+            ["France", "Plain light-coloured", "/france-visa-photo-maker/", "https://france-visas.gouv.fr/documents/d/france-visas/iso_iec_fv_visa_photograph_requirements_en"],
+            ["Italy", "White", "/italy-visa-photo-maker/", "https://italyvms.com/photo-requirements/"],
+            ["Netherlands", "Light grey, light blue or white", "/netherlands-visa-photo-maker/", "https://www.netherlandsworldwide.nl/passport-id-card/photo-requirements"],
+          ].map(([c, bg, maker, href]) => (
             <tr key={c} className="border-b border-hairline/60">
               <td className="py-2 pr-3 font-medium text-ink">{c}</td>
               <td className="py-2 pr-3">{bg}</td>
               <td className="py-2">
-                {href ? <Link href={href}>Make&nbsp;→</Link> : "—"}
+                <Link href={maker}>Make&nbsp;→</Link>{" "}·{" "}
+                <a href={href} target="_blank" rel="noopener noreferrer">source</a>
               </td>
             </tr>
           ))}
@@ -100,6 +110,19 @@ export default function Page() {
         For EU Schengen visa requirements, see the{" "}
         <a href="https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en" className="text-brand underline" target="_blank" rel="noopener noreferrer">European Commission Schengen visa guidance</a>.
       </p>
+
+      <h2>Troubleshooting rejected Schengen photos</h2>
+      <table className="my-5 w-full border-collapse text-[14px]">
+        <thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead>
+        <tbody className="text-ink-soft">
+          {[
+            ["Portal rejects the file before preview", "Check the portal's current JPG and KB rules; there is no EU-wide upload cap."],
+            ["Head is cropped or too small", "Return to the 35×45 mm preset and keep chin-to-crown height within the registry's 32–36 mm band."],
+            ["White background rejected", "Use the destination country's published colour; Germany requires neutral/light grey while Italy specifies white."],
+            ["Face looks stretched", "Crop to the 35:45 aspect ratio; do not force independent width and height scaling."],
+          ].map(([failure, fix]) => <tr key={failure} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{failure}</td><td className="py-2">{fix}</td></tr>)}
+        </tbody>
+      </table>
 
       <h2>How to make one free, without uploading your photo</h2>
       <p>

@@ -36,11 +36,13 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
+      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
       <p>
         A passport photo from a shop isn&apos;t magic. It&apos;s really just
         three things: a plain background, even light, and a precise crop. You can
         do all three at home with a phone and skip the queue (and the fee). Here&apos;s
-        the approach that actually gets accepted.
+        a practical capture workflow before checking the result against the current
+        official requirement.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
@@ -52,6 +54,16 @@ export default function Page() {
           <li>Upload to the <Link href="/passport-photo/" className="text-brand underline">passport photo maker</Link>, pick your country, and it crops and sets the background automatically.</li>
         </ul>
       </div>
+
+      <h2>Concrete output example</h2>
+      <p>
+        A landscape phone image can be cropped without stretching into the selected
+        country preset. Choosing the verified US preset produces a square 51×51&nbsp;mm
+        frame with a 25–35&nbsp;mm chin-to-crown band; choosing the verified UK preset
+        produces 35×45&nbsp;mm with a 29–34&nbsp;mm head band. Sources: the{" "}
+        <a href="https://travel.state.gov/en/passports/apply/help/photos.html" target="_blank" rel="noopener noreferrer">U.S. State Department</a>{" "}
+        and <a href="https://www.gov.uk/photos-for-passports" target="_blank" rel="noopener noreferrer">GOV.UK</a>.
+      </p>
 
       <h2>Background colour by country</h2>
       <p>
@@ -113,7 +125,7 @@ export default function Page() {
 
       <h2>3. Skip the things that get photos rejected</h2>
       <ul>
-        <li>No glasses. Most countries no longer allow them.</li>
+        <li>Follow the selected country&apos;s glasses rule; the US registry says no glasses, while Canada permits them if there is no glare and the eyes remain visible.</li>
         <li>No smiling, no raised eyebrows; neutral only.</li>
         <li>No hats or head coverings except for religious or medical reasons.</li>
         <li>No shadows on your face or behind your head.</li>
@@ -136,15 +148,18 @@ export default function Page() {
         photo kiosk on photo paper. For online applications, use the upload-ready
         file. A compliant photo, and you never left home.
       </p>
+      <h2>Troubleshooting a home passport photo</h2>
+      <table className="my-5 w-full border-collapse text-[14px]"><thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead><tbody className="text-ink-soft">{[
+        ["Shadow behind the head", "Move farther from the wall and use soft light from in front of the face."],
+        ["Face looks distorted", "Use the rear camera at eye level from farther away; avoid a close arm's-length selfie."],
+        ["Head is clipped after cropping", "Retake with space above the hair and around both shoulders."],
+        ["Portal rejects the finished file", "Check the country's current dimensions, format and KB rules; correct framing alone is not enough."],
+      ].map(([failure, fix]) => <tr key={failure} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{failure}</td><td className="py-2">{fix}</td></tr>)}</tbody></table>
       <p>
         Photographing a baby or infant? The rules differ — eyes must be open and
         the head unsupported. See{" "}
         <Link href="/blog/baby-and-infant-passport-photo-guide/">
           how to take a baby passport photo at home
-        </Link>. For the full list of reasons photos get rejected at the counter,
-        see{" "}
-        <Link href="/blog/why-passport-photos-get-rejected/">
-          why passport photos get rejected
         </Link>.
       </p>
 
