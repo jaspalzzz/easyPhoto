@@ -49,6 +49,9 @@ export default function Page() {
       ctaHref="/tools/sign-image/"
       ctaLabel="Sign an image now"
     >
+      <div className="mb-5 text-sm text-muted-foreground">
+        Last reviewed 12 July 2026 · Tested with the current easyPhoto Sign Image tool
+      </div>
       <p>
         If a form, certificate, scanned JPG or photo needs your signature on top
         of it, you do not need to print, sign and scan again. You can sign on an
@@ -83,6 +86,16 @@ export default function Page() {
           </li>
         </ul>
       </div>
+
+      <h2>Before and after: what actually changes</h2>
+      <p>
+        The <Link href="/tools/sign-image/">Sign Image tool</Link> preserves your
+        document&apos;s dimensions. An 800 × 500 px upload downloads as an 800 × 500 px
+        JPG—placing the signature changes the pixels <em>inside</em> the image, but
+        it does not crop or resize the document. That is the key check before
+        uploading: open the download and confirm both the signature position and
+        the unchanged canvas dimensions.
+      </p>
 
       <h2>When do you actually need to sign on an image?</h2>
       <p>
@@ -249,8 +262,9 @@ export default function Page() {
         There is no single answer — it depends on where you upload the signed
         image. Exam and government portals each set their own limit, and signing
         adds a little to the file, so it&apos;s worth checking before you submit.
-        Most Indian portals want <strong>JPEG</strong> and cap the file at a low
-        KB size (many between 20&nbsp;KB and 200&nbsp;KB).
+        Do not rely on a universal limit: the permitted format and size belong to
+        the specific form. Check its current upload instructions before signing,
+        then use the exact limit shown there.
       </p>
       <p>
         If your signed image is over the limit, resize it to the exact target with
