@@ -20,6 +20,7 @@ import { Faq } from "@/components/site/Faq";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { AUTHOR } from "@/lib/author";
 import { PortalResizer } from "@/components/tools/PortalResizer";
+import { AffiliateCta } from "@/components/site/AffiliateCta";
 
 // One static page per exam (the cited Spec Database).
 export function generateStaticParams() {
@@ -418,6 +419,8 @@ export default async function Page({
       <section>
         <Faq items={faqItems} noSchema />
       </section>
+
+      <AffiliateCta examId={exam} />
     </div>
   );
 }
