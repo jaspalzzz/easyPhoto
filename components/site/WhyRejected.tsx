@@ -84,7 +84,7 @@ export function WhyRejected() {
           </p>
           <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
             Why photos get{" "}
-            <span className="text-cta">rejected</span>
+            <span className="text-cta-text">rejected</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[14.5px] leading-relaxed text-muted-foreground">
             Most applications get rejected over these common mistakes.
@@ -102,14 +102,14 @@ export function WhyRejected() {
           {/* ── LEFT — rejection reasons ── */}
           <div className="flex h-full flex-col rounded-2xl border border-hairline bg-card p-5">
             <div className="mb-4 flex items-center gap-2">
-              <AlertTriangle className="h-[15px] w-[15px] text-red-500" strokeWidth={2} />
-              <h3 className="text-[13px] font-bold text-red-500">Common reasons for rejection</h3>
+              <AlertTriangle className="h-[15px] w-[15px] text-red-700 dark:text-red-400" strokeWidth={2} />
+              <h3 className="text-[13px] font-bold text-red-700 dark:text-red-400">Common reasons for rejection</h3>
             </div>
             <div className="flex flex-1 flex-col divide-y divide-hairline">
               {REASONS.map(({ Icon, label, detail }) => (
                 <div key={label} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
                   <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-red-100 dark:border-red-800/30 bg-red-50 dark:bg-red-900/20">
-                    <Icon className="h-[18px] w-[18px] text-red-500 dark:text-red-400" strokeWidth={1.75} />
+                    <Icon className="h-[18px] w-[18px] text-red-700 dark:text-red-400" strokeWidth={1.75} />
                   </span>
                   <div>
                     <p className="text-[13px] font-semibold text-ink">{label}</p>
@@ -128,7 +128,7 @@ export function WhyRejected() {
           {/* ── MIDDLE — AI compliance analysis ── */}
           <div className="flex h-full flex-col rounded-2xl border border-hairline bg-card p-5">
             <div className="mb-4 flex items-center gap-2">
-              <Sparkles className="h-[15px] w-[15px] text-cta" strokeWidth={2} />
+              <Sparkles className="h-[15px] w-[15px] text-cta-text" strokeWidth={2} />
               <h3 className="text-[13px] font-bold text-brand">AI Compliance Analysis</h3>
             </div>
 
@@ -154,7 +154,7 @@ export function WhyRejected() {
             <div className="mt-4 flex flex-1 flex-col justify-between">
               {AI_CHECKS.map((check) => (
                 <div key={check} className="flex items-center gap-2.5 py-1">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-cta" strokeWidth={2} />
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-cta-text" strokeWidth={2} />
                   <span className="flex-1 text-[12.5px] text-ink">{check}</span>
                   <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[10.5px] font-bold text-brand">
                     Pass
@@ -175,7 +175,7 @@ export function WhyRejected() {
             {/* Photo card */}
             <div className="rounded-2xl border border-hairline bg-card p-4">
               <div className="mb-3 flex items-center gap-1.5">
-                <CheckCircle2 className="h-[15px] w-[15px] text-cta" strokeWidth={2} />
+                <CheckCircle2 className="h-[15px] w-[15px] text-cta-text" strokeWidth={2} />
                 <h3 className="text-[13px] font-semibold text-brand">
                   Spec-checked photo
                   <span className="ml-1 font-medium text-muted-foreground">(No detectable issues)</span>
@@ -214,7 +214,7 @@ export function WhyRejected() {
                 {RESULTS.map(({ attr, val }) => (
                   <div key={attr} className="flex items-center justify-between gap-1">
                     <div className="flex items-center gap-1">
-                      <span className="text-[10px] font-black text-cta">✓</span>
+                      <span className="text-[10px] font-black text-cta-text">✓</span>
                       <span className="text-[11.5px] text-muted-foreground">{attr}</span>
                     </div>
                     <span className="text-[11.5px] font-bold text-brand">{val}</span>
@@ -231,7 +231,7 @@ export function WhyRejected() {
           <div className="grid flex-1 grid-cols-2 gap-4 sm:grid-cols-4">
             {TRUST_ITEMS.map(({ Icon, title, sub }) => (
               <div key={title} className="flex items-start gap-2.5">
-                <Icon className="h-5 w-5 shrink-0 text-cta" strokeWidth={1.75} />
+                <Icon className="h-5 w-5 shrink-0 text-cta-text" strokeWidth={1.75} />
                 <div>
                   <p className="text-[12.5px] font-bold text-ink">{title}</p>
                   <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{sub}</p>

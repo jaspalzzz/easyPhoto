@@ -103,14 +103,14 @@ const NAVY = { background: "hsl(222 60% 8%)" } as const;
 function StudioValue({ v }: { v: RowSide }) {
   if (v.kind === "cross") {
     return (
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-[14px] font-bold leading-none text-red-500 dark:text-red-400">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-[14px] font-bold leading-none text-red-700 dark:text-red-300">
         ✕
       </span>
     );
   }
   return (
     <div className="text-right">
-      <p className="text-[13px] font-bold leading-tight text-red-600 dark:text-red-400">{v.primary}</p>
+      <p className="text-[13px] font-bold leading-tight text-red-700 dark:text-red-300">{v.primary}</p>
       {v.secondary && (
         <p className="mt-0.5 text-[11px] leading-tight text-red-400 dark:text-red-300">{v.secondary}</p>
       )}
@@ -128,7 +128,7 @@ function EasyValue({ v }: { v: RowSide }) {
   }
   const cls =
     v.kind === "gold" ? "text-cta" :
-    v.kind === "good" ? "text-emerald-600 dark:text-emerald-400" :
+    v.kind === "good" ? "text-emerald-700 dark:text-emerald-300" :
     "text-ink";
   return (
     <div className="text-right">
@@ -175,7 +175,7 @@ export function ComparisonTable() {
               </span>
               <div>
                 <h3 className="text-[17px] font-bold text-ink">Photo Studio</h3>
-                <span className="mt-0.5 inline-block rounded-full bg-red-100 dark:bg-red-900/30 px-2.5 py-0.5 text-[11px] font-bold text-red-600 dark:text-red-400">
+                <span className="mt-0.5 inline-block rounded-full bg-red-100 dark:bg-red-900/30 px-2.5 py-0.5 text-[11px] font-bold text-red-700 dark:text-red-300">
                   Traditional Way
                 </span>
               </div>

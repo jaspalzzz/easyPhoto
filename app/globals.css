@@ -29,6 +29,7 @@
     --brand: 212 64% 24%;          /* navy: wordmark, links, active, focus, icons */
     --brand-soft: 212 48% 93%;     /* faint navy wash */
     --cta: 45 88% 60%;             /* GOLD: primary action + precious accent */
+    --cta-text: 45 88% 30.3%;       /* nearest AA gold for text/icons on light paper */
     --cta-foreground: 225 52% 9%;  /* deep navy text ON gold (never white) */
     --success: 151 42% 33%;        /* functional only: "compliant" pass state */
     --success-soft: 150 38% 93%;
@@ -77,6 +78,7 @@
     /* Gold CTA is universal — keep identical */
     /* --cta stays */
     /* --cta-foreground stays */
+    --cta-text: var(--cta);          /* bright gold remains accessible on dark surfaces */
 
     /* shadcn bridge tokens that are hardcoded in :root */
     --secondary: 222 22% 18%;

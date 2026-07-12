@@ -58,7 +58,7 @@ const FLOW_STEPS: FlowStep[] = [
 
 const TRUST_PILLS = [
   { label: "Secure",  Icon: Lock,       cls: "text-blue-500"    },
-  { label: "Private", Icon: ShieldCheck, cls: "text-emerald-500" },
+  { label: "Private", Icon: ShieldCheck, cls: "text-emerald-700 dark:text-emerald-300" },
   { label: "Instant", Icon: Zap,        cls: "text-amber-500"   },
   { label: "Free",    Icon: Tag,        cls: "text-pink-500"    },
 ];
@@ -171,10 +171,10 @@ export function AiShowcase() {
               {BEFORE_ISSUES.map(({ n, title, desc }) => (
                 <li key={n} className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-[10px] font-bold text-red-500">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-[10px] font-bold text-red-700 dark:text-red-300">
                       {n}
                     </span>
-                    <span className="text-[12.5px] font-bold text-red-500">{title}</span>
+                    <span className="text-[12.5px] font-bold text-red-700 dark:text-red-300">{title}</span>
                   </div>
                   <span className="text-[11.5px] text-muted-foreground">{desc}</span>
                 </li>
@@ -222,11 +222,11 @@ export function AiShowcase() {
                 </svg>
                 {/* Centered text overlay */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-[1.5rem] font-black leading-none text-emerald-500">7/7</span>
+                  <span className="text-[1.5rem] font-black leading-none text-emerald-700 dark:text-emerald-300">7/7</span>
                   <span className="mt-0.5 text-center text-[8px] font-semibold leading-tight text-muted-foreground">
                     Checks<br />Passed
                   </span>
-                  <span className="mt-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-emerald-600 dark:text-emerald-300">
+                  <span className="mt-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
                     All Pass
                   </span>
                 </div>
@@ -248,7 +248,7 @@ export function AiShowcase() {
                         <span className="text-[11px] font-semibold text-ink">{label}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <span className="text-[10px] font-bold text-emerald-500">Pass</span>
+                        <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">Pass</span>
                         <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 text-[7px] font-bold text-white">
                           ✓
                         </span>
@@ -355,7 +355,7 @@ export function AiShowcase() {
                   style={{ bottom: 8, right: 36 }}
                 >
                   <div className="flex-1 border-t-2 border-dashed border-emerald-400" />
-                  <span className="shrink-0 text-[9px] font-bold text-emerald-600">35 mm</span>
+                  <span className="shrink-0 text-[9px] font-bold text-emerald-700 dark:text-emerald-300">35 mm</span>
                   <div className="flex-1 border-t-2 border-dashed border-emerald-400" />
                 </div>
 
@@ -366,7 +366,7 @@ export function AiShowcase() {
                 >
                   <div className="flex-1 border-r-2 border-dashed border-emerald-400" />
                   <span
-                    className="shrink-0 text-[9px] font-bold text-emerald-600"
+                    className="shrink-0 text-[9px] font-bold text-emerald-700 dark:text-emerald-300"
                     style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
                   >
                     45 mm
@@ -379,7 +379,7 @@ export function AiShowcase() {
 
             {/* Compliance banner */}
             <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-emerald-100 dark:border-emerald-800/30 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-2.5">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" strokeWidth={2} />
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700 dark:text-emerald-300" strokeWidth={2} />
               <div>
                 <p className="text-[12px] font-bold text-ink">Checked Against Published Requirements</p>
                 <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">

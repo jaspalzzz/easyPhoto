@@ -91,7 +91,7 @@ const TRUST_SIGNALS = [
   { Icon: BadgeCheck,  label: "Spec-Checked",           sub: "Against published requirements" },
 ] as const;
 
-const linkCls = "text-sm text-white/55 transition-colors hover:text-[hsl(var(--cta))]";
+const linkCls = "text-sm text-white/70 transition-colors hover:text-[hsl(var(--cta))]";
 
 /**
  * Rich navy footer = a crawlable internal-link sitemap (every country + tool),
@@ -108,7 +108,7 @@ export function Footer() {
             <LogoMark className="h-9 w-9" onDark />
             <Wordmark className="text-[1.35rem]" tone="light" />
           </Link>
-          <p className="max-w-xs text-sm leading-relaxed text-white/55">
+          <p className="max-w-xs text-sm leading-relaxed text-white/70">
             Free, private passport &amp; visa photos and everyday image &amp; PDF
             tools, made entirely in your browser.
           </p>
@@ -122,7 +122,7 @@ export function Footer() {
               </span>
               <span className="min-w-0">
                 <p className="text-[12.5px] font-bold leading-tight text-white">{label}</p>
-                <p className="mt-0.5 text-[11px] leading-snug text-white/45">{sub}</p>
+                <p className="mt-0.5 text-[11px] leading-snug text-white/70">{sub}</p>
               </span>
             </div>
           ))}
@@ -138,10 +138,10 @@ export function Footer() {
               <span className={cn("h-4 w-[3px] shrink-0 rounded-full", group.barCls)} />
               <group.Icon className={cn("h-4 w-4 shrink-0", group.iconCls)} strokeWidth={1.75} />
               <h3 className="eyebrow text-white">{group.label}</h3>
-              <span className="text-[11px] font-medium text-white/35">{group.links.length}</span>
+              <span className="text-[11px] font-medium text-white/70">{group.links.length}</span>
               <Link
                 href={group.viewAllHref}
-                className="ml-auto inline-flex shrink-0 items-center gap-1 text-[11.5px] font-semibold text-white/55 transition-colors hover:text-[hsl(var(--cta))]"
+                className="ml-auto inline-flex shrink-0 items-center gap-1 text-[11.5px] font-semibold text-white/70 transition-colors hover:text-[hsl(var(--cta))]"
               >
                 {group.viewAllLabel}
                 <ArrowRight className="h-3 w-3" />
@@ -164,7 +164,7 @@ export function Footer() {
 
       {/* ── Bottom bar ────────────────────────────────────────────────── */}
       <div className="border-t border-white/10">
-        <div className="container flex flex-col gap-3 py-5 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
+        <div className="container flex flex-col gap-3 py-5 text-xs text-white/70 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} easyPhoto. Processed in your browser, never uploaded.
             Always verify against official requirements before submitting.
