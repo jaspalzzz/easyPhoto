@@ -126,7 +126,7 @@ export default function RootLayout({
         {/* LCP preload — hero before-card is the largest above-fold image; early
             fetch hint prevents the browser from discovering it late during HTML parse,
             which is the primary mobile LCP bottleneck on this page. */}
-        <link rel="preload" as="image" href="/images/sample4_before_1782052955340.webp" fetchPriority="high" />
+        <link rel="preload" as="image" href="/images/sample4_before_384.webp" fetchPriority="high" />
         {/* AdSense connection warming — even with lazyOnload, establishing the
             TCP+TLS handshake early saves ~200ms on first-ad impression. */}
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="" />

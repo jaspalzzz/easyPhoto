@@ -184,10 +184,11 @@ export function WhyRejected() {
               <div className="flex justify-center">
                 <div className="w-[140px] overflow-hidden rounded-xl border border-hairline">
                   <Image
-                    src="/images/sample6_after_1782053037309.webp"
+                    src="/images/sample6_after_280.webp"
                     alt="Sample AI-corrected passport photo that passes the listed checks"
                     width={140}
                     height={187}
+                    loading="lazy"
                     className="h-[187px] w-[140px] object-cover object-top"
                   />
                 </div>

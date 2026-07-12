@@ -25,7 +25,7 @@ export function HeroVisual() {
 
         <div className="relative overflow-hidden rounded-xl bg-white" style={{ aspectRatio: "3/4" }}>
           <img
-            src="/images/sample4_before_1782052955340.webp"
+            src="/images/sample4_before_384.webp"
             alt="Example selfie — before AI processing"
             className="h-full w-full object-cover object-top"
             fetchPriority="high"
@@ -93,7 +93,7 @@ export function HeroVisual() {
 
         <div className="relative overflow-hidden rounded-xl bg-white [container-type:size]" style={{ aspectRatio: "3/4" }}>
           <img
-            src="/images/sample4_after_1782052969219.webp"
+            src="/images/sample4_after_384.webp"
             alt="Passport photo prepared to spec — after AI processing"
             className="h-full w-full object-cover object-top"
           />
