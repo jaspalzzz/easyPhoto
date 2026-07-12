@@ -9,6 +9,7 @@ const outfit = Outfit({
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-outfit",
   display: "swap",
+  preload: false,
 });
 const display = Space_Grotesk({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ const mono = JetBrains_Mono({
   weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
+  preload: false,
 });
 import { Footer } from "@/components/site/Footer";
 import { Wordmark } from "@/components/site/Wordmark";
