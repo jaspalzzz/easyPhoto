@@ -3,18 +3,18 @@ import { ToolPage } from "@/components/tools/ToolPage";
 import { RejectionPredictorTool } from "@/components/tools/RejectionPredictorTool";
 
 export const metadata = pageMetadata({
-  title: "Passport Photo Rejection Checker — Will My Photo Be Accepted?",
+  title: "Passport Photo Issue Checker — Review Common Problems",
   description:
-    "Upload your passport photo and check it against ICAO biometric criteria — face detection, centering, head size, eye level, background. Free, nothing uploaded.",
+    "Review measurable passport-photo properties including face position, head framing, eye level, background uniformity and lighting. Free, with nothing uploaded.",
   path: "/tools/photo-rejection-check/",
 });
 
 export default function Page() {
   return (
     <ToolPage
-      title="Passport Photo Rejection Check"
+      title="Photo Issue Checker"
       slug="photo-rejection-check"
-      blurb="Upload your passport or visa photo and find out if it will pass the automated biometric gate — before you submit it. Checks face detection, horizontal centering, head size, eye level, tilt, background plainness, and lighting, all against ICAO criteria."
+      blurb="Review measurable passport- or visa-photo properties before submitting: face detection, horizontal centering, head framing, eye level, tilt, background uniformity and lighting. The result cannot predict an authority's decision."
     >
       <RejectionPredictorTool />
     </ToolPage>

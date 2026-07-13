@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CheckCircle2, XCircle, AlertCircle, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useWorkflowHandoff } from "@/components/site/useWorkflowHandoff";
+import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { PORTAL_PRESETS, PORTAL_KEYS } from "@/lib/portalPresets";
 import { track } from "@/lib/analytics";
 
@@ -222,7 +223,7 @@ export function PhotoValidatorTool() {
     : "pass";
 
   const overallLabel = {
-    pass: "Looks good",
+    pass: "No measurable issues detected",
     warn: "Check before uploading",
     fail: "Issues found",
   }[overallStatus];
@@ -303,6 +304,19 @@ export function PhotoValidatorTool() {
           </p>
         </div>
       )}
+
+      <ToolLimitationsNotice
+        summary="Checks measurable file properties such as dimensions, file size, format and aspect ratio. This validator does not assess background uniformity or approximate face position, and it cannot guarantee acceptance — verify the current application instructions on the official portal."
+        canCheck={[
+          "File size, pixel dimensions, format, and aspect ratio",
+          "Matches against the measurable limits stored in portal presets",
+        ]}
+        cannotCheck={[
+          "Background, lighting, expression, face position, identity, or recency",
+          "Requirements that are absent from the stored presets",
+          "The portal or reviewing authority’s final decision",
+        ]}
+      />
 
       <Button variant="outline" size="sm" onClick={reset}>
         <RefreshCcw className="h-4 w-4" strokeWidth={1.75} />

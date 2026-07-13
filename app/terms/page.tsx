@@ -72,7 +72,7 @@ export default function TermsPage() {
             You are responsible for checking your final photo against the current
             official requirements before submitting it.
           </strong>{" "}
-          We do not guarantee that any photo will be accepted, and we are not
+          We do not guarantee a favourable application decision, and we are not
           liable for rejected applications, fees, or delays. Some flows carry
           extra conditions shown in-app (for example, India&apos;s printed form
           requires a professional photo-lab print, and printed Canadian passport

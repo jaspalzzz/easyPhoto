@@ -57,9 +57,10 @@ export default function Page() {
       <p>
         Most Indian exam portals — SSC, UPSC, IBPS, Railway — require a JPG photo
         between 20&nbsp;KB and 50&nbsp;KB. Pixel dimensions vary: UPSC and NDA ask
-        for a square image of at least 350&#215;350&nbsp;px, while Passport Seva
-        wants a portrait 630&#215;810&nbsp;px. All of them want a plain white
-        background with your face filling most of the frame.
+        for a square image of at least 350&#215;350&nbsp;px. These exam uploads
+        should not be compared with an ordinary adult Passport Seva application:
+        the adult&apos;s photograph is captured at the PSK/POPSK, while the
+        630&#215;810&nbsp;px guidance belongs to the overseas mission workflow.
       </p>
       <p>
         The safest approach: use the{" "}
@@ -87,7 +88,7 @@ export default function Page() {
             </span>
             <Image
               src="/images/sample2_before_400.webp"
-              alt="Input selfie photo before AI correction — unsuitable for exam portal upload"
+              alt="Input selfie before automated photo preparation"
               width={400}
               height={400}
               className="h-48 w-full object-cover object-top"
@@ -99,7 +100,7 @@ export default function Page() {
             </span>
             <Image
               src="/images/sample2_after_400.webp"
-              alt="AI-corrected exam photo with white background and correct head framing — ready to upload"
+              alt="Prepared exam photo with a white background and adjusted head framing"
               width={400}
               height={400}
               className="h-48 w-full object-cover object-top"

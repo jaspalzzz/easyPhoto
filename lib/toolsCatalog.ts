@@ -42,8 +42,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       },
       {
         slug: "compliance-checker",
-        title: "Exam Photo & Signature Checker",
-        blurb: "Check if your exam photo or signature will be rejected — size, dimensions & format vs the official spec.",
+        title: "Pre-submission Photo & Signature Check",
+        blurb: "Compare an exam photo or signature with listed file-size, dimension, format and background requirements.",
         ready: true,
         icon: "BadgeCheck",
       },
@@ -185,8 +185,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       },
       {
         slug: "photo-rejection-check",
-        title: "Passport Photo Rejection Check",
-        blurb: "Check your passport photo against ICAO biometric criteria before you submit — face, centering, size, tilt, background.",
+        title: "Photo Issue Checker",
+        blurb: "Review measurable passport-photo properties before submitting — face position, framing, tilt, background and lighting.",
         ready: true,
         popular: true,
         icon: "ShieldAlert",

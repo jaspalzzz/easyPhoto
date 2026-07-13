@@ -11,13 +11,13 @@ const STEPS = [
     Icon: ScanLine,
     step: "Step 2",
     title: "We adjust & verify",
-    desc: "Our AI crops, resizes and checks all compliance rules automatically.",
+    desc: "Automated tools crop, resize and review measurable photo properties.",
   },
   {
     Icon: Download,
     step: "Step 3",
-    title: "Download & use",
-    desc: "Download your compliant photo instantly. No watermark, no sign-up.",
+    title: "Download the result",
+    desc: "Download your prepared photo with no watermark or sign-up.",
   },
 ];
 
@@ -29,7 +29,7 @@ export function HowItWorks() {
           How it works
         </p>
         <h2 className="mb-12 text-center text-[1.75rem] font-semibold tracking-tight text-ink">
-          Get your compliant photo in{" "}
+          Prepare your photo in{" "}
           <span className="mark-gold text-ink">3 simple steps</span>
         </h2>
 

@@ -11,11 +11,7 @@ export interface ReceiptCheck {
 }
 
 /**
- * The Compliance Receipt — the product's emotional payoff, rendered.
- * The engine quietly verifies sizes, bands and formats; this card performs
- * that verification for an anxious applicant: a clear pass/fail verdict
- * against the NAMED requirement, line by line, plus the privacy reassurance
- * at the exact moment they're about to submit the file somewhere official.
+ * A pre-submission receipt for the measurable checks the tool performs.
  */
 export function ComplianceReceipt({
   requirement,
@@ -54,8 +50,8 @@ export function ComplianceReceipt({
         )}
         <span>
           {allOk
-            ? `Meets the ${requirement} requirement`
-            : `Doesn't fully meet the ${requirement} requirement yet`}
+            ? `No measurable issues detected for ${requirement}`
+            : `Review the marked ${requirement} measurements`}
         </span>
       </p>
 
@@ -80,7 +76,7 @@ export function ComplianceReceipt({
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
         {allOk
           ? "No detectable issues found. The file is on your device only — nothing was uploaded."
-          : "Fix the marked line before submitting — portals reject on exactly these checks."}
+          : "Review the marked line and confirm the current portal instructions before submitting."}
       </p>
     </div>
   );

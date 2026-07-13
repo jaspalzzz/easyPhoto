@@ -17,7 +17,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Which free tool is most accurate for India passport photos?",
-    a: "PassportSizePhoto.in lists the Passport Seva spec at the pixel level (630×810 px, 10–250 KB), matching the upload portal's exact constraints. easyPhoto targets the same spec and also covers exam portal requirements. Both are free with no server upload. Neither charges credits for any feature.",
+    a: "For an ordinary adult domestic application, no photo-tool output is submitted because the PSK/POPSK captures the photo. For the below-four exception, choose a tool that can prepare the official 35×45 mm white-background print. The 630×810 format belongs to overseas Indian-mission guidance; the 250 KB cap is not confirmed as an ordinary Passport Seva rule.",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function Page() {
               <th className="px-4 py-3 text-left font-semibold text-ink">Tool</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">Cost</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">On-device</th>
-              <th className="px-4 py-3 text-left font-semibold text-ink">India 35×45 mm</th>
+              <th className="px-4 py-3 text-left font-semibold text-ink">India under-four print</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">Watermark-free</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">Exam tools</th>
             </tr>
@@ -122,7 +122,7 @@ export default function Page() {
               <td className="px-4 py-3 font-medium text-ink">PassportSizePhoto.in</td>
               <td className="px-4 py-3 text-muted-foreground">Free</td>
               <td className="px-4 py-3 font-medium text-emerald-700">Yes (WebAssembly)</td>
-              <td className="px-4 py-3 text-muted-foreground">✓ 630×810 px, 10–250 KB</td>
+              <td className="px-4 py-3 text-muted-foreground">35×45 mm available</td>
               <td className="px-4 py-3 font-medium text-emerald-700">Yes</td>
               <td className="px-4 py-3 text-muted-foreground">None</td>
             </tr>
@@ -149,8 +149,8 @@ export default function Page() {
 
       <p>
         easyPhoto makes{" "}
-        <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">Indian passport photos to the Passport Seva spec</Link>{" "}
-        (35×45 mm, white background, under 1 MB) for free, with no account and no server upload. Every operation runs in
+        <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">the 35×45 mm under-four passport print</Link>{" "}
+        on a white background for free, with no account and no server upload. Ordinary adult applicants are photographed at the PSK/POPSK. Every operation runs in
         your browser — you can verify this yourself by watching the network tab while the tool
         processes your photo. No image upload request is sent.
       </p>
@@ -166,8 +166,11 @@ export default function Page() {
       <h2>PassportSizePhoto.in — the strongest free passport-only alternative</h2>
 
       <p>
-        PassportSizePhoto.in is a free, India-native tool built on WebAssembly. It correctly
-        implements the Passport Seva spec at the pixel level: 630×810 px, 10–250 KB. Processing
+        PassportSizePhoto.in is a free, India-native tool built on WebAssembly. It
+        offers a 630×810 px, 10–250 KB preset, but that must not be described as
+        the ordinary domestic Passport Seva upload specification. The official
+        630×810 instruction applies to overseas mission guidance, and the 250 KB
+        cap remains unverified. Processing
         is browser-local with an explicit claim of DPDPA (India&apos;s data protection law)
         compliance alongside GDPR — comparable to easyPhoto&apos;s privacy model. The tool
         includes a print layout selector (1, 4, 6, or 8 photos per 4R sheet), multiple
@@ -197,8 +200,9 @@ export default function Page() {
         servers and deleted approximately one hour after processing. For users who want
         server-free processing, PassportMaker is not the right tool. For users who need the
         AI outfit-swap feature and are comfortable with a temporary upload, it is worth testing.
-        Note that the India 35×45 mm spec is listed as supported but not confirmed at the pixel
-        level on any page we could access.
+        Note that an India 35×45 mm crop is listed as supported but not confirmed
+        at the pixel level on any page we could access. That crop is relevant to
+        the below-four print, not an ordinary adult upload.
       </p>
 
       <h2>When Cutout.pro is actually worth using</h2>
@@ -226,9 +230,10 @@ export default function Page() {
       </ul>
 
       <p>
-        For a standard Indian passport photo, exam portal photo, or document resize — where
-        the tool&apos;s AI advantages do not apply — the free on-device alternatives are cheaper,
-        faster, and more private.
+        For the Indian under-four print, an exam portal photo, or a document
+        resize—where the tool&apos;s AI advantages do not apply—the free
+        on-device alternatives avoid a server upload. Ordinary adult passport
+        applicants do not submit a prepared photo at the PSK/POPSK.
       </p>
 
       <Faq items={FAQ_ITEMS} noSchema />

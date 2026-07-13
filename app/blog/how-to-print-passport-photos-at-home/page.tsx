@@ -9,7 +9,7 @@ const post = getPost("how-to-print-passport-photos-at-home")!;
 const FAQ_ITEMS = [
   {
     q: "What size should I print passport photos at home?",
-    a: "The standard Indian passport photo print is 35×45 mm. For a 4×6 inch (10×15 cm) photo paper — the most common print format in India — you can fit 8 photos on one sheet using the 2×4 layout at 300 DPI. Use easyPhoto's print sheet tool to tile and download a print-ready JPEG automatically.",
+    a: "For an Indian passport applicant below four, the required print is 35×45 mm. Ordinary adult domestic applicants do not carry a photo because it is captured at the PSK/POPSK. Other countries and services use their own print dimensions.",
   },
   {
     q: "Can I print passport photos at home with a normal inkjet printer?",
@@ -21,11 +21,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "Do home-printed passport photos get accepted at the passport office?",
-    a: "Yes — the Passport Seva portal and MEA guidelines do not require photos to be taken or printed in a studio. The photo must meet the specification: 35×45 mm, colour, white or off-white background, frontal face, matte or semi-gloss paper. Home-printed photos that meet these requirements are accepted.",
+    a: "Do not assume that. Ordinary adult Indian applicants do not submit a print. For a child below four, Passport Seva requires a recent 35×45 mm white-background print, but the application decision cannot be guaranteed from the printer or paper alone. Follow the current minor-photo guidance.",
   },
   {
     q: "What DPI should passport photos be printed at?",
-    a: "300 DPI is the standard for passport photos and is accepted by all Indian government offices. At 300 DPI, a 35×45 mm photo is 413×531 pixels. Most home inkjet and laser printers can produce acceptable quality at 300 DPI on photo paper. Never print at less than 200 DPI — the pixelation is visible on small prints.",
+    a: "At 300 DPI, a 35×45 mm layout is about 413×531 pixels. DPI is a print-layout calculation, not a universal acceptance rule; use the resolution and print method stated by the authority handling your document.",
   },
 ];
 
@@ -79,16 +79,15 @@ export default function Page() {
         </ul>
       </div>
 
-      <h2>What are the standard passport photo print dimensions in India?</h2>
+      <h2>When does an Indian passport applicant need a 35×45 mm print?</h2>
 
       <p>
-        The Ministry of External Affairs specifies a{" "}
-        <strong>35&nbsp;mm wide × 45&nbsp;mm tall</strong> photo for Indian passports.
-        This is a global standard shared with PAN cards (physical submission),
-        most Indian exam portals, and the majority of visa applications. The
-        only common exceptions are US passports (2×2 inch / 51×51&nbsp;mm) and
-        UK / Schengen visas (35×45&nbsp;mm — same size, but different background colour
-        requirements).
+        Passport Seva requires a{" "}
+        <strong>35&nbsp;mm wide × 45&nbsp;mm tall</strong> white-background print
+        for a child below four. Ordinary adult fresh/reissue applicants in India
+        do not carry a photo; the PSK/POPSK captures it with their biometrics.
+        Other Indian documents, exams and foreign visa applications each need
+        their own current specification.
       </p>
 
       <img
@@ -110,12 +109,11 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["Indian Passport", "35×45 mm", "413×531 px"],
+            ["Indian passport — child below four", "35×45 mm", "413×531 px"],
             ["PAN Card (physical)", "25×35 mm", "295×413 px"],
             ["Most Indian exam forms", "35×45 mm", "413×531 px"],
             ["US Passport", "51×51 mm (2×2 inch)", "600×600 px"],
             ["UK / Schengen Visa", "35×45 mm", "413×531 px"],
-            ["Baby / Infant Passport (India)", "35×45 mm (same size)", "413×531 px"],
           ].map(([doc, size, px]) => (
             <tr key={doc} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{doc}</td>
@@ -258,15 +256,15 @@ export default function Page() {
       <h2>Are home-printed photos accepted at passport offices?</h2>
 
       <p>
-        Yes — the{" "}
+        An ordinary adult Indian passport applicant does not submit a print. For
+        a child below four, the{" "}
         <Link href="/blog/indian-passport-photo-requirements/" className="text-brand underline">
           MEA passport photo guidelines
         </Link>{" "}
-        specify the photo characteristics (size, background, head position, recency),
-        not the printing method or vendor. A home-printed photo that meets the spec
-        is equally valid. The practical check: hold the photo up to the light — the
-        image should not be visible through the paper (too thin = poor quality). On
-        quality photo paper this is never an issue.
+        require a recent 35×45 mm white-background photograph and specify its
+        composition. Those requirements do not make every home print acceptable
+        or guarantee an application outcome. Follow the current guidance and ask
+        Passport Seva if the required print method is unclear.
       </p>
 
       <p>

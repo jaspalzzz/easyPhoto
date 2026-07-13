@@ -129,7 +129,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   },
   "passport-seva": {
     id: "passport-seva",
-    name: "Passport Seva (India)",
+    name: "Passport Seva overseas format (conditional)",
     photoLimitKb: 250,
     photoMinKb: 10,
     sigLimitKb: 100,
@@ -140,12 +140,15 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 150,
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 4.5 / 1.5,
-    description: "Passport Seva online portal. Photo 630x810 px, 10-250 KB, white background, face 80-85%. Signature rectangular, up to 100 KB.",
-    source: { url: "https://www.passportindia.gov.in", label: "Passport Seva (passportindia.gov.in)" },
-    verification: "official",
-    verifiedOn: "2026-06-08",
+    description:
+      "Conditional compatibility preset, not an ordinary domestic Passport Seva upload requirement. The 630x810 px photo format is confirmed for the overseas Indian-mission ICAO workflow; the stored KB and signature limits need workflow-specific verification.",
+    source: {
+      url: "https://embassy.passportindia.gov.in/pdf/Guidelines_for_ICAO_Compliant_Photographs_for_Passport_Applications.pdf",
+      label: "Passport Seva at Indian Embassies — ICAO photograph guidance",
+    },
+    verification: "needs-review",
     context:
-      "Passport Seva is the Ministry of External Affairs' online portal for Indian passport applications — the photo and signature are uploaded during the online form at passportindia.gov.in, ahead of the physical Passport Seva Kendra (PSK) appointment.",
+      "For ordinary adult fresh/reissue applications in India, Passport Seva captures the photograph and biometrics at the PSK/POPSK; applicants do not upload or carry a photo. Children below four carry a 45x35 mm white-background print. Use this digital preset only when a separate overseas or other workflow explicitly requests it.",
   },
   oci: {
     id: "oci",

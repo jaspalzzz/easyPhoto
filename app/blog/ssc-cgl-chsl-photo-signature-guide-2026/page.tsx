@@ -187,7 +187,7 @@ export default function Page() {
         <li><strong>Background:</strong> plain white only. No patterns, no shadows, no furniture visible.</li>
         <li><strong>Attire:</strong> formal. A plain, dark-coloured shirt or blouse reads cleanly. Avoid white tops in front of a white background, as the shoulder edges blur together.</li>
         <li><strong>Glasses:</strong> strictly prohibited. Not just tinted lenses: all glasses, including prescription ones.</li>
-        <li><strong>Head covering:</strong> banned except for religious reasons (turban, hijab). If worn consistently in your identity documents, it will be accepted; otherwise, remove it.</li>
+        <li><strong>Head covering:</strong> follow the current notification&apos;s religious-covering instructions and keep the face clearly visible.</li>
         <li><strong>Expression:</strong> neutral, mouth closed, both eyes fully open. Looking directly at the camera.</li>
         <li><strong>Framing:</strong> head and the top of your shoulders should fill roughly 70–80% of the frame. Don&apos;t stand too far back.</li>
       </ul>

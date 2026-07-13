@@ -25,7 +25,7 @@ interface Analysis {
 function statusLabel(s: Status) {
   if (s === "centered") return "Face is well-centred ✓";
   if (s === "slightly-off") return "Slightly off-centre — may still be accepted";
-  return "Off-centre — likely to be rejected";
+  return "Off-centre — review before submitting";
 }
 
 function statusCls(s: Status) {

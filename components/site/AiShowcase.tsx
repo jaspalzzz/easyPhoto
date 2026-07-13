@@ -1,6 +1,6 @@
 /**
- * AiShowcase — "AI Corrects Measurable Details"
- * 3-card comparison (selfie → AI engine → compliant) + 4-step flow bar
+ * AiShowcase — automated checks for measurable details
+ * 3-card comparison (selfie → checks → prepared result) + 4-step flow bar
  * Adapted from design template; palette: site tokens + semantic red/amber/emerald
  */
 
@@ -51,15 +51,15 @@ const MINI_STEPS = ["Scanning", "Analyzing", "Validating", "Optimizing"] as cons
 interface FlowStep { n: number; title: string; desc: string; Icon: LucideIcon; }
 const FLOW_STEPS: FlowStep[] = [
   { n: 1, title: "Upload",              desc: "Upload your selfie from any device",                    Icon: Upload     },
-  { n: 2, title: "AI Analyzes",         desc: "Our AI measures your photo against the published spec",  Icon: Cpu        },
+  { n: 2, title: "Automated checks",    desc: "Measures the photo against listed requirements",           Icon: Cpu        },
   { n: 3, title: "Checks Complete",     desc: "Helps identify common rejection risks before you submit", Icon: ShieldCheck },
-  { n: 4, title: "Download",            desc: "Download your prepared photo in seconds",               Icon: Download   },
+  { n: 4, title: "Download",            desc: "Download the prepared result when processing finishes", Icon: Download   },
 ];
 
 const TRUST_PILLS = [
   { label: "Secure",  Icon: Lock,       cls: "text-blue-500"    },
   { label: "Private", Icon: ShieldCheck, cls: "text-emerald-700 dark:text-emerald-300" },
-  { label: "Instant", Icon: Zap,        cls: "text-amber-500"   },
+  { label: "On-device", Icon: Zap,      cls: "text-amber-500"   },
   { label: "Free",    Icon: Tag,        cls: "text-pink-500"    },
 ];
 
@@ -68,7 +68,7 @@ const GOLD_BADGE = { background: "hsl(45 88% 60%)", color: "hsl(222 60% 8%)" } a
 
 /* ── sub-components ──────────────────────────────────────────────────── */
 
-/** Amber right-pointing arrow (selfie → AI) */
+/** Amber right-pointing arrow (selfie → automated checks) */
 function AmberArrow() {
   return (
     <svg width="32" height="20" viewBox="0 0 40 20" fill="none" aria-hidden="true">
@@ -79,7 +79,7 @@ function AmberArrow() {
   );
 }
 
-/** Emerald right-pointing arrow (AI → compliant) */
+/** Emerald right-pointing arrow (automated checks → prepared result) */
 function EmeraldArrow() {
   return (
     <svg width="32" height="20" viewBox="0 0 40 20" fill="none" aria-hidden="true">
@@ -100,13 +100,13 @@ export function AiShowcase() {
         {/* ── heading ── */}
         <div className="mb-10 text-center">
           <p className="mb-3 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            AI Photo Correction
+            Automated photo preparation
           </p>
           <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
-            <span className="text-cta">AI</span> Corrects Measurable Details
+            Automated checks for measurable details
           </h2>
           <p className="mt-3 text-[14.5px] text-muted-foreground">
-            From any selfie to a photo checked against published requirements — in seconds.
+            From a selfie to a photo reviewed against measurable published requirements.
             <span className="mt-1 block text-[12.5px] text-ink-faint">
               Example walkthrough below, shown with a sample photo.
             </span>
@@ -142,7 +142,7 @@ export function AiShowcase() {
               <div className="relative h-[150px] w-[110px] sm:h-[190px] sm:w-[140px]">
                 <Image
                   src="/images/sample2_before_280.webp"
-                  alt="Example selfie before AI processing"
+                  alt="Example selfie before automated photo preparation"
                   fill
                   sizes="140px"
                   className="rounded-xl object-cover object-top"
@@ -187,16 +187,16 @@ export function AiShowcase() {
             <AmberArrow />
           </div>
 
-          {/* ── MIDDLE — AI Compliance Engine ── */}
+          {/* ── MIDDLE — automated photo checks ── */}
           <div className="flex flex-[1.2] flex-col rounded-2xl border-2 border-amber-100 dark:border-amber-800/30 bg-card p-5 shadow-[0_8px_36px_rgba(0,0,0,0.05)]">
 
             {/* card header */}
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="rounded-md bg-amber-500 px-2 py-0.5 text-xs font-black text-white">
-                  AI
+                  ✓
                 </span>
-                <h3 className="text-[15px] font-bold text-ink">AI Compliance Engine</h3>
+                <h3 className="text-[15px] font-bold text-ink">Automated photo checks</h3>
               </div>
               <span className="rounded-full border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-300">
                 Analyzing…
@@ -263,7 +263,7 @@ export function AiShowcase() {
             <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-2.5">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" strokeWidth={2} />
               <div>
-                <p className="text-[12px] font-bold text-ink">All Measurable Checks Pass</p>
+                <p className="text-[12px] font-bold text-ink">No measurable issues detected</p>
                 <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
                   Measured against the published specs for passport, visa, ID &amp; more.
                 </p>
@@ -305,7 +305,7 @@ export function AiShowcase() {
             <EmeraldArrow />
           </div>
 
-          {/* ── RIGHT — Spec-checked Photo ── */}
+          {/* ── RIGHT — checked photo ── */}
           <div className="flex flex-1 flex-col rounded-2xl border-2 border-emerald-100 dark:border-emerald-800/30 bg-card p-5 shadow-[0_4px_28px_rgba(16,185,129,0.06)]">
 
             {/* card header */}
@@ -317,14 +317,14 @@ export function AiShowcase() {
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </span>
-                <h3 className="text-[15px] font-bold text-ink">Spec-checked Photo</h3>
+                <h3 className="text-[15px] font-bold text-ink">Checked for measurable requirements</h3>
               </div>
               <span className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-300">
                 No Detectable Issues
               </span>
             </div>
 
-            {/* Spec-checked photo with dimension indicators */}
+            {/* Checked photo with dimension indicators */}
             <div className="mb-4 flex items-center justify-center rounded-xl border border-hairline bg-paper py-6">
               {/*
                 Outer wrapper provides space for the dimension indicators:
@@ -342,7 +342,7 @@ export function AiShowcase() {
                   <div className="absolute inset-0 z-10 rounded-xl border-2 border-dashed border-emerald-400 pointer-events-none" />
                   <Image
                     src="/images/sample2_after_256.webp"
-                    alt="Sample AI-corrected passport photo that passes the listed checks"
+                    alt="Sample passport photo prepared to the listed dimensions"
                     fill
                     sizes="128px"
                     className="object-cover object-top"

@@ -320,7 +320,7 @@ export default function Page() {
         Use this checklist immediately before uploading. If any item fails,
         fix it. Most take under two minutes with the right tool. For the photo
         specifically, the free{" "}
-        <Link href="/tools/photo-rejection-check/">photo rejection predictor</Link>
+        <Link href="/tools/photo-rejection-check/">photo issue checker</Link>
         {" "}runs 9 automated checks (centering, background, expression markers, tilt)
         entirely on your device.
       </p>

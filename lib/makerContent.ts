@@ -28,37 +28,37 @@ export interface MakerContent {
 export const MAKER_CONTENT: Record<string, MakerContent> = {
   "india-passport-photo-maker": {
     intro:
-      "Applying through Passport Seva? An Indian passport photo is 35×45mm on a plain white background, with your face filling most of the frame, and the online portals cap the file size tightly. This maker sets all of that automatically, right in your browser.",
+      "For an ordinary adult fresh/reissue application in India, Passport Seva captures your photograph and biometrics at the PSK/POPSK; you do not upload or carry a photo. This maker is useful for the 35×45mm white-background print required for a child below four, or when a separate overseas workflow asks you to prepare a photo.",
     sections: [
       {
-        h: "India passport photo requirements",
-        p: "The Passport Seva specification is a 35×45mm photo on a plain white background, taken with a neutral expression and both eyes open. India expects a large face (roughly 80–85% of the frame from chin to crown), so a tightly framed photo is essential. Shadows on the face or the wall behind you are the most common reasons a photo gets sent back.",
+        h: "Ordinary adult applications use centre capture",
+        p: "Passport Seva says applicants attend the PSK or POPSK so their photograph and biometrics can be obtained there, and its visit guidance says a photograph is not required. The online form is used for the application and appointment; it is not an adult passport-photo upload.",
       },
       {
-        h: "Printing vs. online upload",
-        p: "For the older pasted application form you need a genuine photo-lab print on photo paper. A home inkjet printout is often refused. For the online Passport Seva application you upload a digital photo, and the portal limits the file size to a small number of kilobytes, so the image has to be compressed without going blurry.",
+        h: "The 35×45mm print is for a child below four",
+        p: "Passport Seva's fresh/reissue instructions require a minor below four to carry a recent 4.5×3.5cm (45×35mm) colour photograph with a white background. The linked minor-photo guidance also specifies a frontal, centred image, open eyes, even lighting and 80–85% face coverage.",
       },
       {
-        h: "Works for Tatkal, re-issue and police verification",
-        p: "The same 35×45mm white-background photo is used for fresh passports, Tatkal, re-issue and the photo many applicants attach for police verification. Portal caps change, so always confirm the current size and file limit on passportindia.gov.in before you submit.",
+        h: "Overseas, OCI and e-Visa are separate",
+        p: "Indian missions abroad use separate ICAO guidance that specifies 630×810 pixels for photograph capture or upload. OCI and Indian e-Visa applications use different square-photo specifications. Select the workflow that will process your application and confirm its current instructions before submitting.",
       },
     ],
     faqs: [
       {
-        q: "What is the passport photo size for the Passport Seva online application?",
-        a: "35×45mm with a plain white background. The online portal also limits the file size, so compress the finished photo to the kilobyte cap shown on your application.",
+        q: "Do adults upload a photo with a Passport Seva application?",
+        a: "No. In the ordinary domestic fresh/reissue workflow, an adult's photo and biometrics are captured at the PSK/POPSK. Passport Seva's visit guidance says a photograph is not required.",
       },
       {
-        q: "Why does an Indian passport photo need a white background?",
-        a: "Passport Seva requires a plain white, evenly lit background with no shadows so the face can be verified. This tool replaces the background with the correct white automatically.",
+        q: "Who needs the 35×45mm white-background print?",
+        a: "A child below four years. Passport Seva instructs that applicant to carry a recent 4.5×3.5cm colour photograph with a white background.",
       },
       {
-        q: "How much of the frame should my face fill?",
-        a: "Indian passport photos expect a large face, about 80–85% of the frame from chin to crown. The maker crops to that proportion so the photo isn't rejected for a small head size.",
+        q: "Where does the 630×810 pixel format apply?",
+        a: "It appears in the current ICAO guidance for passport applications through Indian embassies and consulates abroad. It is not an ordinary domestic adult PSK/POPSK upload size.",
       },
       {
-        q: "Can I get my Indian passport photo under 20 KB for upload?",
-        a: "Yes. After making the photo, use the resize-to-KB tool to compress it to your portal's exact limit (often 10–50 KB for government forms) while keeping it sharp.",
+        q: "Can I reuse this photo for OCI or an Indian e-Visa?",
+        a: "Use the dedicated OCI or e-Visa preset instead. Both are square digital-photo workflows with specifications that differ from the under-four passport print.",
       },
     ],
   },
@@ -369,7 +369,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         h: "It's square, not the 35×45mm passport size",
-        p: "Don't confuse this with an Indian passport photo. The passport photo (for Indian citizens) is a 35×45mm rectangle, while the e-Visa photo (for foreign visitors) is square. Using the wrong shape is an easy way to get an upload rejected, so this page is set specifically to the square e-Visa format.",
+        p: "Don't confuse this with the ordinary domestic Indian passport workflow, where an adult is photographed at the PSK/POPSK. The 35×45mm passport print applies to a child below four, while the e-Visa photo for foreign visitors is a separate square upload.",
       },
       {
         h: "File size and uploading",
@@ -383,7 +383,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "Is the Indian e-Visa photo the same as a passport photo?",
-        a: "No. The Indian passport photo is a 35×45mm rectangle (for citizens), while the e-Visa photo (for foreign visitors) is square. They're different specifications, so use the right one for your application.",
+        a: "No. Ordinary adult Indian passport applicants are photographed at the PSK/POPSK, and the 35×45mm print is the below-four exception. The e-Visa photo for foreign visitors is a separate square digital upload.",
       },
       {
         q: "What file size does the Indian e-Visa photo need?",

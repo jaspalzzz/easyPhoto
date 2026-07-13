@@ -14,7 +14,7 @@ export default function Page() {
     <ToolPage
       title="Auto-Crop to Passport Spec"
       slug="auto-crop"
-      blurb="Upload any photo — AI detects your face and automatically crops and resizes it to the correct passport photo proportions for your country (India 35×45mm, USA 51×51mm, UK, EU, or Australia). Head is centred and sized to spec. Download instantly."
+      blurb="Upload a photo and the on-device face detector crops it to the selected preset. India's 35×45mm option is for the below-four print; ordinary adults are photographed at PSK/POPSK. Other country presets include the USA, UK, EU, and Australia."
       footnote="Uses MediaPipe FaceLandmarker for face detection and a geometric head-positioning engine to compute the ideal crop. All processing is on-device."
     >
       <AutoCropTool />

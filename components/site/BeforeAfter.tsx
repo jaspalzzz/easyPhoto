@@ -1,6 +1,6 @@
 /**
  * Before → After transformation (Image 2 reference style).
- * Two large portrait panels with gold dimension markers, navy AI badge centre,
+ * Two large portrait panels with gold dimension markers and an automation badge,
  * and a dark bottom strip comparing before problems vs after solutions.
  *
  * Photos: replace each illustrated <svg data-photo-slot="..."> with an <img> tag
@@ -15,10 +15,10 @@ const BEFORE_PROBLEMS = [
 ];
 
 const AFTER_SOLUTIONS = [
-  "Perfect Size & Ratio",
+  "Selected Size & Ratio",
   "Clean White Background",
   "Balanced Lighting",
-  "Face Perfectly Centered",
+  "Face Centered",
 ];
 
 /* Illustrated "before" selfie — warm room background, slightly off-centre */
@@ -87,11 +87,11 @@ export function BeforeAfter() {
         <div className="mb-10 text-center">
           <span className="eyebrow text-[#7a5c06]">Transformation</span>
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-[2rem]">
-            See the difference in seconds
+            Compare the prepared result
           </h2>
         </div>
 
-        {/* 3-column: before | AI badge | after */}
+        {/* 3-column: before | automation badge | after */}
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-stretch sm:gap-0">
 
           {/* BEFORE */}
@@ -111,10 +111,10 @@ export function BeforeAfter() {
             </div>
           </div>
 
-          {/* AI badge — sits between panels */}
+          {/* Automated-processing badge — sits between panels */}
           <div className="flex shrink-0 items-center justify-center sm:relative sm:z-10 sm:-mx-5 sm:py-6">
             <div className="flex h-16 w-16 flex-col items-center justify-center rounded-full bg-[hsl(222_60%_8%)] shadow-xl ring-4 ring-white sm:h-[68px] sm:w-[68px]">
-              <span className="text-[1.2rem] font-black leading-none tracking-tighter text-[hsl(var(--cta))]">AI</span>
+              <span className="text-[0.85rem] font-black leading-none tracking-tight text-[hsl(var(--cta))]">AUTO</span>
               <span className="mt-0.5 text-xs font-semibold uppercase tracking-widest text-[hsl(var(--cta))]/70">
                 auto
               </span>

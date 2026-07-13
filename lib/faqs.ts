@@ -91,16 +91,16 @@ export const PASSPORT_FAQ: FaqItem[] = [
   { q: "Can I wear glasses in a passport photo?", a: "Generally no. The US has banned glasses since 2016 and most countries discourage them, so it's safest to take them off." },
   { q: "How many passport photos do I need?", a: "Usually two for a printed application. The 4×6 inch print sheet gives you several copies on one sheet." },
   { q: "How do I make a baby or infant passport photo?", a: "Lay the baby on a plain white sheet, take a top-down photo with the eyes open if you can, and upload it. The same sizing rules apply." },
-  { q: "Will an EasyPhoto passport photo be accepted?", a: "It's built to each country's published specification and runs a compliance check, and we link the official source on every country page. Always review the requirements before submitting." },
+  { q: "What can EasyPhoto check before I submit?", a: "It prepares the selected dimensions and background, then reviews measurable image properties. It cannot predict acceptance; use the linked source and confirm the current application instructions before submitting." },
   { q: "Can I wear a head covering in a passport photo?", a: "Only for religious or medical reasons, and your full face from chin to forehead must be clearly visible." },
   { q: "Is this passport photo maker really free with no watermark?", a: "Yes. You get a full-quality download with no sign-up and no watermark." },
   { q: "Does my passport photo get uploaded or stored?", a: "No. Everything is processed in your browser and discarded when you close the tab." },
   { q: "Can I make a US DV Lottery or green card photo?", a: "The DV Lottery uses a stricter square spec (600×600, JPEG, under 240KB). Use the US page, then the resize tool to meet the file-size limit." },
   { q: "How do I print my passport photo?", a: "Download the 4×6 inch PDF sheet and print it at any photo kiosk or chemist, then cut out the copies." },
   { q: "What's the difference between a passport photo and a visa photo?", a: "The size is often similar, but background rules and exact specs differ, so use the visa photo maker for visa applications." },
-  { q: "What is the passport photo size for the Passport Seva portal upload?", a: "Exactly 630×810 px JPEG, under 250 KB for the Passport Seva online application. For the printed form pasted on paper, the size is 35×45 mm (4.5×3.5 cm). EasyPhoto's India preset outputs the 630×810 px digital file ready for portal upload." },
-  { q: "Has India changed passport photo requirements?", a: "Yes — from 1 September 2025, applications through Indian embassies and consulates abroad (the NRI/overseas route) require ICAO-compliant photographs. The domestic Passport Seva Kendra spec continues to use the 35×45 mm white-background format. Glasses are now effectively banned on both routes." },
-  { q: "Can I upload a selfie for an Indian passport photo?", a: "No. Selfies are not accepted. The photo must be taken by someone else from about 1.5 metres, on a plain white background with even lighting. Selfies distort face proportions and typically fail the Passport Seva automated compliance check." },
+  { q: "Do I upload a photo with an ordinary Passport Seva application?", a: "No. For ordinary adult fresh/reissue applications in India, Passport Seva captures the photograph and biometrics at the PSK/POPSK. A child below four carries a recent 45×35 mm white-background print." },
+  { q: "Where does India's 630×810 px passport-photo format apply?", a: "The current ICAO guidance for Indian embassies and consulates abroad specifies 630×810 px for photograph capture or upload. It is not the ordinary domestic adult PSK/POPSK upload size. Follow the selected mission's instructions." },
+  { q: "Can I use a phone photo for an Indian passport application?", a: "An ordinary adult applicant is photographed at the PSK/POPSK. A phone image can be prepared for the below-four printed-photo exception or a separate overseas workflow, but it must follow that workflow's current composition and submission instructions." },
 ];
 
 export const VISA_FAQ: FaqItem[] = [
@@ -119,7 +119,7 @@ export const VISA_FAQ: FaqItem[] = [
   { q: "Is my photo uploaded when I make a visa photo?", a: "No, it's processed entirely on your device." },
   { q: "How recent does a visa photo need to be?", a: "Most countries require it to be taken within the last six months and to match how you currently look." },
   { q: "What file format and size do online visa portals want?", a: "Usually a JPG under a set KB limit. Use the resize tool if your portal caps the file size." },
-  { q: "Why was my visa photo rejected?", a: "Common reasons are the wrong size, wrong background, glasses, smiling, shadows, or an old photo. The compliance check catches the sizing and background issues." },
+  { q: "Why was my visa photo rejected?", a: "Common reasons include the wrong size, wrong background, glasses, smiling, shadows, or an old photo. Automated photo checks can flag measurable sizing and background issues but cannot assess every visual rule." },
 ];
 
 export const PHOTO_RESIZE_FAQ: FaqItem[] = [
@@ -128,7 +128,7 @@ export const PHOTO_RESIZE_FAQ: FaqItem[] = [
   { q: "How do I resize a photo to 50KB?", a: "Enter 50KB as the target and download the compressed file. It's handy for passport, visa and exam uploads." },
   { q: "How do I compress an image to 100KB or 200KB?", a: "Type any target in KB. There are quick presets for 10, 20, 50, 100 and 200KB." },
   { q: "How do I resize a photo without losing quality?", a: "We lower JPEG quality only as much as needed and shrink dimensions last, so the photo stays as sharp as the target allows." },
-  { q: "How do I resize a photo for SSC, UPSC or government forms?", a: "These usually cap photos at 20–50KB. Compress to that target and the upload will be accepted." },
+  { q: "How do I resize a photo for SSC, UPSC or government forms?", a: "Select the limit stated in the current notification, compress to that target, and confirm the downloaded file before uploading." },
   { q: "Can I resize a photo on my phone?", a: "Yes, it works the same in a mobile browser." },
   { q: "What's the difference between resizing by KB and by pixels?", a: "KB controls the file size for upload limits, while pixels control the width and height. There's a separate tool for each." },
   { q: "How do I resize an image to exact pixel dimensions?", a: "Use the resize-by-dimensions tool, with an optional aspect-ratio lock." },
@@ -320,8 +320,8 @@ export const PHOTO_NAME_DATE_FAQ: FaqItem[] = [
 ];
 
 export const COMPLIANCE_CHECKER_FAQ: FaqItem[] = [
-  { q: "What does the photo & signature checker do?", a: "Pick your exam, choose photo or signature, and upload your file. It checks the file against that exam's official spec — file size (KB), pixel dimensions, aspect, format and a white-background guide — and tells you whether it will likely be accepted, before you upload to the portal." },
-  { q: "Is the check accurate?", a: "The size, dimensions and format checks are exact — they compare your file to the official spec. The background check is a guide, not a guarantee. Always confirm against the official portal before submitting." },
+  { q: "What does the photo & signature checker do?", a: "Pick your exam, choose photo or signature, and upload your file. It compares file size (KB), pixel dimensions, aspect, format and a white-background guide with the selected published requirements, then reports measurable issues before you upload." },
+  { q: "What can the checker confirm?", a: "It can compare measurable file properties with the selected listing. Background and face-position results are guides, and it cannot predict acceptance. Confirm the current application instructions on the named authority's portal before submitting." },
   { q: "Does it upload my photo or signature?", a: "No. The file is read and checked entirely in your browser — nothing is uploaded to any server." },
   { q: "Why does a portal reject my upload?", a: "Usually the file is over the KB limit, the pixel dimensions/aspect are wrong, it isn't a JPG, or the background isn't plain white. The checker flags each of these so you know exactly what to fix." },
   { q: "How do I fix a failing check?", a: "When something fails, the result links straight to the resizer for your exam, which compresses and resizes your file to the exact required spec." },
@@ -375,7 +375,7 @@ export function countryFaqItems(
     },
     india: {
       q: "Is a home-printed Indian passport photo accepted?",
-      a: "For the pasted paper form, India requires a real photo-lab print, and a home or computer printout may be rejected. Online upload sizes vary, so confirm the current limit at passportindia.gov.in.",
+      a: "Ordinary adult applicants do not carry a print to the PSK/POPSK. For a child below four, Passport Seva requires a recent 45×35 mm white-background print; use the official minor-photo guidance and confirm the current application instructions.",
     },
     canada: {
       q: "Can I use this for a Canadian passport photo?",

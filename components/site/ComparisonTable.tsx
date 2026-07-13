@@ -49,7 +49,7 @@ const ROWS: CompRow[] = [
     Icon: Clock,
     label: "Turnaround Time",
     studio: { sub: "You wait in queue",                 primary: "30 – 60",      secondary: "minutes",        kind: "bad"   },
-    easy:   { sub: "Instant results",                   primary: "30",           secondary: "seconds",        kind: "good"  },
+    easy:   { sub: "Runs in your browser",             primary: "On device",     secondary: "Time varies",     kind: "good"  },
   },
   {
     Icon: Car,
@@ -65,7 +65,7 @@ const ROWS: CompRow[] = [
   },
   {
     Icon: ShieldCheck,
-    label: "Compliance Check",
+    label: "Pre-submission photo check",
     studio: { sub: "No spec check before printing",     primary: "✗",            kind: "cross" },
     easy:   { sub: "Checks run before you download",    primary: "✓",            kind: "check" },
   },
@@ -73,7 +73,7 @@ const ROWS: CompRow[] = [
     Icon: Layers,
     label: "Background Removal",
     studio: { sub: "May not be available",              primary: "✗",            kind: "cross" },
-    easy:   { sub: "AI removes background instantly",   primary: "✓",            kind: "check" },
+    easy:   { sub: "Automated background removal",       primary: "✓",            kind: "check" },
   },
   {
     Icon: Globe,
@@ -90,10 +90,10 @@ const ROWS: CompRow[] = [
 ];
 
 const TRUST_POINTS: TrustPoint[] = [
-  { Icon: Sparkles,    label: "AI-Powered Corrections",      desc: "AI helps fix size, lighting and framing automatically."          },
-  { Icon: ShieldCheck, label: "Checked Against Published Specs", desc: "Every country & exam spec cites its published source."       },
+  { Icon: Sparkles,    label: "Automated Photo Preparation", desc: "Adjusts size, background and framing with browser-based tools." },
+  { Icon: ShieldCheck, label: "Published Requirement Sources", desc: "Specifications cite a published source where available."     },
   { Icon: Lock,        label: "Your Privacy First",        desc: "We process everything in your browser. No uploads."              },
-  { Icon: Zap,         label: "Instant & Free",            desc: "From upload to download in under 30 seconds."                   },
+  { Icon: Zap,         label: "On-device & Free",          desc: "Processing time varies by image and device."                   },
 ];
 
 const NAVY = { background: "hsl(222 60% 8%)" } as const;
@@ -159,7 +159,7 @@ export function ComparisonTable() {
           </h2>
           <p className="mt-3 text-[14.5px] text-muted-foreground">
             See how easyPhoto compares with a studio visit for creating
-            spec-checked document photos — without leaving home.
+            document photos checked for measurable requirements — without leaving home.
           </p>
         </div>
 
@@ -306,7 +306,7 @@ export function ComparisonTable() {
               <ArrowRight className="h-4 w-4" />
             </Link>
             <p className="text-xs text-muted-foreground">
-              No signup.&nbsp; No payment.&nbsp; Just spec-checked photos.
+              No signup.&nbsp; No payment.&nbsp; Measurable photo checks.
             </p>
           </div>
 

@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Download, Printer, Globe, LayoutGrid, Loader2, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
 import type { Preset } from "@/store/useToolStore";
 import { compressToCap, encode } from "@/lib/compress";
@@ -169,6 +170,8 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
   return (
     <div className="space-y-3.5">
       <h3 className="eyebrow">Download</h3>
+
+      <ToolLimitationsNotice />
 
       {/* Online upload — first on mobile; this is the primary need for portal applicants */}
       <div className="rounded-md border border-hairline">

@@ -146,9 +146,11 @@ export default function Page() {
         and how big your head must be within it. The US wants 25–35mm chin to
         crown on a 2×2 inch photo (per the{" "}
         <a href="https://travel.state.gov/content/travel/en/passports/how-apply/photos.html" target="_blank" rel="noopener noreferrer">U.S. Department of State</a>
-        ), while India wants a notably larger face (
-        <a href="https://www.passportindia.gov.in" target="_blank" rel="noopener noreferrer">Passport Seva</a>
-        ). A generic square crop won&apos;t match either. The{" "}
+        ), while India&apos;s under-four print and overseas ICAO guidance use
+        80–85% face coverage (
+        <a href="https://www.passportindia.gov.in/AppOnlineProject/pdf/GUIDELINES%20FOR%20CAPTURING%20PHOTOGRAPHS%20FOR%20MINORS_v2.1.pdf" target="_blank" rel="noopener noreferrer">Passport Seva minor-photo guidance</a>
+        ). Ordinary adult Indian applicants are photographed at the PSK/POPSK.
+        A generic square crop won&apos;t match every workflow. The{" "}
         <Link href="/passport-photo/">passport photo maker</Link> sizes the head
         to the exact band per country, which removes this problem entirely.
       </p>

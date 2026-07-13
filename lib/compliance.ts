@@ -1,5 +1,5 @@
 /**
- * Compliance check engine — "will my exam upload be rejected?"
+ * Pre-submission checker for measurable exam-upload requirements.
  * ------------------------------------------------------------
  * Pure (no DOM, no model) so it is fully unit-testable. The UI decodes the file
  * (bytes, pixel size, format, an optional white-background heuristic) and passes

@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useWorkflowHandoff } from "@/components/site/useWorkflowHandoff";
+import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { track } from "@/lib/analytics";
 import { checkPhotoQuality, type PhotoCheck } from "@/lib/photoCheck";
 
@@ -32,18 +33,18 @@ function overallVerdict(checks: PhotoCheck[]): Verdict {
 const VERDICT_UI: Record<Verdict, { cls: string; headline: string; sub: string }> = {
   pass: {
     cls: "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-800/50 dark:bg-emerald-900/20 dark:text-emerald-300",
-    headline: "Likely to be accepted",
-    sub: "All ICAO biometric checks passed. Confirm dimensions and file size against the portal before submitting.",
+    headline: "No measurable issues detected",
+    sub: "No issues were found in the checks below. Confirm dimensions, file size, and current portal instructions before submitting.",
   },
   warn: {
     cls: "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-800/50 dark:bg-amber-900/20 dark:text-amber-300",
-    headline: "May be rejected — fix the warnings",
-    sub: "The photo has one or more issues that can cause rejection at an automated biometric gate.",
+    headline: "Review the flagged measurements",
+    sub: "One or more measured properties fall outside the checker’s guidance.",
   },
   fail: {
     cls: "border-red-200 bg-red-50 text-red-700 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300",
-    headline: "Likely to be rejected",
-    sub: "Critical ICAO criteria failed. Fix the issues below before submitting this photo.",
+    headline: "Measurable issues detected",
+    sub: "Review the measured issues below and compare the result with the current application instructions.",
   },
 };
 
@@ -180,10 +181,24 @@ export function RejectionPredictorTool() {
           ))}
         </div>
 
+        <ToolLimitationsNotice
+          summary="Checks measurable image properties including background uniformity and approximate face position. This checker does not compare file size or required pixel dimensions, and it cannot guarantee acceptance — verify the current application instructions on the official portal."
+          canCheck={[
+            "Face detection, approximate centering, head framing, and eye level",
+            "Whole-head visibility and background uniformity",
+            "Approximate lighting consistency",
+          ]}
+          cannotCheck={[
+            "Required pixel dimensions, format, or file-size limits",
+            "Identity, recency, expression, closed eyes, or glasses glare in every case",
+            "The application authority’s final decision",
+          ]}
+        />
+
         <p className="text-xs text-muted-foreground">
-          Analysis covers ICAO biometric criteria: face detection, centering, head size, eye level, head visibility, and background. Pixel dimensions and file size are not checked here — use the{" "}
-          <Link href="/tools/compliance-checker/" className="underline underline-offset-2">Compliance Checker</Link>{" "}
-          to validate those against your specific exam or portal.
+          Use the{" "}
+          <Link href="/tools/compliance-checker/" className="underline underline-offset-2">Pre-submission photo check</Link>{" "}
+          to compare file size and pixel dimensions with a selected exam listing.
         </p>
 
         <Button variant="outline" size="sm" onClick={reset}>
@@ -199,7 +214,7 @@ export function RejectionPredictorTool() {
       <div
         role="button"
         tabIndex={0}
-        aria-label="Upload passport photo for rejection analysis"
+        aria-label="Upload passport photo for issue analysis"
         onClick={() => inputRef.current?.click()}
         onKeyDown={(e) => e.key === "Enter" && inputRef.current?.click()}
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
@@ -214,7 +229,7 @@ export function RejectionPredictorTool() {
           <div className="flex flex-col items-center gap-2">
             <Loader2 className="h-8 w-8 animate-spin text-brand" />
             <p className="text-sm font-medium text-ink">Analysing photo…</p>
-            <p className="text-xs text-muted-foreground">Running face detection &amp; ICAO checks</p>
+            <p className="text-xs text-muted-foreground">Running measurable photo checks</p>
           </div>
         ) : (
           <>
@@ -230,7 +245,7 @@ export function RejectionPredictorTool() {
       {error && <p className="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</p>}
 
       <div className="rounded-lg border border-hairline bg-muted/30 px-4 py-3">
-        <p className="text-xs font-semibold text-ink mb-1">What gets checked (ICAO criteria)</p>
+        <p className="text-xs font-semibold text-ink mb-1">What this checker can measure</p>
         <ul className="space-y-0.5 text-xs text-muted-foreground">
           <li>• Face detected and clearly visible</li>
           <li>• Single person in the frame</li>

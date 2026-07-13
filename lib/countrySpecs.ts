@@ -11,6 +11,8 @@
  *   "gov"        = confirmed against the official government source
  *   "aggregator" = sourced from reputable third-party guides; should be
  *                  re-confirmed against the primary gov portal when possible
+ *   "conditional" = some values are retained for a separately scoped workflow
+ *                   or tool compatibility and must not be presented as universal
  *
  * GOLDEN RULE: a wrong number here = a rejected photo = a dead reputation.
  * Treat this file as the product. Re-verify on a schedule; specs change quietly.
@@ -21,7 +23,7 @@
  * The values are sacred — types were added, numbers were NOT touched.
  */
 
-export type Verified = "gov" | "aggregator";
+export type Verified = "gov" | "aggregator" | "conditional";
 
 /** Date attached to country records marked `gov` in this registry review. */
 export const COUNTRY_SPECS_VERIFIED_ON = "2026-06-04";
@@ -116,54 +118,50 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   india: {
     id: "india",
     label: "India",
-    documents: ["Passport (Passport Seva)"], // OCI is a DIFFERENT spec — see notes
-    printMm: { width: 35, height: 45 }, // 4.5x3.5cm — official Passport Seva
-    // Official Passport Seva photo-upload instructions: the FACE must cover
-    // 80-85% of the photo. On a 45mm-high photo that is ~36-38mm chin-to-crown
-    // (midpoint 37mm ≈ 82%). Confirmed 2026-06; do not lower without re-checking.
+    documents: [
+      "Passport — child below 4 (printed photo)",
+      "Passport — overseas ICAO photograph",
+    ], // Ordinary adult domestic applicants are photographed at PSK/POPSK.
+    printMm: { width: 35, height: 45 }, // Confirmed for the below-4 printed-photo exception.
+    // The official below-4 and overseas ICAO guidance specifies 80-85% face
+    // coverage. On a 45mm-high frame that is ~36-38mm chin-to-crown.
     headHeightMm: { min: 36, max: 38 },
     headPercentOfFrame: { min: 80, max: 85 },
     background: {
-      description: "Plain white (strict — Passport Seva checks luminance)",
+      description: "Plain white (below-4 print and overseas ICAO guidance)",
       hex: "#FFFFFF",
       acceptableHex: ["#FFFFFF"],
     },
     digital: {
-      // Passport Seva online upload. Sources disagree on the cap (250/300/1024
-      // KB); we honour the STRICTEST (≤250 KB), which satisfies all three at
-      // once. pxMin drives output to the commonly-cited 630×810 target.
+      // 630x810 is confirmed only in the overseas Indian-mission ICAO guidance.
+      // The 10-250 KB band is retained for backwards-compatible export behavior;
+      // no current official source was found for that band in the ordinary
+      // domestic fresh/reissue workflow. Do not label it a PSK/POPSK upload rule.
       pxMin: { width: 630, height: 810 },
-      fileSizeKb: { min: 10, max: 250 }, // strictest of the disputed caps
+      fileSizeKb: { min: 10, max: 250 },
       formats: ["jpg"],
     },
     dpiMin: 300,
     glasses: "discouraged",
     smileAllowed: "neutral preferred",
     notes:
-      "Domestic Passport Seva has long specified a 4.5cm x 3.5cm (45x35mm) " +
-      "printed photo; the widely-reported '51x51mm → 35x45mm' ICAO switch " +
-      "(effective Sep 1, 2025) applies to Indian EMBASSIES/CONSULATES abroad " +
-      "(NRI/VFS), NOT the domestic portal. CONFIRMED (official PSK 'DOs & DON'Ts " +
-      "for Photograph'): printed photo 45x35mm, PLAIN WHITE background, dark " +
-      "clothing, frontal full face, natural expression, eyes open, both ears " +
-      "visible, head centred, no glasses glare, no shadows, head coverings only " +
-      "for religious reasons. 'Photograph in computer print will NOT be accepted' " +
-      "— the pasted print must be a real photo-paper lab print. " +
-      "CONFIRMED online upload (official Passport Seva photo-upload PDF): image " +
-      "must be EXACTLY 630x810 px and under 250 KB, JPEG. " +
-      "Head coverage retargeted to the official 80-85% face (head 36-38mm). " +
-      "OCI card is a DIFFERENT spec: 51x51mm square, LIGHT (not white) " +
-      "background — handle separately. The Indian e-VISA (for foreigners) is " +
-      "also different: square 350-1000px, white — see the india-visa spec.",
+      "Ordinary adult fresh/reissue applicants in India do not upload or carry a " +
+      "passport photograph: Passport Seva captures the photograph and biometrics " +
+      "at the PSK/POPSK. A recent 45x35mm white-background print is required only " +
+      "for a child below four. Overseas Indian missions use a separate ICAO " +
+      "workflow; their current guidance specifies a 630x810px colour image, white " +
+      "background and 80-85% face coverage for capture or upload. No live official " +
+      "source was found for a 10-250 KB ordinary domestic Passport Seva upload, so " +
+      "that export band is conditional and retained only for compatibility. OCI " +
+      "and Indian e-Visa use separate square-photo specifications.",
     advisory:
-      "For the printed paper form, use a professional photo-lab print — " +
-      "home/computer printouts are not accepted. For online upload we target " +
-      "~630×810px and keep the file under the strictest reported limit (250 KB); " +
-      "please confirm the current limit on passportindia.gov.in.",
-    source: "https://www.passportindia.gov.in/",
-    // Verified 2026-06 vs official Passport Seva PDFs: 45x35mm, white bg,
-    // 630x810px / <250KB, computer-print rule, 80-85% face coverage — all match.
-    verified: "gov",
+      "Ordinary adults are photographed at the PSK/POPSK; do not upload or carry " +
+      "a photo unless your specific workflow says otherwise. The 45×35mm white " +
+      "print applies to children below four. The 630×810px export is for overseas " +
+      "ICAO guidance; the stored 10–250 KB band is unverified.",
+    source:
+      "https://www.passportindia.gov.in/AppOnlineProject/pdf/GUIDELINES%20FOR%20CAPTURING%20PHOTOGRAPHS%20FOR%20MINORS_v2.1.pdf",
+    verified: "conditional",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -985,13 +983,13 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
  *   canada   → READY for visa/PR/renewal only (gov-verified; passport print excluded)
  *   schengen → verify per-state background defaults
  *   uk       → re-check gov.uk background shade + digital caps
- *   india    → AVAILABLE with caveats: print spec confirmed; online upload
- *              caps unconfirmed, so we target the strictest reported limit
- *              (≤250KB @ ~630×810) and show an advisory (see india.advisory).
+ *   india    → CONDITIONAL: domestic adults use PSK/POPSK capture; 45x35mm is
+ *              the below-four print; 630x810 belongs to overseas ICAO guidance;
+ *              stored KB limits remain unverified (see india.advisory).
  */
 // India first — primary market (easyphoto.in). Order drives the hero chips,
-// home grid, footer and sitemap. (NOTE: India's online-upload specs are still
-// the inferred/strictest-cap values — see india.notes — re-verify when possible.)
+// home grid, footer and sitemap. Do not surface the compatibility KB band as an
+// ordinary domestic Passport Seva upload requirement.
 export const LAUNCH_ORDER = [
   "india",
   "us",

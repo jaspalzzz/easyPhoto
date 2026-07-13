@@ -3,11 +3,10 @@ import { DocPhotoLanding } from "@/components/site/DocPhotoLanding";
 import { PASSPORT_FAQ } from "@/lib/faqs";
 
 export const metadata = pageMetadata({
-  title: "Free Indian Passport Photo Maker — ICAO Compliant, No Upload",
+  title: "Free Passport Photo Maker — India, US, UK & More",
   titleAbsolute: true,
   description:
-    "Make a compliant Indian passport photo free — 35×45 mm or exactly 630×810 px JPEG under 250 KB for " +
-    "Passport Seva. Also US, UK, Canada & Australia. ICAO-compliant, 100% private, nothing uploaded.",
+    "Prepare passport photos in your browser. For India, adults are photographed at PSK/POPSK; the 35×45 mm white print is for children below four. Also supports other countries.",
   path: "/passport-photo/",
 });
 
@@ -17,7 +16,7 @@ export default function Page() {
       kind="passport"
       path="/passport-photo/"
       h1="Free Indian Passport Size Photo Maker"
-      intro="Make a compliant Indian passport photo for free — 35×45 mm for the printed form, or exactly 630×810 px JPEG under 250 KB for the Passport Seva online upload. Pick your country, drop in a photo, and we auto-crop to the exact head size, ICAO-compliant white background, and portal spec. 100% private; nothing is uploaded."
+      intro="For an ordinary adult fresh/reissue application in India, your photo and biometrics are captured at the PSK/POPSK — there is no photo upload or print to carry. Use the India preset for the 35×45 mm white-background print required for a child below four, overseas guidance when your mission requests it, or choose another country's preset. Processing stays in your browser."
       faqItems={PASSPORT_FAQ}
       dateModified="2026-06-11"
     />

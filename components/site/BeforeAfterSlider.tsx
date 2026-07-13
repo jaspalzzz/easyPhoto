@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Interactive before/after comparison slider (drag the handle to reveal).
- * Left of the handle = "before" (the selfie); right = "after" (compliant photo).
+ * Left of the handle = "before" (the selfie); right = "after" (prepared photo).
  *
  * The revealed (top) layer is clipped to a width %, and its image is sized to
  * the full container width via container-query units (100cqw) so it never
@@ -69,13 +69,13 @@ export function BeforeAfterSlider({
         onKeyDown={onKeyDown}
         role="slider"
         tabIndex={0}
-        aria-label="Drag to compare your selfie with the compliant photo"
+        aria-label="Drag to compare your selfie with the prepared photo"
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(pct)}
         className="lift-card relative aspect-[4/5] w-full cursor-ew-resize select-none overflow-hidden rounded-2xl border border-hairline [container-type:inline-size] [touch-action:none] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
       >
-        {/* AFTER (full, underneath) — compliant photo */}
+        {/* AFTER (full, underneath) — prepared photo */}
         <div className="absolute inset-0">
           <img
             src={afterSrc}

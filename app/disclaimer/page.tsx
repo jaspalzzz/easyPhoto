@@ -93,7 +93,7 @@ export default function DisclaimerPage() {
           Our tools size, compress and check photos, signatures and documents to
           help them meet published requirements. We{" "}
           <strong className="text-foreground">
-            cannot guarantee that any output will be accepted
+            cannot predict or guarantee an application authority&apos;s decision
           </strong>{" "}
           by a portal, officer or authority, and we are not liable for rejected
           applications, missed deadlines, fees, or any other loss arising from

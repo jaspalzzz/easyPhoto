@@ -28,6 +28,7 @@ import { imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
 import { padBlobToMin } from "@/lib/padBytes";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
+import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { useExamSearch } from "@/components/tools/ExamSearch";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
@@ -359,8 +360,8 @@ export function ExamPackageTool() {
                   Which exam or form are you applying for?
                 </h3>
                 <p className="mt-0.5 text-sm text-muted-foreground">
-                  Pick your exam — we&apos;ll size your photo &amp; signature to its
-                  exact official spec, then bundle them for upload.
+                  Pick your exam — we&apos;ll size your photo &amp; signature to the
+                  selected published requirements, then bundle them for upload.
                 </p>
               </div>
             </div>
@@ -582,6 +583,18 @@ export function ExamPackageTool() {
                 <Button variant="outline" size="sm" onClick={reset}>
                   <RotateCcw className="h-4 w-4" /> Prepare another exam
                 </Button>
+                <ToolLimitationsNotice
+                  summary="Checks measurable file properties such as dimensions and file size. The package builder does not assess every visual photo or signature requirement, and it cannot guarantee acceptance — verify the current application instructions on the official portal."
+                  canCheck={[
+                    "Generated photo and signature file sizes",
+                    "Output format and encoded dimensions used by this workflow",
+                  ]}
+                  cannotCheck={[
+                    "Identity, recency, expression, or signature authenticity",
+                    "Requirements not included in the selected preset",
+                    "The portal or reviewing authority’s final decision",
+                  ]}
+                />
                 <p className="flex items-start gap-2 text-xs text-muted-foreground">
                   <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
                   Everything was processed in your browser — nothing was uploaded.

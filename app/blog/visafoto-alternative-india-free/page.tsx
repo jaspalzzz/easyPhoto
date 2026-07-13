@@ -13,11 +13,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "Does easyPhoto produce photos that are accepted by Indian passport offices?",
-    a: "The tool uses the Passport Seva specification: 35×45 mm JPG, plain white background, face centred, under 1 MB. Meeting the stated spec is what determines acceptance — no tool (including Visafoto) can guarantee the physical photo print meets every counter officer's judgment. The digital upload spec is met.",
+    a: "For an ordinary adult domestic application, Passport Seva captures the photo at the PSK/POPSK; no tool output is uploaded or carried. The tool can prepare the official 35×45 mm white-background print for a child below four, but no tool can guarantee an application decision.",
   },
   {
     q: "What is the cheapest way to get a passport photo in India?",
-    a: "The cheapest digital option is free: easyPhoto, PassportSizePhoto.in, or IDPhoto4You all produce a compliant 35×45 mm JPG at no cost. For a physical printed photo, a local studio charges ₹30–₹80 for a set of six. For a digital photo for the Passport Seva portal, the free online tools are sufficient.",
+    a: "An ordinary adult domestic applicant does not need to buy or prepare a passport photo because it is captured at the PSK/POPSK. For a child below four, a browser-based tool can prepare the 35×45 mm crop before it is printed.",
   },
 ];
 
@@ -32,8 +32,8 @@ export default function Page() {
   return (
     <BlogPostLayout slug="visafoto-alternative-india-free" faqItems={FAQ_ITEMS}>
       <p>
-        Visafoto is accurate — it supports India&apos;s 35×45 mm passport spec, adds a human
-        expert review, and guarantees compliance. It also charges ₹600 per photo (confirmed June
+        Visafoto supports a 35×45 mm India preset and adds a human
+        expert review. It also charges ₹600 per photo (confirmed June
         2026) and uploads your biometric photo to a remote server for processing. For most Indian
         passport and exam photo tasks, that&apos;s more than necessary. Here are four free
         alternatives that get the spec right without the cost or the upload.
@@ -49,11 +49,11 @@ export default function Page() {
 
       <p>
         Visafoto&apos;s human expert review layer is a real differentiator. A trained reviewer
-        checks your photo against the official spec before you download it. For a Schengen or US
-        visa where a rejected photo can delay the appointment by weeks, that guarantee is worth
-        ₹600. The India{" "}
-        <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">35×45 mm spec</Link>{" "}
-        is correctly implemented. The tool is polished and the
+        checks your photo against the named authority&apos;s published requirements before you download it. For a Schengen or US
+        visa where another review is useful, that service may be worth
+        ₹600. Its India{" "}
+        <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">35×45 mm crop</Link>{" "}
+        can be used for the below-four printed-photo exception. The tool is polished and the
         output quality is high.
       </p>
 
@@ -72,7 +72,7 @@ export default function Page() {
               <th className="px-4 py-3 text-left font-semibold text-ink">Tool</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">Cost</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">On-device</th>
-              <th className="px-4 py-3 text-left font-semibold text-ink">India 35×45 mm</th>
+              <th className="px-4 py-3 text-left font-semibold text-ink">India under-four print</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">Expert review</th>
             </tr>
           </thead>
@@ -126,8 +126,9 @@ export default function Page() {
       </p>
 
       <p>
-        easyPhoto makes the Indian passport photo at the correct 35×45 mm Passport Seva spec with
-        a plain white background and automatic compliance check. It&apos;s free with no account.
+        easyPhoto prepares the 35×45 mm white-background print required for an
+        applicant below four. Ordinary adults are photographed at the PSK/POPSK,
+        so they do not submit this output. It&apos;s free with no account.
         Everything runs in your browser — the full-resolution image is never sent to a server. You
         can verify this yourself: open the browser&apos;s network tab and watch zero image uploads
         while the tool works.
@@ -145,8 +146,8 @@ export default function Page() {
 
       <p>
         PassportSizePhoto.in is built specifically for Indian document photos. It states on-device
-        processing and claims DPDPA compliance. The India 35×45 mm spec is correctly implemented.
-        For a straightforward passport photo with no server upload, it&apos;s a genuine free
+        processing and claims DPDPA compliance. It includes a 35×45 mm crop suitable
+        for the under-four print. For that crop with no server upload, it&apos;s a genuine free
         alternative.
       </p>
 
@@ -185,8 +186,9 @@ export default function Page() {
       </p>
 
       <p>
-        For a standard Indian passport renewal, an OCI application, or any exam portal photo
-        where the system simply checks dimensions and file size — the free tools work equally well.
+        For the under-four passport print or an exam portal photo with published
+        dimensions and file-size rules, a free preparation tool may be sufficient.
+        An ordinary adult renewal uses centre capture, while OCI needs its own square preset.
         See the{" "}
         <Link href="/blog/best-free-passport-photo-maker-india-2026/" className="text-brand underline">best free Indian passport photo maker guide</Link>{" "}
         for a full comparison of all free options.

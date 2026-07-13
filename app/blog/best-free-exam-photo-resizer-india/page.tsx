@@ -252,8 +252,8 @@ export default function Page() {
 
       <p>
         What it doesn&apos;t do: ExamMint is built exclusively for exam document photos. No
-        passport photos (no dedicated India 35×45 mm page — a custom preset exists but no
-        Passport Seva-specific tool), no PDF compression, no Aadhaar masking, and no format
+        passport photos (no dedicated page for India&apos;s under-four 35×45 mm print
+        or the separate overseas workflow), no PDF compression, no Aadhaar masking, and no format
         conversion. Spec pages reference the issuing body by name but link to a third-party
         syllabus site rather than the official government notification directly.
       </p>
@@ -296,8 +296,9 @@ export default function Page() {
       </p>
 
       <p>
-        Where easyPhoto covers different ground entirely: passport photos for India (35×45 mm
-        Passport Seva spec), the US, UK, Canada, Schengen, and 20+ other countries. PDF
+        Where easyPhoto covers different ground entirely: the 35×45 mm
+        under-four India passport print, separate overseas guidance, and passport
+        photos for the US, UK, Canada, Schengen, and 20+ other countries. PDF
         compression for marksheets and certificates. Aadhaar masking. Format conversion (HEIC
         to JPG, WebP to JPG). If your application process involves a passport photo for ID
         proof, exam photo and signature, and PDF uploads of documents, easyPhoto handles all
@@ -316,9 +317,9 @@ export default function Page() {
 
       <p>
         For national-level exams (SSC, IBPS, UPSC), coverage is present but narrower than
-        ExamMint. The site lists Passport as a menu item but the India 35×45 mm spec has not
-        been verified on their accessible pages — check the dimensions before using it for a
-        passport application.
+        ExamMint. The site lists Passport as a menu item, but its support for
+        India&apos;s below-four 35×45 mm print or the separate overseas workflow
+        was not verified on accessible pages.
       </p>
 
       <h2>govtphotoresizer.com — 6 exams, server-side, questionable passport spec</h2>
@@ -333,9 +334,10 @@ export default function Page() {
         Two caveats worth knowing. First, processing is server-side: photos leave the device.
         The About page claims &quot;never stored after processing,&quot; but this is not backed
         by the privacy policy (which appears to be a default template with no technical detail).
-        Second, the passport photo tool outputs 600×600 px square. This matches an older square
-        format and does not align with the Passport Seva portal&apos;s current 35×45 mm portrait
-        spec. Do not use the passport tool here for an Indian passport application.
+        Second, the passport photo tool outputs a 600×600 px square. That does not
+        match the 35×45 mm print required for an Indian passport applicant below
+        four or the 630×810 overseas ICAO guidance. Ordinary adult domestic
+        applicants do not submit either file because the PSK/POPSK captures the photo.
       </p>
 
       <p>
