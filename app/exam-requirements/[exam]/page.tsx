@@ -378,6 +378,73 @@ export default async function Page({
         )}
       </section>
 
+      {exam === "ssc" && (
+        <section className="space-y-6 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">SSC photo and signature use different upload bands</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The SSC record specifies a {photoKb(spec)} photo at {px(spec.photoWidthPx, spec.photoHeightPx)}.
+              The signature has its own {sig} band and {px(spec.sigWidthPx, spec.sigHeightPx)} dimensions.
+              Preparing the two files separately matters because one file cannot satisfy both sets of limits.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">SSC-specific application note</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              SSC uses these files across recruitments including CGL, CHSL, MTS,
+              GD Constable, Stenographer and Junior Engineer through its One-Time
+              Registration flow. Its recorded photo instructions also require the
+              candidate&apos;s name and the date of photography on the image.
+            </p>
+          </div>
+          {spec.source && (
+            <a
+              href={spec.source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
+            >
+              Check the SSC official portal <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          )}
+        </section>
+      )}
+
+      {exam === "upsc" && (
+        <section className="space-y-6 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">UPSC uses separate square upload ranges</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The verified UPSC record sets the photo at {photoKb(spec)} and starts
+              its square pixel range at {px(spec.photoWidthPx, spec.photoHeightPx)}.
+              The signature is also {sig}, with its recorded square range starting
+              at {px(spec.sigWidthPx, spec.sigHeightPx)}. Both are JPG uploads, and
+              the photo uses a plain white background with the candidate&apos;s name
+              and date at the bottom.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Upload limits are not the paper-scan guide</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              UPSC&apos;s recorded paste-on-paper guidance describes a 5 × 6 cm photo
+              and a 6 × 3 cm signature scanned at 200 DPI. Those measurements are
+              scanning guidance; the online portal values shown above are the
+              actual KB and pixel constraints for the uploaded files.
+            </p>
+          </div>
+          {spec.source && (
+            <a
+              href={spec.source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
+            >
+              Check the UPSC online application source <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          )}
+        </section>
+      )}
+
       {/* Common rejection reasons — unique, useful, links the requirement to the fix */}
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Why {spec.name.split(" (")[0]} uploads get rejected</h2>
