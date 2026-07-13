@@ -140,11 +140,10 @@ export function BlogPostLayout({
         <aside className="mt-12 rounded-xl border border-hairline bg-accent/5 p-5 text-sm leading-relaxed text-ink-soft">
           <p className="font-semibold text-ink">How we keep this accurate</p>
           <p className="mt-2">
-            Every photo and signature specification on easyPhoto is checked
-            against the official government source — passport offices, exam boards
-            and embassies — and dated, then re-verified when a portal changes its
-            rules. Every tool runs entirely in your browser; your documents are
-            never uploaded.
+            Specification pages show the named source and verification status.
+            Entries confirmed against an official source are dated; entries still
+            awaiting confirmation are marked for review. Every tool runs entirely
+            in your browser; your documents are never uploaded.
           </p>
           <p className="mt-2">
             Spotted something out of date?{" "}

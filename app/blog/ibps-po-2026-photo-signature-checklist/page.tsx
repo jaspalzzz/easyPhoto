@@ -13,7 +13,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can I use a PNG or HEIC file for the IBPS portal?",
-    a: "No. The IBPS portal accepts JPG/JPEG only. A PNG or HEIC file (the default format on iPhones) will be rejected at upload. The IBPS PO resizer on easyPhoto automatically outputs JPG, so no separate conversion is needed.",
+    a: "No. The recorded IBPS requirement lists JPG/JPEG. A PNG or HEIC file (the default format on iPhones) is outside that listed format and may fail the upload check. The IBPS PO resizer on easyPhoto outputs JPG, so no separate conversion is needed.",
   },
   {
     q: "What happens if my photo is under 20 KB?",

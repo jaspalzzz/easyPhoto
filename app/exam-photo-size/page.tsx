@@ -13,7 +13,7 @@ import { breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 
 export const metadata = pageMetadata({
-  title: "Exam Photo & Signature Size 2026 — Full List for Indian Exams (Official)",
+  title: "Exam Photo & Signature Size 2026 — Full List for Indian Exams",
   titleAbsolute: true,
   description:
     "The complete, official photo and signature size list for 30+ Indian exam and recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA, RBI, NABARD, LIC and State PSCs. Compare KB limits and pixel dimensions in one table, each with its source.",
@@ -54,8 +54,8 @@ const FAQS: FaqItem[] = [
     a: "Pick your exam below to open its page, then use the in-browser resizer to hit the exact KB and dimensions. It runs entirely on your device — nothing is uploaded — and it's free with no watermark.",
   },
   {
-    q: "Are these sizes official?",
-    a: "Yes. Each exam's page links to the official government source the numbers were confirmed against, with the date. Specs can change between notification cycles, so confirm on the official portal before you submit.",
+    q: "How are these sizes sourced?",
+    a: "Each exam page shows the named source where available and its verification status. Some presets are marked needs-review. Requirements can change between notification cycles, so confirm on the current portal before submitting.",
   },
 ];
 
@@ -85,7 +85,7 @@ export default function Page() {
           Exam Photo &amp; Signature Size — Full List
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          The official photo and signature size for 30+ Indian exam and
+          Recorded photo and signature sizes for 30+ Indian exam and
           recruitment forms, in one place — file-size (KB) limits and pixel
           dimensions side by side. Find your exam, then resize free in your
           browser. Each exam links to its full spec with the official source.

@@ -37,7 +37,7 @@ const VALUES = [
     tile: "text-brand bg-brand/10",
     title: "Specifications you can inspect",
     body:
-      "Each specification links to its published source. We identify whether it comes from an official government portal or from secondary guidance, then use the recorded dimensions and limits when preparing your file.",
+      "Specification pages link to a published source where available. We identify whether a source is an official portal or secondary guidance, flag entries that need review, and use the recorded dimensions and limits when preparing your file.",
   },
   {
     icon: Lock,

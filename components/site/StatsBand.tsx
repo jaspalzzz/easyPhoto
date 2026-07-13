@@ -4,7 +4,7 @@ import * as React from "react";
 import { Globe, FileCheck2, Wrench, Landmark } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { LAUNCH_ORDER } from "@/lib/countrySpecs";
-import { PORTAL_KEYS } from "@/lib/portalPresets";
+import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
 import { READY_TOOLS } from "@/lib/toolsCatalog";
 
 /**
@@ -25,7 +25,15 @@ const STATS: Stat[] = [
   { Icon: Globe,      num: LAUNCH_ORDER.length, suffix: "+", label: "Countries supported", sub: "Passport & visa specs"           },
   { Icon: FileCheck2, num: PORTAL_KEYS.length,  suffix: "+", label: "Exam & form specs",   sub: "SSC, UPSC, Railway & more"       },
   { Icon: Wrench,     num: READY_TOOLS.length,  suffix: "+", label: "Free tools",          sub: "Photo, PDF & signature"          },
-  { Icon: Landmark,   num: 100,                 suffix: "%", label: "Source documented",   sub: "Published source linked for every spec" },
+  {
+    Icon: Landmark,
+    num: Object.values(PORTAL_PRESETS).filter(
+      (spec) => spec.verification === "official" && Boolean(spec.verifiedOn),
+    ).length,
+    suffix: "",
+    label: "Source-verified specs",
+    sub: "Official source and date recorded",
+  },
 ];
 
 const NAVY = { background: "hsl(222 60% 8%)" } as const;

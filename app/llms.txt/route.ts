@@ -32,9 +32,9 @@ export function GET() {
   );
   lines.push("");
   lines.push(
-    "All photo and signature specifications below are confirmed against each " +
-      "portal's official government source and dated; a wrong size means a " +
-      "rejected application, so accuracy is the priority."
+    "Photo and signature specifications below show the named source where " +
+      "available and their verification status. Users should confirm the current " +
+      "portal instructions before submitting."
   );
   lines.push("");
 

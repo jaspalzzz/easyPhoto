@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Authentic trust signals. Every claim is verifiable from how the app actually
- * works (client-side processing, gov-source links, free, no watermark). No
+ * works (client-side processing, source links, free, no watermark). No
  * fabricated stats or testimonials.
  */
 const SIGNALS = [
@@ -15,8 +15,8 @@ const SIGNALS = [
   },
   {
     icon: Landmark,
-    title: "Built on official requirements",
-    body: "Sizes and rules come from each country's government source, linked on every page.",
+    title: "Published requirement sources",
+    body: "Specification pages link the named source where available and show when an entry needs review.",
     tile: "bg-[hsl(174_72%_30%/0.14)] text-[hsl(174_72%_28%)]",
   },
   {

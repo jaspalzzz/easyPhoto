@@ -388,11 +388,10 @@ export default function ToolsHubPage() {
           <div>
             <h3 className="text-sm font-semibold text-ink mb-1">How are the KB and pixel targets set?</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Every file-size and dimension limit comes directly from the official recruitment
-              portal or government notification. For exam tools, targets are read from the latest
-              official instructions — SSC, UPSC, IBPS, SBI, RRB, and NDA portals each publish
-              photo and signature size rules in their candidate handbooks, and easyPhoto checks
-              these each time a new exam cycle begins.
+              File-size and dimension targets come from the source recorded for each preset.
+              Specification pages identify entries verified against an official recruitment
+              portal or notification, show the recorded review date, and flag presets that still
+              need source review. Confirm the current application instructions before submitting.
             </p>
           </div>
         </div>

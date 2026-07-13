@@ -63,9 +63,9 @@ export default function Page() {
           Exam Photo &amp; Signature Size Requirements
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          The exact photo and signature size, dimensions and format each Indian exam
-          and recruitment portal requires — with a link to the official source on every
-          page. Match these to avoid form rejection, then resize free in your browser.
+          Recorded photo and signature sizes, dimensions and formats for Indian exam
+          and recruitment portals. Each specification page shows its named source and
+          verification status. Confirm the current portal instructions before submitting.
         </p>
         <p className="text-sm">
           <Link href="/exam-photo-size/" className="font-medium text-brand hover:underline">

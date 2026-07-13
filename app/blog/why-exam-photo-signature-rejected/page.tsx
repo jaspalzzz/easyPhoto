@@ -310,7 +310,7 @@ export default function Page() {
       </ul>
       <p>
         Everything runs entirely in your browser — your photo and signature are
-        never uploaded to a server. Find your exact requirement in the{" "}
+        never uploaded to a server. Find the recorded requirement in the{" "}
         <Link href="/exam-requirements/">exam requirements directory</Link>, each
         linked to the official notification so you can confirm before you submit.
       </p>

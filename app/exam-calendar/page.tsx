@@ -39,7 +39,7 @@ const FAQS: FaqItem[] = [
   },
   {
     q: "What should I prepare before the form opens?",
-    a: "The photo and signature in the exact size the portal demands — that's the step that rejects most applications. Each entry links to the official photo & signature spec with a free resizer, so you can have compliant files ready the day applications open.",
+    a: "Prepare the photo and signature using the dimensions and file-size limits listed for the selected portal. Each entry links to its recorded photo and signature specification and source status. Confirm the current notification when the application window opens.",
   },
 ];
 

@@ -10,7 +10,7 @@ const post = getPost("exam-photo-signature-size-guide")!;
 const FAQ_ITEMS = [
   {
     q: "Can I use the same photo for SSC, IBPS and SBI in the same cycle?",
-    a: "Usually yes for KB, but not always for pixels. IBPS and SBI both use 200×230 px, so a photo sized for one passes the other. SSC CGL typically uses 275×354 px, which is a different dimension. You may need to resize in pixels (not just KB) when switching between SSC and banking portals. A photo that passes all KB checks will still be rejected if the pixel dimensions don't match.",
+    a: "The recorded KB ranges may overlap, but pixel requirements can differ. IBPS and SBI are listed at 200×230 px, while SSC CGL is listed at 275×354 px. Prepare a separate export for each selected portal and confirm its current instructions; matching a KB range alone does not confirm that the dimensions are suitable.",
   },
   {
     q: "Why do exam portals set a minimum file size as well as a maximum?",
@@ -18,15 +18,15 @@ const FAQ_ITEMS = [
   },
   {
     q: "My signature scan looks grey or cream — will it be rejected?",
-    a: "Yes. Grey or cream background is the most common reason signatures fail. Most portals expect bright white. Use the signature resizer: it removes the paper background and whitens any grey or cream tone automatically. Photograph the signature near a window (not under yellow indoor lighting) to minimise the grey cast before processing.",
+    a: "A grey or cream background may not match a portal's listed white-background requirement. Use the signature resizer to remove the paper background and whiten a grey or cream tone. Photograph the signature near a window (not under yellow indoor lighting) to minimise the grey cast before processing.",
   },
   {
     q: "UPSC asks for a square photo but my camera takes portrait shots. What should I do?",
-    a: "UPSC requires a minimum 350×350 px square, not a 35×45 mm portrait. Crop your photo to a 1:1 square with your head centred and face filling most of the frame, then resize to meet the KB requirement. The UPSC photo resizer applies the square crop and KB target in one step. Submitting a portrait photo to a UPSC portal — even one with the correct KB — will be rejected.",
+    a: "The recorded UPSC requirement lists a minimum 350×350 px square, not a 35×45 mm portrait. Crop your photo to a 1:1 square with your head centred and face filling most of the frame, then resize to meet the KB requirement. The UPSC photo resizer applies the square crop and KB target in one step. A portrait photo does not match the listed square format and may fail the portal's upload check.",
   },
   {
     q: "What format should I use — JPG or PNG?",
-    a: "JPG for almost every Indian exam portal: SSC, IBPS, SBI, UPSC and RRB all require JPG. NTA (NEET and JEE) is the exception — it accepts both JPG and PNG. If your phone saves photos as HEIC or WebP (common on newer iPhones and Android), convert to JPG before uploading. WebP and HEIC are rejected by all major Indian exam portals.",
+    a: "The recorded SSC, IBPS, SBI, UPSC and RRB specifications list JPG. The recorded NTA specification lists JPG or PNG. If your phone saves HEIC or WebP, convert the image to a format named in the current portal instructions before uploading.",
   },
   {
     q: "Do specs change between exam cycles?",
@@ -50,7 +50,7 @@ export default function Page() {
         a signature. Almost every candidate gets at least one of them wrong on the
         first try: wrong KB, wrong pixel dimensions, grey background on the
         signature, or a portrait photo where the portal expects a square. This
-        guide covers the exact specs for every major exam, how the KB band works,
+        guide covers the recorded specs for many major exams, how the KB band works,
         how to prepare your signature correctly, and what to fix when the portal
         bounces your upload.
       </p>

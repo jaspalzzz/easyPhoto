@@ -8,7 +8,7 @@ const BEFORE_ISSUES = [
 
 const AUTOMATED_CHECKS = [
   "BG Removed",
-  "Exact Size",
+  "Selected Size",
   "Face Aligned",
   "Checked for measurable requirements",
 ];

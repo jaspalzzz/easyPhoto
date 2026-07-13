@@ -46,15 +46,15 @@ export function ExamSpecTable({
   // Answer-first prose summary, built from the SAME fields as the register
   // below so the two can never disagree. AI answer engines (ChatGPT, Perplexity,
   // Google AI Overviews) flatten or drop the <dl> register when extracting text;
-  // this sentence hands them a clean, citable answer with the exact numbers —
+  // this sentence hands them a clean, citable answer with the recorded numbers —
   // worded the way people ask ("what is the SSC photo size?").
   const photoSentence =
-    `The ${label} photo must be a JPG/JPEG file of ${kbRange(spec.photoMinKb, spec.photoLimitKb)}` +
+    `The registry lists the ${label} photo as a JPG/JPEG file of ${kbRange(spec.photoMinKb, spec.photoLimitKb)}` +
     (photoDim ? ` at ${photoDim}` : "") +
     (spec.dpi ? ` (${spec.dpi} DPI)` : "") +
     ".";
   const sigSentence = hasSig
-    ? ` The signature must be a JPG/JPEG file of ${kbRange(spec.sigMinKb, spec.sigLimitKb!)}` +
+    ? ` It lists the signature as a JPG/JPEG file of ${kbRange(spec.sigMinKb, spec.sigLimitKb!)}` +
       (sigDim ? ` at ${sigDim}` : "") +
       "."
     : "";
@@ -66,7 +66,7 @@ export function ExamSpecTable({
           {label} photo {hasSig && <>&amp; signature </>}specification
         </h2>
         <span className="eyebrow hidden text-[#7a5c06] sm:block">
-          Exact requirement
+          Recorded requirement
         </span>
       </div>
 
