@@ -17,6 +17,7 @@ export const dynamic = "force-static";
 // NOT new Date(), so lastmod reflects actual freshness instead of churning on
 // every build/deploy (which Google distrusts). Blog posts use their own date.
 const LAST_UPDATED = "2026-06-25";
+const TRUST_PAGES_UPDATED = "2026-07-13";
 
 // Helper: add the page's OG image as an image sitemap entry.
 // Next.js 15 renders <image:image>/<image:loc> for each entry in `images`.
@@ -61,6 +62,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...CONVERT_SLUGS.map((slug) => convertPath(slug)),
   ];
 
+  const trustRoutes: string[] = [
+    "/editorial-policy/",
+    "/corrections-policy/",
+    "/source-methodology/",
+    "/authors/jaspal-kumar/",
+    "/how-photo-checking-works/",
+  ];
+
   // ── Routes WITH dedicated opengraph-image.tsx ─────────────────────────────
   const ogRoutes: string[] = [
     "/passport-photo/",
@@ -76,6 +85,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...simpleRoutes.map((path) => ({
       url: `${SITE_URL}${path}`,
       lastModified: LAST_UPDATED,
+    })),
+
+    // ── Indexable trust and methodology pages ───────────────────────────────
+    ...trustRoutes.map((path) => ({
+      url: `${SITE_URL}${path}`,
+      lastModified: TRUST_PAGES_UPDATED,
     })),
 
     // ── Landing pages with OG images ─────────────────────────────────────────
