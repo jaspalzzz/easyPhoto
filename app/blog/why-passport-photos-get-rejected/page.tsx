@@ -212,8 +212,8 @@ export default function Page() {
         Online portals cap the file size. Indian exam and government forms often
         want 20–50 KB, and other portals have their own limits. A phone photo is
         far too big for any of them. Compress the finished photo with{" "}
-        <Link href="/photo-resize-to-20kb/">resize to 20 KB</Link> or{" "}
-        <Link href="/photo-resize-to-50kb/">50 KB</Link> to fit.
+        <Link href="/tools/resize-kb/?target=20">resize to 20 KB</Link> or{" "}
+        <Link href="/tools/resize-kb/?target=50">50 KB</Link> to fit.
       </p>
 
       <h2>Old photo or wrong document type</h2>

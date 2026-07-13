@@ -161,7 +161,7 @@ export default function Page() {
         <li>
           <strong>Degree or diploma certificate</strong> — usually one page;
           80–120&nbsp;KB is achievable. If the portal cap is 100&nbsp;KB, use{" "}
-          <Link href="/compress-pdf-to-100kb/">compress PDF to 100&nbsp;KB</Link>.
+          <Link href="/tools/pdf-compress/?target=100">compress PDF to 100&nbsp;KB</Link>.
         </li>
         <li>
           <strong>Caste, category, income or domicile certificate</strong> — these
@@ -174,7 +174,7 @@ export default function Page() {
       </ul>
       <p>
         For portals with a 50&nbsp;KB hard cap (SSC and UPSC annexures), use{" "}
-        <Link href="/compress-pdf-to-50kb/">compress PDF to 50&nbsp;KB</Link>. For
+        <Link href="/tools/pdf-compress/?target=50">compress PDF to 50&nbsp;KB</Link>. For
         the broader category of portals that allow 100&nbsp;KB,{" "}
         <Link href="/tools/pdf-compress/">the custom PDF compress tool</Link> lets
         you enter any target. The full compression guide at{" "}

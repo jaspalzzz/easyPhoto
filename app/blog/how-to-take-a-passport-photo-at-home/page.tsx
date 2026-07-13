@@ -155,7 +155,7 @@ export default function Page() {
         country, and it crops your head to the exact required size and applies the
         correct background colour. If your country&apos;s portal caps the file
         size, run the result through{" "}
-        <Link href="/photo-resize-to-50kb/">resize to 50&nbsp;KB</Link>.
+        <Link href="/tools/resize-kb/?target=50">resize to 50&nbsp;KB</Link>.
       </p>
 
       <h2>5. Print or upload</h2>

@@ -123,7 +123,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
           Need the exact dimensions and white background too? Use the{" "}
           <Link href="/passport-photo/" className="text-brand hover:underline">passport photo maker</Link>{" "}
           first, then compress here. Pair it with a{" "}
-          <Link href="/signature-resize-to-20kb/" className="text-brand hover:underline">resized signature</Link>{" "}
+          <Link href="/tools/signature-resize/?target=20" className="text-brand hover:underline">resized signature</Link>{" "}
           for exam forms. Always check the exact limit on your form, then set it above.
         </p>
       </section>

@@ -1,29 +1,25 @@
 /**
- * Dedicated "resize to N KB" landing pages — high-intent (esp. India forms).
- * Keyword-rich, root-level slugs: /photo-resize-to-20kb/.
+ * Supported target values for the consolidated KB tools. Historical root-level
+ * landing pages redirect to these parent-tool query URLs.
  */
 export const KB_TARGETS = [10, 20, 30, 50, 100, 200] as const;
 
 export type KbTarget = (typeof KB_TARGETS)[number];
 
-export const kbSlug = (kb: number) => `photo-resize-to-${kb}kb`;
-export const kbPath = (kb: number) => `/${kbSlug(kb)}/`;
+export const kbPath = (kb: number) => `/tools/resize-kb/?target=${kb}`;
 
 export const SIGNATURE_KB_TARGETS = [10, 20, 50, 100] as const;
 export type SignatureKbTarget = (typeof SIGNATURE_KB_TARGETS)[number];
-export const sigKbSlug = (kb: number) => `signature-resize-to-${kb}kb`;
-export const sigKbPath = (kb: number) => `/${sigKbSlug(kb)}/`;
+export const sigKbPath = (kb: number) => `/tools/signature-resize/?target=${kb}`;
 
-/** Dedicated "compress PDF to N KB" landing pages — marksheets, certificates, forms. */
+/** Supported target values for the consolidated PDF compressor. */
 export const PDF_KB_TARGETS = [50, 100, 200, 500] as const;
 export type PdfKbTarget = (typeof PDF_KB_TARGETS)[number];
-export const pdfKbSlug = (kb: number) => `compress-pdf-to-${kb}kb`;
-export const pdfKbPath = (kb: number) => `/${pdfKbSlug(kb)}/`;
+export const pdfKbPath = (kb: number) => `/tools/pdf-compress/?target=${kb}`;
 
 /**
- * Per-target editorial content so each "resize to N KB" page is genuinely
- * distinct (different real use cases, tip and FAQ), not a template with the
- * number swapped. Drives KbResizeLanding / PdfKbLanding and the signature pages.
+ * Legacy target-specific guidance retained for the shared landing components.
+ * These components are not routes after the exact-KB page consolidation.
  */
 export interface KbUseCase {
   /** Section heading for "where this size applies" — unique per target. */
