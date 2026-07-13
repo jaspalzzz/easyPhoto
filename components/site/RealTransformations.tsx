@@ -26,7 +26,7 @@ export function RealTransformations() {
             <div key={i} className="ep-card overflow-hidden p-4">
               <div className="flex items-center gap-4">
                 <div className="relative flex-1 overflow-hidden rounded-lg" style={{ aspectRatio: "1" }}>
-                  <span className="absolute left-2 top-2 z-10 rounded-md bg-[rgba(255,23,68,0.9)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                  <span className="absolute left-2 top-2 z-10 rounded-md bg-[rgba(255,23,68,0.9)] px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-white">
                     Before
                   </span>
                   <img
@@ -41,7 +41,7 @@ export function RealTransformations() {
                 </div>
 
                 <div className="relative flex-1 overflow-hidden rounded-lg" style={{ aspectRatio: "1" }}>
-                  <span className="absolute left-2 top-2 z-10 rounded-md bg-[rgba(0,200,83,0.9)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                  <span className="absolute left-2 top-2 z-10 rounded-md bg-[rgba(0,200,83,0.9)] px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-white">
                     After
                   </span>
                   <img

@@ -122,7 +122,7 @@ export function Footer() {
               </span>
               <span className="min-w-0">
                 <p className="text-[12.5px] font-bold leading-tight text-white">{label}</p>
-                <p className="mt-0.5 text-[11px] leading-snug text-white/70">{sub}</p>
+                <p className="mt-0.5 text-xs leading-snug text-white/70">{sub}</p>
               </span>
             </div>
           ))}
@@ -138,7 +138,7 @@ export function Footer() {
               <span className={cn("h-4 w-[3px] shrink-0 rounded-full", group.barCls)} />
               <group.Icon className={cn("h-4 w-4 shrink-0", group.iconCls)} strokeWidth={1.75} />
               <h3 className="eyebrow text-white">{group.label}</h3>
-              <span className="text-[11px] font-medium text-white/70">{group.links.length}</span>
+              <span className="text-xs font-medium text-white/70">{group.links.length}</span>
               <Link
                 href={group.viewAllHref}
                 className="ml-auto inline-flex shrink-0 items-center gap-1 text-[11.5px] font-semibold text-white/70 transition-colors hover:text-[hsl(var(--cta))]"

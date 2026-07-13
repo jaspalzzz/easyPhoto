@@ -82,7 +82,7 @@ export default function Page() {
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <div className="grid grid-cols-2">
           <div className="relative border-r border-hairline">
-            <span className="absolute left-2 top-2 z-10 rounded bg-red-500/90 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+            <span className="absolute left-2 top-2 z-10 rounded bg-red-500/90 px-1.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">
               Before
             </span>
             <Image
@@ -94,7 +94,7 @@ export default function Page() {
             />
           </div>
           <div className="relative">
-            <span className="absolute left-2 top-2 z-10 rounded bg-green-600/90 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+            <span className="absolute left-2 top-2 z-10 rounded bg-green-600/90 px-1.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">
               After
             </span>
             <Image

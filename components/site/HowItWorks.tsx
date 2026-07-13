@@ -25,7 +25,7 @@ export function HowItWorks() {
   return (
     <section className="border-t border-hairline bg-paper">
       <div className="container py-14 sm:py-16">
-        <p className="mb-2 text-center text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+        <p className="mb-2 text-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
           How it works
         </p>
         <h2 className="mb-12 text-center text-[1.75rem] font-semibold tracking-tight text-ink">

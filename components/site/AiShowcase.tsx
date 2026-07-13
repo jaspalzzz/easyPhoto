@@ -99,7 +99,7 @@ export function AiShowcase() {
 
         {/* ── heading ── */}
         <div className="mb-10 text-center">
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+          <p className="mb-3 text-xs font-bold uppercase tracking-widest text-muted-foreground">
             AI Photo Correction
           </p>
           <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
@@ -132,7 +132,7 @@ export function AiShowcase() {
                 </span>
                 <h3 className="text-[15px] font-bold text-ink">Your Selfie</h3>
               </div>
-              <span className="rounded-full bg-red-50 dark:bg-red-900/20 px-3 py-1 text-[10px] font-bold text-red-700 dark:text-red-300">
+              <span className="rounded-full bg-red-50 dark:bg-red-900/20 px-3 py-1 text-xs font-bold text-red-700 dark:text-red-300">
                 Needs Improvement
               </span>
             </div>
@@ -171,7 +171,7 @@ export function AiShowcase() {
               {BEFORE_ISSUES.map(({ n, title, desc }) => (
                 <li key={n} className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-[10px] font-bold text-red-700 dark:text-red-300">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-xs font-bold text-red-700 dark:text-red-300">
                       {n}
                     </span>
                     <span className="text-[12.5px] font-bold text-red-700 dark:text-red-300">{title}</span>
@@ -193,18 +193,18 @@ export function AiShowcase() {
             {/* card header */}
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="rounded-md bg-amber-500 px-2 py-0.5 text-[11px] font-black text-white">
+                <span className="rounded-md bg-amber-500 px-2 py-0.5 text-xs font-black text-white">
                   AI
                 </span>
                 <h3 className="text-[15px] font-bold text-ink">AI Compliance Engine</h3>
               </div>
-              <span className="rounded-full border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 text-[10px] font-bold text-amber-700 dark:text-amber-300">
+              <span className="rounded-full border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-300">
                 Analyzing…
               </span>
             </div>
 
             {/* Circular gauge + checks (side by side) */}
-            <div className="mb-4 flex items-center gap-4">
+            <div className="mb-4 flex flex-col items-center gap-4 min-[360px]:flex-row">
 
               {/* Circular SVG gauge */}
               <div className="relative shrink-0" style={{ width: 128, height: 128 }}>
@@ -223,10 +223,10 @@ export function AiShowcase() {
                 {/* Centered text overlay */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-[1.5rem] font-black leading-none text-emerald-700 dark:text-emerald-300">7/7</span>
-                  <span className="mt-0.5 text-center text-[8px] font-semibold leading-tight text-muted-foreground">
+                  <span className="mt-0.5 text-center text-xs font-semibold leading-tight text-muted-foreground">
                     Checks<br />Passed
                   </span>
-                  <span className="mt-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
+                  <span className="mt-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
                     All Pass
                   </span>
                 </div>
@@ -235,8 +235,8 @@ export function AiShowcase() {
               {/* Checks table */}
               <div className="min-w-0 flex-1">
                 <div className="mb-1.5 flex justify-between border-b border-hairline pb-1">
-                  <span className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Check</span>
-                  <span className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Status</span>
+                  <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Check</span>
+                  <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Status</span>
                 </div>
                 <ul className="flex flex-col gap-[5px]">
                   {AI_CHECKS.map(({ label, tileBg, tileText, Icon }) => (
@@ -245,10 +245,10 @@ export function AiShowcase() {
                         <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${tileBg}`}>
                           <Icon className={`h-2.5 w-2.5 ${tileText}`} strokeWidth={2.5} />
                         </span>
-                        <span className="text-[11px] font-semibold text-ink">{label}</span>
+                        <span className="text-xs font-semibold text-ink">{label}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">Pass</span>
+                        <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300">Pass</span>
                         <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 text-[7px] font-bold text-white">
                           ✓
                         </span>
@@ -264,7 +264,7 @@ export function AiShowcase() {
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" strokeWidth={2} />
               <div>
                 <p className="text-[12px] font-bold text-ink">All Measurable Checks Pass</p>
-                <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+                <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
                   Measured against the published specs for passport, visa, ID &amp; more.
                 </p>
               </div>
@@ -292,7 +292,7 @@ export function AiShowcase() {
                   <div className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-[8px] font-bold text-white">
                     ✓
                   </div>
-                  <span className="mt-1 whitespace-nowrap text-[9px] font-bold text-ink">
+                  <span className="mt-1 whitespace-nowrap text-xs font-bold text-ink">
                     {label}
                   </span>
                 </div>
@@ -319,7 +319,7 @@ export function AiShowcase() {
                 </span>
                 <h3 className="text-[15px] font-bold text-ink">Spec-checked Photo</h3>
               </div>
-              <span className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+              <span className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-300">
                 No Detectable Issues
               </span>
             </div>
@@ -355,7 +355,7 @@ export function AiShowcase() {
                   style={{ bottom: 8, right: 36 }}
                 >
                   <div className="flex-1 border-t-2 border-dashed border-emerald-400" />
-                  <span className="shrink-0 text-[9px] font-bold text-emerald-700 dark:text-emerald-300">35 mm</span>
+                  <span className="shrink-0 text-xs font-bold text-emerald-700 dark:text-emerald-300">35 mm</span>
                   <div className="flex-1 border-t-2 border-dashed border-emerald-400" />
                 </div>
 
@@ -366,7 +366,7 @@ export function AiShowcase() {
                 >
                   <div className="flex-1 border-r-2 border-dashed border-emerald-400" />
                   <span
-                    className="shrink-0 text-[9px] font-bold text-emerald-700 dark:text-emerald-300"
+                    className="shrink-0 text-xs font-bold text-emerald-700 dark:text-emerald-300"
                     style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
                   >
                     45 mm
@@ -382,7 +382,7 @@ export function AiShowcase() {
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700 dark:text-emerald-300" strokeWidth={2} />
               <div>
                 <p className="text-[12px] font-bold text-ink">Checked Against Published Requirements</p>
-                <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+                <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
                   Prepared for the published requirements of passport, visa, OCI and ID documents.
                 </p>
               </div>
@@ -396,7 +396,7 @@ export function AiShowcase() {
                   className="flex flex-col items-center justify-center gap-1 rounded-lg border border-hairline bg-paper py-2"
                 >
                   <Icon className={`h-3.5 w-3.5 ${cls}`} strokeWidth={2} />
-                  <span className="text-[10px] font-semibold text-ink">{label}</span>
+                  <span className="text-xs font-semibold text-ink">{label}</span>
                 </div>
               ))}
             </div>
@@ -420,7 +420,7 @@ export function AiShowcase() {
                 <div>
                   <div className="mb-0.5 flex items-center gap-1.5">
                     <span
-                      className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full text-[10px] font-bold"
+                      className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full text-xs font-bold"
                       style={GOLD_BADGE}
                     >
                       {n}

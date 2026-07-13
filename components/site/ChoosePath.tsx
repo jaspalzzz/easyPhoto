@@ -127,14 +127,14 @@ function PathCard({ path }: { path: Path }) {
           <Icon className={`h-[22px] w-[22px] ${iconText}`} strokeWidth={1.75} />
         </div>
         {featured && (
-          <span className="inline-flex items-center gap-1 rounded-full border border-cta bg-cta px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cta-foreground">
+          <span className="inline-flex items-center gap-1 rounded-full border border-cta bg-cta px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-cta-foreground">
             <ScrollText className="h-3 w-3" strokeWidth={2} />
             Start here
           </span>
         )}
       </div>
 
-      <p className="mb-1 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+      <p className="mb-1 text-xs font-bold uppercase tracking-widest text-muted-foreground">
         {eyebrow}
       </p>
       <h3 className="mb-2 text-[17px] font-bold leading-tight text-ink">{title}</h3>

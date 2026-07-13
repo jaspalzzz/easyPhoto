@@ -46,7 +46,7 @@ export function ComplianceEngine() {
                   className="animate-scan-beam pointer-events-none absolute left-0 h-[2px] w-full"
                   style={{ background: "#00c853", boxShadow: "0 0 8px #00c853", zIndex: 5 }}
                 />
-                <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#00c853] text-[11px] font-bold text-white">
+                <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#00c853] text-xs font-bold text-white">
                   ✓
                 </div>
               </div>
@@ -59,7 +59,7 @@ export function ComplianceEngine() {
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
               {CHECKS.map((item) => (
                 <div key={item} className="flex items-center gap-2 text-[13px] text-ink">
-                  <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[rgba(0,200,83,0.12)] text-[9px] font-black text-[#00c853]">
+                  <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[rgba(0,200,83,0.12)] text-xs font-black text-[#00c853]">
                     ✓
                   </span>
                   {item}
@@ -70,7 +70,7 @@ export function ComplianceEngine() {
 
           {/* Right — check results */}
           <div className="ep-card flex flex-col items-center justify-center p-6 text-center">
-            <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
               Checks Passed
             </p>
             <div className="mb-3 text-[56px] font-black leading-none text-[#00c853]"

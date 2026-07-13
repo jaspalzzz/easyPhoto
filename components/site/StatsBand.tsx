@@ -106,7 +106,7 @@ export function StatsBand() {
                 {displayValues[i]}
               </span>
               <span aria-hidden="true" className="mt-0.5 block text-[11.5px] font-bold leading-tight text-ink">{label}</span>
-              <span aria-hidden="true" className="block text-[10px] leading-snug text-muted-foreground">{sub}</span>
+              <span aria-hidden="true" className="block text-xs leading-snug text-muted-foreground">{sub}</span>
             </div>
           </div>
         ))}

@@ -99,7 +99,7 @@ export default function HomePage() {
               <div className="mt-6 max-w-md">
                 <ToolSearch />
                 <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                  <span className="text-[11px] font-semibold text-muted-foreground">
+                  <span className="text-xs font-semibold text-muted-foreground">
                     Popular:
                   </span>
                   {POPULAR_CHIPS.map((c) => (

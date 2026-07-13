@@ -79,7 +79,7 @@ export function WhyRejected() {
 
         {/* ── heading ── */}
         <div className="mb-10 text-center">
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+          <p className="mb-3 text-xs font-bold uppercase tracking-widest text-muted-foreground">
             Common Mistakes
           </p>
           <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
@@ -207,14 +207,14 @@ export function WhyRejected() {
                 <div>
                   <p className="text-[2.2rem] font-black leading-none tracking-tight text-ink">6/6</p>
                   <p className="text-[12.5px] font-bold text-ink">Checks Passed</p>
-                  <p className="text-[11px] text-muted-foreground">No detectable issues found</p>
+                  <p className="text-xs text-muted-foreground">No detectable issues found</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-x-3 gap-y-2">
                 {RESULTS.map(({ attr, val }) => (
                   <div key={attr} className="flex items-center justify-between gap-1">
                     <div className="flex items-center gap-1">
-                      <span className="text-[10px] font-black text-cta-text">✓</span>
+                      <span className="text-xs font-black text-cta-text">✓</span>
                       <span className="text-[11.5px] text-muted-foreground">{attr}</span>
                     </div>
                     <span className="text-[11.5px] font-bold text-brand">{val}</span>
@@ -234,7 +234,7 @@ export function WhyRejected() {
                 <Icon className="h-5 w-5 shrink-0 text-cta-text" strokeWidth={1.75} />
                 <div>
                   <p className="text-[12.5px] font-bold text-ink">{title}</p>
-                  <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{sub}</p>
+                  <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{sub}</p>
                 </div>
               </div>
             ))}
@@ -247,7 +247,7 @@ export function WhyRejected() {
             >
               Try it free <ArrowRight className="h-4 w-4" />
             </Link>
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               No signup&nbsp;•&nbsp;No uploads&nbsp;•&nbsp;100% Free
             </p>
           </div>

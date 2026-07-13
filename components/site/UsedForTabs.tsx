@@ -16,7 +16,7 @@ export function UsedForTabs() {
     <section className="border-t border-hairline bg-paper py-3">
       <div className="container">
         <div className="flex items-center gap-4 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
-          <span className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+          <span className="shrink-0 text-xs font-bold uppercase tracking-widest text-muted-foreground">
             Used For
           </span>
           <div className="flex gap-2">
