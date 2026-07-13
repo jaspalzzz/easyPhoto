@@ -227,14 +227,14 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                   placeholder="Search any tool..."
                   className="flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
                 />
-                <span className="shrink-0 rounded border border-hairline bg-paper px-1.5 py-0.5 text-[10px] font-semibold leading-tight text-muted-foreground">
+                <span className="shrink-0 rounded border border-hairline bg-paper px-1.5 py-0.5 text-xs font-semibold leading-tight text-muted-foreground">
                   ⌘K
                 </span>
               </div>
 
               {/* Trending */}
               <div className="flex min-w-0 flex-1 items-center gap-2.5 overflow-hidden">
-                <span className="flex shrink-0 items-center gap-1.5 text-[11px] font-bold text-muted-foreground">
+                <span className="flex shrink-0 items-center gap-1.5 text-xs font-bold text-muted-foreground">
                   <Flame className="h-3.5 w-3.5 text-orange-500" strokeWidth={2} />
                   Trending this week
                 </span>
@@ -245,7 +245,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                       href={t.href}
                       onClick={close}
                       role="menuitem"
-                      className="shrink-0 rounded-full border border-hairline bg-surface px-2.5 py-1 text-[11px] font-medium text-ink transition-colors hover:bg-accent"
+                      className="shrink-0 rounded-full border border-hairline bg-surface px-2.5 py-1 text-xs font-medium text-ink transition-colors hover:bg-accent"
                     >
                       {t.title}
                     </Link>
@@ -275,12 +275,12 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <p className="text-[12.5px] font-bold leading-tight text-ink">{title}</p>
                       {badge && (
-                        <span className="rounded-full bg-amber-100 dark:bg-amber-900/30 px-1.5 py-[1px] text-[9px] font-bold uppercase tracking-wide text-amber-700 dark:text-amber-400">
+                        <span className="rounded-full bg-amber-100 dark:bg-amber-900/30 px-1.5 py-[1px] text-xs font-bold uppercase tracking-wide text-amber-700 dark:text-amber-400">
                           {badge}
                         </span>
                       )}
                     </div>
-                    <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{desc}</p>
+                    <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{desc}</p>
                   </div>
                   <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                 </Link>
@@ -341,7 +341,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                     href={col.viewAllHref}
                     onClick={close}
                     role="menuitem"
-                    className={cn("mt-3 flex items-center gap-1 text-[11px] font-bold hover:underline", col.tileText)}
+                    className={cn("mt-3 flex items-center gap-1 text-xs font-bold hover:underline", col.tileText)}
                   >
                     {col.viewAllLabel}
                     <ArrowRight className="h-3.5 w-3.5" />
@@ -363,7 +363,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                     </span>
                     <span>
                       <p className="text-[11.5px] font-bold text-ink">{label}</p>
-                      <p className="hidden text-[10px] leading-tight text-muted-foreground xl:block">{sub}</p>
+                      <p className="hidden text-xs leading-tight text-muted-foreground xl:block">{sub}</p>
                     </span>
                   </span>
                 ))}

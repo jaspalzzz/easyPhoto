@@ -88,7 +88,7 @@ export default function HomePage() {
               </span>
               <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
                 Document photos{" "}
-                <span className="mark-gold"><span className="text-gradient-brand">prepared to spec</span></span>
+                <span className="mark-gold"><span>prepared to spec</span></span>
               </h1>
               <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
                 100% free tools. No uploads. No data stored.
@@ -99,7 +99,7 @@ export default function HomePage() {
               <div className="mt-6 max-w-md">
                 <ToolSearch />
                 <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                  <span className="text-[11px] font-semibold text-muted-foreground">
+                  <span className="text-xs font-semibold text-muted-foreground">
                     Popular:
                   </span>
                   {POPULAR_CHIPS.map((c) => (

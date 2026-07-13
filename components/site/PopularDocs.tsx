@@ -177,7 +177,7 @@ export function PopularDocs() {
                     className="group flex items-center gap-3 rounded-xl border border-hairline bg-card p-3.5 transition-colors hover:border-hairline-strong hover:bg-surface"
                   >
                     <span
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[10px] font-black leading-none text-cta"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-black leading-none text-cta"
                       style={{ background: "hsl(222 60% 8%)" }}
                     >
                       {exam.label.slice(0, 2).toUpperCase()}

@@ -97,12 +97,12 @@ export function BeforeAfter() {
           {/* BEFORE */}
           <div className="relative w-full overflow-hidden rounded-2xl border-2 border-red-100 bg-white shadow-sm sm:flex-1 sm:rounded-r-none">
             <div className="absolute left-3 top-3 z-10">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[hsl(222_60%_8%)] px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[hsl(222_60%_8%)] px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
                 ✕ Before
               </span>
             </div>
             <div className="absolute right-3 top-3 z-10">
-              <span className="rounded bg-black/50 px-2 py-0.5 font-mono text-[10px] text-white">
+              <span className="rounded bg-black/50 px-2 py-0.5 font-mono text-xs text-white">
                 1050 × 1450 px
               </span>
             </div>
@@ -115,7 +115,7 @@ export function BeforeAfter() {
           <div className="flex shrink-0 items-center justify-center sm:relative sm:z-10 sm:-mx-5 sm:py-6">
             <div className="flex h-16 w-16 flex-col items-center justify-center rounded-full bg-[hsl(222_60%_8%)] shadow-xl ring-4 ring-white sm:h-[68px] sm:w-[68px]">
               <span className="text-[1.2rem] font-black leading-none tracking-tighter text-[hsl(var(--cta))]">AI</span>
-              <span className="mt-0.5 text-[7px] font-semibold uppercase tracking-widest text-[hsl(var(--cta))]/70">
+              <span className="mt-0.5 text-xs font-semibold uppercase tracking-widest text-[hsl(var(--cta))]/70">
                 auto
               </span>
             </div>
@@ -124,12 +124,12 @@ export function BeforeAfter() {
           {/* AFTER */}
           <div className="relative w-full overflow-hidden rounded-2xl border-2 border-green-100 bg-white shadow-sm sm:flex-1 sm:rounded-l-none">
             <div className="absolute left-3 top-3 z-10">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[hsl(var(--cta))] px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-[hsl(var(--cta-foreground))]">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[hsl(var(--cta))] px-3 py-1 text-xs font-bold uppercase tracking-wide text-[hsl(var(--cta-foreground))]">
                 ✓ After
               </span>
             </div>
             <div className="absolute right-3 top-3 z-10">
-              <span className="rounded bg-green-600/80 px-2 py-0.5 font-mono text-[10px] text-white">
+              <span className="rounded bg-green-600/80 px-2 py-0.5 font-mono text-xs text-white">
                 35 × 45 mm
               </span>
             </div>
@@ -139,7 +139,7 @@ export function BeforeAfter() {
             {/* Gold dimension markers */}
             <div className="flex items-center gap-1 px-1 pt-1">
               <div className="flex-1 border-t-2 border-dashed border-[#C9921A]" />
-              <span className="shrink-0 text-[9px] font-semibold text-[#C9921A]">35 mm</span>
+              <span className="shrink-0 text-xs font-semibold text-[#C9921A]">35 mm</span>
               <div className="flex-1 border-t-2 border-dashed border-[#C9921A]" />
             </div>
           </div>
@@ -149,13 +149,13 @@ export function BeforeAfter() {
         <div className="mt-5 overflow-hidden rounded-2xl border border-hairline bg-[hsl(222_60%_8%)]">
           <div className="grid grid-cols-1 divide-y divide-white/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
             <div className="p-5">
-              <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-white/40">
+              <p className="mb-3 text-xs font-bold uppercase tracking-widest text-white/40">
                 Without easyPhoto
               </p>
               <ul className="space-y-2.5">
                 {BEFORE_PROBLEMS.map((p) => (
                   <li key={p} className="flex items-center gap-2.5 text-[13px] text-red-300">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500/20 text-[10px] font-bold text-red-400">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500/20 text-xs font-bold text-red-400">
                       ✕
                     </span>
                     {p}
@@ -164,13 +164,13 @@ export function BeforeAfter() {
               </ul>
             </div>
             <div className="p-5">
-              <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-white/40">
+              <p className="mb-3 text-xs font-bold uppercase tracking-widest text-white/40">
                 With easyPhoto
               </p>
               <ul className="space-y-2.5">
                 {AFTER_SOLUTIONS.map((s) => (
                   <li key={s} className="flex items-center gap-2.5 text-[13px] text-green-300">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500/20 text-[10px] font-bold text-green-400">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500/20 text-xs font-bold text-green-400">
                       ✓
                     </span>
                     {s}

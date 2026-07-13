@@ -47,7 +47,7 @@ export function DarkTrustStrip() {
             style={BADGE}
           >
             <Lock className="h-3.5 w-3.5 text-cta" strokeWidth={2} />
-            <span className="text-[11px] font-bold uppercase tracking-widest text-cta">
+            <span className="text-xs font-bold uppercase tracking-widest text-cta">
               Privacy is the product
             </span>
           </span>

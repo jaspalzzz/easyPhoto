@@ -41,7 +41,7 @@ export function WorkflowNextSteps({ getBlob, filename, steps }: Props) {
 
   return (
     <div className="mt-5 border-t border-hairline pt-5">
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-ink-soft">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
         Continue editing
       </p>
       <div className={`grid gap-2 ${steps.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
@@ -63,7 +63,7 @@ export function WorkflowNextSteps({ getBlob, filename, steps }: Props) {
                 <p className="text-[13px] font-semibold leading-snug text-ink">
                   {step.label}
                 </p>
-                <p className="mt-0.5 text-[11px] leading-snug text-ink-soft">
+                <p className="mt-0.5 text-xs leading-snug text-ink-soft">
                   {step.hint}
                 </p>
               </div>

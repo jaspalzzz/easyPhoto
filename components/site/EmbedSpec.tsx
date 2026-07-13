@@ -52,7 +52,7 @@ export function EmbedSpec({
         keeps it coming.
       </p>
       <div className="mt-3 flex items-stretch gap-2">
-        <code className="flex-1 overflow-x-auto whitespace-pre rounded-md border border-hairline bg-ink/[0.03] px-3 py-2 font-mono text-[11px] leading-relaxed text-ink-soft">
+        <code className="flex-1 overflow-x-auto whitespace-pre rounded-md border border-hairline bg-ink/[0.03] px-3 py-2 font-mono text-xs leading-relaxed text-ink-soft">
           {code}
         </code>
         <button

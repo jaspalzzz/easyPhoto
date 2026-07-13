@@ -178,8 +178,8 @@
      The signature "stamp" accent for headlines. */
   .mark-gold {
     background: linear-gradient(
-      transparent 58%,
-      hsl(var(--cta)) 58%,
+      transparent 78%,
+      hsl(var(--cta)) 78%,
       hsl(var(--cta)) 90%,
       transparent 90%
     );

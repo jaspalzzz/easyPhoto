@@ -114,7 +114,7 @@ function BottomCard({ card }: { card: Card }) {
         {includes.map((item) => (
           <span
             key={item}
-            className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${chipBg} ${chipText}`}
+            className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${chipBg} ${chipText}`}
           >
             {item}
           </span>
@@ -138,7 +138,7 @@ export function FeaturedTools() {
         {/* heading */}
         <div className="mb-8 flex items-end justify-between gap-4">
           <div>
-            <p className="mb-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+            <p className="mb-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
               Popular Workflows
             </p>
             <h2 className="text-[1.7rem] font-bold tracking-tight text-ink sm:text-[2rem]">
@@ -172,7 +172,7 @@ export function FeaturedTools() {
 
             {/* Pill + icon in same row */}
             <div className="relative mb-5 flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-cta bg-cta px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-cta-foreground">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-cta bg-cta px-3 py-1 text-xs font-bold uppercase tracking-widest text-cta-foreground">
                 ✦ Most popular
               </span>
               <div
@@ -193,7 +193,7 @@ export function FeaturedTools() {
               {PASSPORT.includes.map((item) => (
                 <span
                   key={item}
-                  className="rounded-full border border-white/12 px-3 py-1 text-[11px] font-semibold text-white/60"
+                  className="rounded-full border border-white/12 px-3 py-1 text-xs font-semibold text-white/60"
                 >
                   {item}
                 </span>

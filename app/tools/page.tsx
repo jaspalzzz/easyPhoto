@@ -71,7 +71,7 @@ export default function ToolsHubPage() {
             </span>
             <div className="min-w-0 text-left">
               <p className="text-[12px] font-bold leading-tight text-ink">{title}</p>
-              <p className="mt-0.5 truncate text-[10px] leading-snug text-muted-foreground">{sub}</p>
+              <p className="mt-0.5 truncate text-xs leading-snug text-muted-foreground">{sub}</p>
             </div>
           </Link>
         ))}
@@ -272,7 +272,7 @@ export default function ToolsHubPage() {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-ink">{tool.title}</span>
-                      <span className="rounded-md border border-hairline px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                      <span className="rounded-md border border-hairline px-2 py-0.5 text-xs font-medium text-muted-foreground">
                         Coming soon
                       </span>
                     </div>

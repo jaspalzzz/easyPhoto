@@ -112,7 +112,7 @@ function StudioValue({ v }: { v: RowSide }) {
     <div className="text-right">
       <p className="text-[13px] font-bold leading-tight text-red-700 dark:text-red-300">{v.primary}</p>
       {v.secondary && (
-        <p className="mt-0.5 text-[11px] leading-tight text-red-400 dark:text-red-300">{v.secondary}</p>
+        <p className="mt-0.5 text-xs leading-tight text-red-400 dark:text-red-300">{v.secondary}</p>
       )}
     </div>
   );
@@ -121,7 +121,7 @@ function StudioValue({ v }: { v: RowSide }) {
 function EasyValue({ v }: { v: RowSide }) {
   if (v.kind === "check") {
     return (
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-[11px] font-bold text-white shadow-sm">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white shadow-sm">
         ✓
       </span>
     );
@@ -134,7 +134,7 @@ function EasyValue({ v }: { v: RowSide }) {
     <div className="text-right">
       <p className={`text-[13px] font-bold leading-tight ${cls}`}>{v.primary}</p>
       {v.secondary && (
-        <p className="mt-0.5 text-[11px] leading-tight text-muted-foreground">{v.secondary}</p>
+        <p className="mt-0.5 text-xs leading-tight text-muted-foreground">{v.secondary}</p>
       )}
     </div>
   );
@@ -149,7 +149,7 @@ export function ComparisonTable() {
 
         {/* ── heading ── */}
         <div className="mb-10 text-center">
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-cta">
+          <p className="mb-3 text-xs font-bold uppercase tracking-widest text-cta">
             ✦ Comparison ✦
           </p>
           <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
@@ -175,7 +175,7 @@ export function ComparisonTable() {
               </span>
               <div>
                 <h3 className="text-[17px] font-bold text-ink">Photo Studio</h3>
-                <span className="mt-0.5 inline-block rounded-full bg-red-100 dark:bg-red-900/30 px-2.5 py-0.5 text-[11px] font-bold text-red-700 dark:text-red-300">
+                <span className="mt-0.5 inline-block rounded-full bg-red-100 dark:bg-red-900/30 px-2.5 py-0.5 text-xs font-bold text-red-700 dark:text-red-300">
                   Traditional Way
                 </span>
               </div>
@@ -190,7 +190,7 @@ export function ComparisonTable() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[12.5px] font-semibold leading-tight text-ink">{label}</p>
-                    <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{studio.sub}</p>
+                    <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{studio.sub}</p>
                   </div>
                   <div className="shrink-0">
                     <StudioValue v={studio} />
@@ -250,7 +250,7 @@ export function ComparisonTable() {
               </span>
               <div>
                 <h3 className="text-[17px] font-bold text-ink">easyPhoto</h3>
-                <span className="mt-0.5 inline-block rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
+                <span className="mt-0.5 inline-block rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
                   Smarter Way
                 </span>
               </div>
@@ -265,7 +265,7 @@ export function ComparisonTable() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[12.5px] font-semibold leading-tight text-ink">{label}</p>
-                    <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{easy.sub}</p>
+                    <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{easy.sub}</p>
                   </div>
                   <div className="shrink-0">
                     <EasyValue v={easy} />
@@ -305,7 +305,7 @@ export function ComparisonTable() {
               Try easyPhoto for Free
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               No signup.&nbsp; No payment.&nbsp; Just spec-checked photos.
             </p>
           </div>

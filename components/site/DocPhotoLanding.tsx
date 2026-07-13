@@ -158,7 +158,7 @@ export function DocPhotoLanding({
               <Flag country={c.flag} className="h-11 w-[68px] rounded-md ring-1 ring-hairline" />
               <div>
                 <p className="text-[14px] font-bold leading-tight text-ink">{c.label}</p>
-                <p className="mt-1 text-[11px] font-medium text-muted-foreground">
+                <p className="mt-1 text-xs font-medium text-muted-foreground">
                   {c.mm.width}×{c.mm.height} mm
                 </p>
               </div>
@@ -183,7 +183,7 @@ export function DocPhotoLanding({
             >
               <Flag country={c.flag} className="h-3 w-[1.05rem] rounded-[2px]" />
               {c.label}
-              <span className="text-[10px] text-muted-foreground">
+              <span className="text-xs text-muted-foreground">
                 {c.mm.width}×{c.mm.height}
               </span>
             </Link>

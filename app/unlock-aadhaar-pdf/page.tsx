@@ -102,7 +102,7 @@ export default function Page() {
         <ol className="space-y-2 text-sm leading-relaxed text-muted-foreground">
           {STEPS.map((s, i) => (
             <li key={i} className="flex items-start gap-2.5">
-              <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-hairline-strong text-[11px] font-semibold text-ink-soft">
+              <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-hairline-strong text-xs font-semibold text-ink-soft">
                 {i + 1}
               </span>
               {s}

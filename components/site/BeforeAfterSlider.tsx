@@ -101,10 +101,10 @@ export function BeforeAfterSlider({
         </div>
 
         {/* Badges — anchored to the frame (never clipped by the wipe) */}
-        <span className="pointer-events-none absolute left-3 top-3 z-[6] whitespace-nowrap rounded-full bg-red-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
+        <span className="pointer-events-none absolute left-3 top-3 z-[6] whitespace-nowrap rounded-full bg-red-500 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white shadow-sm">
           ✕ {beforeLabel}
         </span>
-        <span className="pointer-events-none absolute right-3 top-3 z-[6] whitespace-nowrap rounded-full bg-emerald-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
+        <span className="pointer-events-none absolute right-3 top-3 z-[6] whitespace-nowrap rounded-full bg-emerald-500 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white shadow-sm">
           ✓ {afterLabel}
         </span>
 
