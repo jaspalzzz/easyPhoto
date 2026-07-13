@@ -129,7 +129,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   },
   "passport-seva": {
     id: "passport-seva",
-    name: "Passport Seva overseas format (conditional)",
+    name: "Passport Seva overseas ICAO",
     photoLimitKb: 250,
     photoMinKb: 10,
     sigLimitKb: 100,
