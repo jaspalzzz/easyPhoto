@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
 import {
   effectivePrintMm,
   type CountrySpec,
@@ -26,6 +25,7 @@ import { pageMetadata } from "@/lib/seo";
 import { kbPath } from "@/lib/kbTargets";
 import { Faq } from "@/components/site/Faq";
 import { countryFaqItems } from "@/lib/faqs";
+import { CountrySpecificationProvenance } from "@/components/site/SpecificationProvenance";
 
 // Static export: one page per maker slug (passport + visa).
 export function generateStaticParams() {
@@ -257,20 +257,7 @@ export default async function MakerPage({
           <p className="text-sm leading-relaxed text-muted-foreground">
             {GOOD_TO_KNOW[spec.id] ?? spec.notes}
           </p>
-          <a
-            href={spec.source}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-          >
-            Official source <ExternalLink className="h-3.5 w-3.5" />
-          </a>
-          <p className="text-xs text-muted-foreground">
-            Verification status:{" "}
-            {spec.verified === "gov"
-              ? "Confirmed against the official government source."
-              : "Sourced from reputable guides, so re-check the official portal before submitting."}
-          </p>
+          <CountrySpecificationProvenance spec={spec} />
         </div>
       </section>
 

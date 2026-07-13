@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { ExternalLink, ArrowRight, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, softwareApplicationSchema, faqSchema } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { StickyCtaBar } from "@/components/site/StickyCtaBar";
+import { CountrySpecificationProvenance } from "@/components/site/SpecificationProvenance";
 
 const spec = COUNTRY_SPECS["uk"]!;
 
@@ -129,18 +130,7 @@ export default function Page() {
             </div>
           ))}
         </dl>
-        <p className="text-xs text-ink-faint">
-          Source:{" "}
-          <a
-            href={spec.source}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-brand underline inline-flex items-center gap-0.5"
-          >
-            gov.uk/photos-for-passports <ExternalLink className="h-3 w-3" />
-          </a>{" "}
-          — verified June 2026.
-        </p>
+        <CountrySpecificationProvenance spec={spec} />
       </section>
 
       {/* Sections */}

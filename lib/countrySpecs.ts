@@ -23,6 +23,9 @@
 
 export type Verified = "gov" | "aggregator";
 
+/** Date attached to country records marked `gov` in this registry review. */
+export const COUNTRY_SPECS_VERIFIED_ON = "2026-06-04";
+
 export interface Dimensions {
   width: number;
   height: number;

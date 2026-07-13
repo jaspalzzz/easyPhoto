@@ -172,6 +172,11 @@ export function Footer() {
           <nav className="flex flex-wrap items-center gap-4">
             <Link href="/blog/" className="transition-colors hover:text-[hsl(var(--cta))]">Blog</Link>
             <Link href="/about/" className="transition-colors hover:text-[hsl(var(--cta))]">About</Link>
+            <Link href="/authors/jaspal-kumar/" className="transition-colors hover:text-[hsl(var(--cta))]">Author</Link>
+            <Link href="/editorial-policy/" className="transition-colors hover:text-[hsl(var(--cta))]">Editorial policy</Link>
+            <Link href="/corrections-policy/" className="transition-colors hover:text-[hsl(var(--cta))]">Corrections</Link>
+            <Link href="/source-methodology/" className="transition-colors hover:text-[hsl(var(--cta))]">Sources</Link>
+            <Link href="/how-photo-checking-works/" className="transition-colors hover:text-[hsl(var(--cta))]">How checking works</Link>
             <Link href="/contact/" className="transition-colors hover:text-[hsl(var(--cta))]">Contact</Link>
             <Link href="/privacy/" className="transition-colors hover:text-[hsl(var(--cta))]">Privacy</Link>
             <Link href="/terms/" className="transition-colors hover:text-[hsl(var(--cta))]">Terms</Link>

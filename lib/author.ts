@@ -5,24 +5,23 @@
  */
 export const AUTHOR = {
   name: "Jaspal Kumar",
-  /** Credential-forward title (the Expertise signal). Keeps his real profession
-      (developer) AND the topical expertise the content is about (verifying photo
-      /signature specs against official sources) — both true per the bio. */
-  title: "easyPhoto developer & document-spec researcher",
-  /** Leads with hands-on experience; ties to the product he builds. */
+  /** A bounded description of Jaspal's role, not an authority credential. */
+  title: "easyPhoto developer",
   bio:
     "Jaspal Kumar builds and maintains easyPhoto. With over 10 years of hands-on " +
-    "experience in web and mobile development, he focuses on privacy-first, " +
-    "in-browser tools for passport, visa and exam photos — and on verifying every " +
-    "photo and signature spec against the official government sources.",
-  /** Topics for Person.knowsAbout — entity clarity for search + AI. */
+    "experience in web and mobile development, he focuses on privacy-first " +
+    "in-browser image tools and maintains source-linked specification records " +
+    "for easyPhoto.",
   knowsAbout: [
-    "Passport and visa photo requirements",
-    "Document and image processing",
     "Web and mobile development",
+    "In-browser image processing",
+    "Source-linked document photo specifications",
   ],
-  /** Public profile — byline link and Person.sameAs. */
-  url: "https://www.linkedin.com/in/jaspal-jk/",
+  /** On-site identity is the byline and Person-schema URL. */
+  url: "/authors/jaspal-kumar/",
+  /** External identity remains the Person.sameAs reference. */
+  linkedIn: "https://www.linkedin.com/in/jaspal-jk/",
+  sameAs: ["https://www.linkedin.com/in/jaspal-jk/"],
   /** Headshot in public/authors/. Avatar falls back to "JK" initials if absent. */
   photo: "/authors/jaspal-kumar.jpeg",
-};
+} as const;

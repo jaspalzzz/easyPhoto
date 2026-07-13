@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, ShieldCheck, AlertTriangle } from "lucide-react";
+import { ExternalLink, AlertTriangle } from "lucide-react";
 import { PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
 import {
   getPortalSpec,
@@ -12,7 +12,7 @@ import {
 } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { SUB_EXAM_RESIZERS, RESIZER_YEAR } from "@/lib/subExamResizers";
-import { pageMetadata } from "@/lib/seo";
+import { absoluteUrl, pageMetadata } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, faqSchema, webPageSchema } from "@/lib/schema";
@@ -21,6 +21,7 @@ import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { AUTHOR } from "@/lib/author";
 import { PortalResizer } from "@/components/tools/PortalResizer";
 import { AffiliateCta } from "@/components/site/AffiliateCta";
+import { SpecificationProvenance } from "@/components/site/SpecificationProvenance";
 
 // One static page per exam (the cited Spec Database).
 export function generateStaticParams() {
@@ -172,7 +173,7 @@ export default async function Page({
             description: spec.description,
             url: path,
             ...(prov.verifiedOn ? { dateModified: prov.verifiedOn } : {}),
-            author: { name: AUTHOR.name, url: AUTHOR.url },
+            author: { name: AUTHOR.name, url: absoluteUrl(AUTHOR.url) },
           }),
           faqSchema(faqItems),
         ]}
@@ -200,32 +201,22 @@ export default async function Page({
           <AuthorAvatar src={AUTHOR.photo} name={AUTHOR.name} className="h-6 w-6" />
           <p className="text-xs text-ink-soft">
             Reviewed by{" "}
-            <a
+            <Link
               href={AUTHOR.url}
-              target="_blank"
-              rel="noopener noreferrer"
               className="font-medium text-ink hover:text-brand hover:underline"
             >
               {AUTHOR.name}
-            </a>
+            </Link>
             , {AUTHOR.title}
           </p>
         </div>
         {/* Provenance / trust signal */}
-        <p className="flex flex-wrap items-center gap-1.5 text-xs text-ink-soft">
-          <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
-          <span>{prov.label}.</span>
-          {prov.url && (
-            <a
-              href={prov.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-0.5 font-medium text-brand hover:underline"
-            >
-              Official source <ExternalLink className="h-3 w-3" />
-            </a>
-          )}
-        </p>
+        <SpecificationProvenance
+          verified={prov.verified}
+          verifiedOn={prov.verifiedOn}
+          sourceUrl={prov.url}
+          sourceLabel={prov.sourceLabel}
+        />
       </header>
 
       {/* The spec table — the authoritative, citable data */}

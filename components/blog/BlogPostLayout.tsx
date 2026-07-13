@@ -60,8 +60,8 @@ export function BlogPostLayout({
               author: {
                 "@type": "Person",
                 name: AUTHOR.name,
-                url: AUTHOR.url,
-                sameAs: [AUTHOR.url],
+                url: absoluteUrl(AUTHOR.url),
+                sameAs: AUTHOR.sameAs,
                 ...(AUTHOR.photo ? { image: absoluteUrl(AUTHOR.photo) } : {}),
                 jobTitle: AUTHOR.title,
                 knowsAbout: AUTHOR.knowsAbout,
@@ -94,14 +94,12 @@ export function BlogPostLayout({
           <div className="flex items-center gap-3 pt-1">
             <AuthorAvatar src={AUTHOR.photo} name={AUTHOR.name} className="h-10 w-10" />
             <div className="text-sm leading-tight">
-              <a
+              <Link
                 href={AUTHOR.url}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="font-semibold text-ink hover:text-brand hover:underline"
               >
                 {AUTHOR.name}
-              </a>
+              </Link>
               <p className="text-xs text-muted-foreground">{AUTHOR.title}</p>
             </div>
           </div>
@@ -125,14 +123,12 @@ export function BlogPostLayout({
           <AuthorAvatar src={AUTHOR.photo} name={AUTHOR.name} className="h-12 w-12" />
           <div className="text-sm leading-relaxed">
             <p className="eyebrow mb-1 text-ink-soft">About the author</p>
-            <a
+            <Link
               href={AUTHOR.url}
-              target="_blank"
-              rel="noopener noreferrer"
               className="font-semibold text-ink hover:text-brand hover:underline"
             >
               {AUTHOR.name}
-            </a>
+            </Link>
             <span className="text-muted-foreground"> · {AUTHOR.title}</span>
             <p className="mt-1.5 text-ink-soft">{AUTHOR.bio}</p>
           </div>

@@ -8,6 +8,7 @@
 
 import { SITE_URL, SITE_NAME } from "./site";
 import { absoluteUrl } from "./seo";
+import { AUTHOR } from "./author";
 
 export const ORG_ID = `${SITE_URL}/#organization`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
@@ -52,10 +53,10 @@ export function organizationSchema() {
     // Named founder strengthens entity disambiguation for AI knowledge graphs.
     founder: {
       "@type": "Person",
-      name: "Jaspal Kumar",
-      url: "https://www.linkedin.com/in/jaspal-jk/",
-      sameAs: ["https://www.linkedin.com/in/jaspal-jk/"],
-      jobTitle: "easyPhoto developer & document-spec researcher",
+      name: AUTHOR.name,
+      url: absoluteUrl(AUTHOR.url),
+      sameAs: AUTHOR.sameAs,
+      jobTitle: AUTHOR.title,
     },
   };
 }
