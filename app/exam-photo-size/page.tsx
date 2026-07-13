@@ -143,7 +143,7 @@ export default function Page() {
           <Link href="/tools/exam-package/" className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50">
             Exam Application Kit
           </Link>
-          <Link href="/photo-resize-to-50kb/" className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50">
+          <Link href="/tools/resize-kb/?target=50" className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50">
             Resize photo to KB
           </Link>
         </div>

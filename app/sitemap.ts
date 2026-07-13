@@ -2,11 +2,6 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { MAKER_PAGES } from "@/lib/makerPages";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
-import {
-  KB_TARGETS, kbPath,
-  PDF_KB_TARGETS, pdfKbPath,
-  SIGNATURE_KB_TARGETS, sigKbPath,
-} from "@/lib/kbTargets";
 import { BLOG_POSTS } from "@/lib/blog";
 import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
 import { CONVERT_SLUGS, convertPath } from "@/lib/convertPairs";
@@ -40,7 +35,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const simpleRoutes: string[] = [
     "/",
     "/tools/",
-    ...SIGNATURE_KB_TARGETS.map((kb) => sigKbPath(kb)),
     "/us-passport-photo/",
     "/uk-passport-photo/",
     "/canada-passport-photo/",
@@ -55,8 +49,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/exam-photo-size/",
     "/exam-calendar/",
     "/aadhaar-photo/",
-    ...KB_TARGETS.map((kb) => kbPath(kb)),
-    ...PDF_KB_TARGETS.map((kb) => pdfKbPath(kb)),
     // Hinglish pages are noindex (thin duplicates) — intentionally not in sitemap.
     "/convert/",
     ...CONVERT_SLUGS.map((slug) => convertPath(slug)),

@@ -118,11 +118,11 @@ export default function Page() {
       </p>
       <ul>
         <li>
-          <Link href="/compress-pdf-to-100kb/">Compress to 100&nbsp;KB</Link> or{" "}
-          <Link href="/compress-pdf-to-200kb/">200&nbsp;KB</Link> for most portals.
+          <Link href="/tools/pdf-compress/?target=100">Compress to 100&nbsp;KB</Link> or{" "}
+          <Link href="/tools/pdf-compress/?target=200">200&nbsp;KB</Link> for most portals.
         </li>
         <li>
-          <Link href="/compress-pdf-to-50kb/">Compress to 50&nbsp;KB</Link> for the
+          <Link href="/tools/pdf-compress/?target=50">Compress to 50&nbsp;KB</Link> for the
           tightest exam-portal limits (UPSC annexures, IBPS supporting docs).
         </li>
         <li>

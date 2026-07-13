@@ -116,19 +116,19 @@ export default function Page() {
       </p>
       <ul>
         <li>
-          <Link href="/compress-pdf-to-50kb/">Compress PDF to 50&nbsp;KB</Link> — the
+          <Link href="/tools/pdf-compress/?target=50">Compress PDF to 50&nbsp;KB</Link> — the
           tightest common exam-portal limit (UPSC, IBPS annexures).
         </li>
         <li>
-          <Link href="/compress-pdf-to-100kb/">Compress PDF to 100&nbsp;KB</Link> — the
+          <Link href="/tools/pdf-compress/?target=100">Compress PDF to 100&nbsp;KB</Link> — the
           most common limit for Aadhaar, marksheets and certificates.
         </li>
         <li>
-          <Link href="/compress-pdf-to-200kb/">Compress PDF to 200&nbsp;KB</Link> — for
+          <Link href="/tools/pdf-compress/?target=200">Compress PDF to 200&nbsp;KB</Link> — for
           portals that allow a bit more headroom.
         </li>
         <li>
-          <Link href="/compress-pdf-to-500kb/">Compress PDF to 500&nbsp;KB</Link> — for
+          <Link href="/tools/pdf-compress/?target=500">Compress PDF to 500&nbsp;KB</Link> — for
           visa and bank documents with higher caps.
         </li>
         <li>

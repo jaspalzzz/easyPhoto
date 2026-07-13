@@ -3,6 +3,23 @@
 
 /india/ /india-passport-photo-maker/ 301
 
+# Retired exact-KB landing pages → their consolidated parent tools. Preserve the
+# requested target so the parent can preselect it when query handling is enabled.
+/photo-resize-to-10kb/ /tools/resize-kb/?target=10 301
+/photo-resize-to-20kb/ /tools/resize-kb/?target=20 301
+/photo-resize-to-30kb/ /tools/resize-kb/?target=30 301
+/photo-resize-to-50kb/ /tools/resize-kb/?target=50 301
+/photo-resize-to-100kb/ /tools/resize-kb/?target=100 301
+/photo-resize-to-200kb/ /tools/resize-kb/?target=200 301
+/signature-resize-to-10kb/ /tools/signature-resize/?target=10 301
+/signature-resize-to-20kb/ /tools/signature-resize/?target=20 301
+/signature-resize-to-50kb/ /tools/signature-resize/?target=50 301
+/signature-resize-to-100kb/ /tools/signature-resize/?target=100 301
+/compress-pdf-to-50kb/ /tools/pdf-compress/?target=50 301
+/compress-pdf-to-100kb/ /tools/pdf-compress/?target=100 301
+/compress-pdf-to-200kb/ /tools/pdf-compress/?target=200 301
+/compress-pdf-to-500kb/ /tools/pdf-compress/?target=500 301
+
 # Legacy dedicated resizer URLs → the indexed canonical spec page per portal.
 #
 # These 301 into /exam-requirements/{exam}/ — NOT /tools/form-resizer/{exam}/.

@@ -468,7 +468,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Clean the background.</strong> Upload to the{" "}
-          <Link href="/signature-resize-to-20kb/">signature resizer</Link>, which
+          <Link href="/tools/signature-resize/?target=20">signature resizer</Link>, which
           removes the paper background, whitens any grey or cream tone, and outputs
           within the target KB band. For portals that want a transparent background,
           use the PNG output option.
@@ -601,14 +601,14 @@ export default function Page() {
       <ul>
         <li>
           <strong>Photo to exact KB:</strong>{" "}
-          <Link href="/photo-resize-to-50kb/">resize to 50&nbsp;KB</Link> for the
+          <Link href="/tools/resize-kb/?target=50">resize to 50&nbsp;KB</Link> for the
           standard ceiling, or{" "}
           <Link href="/tools/resize-kb/">set a custom KB target</Link> for exams
           with a different cap.
         </li>
         <li>
           <strong>Signature:</strong> the{" "}
-          <Link href="/signature-resize-to-20kb/">resize signature to 20&nbsp;KB</Link>{" "}
+          <Link href="/tools/signature-resize/?target=20">resize signature to 20&nbsp;KB</Link>{" "}
           tool removes the paper background, crops tightly, and outputs within the
           required band.
         </li>

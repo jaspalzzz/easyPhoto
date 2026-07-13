@@ -193,7 +193,7 @@ export default function Page() {
       <p>
         If the portal caps the file size, compress the finished photo to an exact
         target — for example{" "}
-        <Link href="/photo-resize-to-50kb/">resize to 50&nbsp;KB</Link> — or pick a{" "}
+        <Link href="/tools/resize-kb/?target=50">resize to 50&nbsp;KB</Link> — or pick a{" "}
         <Link href="/tools/resize-kb/">custom KB size</Link>. As always, your image
         stays on your device.
       </p>

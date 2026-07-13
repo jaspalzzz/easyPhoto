@@ -378,14 +378,14 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
         <div className="flex flex-wrap gap-1.5 pt-1">
           <Link
             id="promo-compress-20kb"
-            href="/photo-resize-to-20kb/"
+            href="/tools/resize-kb/?target=20"
             className="inline-flex min-h-10 items-center rounded-md px-3 py-2 bg-card border border-hairline hover:bg-accent/50 font-medium text-xs text-foreground transition-colors"
           >
             Compress to 20 KB
           </Link>
           <Link
             id="promo-compress-50kb"
-            href="/photo-resize-to-50kb/"
+            href="/tools/resize-kb/?target=50"
             className="inline-flex min-h-10 items-center rounded-md px-3 py-2 bg-card border border-hairline hover:bg-accent/50 font-medium text-xs text-foreground transition-colors"
           >
             Compress to 50 KB

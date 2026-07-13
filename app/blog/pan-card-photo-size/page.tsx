@@ -179,7 +179,7 @@ export default function Page() {
         higher DPI blows up the file size without improving legibility. Crop so
         the signature sits centred with a small white margin on all sides. If the
         file is over the limit, use the{" "}
-        <Link href="/signature-resize-to-20kb/" className="text-brand underline">
+        <Link href="/tools/signature-resize/?target=20" className="text-brand underline">
           signature resizer to 20&nbsp;KB
         </Link>{" "}
         (or the appropriate target for your portal).
@@ -353,7 +353,7 @@ export default function Page() {
           resize image to exact KB
         </Link>{" "}
         tool instead. For signatures specifically, the{" "}
-        <Link href="/signature-resize-to-20kb/" className="text-brand underline">
+        <Link href="/tools/signature-resize/?target=20" className="text-brand underline">
           signature resize to 20&nbsp;KB
         </Link>{" "}
         tool is preset to the most common Indian exam portal limit.

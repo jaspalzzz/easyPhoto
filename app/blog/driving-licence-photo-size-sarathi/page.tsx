@@ -288,7 +288,7 @@ export default function Page() {
           background removal tool
         </Link>{" "}
         to replace it with solid white before resizing. For the signature, the{" "}
-        <Link href="/signature-resize-to-20kb/" className="text-brand underline">
+        <Link href="/tools/signature-resize/?target=20" className="text-brand underline">
           signature resize to 20&nbsp;KB
         </Link>{" "}
         tool is preset to the Sarathi limit.
