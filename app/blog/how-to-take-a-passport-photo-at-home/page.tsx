@@ -3,8 +3,19 @@ import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
+import { PhotoComplianceDiagram, type PhotoComplianceCase } from "@/components/site/PhotoComplianceDiagram";
+import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 
 const post = getPost("how-to-take-a-passport-photo-at-home")!;
+const indiaHead = (COUNTRY_SPECS.india.headPercentOfFrame!.min + COUNTRY_SPECS.india.headPercentOfFrame!.max) / 2;
+const HOME_CASES: PhotoComplianceCase[] = [
+  { status: "pass", title: "Ready to crop", reason: "Straight, centred, evenly lit and neutral.", variant: "correct-baseline", background: COUNTRY_SPECS.india.background.hex, headPercent: indiaHead },
+  { status: "fail", title: "Shadow behind", reason: "Standing too close to the wall creates a shadow.", variant: "shadow-behind", background: COUNTRY_SPECS.india.background.hex, headPercent: indiaHead },
+  { status: "fail", title: "Uneven light", reason: "Side lighting leaves part of the face dark.", variant: "uneven-lighting", background: COUNTRY_SPECS.india.background.hex, headPercent: indiaHead },
+  { status: "fail", title: "Head tilted", reason: "Keep the head upright and face the camera.", variant: "head-tilted", background: COUNTRY_SPECS.india.background.hex, headPercent: indiaHead },
+  { status: "fail", title: "Eyes closed", reason: "Retake while both eyes are open and visible.", variant: "eyes-closed", background: COUNTRY_SPECS.india.background.hex, headPercent: indiaHead },
+  { status: "fail", title: "No crop room", reason: "Leave space so the final crop does not clip the head.", variant: "crop-cutoff", background: COUNTRY_SPECS.india.background.hex },
+];
 
 const FAQ_ITEMS = [
   {
@@ -54,6 +65,11 @@ export default function Page() {
           <li>Upload to the <Link href="/passport-photo/" className="text-brand underline">passport photo maker</Link>, pick your country, and it crops and sets the background automatically.</li>
         </ul>
       </div>
+
+      <PhotoComplianceDiagram
+        cases={HOME_CASES}
+        caption="A focused capture checklist before cropping. The white baseline and larger head framing reflect the recorded India Passport Seva preset; always confirm the current official requirement."
+      />
 
       <h2>Concrete output example</h2>
       <p>

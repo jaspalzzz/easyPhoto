@@ -4,8 +4,22 @@ import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
+import { PhotoComplianceDiagram, type PhotoComplianceCase } from "@/components/site/PhotoComplianceDiagram";
+import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 
 const post = getPost("passport-photo-background-color")!;
+const midpoint = (id: "india" | "uk") => {
+  const band = COUNTRY_SPECS[id].headPercentOfFrame!;
+  return (band.min + band.max) / 2;
+};
+const BACKGROUND_CASES: PhotoComplianceCase[] = [
+  { status: "pass", title: "India: white", reason: "Plain white matches the recorded India preset.", variant: "correct-baseline", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("india") },
+  { status: "pass", title: "UK: light cream", reason: "Light cream matches the recorded UK options.", variant: "correct-baseline", background: COUNTRY_SPECS.uk.background.hex, headPercent: midpoint("uk") },
+  { status: "fail", title: "UK on white", reason: "White is the wrong choice for the recorded UK preset.", variant: "background-wrong-colour", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("uk") },
+  { status: "fail", title: "Patterned wall", reason: "Patterns prevent a plain, uniform background.", variant: "background-busy" },
+  { status: "fail", title: "Background shadow", reason: "A shadow makes the background uneven.", variant: "shadow-behind", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("india") },
+  { status: "fail", title: "Uneven lighting", reason: "A gradient across the face is not even lighting.", variant: "uneven-lighting", background: COUNTRY_SPECS.uk.background.hex, headPercent: midpoint("uk") },
+];
 
 export const metadata = pageMetadata({
   title: `${post.title}`,
@@ -38,6 +52,11 @@ export default function Page() {
           <li>Whatever the colour, it must be a <strong>single even tone with no shadows</strong>.</li>
         </ul>
       </div>
+
+      <PhotoComplianceDiagram
+        cases={BACKGROUND_CASES}
+        caption="Background examples drawn from the India and UK registry colours. These are illustrative; confirm the current colour and framing rules on the relevant official source."
+      />
 
       <h2>Before and after: what actually changes</h2>
       <p>

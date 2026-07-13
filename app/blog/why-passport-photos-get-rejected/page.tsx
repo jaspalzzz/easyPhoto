@@ -3,8 +3,28 @@ import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { getPost } from "@/lib/blog";
 import { Faq } from "@/components/site/Faq";
+import { PhotoComplianceDiagram, type PhotoComplianceCase } from "@/components/site/PhotoComplianceDiagram";
+import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 
 const post = getPost("why-passport-photos-get-rejected")!;
+const usHead = (COUNTRY_SPECS.us.headPercentOfFrame!.min + COUNTRY_SPECS.us.headPercentOfFrame!.max) / 2;
+
+const COMPLIANCE_CASES: PhotoComplianceCase[] = [
+  { status: "pass", title: "Correct baseline", reason: "Centred, straight, evenly lit and neutral.", variant: "correct-baseline", background: COUNTRY_SPECS.us.background.hex, headPercent: usHead },
+  { status: "fail", title: "Busy background", reason: "The background is patterned instead of plain.", variant: "background-busy" },
+  { status: "fail", title: "Wrong colour", reason: "The background does not match the selected country.", variant: "background-wrong-colour", background: COUNTRY_SPECS.uk.background.hex },
+  { status: "fail", title: "Head too small", reason: "The face sits below the required framing band.", variant: "head-too-small", background: COUNTRY_SPECS.us.background.hex },
+  { status: "fail", title: "Head too large", reason: "The face exceeds the required framing band.", variant: "head-too-large", background: COUNTRY_SPECS.us.background.hex },
+  { status: "fail", title: "Off-centre", reason: "The head is shifted away from the frame centre.", variant: "off-centre", background: COUNTRY_SPECS.us.background.hex, headPercent: usHead },
+  { status: "fail", title: "Head tilted", reason: "The head is not upright and facing forward.", variant: "head-tilted", background: COUNTRY_SPECS.us.background.hex, headPercent: usHead },
+  { status: "fail", title: "Shadow behind", reason: "A visible shadow makes the background uneven.", variant: "shadow-behind", background: COUNTRY_SPECS.us.background.hex, headPercent: usHead },
+  { status: "fail", title: "Uneven lighting", reason: "One side of the face is noticeably darker.", variant: "uneven-lighting", background: COUNTRY_SPECS.us.background.hex, headPercent: usHead },
+  { status: "fail", title: "Smiling", reason: "The expression is not neutral and closed-mouth.", variant: "smiling", background: COUNTRY_SPECS.us.background.hex, headPercent: usHead },
+  { status: "fail", title: "Eyes closed", reason: "Both eyes need to be open and visible.", variant: "eyes-closed", background: COUNTRY_SPECS.us.background.hex, headPercent: usHead },
+  { status: "fail", title: "Glasses glare", reason: "Reflections obscure the eyes.", variant: "glasses-glare", background: COUNTRY_SPECS.us.background.hex, headPercent: usHead },
+  { status: "fail", title: "Hair over face", reason: "Hair hides part of the face or an eye.", variant: "hair-over-face", background: COUNTRY_SPECS.us.background.hex, headPercent: usHead },
+  { status: "fail", title: "Crop cutoff", reason: "The top of the head is clipped by the frame.", variant: "crop-cutoff", background: COUNTRY_SPECS.us.background.hex },
+];
 
 const FAQ_ITEMS = [
   {
@@ -114,6 +134,11 @@ export default function Page() {
           The six most common passport photo rejection reasons — and what to do instead.
         </figcaption>
       </figure>
+
+      <PhotoComplianceDiagram
+        cases={COMPLIANCE_CASES}
+        caption="Illustrative do/don’t examples. Framing and the white baseline use the recorded US passport specification; confirm the current rules on the official portal for your document."
+      />
 
       <h2>Wrong size or head proportion</h2>
       <p>
