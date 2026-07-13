@@ -57,7 +57,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "indian-passport-photo-requirements",
-    title: "Indian Passport Photo Requirements 2026: Full Compliance Checklist",
+    title: "Indian Passport Photo Rules 2026: Adults vs Children Under 4",
     description:
       "Indian passport photo workflow explained: adults are photographed at PSK/POPSK, children below four need a 35×45 mm print, and overseas, OCI and e-Visa rules differ.",
     date: "June 24, 2026",
@@ -92,9 +92,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "best-free-exam-photo-resizer-india",
-    title: "Best Free Exam Photo & Signature Resizer India (2026)",
+    title: "5 Free Exam Photo & Signature Resizers Compared (2026)",
     description:
-      "Resize SSC, IBPS, UPSC or RRB exam photos to exact KB and px specs for free. Five tools compared: ExamMint, myexamphoto.in, SarkariResizer, govtphotoresizer.com, and easyPhoto.",
+      "Resize SSC, IBPS, UPSC or RRB exam photos to the KB and pixel specs each portal lists, for free. Five tools compared: ExamMint, myexamphoto.in, SarkariResizer, govtphotoresizer.com, and easyPhoto.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     updatedISO: "2026-06-18",
