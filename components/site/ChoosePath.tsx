@@ -79,7 +79,7 @@ const PATHS: Path[] = [
     Icon: Plane,
     eyebrow: "Passport & Visa",
     title: <>Passport &amp; Visa Photos</>,
-    desc: `Passport, visa and OCI photos for ${COUNTRY_COUNT}+ countries — exact size, correct background, checked against the published spec.`,
+    desc: `Passport, visa and OCI photo preparation for ${COUNTRY_COUNT}+ countries — selected size, background guidance and linked source details.`,
     href: "/passport-photo/",
     cta: "Make a passport or visa photo",
     chips: [
@@ -173,11 +173,11 @@ export function ChoosePath() {
         {/* Broad promise — passport and exam users both belong here */}
         <div className="mx-auto mb-8 max-w-2xl text-center">
           <h2 className="text-[1.7rem] font-bold tracking-tight text-ink sm:text-[2rem]">
-            Application photos &amp; documents that meet the{" "}
+            Prepare application photos &amp; documents using{" "}
             <span className="mark-gold whitespace-nowrap text-ink">published specs</span>
           </h2>
           <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
-            Pick your path — each exam and passport spec cites its published source, so you can check it yourself.
+            Pick your path — specification pages show a published source where available and flag entries that need review.
           </p>
         </div>
 

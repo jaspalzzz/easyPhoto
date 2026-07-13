@@ -60,9 +60,9 @@ const POPULAR_EXAMS = [
 ];
 
 const STATS = [
-  { Icon: Globe,       value: `${LAUNCH_ORDER.length}+`, label: "Countries Supported",       sub: "Official government specs"         },
+  { Icon: Globe,       value: `${LAUNCH_ORDER.length}+`, label: "Countries Supported",       sub: "Requirements from named authorities"},
   { Icon: BookOpen,    value: `${PORTAL_KEYS.length}+`,  label: "Exam Specifications",       sub: "SSC, UPSC, Railway, Banking & more"},
-  { Icon: ShieldCheck, value: "Official",                label: "Spec Sources",              sub: "Checked against published requirements" },
+  { Icon: ShieldCheck, value: "Linked",                  label: "Spec Sources",              sub: "Official source where available"   },
   { Icon: Wrench,      value: `${READY_TOOLS.length}+`,  label: "Free Tools",                sub: "Photo, PDF, signature & more"      },
   { Icon: Lock,        value: "0",                       label: "Uploads to any server",     sub: "Everything runs in your browser"   },
 ];

@@ -126,7 +126,7 @@ export default function Page() {
         sitting on the form. To avoid that, remove the background so only the ink
         is visible. The{" "}
         <Link href="/tools/transparent-signature/">transparent signature tool</Link>{" "}
-        does this in one click. For a full walkthrough of every portal&apos;s
+        does this in one click. For a broader walkthrough of portal
         signature rule, read{" "}
         <Link href="/blog/how-to-sign-exam-application-forms-india/">
           how to sign an exam application form in India

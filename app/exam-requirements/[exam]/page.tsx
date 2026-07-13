@@ -13,7 +13,6 @@ import {
 import { portalFaqItems } from "@/lib/faqs";
 import { SUB_EXAM_RESIZERS, RESIZER_YEAR } from "@/lib/subExamResizers";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
-import { SITE_NAME } from "@/lib/site";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, faqSchema, webPageSchema } from "@/lib/schema";
 import { Faq } from "@/components/site/Faq";
@@ -47,12 +46,8 @@ function aspectLabel(r: number): string {
   return `${r.toFixed(2)} : 1`;
 }
 
-// Per-exam custom titles, bypassing the length-guarded template below
-// (titleAbsolute). These are the FULL SERP title (brand suffix included),
-// so keep each ≤ 60 chars to avoid truncation — the army-agniveer override
-// that used to live here ran 64 chars (truncating) with a vague "longer is
-// better" rationale and got 110 impr / 0 clicks at pos 7.4, which is why the
-// blind-length approach was abandoned.
+// Per-exam custom titles bypass the template below (titleAbsolute). These are
+// the full SERP title, including the brand suffix.
 //
 // voter-id: MONITORED SXO EXPERIMENT (added 2026-07-10). SERP-backwards
 // analysis (2026-07-09 audit) found "voter id photo resizer" is won ~90% by
@@ -66,7 +61,7 @@ function aspectLabel(r: number): string {
 // revert this single line (the template default is the fallback). Do NOT roll
 // this out to the other 49 exam pages until this test reads positive.
 const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {
-  "voter-id": "Voter ID Photo Size & Resizer 2026 (Official) — easyPhoto",
+  "voter-id": "Voter ID Photo Size & Resizer 2026 — easyPhoto",
 };
 
 export async function generateMetadata({
@@ -83,20 +78,13 @@ export async function generateMetadata({
   // for both photo and signature was pushing descriptions to 195-217 chars,
   // well past the ~155-160 char SERP display width, so they were truncating.
   const shortName = spec.name.split(" (")[0];
-  // Longer exam names (e.g. "Driving Licence", "Indian Navy Agniveer") push
-  // the title with " (Official)" past the ~60-char SERP budget once the
-  // " — easyPhoto" template suffix is appended. Drop that qualifier rather
-  // than truncate mid-word — the spec table's "Official source" badge and
-  // the meta description already carry the trust signal.
   const titleBase = `${shortName} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR}`;
-  const titleWithOfficial = `${titleBase} (Official)`;
-  const fitsWithOfficial = `${titleWithOfficial} — ${SITE_NAME}`.length <= 60;
   return pageMetadata({
     // Short exam name keeps the SERP title under ~60 chars and matches how
     // people actually search ("SSC photo size", not the full commission name).
     title:
       EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam] ??
-      (fitsWithOfficial ? titleWithOfficial : titleBase),
+      titleBase,
     titleAbsolute: !!EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam],
     description:
       `${shortName}: photo ${photoKb(spec)} (${px(spec.photoWidthPx, spec.photoHeightPx)})` +

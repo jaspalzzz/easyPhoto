@@ -189,7 +189,7 @@ export default function Page() {
         <Link href="/blog/passport-photo-background-color/" className="text-brand underline">
           passport photo background colour guide
         </Link>{" "}
-        covers every major country&apos;s exact requirement.
+        covers the recorded requirements for many countries.
       </p>
 
       {/* CHART: server upload vs on-device comparison */}

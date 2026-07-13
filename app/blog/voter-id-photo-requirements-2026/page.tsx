@@ -348,7 +348,7 @@ export default function Page() {
         <Link href="/blog/indian-government-id-photo-requirements/" className="text-brand underline">
           Indian government ID photo requirements
         </Link>{" "}
-        guide — one reference for the exact size and KB limit of every portal. For
+        guide — one reference for the recorded sizes and KB limits of the listed portals. For
         PAN card specs, see the{" "}
         <Link href="/blog/pan-card-photo-size/" className="text-brand underline">
           PAN card photo size guide

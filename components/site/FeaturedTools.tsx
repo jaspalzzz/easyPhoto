@@ -43,8 +43,8 @@ const BOTTOM_CARDS: Card[] = [
     icon: <GraduationCap className="h-5 w-5 text-amber-600" strokeWidth={1.75} />,
     title: "Exam Application Kit",
     outcome:
-      "Get a photo and signature in the exact size every exam portal demands — SSC, UPSC, Railway, Banking and more.",
-    includes: ["Photo + signature", "Rejection checker", "50+ exam specs"],
+      "Prepare a photo and signature for the dimensions listed by the selected exam portal — SSC, UPSC, Railway, Banking and more.",
+    includes: ["Photo + signature", "Photo issue checker", "50+ exam specs"],
     href: "/tools/exam-package/",
     cta: "Build your exam kit",
     iconBg: "bg-amber-50 dark:bg-amber-900/20",
@@ -69,7 +69,7 @@ const BOTTOM_CARDS: Card[] = [
     icon: <ImageIcon className="h-5 w-5 text-sky-600" strokeWidth={1.75} />,
     title: "Image Processing",
     outcome:
-      "Resize, compress or convert any photo to hit the exact KB or pixel limit every portal sets.",
+      "Resize, compress or convert a photo to a selected KB or pixel target.",
     includes: ["Resize to KB", "Resize dimensions", "JPG to PDF"],
     href: "/tools/",
     cta: "Open image tools",

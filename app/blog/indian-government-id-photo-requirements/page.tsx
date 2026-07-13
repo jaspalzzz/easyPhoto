@@ -9,23 +9,23 @@ const post = getPost("indian-government-id-photo-requirements")!;
 const FAQ_ITEMS = [
   {
     q: "Is the photo size the same for all Indian government IDs?",
-    a: "No. Each portal sets its own limit. Voter ID (NVSP) allows up to 200 KB, PAN via NSDL caps at 50 KB, PAN via UTIITSL at 30 KB, and the driving licence (Sarathi) at just 40 KB. Pixel dimensions differ too. One photo compressed to under 30 KB clears every one of these online upload portals. Aadhaar is the exception: its photo is captured in person at an Aadhaar Seva Kendra — UIDAI does not allow an Aadhaar photo to be uploaded online.",
+    a: "No. The recorded limits differ between voter ID, PAN and driving-licence workflows, and their pixel dimensions can differ too. Prepare an export for the selected portal rather than assuming one file fits each workflow. Aadhaar is different: its photo is captured in person at an Aadhaar Seva Kendra rather than uploaded online.",
   },
   {
     q: "Which Indian government portal has the strictest photo size limit?",
-    a: "UTIITSL for PAN cards is the tightest at 30 KB, followed by the Sarathi driving-licence portal at 40 KB. If you compress a single JPEG to under 30 KB on a plain white background at roughly 200×250 px, it will pass every portal that accepts an online photo upload — voter ID, PAN, and driving licence — without a separate photo for each.",
+    a: "Among the limits recorded here, UTIITSL for PAN cards has a 30 KB ceiling and the Sarathi driving-licence preset has a 40 KB ceiling. File size is only one requirement; crop, dimensions and workflow can differ, so prepare and verify a separate export for the selected portal.",
   },
   {
     q: "What file format do Indian government ID applications need?",
-    a: "Every major online upload portal — NVSP (voter ID), NSDL and UTIITSL (PAN), and Sarathi (driving licence) — requires JPEG / JPG. PNG, PDF, WEBP and HEIC are rejected. If your phone saves photos as HEIC or PNG, convert to JPEG before uploading. All portals also require a colour photo; black-and-white is rejected. (Aadhaar photos are captured at a centre, so there is no file to upload for them.)",
+    a: "The voter ID, PAN and Sarathi presets recorded here list JPEG/JPG. If your phone saves another format, convert the image to the format named by the selected portal and confirm its current instructions. Aadhaar photos are captured at a centre, so there is no photo file to upload for that workflow.",
   },
   {
     q: "Can I use the same photo for my PAN card, voter ID and driving licence?",
-    a: "Yes, if you prepare it to the strictest common spec: a recent colour JPEG on a plain white background, roughly 200×250 px portrait, compressed to under 30 KB. That single file satisfies the KB cap and pixel minimum of all three online portals. The one exception is UTIITSL's square (213×213 px) PAN crop, which needs a square version. Aadhaar isn't in this list because its photo is taken at a centre, not uploaded.",
+    a: "Use one clear source photo if convenient, but create a separate export for each workflow. The recorded crop, dimensions and file-size limits are not identical; for example, the UTIITSL PAN preset uses a square crop. Aadhaar is not an upload workflow because its photo is taken at a centre.",
   },
   {
     q: "Why do government ID photos get rejected online?",
-    a: "The most common reasons are the same across portals: file size over the KB limit (even 1 KB over auto-rejects), wrong format (PNG/PDF instead of JPEG), a dark or patterned background, a black-and-white photo, or a blurry, low-resolution image. Fixing the KB size and switching the background to plain white resolves the vast majority of rejections.",
+    a: "Common measurable upload problems include a file outside the listed KB range, a different format or dimensions, and low image quality. Visual and workflow checks vary by portal, so use the current application instructions rather than treating one correction as a guarantee.",
   },
 ];
 
@@ -49,41 +49,39 @@ export default function Page() {
         A typical Indian adult carries four government photo IDs — a PAN card, a
         voter ID (EPIC), an Aadhaar, and a driving licence. Every one of them is
         applied for or updated on a different government portal, and here is the
-        catch that trips up thousands of people every week:{" "}
-        <strong>no two portals accept the same photo file</strong>. The KB limit,
-        the pixel dimensions, even the crop shape all differ. A photo that sails
-        through the voter ID portal at 180&nbsp;KB is rejected instantly by the
-        driving-licence portal, which caps at 40&nbsp;KB.
+        practical complication is that the recorded requirements differ by
+        workflow. The KB limit, pixel dimensions and crop shape are not uniform,
+        so prepare the output for the portal you are using.
       </p>
 
       <p>
-        This guide is the single reference for all of them: the exact 2026 photo
-        spec for each Indian government ID, the one file that passes every portal,
-        and how to make it in your browser without uploading anything.
+        This guide compares the recorded photo requirements for these Indian
+        government-ID workflows and explains how to prepare separate outputs in
+        your browser without uploading the image.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">
-          Quick answer — the one photo that passes every portal
+          Quick answer — start with one clear source photo
         </p>
         <p className="!mt-2 text-[15px]">
           Prepare a recent <strong>colour JPEG</strong> on a{" "}
           <strong>plain white background</strong>, roughly{" "}
           <strong>200×250&nbsp;px</strong> portrait, compressed to{" "}
-          <strong>under 30&nbsp;KB</strong>. That single file clears the KB cap and
-          pixel minimum of the <strong>voter ID, PAN and driving-licence</strong>{" "}
-          portals. The only extra you may need is a square (213×213&nbsp;px) crop for
-          a PAN card via UTIITSL. Aadhaar is the exception — its photo is captured in
-          person at a centre, not uploaded (see below).
+          <strong>under 30&nbsp;KB</strong> as a starting export. Then match the crop,
+          dimensions and live instructions for the <strong>voter ID, PAN or
+          driving-licence</strong> workflow you are using. UTIITSL PAN uses a square
+          213×213&nbsp;px crop in the recorded preset. Aadhaar is different — its photo
+          is captured in person at a centre, not uploaded (see below).
         </p>
       </div>
 
-      <h2>Every Indian government ID photo spec (2026)</h2>
+      <h2>Recorded Indian government ID photo specs (2026)</h2>
 
       <p>
-        These are the current requirements for the online application or update
-        form of each ID, verified against the respective government portal. The KB
-        limit is the number that rejects most uploads, so it is listed first. Note
+        These are the requirements recorded for the listed application or update
+        workflows. Check the named portal for the current instructions. The KB
+        limit is listed first for comparison. Note
         that <strong>Aadhaar</strong> is different from the rest — its photo is
         taken in person at an Aadhaar Seva Kendra, not uploaded online.
       </p>
@@ -118,11 +116,10 @@ export default function Page() {
       </table>
 
       <p>
-        Every portal wants the same <em>kind</em> of photo — a recent, front-facing
+        The listed portals generally call for the same <em>kind</em> of photo — a recent, front-facing
         colour headshot on a plain light background — but enforces it with a
         different KB cap and pixel rule. That gap between &ldquo;looks the same&rdquo;
-        and &ldquo;passes the same&rdquo; is exactly why a photo accepted by one
-        portal is bounced by the next.
+        and &ldquo;uses the same file&rdquo; is why separate portal-specific exports are safer.
       </p>
 
       <h2>Why can&apos;t you use one photo for every ID?</h2>
@@ -342,11 +339,11 @@ export default function Page() {
         does it in your browser.
       </p>
 
-      <h2>How to make one photo that passes every portal</h2>
+      <h2>How to prepare one source photo for different portals</h2>
 
       <p>
-        You do not need a studio or four separate photos. One good capture, prepared
-        to the strictest spec, works everywhere. (For a focused look at just how the
+        You can begin with one good capture and create a separate export for each
+        recorded workflow. (For a focused look at just how the
         three online IDs differ, see{" "}
         <Link href="/blog/pan-vs-voter-id-vs-driving-licence-photo/" className="text-brand underline">
           PAN vs voter ID vs driving licence photo
@@ -390,11 +387,11 @@ export default function Page() {
         </li>
       </ol>
 
-      <h2>Common rejection reasons across all portals</h2>
+      <h2>Common upload issues across the listed portals</h2>
 
       <p>
-        Whatever the ID, the automatic checks reject for the same handful of reasons.
-        Fix these and almost every upload goes through on the first try:
+        Portal checks differ, but these measurable file issues are useful to review
+        before uploading:
       </p>
 
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -406,7 +403,7 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["File over the KB limit", "Compress to under 30 KB to clear every portal at once"],
+            ["File over the KB limit", "Compress to the range listed by the selected portal"],
             ["PNG, PDF, WEBP or HEIC file", "Convert to JPEG before uploading"],
             ["Black-and-white photo", "Use a colour photo — even a colour scan of a B&W print is rejected"],
             ["Dark or patterned background", "Shoot against plain white or use background removal"],

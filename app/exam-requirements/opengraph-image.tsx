@@ -8,6 +8,6 @@ export const alt = "Exam Photo & Signature Size Requirements — easyPhoto";
 export default function Image() {
   return ogImage({
     title: "Exam Photo & Signature Requirements",
-    subtitle: "Official photo & signature sizes for SSC, UPSC, IBPS, SBI, RRB, NTA & more — with sources.",
+    subtitle: "Recorded photo & signature sizes for SSC, UPSC, IBPS, SBI, RRB, NTA & more — with source status.",
   });
 }

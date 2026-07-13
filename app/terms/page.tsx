@@ -64,9 +64,9 @@ export default function TermsPage() {
         </Section>
 
         <Section title="Verify against official requirements">
-          We size photos and set backgrounds according to each country&apos;s
-          published specifications and link the official government source on
-          every country page. However, requirements change and can vary by
+          We size photos and set backgrounds using the recorded country
+          specifications and link the named published source where available.
+          However, requirements change and can vary by
           office or consulate.{" "}
           <strong className="text-foreground">
             You are responsible for checking your final photo against the current

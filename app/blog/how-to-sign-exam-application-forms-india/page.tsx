@@ -75,7 +75,7 @@ export default function Page() {
         What are the two signature types accepted by exam portals?
       </h2>
       <p>
-        Almost all portals accept a scanned signature on a white background,
+        Many portals list a scanned signature on a white background,
         saved as a JPG. A small number of portals, mainly Army Agniveer and NDA
         online applications, also accept a transparent-background PNG. The
         transparent version looks cleaner on the printed form because the form
@@ -259,7 +259,7 @@ export default function Page() {
         <li>
           <strong>Dimensions outside the allowed range.</strong> A signature
           image that is 200&#215;200 px submitted to an SSC portal expecting
-          140&#215;60 px will be rejected. Match the dimensions exactly.
+          140&#215;60 px does not match the recorded dimensions and may fail upload validation. Match the listed dimensions.
         </li>
       </ul>
 

@@ -291,8 +291,8 @@ export default function Page() {
 
       <p>
         easyPhoto covers 40+ exam portals: less than ExamMint&apos;s 104+, more than
-        myexamphoto.in&apos;s ~13. Each spec includes a link to the official notification and a
-        verified-on date so you can confirm which source the KB and pixel limits came from.
+        myexamphoto.in&apos;s ~13. Specification pages show a linked source where available,
+        plus either a verification date or a needs-review notice.
       </p>
 
       <p>
@@ -372,8 +372,8 @@ export default function Page() {
           page.
         </li>
         <li>
-          <strong>You want to verify the exact spec source:</strong> easyPhoto links to the
-          official board notification for every spec and shows the date it was last checked.
+          <strong>You want to review the recorded spec source:</strong> easyPhoto shows the
+          named source where available and distinguishes dated verification from needs-review entries.
         </li>
       </ul>
 

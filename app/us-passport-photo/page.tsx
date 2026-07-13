@@ -24,7 +24,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "What background colour does a US passport photo need?",
-    a: "A plain white or off-white background with no shadows, patterns or objects behind you. Do not use a blue, grey or off-colour background — it will be rejected.",
+    a: "A plain white or off-white background with no shadows, patterns or objects behind you. A blue, grey or off-colour background does not meet the listed background requirement.",
   },
   {
     q: "Are glasses allowed in a US passport photo?",
