@@ -1,5 +1,5 @@
 /**
- * ComplianceEngine — light-themed, matches the site's paper design system
+ * Automated photo checks — light-themed, matches the site's paper design system
  * Left: photo with green scan frame + animated beam
  * Center: 10-item checklist in ep-card
  * Right: check-results card in ep-card
@@ -24,10 +24,10 @@ export function ComplianceEngine() {
     <section className="border-t border-hairline bg-paper">
       <div className="container py-14 sm:py-16">
         <h2 className="mb-2 text-center text-2xl font-semibold tracking-tight text-ink">
-          AI Compliance Check
+          Automated photo checks
         </h2>
         <p className="mb-10 text-center text-[14px] text-muted-foreground">
-          Run any photo through 10 checks from the published requirements with our free compliance checker.
+          Review a photo with 10 measurable checks from the published requirements.
         </p>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-[0.75fr_1.25fr_1fr] md:gap-8">
@@ -38,7 +38,7 @@ export function ComplianceEngine() {
               <div className="relative aspect-square overflow-hidden rounded-lg">
                 <img
                   src="/images/sample7_after_1782053075466.webp"
-                  alt="AI compliance scan example"
+                  alt="Automated photo-check example"
                   className="h-full w-full object-cover object-top"
                 />
                 <div className="pointer-events-none absolute inset-0 rounded-lg border-2 border-[#00c853] shadow-[inset_0_0_16px_rgba(0,200,83,0.15)]" />
@@ -55,7 +55,7 @@ export function ComplianceEngine() {
 
           {/* Center — checklist */}
           <div className="ep-card p-6">
-            <h3 className="mb-5 text-[15px] font-semibold text-ink">10 Compliance Checks</h3>
+            <h3 className="mb-5 text-[15px] font-semibold text-ink">10 measurable checks</h3>
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
               {CHECKS.map((item) => (
                 <div key={item} className="flex items-center gap-2 text-[13px] text-ink">
@@ -81,7 +81,7 @@ export function ComplianceEngine() {
               <div className="h-full rounded-full bg-[#00c853]" style={{ width: "100%" }} />
             </div>
             <p className="mb-5 text-[13px] leading-relaxed text-muted-foreground">
-              All measurable checks pass. Always verify against the current official notice.
+              No measurable issues detected. Always verify the current application instructions on the named authority&apos;s portal.
             </p>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-4 py-2 text-[12px] font-semibold text-ink">
               🛡️ Checked against published requirements

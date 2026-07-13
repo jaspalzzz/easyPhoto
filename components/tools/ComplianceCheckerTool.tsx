@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CheckCircle2, AlertTriangle, XCircle, Loader2, ArrowRight, Share2 } from "lucide-react";
 import { Uploader } from "@/components/tool/Uploader";
 import { useWorkflowHandoff } from "@/components/site/useWorkflowHandoff";
+import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { allPortalSpecs, getPortalSpec } from "@/lib/specRegistry";
 import {
   checkCompliance,
@@ -57,9 +58,9 @@ const STATUS_ICON = {
 } as const;
 
 const VERDICT = {
-  pass: { cls: "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/20 dark:text-green-300", text: "Looks good — likely to be accepted" },
-  warn: { cls: "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-800/50 dark:bg-amber-900/20 dark:text-amber-300", text: "Check these before you upload" },
-  fail: { cls: "border-red-200 bg-red-50 text-red-700 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300", text: "Will likely be rejected — fix below" },
+  pass: { cls: "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/20 dark:text-green-300", text: "No measurable issues detected" },
+  warn: { cls: "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-800/50 dark:bg-amber-900/20 dark:text-amber-300", text: "Review these measurements before submitting" },
+  fail: { cls: "border-red-200 bg-red-50 text-red-700 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300", text: "Measurable issues detected — review below" },
 } as const;
 
 export function ComplianceCheckerTool() {
@@ -104,7 +105,7 @@ export function ComplianceCheckerTool() {
       const rep = checkCompliance(facts, spec, kind);
       setReport(rep);
 
-      // AI photo-quality analysis (face geometry + background/lighting). Photo
+      // Automated photo-quality analysis (face geometry + background/lighting). Photo
       // only; runs on a downscaled copy to keep mobile memory low.
       if (kind === "photo" && bmp) {
         try {
@@ -147,8 +148,8 @@ export function ComplianceCheckerTool() {
             ? "needs a check"
             : "needs fixing";
       const shareData: ShareData = {
-        title: "easyPhoto compliance check",
-        text: `My ${examName} ${kind} ${verdictWord} — checked free at easyphoto.in`,
+        title: "easyPhoto pre-submission photo check",
+        text: `I reviewed my ${examName} ${kind} measurements at easyphoto.in`,
       };
       // Prefer native share-with-image where supported (mobile); else download.
       if (
@@ -278,11 +279,11 @@ export function ComplianceCheckerTool() {
             ))}
           </ul>
 
-          {/* AI photo-quality analysis — face geometry + background/lighting,
+          {/* Automated photo-quality analysis — face geometry + background/lighting,
               each with a concrete fix. Photo only. */}
           {photoChecks && photoChecks.length > 0 && (
             <div className="space-y-2.5 rounded-lg border border-hairline bg-paper p-4">
-              <p className="eyebrow text-ink-soft">Photo quality (AI check)</p>
+              <p className="eyebrow text-ink-soft">Automated photo checks</p>
               {photoChecks.map((c) => (
                 <div key={c.label} className="flex items-start gap-2.5 text-sm">
                   {STATUS_ICON[c.status]}
@@ -359,10 +360,29 @@ export function ComplianceCheckerTool() {
               </Link>
             )}
           </div>
-          <p className="text-xs text-ink-faint">
-            Deterministic checks (size, dimensions, format) are exact; the background check is a guide.
-            Always confirm against the official portal before submitting.
-          </p>
+          <ToolLimitationsNotice
+            canCheck={kind === "photo"
+              ? [
+                  "File size, dimensions, and format against the selected listing",
+                  "Background uniformity at the image corners",
+                  "Approximate face position, framing, and lighting",
+                ]
+              : [
+                  "File size, dimensions, and format against the selected listing",
+                  "Whether the image corners appear light and plain",
+                ]}
+            cannotCheck={kind === "photo"
+              ? [
+                  "Identity, recency, expression, or glasses glare in every case",
+                  "Requirements that are not encoded in the selected listing",
+                  "The portal or reviewing authority’s final decision",
+                ]
+              : [
+                  "Whose signature is shown or whether it is current",
+                  "Requirements that are not encoded in the selected listing",
+                  "The portal or reviewing authority’s final decision",
+                ]}
+          />
         </div>
         );
       })()}

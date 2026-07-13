@@ -184,17 +184,19 @@ export default function Page() {
           <h2 className="text-lg font-semibold">UK passport photo for Indians in the UK</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
             If you are an Indian national living in the UK and need to renew your Indian passport
-            through the VFS Global service, you will need two different photos: a UK-style photo
-            for your UK identity documents (35×45mm, light grey background) and an Indian-style
-            photo for the Indian passport application (35×45mm, plain white background). Both are
-            available from this site — switch between the{" "}
+            through an Indian mission or its service provider, use that mission&apos;s
+            current filing instructions. The overseas Indian passport workflow is
+            separate from the UK passport specification and currently links to
+            630×810 px ICAO photograph guidance. Do not reuse the UK crop without
+            checking the mission&apos;s requested submission method. The{" "}
             <Link href="/uk-passport-photo-maker/" className="text-brand hover:underline">
               UK maker
             </Link>{" "}
-            and the{" "}
+            and{" "}
             <Link href="/india-passport-photo-maker/" className="text-brand hover:underline">
               Indian passport maker
-            </Link>.
+            </Link>{" "}
+            expose the two different presets.
           </p>
         </div>
       </section>

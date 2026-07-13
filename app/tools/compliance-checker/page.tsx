@@ -4,18 +4,18 @@ import { ComplianceCheckerTool } from "@/components/tools/ComplianceCheckerTool"
 import { COMPLIANCE_CHECKER_FAQ } from "@/lib/faqs";
 
 export const metadata = pageMetadata({
-  title: "Exam Photo & Signature Checker — Will It Be Rejected?",
+  title: "Pre-submission Exam Photo & Signature Check",
   description:
-    "Check your exam photo or signature against the official spec before you upload — file size (KB), dimensions, format and background for SSC, UPSC, IBPS, SBI, RRB, NTA & more. Free, private, in your browser.",
+    "Compare an exam photo or signature with measurable requirements for file size, dimensions, format and background guidance. Free, private and processed in your browser.",
   path: "/tools/compliance-checker/",
 });
 
 export default function Page() {
   return (
     <ToolPage
-      title="Exam Photo & Signature Checker"
+      title="Pre-submission Photo & Signature Check"
       slug="compliance-checker"
-      blurb="Before you upload, check your photo or signature against your exam's official spec — file size, dimensions, format and background. Catch a rejection before the portal does. Nothing is uploaded."
+      blurb="Compare your photo or signature with the selected exam's published requirements for file size, dimensions, format and background. It reports measurable issues; it cannot predict the portal's decision. Nothing is uploaded."
       faqItems={COMPLIANCE_CHECKER_FAQ}
       footnote="Your file is checked entirely in your browser and is never uploaded."
     >

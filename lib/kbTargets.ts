@@ -125,11 +125,11 @@ export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
   100: {
     heading: "Where a 100 KB photo is used",
     intro:
-      "100 KB is the standard government and travel-document photo size — used by Passport Seva, most visa portals and PAN/ID applications.",
+      "100 KB is a common target for some visa, identity and government-form photo uploads, but each portal sets its own limit.",
     useCases: [
-      { label: "Indian Passport Seva", detail: "The passport portal accepts a higher-quality photo, with 100 KB a comfortable target." },
-      { label: "Visa applications", detail: "Many country visa portals allow a photo up to 100 KB for a clearer face image." },
+      { label: "Visa applications", detail: "Some visa portals allow a photo around this size; confirm the live form's exact range." },
       { label: "PAN, ID and KYC forms", detail: "PAN card and KYC uploads commonly permit around 100 KB." },
+      { label: "Recruitment forms", detail: "Some recruitment portals use a 100 KB ceiling for a clear head-and-shoulders photo." },
     ],
     tip: "For passport and visa photos, get the exact dimensions and white background right first with the passport photo maker, then compress to 100 KB here.",
     faq: {
@@ -138,7 +138,7 @@ export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
     },
     qualityFaq: {
       q: "Will compressing to 100 KB reduce quality?",
-      a: "No — for a portal-sized photo, 100 KB is generous. Even the larger 630×810 px Passport Seva format fits under 100 KB with no visible compression.",
+      a: "It depends on the starting image and target dimensions. At typical portal dimensions, 100 KB often preserves clear facial detail; inspect the exported image before submitting.",
     },
   },
   200: {

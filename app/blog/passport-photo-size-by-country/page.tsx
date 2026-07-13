@@ -9,15 +9,15 @@ const post = getPost("passport-photo-size-by-country")!;
 const FAQ_ITEMS = [
   {
     q: "What is the standard passport photo size?",
-    a: "There is no single standard. India and the UK use 35×45 mm, while the US uses 2×2 inches (51×51 mm). Canada's printed passport photo is 50×70 mm and requires a commercial photographer's certification and guarantor signature. Always check the current requirement for the document and submission channel.",
+    a: "There is no single standard. India's 35×45 mm print applies to a passport applicant below four; ordinary adults are photographed at the PSK/POPSK. The UK uses 35×45 mm, the US uses 2×2 inches, and Canada's printed passport photo is 50×70 mm.",
   },
   {
     q: "Why does my self-cropped passport photo keep getting rejected?",
-    a: "Photo size and head size are two separate requirements. Even if you cut a 35×45 mm frame, the chin-to-crown head height must fall in a specific millimetre range. India, the UK and the US each have different ratios. The passport photo maker measures and adjusts your head position automatically.",
+    a: "Photo size and head size are separate requirements. India's under-four print and overseas ICAO guidance use 80–85% face coverage, while the UK and US use different bands. Ordinary adult Indian applicants are photographed at the PSK/POPSK.",
   },
   {
     q: "Is a white background required for all countries?",
-    a: "No. The UK specifically requires light grey or cream — a white background fails. The US, India and Canada require white. Australia accepts white or plain light grey. The Schengen area prefers light grey. Using the wrong colour is one of the most common rejection reasons.",
+    a: "No. The US uses white or off-white. India's under-four print and overseas ICAO guidance use white. Other authorities publish different options, so check the current source for the exact document.",
   },
   {
     q: "Can I use a passport photo for a visa application?",
@@ -84,7 +84,7 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
-              <Link href="/india-passport-photo-maker/" className="text-brand underline">India</Link>
+              <Link href="/india-passport-photo-maker/" className="text-brand underline">India — child below four</Link>
             </td>
             <td className="py-2 pr-3">35×45&nbsp;mm</td>
             <td className="py-2 pr-3">80–85% of frame</td>
@@ -130,7 +130,7 @@ export default function Page() {
         {" "}·{" "}
         <a href="https://www.gov.uk/photos-for-passports" className="text-brand underline" target="_blank" rel="noopener noreferrer">GOV.UK</a>
         {" "}·{" "}
-        <a href="https://www.passportindia.gov.in/" className="text-brand underline" target="_blank" rel="noopener noreferrer">Passport Seva</a>
+        <a href="https://www.passportindia.gov.in/AppOnlineProject/pdf/GUIDELINES%20FOR%20CAPTURING%20PHOTOGRAPHS%20FOR%20MINORS_v2.1.pdf" className="text-brand underline" target="_blank" rel="noopener noreferrer">Passport Seva under-four guidance</a>
         {" "}·{" "}<a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html" className="text-brand underline" target="_blank" rel="noopener noreferrer">Canada.ca</a>
         {" "}·{" "}<a href="https://www.passports.gov.au/help/passport-photos" className="text-brand underline" target="_blank" rel="noopener noreferrer">Australian Passport Office</a>
         {" "}·{" "}<a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02009R0810-20200202" className="text-brand underline" target="_blank" rel="noopener noreferrer">EU Visa Code</a>
@@ -138,8 +138,9 @@ export default function Page() {
 
       <h2>Why head size matters as much as photo size</h2>
       <p>
-        Two photos can be the same 35×45&nbsp;mm and still differ wildly. India
-        wants your face to dominate the frame, while the UK leaves more headroom.
+        Two photos can be the same 35×45&nbsp;mm and still differ wildly. India&apos;s
+        under-four print guidance uses 80–85% face coverage, while the UK uses a
+        different composition.
         A generic square crop almost never matches the required chin-to-crown band.
         That&apos;s why &quot;I cropped it myself&quot; photos fail so often. The
         head ratio is a biometric requirement, not a suggestion.

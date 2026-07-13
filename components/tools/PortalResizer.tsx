@@ -7,6 +7,7 @@ import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
 import type { ToolSource } from "@/components/tools/ImageToolShell";
 import { setWorkflowPayload } from "@/lib/workflowHandoff";
+import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { AlertCircle, AlertTriangle, Camera, ExternalLink, PenLine, ShieldCheck } from "lucide-react";
 
 export function PortalResizer({
@@ -160,6 +161,19 @@ export function PortalResizer({
           </div>
         )}
       </div>
+
+      <ToolLimitationsNotice
+        summary="Checks measurable file properties such as dimensions and file size. This resizer does not assess background uniformity or approximate face position, and it cannot guarantee acceptance — verify the current application instructions on the official portal."
+        canCheck={[
+          "Output file size and pixel dimensions shown by the resizer",
+          "Whether the generated file reaches the selected size target",
+        ]}
+        cannotCheck={[
+          "Background, expression, face position, identity, or recency",
+          "Requirements not included in the selected preset",
+          "The portal or reviewing authority’s final decision",
+        ]}
+      />
 
       <p className="flex items-start gap-2 text-xs text-muted-foreground">
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />

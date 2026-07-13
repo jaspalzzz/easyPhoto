@@ -1,5 +1,14 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Mail, ShieldCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Building2,
+  Clock3,
+  Mail,
+  MapPin,
+  ShieldCheck,
+  UserRound,
+} from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, ORG_ID } from "@/lib/schema";
@@ -70,6 +79,66 @@ export default function ContactPage() {
             {EMAIL} <ArrowRight className="h-4 w-4" strokeWidth={2} />
           </a>
         </div>
+
+        <section aria-labelledby="operator-heading" className="space-y-4">
+          <div>
+            <h2 id="operator-heading" className="text-lg font-semibold tracking-tight text-ink">
+              Who operates easyPhoto
+            </h2>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              Clear ownership and contact details for this independent service.
+            </p>
+          </div>
+
+          <dl className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-lg border border-hairline bg-card p-4">
+              <dt className="flex items-center gap-2 text-sm font-semibold text-ink">
+                <UserRound className="h-4 w-4 text-brand" strokeWidth={1.75} />
+                Operator
+              </dt>
+              <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                easyPhoto is built and maintained by{" "}
+                <Link
+                  href="/authors/jaspal-kumar/"
+                  className="font-medium text-brand underline decoration-brand/40 underline-offset-2 hover:decoration-brand"
+                >
+                  Jaspal Kumar, easyPhoto developer
+                </Link>
+                .
+              </dd>
+            </div>
+
+            <div className="rounded-lg border border-hairline bg-card p-4">
+              <dt className="flex items-center gap-2 text-sm font-semibold text-ink">
+                <Building2 className="h-4 w-4 text-brand" strokeWidth={1.75} />
+                Ownership
+              </dt>
+              <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                easyPhoto is independently owned and operated by Jaspal Kumar.
+              </dd>
+            </div>
+
+            <div className="rounded-lg border border-hairline bg-card p-4">
+              <dt className="flex items-center gap-2 text-sm font-semibold text-ink">
+                <Clock3 className="h-4 w-4 text-brand" strokeWidth={1.75} />
+                Typical response time
+              </dt>
+              <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                Within two business days.
+              </dd>
+            </div>
+
+            <div className="rounded-lg border border-hairline bg-card p-4">
+              <dt className="flex items-center gap-2 text-sm font-semibold text-ink">
+                <MapPin className="h-4 w-4 text-brand" strokeWidth={1.75} />
+                Location
+              </dt>
+              <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                Punjab, India. Region-level only; no private residential address is published.
+              </dd>
+            </div>
+          </dl>
+        </section>
 
         <section className="space-y-2 border-t border-hairline pt-8">
           <h2 className="text-lg font-semibold tracking-tight">Reporting a spec correction</h2>

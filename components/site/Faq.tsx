@@ -15,8 +15,8 @@ export const HOME_FAQ: FaqItem[] = [
     a: "Yes, it's completely free with no watermark, no sign-up and no payment. You download the full-quality photo.",
   },
   {
-    q: "Will the photo be accepted by the passport office?",
-    a: "We size the head and set the background to each country's official specification, and run an automatic compliance check before you download. We also link the official government source on every country page so you can verify the rules yourself. Always review the final photo against those requirements before submitting.",
+    q: "What can the photo checks confirm?",
+    a: "The tool can size the head, apply the selected background and review measurable image properties before download. It cannot predict acceptance. Check the linked source and the current application instructions before submitting.",
   },
   {
     q: "Why isn't the background pure white for the UK and Schengen?",

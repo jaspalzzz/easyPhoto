@@ -59,23 +59,25 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "indian-passport-photo-requirements",
     title: "Indian Passport Photo Requirements 2026: Full Compliance Checklist",
     description:
-      "Every Indian passport photo requirement from Passport Seva: size, background, expression, glasses, print quality, digital upload spec, and OCI vs e-Visa differences.",
+      "Indian passport photo workflow explained: adults are photographed at PSK/POPSK, children below four need a 35×45 mm print, and overseas, OCI and e-Visa rules differ.",
     date: "June 24, 2026",
     dateISO: "2026-06-24",
+    updatedISO: "2026-07-13",
     excerpt:
-      "45×35 mm print, 630×810 px JPEG under 250 KB for digital — but size is only the start. Here is the complete Indian passport photo compliance checklist, from background shade to the print-quality rule that catches most people.",
-    readMins: 10,
+      "Ordinary adults do not upload or carry a passport photo to a PSK/POPSK: it is captured at the centre. The 35×45 mm white-background print is the below-four exception.",
+    readMins: 6,
   },
   {
     slug: "indian-passport-photo-size-rules",
     title: "Indian Passport Photo Size & Rules (Passport Seva 2026)",
     description:
-      "Indian passport photos are 45×35 mm in print and exactly 630×810 px / under 250 KB online, on a plain white background. Full Passport Seva rules and a free maker.",
+      "Indian passport photo rules by workflow: PSK/POPSK capture for adults, a 45×35 mm white-background print for children below four, and separate overseas guidance.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
+    updatedISO: "2026-07-13",
     excerpt:
-      "The Passport Seva spec is exact: a 45×35 mm printed photo or a 630×810 px JPEG under 250 KB, plain white background, face filling 80–85% of the frame. Here's every rule — plus how OCI and NRI applications differ.",
-    readMins: 8,
+      "The domestic adult workflow uses a photo captured at the PSK/POPSK. Children below four carry a 45×35 mm print; overseas, OCI and e-Visa photo workflows are separate.",
+    readMins: 6,
   },
   {
     slug: "cutout-pro-alternative-india",
@@ -104,23 +106,24 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "best-free-passport-photo-maker-india-2026",
     title: "Best Free Passport Photo Maker Online India (2026)",
     description:
-      "Seven free tools for a compliant 35×45 mm Indian passport photo — compared on privacy, spec accuracy, and exam support. No ₹600 fees, no account needed.",
+      "Seven photo tools compared for India's below-four 35×45 mm print, overseas preparation and exam support, with the adult PSK/POPSK capture workflow explained.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
-    updatedISO: "2026-06-18",
+    updatedISO: "2026-07-13",
     excerpt:
-      "Most tools either charge ₹600, upload your photo to a server, or use the wrong India spec. Here are five options compared on cost, privacy, and whether they actually know the 35×45 mm Seva requirement.",
+      "Ordinary adults are photographed at the PSK/POPSK. For the below-four print and separate overseas workflows, here are five tools compared on cost, privacy and format support.",
     readMins: 6,
   },
   {
     slug: "visafoto-alternative-india-free",
     title: "Free Visafoto Alternative India: 4 Tools That Won't Charge ₹600",
     description:
-      "Visafoto charges ₹600 and uploads your image. Four free alternatives for India-compliant 35×45 mm passport photos in your browser — no payment, no upload.",
+      "Four browser-based alternatives for India's below-four 35×45 mm passport print and exam photos, with the ordinary adult PSK/POPSK capture workflow explained.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
+    updatedISO: "2026-07-13",
     excerpt:
-      "Visafoto is accurate, but ₹600 per photo and a server upload aren't necessary for most Indian passport or exam photos. Here are four free alternatives and when Visafoto is actually worth it.",
+      "Ordinary adult passport applicants do not upload a prepared photo. For the below-four print, overseas preparation or exam photos, here are four tool alternatives.",
     readMins: 5,
   },
   {

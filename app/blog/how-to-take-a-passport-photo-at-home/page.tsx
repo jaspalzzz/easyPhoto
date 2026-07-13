@@ -68,7 +68,7 @@ export default function Page() {
 
       <PhotoComplianceDiagram
         cases={HOME_CASES}
-        caption="A focused capture checklist before cropping. The white baseline and larger head framing reflect the recorded India Passport Seva preset; always confirm the current official requirement."
+        caption="A focused capture checklist before cropping. The white baseline and larger head framing reflect India's under-four print and overseas ICAO guidance; ordinary adults are photographed at the PSK/POPSK."
       />
 
       <h2>Concrete output example</h2>

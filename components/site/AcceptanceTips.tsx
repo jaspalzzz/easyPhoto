@@ -40,7 +40,7 @@ export function DoDontStrip({
   );
 }
 
-/** Country passport/visa "get accepted" tips, derived from the country's spec. */
+/** Country passport/visa preparation tips, derived from the country's spec. */
 export function AcceptanceTips({ spec }: { spec: CountrySpec }) {
   const glassesAllowed =
     spec.glasses === true ||
@@ -49,9 +49,9 @@ export function AcceptanceTips({ spec }: { spec: CountrySpec }) {
   return (
     <section className="rounded-xl border border-hairline bg-card p-5">
       <DoDontStrip
-        title={`Before you upload — what gets ${spec.label} photos accepted`}
+        title={`Before you upload — ${spec.label} photo preparation checklist`}
         dos={[
-          "A plain, evenly lit background to start (we apply the official colour)",
+          "A plain, evenly lit background to start (we apply the selected colour)",
           "Face the camera straight on, both ears roughly visible",
           "Neutral expression, mouth closed, eyes open",
           "A recent photo, taken within the last 6 months",
@@ -84,7 +84,7 @@ export function ExamSubmitTips({
   return (
     <section className={`space-y-4 rounded-xl border border-hairline bg-card p-5 ${className}`}>
       <DoDontStrip
-        title="What gets the photo accepted"
+        title="Photo preparation checklist"
         dos={[
           "Plain, evenly lit light background",
           "Face straight on, neutral expression, both eyes open",
@@ -99,7 +99,7 @@ export function ExamSubmitTips({
       {hasSignature && (
         <div className="border-t border-hairline pt-4">
           <DoDontStrip
-            title="What gets the signature accepted"
+            title="Signature preparation checklist"
             dos={[
               "Black or blue ink on plain white paper",
               "Signed large and clear, photographed in good light",

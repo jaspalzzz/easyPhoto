@@ -21,7 +21,7 @@ const SIGNALS = [
   },
   {
     icon: BadgeCheck,
-    title: "Automatic compliance check",
+    title: "Automated photo checks",
     body: "Head size, framing and resolution are checked against the spec before you download.",
     tile: "bg-[hsl(212_88%_48%/0.14)] text-[hsl(212_90%_44%)]",
   },
@@ -67,7 +67,7 @@ export function TrustPills({ className }: { className?: string }) {
     { icon: ShieldCheck, label: "100% Private" },
     { icon: Gift,        label: "Free to use"  },
     { icon: ImageOff,    label: "No watermark" },
-    { icon: BadgeCheck,  label: "Compliance checked" },
+    { icon: BadgeCheck,  label: "No measurable issues detected" },
   ];
   return (
     <div className={cn("flex flex-wrap items-center justify-center gap-2", className)}>

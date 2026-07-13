@@ -18,7 +18,7 @@ const REASONS: Reason[] = [
   { Icon: EyeOff,    label: "Eyes not visible",       detail: "Eyes covered, closed or hair/glare blocking eyes"   },
 ];
 
-const AI_CHECKS = [
+const AUTOMATED_CHECKS = [
   "Checking head size & framing",
   "Verifying background",
   "Analyzing lighting & clarity",
@@ -38,9 +38,9 @@ const RESULTS = [
 
 interface TrustItem { Icon: LucideIcon; title: string; sub: string; }
 const TRUST_ITEMS: TrustItem[] = [
-  { Icon: ShieldCheck, title: "Spec-Checked",      sub: "Passes all measurable checks"          },
+  { Icon: ShieldCheck, title: "Checked for measurable requirements", sub: "No measurable issues detected" },
   { Icon: Lock,        title: "100% Private",      sub: "Your photos never leave your device"   },
-  { Icon: Zap,         title: "Instant Results",   sub: "Prepare spec-checked photos in seconds" },
+  { Icon: Zap,         title: "On-device results", sub: "Review measurable photo properties"    },
   { Icon: Users,       title: "No Account Needed", sub: "Free to use — no signup, no watermark" },
 ];
 
@@ -87,8 +87,8 @@ export function WhyRejected() {
             <span className="text-cta-text">rejected</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[14.5px] leading-relaxed text-muted-foreground">
-            Most applications get rejected over these common mistakes.
-            easyPhoto flags them and auto-corrects size, background and framing.
+            These measurable photo problems can conflict with listed requirements.
+            easyPhoto flags measurable issues and can adjust size, background and framing.
           </p>
         </div>
 
@@ -120,19 +120,19 @@ export function WhyRejected() {
             </div>
           </div>
 
-          {/* ── ARROW 1: rejection → AI (red dashed) ── */}
+          {/* ── ARROW 1: problems → automated checks (red dashed) ── */}
           <div className="hidden items-center justify-center lg:flex">
             <RedArrow />
           </div>
 
-          {/* ── MIDDLE — AI compliance analysis ── */}
+          {/* ── MIDDLE — automated photo analysis ── */}
           <div className="flex h-full flex-col rounded-2xl border border-hairline bg-card p-5">
             <div className="mb-4 flex items-center gap-2">
               <Sparkles className="h-[15px] w-[15px] text-cta-text" strokeWidth={2} />
-              <h3 className="text-[13px] font-bold text-brand">AI Compliance Analysis</h3>
+              <h3 className="text-[13px] font-bold text-brand">Automated photo checks</h3>
             </div>
 
-            {/* AI chip — dark navy + gold, sized to fill the mid-section */}
+            {/* Automated-check chip — dark navy + gold */}
             <div className="relative mx-auto flex h-[200px] w-[200px] flex-shrink-0 items-center justify-center">
               <div className="absolute h-full w-full rounded-full border border-brand/10" />
               <div className="absolute h-[155px] w-[155px] rounded-full border border-brand/15" />
@@ -141,7 +141,7 @@ export function WhyRejected() {
                 className="relative z-10 flex h-[90px] w-[90px] flex-col items-center justify-center gap-1.5 rounded-[20px] shadow-xl"
                 style={NAVY}
               >
-                <span className="text-[1.7rem] font-black leading-none tracking-tight text-cta">AI</span>
+                <span className="text-[1.7rem] font-black leading-none tracking-tight text-cta">✓</span>
                 <div className="flex gap-1">
                   {[0, 1, 2].map((i) => (
                     <span key={i} className="h-1 w-1 rounded-full bg-white/30" />
@@ -152,7 +152,7 @@ export function WhyRejected() {
 
             {/* Check items — fill remaining height */}
             <div className="mt-4 flex flex-1 flex-col justify-between">
-              {AI_CHECKS.map((check) => (
+              {AUTOMATED_CHECKS.map((check) => (
                 <div key={check} className="flex items-center gap-2.5 py-1">
                   <CheckCircle2 className="h-4 w-4 shrink-0 text-cta-text" strokeWidth={2} />
                   <span className="flex-1 text-[12.5px] text-ink">{check}</span>
@@ -164,12 +164,12 @@ export function WhyRejected() {
             </div>
           </div>
 
-          {/* ── ARROW 2: AI → compliant (gold dashed) ── */}
+          {/* ── ARROW 2: checks → prepared result (gold dashed) ── */}
           <div className="hidden items-center justify-center lg:flex">
             <GoldArrow />
           </div>
 
-          {/* ── RIGHT — compliant photo + check results ── */}
+          {/* ── RIGHT — prepared photo + check results ── */}
           <div className="flex h-full flex-col gap-4">
 
             {/* Photo card */}
@@ -177,7 +177,7 @@ export function WhyRejected() {
               <div className="mb-3 flex items-center gap-1.5">
                 <CheckCircle2 className="h-[15px] w-[15px] text-cta-text" strokeWidth={2} />
                 <h3 className="text-[13px] font-semibold text-brand">
-                  Spec-checked photo
+                  Checked for measurable requirements
                   <span className="ml-1 font-medium text-muted-foreground">(No detectable issues)</span>
                 </h3>
               </div>
@@ -185,7 +185,7 @@ export function WhyRejected() {
                 <div className="w-[140px] overflow-hidden rounded-xl border border-hairline">
                   <Image
                     src="/images/sample6_after_280.webp"
-                    alt="Sample AI-corrected passport photo that passes the listed checks"
+                    alt="Sample passport photo with no measurable issues detected"
                     width={140}
                     height={187}
                     loading="lazy"

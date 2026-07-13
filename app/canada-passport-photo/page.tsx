@@ -44,7 +44,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "Can Indians in Canada use this for an Indian passport renewal?",
-    a: "Yes. For renewing an Indian passport through the Indian Consulate in Canada, you need an Indian-spec photo (35×45mm, plain white background). The Indian passport maker produces the correct format. For your Canadian permit or PR, use this Canada maker instead.",
+    a: "Use the current instructions from the Indian mission or its service provider in Canada. Overseas passport applications follow a separate mission workflow; the umbrella ICAO guidance specifies a 630×810 px white-background photograph, but the local submission method must be confirmed.",
   },
   {
     q: "How recent does a Canadian passport or visa photo need to be?",
@@ -173,15 +173,15 @@ export default function Page() {
         <div className="space-y-2">
           <h2 className="text-lg font-semibold">Canada photo for Indians in Canada</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Indian nationals in Canada often need two different photos simultaneously: a Canadian
-            photo (35×45mm, white background) for their IRCC application or PR card, and an Indian
-            passport photo (35×45mm, plain white background, 80–85% face coverage) for renewing
-            their Indian passport through the Indian Consulate or VFS Global. Both formats use the
-            same 35×45mm size but differ in head coverage rules. Use the{" "}
+            A Canadian immigration photo and an Indian passport-renewal photo are
+            separate workflows. For the Indian renewal, follow the current Indian
+            mission or service-provider instructions; the umbrella overseas ICAO
+            guidance specifies a 630×810 px white-background photograph with
+            80–85% face coverage, but the local submission method may differ. Use the{" "}
             <Link href="/canada-passport-photo-maker/" className="text-brand hover:underline">Canada maker</Link>{" "}
-            for IRCC documents and the{" "}
+            for IRCC documents and consult the{" "}
             <Link href="/india-passport-photo-maker/" className="text-brand hover:underline">India maker</Link>{" "}
-            for Indian passport renewals.
+            only after confirming the Indian mission&apos;s requested format.
           </p>
         </div>
 

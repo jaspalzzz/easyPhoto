@@ -1,7 +1,7 @@
 import type { ComplianceReport, CheckStatus } from "@/lib/compliance";
 
 /**
- * Renders a shareable "compliance check" result card to a PNG blob.
+ * Renders a shareable pre-submission check result card to a PNG blob.
  *
  * Privacy first: the card NEVER contains the user's photo or signature — only
  * the verdict, the per-rule checks, and the easyphoto.in mark. It's the artifact
@@ -33,9 +33,9 @@ const STATUS_COLOR: Record<CheckStatus, string> = {
 };
 
 const VERDICT_HEADLINE: Record<CheckStatus, string> = {
-  pass: "Looks good",
-  warn: "Worth a check",
-  fail: "Likely to be rejected",
+  pass: "No measurable issues detected",
+  warn: "Review the measurements",
+  fail: "Measurable issues detected",
 };
 
 const SANS =
@@ -151,7 +151,7 @@ export async function buildComplianceCard(opts: {
   let y = PAD + 144;
   ctx.fillStyle = C.inkSoft;
   ctx.font = `600 24px ${MONO}`;
-  ctx.fillText("COMPLIANCE CHECK", PAD, y);
+  ctx.fillText("PRE-SUBMISSION CHECK", PAD, y);
 
   // Title
   y += 64;

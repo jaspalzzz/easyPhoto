@@ -21,7 +21,7 @@ const TABS: Tab[] = [
   {
     id: "document", label: "Document Photos", Icon: User,
     tools: [
-      { title: "Passport Photo Maker",  desc: "All countries & official specs",        href: "/passport-photo/",               Icon: CreditCard    },
+      { title: "Passport Photo Maker",  desc: "Country presets with published sources", href: "/passport-photo/",               Icon: CreditCard    },
       { title: "LinkedIn Photo Maker",  desc: "Professional headshots",                href: "/tools/linkedin-photo/",         Icon: UserCircle    },
       { title: "Resume / CV Photo",     desc: "Job applications & CVs",                href: "/tools/resume-photo/",           Icon: FileText      },
       { title: "Photo Print Sheet",     desc: "4×6 inch, A4 & more sizes",            href: "/tools/print-sheet/",            Icon: Printer       },

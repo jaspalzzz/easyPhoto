@@ -61,7 +61,7 @@ export default function EditorialPolicyPage() {
         <ul className="list-disc space-y-2 pl-5">
           <li>Use primary official sources where they are available.</li>
           <li>Do not describe easyPhoto as a government service or official tool.</li>
-          <li>Do not promise that a prepared file will be accepted.</li>
+          <li>Do not promise a favourable application decision for a prepared file.</li>
           <li>Separate measurable image properties from visual estimates.</li>
           <li>Tell readers to confirm the current application instructions.</li>
         </ul>

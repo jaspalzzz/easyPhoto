@@ -84,7 +84,7 @@ export default function HomePage() {
             {/* Left — value proposition */}
             <div className="hero-enter max-w-xl">
               <span className="eyebrow">
-                Passport · Visa · ID Card · Exam — exact to the millimetre
+                Passport · Visa · ID Card · Exam — prepared to selected dimensions
               </span>
               <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
                 Document photos{" "}

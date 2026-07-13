@@ -19,7 +19,7 @@ import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { downloadBlob } from "@/lib/download";
 
 const SPEC_OPTIONS = [
-  { id: "india", label: "India Passport (35×45 mm)" },
+  { id: "india", label: "India — child below 4 (35×45 mm)" },
   { id: "us", label: "USA Passport (51×51 mm)" },
   { id: "uk", label: "UK Passport (35×45 mm)" },
   { id: "eu", label: "EU / Schengen (35×45 mm)" },

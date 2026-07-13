@@ -403,7 +403,7 @@ export default function ToolsHubPage() {
         <h2 className="text-lg font-semibold">Passport &amp; visa photos</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Need a compliant ID photo? Use the country-aware makers for exact size,
-          correct background and a compliance check.
+          selected background and a pre-submission photo check.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link

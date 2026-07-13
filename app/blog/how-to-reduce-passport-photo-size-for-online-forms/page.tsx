@@ -48,7 +48,7 @@ export default function Page() {
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>Use the exact minimum, maximum, dimensions and format shown by the specific application portal; there is no universal government-form limit.</li>
-          <li>For example, the verified SSC registry entry is 20–50&nbsp;KB, while the verified Passport Seva preset is 10–250&nbsp;KB and exactly 630×810&nbsp;px.</li>
+          <li>For example, the verified SSC registry entry is 20–50&nbsp;KB, while OCI uses a square 200–900&nbsp;px JPEG/JPG up to 200&nbsp;KB.</li>
           <li>Use a target-KB tool that finds the right compression automatically — never guess a manual quality slider.</li>
         </ul>
       </div>
@@ -65,7 +65,7 @@ export default function Page() {
           {[
             ["SSC photo", "20–50 KB — official SSC source"],
             ["IBPS photo", "20–50 KB — official IBPS source"],
-            ["Passport Seva online photo", "10–250 KB, 630×810 px JPG — official Passport Seva source"],
+            ["OCI online photo", "Square 200–900 px JPEG/JPG, up to 200 KB — official OCI source"],
             ["Schengen portal upload", "No shared cap in the registry; confirm on the consulate/VFS form"],
           ].map(([type, limit]) => (
             <tr key={type} className="border-b border-hairline/60">
@@ -79,18 +79,17 @@ export default function Page() {
         Always read the form&apos;s instructions. Limits vary, and some portals
         set a minimum as well as a maximum. Official sources:{" "}
         <a href="https://ssc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>,{" "}
-        <a href="https://www.ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>, and{" "}
-        <a href="https://www.passportindia.gov.in/" className="text-brand underline" target="_blank" rel="noopener noreferrer">Passport Seva</a>.
+        <a href="https://www.ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>, and the{" "}
+        <a href="https://ociservices.gov.in/onlineOCI/onlineOCI/faq" className="text-brand underline" target="_blank" rel="noopener noreferrer">OCI Services FAQ</a>.
       </p>
 
       <h2>Concrete output example</h2>
       <p>
-        If the application requires Passport Seva&apos;s recorded online preset,
-        prepare the crop first and then export a 630×810&nbsp;px JPG within
-        10–250&nbsp;KB. The result keeps the required dimensions; compression
-        changes JPEG encoding quality, not the 630×810&nbsp;px canvas. For SSC,
-        target the verified 20–50&nbsp;KB band instead and confirm the current
-        notice on the official SSC source.
+        If an OCI application requires its published photo format, prepare a
+        square JPEG/JPG between 200×200 and 900×900&nbsp;px and keep it at or
+        below 200&nbsp;KB. Compression changes JPEG encoding quality, not the
+        square canvas. For SSC, target the verified 20–50&nbsp;KB band instead
+        and confirm the current notice on the official SSC source.
       </p>
 
       <h2>How to compress without losing sharpness</h2>

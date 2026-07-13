@@ -88,7 +88,7 @@ const TRUST_SIGNALS = [
   { Icon: ShieldCheck, label: "100% Private",         sub: "Files never leave your device" },
   { Icon: Zap,         label: "Browser Processing",   sub: "No uploads, no waiting"        },
   { Icon: Lock,        label: "No Data Stored",        sub: "We don't keep your files"      },
-  { Icon: BadgeCheck,  label: "Spec-Checked",           sub: "Against published requirements" },
+  { Icon: BadgeCheck,  label: "Checked for measurable requirements", sub: "Against published requirements" },
 ] as const;
 
 const linkCls = "text-sm text-white/70 transition-colors hover:text-[hsl(var(--cta))]";

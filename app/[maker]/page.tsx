@@ -63,7 +63,7 @@ export async function generateMetadata({
  */
 const GOOD_TO_KNOW: Record<string, string> = {
   india:
-    "India is strict about a plain white background and a large, well-lit face. For the older pasted paper form you'll need a genuine photo-lab print, since a home printout is often refused. (The OCI card and the Indian e-Visa use different photos.)",
+    "Ordinary adult fresh/reissue applicants in India are photographed at the PSK/POPSK and do not upload or carry a photo. The 35×45mm white-background print is for a child below four; overseas missions, OCI and Indian e-Visa use separate workflows.",
   us: "The US wants a plain white or off-white background and no glasses. Use a photo from the last six months, and leave a little space above your head so there's room to crop.",
   canada:
     "This covers Canada's 35×45mm photo for visas, study and work permits, PR/Express Entry and online passport renewal. The printed passport booklet photo is different: it needs a commercial photographer's certification and a guarantor signature, which a self-serve tool can't provide.",

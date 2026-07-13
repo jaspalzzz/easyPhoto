@@ -134,7 +134,7 @@ export function DocPhotoLanding({
         {/* Section header */}
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
-            <span className="eyebrow text-brand">Official specifications</span>
+            <span className="eyebrow text-brand">Requirements published by the named authority</span>
             <h2 className="mt-1 text-xl font-semibold tracking-tight text-ink">
               {kind === "passport" ? "Passport" : "Visa"} photo size by country
             </h2>

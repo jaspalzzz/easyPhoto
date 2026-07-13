@@ -168,7 +168,7 @@ export default function Page() {
             ["NVSP / ECI (Voter ID)", "Not specified", "File size (10–200 KB), JPEG format"],
             ["Sarathi (Driving Licence)", "Not specified", "File size (≤40 KB photo, ≤20 KB sig)"],
             ["UPSC / SSC / IBPS exam portals", "Not specified", "File size in KB and pixel dimensions"],
-            ["Passport Seva (MEA)", "Not specified", "Pixel dims, JPEG format, file size"],
+            ["India overseas passport guidance", "Not specified", "630×810 px and photo composition"],
           ].map(([portal, dpi, checked]) => (
             <tr key={portal} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{portal}</td>

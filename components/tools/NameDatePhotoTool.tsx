@@ -72,7 +72,7 @@ function presetFromSpec(id: string, label: string, specId: string): Preset {
 const PRESETS: Preset[] = [
   presetFromSpec("ssc", "SSC Preset", "ssc"),
   presetFromSpec("upsc", "UPSC Preset", "upsc"),
-  presetFromSpec("passport", "Passport Seva", "passport-seva"),
+  presetFromSpec("passport", "Overseas passport (conditional)", "passport-seva"),
   // Free-form crop: NaN is Cropper.js's "no aspect-ratio lock" value, so the
   // box can be dragged to ANY size — including the full width/height of a tall
   // screenshot or an odd source photo. The spec presets above stay locked to

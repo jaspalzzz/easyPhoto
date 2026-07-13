@@ -35,7 +35,7 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
 
   return (
     <div className="space-y-3.5">
-      <h3 className="eyebrow">Compliance check</h3>
+      <h3 className="eyebrow">Pre-submission photo check</h3>
 
       {retake && (
         <div className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-xs leading-relaxed text-amber-900">
@@ -105,8 +105,8 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
 
       <p className="flex items-start gap-2 text-xs leading-relaxed text-ink-faint">
         <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-        Automated checks can&apos;t catch everything (expression, glasses glare,
-        shadows). Review against the official requirements before submitting.
+        Automated checks cannot assess every visual requirement or predict an
+        authority&apos;s decision. Review the current application instructions before submitting.
       </p>
     </div>
   );

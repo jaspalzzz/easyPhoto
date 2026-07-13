@@ -13,7 +13,7 @@ const midpoint = (id: "india" | "uk") => {
   return (band.min + band.max) / 2;
 };
 const BACKGROUND_CASES: PhotoComplianceCase[] = [
-  { status: "pass", title: "India: white", reason: "Plain white matches the recorded India preset.", variant: "correct-baseline", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("india") },
+  { status: "pass", title: "India: white", reason: "White applies to the under-four print and overseas ICAO guidance.", variant: "correct-baseline", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("india") },
   { status: "pass", title: "UK: light cream", reason: "Light cream matches the recorded UK options.", variant: "correct-baseline", background: COUNTRY_SPECS.uk.background.hex, headPercent: midpoint("uk") },
   { status: "fail", title: "UK on white", reason: "White is the wrong choice for the recorded UK preset.", variant: "background-wrong-colour", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("uk") },
   { status: "fail", title: "Patterned wall", reason: "Patterns prevent a plain, uniform background.", variant: "background-busy" },
@@ -46,7 +46,7 @@ export default function Page() {
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
-          <li><strong>White / off-white:</strong> US, India, Canada, Australia.</li>
+          <li><strong>White / off-white:</strong> US, Canada and Australia; India&apos;s under-four print and overseas ICAO guidance use white.</li>
           <li><strong>Light grey or cream:</strong> the UK — <strong>pure white is rejected</strong>.</li>
           <li><strong>Light grey:</strong> safest for Schengen (Switzerland rejects white).</li>
           <li>Whatever the colour, it must be a <strong>single even tone with no shadows</strong>.</li>
@@ -65,7 +65,7 @@ export default function Page() {
         background while keeping your canvas dimensions fixed—select white and a
         1024 × 1024 px photo stays 1024 × 1024 px, with only the background
         changed. For an actual application, the next step is country-specific
-        cropping—for example, India&apos;s recorded print frame is 35 × 45 mm, while
+        cropping—for example, India&apos;s under-four print frame is 35 × 45 mm, while
         the U.S. frame is 2 × 2 inches (51 × 51 mm).
       </p>
 
@@ -81,7 +81,7 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             ["United States", "Plain white or off-white", "/us-passport-photo-maker/"],
-            ["India", "Plain white", "/india-passport-photo-maker/"],
+            ["India (under-four print / overseas)", "Plain white", "/india-passport-photo-maker/"],
             ["United Kingdom", "Light grey or cream (pure white rejected)", "/uk-passport-photo-maker/"],
             ["Canada", "Plain white", "/canada-passport-photo-maker/"],
             ["Australia", "Plain white or light grey", "/australia-passport-photo-maker/"],
@@ -100,20 +100,20 @@ export default function Page() {
       <p className="text-sm text-ink-soft">
         Official sources:{" "}
         <a href="https://travel.state.gov/content/travel/en/passports/how-apply/photos.html" target="_blank" rel="noopener noreferrer">U.S. Dept. of State</a>,{" "}
-        <a href="https://www.passportindia.gov.in" target="_blank" rel="noopener noreferrer">Passport Seva (India)</a>,{" "}
+        <a href="https://www.passportindia.gov.in/AppOnlineProject/pdf/GUIDELINES%20FOR%20CAPTURING%20PHOTOGRAPHS%20FOR%20MINORS_v2.1.pdf" target="_blank" rel="noopener noreferrer">Passport Seva under-four guidance</a>,{" "}
         <a href="https://www.gov.uk/photos-for-passports" target="_blank" rel="noopener noreferrer">GOV.UK</a>.
       </p>
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
           src="/images/passport-photo-background-color.webp"
-          alt="Professional portrait background comparison showing white (India/US), light grey (UK), and cream backgrounds side by side"
+          alt="Portrait background comparison showing white for the US and India under-four or overseas guidance, plus light grey and cream for the UK"
           width={1024}
           height={1024}
           className="w-full h-auto"
         />
         <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
-          The three most common passport photo backgrounds: white (India, US), light grey (UK), and cream. Each changes how the photo is assessed against national specs.
+          Common passport-photo backgrounds: white for the US and India&apos;s under-four or overseas guidance, plus light grey and cream for the UK.
         </figcaption>
       </figure>
 
@@ -178,11 +178,11 @@ export default function Page() {
           items={[
             {
               q: "Can I use a plain white wall for my passport photo?",
-              a: "Only for countries that require white (US, India, Canada). The UK rejects pure white. And a white wall shot in warm indoor light often comes out cream or grey, with a shadow behind the head — both fail the 'single even tone' rule.",
+              a: "Only when the relevant authority requires white. The US uses white or off-white; India's under-four print and overseas ICAO guidance use white. Check the current document-specific source before applying.",
             },
             {
               q: "What background colour does a US or India passport photo need?",
-              a: "Both require plain white (the US also accepts off-white). It must be a single, even, shadow-free tone.",
+              a: "The US uses plain white or off-white. India's under-four print and overseas ICAO guidance use plain white; ordinary adult domestic applicants are photographed at the PSK/POPSK.",
             },
             {
               q: "Why does the UK reject white passport-photo backgrounds?",

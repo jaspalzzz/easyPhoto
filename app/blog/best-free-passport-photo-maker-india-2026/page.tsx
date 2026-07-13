@@ -19,7 +19,8 @@ export default function Page() {
       <p>
         Most online passport photo tools have at least one of three problems: they charge ₹600 per
         photo, they upload your biometric face photo to a remote server, or they use the US 2×2 inch
-        spec instead of India&apos;s actual 35×45 mm requirement. If you&apos;re applying for a
+        spec without explaining that India&apos;s 35×45 mm print applies to children below four,
+        while ordinary adults are photographed at the PSK/POPSK. If you&apos;re preparing a
         passport, OCI card, or a government exam form, none of those is acceptable. Here are seven
         tools compared on the criteria that matter: cost, privacy, and whether they actually know
         the India spec.
@@ -75,7 +76,7 @@ export default function Page() {
           {[
             ["✓ Completely free, no sign-up", "#15803d"],
             ["✓ On-device — nothing uploaded", "#15803d"],
-            ["✓ Exact Passport Seva 35×45 mm", "#15803d"],
+            ["✓ 35×45 mm under-four print", "#15803d"],
             ["✓ SSC / IBPS / UPSC KB presets", "#15803d"],
             ["✓ Instant re-crop, any time", "#15803d"],
           ].map(([text, color], i) => (
@@ -93,19 +94,19 @@ export default function Page() {
       <h2>What the India passport photo spec actually requires</h2>
 
       <p>
-        The Passport Seva portal (passportindia.gov.in) specifies a{" "}
-        <strong>35×45 mm JPG</strong> with a plain white background, the face taking up 70–80% of
-        the frame, and the file under 1 MB. This is not the same as the US 2×2 inch (51×51 mm)
-        spec, a mistake several tools make for their &quot;India&quot; preset. For exam portals
-        the rules are stricter: SSC requires 20–50 KB at 275×354 px, IBPS requires 20–50 KB at
-        200×230 px, UPSC requires 20–300 KB at a minimum of 350×350 px. All set by each
-        board&apos;s own notification.
+        Passport Seva says an ordinary adult fresh/reissue applicant is photographed
+        and fingerprinted at the PSK/POPSK, so no passport photo is uploaded or
+        carried. A child below four must carry a{" "}
+        <strong>35×45 mm colour print on a white background</strong>. Indian
+        missions abroad use separate ICAO guidance, and OCI and e-Visa have their
+        own square-photo uploads. Exam portals also use separate dimensions and KB
+        bands set by each board&apos;s notification.
       </p>
 
       <p>
         This is a quick summary; for the complete, regularly-verified Passport Seva
-        rules — print vs digital sizes, OCI and NRI differences, and the exact
-        pixel and KB limits — see our{" "}
+        workflows — domestic centre capture, the below-four exception, overseas
+        guidance, OCI and e-Visa differences — see our{" "}
         <Link href="/blog/indian-passport-photo-size-rules/">Indian passport photo size &amp; rules</Link>{" "}
         guide, the canonical reference we keep updated.
       </p>
@@ -117,7 +118,7 @@ export default function Page() {
               <th className="px-4 py-3 text-left font-semibold text-ink">Tool</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">Cost</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">Server upload?</th>
-              <th className="px-4 py-3 text-left font-semibold text-ink">India 35×45 mm</th>
+              <th className="px-4 py-3 text-left font-semibold text-ink">India under-four print</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">Exam tools</th>
             </tr>
           </thead>
@@ -185,7 +186,7 @@ export default function Page() {
       </p>
 
       <p>
-        easyPhoto makes passport photos (India 35×45 mm, US 2×2 in, UK, Canada, Schengen and 20+
+        easyPhoto prepares the India 35×45 mm under-four print and passport photos for the US, UK, Canada, Schengen and 20+
         other countries), resizes exam photos to the exact KB and pixel limits of 40+ Indian exam
         portals (SSC, IBPS, UPSC, SBI, RRB, NTA and more), and handles PDF compression, signature
         resize, and format conversion. Nothing is uploaded: every operation runs in your browser
@@ -205,9 +206,10 @@ export default function Page() {
       <p>
         PassportSizePhoto.in is a free, India-native passport photo tool built on WebAssembly with
         a verifiable &quot;zero-data-transfer&quot; privacy model: processing runs entirely in
-        the browser and photos are never sent to a server. The India spec is implemented at the
-        pixel level: 630×810 px, 10–250 KB, matching the Passport Seva portal&apos;s exact upload
-        constraints. The tool claims DPDPA (India&apos;s Digital Personal Data Protection Act)
+        the browser and photos are never sent to a server. It offers a 630×810 px,
+        10–250 KB preset, but the official 630×810 instruction we found applies to
+        overseas Indian-mission ICAO guidance; the 250 KB cap is not confirmed as
+        an ordinary Passport Seva requirement. The tool claims DPDPA (India&apos;s Digital Personal Data Protection Act)
         compliance alongside GDPR, and a Hindi-language version is available.
       </p>
 
@@ -266,21 +268,21 @@ export default function Page() {
         use machine learning to adjust background, lighting, and expression automatically. They
         generally require server upload and payment before you can download the result.
         AIPassportPhoto&apos;s India page (as of June 2026) lists the spec as 2×2 inches,
-        the US size, not the Indian Passport Seva spec of 35×45 mm. If spec accuracy matters, it
-        is worth verifying what a tool claims before paying.
+        the US size, not the 35×45 mm print Passport Seva requires for a child
+        below four. Ordinary adults are photographed at the PSK/POPSK.
       </p>
 
       <h2>PhotoGov — check which India page you land on</h2>
 
       <p>
         PhotoGov (photogov.net) serves 1.8 million users across 200 countries and 900+ document
-        types. It is a large, well-established tool. The India 35×45 mm Passport Seva spec exists
+        types. It is a large, well-established tool. An India 35×45 mm crop exists
         on their dedicated page (/documents/in-passport-35x45mm-photo/). However, their generic
         India passport page (/documents/in-passport-photo/) showed 2×2 inches (51×51 mm) — the
         US specification — with a light grey background rather than the India-mandated white. This
         is a verifiable content discrepancy on their site (confirmed June 2026). If you use
-        PhotoGov for an Indian passport photo, navigate to the specific 35×45 mm page, not the
-        generic India page.
+        PhotoGov for the below-four print, navigate to the specific 35×45 mm page,
+        not the generic India page.
       </p>
 
       <p>
@@ -315,9 +317,9 @@ export default function Page() {
 
       <ul>
         <li>
-          <strong>Indian passport or OCI card application:</strong> easyPhoto or
-          PassportSizePhoto.in. Both are free, India-spec-correct, and don&apos;t upload your
-          photo.
+          <strong>Under-four passport print:</strong> easyPhoto or
+          PassportSizePhoto.in can prepare a 35×45 mm crop without uploading your
+          source image. Use a dedicated square preset for OCI.
         </li>
         <li>
           <strong>SSC, IBPS, UPSC, SBI, RRB, NTA exam form:</strong> easyPhoto, the only tool
@@ -334,7 +336,7 @@ export default function Page() {
         </li>
         <li>
           <strong>You found PhotoGov and want to use it:</strong> Navigate specifically to their
-          India 35×45 mm page. Their generic India passport page shows the US spec. Or use a
+          India 35×45 mm page for the below-four print. Their generic India passport page shows the US spec. Or use a
           free on-device tool and skip the server upload entirely.
         </li>
         <li>
@@ -350,19 +352,20 @@ export default function Page() {
         <strong>Is the India passport photo size 35×45 mm or 2×2 inches?</strong>
       </p>
       <p>
-        35×45 mm, per Passport Seva (passportindia.gov.in). The 2×2 inch (51×51 mm) size is the
-        US specification. Some tools incorrectly use the US size for their India preset. Check
-        the dimensions before submitting.
+        Passport Seva requires a 35×45 mm white-background print for a child below
+        four. An ordinary adult domestic applicant supplies neither size because
+        the photo is captured at the PSK/POPSK. A 2×2 inch square belongs to
+        separate workflows such as OCI.
       </p>
 
       <p>
         <strong>Can I use a phone photo for my Indian passport application?</strong>
       </p>
       <p>
-        Yes. Passport Seva accepts digital photos uploaded during the online application. The photo
-        must be a clear, recent JPG with a plain white background, face centred, and no glasses.
-        A phone camera in good light is sufficient. Resize it to 35×45 mm and under 1 MB before
-        uploading.
+        For an ordinary adult domestic application, no: Passport Seva captures the
+        photograph at the PSK/POPSK. A phone image can be prepared for the
+        below-four print or an overseas workflow only when that workflow&apos;s
+        current instructions ask for one.
       </p>
 
       <p>

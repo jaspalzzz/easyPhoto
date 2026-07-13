@@ -66,7 +66,7 @@ const FOOTER_SIGNALS = [
   { Icon: ShieldCheck, label: "100% Private",         sub: "Your files never leave your device", iconBg: "bg-amber-100 dark:bg-amber-900/30",   iconText: "text-amber-700 dark:text-amber-400"  },
   { Icon: Zap,         label: "Browser Processing",   sub: "No uploads, no waiting",             iconBg: "bg-blue-100 dark:bg-blue-900/30",     iconText: "text-blue-700 dark:text-blue-400"    },
   { Icon: Lock,        label: "No Data Stored",       sub: "We don't store your files",          iconBg: "bg-emerald-100 dark:bg-emerald-900/30", iconText: "text-emerald-700 dark:text-emerald-400"},
-  { Icon: BadgeCheck,  label: "Spec-Checked",         sub: "Against published requirements",     iconBg: "bg-violet-100 dark:bg-violet-900/30", iconText: "text-violet-700 dark:text-violet-400" },
+  { Icon: BadgeCheck,  label: "Checked for measurable requirements", sub: "Against published requirements", iconBg: "bg-violet-100 dark:bg-violet-900/30", iconText: "text-violet-700 dark:text-violet-400" },
 ] as const;
 
 /* ═══════════════════════════════════════════════════════════════════════

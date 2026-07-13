@@ -18,7 +18,7 @@ export function RealTransformations() {
           Real Transformations
         </h2>
         <p className="mb-10 text-center text-[14px] text-muted-foreground">
-          See what the AI does to your photo in seconds.
+          Compare sample inputs with their automated prepared results.
         </p>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">

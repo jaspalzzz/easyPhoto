@@ -165,14 +165,16 @@ export default function Page() {
           <h2 className="text-lg font-semibold">Schengen photo for Indian visa applicants</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
             Indian nationals applying for a Schengen visa — whether for tourism, business, or
-            study — need the standard 35×45mm light-grey-background ICAO photo. This is different
-            from the Indian passport photo (35×45mm, plain white background, 80–85% face coverage).
-            If you are simultaneously renewing your Indian passport and applying for a Schengen
-            visa, you need two different photos. Use this maker for the Schengen photo and the{" "}
+            study — need the Schengen photo requested by the destination authority.
+            An Indian passport renewal abroad follows separate Indian-mission
+            instructions; the current umbrella ICAO guidance specifies a 630×810
+            px white-background photograph with 80–85% face coverage. If you are
+            handling both applications, do not reuse one output without checking
+            both authorities. Use this maker for the Schengen photo and the{" "}
             <Link href="/india-passport-photo-maker/" className="text-brand hover:underline">
               India passport maker
             </Link>{" "}
-            for the Indian renewal.
+            only when the Indian mission&apos;s instructions call for that preset.
           </p>
         </div>
 
