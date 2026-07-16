@@ -41,7 +41,7 @@ describe("specRegistry — provenance", () => {
 });
 
 describe("specRegistry — staleness", () => {
-  const today = "2026-06-08";
+  const today = "2026-07-16";
 
   it("treats needs-review / undated specs as stale", () => {
     expect(isSpecStale({ ...base, verification: "needs-review" }, 6, today)).toBe(true);
@@ -57,12 +57,17 @@ describe("specRegistry — staleness", () => {
 
   it("verified portals are NOT in the review list; unverified ones are", () => {
     const review = specsNeedingReview(6, today).map((s) => s.id);
-    // Verified against official sources on 2026-06-08:
-    expect(review).not.toContain("ssc");
+    // Recently verified against first-party sources:
+    expect(review).not.toContain("upsc");
     expect(review).not.toContain("ibps");
     expect(review).not.toContain("sbi");
-    // Still pending re-confirmation (conflicting/variable sources, or no
-    // fetchable primary source found as of 2026-07-01's verification pass):
+    // Current workflows use live capture or retain conditional/compatibility
+    // values that still need workflow-specific confirmation:
+    expect(review).toContain("ssc");
+    expect(review).toContain("passport-seva");
+    expect(review).toContain("rrb");
+    expect(review).toContain("voter-id");
+    // Other presets still pending re-confirmation:
     expect(review).toContain("itbp");
     expect(review).toContain("clat");
     // Not all are verified yet — the review list must be non-empty.
