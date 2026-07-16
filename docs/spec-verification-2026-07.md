@@ -19,6 +19,25 @@ Verified date for the completed India review: **2026-07-13**.
 | OCI content and preset | OCI uses an uploaded square photo at least 51 × 51 mm, 200–900 px with equal height and width, JPEG/JPG up to 200 KB, on a plain light-coloured background that is not white. | https://ociservices.gov.in/onlineOCI/onlineOCI/faq | OCI Services — Frequently Asked Questions | Not stated on live page | 2026-07-13 | Confirmed | Kept separate from Indian passport and e-Visa workflows. |
 | Indian e-Visa content and preset | The Indian e-Visa uses an uploaded square JPEG, 10 KB–1 MB, with a plain light-coloured or white background; the photo must be front-facing, centred, shadow-free and without spectacles. | https://indianvisaonline.gov.in/evisa/tvoa.html | Indian Visa Online — e-Visa | Page footer updated 2019-05-16 | 2026-07-13 | Confirmed | Kept separate from the Indian-citizen passport workflow. |
 
+## Phase 1 portal-preset audit
+
+The nine presets below were rechecked on **2026-07-16**. “Needs-review” is
+intentional where the public first-party source does not publish the stored
+digital limits or where the available numeric notice belongs to an older
+recruitment cycle.
+
+| URL | Claim | Official source URL | Source title | Source date | Verified date | Confidence | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| /exam-requirements/passport-seva/ | The overseas Indian-mission ICAO workflow specifies a 630×810 px colour photo on white with 80–85% face coverage. It does not publish the preset's 10–250 KB photo or 10–100 KB signature limits; ordinary domestic adult applications use PSK/POPSK capture instead. | https://embassy.passportindia.gov.in/pdf/Guidelines_for_ICAO_Compliant_Photographs_for_Passport_Applications.pdf | Guidelines for ICAO Compliant Photographs for Passport Applications | PDF undated; overseas notice effective 2025-09-01 | 2026-07-16 | Conditional | Kept needs-review. Pixel/composition scope is confirmed for overseas capture/upload; KB and signature fields remain explicitly unconfirmed. |
+| /exam-requirements/clat/ | CLAT 2026 requires a front-facing recent passport-size photograph with a plain background and a candidate signature, but its public instructions give no KB, pixel, DPI, format, ink or name/date limits. | https://consortiumofnlus.ac.in/clat-2026/ug-instructions.html | CLAT 2026 UG Instructions | CLAT 2026 cycle; page undated | 2026-07-16 | Unverified | Kept needs-review. The inherited 20–50 KB / 200×230 px and 10–20 KB / 140×60 px values are labelled compatibility values pending confirmation in the current application screen. |
+| /exam-requirements/army-agniveer/ | The Indian Army recruiting-year 2027 notice confirms an online application and a recent photograph upload, but gives no public KB, pixel, signature, format or name/date rule. The direct portal currently redirects public access to authentication. | https://www.telangana.gov.in/wp-content/uploads/2026/02/Recruitment-Notification-for-AGNIVEER-2027.pdf | Indian Army Agniveer Recruiting Year 2027 notification (Government of Telangana copy) | Registration opened 2026-02-13 | 2026-07-16 | Unverified | Kept needs-review. Removed the unsupported name/date flag; stored numeric values remain visibly unconfirmed pending the current candidate-portal validation rules. |
+| /exam-requirements/ccc-nielit/ | NIELIT's Version 1.11 guide specifies photo 5–50 KB, 132×170 px, 3.5×4.5 cm, 96–300 DPI, JPEG/JPG, recent colour on white; signature/LTI 5–20 KB, 170×132 px, 4.5×3.5 cm, 96–200 DPI, JPEG/JPG, black or blue ink on white. | https://nva.nielit.gov.in/ccc/CCC_ExamGuideLine.pdf | Guidelines and Instructions for Submission of Online Examination Application Form for DLC | Version 1.11 (2023); technical approvals dated 2021-10-20 and 2021-11-29 | 2026-07-16 | Confirmed | Upgraded to official and corrected both minima, both pixel dimensions, both aspect ratios, workflow copy and signature ink. No name/date rule is stated. |
+| /exam-requirements/dsssb/ | DSSSB Advertisement 02/2026 confirms a recent clear colour photo on plain white/off-white and a legible signature, but publishes no numeric photo/signature upload limits. Archived 2012 OARS instructions list photo 25–100 KB at 3.5×4.5 cm and signature 10–50 KB at 3.5×1.5 cm. | https://dsssb.delhi.gov.in/sites/default/files/DSSSB/circulars-orders/final_advt_02-2026_1.pdf<br>https://dsssbonline.nic.in/AdvtDetailFiles/doc_dsssb_english.pdf | DSSSB Advertisement 02/2026; archived OARS upload instructions | 2026-02-25; archived instructions associated with Advertisement 02/2012 | 2026-07-16 | Historical | Kept needs-review. Historical numeric values remain, with current-notice scope and a prompt to check the live OARS upload screen. |
+| /exam-requirements/bsf/ | SSC's 2026 Constable GD notice covers BSF and uses a live photograph capture with no photo KB/pixel upload. It specifies a 10–20 KB JPEG/JPG signature about 6×2 cm at 300 DPI. Those rules do not establish the stored 20–50 KB photo compatibility value for separate BSF HC/SI recruitment. | https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/notice_01122025.pdf | SSC Constable GD in CAPFs and SSF Examination 2026 notice | 2025-12-01 | 2026-07-16 | Conditional | Kept needs-review. The verified SSC-GD workflow is separated from BSF's post-specific recruitment portal and the unconfirmed photo value remains disclosed. |
+| /exam-requirements/itbp/ | The public ITBP recruitment portal and accessible post notices do not publish the preset's 20–50 KB / 200×230 px photo or 10–20 KB / 140×60 px signature rules. ITBP also participates in SSC Constable GD, which uses a different live-photo workflow. | https://recruitment.itbpolice.nic.in/rect/index.php | ITBP Recruitment Portal | Live portal; no specification date | 2026-07-16 | Unverified | Kept needs-review. Removed the unsupported “standard CAPF pattern” rationale and direct users to the current post-specific upload screen. |
+| /exam-requirements/epfo/ | EPFO's 2023 SSA advertisement specifies a 10–200 KB JPG photograph on a light-shade plain background with approximately 80% face coverage and no spectacles, plus a 4–30 KB JPG/JPEG running-hand signature. No newer SSA direct-recruitment notice is currently listed. | https://www.epfindia.gov.in/site_docs/PDFs/Recruitments_PDFs/Advertisement_for_SSA_24032023.pdf | Advertisement for the Post of Social Security Assistant in EPFO | Applications opened 2023-03-27 | 2026-07-16 | Historical | Kept needs-review because the values are cycle-bound. Scoped the preset to SSA rather than extending the 2023 values to Inspector recruitment. |
+| /exam-requirements/fci/ | FCI Advertisement 01/2022 Category III specifies photo 20–50 KB, preferred 200×230 px, 4.5×3.5 cm, JPG/JPEG on a light/preferably white background; signature 10–20 KB, preferred 140×60 px, JPG/JPEG in black ink. No current direct-recruitment notice is listed. | https://fci.gov.in/fci-storage/storage/app/uploads/653f851f7c7ba1698661663.pdf | FCI Advertisement 01/2022, Category III | Applications opened 2022-09-06 | 2026-07-16 | Historical | Kept needs-review because the source is cycle-bound. Corrected the photo dimensions/aspect ratio and removed the false statement that the notice lacked a photo KB limit. |
+
 ## Next-audit stubs
 
 These entries still need their own claim-level rows with a live-source date,
@@ -40,13 +59,13 @@ precise first-party source currently stored in lib/countrySpecs.ts.
 ### Government and exam portal registry
 
 - Core: ssc, upsc, rrb, ibps, sbi, nta, rbi, ctet
-- National/admissions: gate, ugc-net, csir-net, cat, clat, cuet
-- Defence: nda, cds, afcat, army-agniveer, airforce-agniveer, navy-agniveer
+- National/admissions: gate, ugc-net, csir-net, cat, cuet
+- Defence: nda, cds, afcat, airforce-agniveer, navy-agniveer
 - State PSC: uppsc, bpsc, mpsc, rpsc, tnpsc, kpsc, appsc, tgpsc, wbpsc, gpsc, hpsc, kerala-psc
 - Banking/insurance: nabard, lic, niacl, irdai
-- Police/CAPF: up-police, bsf, crpf, cisf, itbp
-- Services/other recruitment: pan, driving-licence, voter-id, ccc-nielit, dsssb, upsssc, epfo, fci
-- Travel/document uploads: ds160; recheck oci and passport-seva on the normal review cadence
+- Police/CAPF: up-police, crpf, cisf
+- Services/other recruitment: pan, driving-licence, voter-id, upsssc
+- Travel/document uploads: ds160; recheck oci on the normal review cadence
 
 For each entry, audit photo/signature KB bands, pixel dimensions, aspect ratio,
 format, DPI, name/date or slate rules, workflow context and the precise
