@@ -286,11 +286,11 @@ export function ExamPackageTool() {
   const stepIndex = STEPS.findIndex((s) => s.id === step);
 
   return (
-    <Card>
-      <CardContent className="space-y-6 p-6">
+    <Card className="min-w-0">
+      <CardContent className="min-w-0 space-y-6 p-4 sm:p-6">
         {/* Stepper — premium progress bar with connecting fill */}
         <nav aria-label="Progress">
-          <ol role="list" className="flex items-center">
+          <ol role="list" className="flex min-w-0 items-center">
             {STEPS.map((s, i) => (
               <React.Fragment key={s.id}>
                 <li
@@ -352,10 +352,10 @@ export function ExamPackageTool() {
           })).filter((g) => g.items.length > 0);
 
           return (
-          <div className="space-y-6">
+          <div className="min-w-0 space-y-6">
             <div className="flex items-start gap-3">
               <ToolIconTile name="FileStack" category="exam" />
-              <div>
+              <div className="min-w-0">
                 <h3 className="text-base font-semibold text-ink">
                   Which exam or form are you applying for?
                 </h3>
@@ -395,9 +395,9 @@ export function ExamPackageTool() {
             )}
 
             {filteredGroups.map((group) => (
-              <div key={group.cat} className="space-y-2.5">
+              <div key={group.cat} className="min-w-0 space-y-2.5">
                 <h4 className="eyebrow text-ink-soft">{group.label}</h4>
-                <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid min-w-0 grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
                   {group.items.map((s) => {
                     const sig = sigKbText(s);
                     return (
@@ -405,20 +405,20 @@ export function ExamPackageTool() {
                         key={s.id}
                         type="button"
                         onClick={() => chooseExam(s.id)}
-                        className="ep-card group flex flex-col gap-2 p-3.5 text-left"
+                        className="ep-card group flex min-w-0 flex-col gap-2 p-3.5 text-left"
                       >
-                        <span className="flex items-center justify-between gap-2">
-                          <span className="truncate font-semibold text-ink">
+                        <span className="flex min-w-0 items-center justify-between gap-2">
+                          <span className="min-w-0 break-words font-semibold text-ink">
                             {s.name.split(" (")[0]}
                           </span>
                           <ArrowRight className="h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
                         </span>
-                        <span className="flex flex-wrap gap-1.5">
-                          <span className="rounded-md bg-[hsl(174_72%_30%/0.10)] px-2 py-0.5 font-mono text-[11px] font-medium text-[hsl(174_72%_28%)]">
+                        <span className="flex min-w-0 flex-wrap gap-1.5">
+                          <span className="rounded-md bg-[hsl(174_72%_30%/0.10)] px-2 py-0.5 font-mono text-xs font-medium text-[hsl(174_72%_28%)]">
                             Photo {photoKbText(s)}
                           </span>
                           {sig && (
-                            <span className="rounded-md bg-[hsl(8_75%_45%/0.10)] px-2 py-0.5 font-mono text-[11px] font-medium text-[hsl(8_75%_45%)]">
+                            <span className="rounded-md bg-[hsl(8_75%_45%/0.10)] px-2 py-0.5 font-mono text-xs font-medium text-[hsl(8_75%_45%)]">
                               Sign {sig}
                             </span>
                           )}

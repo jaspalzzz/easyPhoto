@@ -67,7 +67,7 @@ export function ExamSearchControls() {
 
       {/* Popular tags */}
       <div className="mt-3 flex flex-wrap items-center gap-1.5">
-        <span className="text-[11px] font-semibold text-muted-foreground">Popular:</span>
+        <span className="text-xs font-semibold text-muted-foreground">Popular:</span>
         {POPULAR.map((t) => (
           <button
             key={t}

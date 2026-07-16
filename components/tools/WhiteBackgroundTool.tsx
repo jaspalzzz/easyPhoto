@@ -110,14 +110,14 @@ function Body({ source }: { source: ToolSource }) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={source.url} alt="Original" className="max-h-[260px] w-auto rounded-md" />
           </PreviewFrame>
-          <figcaption className="text-center font-mono text-[11px] text-ink-soft">Before</figcaption>
+          <figcaption className="text-center font-mono text-xs text-ink-soft">Before</figcaption>
         </figure>
         <figure className="space-y-1.5">
           <PreviewFrame>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={url ?? source.url} alt="New background" className="max-h-[260px] w-auto rounded-md" />
           </PreviewFrame>
-          <figcaption className="text-center font-mono text-[11px] text-ink-soft">After</figcaption>
+          <figcaption className="text-center font-mono text-xs text-ink-soft">After</figcaption>
         </figure>
       </div>
 

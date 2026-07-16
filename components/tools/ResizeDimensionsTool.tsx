@@ -103,7 +103,7 @@ function Body({ source }: { source: ToolSource }) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={source.url} alt="Original" className="max-h-[260px] w-auto rounded-md" />
           </PreviewFrame>
-          <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+          <figcaption className="text-center font-mono text-xs text-ink-soft">
             Before · {source.size.width}×{source.size.height}px
           </figcaption>
         </figure>
@@ -112,7 +112,7 @@ function Body({ source }: { source: ToolSource }) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={out?.url ?? source.url} alt="Resized" className="max-h-[260px] w-auto rounded-md" />
           </PreviewFrame>
-          <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+          <figcaption className="text-center font-mono text-xs text-ink-soft">
             {out ? `After · ${width}×${height}px` : "After"}
           </figcaption>
         </figure>

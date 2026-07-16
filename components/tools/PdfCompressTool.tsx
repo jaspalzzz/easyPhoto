@@ -185,7 +185,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
               <Download className="h-4 w-4" /> Compress to {targetKb} KB
             </Button>
 
-            <p className="text-[11px] leading-snug text-muted-foreground">
+            <p className="text-xs leading-snug text-muted-foreground">
               To fit the size limit, pages are optimised to images — the text in the
               compressed PDF is no longer selectable. For a lossless PDF, use the
               merge/split tools instead.

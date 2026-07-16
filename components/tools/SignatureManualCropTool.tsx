@@ -321,7 +321,7 @@ function Body({ source }: { source: ToolSource }) {
         aria-hidden="true"
       >
         <div className="h-1 w-8 rounded-full bg-foreground/20" />
-        <span className="text-[11px] text-muted-foreground">swipe here to scroll</span>
+        <span className="text-xs text-muted-foreground">swipe here to scroll</span>
         <div className="h-1 w-8 rounded-full bg-foreground/20" />
       </div>
 
@@ -346,7 +346,7 @@ function Body({ source }: { source: ToolSource }) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={preview} alt="Cropped signature" className="max-h-[180px] w-auto rounded" />
           </PreviewFrame>
-          <p className="text-center font-mono text-[11px] text-ink-soft">
+          <p className="text-center font-mono text-xs text-ink-soft">
             {Math.round(crop!.w)}×{Math.round(crop!.h)}px
             {size ? ` · ${formatKb(size.bytes)}` : ""}
           </p>

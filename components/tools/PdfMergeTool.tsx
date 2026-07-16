@@ -280,7 +280,7 @@ export function PdfMergeTool() {
                     <FileText className="h-5 w-5 text-brand shrink-0" />
                     <div className="min-w-0">
                       <span className="block text-sm font-semibold truncate leading-tight">{item.name}</span>
-                      <span className="text-[10px] text-muted-foreground">{formatKb(item.size)}</span>
+                      <span className="text-xs text-muted-foreground">{formatKb(item.size)}</span>
                     </div>
                   </div>
 

@@ -382,7 +382,7 @@ export function SignPdfTool() {
 
               {/* Signature Creator Panel */}
               <div className="bg-paper border border-hairline rounded-md p-4 space-y-4">
-                <span className="text-[11px] font-semibold eyebrow uppercase tracking-wider text-brand block">
+                <span className="text-xs font-semibold eyebrow uppercase tracking-wider text-brand block">
                   Signature Options
                 </span>
 
@@ -426,7 +426,7 @@ export function SignPdfTool() {
                     <PenLine className="h-8 w-8 text-brand mx-auto opacity-70" />
                     <div>
                       <p className="text-xs font-semibold">No signature created yet</p>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">Draw or upload your signature to place on the document.</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Draw or upload your signature to place on the document.</p>
                     </div>
                     <Button
                       id="pdf-signer-create-sig-btn"

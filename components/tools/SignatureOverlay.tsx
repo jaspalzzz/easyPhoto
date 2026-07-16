@@ -297,7 +297,7 @@ export function SignatureOverlay({
           />
           {/* Live angle readout while rotating or when tilted */}
           {(dragState?.type === "rotate" || (placement.rotation ?? 0) !== 0) && (
-            <span className="pointer-events-none absolute left-1/2 -top-[52px] -translate-x-1/2 rounded bg-brand px-1.5 py-0.5 text-[10px] font-semibold tabular-nums text-white shadow-sm">
+            <span className="pointer-events-none absolute left-1/2 -top-[52px] -translate-x-1/2 rounded bg-brand px-1.5 py-0.5 text-xs font-semibold tabular-nums text-white shadow-sm">
               {Math.round(placement.rotation ?? 0)}°
             </span>
           )}

@@ -100,7 +100,7 @@ function Body({ source }: { source: ToolSource }) {
               className="max-h-[220px] w-auto rounded"
             />
           </PreviewFrame>
-          <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+          <figcaption className="text-center font-mono text-xs text-ink-soft">
             Before · {source.size.width}×{source.size.height}px
           </figcaption>
         </figure>
@@ -129,7 +129,7 @@ function Body({ source }: { source: ToolSource }) {
               )}
             </div>
           </PreviewFrame>
-          <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+          <figcaption className="text-center font-mono text-xs text-ink-soft">
             {out ? `After · ${out.w}×${out.h}px` : "After"}
           </figcaption>
         </figure>

@@ -254,7 +254,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
 
         {/* Printable sheet customizer settings */}
         <div className="pt-3.5 pb-4 px-3 border-t border-hairline space-y-3">
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-soft block">
+          <span className="text-xs font-semibold uppercase tracking-wider text-ink-soft block">
             PDF Print Sheet Layout
           </span>
 
@@ -284,7 +284,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               ))}
             </div>
           </div>
-          <p className="text-center text-[11px] text-muted-foreground">
+          <p className="text-center text-xs text-muted-foreground">
             {sheetLayout.cols}×{sheetLayout.rows} grid on{" "}
             {paperSize === "4x6" ? "4×6″" : paperSize === "5x7" ? "5×7″" : paperSize === "a4" ? "A4" : "Letter"} ·{" "}
             {copies} of {maxCapacity} slots used
@@ -292,7 +292,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
 
           <div className="grid grid-cols-2 gap-2.5 text-xs">
             <label className="block">
-              <span className="text-muted-foreground block mb-0.5 text-[11px]">Paper Size</span>
+              <span className="text-muted-foreground block mb-0.5 text-xs">Paper Size</span>
               <select
                 id="print-sheet-paper-size"
                 value={paperSize}
@@ -307,7 +307,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             </label>
 
             <label className="block">
-              <span className="text-muted-foreground block mb-0.5 text-[11px]">Copies ({copies})</span>
+              <span className="text-muted-foreground block mb-0.5 text-xs">Copies ({copies})</span>
               <input
                 id="print-sheet-copies-input"
                 type="number"
@@ -321,9 +321,9 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
             </label>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 text-[11px]">
+          <div className="grid grid-cols-2 gap-3 text-xs">
             <label className="block">
-              <span className="text-muted-foreground block mb-0.5 text-[10px] uppercase font-semibold">Margin: {marginMm}mm</span>
+              <span className="text-muted-foreground block mb-0.5 text-xs uppercase font-semibold">Margin: {marginMm}mm</span>
               <input
                 id="print-sheet-margin-slider"
                 type="range"
@@ -335,7 +335,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               />
             </label>
             <label className="block">
-              <span className="text-muted-foreground block mb-0.5 text-[10px] uppercase font-semibold">Gap: {gapMm}mm</span>
+              <span className="text-muted-foreground block mb-0.5 text-xs uppercase font-semibold">Gap: {gapMm}mm</span>
               <input
                 id="print-sheet-gap-slider"
                 type="range"
