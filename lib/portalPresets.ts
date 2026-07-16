@@ -148,7 +148,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "needs-review",
     context:
-      "For ordinary adult fresh/reissue applications in India, Passport Seva captures the photograph and biometrics at the PSK/POPSK; applicants do not upload or carry a photo. Children below four carry a 45x35 mm white-background print. Use this digital preset only when a separate overseas or other workflow explicitly requests it.",
+      "For ordinary adult fresh/reissue applications in India, Passport Seva captures the photograph and biometrics at the PSK/POPSK; applicants do not upload or carry a photo. Children below four carry a 45x35 mm white-background print. Use this digital preset only when a separate overseas workflow requests it, and confirm the current mission instructions before relying on the stored KB or signature limits.",
   },
   oci: {
     id: "oci",
@@ -678,14 +678,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     description:
-      "Consortium of NLUs CLAT application. Photo 20-50 KB (200×230 px) JPG/JPEG, recent passport-style; signature 10-20 KB (140×60 px), black ink on white paper, scanned at 200 DPI minimum.",
+      "Compatibility preset for the CLAT application. The public CLAT 2026 instructions confirm a front-facing recent passport-size photograph with a plain background and a candidate signature, but publish no KB, pixel, DPI, file-format or ink limits. The stored 20-50 KB / 200×230 px photo and 10-20 KB / 140×60 px signature values remain unconfirmed; check the current application screen before use.",
     source: {
-      url: "https://consortiumofnlus.ac.in",
-      label: "Consortium of NLUs (consortiumofnlus.ac.in)",
+      url: "https://consortiumofnlus.ac.in/clat-2026/ug-instructions.html",
+      label: "CLAT 2026 UG application instructions",
     },
     verification: "needs-review",
     context:
-      "CLAT (Common Law Admission Test) is run by the Consortium of National Law Universities for admission to NLUs across India; the photo and signature spec follows the common IBPS-pattern dimensions used by several other exams in this list.",
+      "CLAT is run by the Consortium of National Law Universities. Its public 2026 instructions identify the photo and signature uploads but do not expose their digital validation limits, so confirm the current application screen before preparing either file.",
   },
   "army-agniveer": {
     id: "army-agniveer",
@@ -701,15 +701,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 413 / 531,
     sigAspectRatio: 413 / 177,
     description:
-      "Indian Army Agniveer registration (joinindianarmy.nic.in). Photo 20-50 KB JPEG, 413×531 px, with your NAME and the DATE the photo was taken printed at the bottom. Signature 10-20 KB (413×177 px), black ink, running hand. These figures could not be traced to any fetchable official document — the rally notification only specifies physical-photo requirements (3.5×3.5cm print), and the online-upload widget's own validation rules sit behind the login-gated candidate portal. Confirm against the current notification before applying.",
+      "Compatibility preset for Indian Army Agniveer registration. The recruiting-year 2027 notice confirms that a recent photograph is uploaded on joinindianarmy.nic.in, but publishes no photo/signature KB band, pixel dimensions, format or name/date rule. The stored 20-50 KB / 413×531 px photo and 10-20 KB / 413×177 px signature values remain unconfirmed; check the current candidate portal before use.",
     source: {
-      url: "https://joinindianarmy.nic.in",
-      label: "Join Indian Army (joinindianarmy.nic.in)",
+      url: "https://www.telangana.gov.in/wp-content/uploads/2026/02/Recruitment-Notification-for-AGNIVEER-2027.pdf",
+      label: "Indian Army Agniveer RY 2027 notice (government-hosted copy)",
     },
     verification: "needs-review",
-    requiresNameDate: true,
     context:
-      "Indian Army Agniveer applications are submitted on joinindianarmy.nic.in, and the photo must show the candidate's name and the date it was taken printed at the bottom — the same convention used by SSC and Navy Agniveer notifications.",
+      "Indian Army Agniveer applications are submitted on joinindianarmy.nic.in. The current notice asks for a recent uploaded photograph but does not publish the upload widget's numeric limits or require name/date text; confirm the current candidate-portal fields before preparing files.",
   },
   "airforce-agniveer": {
     id: "airforce-agniveer",
@@ -869,21 +868,26 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     id: "ccc-nielit",
     name: "NIELIT CCC (Computer Concepts)",
     photoLimitKb: 50,
-    photoMinKb: 20,
+    photoMinKb: 5,
     sigLimitKb: 20,
-    sigMinKb: 10,
-    photoWidthPx: 200,
-    photoHeightPx: 230,
-    sigWidthPx: 140,
-    sigHeightPx: 60,
-    photoAspectRatio: 20 / 23,
-    sigAspectRatio: 14 / 6,
+    sigMinKb: 5,
+    photoWidthPx: 132,
+    photoHeightPx: 170,
+    sigWidthPx: 170,
+    sigHeightPx: 132,
+    photoAspectRatio: 132 / 170,
+    sigAspectRatio: 170 / 132,
     description:
-      "NIELIT CCC / BCC / ECC online application (student.nielit.gov.in). Photo 20-50 KB (200×230 px), JPG/JPEG; signature 10-20 KB (140×60 px, black ink on white paper), JPG.",
-    source: { url: "https://student.nielit.gov.in", label: "NIELIT Student Portal" },
-    verification: "needs-review",
+      "NIELIT DLC online examination application (BCC, CCC, CCC+, ECC and ACC). Photo 5-50 KB, 132×170 px, 3.5×4.5 cm, 96-300 DPI, JPEG/JPG, recent colour on white; signature 5-20 KB, 170×132 px, 4.5×3.5 cm, 96-200 DPI, JPEG/JPG, black or blue ink on white paper.",
+    source: {
+      url: "https://nva.nielit.gov.in/ccc/CCC_ExamGuideLine.pdf",
+      label: "NIELIT DLC examination application guide, Version 1.11",
+    },
+    verification: "official",
+    verifiedOn: "2026-07-16",
+    signatureInk: "Black or blue ink",
     context:
-      "NIELIT (National Institute of Electronics and Information Technology) conducts the CCC (Course on Computer Concepts), BCC and ECC certification exams. The online application and admit card photo/signature are uploaded via student.nielit.gov.in.",
+      "NIELIT conducts the BCC, CCC, CCC+, ECC and ACC digital-literacy examinations. Version 1.11 of its application guide publishes separate photo and signature/LTI dimensions and upload ranges for the online examination application form.",
   },
 
   dsssb: {
@@ -896,14 +900,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 3.5 / 1.5,
     description:
-      "Delhi Subordinate Services Selection Board online application (dsssb.delhi.gov.in). Photo 25-100 KB (3.5×4.5 cm), JPG/JPEG, plain white/off-white background; signature 10-50 KB (3.5×1.5 cm), JPG/JPEG. The current 2026 advertisement gives no KB/pixel numbers at all (only qualitative background guidance) — these figures come from the most recent DSSSB instruction document with actual numbers, which is dated 2012. Confirm against the current notification before applying.",
+      "DSSSB online application compatibility preset. Advertisement 02/2026 confirms a recent clear colour photo on a plain white/off-white background and a legible signature, but gives no photo/signature KB or dimensions. The stored photo 25-100 KB / 3.5×4.5 cm and signature 10-50 KB / 3.5×1.5 cm values come from archived 2012 OARS instructions; check the current upload screen before use.",
     source: {
-      url: "https://dsssbonline.nic.in/AdvtDetailFiles/doc_dsssb_english.pdf",
-      label: "DSSSB photo/signature instructions (dsssbonline.nic.in)",
+      url: "https://dsssb.delhi.gov.in/sites/default/files/DSSSB/circulars-orders/final_advt_02-2026_1.pdf",
+      label: "DSSSB Advertisement 02/2026",
     },
     verification: "needs-review",
     context:
-      "DSSSB (Delhi Subordinate Services Selection Board) recruits for posts under the Government of NCT of Delhi — TGT, PGT, various Group B and C posts. Photo and signature are uploaded on the online application portal.",
+      "DSSSB recruits for Government of NCT of Delhi posts through OARS. Its current notice leaves numeric upload validation to the portal, so confirm the current OARS photo and signature limits before preparing files.",
   },
 
   upsssc: {
@@ -1004,11 +1008,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     description:
-      "ITBP (Indo-Tibetan Border Police) Constable / SI / HC recruitment (itbpolice.nic.in). Photo 20-50 KB (200×230 px), plain white background, JPG; signature 10-20 KB (140×60 px), JPG.",
-    source: { url: "https://itbpolice.nic.in/itbp/rectt", label: "ITBP Recruitment Portal" },
+      "Compatibility preset for ITBP online recruitment. No current public ITBP notice or instruction page located in this audit publishes the stored 20-50 KB / 200×230 px photo and 10-20 KB / 140×60 px signature limits, format or background rule. Check the current recruitment application before use.",
+    source: {
+      url: "https://recruitment.itbpolice.nic.in/rect/index.php",
+      label: "ITBP recruitment portal",
+    },
     verification: "needs-review",
     context:
-      "ITBP (Indo-Tibetan Border Police) guards India's northern border with China and recruits Constable (GD/Tradesmen), Head Constable and Sub-Inspector through itbpolice.nic.in. Specs follow the standard CAPF pattern.",
+      "ITBP conducts post-specific recruitments through its recruitment portal, while Constable GD can also run through SSC. Public notices reviewed did not expose the application widget's numeric image rules, so confirm the current post-specific upload screen.",
   },
 
   "navy-agniveer": {
@@ -1034,20 +1041,20 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   // ---------------------------------------------------------------------------
   epfo: {
     id: "epfo",
-    name: "EPFO (SSA / Inspector)",
+    name: "EPFO (Social Security Assistant)",
     photoLimitKb: 200,
     photoMinKb: 10,
     sigLimitKb: 30,
     sigMinKb: 4,
     description:
-      "EPFO (Social Security Assistant / Inspector) recruitment administered by UPSC/IBPS. Photo 10-200 KB JPG/JPEG, light-shade plain background; signature 4-30 KB JPG/JPEG. These figures come from EPFO's most recent locatable SSA advertisement (2023) — re-checked 2026-07-01, EPFO's own recruitment page is still processing the 2023 cohort's postings and no newer SSA/Inspector notification has been published, so confirm against the current notice before applying.",
+      "Historical EPFO Social Security Assistant preset from the 2023 direct-recruitment advertisement: photo 10-200 KB JPG on a light-shade plain background, with approximately 80% face coverage and no spectacles; signature 4-30 KB JPG/JPEG. EPFO has not published a newer SSA direct-recruitment notice, so check the current cycle before use.",
     source: {
       url: "https://www.epfindia.gov.in/site_docs/PDFs/Recruitments_PDFs/Advertisement_for_SSA_24032023.pdf",
       label: "EPFO SSA Advertisement (epfindia.gov.in, 2023)",
     },
     verification: "needs-review",
     context:
-      "EPFO (Employees' Provident Fund Organisation) SSA and Inspector recruitments are administered by IBPS or UPSC depending on the cycle. The last locatable official advertisement is from 2023 — confirm against the current cycle's notification once published.",
+      "EPFO's 2023 SSA recruitment was conducted by NTA and its published image rules remain available in the archived advertisement. Recruitment workflows vary by post and cycle, so confirm the current EPFO or conducting-body notice before preparing files.",
   },
 
   fci: {
@@ -1057,19 +1064,22 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 20,
     sigLimitKb: 20,
     sigMinKb: 10,
-    photoAspectRatio: 4.5 / 3.5,
+    photoWidthPx: 200,
+    photoHeightPx: 230,
+    photoAspectRatio: 200 / 230,
     sigWidthPx: 140,
     sigHeightPx: 60,
     sigAspectRatio: 14 / 6,
     description:
-      "FCI (Food Corporation of India) recruitment — AGM / JE / Watchman / Typist (fci.gov.in). Photo 4.5cm×3.5cm, colour, light background (the most recent locatable notice, 2022, states no photo KB limit — 20-50 KB is the standard pattern used elsewhere, not FCI-confirmed); signature 140×60 px, 10-20 KB, black or blue ink (confirmed). FCI's 2026 recruitment notification has still not been published as of 2026-07-01 — press coverage now expects it in August 2026 (previously expected June 2026).",
+      "Historical FCI Category III preset from Advertisement 01/2022: photo 20-50 KB, preferred 200×230 px, 4.5×3.5 cm, JPG/JPEG, recent colour on a light or preferably white background; signature 10-20 KB, preferred 140×60 px, JPG/JPEG, black ink. No current recruitment-cycle notice is published on FCI's recruitment page, so check the current notice before use.",
     source: {
       url: "https://fci.gov.in/fci-storage/storage/app/uploads/653f851f7c7ba1698661663.pdf",
       label: "FCI Category III Advertisement (fci.gov.in, 2022)",
     },
     verification: "needs-review",
+    signatureInk: "Black ink",
     context:
-      "FCI (Food Corporation of India) recruits for AGM, Management Trainee, JE, Typist-Hindi, Watchman and other posts via fci.gov.in or NTA when outsourced. The last locatable official advertisement is from 2022 — confirm against the current cycle's notification once published.",
+      "FCI's upload rules are recruitment-cycle specific. Advertisement 01/2022 supports the stored photo and signature values for Category III recruitment, but no newer direct-recruitment notice is currently listed; confirm the current FCI notice before preparing files.",
   },
 };
 
