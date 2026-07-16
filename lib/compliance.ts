@@ -108,6 +108,13 @@ export function checkCompliance(
         ? `Correct shape (${actual.toFixed(2)}).`
         : `${actual.toFixed(2)} — expected ${ar.toFixed(2)}. Crop to the right shape.`,
     });
+  } else if (!(w && h) && !ar) {
+    checks.push({
+      label: "Dimensions",
+      status: "warn",
+      detail:
+        "No pixel dimensions are published for this workflow, so dimensions were not checked. Confirm the current application instructions.",
+    });
   }
 
   // --- Format ---
