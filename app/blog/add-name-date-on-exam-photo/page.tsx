@@ -7,22 +7,36 @@ import { getPost } from "@/lib/blog";
 
 const post = getPost("add-name-date-on-exam-photo")!;
 
+const SOURCES = {
+  appsc:
+    "https://psc.ap.gov.in/UserManuals/DirectRecruitmentOTPRUserManual.pdf",
+  keralaPsc: "https://keralapsc.gov.in/index.php/tips-applicants",
+  navy:
+    "https://www.joinindiannavy.gov.in/files/Advt_Agniveer_MR_English.pdf",
+  airforce:
+    "https://iafrecruitment.edcil.co.in/agniveervayu/pdffiles/Advt%20Agniveervayu%2001%20of%2027.pdf",
+  upsc:
+    "https://upsconline.nic.in/ngrp/assets/PDF/instruction-photo-signature-upload-upsc.pdf",
+  ssc: "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_cht_2026.pdf",
+  ibps: "https://www.ibps.in/wp-content/uploads/Detailed-Notification-CRP-SPL-XVI_Final_V1_30.06.2026.pdf",
+} as const;
+
 const FAQ_ITEMS = [
   {
-    q: "Does UPSC really require the name and date to be on the photo?",
-    a: "Yes. UPSC's online application instructions require candidates to upload a photo with their name and the date the photograph was taken printed at the bottom. A photo without this text is rejected during document verification. Confirm in the current official notification at upsc.gov.in.",
+    q: "Does UPSC require the name and date to be printed on the photo?",
+    a: "No. UPSC's current instructions list a 20–200 KB JPG photo upload, mandatory live photograph capture, and one 20–100 KB image containing three signatures stacked vertically. They do not list a name-and-date strip.",
   },
   {
-    q: "What date should I write on the photo — the application date or the photo date?",
-    a: "The date the photo was taken, not the date you apply. Most portals check that the photo is recent (usually within the last 6 months). If you took the photo specifically for this application, write today's date.",
+    q: "What date should I put on a digital name-and-date strip?",
+    a: "Use the date the photograph was taken, but only when the current application instructions ask for that date. Do not substitute the application date unless the notice says to do so.",
   },
   {
-    q: "Can I handwrite the name and date on a printed photo?",
-    a: "For printed paper applications, yes — many UPSC and Army forms allow neat handwriting at the bottom. For online uploads, the text must be part of the digital image file. Use the photo with name & date tool for online submissions.",
+    q: "Which applications can use a digital name-and-date strip?",
+    a: "The current APPSC Direct Recruitment OTPR manual and Kerala PSC guidance require the candidate's name and photography date on the image. Confirm the notice for the specific recruitment before preparing it.",
   },
   {
-    q: "Should I add name and date for SSC or IBPS?",
-    a: "No. SSC and IBPS require a plain passport-size photo without any text overlay. Adding a name-and-date strip to a photo for these portals will cause rejection. Only add the text when the official notification explicitly asks for it.",
+    q: "Should I add a digital strip for UPSC, SSC, IBPS, Navy Agniveer or Agniveervayu?",
+    a: "Not for the current SSC, IBPS or UPSC workflows. Navy Agniveer and Agniveervayu notices instead require the candidate to hold a physical black slate with the name and photography date when the photo is taken; a digital strip does not replace that slate.",
   },
 ];
 
@@ -36,161 +50,240 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo" faqItems={FAQ_ITEMS}>
+    <BlogPostLayout
+      slug={post.slug}
+      ctaHref="/tools/photo-with-name-date/"
+      ctaLabel="Open the name-and-date tool"
+      faqItems={FAQ_ITEMS}
+    >
       <div className="mb-5 text-sm text-muted-foreground">
-        Last reviewed 12 July 2026 · Checked against the official UPSC online instructions
+        Last reviewed 16 July 2026 · Checked against the linked authority instructions
       </div>
       <p>
-        Some application forms don&apos;t just want a photo — they want your{" "}
-        <strong>name and the date the photo was taken printed on the photo
-        itself</strong>. UPSC and the Indian Army are the best-known examples,
-        and a photo without that text gets rejected at document verification even
-        if its size and dimensions are perfect. Here&apos;s exactly what they
-        ask for and how to add it in under a minute, without Photoshop.
+        A digital name-and-date strip is needed only when the application
+        instructions ask for one. The current APPSC Direct Recruitment manual
+        and Kerala PSC guidance do; the current UPSC, SSC and IBPS instructions
+        do not. Navy Agniveer and Agniveervayu use a different workflow: the
+        candidate is photographed holding a physical black slate, so adding text
+        afterward is not a substitute.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
-          <li>UPSC (CSE, NDA, CDS) and the Indian Army / Agniveer require your <strong>name and photo date</strong> printed on the photo.</li>
-          <li>SSC, IBPS and most banking exams do <strong>not</strong> require it — adding text to a plain-photo exam can cause rejection.</li>
-          <li>Use the <Link href="/tools/photo-with-name-date/" className="text-brand underline">photo with name &amp; date tool</Link> to add a clean strip in seconds — no Photoshop.</li>
+          <li>
+            Digital strip: APPSC Direct Recruitment OTPR and Kerala PSC currently
+            ask for the candidate&apos;s name and photography date on the image.
+          </li>
+          <li>
+            No strip listed: UPSC, SSC and IBPS current instructions.
+          </li>
+          <li>
+            Physical slate: current Navy Agniveer and Agniveervayu notices; the
+            slate must be present when the photo is taken.
+          </li>
         </ul>
       </div>
 
-      <h2>Before and after: what actually changes</h2>
+      <h2>Before and after: what the digital tool changes</h2>
       <p>
         The <Link href="/tools/photo-with-name-date/">name-and-date tool</Link>{" "}
-        keeps your photo&apos;s frame and adds the name and date in a separate light
-        strip below the face area—so a square 1024 × 1024 px photo stays square,
-        with the text placed under it rather than over your face. Check the output
-        against the square-photo workflow on the{" "}
-        <Link href="/exam-requirements/upsc/">UPSC requirement page</Link>, and always
-        recheck the current notice on the{" "}
-        <a href="https://upsconline.nic.in" target="_blank" rel="noopener noreferrer">official UPSC application portal</a>.
+        adds a separate light strip below the photo and prints the entered name
+        and photography date on it. Use that output only for a form whose current
+        instructions call for digital text, then recheck the finished file&apos;s
+        dimensions and size against that form.
       </p>
 
-      <h2>Which exams require name and date on the photo</h2>
-      <table className="my-5 w-full border-collapse text-[14px]">
-        <thead>
-          <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-3 font-semibold text-ink">Exam</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Name &amp; date required?</th>
-          </tr>
-        </thead>
-        <tbody className="text-ink-soft">
-          {[
-            ["UPSC (CSE, NDA, CDS, CAPF)", "Yes — name and photo date on the image"],
-            ["Indian Army / Agniveer recruitment", "Yes — checked at every recruitment stage"],
-            ["SSC (CGL, CHSL, MTS)", "No — plain passport-size photo"],
-            ["IBPS / SBI (PO, Clerk, RRB)", "No — plain passport-size photo"],
-            ["Railway (RRB)", "No — plain passport-size photo"],
-          ].map(([exam, req]) => (
-            <tr key={exam} className="border-b border-hairline/60">
-              <td className="py-2 pr-3 font-medium text-ink">{exam}</td>
-              <td className="py-2 pr-3">{req}</td>
+      <h2>Which workflows use a strip, slate or neither</h2>
+      <div className="my-5 overflow-x-auto">
+        <table className="w-full min-w-[38rem] border-collapse text-[14px]">
+          <thead>
+            <tr className="border-b border-hairline text-left">
+              <th className="py-2 pr-3 font-semibold text-ink">Application</th>
+              <th className="py-2 pr-3 font-semibold text-ink">Current instruction</th>
+              <th className="py-2 font-semibold text-ink">Authority source</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="text-ink-soft">
+            {[
+              [
+                "APPSC Direct Recruitment OTPR",
+                "Digital name and photography date printed on the photo",
+                SOURCES.appsc,
+                "APPSC OTPR user manual",
+              ],
+              [
+                "Kerala PSC",
+                "Digital name and photography date at the bottom of the photo",
+                SOURCES.keralaPsc,
+                "Kerala PSC applicant guidance",
+              ],
+              [
+                "Navy Agniveer",
+                "Physical black slate held in the photo; not a digital strip",
+                SOURCES.navy,
+                "Indian Navy Agniveer notice, paragraph 34",
+              ],
+              [
+                "Agniveervayu",
+                "Physical black slate held in the photo; not a digital strip",
+                SOURCES.airforce,
+                "IAF Intake 01/2027 notice, paragraph 43.3.1",
+              ],
+              [
+                "UPSC",
+                "No strip listed; uploaded photo, live photo and triple signature",
+                SOURCES.upsc,
+                "UPSC photo and signature instructions",
+              ],
+              [
+                "SSC",
+                "No strip listed; photograph captured live in the application",
+                SOURCES.ssc,
+                "SSC CHT 2026 notice, paragraphs 8.4–8.7",
+              ],
+              [
+                "IBPS",
+                "No strip listed; uploaded photo plus separate live photograph",
+                SOURCES.ibps,
+                "IBPS CRP-SPL XVI notice, Annexure III",
+              ],
+            ].map(([application, instruction, url, label]) => (
+              <tr key={application} className="border-b border-hairline/60">
+                <td className="py-2 pr-3 font-medium text-ink">{application}</td>
+                <td className="py-2 pr-3">{instruction}</td>
+                <td className="py-2">
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-brand underline underline-offset-2"
+                  >
+                    {label}
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <p>
-        If your exam&apos;s notification doesn&apos;t mention it, you don&apos;t
-        need it — adding text to a photo that should be plain can itself cause a
-        rejection. When in doubt, check your exam in the{" "}
-        <Link href="/exam-requirements/">requirements directory</Link> or on{" "}
-        <a href="https://upsc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">upsc.gov.in</a>{" "}
-        directly.
+        Instructions can change by recruitment cycle. If a current notice does
+        not mention a digital strip, do not infer one from an older guide or from
+        another authority&apos;s form.
       </p>
 
-      <h2>What the text actually needs to look like</h2>
+      <h2>What a digital strip needs to contain</h2>
       <p>
-        The rules are simple but specific: your full name and the date should be
-        clearly legible, in a plain dark font, on a light strip at the bottom of
-        the photo — without covering your face or shoulders. The date is the day
-        the photo was <em>taken</em>, not the day you apply. Handwriting it after
-        printing is allowed for the paper form, but for online uploads the text
-        needs to be part of the image.
+        APPSC&apos;s Direct Recruitment OTPR manual says the photograph should have
+        the candidate&apos;s name and the date it was taken printed on it. Kerala PSC
+        says the name and photography date should be printed at the bottom. These
+        sources do not create a universal font or date-format rule for other
+        forms, so follow the current notice for the application you are preparing.
       </p>
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
           src="/images/add-name-date-on-exam-photo.webp"
-          alt="Before and after exam photo showing a plain passport photo transformed into one with name (ADITYA VERMA) and date (25/06/2026) added at the bottom"
+          alt="Illustration comparing a plain portrait with one that has a candidate name and photography date in a strip below"
           width={1024}
           height={1024}
-          className="w-full h-auto"
+          className="h-auto w-full"
         />
         <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
-          Left: plain exam photo. Right: the same photo with candidate name and date stamp added in the required format — ready for exam portal upload.
+          A digital-strip example. Use it only when the current application
+          instructions ask for text printed on the image.
         </figcaption>
       </figure>
 
-      <h2>Why people struggle with this</h2>
+      <h2>Why the workflows are easy to confuse</h2>
       <p>
-        The usual advice is &quot;open it in MS Paint and type the text,&quot;
-        which is fiddly on a phone, easy to misalign, and often leaves the text
-        too small to read or overlapping the chin. Then the photo still has to be
-        resized to the exam&apos;s KB and dimensions afterward — two separate
-        chores.
+        A digital strip and a slate photo both display a name and date, but they
+        are not interchangeable. The strip is added to an existing image. A slate
+        is a physical object held at chest level while the photograph is taken.
+        UPSC&apos;s live-photo and triple-signature steps are different again and do
+        not include either treatment.
       </p>
 
-      <h2>The one-minute way</h2>
+      <h2>How to prepare a digital strip when it is listed</h2>
       <p>
-        The{" "}
-        <Link href="/tools/photo-with-name-date/">photo with name &amp; date tool</Link>{" "}
-        does both at once. You:
+        For APPSC, Kerala PSC or another form that explicitly asks for digital
+        text, the{" "}
+        <Link href="/tools/photo-with-name-date/">
+          photo with name &amp; date tool
+        </Link>{" "}
+        can add the strip on your device:
       </p>
       <ul>
-        <li>Drop in your photo.</li>
-        <li>Type your name; the date defaults to today (taken date) and is editable.</li>
-        <li>It places a clean, legible strip at the bottom without touching your face.</li>
-        <li>Download — already a JPG, ready to resize for your exam.</li>
+        <li>Upload the photo you intend to use.</li>
+        <li>Enter the candidate&apos;s name and the date the photograph was taken.</li>
+        <li>Review the strip placement and export the JPG.</li>
+        <li>Check the finished file against the current application instructions.</li>
       </ul>
       <p>
-        It runs entirely in your browser, so your photo is never uploaded. There
-        is a dedicated{" "}
-        <Link href="/ssc-photo-with-name-date/">SSC name-and-date photo page</Link>{" "}
-        too, preset for that format.
+        The tool runs in the browser, so the photo, name and date are not sent to
+        the site&apos;s server. The{" "}
+        <Link href="/ssc-photo-with-name-date/">
+          SSC photo with name and date page
+        </Link>{" "}
+        explains why current SSC applications do not use this strip.
       </p>
 
-      <h2>Then size it for your exam</h2>
+      <h2>Then check the relevant file limits</h2>
       <p>
-        Once the name and date are on the photo, run it through your exam&apos;s
-        resizer so the file lands in the right KB band and dimensions — for
-        instance the{" "}
-        <Link href="/exam-resizer/upsc-cse/">UPSC resizer</Link> or the{" "}
-        <Link href="/exam-resizer/upsc-nda/">UPSC NDA resizer</Link>. That order —
-        text first, resize second — keeps the text crisp and the file compliant.
+        After adding a strip for a supported workflow, compare the finished file
+        with the registry-backed guidance for{" "}
+        <Link href="/exam-requirements/appsc/">APPSC</Link> or{" "}
+        <Link href="/exam-requirements/kerala-psc/">Kerala PSC</Link>. For UPSC,
+        use the <Link href="/exam-requirements/upsc/">UPSC requirements page</Link>{" "}
+        and its linked instruction PDF instead of adding text.
       </p>
 
       <h2>Name-and-date troubleshooting</h2>
       <table className="my-5 w-full border-collapse text-[14px]">
-        <thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Problem</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead>
+        <thead>
+          <tr className="border-b border-hairline text-left">
+            <th className="py-2 pr-3 font-semibold text-ink">Problem</th>
+            <th className="py-2 font-semibold text-ink">What to check</th>
+          </tr>
+        </thead>
         <tbody className="text-ink-soft">
           {[
-            ["The date is the application date", "Replace it with the date the photograph was actually taken."],
-            ["The strip covers the chin or shoulders", "Re-crop with more space below the shoulders, then regenerate the strip."],
-            ["Text becomes blurry after resizing", "Add the strip first and resize once at the end; avoid repeatedly saving the JPEG."],
-            ["The notification asks for a plain photo", "Do not add a strip. Use the portal-specific requirement page and submit the plain photo it requests."],
-          ].map(([problem, fix]) => <tr key={problem} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{problem}</td><td className="py-2">{fix}</td></tr>)}
+            [
+              "The date is the application date",
+              "Replace it with the photography date when that is what the current notice requests.",
+            ],
+            [
+              "The strip covers the face or shoulders",
+              "Re-crop with enough space, then regenerate the strip below the portrait.",
+            ],
+            [
+              "Text becomes blurry after resizing",
+              "Avoid repeatedly saving the JPEG; export the strip once, then make only the required final adjustment.",
+            ],
+            [
+              "The notice asks for a slate photo",
+              "Take a new photo with the physical slate present. Do not add a digital strip afterward.",
+            ],
+            [
+              "The notice does not mention a name/date treatment",
+              "Leave the photo plain and follow the workflow described by that authority.",
+            ],
+          ].map(([problem, check]) => (
+            <tr key={problem} className="border-b border-hairline/60">
+              <td className="py-2 pr-3 font-medium text-ink">{problem}</td>
+              <td className="py-2">{check}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
       <p>
-        For the full NDA and CDS photo requirements — including the mandatory
-        square crop (350&nbsp;×&nbsp;350&nbsp;px) and the CDS 10-day date rule
-        — see the{" "}
-        <Link href="/blog/nda-cds-photo-signature-guide-2026/">
-          NDA &amp; CDS photo and signature guide
-        </Link>
-        .
-      </p>
-      <p>
-        Worried about other reasons a photo gets sent back? We listed every
-        common one in{" "}
+        For other measurable upload problems, see{" "}
         <Link href="/blog/why-exam-photo-signature-rejected/">
           why exam photos and signatures get rejected
         </Link>
-        .
+        . The final decision remains with the recruiting authority, so confirm the
+        current notice before submitting.
       </p>
 
       <div className="mt-12">

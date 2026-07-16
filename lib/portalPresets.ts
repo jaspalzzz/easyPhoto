@@ -519,12 +519,15 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoLimitKb: 50,
     sigLimitKb: 30,
     description: "Andhra Pradesh PSC (OTPR registration). Photo about 50 KB (3.5x4.5 cm, with name + date printed on it); signature about 30 KB (3.5x1.5 cm), uploaded separately; JPG. The official manual gives cm + KB but no pixel dimensions.",
-    source: { url: "https://psc.ap.gov.in", label: "APPSC (psc.ap.gov.in)" },
+    source: {
+      url: "https://psc.ap.gov.in/UserManuals/DirectRecruitmentOTPRUserManual.pdf",
+      label: "APPSC Direct Recruitment OTPR user manual",
+    },
     verification: "official",
-    verifiedOn: "2026-06-10",
+    verifiedOn: "2026-07-16",
     requiresNameDate: true,
     context:
-      "Andhra Pradesh Public Service Commission registration goes through the OTPR (One-Time Profile Registration) system; like SSC, APPSC requires the candidate's name and the date of photography printed on the photo itself.",
+      "Andhra Pradesh Public Service Commission registration goes through the OTPR (One-Time Profile Registration) system. Its Direct Recruitment manual requires the candidate's name and the date of photography printed on the photo itself.",
   },
   tgpsc: {
     id: "tgpsc",
@@ -1048,14 +1051,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     description:
       "Indian Navy Agniveer SSR/MR recruitment (joinindiannavy.gov.in). Photo 10-50 KB JPEG, passport-style, candidate holding a black slate with name and date of photograph written on it in white chalk. The official notification describes no separate signature upload step at all — earlier third-party figures for a 413×177 px signature could not be traced to any Navy document and have been removed rather than left unverified.",
     source: {
-      url: "https://www.joinindiannavy.gov.in/files/agniveers/Advt_Agniveer_MR_01-23_English.pdf",
-      label: "Join Indian Navy Agniveer (MR) advertisement",
+      url: "https://www.joinindiannavy.gov.in/files/Advt_Agniveer_MR_English.pdf",
+      label: "Indian Navy Agniveer INET 2025 notice, paragraph 34",
     },
     verification: "official",
-    verifiedOn: "2026-07-01",
-    requiresNameDate: true,
+    verifiedOn: "2026-07-16",
+    requiresSlateNameDate: true,
     context:
-      "Indian Navy Agniveer (SSR/MR) applications are submitted on joinindiannavy.gov.in. Like Army Agniveer, the photo must show the candidate holding a slate with name and date written on it. No separate signature upload exists in the official notification.",
+      "Indian Navy Agniveer applications are submitted on joinindiannavy.gov.in. The photo must show the candidate holding a black slate with the name and photography date written in white chalk; this is a physical slate workflow, not a digital name/date strip. The cited notice does not list a separate signature upload.",
   },
 
   // ---------------------------------------------------------------------------
