@@ -174,7 +174,7 @@ export function CompressDocumentTool() {
 
       {/* Target KB */}
       <div className="rounded-md border border-hairline p-3 space-y-2.5">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">
+        <p className="text-xs font-semibold uppercase tracking-wider text-ink-soft">
           Target size
         </p>
         <div className="flex flex-wrap gap-2">

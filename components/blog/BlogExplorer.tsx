@@ -141,7 +141,7 @@ export function BlogExplorer({
 
           {/* Popular chips */}
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-semibold text-muted-foreground">Popular:</span>
+            <span className="text-xs font-semibold text-muted-foreground">Popular:</span>
             {POPULAR.map((t) => (
               <button
                 key={t}
@@ -215,7 +215,7 @@ export function BlogExplorer({
             >
               <Icon className="h-3.5 w-3.5" strokeWidth={2} />
               {meta.label}
-              <span className={cn("text-[11px]", active ? "text-white/70" : "text-muted-foreground/70")}>
+              <span className={cn("text-xs", active ? "text-white/70" : "text-muted-foreground/70")}>
                 {counts[key] ?? 0}
               </span>
             </button>
@@ -255,7 +255,7 @@ export function BlogExplorer({
                       <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg", tile)}>
                         <Icon className="h-4 w-4" strokeWidth={2} />
                       </span>
-                      <p className="text-[11px] font-medium text-muted-foreground">
+                      <p className="text-xs font-medium text-muted-foreground">
                         <time dateTime={p.dateISO}>{p.date}</time> · {p.readMins} min
                       </p>
                     </div>

@@ -365,7 +365,7 @@ export function FormatConverterTool({
                       <FileImage className="h-5 w-5 text-brand shrink-0" />
                       <div className="min-w-0">
                         <span className="block text-sm font-semibold truncate leading-tight">{item.name}</span>
-                        <span className="text-[10px] text-muted-foreground">
+                        <span className="text-xs text-muted-foreground">
                           {formatKb(item.size)}
                           {item.status === "completed" && item.resultBlob && (
                             <span className="text-brand font-semibold">
@@ -394,7 +394,7 @@ export function FormatConverterTool({
                             Failed
                           </span>
                           {item.error && (
-                            <span className="text-[10px] font-normal text-destructive/80 max-w-[140px] text-right leading-tight">
+                            <span className="text-xs font-normal text-destructive/80 max-w-[140px] text-right leading-tight">
                               {item.error}
                             </span>
                           )}
@@ -436,7 +436,7 @@ export function FormatConverterTool({
             {/* Right Column: Settings */}
             <div className="space-y-4">
               <div className="bg-paper p-4 border border-hairline rounded-md space-y-4">
-                <span className="text-[11px] font-semibold eyebrow uppercase tracking-wider text-brand block">
+                <span className="text-xs font-semibold eyebrow uppercase tracking-wider text-brand block">
                   Settings
                 </span>
 
@@ -468,13 +468,13 @@ export function FormatConverterTool({
                     })}
                   </div>
                   {!webpEncodable && (
-                    <p className="text-[10px] leading-normal text-muted-foreground">
+                    <p className="text-xs leading-normal text-muted-foreground">
                       Your browser (Safari) can&apos;t create WebP files — choose
                       JPG or PNG, or use Chrome/Firefox for WebP output.
                     </p>
                   )}
                   {targetFormat === "image/jpeg" && (
-                    <p className="text-[10px] leading-normal text-amber-700">
+                    <p className="text-xs leading-normal text-amber-700">
                       JPG has no transparency — transparent areas (from PNG/WebP)
                       are filled with white. Pick PNG or WebP to keep transparency.
                     </p>
@@ -512,8 +512,8 @@ export function FormatConverterTool({
                     placeholder="e.g. photo_###"
                     className="h-9 w-full rounded-md border border-hairline-strong bg-background px-3 text-xs"
                   />
-                  <span className="text-[10px] text-muted-foreground block leading-normal">
-                    Optional. Use # for padded numbers (e.g., <code className="font-mono text-[9px]">doc_###</code> gives <code className="font-mono text-[9px]">doc_001.jpg</code>).
+                  <span className="text-xs text-muted-foreground block leading-normal">
+                    Optional. Use # for padded numbers (e.g., <code className="font-mono text-xs">doc_###</code> gives <code className="font-mono text-xs">doc_001.jpg</code>).
                   </span>
                 </label>
               </div>
@@ -524,7 +524,7 @@ export function FormatConverterTool({
                   <Button id="converter-zip-btn" variant="cta" className="w-full" onClick={downloadZip} disabled={busy}>
                     <Archive className="h-4 w-4" /> Download ZIP ({completedCount} files)
                   </Button>
-                  <p className="text-[10px] text-center text-muted-foreground leading-normal">
+                  <p className="text-xs text-center text-muted-foreground leading-normal">
                     Compresses all ready conversions into a ZIP for convenient download.
                   </p>
                 </div>

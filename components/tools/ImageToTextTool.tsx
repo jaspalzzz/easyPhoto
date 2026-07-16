@@ -197,7 +197,7 @@ export function ImageToTextTool() {
 
       {/* Language selector */}
       <div className="rounded-md border border-hairline p-3 space-y-2">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">Language</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-ink-soft">Language</p>
         <div className="flex flex-wrap gap-2">
           {LANGS.map((l) => (
             <button

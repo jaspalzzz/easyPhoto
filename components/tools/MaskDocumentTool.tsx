@@ -351,7 +351,7 @@ export function MaskDocumentTool() {
             aria-hidden="true"
           >
             <div className="h-1 w-8 rounded-full bg-foreground/20" />
-            <span className="text-[11px] text-muted-foreground">swipe here to scroll</span>
+            <span className="text-xs text-muted-foreground">swipe here to scroll</span>
             <div className="h-1 w-8 rounded-full bg-foreground/20" />
           </div>
 

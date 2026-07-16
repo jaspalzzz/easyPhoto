@@ -414,11 +414,11 @@ export function ExamPackageTool() {
                           <ArrowRight className="h-4 w-4 shrink-0 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" />
                         </span>
                         <span className="flex min-w-0 flex-wrap gap-1.5">
-                          <span className="rounded-md bg-[hsl(174_72%_30%/0.10)] px-2 py-0.5 font-mono text-[11px] font-medium text-[hsl(174_72%_28%)]">
+                          <span className="rounded-md bg-[hsl(174_72%_30%/0.10)] px-2 py-0.5 font-mono text-xs font-medium text-[hsl(174_72%_28%)]">
                             Photo {photoKbText(s)}
                           </span>
                           {sig && (
-                            <span className="rounded-md bg-[hsl(8_75%_45%/0.10)] px-2 py-0.5 font-mono text-[11px] font-medium text-[hsl(8_75%_45%)]">
+                            <span className="rounded-md bg-[hsl(8_75%_45%/0.10)] px-2 py-0.5 font-mono text-xs font-medium text-[hsl(8_75%_45%)]">
                               Sign {sig}
                             </span>
                           )}

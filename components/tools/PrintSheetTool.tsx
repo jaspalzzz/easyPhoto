@@ -403,7 +403,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
               <button
                 type="button"
                 onClick={resetAdjust}
-                className="inline-flex items-center gap-1 text-[11px] font-medium normal-case tracking-normal text-muted-foreground hover:text-foreground"
+                className="inline-flex items-center gap-1 text-xs font-medium normal-case tracking-normal text-muted-foreground hover:text-foreground"
               >
                 <RotateCcw className="h-3 w-3" strokeWidth={1.75} /> Reset
               </button>
@@ -424,7 +424,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
           <div className="mt-3 space-y-3">
             <label className="block text-xs">
               <span className="mb-1 flex items-center justify-between text-muted-foreground">
-                <span className="font-semibold uppercase tracking-wide text-[10px]">Brightness</span>
+                <span className="font-semibold uppercase tracking-wide text-xs">Brightness</span>
                 <span className="tabular-nums">{brightness}%</span>
               </span>
               <input
@@ -439,7 +439,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
             </label>
             <label className="block text-xs">
               <span className="mb-1 flex items-center justify-between text-muted-foreground">
-                <span className="font-semibold uppercase tracking-wide text-[10px]">Contrast</span>
+                <span className="font-semibold uppercase tracking-wide text-xs">Contrast</span>
                 <span className="tabular-nums">{contrast}%</span>
               </span>
               <input
@@ -453,7 +453,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
               />
             </label>
           </div>
-          <p className="mt-2 text-[11px] leading-snug text-muted-foreground">
+          <p className="mt-2 text-xs leading-snug text-muted-foreground">
             Changes apply to every photo on the sheet. Keep edits light for ID
             photos — strong adjustments can get a submission rejected.
           </p>

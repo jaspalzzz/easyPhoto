@@ -498,7 +498,7 @@ function Body({
                   draggable={false}
                 />
               </PreviewFrame>
-              <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+              <figcaption className="text-center font-mono text-xs text-ink-soft">
                 Before · {source.size.width}×{source.size.height}px
               </figcaption>
             </figure>
@@ -522,7 +522,7 @@ function Body({
                   onTouchEnd={handleEnd}
                 />
               </PreviewFrame>
-              <figcaption className="text-center font-mono text-[11px] text-ink-soft">
+              <figcaption className="text-center font-mono text-xs text-ink-soft">
                 After · {out.w}×{out.h}px
               </figcaption>
             </figure>
@@ -534,7 +534,7 @@ function Body({
         )}
 
         {eraserEnabled && out && !busy && (
-          <p className="text-center text-[11px] font-medium text-brand">
+          <p className="text-center text-xs font-medium text-brand">
             Drag on the <strong>After</strong> image to erase unwanted parts.
           </p>
         )}
@@ -648,7 +648,7 @@ function Body({
                     Solid White JPG
                   </button>
                 </div>
-                <span className="text-[10px] text-muted-foreground block leading-relaxed">
+                <span className="text-xs text-muted-foreground block leading-relaxed">
                   {bgFormat === "jpeg"
                     ? "Recommended for SSC, UPSC, and most Indian government forms."
                     : "Transparent background, ideal for document overlays."}
@@ -674,7 +674,7 @@ function Body({
                   onChange={(e) => setThreshold(Number(e.target.value))}
                   className="w-full cursor-pointer accent-brand"
                 />
-                <span className="text-[11px] text-muted-foreground block mt-0.5">
+                <span className="text-xs text-muted-foreground block mt-0.5">
                   Increase if gray smudges appear; decrease if ink lines break.
                 </span>
               </label>
@@ -700,7 +700,7 @@ function Body({
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="text-xs font-semibold eyebrow uppercase tracking-wider text-muted-foreground">Manual Eraser</h4>
-                    <p className="text-[11px] text-muted-foreground">Erase background noise or lines manually.</p>
+                    <p className="text-xs text-muted-foreground">Erase background noise or lines manually.</p>
                   </div>
                   <Button
                     id="sig-eraser-toggle"
@@ -717,7 +717,7 @@ function Body({
                 {eraserEnabled && (
                   <div className="space-y-3 p-3 bg-accent/5 rounded-md border border-hairline animate-fadeIn">
                     <label className="block text-xs">
-                      <span className="mb-1 flex items-center justify-between font-semibold uppercase text-[10px] text-muted-foreground">
+                      <span className="mb-1 flex items-center justify-between font-semibold uppercase text-xs text-muted-foreground">
                         <span>Brush Size</span>
                         <span>{brushSize}px</span>
                       </span>
@@ -795,7 +795,7 @@ function Body({
                     onChange={(e) => setInkContrast(Number(e.target.value))}
                     className="w-full cursor-pointer accent-brand"
                   />
-                  <span className="text-[11px] text-muted-foreground block mt-0.5">
+                  <span className="text-xs text-muted-foreground block mt-0.5">
                     Enhance faint ink writing for better biometric readability.
                   </span>
                 </label>
@@ -817,7 +817,7 @@ function Body({
                     onChange={(e) => setSmoothing(Number(e.target.value))}
                     className="w-full cursor-pointer accent-brand"
                   />
-                  <span className="text-[11px] text-muted-foreground block mt-0.5">
+                  <span className="text-xs text-muted-foreground block mt-0.5">
                     Smooth jagged edges for high-DPI scan look.
                   </span>
                 </label>
@@ -859,7 +859,7 @@ function Body({
                     onChange={(e) => setPadding(Number(e.target.value))}
                     className="w-full cursor-pointer accent-brand"
                   />
-                  <span className="text-[11px] text-muted-foreground block mt-0.5">
+                  <span className="text-xs text-muted-foreground block mt-0.5">
                     Border space left around the outermost strokes.
                   </span>
                 </label>

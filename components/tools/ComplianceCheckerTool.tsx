@@ -256,7 +256,7 @@ export function ComplianceCheckerTool() {
                 {score}
                 <span className="text-base font-semibold opacity-70">/100</span>
               </div>
-              <div className="mt-1 text-[10px] font-semibold uppercase tracking-wide opacity-70">
+              <div className="mt-1 text-xs font-semibold uppercase tracking-wide opacity-70">
                 Readiness
               </div>
             </div>

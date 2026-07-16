@@ -313,7 +313,7 @@ export function SignImageTool() {
                 </Button>
               </div>
               {placements.length === 0 && (
-                <p className="text-[11px] text-muted-foreground text-center">
+                <p className="text-xs text-muted-foreground text-center">
                   Place at least one signature before saving.
                 </p>
               )}
@@ -344,7 +344,7 @@ export function SignImageTool() {
 
               {/* Signature Creator Panel */}
               <div className="bg-paper border border-hairline rounded-md p-4 space-y-4">
-                <span className="text-[11px] font-semibold eyebrow uppercase tracking-wider text-brand block">
+                <span className="text-xs font-semibold eyebrow uppercase tracking-wider text-brand block">
                   Signature Options
                 </span>
 
@@ -388,7 +388,7 @@ export function SignImageTool() {
                     <PenLine className="h-8 w-8 text-brand mx-auto opacity-70" />
                     <div>
                       <p className="text-xs font-semibold">No signature created yet</p>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">Draw or upload your signature to place on the image.</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Draw or upload your signature to place on the image.</p>
                     </div>
                     <Button
                       id="image-signer-create-sig-btn"

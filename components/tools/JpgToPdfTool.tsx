@@ -137,7 +137,7 @@ export function JpgToPdfTool() {
                   alt={`Page ${i + 1}`}
                   className="h-full w-full object-cover"
                 />
-                <span className="absolute left-1 top-1 rounded-md bg-black/60 px-1.5 font-mono text-[11px] text-white">
+                <span className="absolute left-1 top-1 rounded-md bg-black/60 px-1.5 font-mono text-xs text-white">
                   {i + 1}
                 </span>
                 <button

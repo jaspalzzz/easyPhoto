@@ -209,11 +209,11 @@ export function PanCardOcrTool() {
               mono
               badge={
                 fields.panValid ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
                     <BadgeCheck className="h-3 w-3" /> Valid format{fields.panEntity ? ` · ${fields.panEntity}` : ""}
                   </span>
                 ) : fields.panNumber ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-400">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-400">
                     <AlertTriangle className="h-3 w-3" /> Verify format
                   </span>
                 ) : undefined

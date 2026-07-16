@@ -311,12 +311,12 @@ function Body({ source }: { source: ToolSource }) {
         aria-hidden="true"
       >
         <div className="h-1 w-8 rounded-full bg-foreground/20" />
-        <span className="text-[11px] text-muted-foreground">swipe here to scroll</span>
+        <span className="text-xs text-muted-foreground">swipe here to scroll</span>
         <div className="h-1 w-8 rounded-full bg-foreground/20" />
       </div>
 
       {hasCrop && (
-        <p className="text-center font-mono text-[11px] text-muted-foreground">
+        <p className="text-center font-mono text-xs text-muted-foreground">
           {Math.round(crop!.w)} × {Math.round(crop!.h)} px
         </p>
       )}
@@ -334,7 +334,7 @@ function Body({ source }: { source: ToolSource }) {
             <img src={preview} alt="Cropped result" className="max-h-[260px] w-auto rounded" />
           </PreviewFrame>
           {previewKb !== null && (
-            <p className="text-center text-[11px] text-muted-foreground">
+            <p className="text-center text-xs text-muted-foreground">
               {Math.round(crop!.w)}×{Math.round(crop!.h)} px · ~{formatKb(previewKb)} (JPEG est.)
             </p>
           )}

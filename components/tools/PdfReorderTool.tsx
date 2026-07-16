@@ -351,23 +351,23 @@ export function PdfReorderTool() {
                           isPendingDelete ? "opacity-40" : ""
                         }`}
                       />
-                      <div className="absolute top-2 left-2 bg-background/90 text-[10px] font-mono px-1.5 py-0.5 rounded border border-hairline font-semibold">
+                      <div className="absolute top-2 left-2 bg-background/90 text-xs font-mono px-1.5 py-0.5 rounded border border-hairline font-semibold">
                         #{index + 1}
                       </div>
                       {item.rotation !== 0 && (
-                        <div className="absolute top-2 right-2 bg-brand/90 text-white text-[9px] font-mono px-1.5 py-0.5 rounded font-semibold flex items-center gap-1">
+                        <div className="absolute top-2 right-2 bg-brand/90 text-white text-xs font-mono px-1.5 py-0.5 rounded font-semibold flex items-center gap-1">
                           <RefreshCw className="h-2.5 w-2.5 animate-spin-slow" /> {item.rotation}°
                         </div>
                       )}
                       {/* Fix 2: pending-delete overlay with undo affordance. */}
                       {isPendingDelete && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center bg-destructive/10 gap-1">
-                          <p className="text-[10px] font-semibold text-destructive text-center px-2">
+                          <p className="text-xs font-semibold text-destructive text-center px-2">
                             Delete page {index + 1}?
                           </p>
                           <button
                             type="button"
-                            className="text-[10px] underline text-destructive font-bold"
+                            className="text-xs underline text-destructive font-bold"
                             onClick={() => removePage(item.id)}
                             aria-label={`Confirm delete page ${index + 1}`}
                           >
@@ -453,7 +453,7 @@ export function PdfReorderTool() {
                         >
                           <ArrowLeft className="h-3.5 w-3.5" />
                         </Button>
-                        <span className="text-[10px] text-muted-foreground px-1 font-mono select-none font-semibold">
+                        <span className="text-xs text-muted-foreground px-1 font-mono select-none font-semibold">
                           Orig: #{item.originalIndex + 1}
                         </span>
                         <Button

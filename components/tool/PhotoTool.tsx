@@ -302,12 +302,12 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
 
                     {/* Image Adjustment sliders */}
                     <div className="bg-paper border border-hairline rounded-md p-3.5 space-y-3">
-                      <span className="text-[11px] font-semibold eyebrow uppercase tracking-wider text-brand block">
+                      <span className="text-xs font-semibold eyebrow uppercase tracking-wider text-brand block">
                         Image Adjustments
                       </span>
                       <div className="grid grid-cols-2 gap-4">
                         <label className="block text-xs">
-                          <span className="text-muted-foreground block mb-1 font-semibold uppercase text-[10px]">
+                          <span className="text-muted-foreground block mb-1 font-semibold uppercase text-xs">
                             Brightness: {liveBrightness}%
                           </span>
                           <input
@@ -320,7 +320,7 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                           />
                         </label>
                         <label className="block text-xs">
-                          <span className="text-muted-foreground block mb-1 font-semibold uppercase text-[10px]">
+                          <span className="text-muted-foreground block mb-1 font-semibold uppercase text-xs">
                             Contrast: {liveContrast}%
                           </span>
                           <input
@@ -333,7 +333,7 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
                           />
                         </label>
                       </div>
-                      <p className="text-[10px] leading-snug text-muted-foreground">
+                      <p className="text-xs leading-snug text-muted-foreground">
                         Use sparingly to correct lighting only. Passport and visa
                         authorities can reject photos that look digitally altered
                         — don&apos;t change your natural appearance.
