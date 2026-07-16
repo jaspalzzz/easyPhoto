@@ -79,6 +79,11 @@ export async function generateMetadata({
   // well past the ~155-160 char SERP display width, so they were truncating.
   const shortName = spec.name.split(" (")[0];
   const titleBase = `${shortName} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR}`;
+  const descriptionOverride =
+    exam === "airforce-agniveer"
+      ? `${shortName}: photo ${photoKb(spec)}, signature ${sig}, both JPG/JPEG. ` +
+        "No fixed pixel dimensions are published; confirm the current intake notice."
+      : undefined;
   return pageMetadata({
     // Short exam name keeps the SERP title under ~60 chars and matches how
     // people actually search ("SSC photo size", not the full commission name).
@@ -87,6 +92,7 @@ export async function generateMetadata({
       titleBase,
     titleAbsolute: !!EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam],
     description:
+      descriptionOverride ??
       `${shortName}: photo ${photoKb(spec)} (${px(spec.photoWidthPx, spec.photoHeightPx)})` +
       (sig ? `, signature ${sig} (${px(spec.sigWidthPx, spec.sigHeightPx)})` : "") +
       `. Exact size & format for the form — verified against the official source.`,
@@ -326,22 +332,35 @@ export default async function Page({
           </div>
         )}
 
-        {spec.requiresNameDate && (
+        {(spec.requiresNameDate || spec.requiresSlateNameDate) && (
           <div className="rounded-lg border border-amber-300 bg-amber-50/70 p-4 dark:border-amber-800 dark:bg-amber-950/30">
             <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
-              This form needs your name &amp; date on the photo
+              {spec.requiresSlateNameDate
+                ? "This photo needs a name-and-date slate"
+                : "This form needs your name & date on the photo"}
             </h3>
             <p className="mt-1 text-sm leading-relaxed text-amber-800 dark:text-amber-300">
-              {spec.name.split(" (")[0]} requires the candidate&apos;s name and the
-              date of photography printed on the photo itself. After sizing it here,
-              add the strip with the{" "}
-              <Link
-                href="/tools/photo-with-name-date/"
-                className="font-medium underline underline-offset-2"
-              >
-                Photo with Name &amp; Date tool
-              </Link>
-              .
+              {spec.requiresSlateNameDate ? (
+                <>
+                  The current notice requires the candidate to be photographed holding
+                  a black slate with their name and the photography date written in
+                  white chalk. This must be present when the photo is taken, not added
+                  digitally afterward.
+                </>
+              ) : (
+                <>
+                  {spec.name.split(" (")[0]} requires the candidate&apos;s name and the
+                  date of photography printed on the photo itself. After sizing it here,
+                  add the strip with the{" "}
+                  <Link
+                    href="/tools/photo-with-name-date/"
+                    className="font-medium underline underline-offset-2"
+                  >
+                    Photo with Name &amp; Date tool
+                  </Link>
+                  .
+                </>
+              )}
             </p>
           </div>
         )}
@@ -419,6 +438,93 @@ export default async function Page({
               className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
             >
               Check the UPSC online application source <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          )}
+        </section>
+      )}
+
+      {exam === "driving-licence" && (
+        <section className="space-y-6 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Sarathi checks two separately prepared JPG files</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The Sarathi record sets the colour photo at {photoKb(spec)}, with
+              {" "}a preferred {px(spec.photoWidthPx, spec.photoHeightPx)} canvas.
+              The black-pen signature uses its own {sig} band and preferred
+              {" "}{px(spec.sigWidthPx, spec.sigHeightPx)} canvas. The upload guide
+              requires JPG format for both files.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">The scan guide is shared through Sarathi</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Driving-licence and learner&apos;s-licence applications use the Sarathi
+              upload workflow even though the issuing RTO is administered by the
+              state. This page follows the national Sarathi scan guide rather than
+              inferring different image numbers for each state; confirm the current
+              instructions shown for your selected state and service.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">What can block the Sarathi upload</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Sarathi displays an error when the file size or format is outside the
+              prescribed values. Its guide also warns that an unclear face or
+              signature can require a re-upload, so crop each image to its edges and
+              keep the photograph and signature as separate files.
+            </p>
+          </div>
+          {spec.source && (
+            <a
+              href={spec.source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
+            >
+              Check the Sarathi photo and signature guide <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          )}
+        </section>
+      )}
+
+      {exam === "airforce-agniveer" && (
+        <section className="space-y-6 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">The current IAF notice uses separate upload bands</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The Agniveervayu Intake 01/2027 record sets the recent colour photo at
+              {" "}{photoKb(spec)} and the candidate&apos;s signature at {sig}. Both
+              files must be JPG or JPEG. The notice publishes no fixed pixel
+              dimensions, so this page does not prescribe a pixel canvas.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">The name and date belong on a black slate</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The candidate must be photographed holding a black slate at chest level,
+              with their name and the photography date written clearly in white chalk
+              while looking straight at the camera. This is part of the photographed
+              scene, not a digital name-and-date strip added afterward.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">What to check before the IAF upload</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              A photo or signature outside its recorded KB band, a non-JPG/JPEG file,
+              missing slate details, or a signature scan that includes the whole sheet
+              can prevent a clean submission. The registration flow also captures a
+              live image, so use a current portrait that represents your appearance and
+              confirm the current intake notice before submitting.
+            </p>
+          </div>
+          {spec.source && (
+            <a
+              href={spec.source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
+            >
+              Check the IAF Agniveervayu Intake 01/2027 notice <ExternalLink className="h-3.5 w-3.5" />
             </a>
           )}
         </section>

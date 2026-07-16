@@ -55,6 +55,12 @@ export interface PortalSpec {
    */
   requiresNameDate?: boolean;
   /**
+   * The photo must show the candidate holding a slate with their name and the
+   * photography date. This is distinct from a digitally printed name/date
+   * strip and must not direct users to the strip-adding tool.
+   */
+  requiresSlateNameDate?: boolean;
+  /**
    * Signature ink requirement, when the official source specifies one exactly
    * (e.g. driving-licence and up-police confirm "black" only, not blue). Only
    * set this when actually confirmed — the exam-requirements template falls
@@ -713,20 +719,22 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   "airforce-agniveer": {
     id: "airforce-agniveer",
     name: "Agniveervayu (Indian Air Force)",
-    photoLimitKb: 50,
-    photoMinKb: 10,
-    sigLimitKb: 50,
-    sigMinKb: 10,
+    photoLimitKb: 200,
+    photoMinKb: 100,
+    sigLimitKb: 150,
+    sigMinKb: 80,
     description:
-      "Indian Air Force Agniveervayu application (agnipathvayu.cdac.in). Photo 10-50 KB JPEG/JPG — recent passport-size colour photo holding a black slate at chest level with your name and the date written in white chalk. Signature 10-50 KB; a left-thumb impression image (also 10-50 KB) is uploaded the same way.",
+      "Indian Air Force Agniveervayu Intake 01/2027 online application. Photo 100-200 KB in JPG/JPEG — a recent passport-size colour photo holding a black slate at chest level with the candidate's name and the date written in white chalk. Signature 80-150 KB in JPG/JPEG, signed in black ink on white paper. The notice publishes no fixed pixel dimensions.",
     source: {
-      url: "https://agnipathvayu.cdac.in/AV/guidelines",
-      label: "CASB Agniveervayu guidelines (agnipathvayu.cdac.in)",
+      url: "https://iafrecruitment.edcil.co.in/agniveervayu/pdffiles/Advt%20Agniveervayu%2001%20of%2027.pdf",
+      label: "IAF Agniveervayu Intake 01/2027 notice",
     },
     verification: "official",
-    verifiedOn: "2026-06-11",
+    verifiedOn: "2026-07-16",
+    requiresSlateNameDate: true,
+    signatureInk: "Black ink on white paper",
     context:
-      "Agniveervayu (Indian Air Force) applications are submitted on agnipathvayu.cdac.in; uniquely among the entries here, the candidate photographs themselves holding a black slate with their name and the date written on it in white chalk, rather than having the text printed digitally onto the photo.",
+      "Agniveervayu Intake 01/2027 applications are submitted on iafrecruitment.edcil.co.in. The candidate must be photographed holding a black slate at chest level with their name and the photography date written clearly in white chalk, rather than adding the text digitally after the photo is taken.",
   },
   "up-police": {
     id: "up-police",
