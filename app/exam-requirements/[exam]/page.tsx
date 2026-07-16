@@ -443,6 +443,54 @@ export default async function Page({
         </section>
       )}
 
+      {exam === "sbi" && (
+        <section className="space-y-6 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">SBI uses separate photo and signature upload targets</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The SBI PO record sets the photograph at {photoKb(spec)}, with a
+              preferred {px(spec.photoWidthPx, spec.photoHeightPx)} canvas. The
+              signature uses its own {sig} band and preferred
+              {" "}{px(spec.sigWidthPx, spec.sigHeightPx)} canvas. The advertisement
+              specifies JPG or JPEG files, a minimum {spec.dpi} DPI scan setting,
+              and a signature written in {spec.signatureInk?.toLowerCase()}.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">The live photograph is a separate registration step</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              After preparing the scanned photograph, SBI&apos;s registration flow
+              also captures and uploads a live image through a webcam or mobile
+              phone. This record is scoped to SBI&apos;s 2026 Probationary Officer
+              advertisement and its SBI Careers application link, not an IBPS CRP
+              application. For Clerk or Specialist Officer recruitment, confirm the
+              matching role-specific SBI Careers notice instead of carrying these PO
+              values across.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">What can block an SBI upload</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The advertisement says the form displays an error when a file&apos;s size
+              or format is outside the prescribed values. It also tells candidates
+              to re-upload an unclear or smudged image, so keep the photo and
+              signature as separate JPG/JPEG files and check each preview before
+              submitting.
+            </p>
+          </div>
+          {spec.source && (
+            <a
+              href={spec.source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
+            >
+              Check the SBI PO 2026 advertisement <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          )}
+        </section>
+      )}
+
       {exam === "driving-licence" && (
         <section className="space-y-6 border-t border-hairline pt-8">
           <div className="space-y-2">
