@@ -70,9 +70,8 @@ function presetFromSpec(id: string, label: string, specId: string): Preset {
 }
 
 const PRESETS: Preset[] = [
-  presetFromSpec("ssc", "SSC Preset", "ssc"),
-  presetFromSpec("upsc", "UPSC Preset", "upsc"),
-  presetFromSpec("passport", "Overseas passport (conditional)", "passport-seva"),
+  presetFromSpec("appsc", "APPSC Direct Recruitment", "appsc"),
+  presetFromSpec("kerala-psc", "Kerala PSC", "kerala-psc"),
   // Free-form crop: NaN is Cropper.js's "no aspect-ratio lock" value, so the
   // box can be dragged to ANY size — including the full width/height of a tall
   // screenshot or an odd source photo. The spec presets above stay locked to
@@ -512,7 +511,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
               className="w-full h-10 rounded-md border border-hairline-strong bg-background px-3 text-sm font-mono focus:border-brand"
             />
             <span className="text-xs text-muted-foreground mt-1 block">
-              Usually required to be taken within the last 3 months.
+              Use the date the photograph was taken, as stated by the current notice.
             </span>
           </div>
 
@@ -590,7 +589,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
               <li>
                 · Status:{" "}
                 {result.underCap ? (
-                  <span className="text-emerald-700 dark:text-emerald-400">Compliant size</span>
+                  <span className="text-emerald-700 dark:text-emerald-400">Within selected size cap</span>
                 ) : (
                   <span className="text-amber-700 dark:text-amber-300">Over the {targetKb} KB limit</span>
                 )}
@@ -626,7 +625,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
               {
                 slug: "resize-kb",
                 label: "Compress to KB",
-                hint: "Hit exact file size limits for exam and visa portals",
+                hint: "Adjust to the file-size limit listed by the application portal",
                 icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
               },
             ]}

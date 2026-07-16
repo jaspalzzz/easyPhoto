@@ -172,13 +172,14 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "add-name-date-on-exam-photo",
-    title: "How to Add Name & Date on Exam Photo Free — UPSC & Army 2026",
+    title: "How to Add Name & Date to an Exam Photo (2026)",
     description:
-      "UPSC and Indian Army reject photos without your name and photo date printed on them. Add both in under 60 seconds — free, no app, works on your phone.",
+      "Use a digital name-and-date strip only when the current notice asks for one. Compare APPSC and Kerala PSC with UPSC, SSC, IBPS and slate-photo workflows.",
     date: "June 13, 2026",
     dateISO: "2026-06-13",
+    updatedISO: "2026-07-16",
     excerpt:
-      "UPSC and Army forms reject photos that don't have your name and the photo date printed on them. Here's the exact rule and how to add it in under a minute.",
+      "APPSC and Kerala PSC use a digital name-and-date treatment; UPSC, SSC and IBPS do not, while Navy and Airforce Agniveer notices use a physical slate.",
     readMins: 5,
   },
   {
