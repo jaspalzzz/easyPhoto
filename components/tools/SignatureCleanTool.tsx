@@ -87,7 +87,7 @@ function Body({ source, options }: { source: ToolSource; options: Options }) {
           className="w-full"
         />
         <span className="text-xs text-muted-foreground">
-          Higher removes more of the paper; lower keeps faint strokes.
+          Lower removes darker paper; raise only when faint ink strokes disappear.
         </span>
       </label>
 

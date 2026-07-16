@@ -6,7 +6,11 @@ import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, canvasToBlob, pngUnderKb, picaResizeTo } from "@/lib/imaging";
-import { whiteToTransparent, trimToContent } from "@/lib/signature";
+import {
+  whiteToTransparent,
+  trimToContent,
+  type SignatureInkColor,
+} from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
@@ -16,6 +20,19 @@ import { track, deviceClass } from "@/lib/analytics";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
 
 type Tab = "clean" | "crop" | "resize";
+
+const INK_COLOUR_PRESETS: Array<{
+  value: SignatureInkColor;
+  label: string;
+  swatch?: string;
+}> = [
+  { value: "original", label: "Original" },
+  { value: "black", label: "Black", swatch: "#000000" },
+  { value: "dark-blue", label: "Dark blue", swatch: "#0b2a6f" },
+  { value: "blue", label: "Blue", swatch: "#0033cb" },
+  { value: "red", label: "Red", swatch: "#b42318" },
+  { value: "custom", label: "Custom" },
+];
 
 interface SignatureWorkflowProps {
   defaultTab?: Tab;
@@ -92,8 +109,10 @@ function Body({
   // Clean Settings
   const [threshold, setThreshold] = React.useState(200);
   const [softness, setSoftness] = React.useState(40);
-  const [inkColor, setInkColor] = React.useState<"original" | "black" | "blue">("original");
+  const [inkColor, setInkColor] = React.useState<SignatureInkColor>("original");
+  const [customInkColor, setCustomInkColor] = React.useState("#0033cb");
   const [inkContrast, setInkContrast] = React.useState(1.0);
+  const [strokeWidth, setStrokeWidth] = React.useState(0);
 
   // Crop Settings
   const [autoCrop, setAutoCrop] = React.useState(autoCropDefault);
@@ -230,6 +249,7 @@ function Body({
   const dThreshold = useDebouncedValue(threshold, 150);
   const dSoftness = useDebouncedValue(softness, 150);
   const dInkContrast = useDebouncedValue(inkContrast, 150);
+  const dStrokeWidth = useDebouncedValue(strokeWidth, 150);
   const dPadding = useDebouncedValue(padding, 150);
   const dSmoothing = useDebouncedValue(smoothing, 150);
   const dTargetKb = useDebouncedValue(targetKb, 200);
@@ -253,7 +273,9 @@ function Body({
           threshold: dThreshold,
           softness: dSoftness,
           inkColor,
+          customInkColor,
           inkContrast: dInkContrast,
+          strokeWidth: dStrokeWidth,
         });
 
         // Apply Eraser Mask if it exists
@@ -416,7 +438,9 @@ function Body({
     dThreshold,
     dSoftness,
     inkColor,
+    customInkColor,
     dInkContrast,
+    dStrokeWidth,
     autoCrop,
     dPadding,
     resizeMode,
@@ -675,7 +699,7 @@ function Body({
                   className="w-full cursor-pointer accent-brand"
                 />
                 <span className="text-xs text-muted-foreground block mt-0.5">
-                  Increase if gray smudges appear; decrease if ink lines break.
+                  Lower to remove darker paper; raise only when faint ink lines disappear.
                 </span>
               </label>
 
@@ -760,29 +784,55 @@ function Body({
                 </div>
 
                 <div className="space-y-2">
-                  <span className="text-xs font-medium text-muted-foreground block">Ink Color Preset</span>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(["original", "black", "blue"] as const).map((color) => (
+                  <span className="block text-xs font-medium text-muted-foreground">Ink colour</span>
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                    {INK_COLOUR_PRESETS.map((preset) => (
                       <button
-                        id={`sig-ink-color-${color}`}
-                        key={color}
+                        id={`sig-ink-color-${preset.value}`}
+                        key={preset.value}
                         type="button"
-                        onClick={() => setInkColor(color)}
-                        className={`rounded-md border py-1.5 text-xs font-medium transition-colors ${
-                          inkColor === color
+                        aria-pressed={inkColor === preset.value}
+                        onClick={() => setInkColor(preset.value)}
+                        className={`flex min-h-10 items-center justify-center gap-1.5 rounded-md border px-2 py-1.5 text-xs font-medium transition-colors ${
+                          inkColor === preset.value
                             ? "bg-brand/10 border-brand text-brand"
                             : "bg-background border-hairline hover:bg-accent/40"
                         }`}
                       >
-                        {color === "original" ? "Original Ink" : color === "black" ? "Solid Black" : "Solid Blue"}
+                        {preset.swatch ? (
+                          <span
+                            aria-hidden="true"
+                            className="h-3 w-3 shrink-0 rounded-full border border-ink/20"
+                            style={{ backgroundColor: preset.swatch }}
+                          />
+                        ) : null}
+                        {preset.label}
                       </button>
                     ))}
                   </div>
+                  {inkColor === "custom" ? (
+                    <label className="flex min-h-11 items-center justify-between gap-3 rounded-md border border-hairline bg-background px-3 py-2 text-xs">
+                      <span className="font-medium text-foreground">Choose custom colour</span>
+                      <span className="flex items-center gap-2 font-mono text-muted-foreground">
+                        {customInkColor.toUpperCase()}
+                        <input
+                          id="sig-ink-custom-colour"
+                          type="color"
+                          value={customInkColor}
+                          onChange={(e) => setCustomInkColor(e.target.value)}
+                          className="h-8 w-11 cursor-pointer rounded border border-hairline bg-transparent p-0.5"
+                        />
+                      </span>
+                    </label>
+                  ) : null}
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    Choose the ink colour requested by the current form; requirements vary by portal.
+                  </p>
                 </div>
 
                 <label className="block text-sm">
                   <span className="mb-1 flex items-center justify-between">
-                    <span className="eyebrow">Ink Stroke Thickness (Contrast)</span>
+                    <span className="eyebrow">Stroke darkness</span>
                     <span className="font-mono text-xs text-brand font-semibold">{inkContrast.toFixed(1)}x</span>
                   </span>
                   <input
@@ -796,7 +846,29 @@ function Body({
                     className="w-full cursor-pointer accent-brand"
                   />
                   <span className="text-xs text-muted-foreground block mt-0.5">
-                    Enhance faint ink writing for better biometric readability.
+                    Strengthen faint strokes without changing their width.
+                  </span>
+                </label>
+
+                <label className="block text-sm">
+                  <span className="mb-1 flex items-center justify-between">
+                    <span className="eyebrow">Stroke width</span>
+                    <span className="font-mono text-xs font-semibold text-brand">
+                      {strokeWidth === 0 ? "Original" : `+${strokeWidth}px`}
+                    </span>
+                  </span>
+                  <input
+                    id="sig-ink-stroke-width"
+                    type="range"
+                    min={0}
+                    max={6}
+                    step={1}
+                    value={strokeWidth}
+                    onChange={(e) => setStrokeWidth(Number(e.target.value))}
+                    className="w-full cursor-pointer accent-brand"
+                  />
+                  <span className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">
+                    Expand thin extracted strokes. Start with +1px or +2px to preserve the signature shape.
                   </span>
                 </label>
 
