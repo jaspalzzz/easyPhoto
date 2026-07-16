@@ -81,43 +81,41 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   ssc: {
     id: "ssc",
     name: "SSC (Staff Selection Commission)",
+    // Compatibility-only photo target. Current SSC notices use live capture
+    // and publish no pre-existing photo-upload KB or pixel requirement.
     photoLimitKb: 50,
     photoMinKb: 20,
     sigLimitKb: 20,
     sigMinKb: 10,
-    photoWidthPx: 350,
-    photoHeightPx: 450,
-    sigWidthPx: 140,
-    sigHeightPx: 60,
-    photoAspectRatio: 3.5 / 4.5,
-    sigAspectRatio: 4 / 2,
-    description: "Staff Selection Commission photo (20-50 KB, 3.5x4.5cm) and signature (10-20 KB, 4.0x2.0cm).",
-    source: { url: "https://ssc.gov.in", label: "SSC official portal (ssc.gov.in)" },
-    verification: "official",
-    verifiedOn: "2026-06-08",
+    sigAspectRatio: 6 / 2,
+    description:
+      "Current 2026 SSC applications capture the candidate's photograph live and do not use a pre-existing photo upload. The stored 20–50 KB photo target is compatibility-only, not a current SSC requirement. The current notice specifies a JPEG/JPG signature of 10–20 KB at about 6.0×2.0 cm; it publishes no photo or signature pixel dimensions, photo aspect ratio, DPI, or name/date rule. Confirm the current exam notice before using the compatibility photo output.",
+    source: {
+      url: "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_cht_2026.pdf",
+      label: "SSC Combined Hindi Translators Examination 2026 notice, paragraphs 8.4–8.7",
+    },
+    verification: "needs-review",
     context:
-      "SSC (Staff Selection Commission) recruitments — CGL, CHSL, MTS, GD Constable, Stenographer and Junior Engineer — collect your photograph and signature during the One-Time Registration (OTR) on ssc.gov.in. SSC also requires your name and the date the photo was taken to appear on the photograph itself.",
+      "The current SSC application module captures a live photograph from the candidate's computer or mobile camera. A pre-existing photograph is not uploaded. The signature remains a separate JPEG/JPG upload; confirm the current notice for the specific SSC examination before preparing files.",
   },
   upsc: {
     id: "upsc",
     name: "UPSC (Union Public Service Commission)",
-    photoLimitKb: 300,
+    photoLimitKb: 200,
     photoMinKb: 20,
-    sigLimitKb: 300,
+    sigLimitKb: 100,
     sigMinKb: 20,
-    photoWidthPx: 550,
-    photoHeightPx: 550,
-    sigWidthPx: 350,
-    sigHeightPx: 350,
-    photoAspectRatio: 1,
-    sigAspectRatio: 1,
-    description: "Union Public Service Commission online application (OTR portal). Photo 20-300 KB, 550x550 to 1000x1000 px, plain white background with name + date at the bottom; signature 20-300 KB, 350x350 to 550x550 px; JPG. (The paste-on-paper scan guide quotes 5x6 cm photo / 6x3 cm signature at 200 DPI — that is scanning guidance; the portal's actual upload limits are the KB/px above.)",
-    source: { url: "https://upsconline.nic.in", label: "UPSC online application (upsconline.nic.in)" },
+    description:
+      "UPSC's current application portal requires a JPG photograph of 20–200 KB with a plain white background and about 75% face coverage, plus a JPG image containing three signatures arranged vertically at 20–100 KB and 350–500 pixels. The instructions publish no fixed photo pixel dimensions, photo aspect ratio, DPI, or name/date strip.",
+    source: {
+      url: "https://upsconline.nic.in/ngrp/assets/PDF/instruction-photo-signature-upload-upsc.pdf",
+      label: "UPSC — Instructions for Uploading the Photo & Signature",
+    },
     verification: "official",
-    verifiedOn: "2026-06-10",
-    requiresNameDate: true,
+    verifiedOn: "2026-07-16",
+    signatureInk: "Black ink on plain white paper",
     context:
-      "UPSC (Union Public Service Commission) runs the Civil Services (IAS, IPS, IFS), CDS, NDA, CMS and other central recruitments through a single One-Time Registration (OTR) account on upsconline.nic.in. UPSC requires the candidate's name and the date the photo was taken to be printed on the photograph itself.",
+      "UPSC's current portal requires both an uploaded passport-size photograph and a live photograph captured during the application. The live image is matched with the uploaded photo. The signature upload must show the candidate's signature three times vertically on one plain-white image.",
   },
   ds160: {
     id: "ds160",
@@ -181,22 +179,25 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     // (used for titles/meta descriptions/UI labels) pick the 26-char full
     // name instead of "RRB", overflowing SERP title/description budgets.
     name: "RRB (Railway Recruitment Board)",
+    // Compatibility-only photo target. Current CENs capture the photograph live
+    // and do not accept a pre-existing photo file.
     photoLimitKb: 50,
     photoMinKb: 20,
-    sigLimitKb: 40,
-    sigMinKb: 10,
-    photoWidthPx: 320,
-    photoHeightPx: 240,
+    sigLimitKb: 49,
+    sigMinKb: 30,
     sigWidthPx: 140,
     sigHeightPx: 60,
-    photoAspectRatio: 320 / 240,
     sigAspectRatio: 14 / 6,
-    description: "Railway Recruitment Board (rrbapply.gov.in). Photo 20-50 KB (320x240 px or 35x45 mm, white background, 100 DPI); signature 10-40 KB (140x60 px or 50x20 mm, black ink, running letters); JPG/JPEG. Same template across NTPC, Group D, ALP and Technician CENs. (Some RRB FAQs quote 30-70 KB, but the CEN notification's 20-50 KB / 10-40 KB governs.)",
-    source: { url: "https://rrbapply.gov.in", label: "RRB Application Portal (rrbapply.gov.in)" },
-    verification: "official",
-    verifiedOn: "2026-06-10",
+    signatureInk: "Black ink on white paper",
+    description:
+      "Current RRB CEN applications capture the candidate's photograph live and do not accept a pre-existing photo upload. The stored 20–50 KB photo target is compatibility-only, not a current RRB requirement. The current notice specifies a JPG/JPEG signature of 30–49 KB, at least 140×60 px, scanned at a minimum 100 DPI in running handwriting. Confirm the current CEN before using the compatibility photo output.",
+    source: {
+      url: "https://www.rrbcdg.gov.in/uploads/2025/03-PMED/CEN%2003_2025.pdf",
+      label: "RRB CEN 03/2025, paragraphs 14.4–14.5.1",
+    },
+    verification: "needs-review",
     context:
-      "Railway Recruitment Board (RRB) recruitments — NTPC, Group D, ALP and Technician — are applied for on the common portal rrbapply.gov.in, and share the same photo and signature upload spec across every CEN notification.",
+      "Current Railway Recruitment Board notices use webcam or mobile-camera live photo capture during the application. Only the signature is prepared as an image file; confirm the current CEN because recruitment-cycle instructions can change.",
   },
   ibps: {
     id: "ibps",
@@ -211,12 +212,18 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 60,
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
-    description: "Institute of Banking Personnel Selection photo (20-50 KB, 200x230px) and signature (10-20 KB, 140x60px, black ink).",
-    source: { url: "https://ibps.in", label: "IBPS official portal (ibps.in)" },
+    dpi: 200,
+    signatureInk: "Black ink on white paper",
+    description:
+      "IBPS CRP-XVI photo 20–50 KB at a preferred 200×230 px and signature 10–20 KB at a preferred 140×60 px, JPG/JPEG, with a minimum 200 DPI scan setting. The signature is written in black ink on white paper; registration also includes a separately captured live photograph.",
+    source: {
+      url: "https://www.ibps.in/wp-content/uploads/Detailed-Notification-CRP-SPL-XVI_Final_V1_30.06.2026.pdf",
+      label: "IBPS CRP Specialist Officers XVI notice, Annexure III",
+    },
     verification: "official",
-    verifiedOn: "2026-06-08",
+    verifiedOn: "2026-07-16",
     context:
-      "IBPS (Institute of Banking Personnel Selection) conducts the common recruitment process for Probationary Officer, Clerk, Specialist Officer and Regional Rural Bank posts across public-sector banks; the photo and signature are uploaded during the online registration at ibps.in.",
+      "IBPS CRP registration uploads a passport-style photograph and signature and also captures a separate live photograph by webcam or mobile phone. The pixel dimensions in the current notice are preferred dimensions; confirm the current CRP notice for the recruitment cycle being used.",
   },
   sbi: {
     id: "sbi",
@@ -231,12 +238,18 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 60,
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
-    description: "State Bank of India PO recruitment photo (20-50 KB, 200x230px) and signature (10-20 KB, 140x60px, black ink).",
-    source: { url: "https://sbi.co.in/web/careers", label: "SBI Careers (sbi.co.in/web/careers)" },
+    dpi: 200,
+    signatureInk: "Black ink on white paper",
+    description:
+      "SBI PO 2026 photo 20–50 KB at a preferred 200×230 px and signature 10–20 KB at a preferred 140×60 px, JPG/JPEG, with a minimum 200 DPI scan setting. The signature is written in black ink on white paper; registration also includes a separately captured live photograph.",
+    source: {
+      url: "https://sbi.bank.in/csfile/18062026_1_Detailed_Adv.2026.pdf",
+      label: "SBI PO 2026 advertisement CRPD/PO/2026-27/09, Annexure II",
+    },
     verification: "official",
-    verifiedOn: "2026-06-08",
+    verifiedOn: "2026-07-16",
     context:
-      "The State Bank of India recruits its Probationary Officer, Clerk (Junior Associate) and Specialist Officer cadres directly through its own careers portal — separately from the IBPS common exam — though the photo and signature upload limits match most banking recruitments.",
+      "SBI's 2026 Probationary Officer application requires the scanned photograph and signature files recorded here and a separate live photograph captured by webcam or mobile phone. These values are scoped to advertisement CRPD/PO/2026-27/09; confirm the current SBI notice for another recruitment.",
   },
   nta: {
     id: "nta",
@@ -810,18 +823,19 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   "voter-id": {
     id: "voter-id",
     name: "Voter ID (ECI Form 6)",
+    // Compatibility-only digital cap. The public Form 6 guidance confirms the
+    // physical dimensions/composition but does not publish an upload file cap.
     photoLimitKb: 2048,
     photoAspectRatio: 3.5 / 4.5,
     description:
-      "New voter registration (Form 6) on the ECI Voters' Service Portal (voters.eci.gov.in). The ECI specifies a recent passport-size colour photo, 4.5×3.5 cm, white background, full frontal face, eyes open. The portal accepts a generous file size (about 2 MB) — a clear photo around 100-300 KB uploads fastest and is well within the cap. No separate signature upload for Form 6.",
+      "ECI Form 6 specifies a recent, good-quality, unsigned colour passport-size photograph measuring 4.5×3.5 cm on a white background, with eyes open and both face edges visible. The public instructions do not publish a digital file-size cap, pixel dimensions, format or DPI. The stored 2 MB target is compatibility-only; confirm the current Voters' Service Portal upload screen before preparing a digital file.",
     source: {
       url: "https://voters.eci.gov.in/guidelines/Form-6_en.pdf",
       label: "ECI Form 6 guidelines (voters.eci.gov.in)",
     },
-    verification: "official",
-    verifiedOn: "2026-07-01",
+    verification: "needs-review",
     context:
-      "Form 6 (new voter registration) is filed on the Election Commission of India's Voters' Service Portal; unlike most exam portals in this list, there is no separate signature upload — only the photo.",
+      "Form 6 supports new-elector registration. Its public ECI guidance confirms the photograph's physical size and composition but not the online upload cap; there is no separate signature image in this preset. Confirm the current portal instructions before upload.",
   },
   cuet: {
     id: "cuet",
