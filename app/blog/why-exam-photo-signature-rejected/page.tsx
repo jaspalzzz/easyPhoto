@@ -115,9 +115,9 @@ export default function Page() {
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">SSC CGL / CHSL / MTS</td>
             <td className="py-2 pr-3">20–50 KB</td>
-            <td className="py-2 pr-3">350×450 px</td>
+            <td className="py-2 pr-3">live capture</td>
             <td className="py-2 pr-3">10–20 KB</td>
-            <td className="py-2 pr-3">140×60 px</td>
+            <td className="py-2 pr-3">no fixed size</td>
             <td className="py-2 pr-3">JPG</td>
           </tr>
           <tr className="border-b border-hairline/60">
@@ -154,10 +154,10 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">NDA / CDS (UPSC)</td>
-            <td className="py-2 pr-3">40 KB max</td>
-            <td className="py-2 pr-3">350×450 px</td>
-            <td className="py-2 pr-3">40 KB max</td>
-            <td className="py-2 pr-3">350×150 px</td>
+            <td className="py-2 pr-3">20–200 KB</td>
+            <td className="py-2 pr-3">no fixed size</td>
+            <td className="py-2 pr-3">20–100 KB</td>
+            <td className="py-2 pr-3">no fixed size</td>
             <td className="py-2 pr-3">JPG</td>
           </tr>
         </tbody>
@@ -189,9 +189,11 @@ export default function Page() {
 
       <h2>2. The pixel dimensions or aspect ratio don&apos;t match</h2>
       <p>
-        Portals check width × height, not just KB. SSC expects roughly
-        350×450&nbsp;px (a 3.5:4.5 ratio); a square crop or a landscape selfie is
-        rejected even at the right file size.
+        Many portals check width × height, not just KB. IBPS and SBI expect
+        roughly 200×230&nbsp;px (a portrait ratio); a square crop or a landscape
+        selfie is rejected even at the right file size. Always match the pixel
+        size your own notification states — several portals (UPSC, and SSC&apos;s
+        live-capture flow) publish none.
       </p>
       <p>
         <strong>Fix:</strong> the exam resizers apply the correct dimensions and
@@ -331,7 +333,7 @@ export default function Page() {
           <ul className="!mt-2 space-y-1 text-[14px]">
             <li>File is <strong>JPG/JPEG</strong> (not PNG, HEIC, or WebP)</li>
             <li>File size is within your exam&apos;s exact KB band (e.g. <strong>20–50 KB for SSC</strong>, <strong>15–40 KB for RRB</strong>)</li>
-            <li>Pixel dimensions match the notification exactly (e.g. <strong>350×450 px for SSC</strong>, <strong>200×230 px for IBPS/SBI</strong>)</li>
+            <li>Pixel dimensions match the notification where it states them (e.g. <strong>200×230 px for IBPS/SBI</strong>; UPSC and SSC publish none)</li>
             <li>Background is plain <strong>white or off-white</strong> with no shadows</li>
             <li>Face is centred, front-facing, fully visible — no hats, no glasses, no hair covering face</li>
             <li>Expression is neutral with both eyes open</li>

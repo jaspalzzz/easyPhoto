@@ -130,7 +130,7 @@ export default function Page() {
             {exam:"SSC CGL / CHSL",photo:50,sig:20,photoPx:"live capture",sigPx:"140×60"},
             {exam:"IBPS PO / Clerk",photo:50,sig:20,photoPx:"200×230",sigPx:"140×60"},
             {exam:"UPSC CSE / IAS",photo:200,sig:100,photoPx:"no fixed size",sigPx:"350–500"},
-            {exam:"NTA NEET / JEE",photo:200,sig:100,photoPx:"350×450",sigPx:"280×120"},
+            {exam:"NTA NEET / JEE",photo:200,sig:100,photoPx:"no fixed size",sigPx:"no fixed size"},
           ].map((row, i) => {
             const y = 62 + i * 55;
             return (
