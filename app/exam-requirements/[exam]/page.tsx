@@ -102,7 +102,11 @@ export async function generateMetadata({
       // em-dash for the spec table, which reads as "(—)" in a SERP snippet.
       `${shortName}: photo ${photoKb(spec)}${parens(photoDimsPx(spec, " px"))}` +
       (sig ? `, signature ${sig}${parens(sigDimsPx(spec, " px"))}` : "") +
-      `. Exact size & format for the form — verified against the official source.`,
+      // Only claim "verified" for specs actually confirmed against their source
+      // and dated; needs-review presets get an honest "confirm on the source".
+      (specProvenance(spec).verified
+        ? `. Exact size & format for the form — verified against the official source.`
+        : `. Size & format for the form — confirm the current figures on the official source.`),
     path: `/exam-requirements/${exam}/`,
   });
 }
