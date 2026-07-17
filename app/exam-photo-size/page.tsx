@@ -43,7 +43,7 @@ const CATEGORY_ORDER: PortalCategory[] = [
 const FAQS: FaqItem[] = [
   {
     q: "What is the standard photo size for Indian exam forms?",
-    a: "Most Indian exam portals want the photo at 20–50 KB and the signature at 10–20 KB, usually around 3.5×4.5 cm (≈200×230 to 350×450 px). But it varies by exam — UPSC allows up to 300 KB, GATE up to 600 KB, and some State PSCs differ — so always match the exact exam, which is what this table is for.",
+    a: "Most Indian exam portals want the photo at 20–50 KB and the signature at 10–20 KB, usually around 3.5×4.5 cm. But it varies by exam — UPSC allows up to 200 KB, GATE up to 600 KB, and some State PSCs differ — so always match the exact exam, which is what this table is for.",
   },
   {
     q: "Why does the exact size matter so much?",

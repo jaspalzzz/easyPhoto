@@ -130,10 +130,10 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">UPSC CSE / IFS</td>
-            <td className="py-2 pr-3">300 KB max</td>
-            <td className="py-2 pr-3">350×350 px min</td>
-            <td className="py-2 pr-3">300 KB max</td>
-            <td className="py-2 pr-3">350×350 px min</td>
+            <td className="py-2 pr-3">20–200 KB</td>
+            <td className="py-2 pr-3">no fixed size</td>
+            <td className="py-2 pr-3">20–100 KB</td>
+            <td className="py-2 pr-3">350–500 px</td>
             <td className="py-2 pr-3">JPG</td>
           </tr>
           <tr className="border-b border-hairline/60">

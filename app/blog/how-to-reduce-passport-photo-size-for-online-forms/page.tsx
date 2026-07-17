@@ -9,7 +9,7 @@ const post = getPost("how-to-reduce-passport-photo-size-for-online-forms")!;
 const FAQ_ITEMS = [
   {
     q: "Why is my photo rejected even though it's under the file-size cap?",
-    a: "Some portals set a band, not just a ceiling. The verified SSC entry is 20–50 KB, while the verified UPSC entry is 20–300 KB. Use the exact current band for the application instead of assuming all exam portals share one limit.",
+    a: "Some portals set a band, not just a ceiling. The verified SSC entry is 20–50 KB, while the verified UPSC entry is 20–200 KB. Use the exact current band for the application instead of assuming all exam portals share one limit.",
   },
   {
     q: "Can I compress a photo without losing face clarity?",

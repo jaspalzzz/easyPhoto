@@ -112,7 +112,7 @@ export default function Page() {
           {(
             [
               ["SSC (CGL, CHSL, MTS)", "10–20 KB", "140×60 px", "JPG"],
-              ["UPSC (CSE, NDA, CDS)", "10–20 KB", "350×350 px min", "JPG"],
+              ["UPSC (CSE, NDA, CDS)", "20–100 KB", "350–500 px (3 on one sheet)", "JPG"],
               ["IBPS (PO, Clerk, SO)", "10–20 KB", "140×60 px", "JPG"],
               ["SBI (PO, Clerk)", "10–20 KB", "140×60 px", "JPG"],
               ["RRB (NTPC, Group D)", "10–20 KB", "140×60 px", "JPG"],
@@ -130,11 +130,12 @@ export default function Page() {
       </table>
 
       <p>
-        Notice that UPSC uses a square minimum dimension (350&#215;350 px),
-        whereas SSC and IBPS use a wide, short rectangle (140&#215;60 px). If
-        you prepare one signature image for SSC and try to submit it to UPSC, it
-        will fail the dimension check. Prepare separate crops for square-format
-        and rectangular-format portals.
+        Notice that UPSC is different in kind: it wants a single image holding{" "}
+        <em>three</em> signatures arranged vertically (roughly 350–500&nbsp;px,
+        20–100&nbsp;KB), whereas SSC and IBPS want one signature in a wide, short
+        rectangle (140&#215;60&nbsp;px). If you prepare one signature image for
+        SSC and try to submit it to UPSC, it will fail — prepare each portal&apos;s
+        file to its own layout.
       </p>
 
       <h2>How do you prepare a compliant digital signature?</h2>
@@ -175,8 +176,8 @@ export default function Page() {
       <h3>Step 4 - resize to the portal&apos;s pixel dimensions</h3>
       <p>
         Resize the crop to the exact pixel dimensions the portal specifies.
-        Rectangle portals (SSC, IBPS) need roughly 140&#215;60 px. Square
-        portals (UPSC) need at least 350&#215;350 px. The{" "}
+        Rectangle portals (SSC, IBPS) need roughly 140&#215;60 px. UPSC takes a
+        vertical three-signature sheet around 350–500&nbsp;px. The{" "}
         <Link href="/tools/signature-resize/">signature resize tool</Link> lets
         you enter the target dimensions and outputs the correctly sized image.
       </p>
@@ -331,7 +332,7 @@ export default function Page() {
             },
             {
               q: "Can I use the same signature image for SSC and UPSC?",
-              a: "Not directly. SSC requires a rectangular crop (140×60 px) and UPSC requires a square crop (minimum 350×350 px). You need to re-crop or resize the image to the correct dimensions for each portal. The pixel shapes are incompatible: stretching a 140×60 px image to 350×350 px will distort the signature strokes.",
+              a: "Not directly. SSC requires one signature in a rectangular crop (140×60 px), while UPSC wants a single image holding three signatures arranged vertically (around 350–500 px, 20–100 KB). The layouts are different, so prepare a separate file for each portal rather than reusing one.",
             },
             {
               q: "What if the portal keeps saying my signature file is too large?",

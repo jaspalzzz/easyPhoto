@@ -8,6 +8,6 @@ export const alt = "UPSC Signature Resizer — easyPhoto";
 export default function Image() {
   return ogImage({
     title: "UPSC Signature Resizer",
-    subtitle: "Clean background and compress signature to 20-300 KB for the Union Public Service Commission.",
+    subtitle: "Clean background and compress signature to 20-100 KB for the Union Public Service Commission.",
   });
 }

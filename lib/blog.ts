@@ -130,22 +130,22 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "upsc-cse-ias-photo-signature-guide-2026",
     title: "UPSC CSE / IAS Photo & Signature Requirements 2026",
     description:
-      "UPSC CSE: 20–300 KB JPG, min 350×350 px square, name and date mandatory, three signatures on one sheet. Live photo matching and 10-day recency rule explained.",
+      "UPSC CSE: 20–200 KB JPG photo, plain white background, ~75% face coverage, plus three signatures on one sheet at 20–100 KB. UPSC publishes no fixed pixel size or name/date strip.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     excerpt:
-      "UPSC CSE 2026 added live webcam matching and a 10-day photo recency rule. Here are the confirmed specs, why three signatures are required, and the complete upload workflow.",
+      "UPSC uses one OTR portal for CSE, NDA and CDS. Here are the file-size limits it actually publishes, why three signatures are required, and the complete upload workflow.",
     readMins: 7,
   },
   {
     slug: "nda-cds-photo-signature-guide-2026",
-    title: "NDA & CDS 2026 Photo: Square Crop, Name Required — Exact Spec",
+    title: "NDA & CDS 2026 Photo & Signature Requirements — Exact Size",
     description:
-      "NDA and CDS need a square photo (350×350 px min), your name and date at the bottom, and a 20–300 KB JPG. The square crop trips most applicants — full prep here.",
+      "NDA and CDS use the same UPSC OTR portal: a 20–200 KB JPG photo on a plain white background, plus three signatures on one sheet at 20–100 KB. UPSC publishes no fixed pixel size or name/date strip.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     excerpt:
-      "NDA and CDS require a square photo — 350×350 px minimum — plus your name and date printed on the image. Here are the exact specs, the square vs portrait trap, and the complete upload workflow.",
+      "NDA and CDS upload through the same UPSC OTR portal as CSE. Here are the file-size limits UPSC actually publishes, why three signatures are required, and the complete upload workflow.",
     readMins: 7,
   },
   {
