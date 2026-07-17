@@ -76,9 +76,9 @@ export default function Page() {
       <h2>PAN vs Voter ID vs Driving Licence — side by side</h2>
 
       <p>
-        Here is the exact 2026 photo spec for each, verified against the respective
-        government portal. The KB limit is the number that rejects most uploads, so
-        it is listed first.
+        Here is the 2026 photo spec for each, drawn from the respective government
+        portal — confirm the current figure on the linked source before you apply.
+        The KB limit is the number that rejects most uploads, so it is listed first.
       </p>
 
       <table className="my-5 w-full border-collapse text-[14px]">
