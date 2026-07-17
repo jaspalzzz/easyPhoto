@@ -10,6 +10,12 @@ import { Info } from "lucide-react";
 
 const spec = getPortalSpec("rrb")!;
 const prov = specProvenance(spec);
+// Only mention pixels when the authority actually publishes them — several
+// portals (UPSC/SSC/RRB) publish a KB band but no pixel requirement.
+const photoDims =
+  spec.photoWidthPx && spec.photoHeightPx
+    ? ` and ${spec.photoWidthPx}×${spec.photoHeightPx}px`
+    : "";
 
 export const metadata = pageMetadata({
   title: `Railway RRB Photo Resizer — Compress to ${spec.photoLimitKb} KB`,
@@ -25,7 +31,7 @@ export default function Page() {
       faqItems={portalFaqItems(spec)}
       path="/railway-photo-resizer/"
       dateModified={spec.verifiedOn}
-      blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB) and standard dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for the Railway Recruitment Board portal.`}
+      blurb={`Resize and compress your passport photo to the ${spec.photoMinKb}–${spec.photoLimitKb} KB range${photoDims} listed for the Railway Recruitment Board portal.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >
       <ExamSubmitTips hasSignature={spec.sigLimitKb !== undefined} className="mb-6" />
