@@ -265,7 +265,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 3.5 / 1.5,
     description: "NTA exams (NEET, JEE Main). Passport photo 3.5x4.5cm, 10-200 KB; signature 3.5x1.5cm, 10-100 KB, JPG. (NEET also needs a separate 4x6 inch postcard photo.)",
-    source: { url: "https://exams.nta.ac.in", label: "NTA exams portal (nta.ac.in)" },
+    source: { url: "https://nta.ac.in", label: "NTA (nta.ac.in)" },
     verification: "official",
     verifiedOn: "2026-06-08",
     context:
@@ -305,7 +305,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 3.5 / 1.5,
     description: "CBSE CTET. Photo 3.5x4.5cm, 10-100 KB; signature 3.5x1.5cm, 3-30 KB, JPG. The portal auto-rejects wrong dimensions, so match exactly.",
-    source: { url: "https://ctet.nic.in", label: "CTET (ctet.nic.in)" },
+    source: {
+      url: "https://cdnbbsr.s3waas.gov.in/s3443dec3062d0286986e21dc0631734c9/uploads/2026/05/202605111250310617.pdf",
+      label: "CTET September 2026 — Information Bulletin",
+    },
     verification: "official",
     verifiedOn: "2026-06-08",
     context:
@@ -329,7 +332,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoLimitKb: 50,
     sigLimitKb: 20,
     description: "Bihar PSC captures your photograph live via webcam during the online application — there is no photo file to upload, so use the photo tool only for general passport-photo prep. The signature is uploaded under 20 KB (both a Hindi and an English signature), JPG.",
-    source: { url: "https://bpsc.bihar.gov.in", label: "BPSC (bpsc.bihar.gov.in)" },
+    source: {
+      url: "https://bpsconline.bihar.gov.in/downloads/User_Manual.pdf",
+      label: "BPSC online application — User Manual",
+    },
     verification: "official",
     verifiedOn: "2026-06-10",
     context:
@@ -341,7 +347,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoLimitKb: 50,
     sigLimitKb: 50,
     description: "Maharashtra PSC. Photo up to 50 KB (3.5 cm x 4.5 cm, solid-colour background); signature up to 50 KB (3.5 cm x 1.5 cm, black ink on white paper); JPG/JPEG only. The official instructions give cm dimensions and a 50 KB max for both — no pixel size and no minimum.",
-    source: { url: "https://mpsc.gov.in", label: "MPSC (mpsc.gov.in)" },
+    source: {
+      url: "https://mpsconline.gov.in/downloads/Instructions-for-Filling-the-Application-Form.pdf",
+      label: "MPSC — Instructions for Filling the Application Form",
+    },
     verification: "official",
     verifiedOn: "2026-06-10",
     context:
@@ -365,7 +374,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 400 / 130,
     description: "Graduate Aptitude Test in Engineering. Photo 5-600 KB (200x260 to 530x690 px, 3.5x4.5 cm); signature 3-300 KB (250x80 to 580x180 px), JPEG. The KB cap is set by the conducting IIT each year (600 KB for GATE 2026 / IIT Guwahati) — confirm the current bulletin.",
-    source: { url: "https://gate2026.iitg.ac.in", label: "GATE 2026 (IIT Guwahati)" },
+    source: {
+      url: "https://gate2026.iitg.ac.in/photograph-and-signature.html",
+      label: "GATE 2026 — Photograph & Signature specifications",
+    },
     verification: "official",
     verifiedOn: "2026-06-10",
     context:
@@ -379,7 +391,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigLimitKb: 50,
     sigMinKb: 10,
     description: "UGC National Eligibility Test (conducted by NTA). Photo 10-200 KB; signature 10-50 KB; JPG/JPEG only. NTA specifies file size and format but no fixed pixel dimensions.",
-    source: { url: "https://ugcnet.nta.ac.in", label: "NTA UGC-NET (ugcnet.nta.ac.in)" },
+    source: {
+      url: "https://cdnbbsr.s3waas.gov.in/s301eee509ee2f68dc6014898c309e86bf/uploads/2026/04/202604301078678748.pdf",
+      label: "UGC-NET June 2026 — Information Bulletin",
+    },
     verification: "official",
     verifiedOn: "2026-06-10",
     context:
@@ -535,7 +550,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigLimitKb: 30,
     sigMinKb: 1,
     description: "Telangana PSC (One Time Registration). Photo 4-50 KB (3.5x4.5 cm); signature 1-30 KB (3.5x1.5 cm), uploaded separately; JPG/JPEG/PNG. The official OTR manual gives cm + KB but no pixel dimensions.",
-    source: { url: "https://tgpsc.gov.in", label: "TGPSC (tgpsc.gov.in)" },
+    source: { url: "https://www.tgpsc.gov.in", label: "TGPSC (tgpsc.gov.in)" },
     verification: "official",
     verifiedOn: "2026-06-10",
     context:
@@ -599,7 +614,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     description: "NABARD recruitment (IBPS-administered). Photo 20-50 KB (200x230 px); signature 10-20 KB (140x60 px); JPG/JPEG, min 200 DPI.",
-    source: { url: "https://nabard.org", label: "NABARD (nabard.org)" },
+    source: { url: "https://www.nabard.org", label: "NABARD (nabard.org)" },
     verification: "official",
     verifiedOn: "2026-06-10",
     context:
