@@ -49,6 +49,33 @@ const documentedReviews = specs.filter(
     s.hasCurrentDisclosure
 );
 
+/**
+ * An "official · Verified {date} · {source}" badge is a promise that someone
+ * checked the number against a document. A bare homepage cannot evidence a KB
+ * band or a pixel dimension — you cannot open it and find the claim.
+ *
+ * NDA and CDS both cited only "https://upsconline.nic.in" while asserting a
+ * 350x450 photo and a 10-50 KB signature. UPSC's actual instruction PDF, which
+ * governs "any examination" on that portal, publishes no photo pixel spec and
+ * requires 20-100 KB — so a signature built to our band was rejectable. The
+ * homepage citation is what let an unverifiable claim look verified.
+ *
+ * This is a ratchet, not a wall: the existing backlog is grandfathered so the
+ * build keeps working, but the count can only go down. Re-verify a spec against
+ * a real document and lower the baseline.
+ */
+const isBareDomain = (url) => {
+  try {
+    return new URL(url).pathname.replace(/\/+$/, "") === "";
+  } catch {
+    return false;
+  }
+};
+const undocumented = specs.filter(
+  (s) => s.verification === "official" && s.url && isBareDomain(s.url)
+);
+const UNDOCUMENTED_BASELINE = 22;
+
 const blocking = specs.filter((s) => {
   if (s.verification === "official") {
     return !s.verifiedOn || monthsSince(s.verifiedOn) >= MAX_MONTHS;
@@ -60,6 +87,24 @@ const blocking = specs.filter((s) => {
 });
 
 console.log(`\nSpec registry check — ${specs.length} specs, ${today}\n`);
+
+if (undocumented.length > UNDOCUMENTED_BASELINE) {
+  console.log(
+    `${undocumented.length} official specs cite only a homepage, up from the ${UNDOCUMENTED_BASELINE} already known.\n` +
+      `An "official · Verified" badge needs a document you can open and find the number in.\n`
+  );
+  for (const s of undocumented) console.log(`  • ${s.id.padEnd(16)} ${s.url}`);
+  console.log("\nCite the actual notice/instruction PDF, or mark the spec needs-review.\n");
+  process.exit(1);
+}
+if (undocumented.length > 0) {
+  console.log(
+    `⚠ ${undocumented.length} official specs cite only a homepage, so their "Verified" badge is not ` +
+      `evidenced (baseline ${UNDOCUMENTED_BASELINE}; this count may not grow):`
+  );
+  console.log(`  ${undocumented.map((s) => s.id).join(", ")}\n`);
+}
+
 if (blocking.length === 0) {
   const officialCount = specs.filter((s) => s.verification === "official").length;
   console.log(`✓ ${officialCount} official specs are dated and within the review window.`);
