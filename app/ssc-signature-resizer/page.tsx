@@ -9,10 +9,16 @@ import { Info } from "lucide-react";
 
 const spec = getPortalSpec("ssc")!;
 const prov = specProvenance(spec);
+// Only mention pixels when the authority actually publishes them — several
+// portals (UPSC/SSC/RRB) publish a KB band but no pixel requirement.
+const sigDims =
+  spec.sigWidthPx && spec.sigHeightPx
+    ? ` and ${spec.sigWidthPx}×${spec.sigHeightPx}px`
+    : "";
 
 export const metadata = pageMetadata({
   title: "SSC Signature Resizer — Compress Signature to 10–20 KB",
-  description: `Crop and compress your signature scan to under ${spec.sigLimitKb} KB (${spec.sigMinKb}–${spec.sigLimitKb} KB) and exact specs (${spec.sigWidthPx}x${spec.sigHeightPx}px) for the SSC application form. 100% private.`,
+  description: `Crop and compress your signature scan to the ${spec.sigMinKb}–${spec.sigLimitKb} KB range${sigDims} listed for the SSC application form. 100% private.`,
   path: "/ssc-signature-resizer/",
 });
 
@@ -24,7 +30,7 @@ export default function Page() {
       faqItems={portalFaqItems(spec)}
       path="/ssc-signature-resizer/"
       dateModified={spec.verifiedOn}
-      blurb={`Resize, clean, and compress your signature to under ${spec.sigLimitKb} KB (${spec.sigMinKb}–${spec.sigLimitKb} KB) and standard dimensions (${spec.sigWidthPx}×${spec.sigHeightPx}px) for the Staff Selection Commission portal.`}
+      blurb={`Resize, clean, and compress your signature to the ${spec.sigMinKb}–${spec.sigLimitKb} KB range${sigDims} listed for the Staff Selection Commission portal.`}
       footnote="Your signature is processed entirely in your browser. No server uploads."
     >
       <div className="mb-6 flex gap-2 rounded-md bg-brand-soft/30 border border-brand/10 p-3 text-xs text-ink-soft leading-relaxed max-w-xl">
