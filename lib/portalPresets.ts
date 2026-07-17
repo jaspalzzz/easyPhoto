@@ -286,10 +286,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 60,
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
-    description: "Reserve Bank of India recruitment (Grade B, Assistant). Photo 20-50 KB, 200x230 px; signature 10-20 KB, 140x60 px, black ink, JPG.",
-    source: { url: "https://opportunities.rbi.org.in", label: "RBI Opportunities (rbi.org.in)" },
+    dpi: 200,
+    description: "Reserve Bank of India recruitment (Grade B, Assistant). Photo 20-50 KB, 200x230 px (preferred), light/white background; signature 10-20 KB, 140x60 px (preferred), black ink on white paper; JPG/JPEG, scanned at 200 dpi true colour.",
+    source: {
+      url: "https://rbidocs.rbi.org.in/rdocs/content/pdfs/RPJECE07012019_AN1.pdf",
+      label: "RBI — Guidelines for Scanning the Photograph & Signature (Annex I)",
+    },
     verification: "official",
-    verifiedOn: "2026-06-08",
+    verifiedOn: "2026-07-17",
     context:
       "The Reserve Bank of India recruits Grade B Officers and Assistants through its own recruitment portal at opportunities.rbi.org.in, separate from the IBPS common exam used by most other public-sector banks.",
   },
