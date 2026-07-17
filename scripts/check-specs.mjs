@@ -74,7 +74,7 @@ const isBareDomain = (url) => {
 const undocumented = specs.filter(
   (s) => s.verification === "official" && s.url && isBareDomain(s.url)
 );
-const UNDOCUMENTED_BASELINE = 15;
+const UNDOCUMENTED_BASELINE = 14;
 
 const blocking = specs.filter((s) => {
   if (s.verification === "official") {

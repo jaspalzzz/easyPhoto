@@ -464,16 +464,19 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   afcat: {
     id: "afcat",
     name: "AFCAT (Air Force)",
-    photoLimitKb: 200,
-    photoMinKb: 100,
-    sigLimitKb: 150,
-    sigMinKb: 80,
-    description: "Air Force Common Admission Test. Photo 100-200 KB; signature 80-150 KB; thumb impression 50-100 KB; JPG/JPEG. The 2026 notification specifies file size and format but no fixed pixel dimensions. (The older '10-50 KB' spec is outdated.)",
-    source: { url: "https://afcat.cdac.in", label: "AFCAT (afcat.cdac.in)" },
+    photoLimitKb: 50,
+    photoMinKb: 10,
+    sigLimitKb: 50,
+    sigMinKb: 10,
+    description: "Air Force Common Admission Test. Passport-size colour photo, signature and thumb impression each 10-50 KB, JPG/JPEG. AFCAT specifies file size and format but no fixed pixel dimensions.",
+    source: {
+      url: "https://afcat.cdac.in/AFCAT/assets/images/news/AFCAT_01_2025/English_Notification_AFCAT_01-2025.pdf",
+      label: "AFCAT 01/2025 — Notification (IAF / C-DAC)",
+    },
     verification: "official",
-    verifiedOn: "2026-06-10",
+    verifiedOn: "2026-07-17",
     context:
-      "AFCAT (Air Force Common Admission Test) recruits for the Indian Air Force's Flying and Ground Duty branches; the current notification specifies file size and format for the photo, signature and thumb impression, but no fixed pixel dimensions.",
+      "AFCAT (Air Force Common Admission Test) recruits for the Indian Air Force's Flying and Ground Duty branches; the notification requires the photo, signature and thumb impression each scanned as a 10-50 KB JPG/JPEG, with no fixed pixel dimensions.",
   },
 
   // ---------------------------------------------------------------------------
