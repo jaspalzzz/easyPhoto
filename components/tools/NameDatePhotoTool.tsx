@@ -8,7 +8,7 @@ import { compressToCap } from "@/lib/compress";
 import { downloadBlob } from "@/lib/download";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { formatKb } from "@/lib/utils";
-import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { getPortalSpec, photoDimsPx, specProvenance } from "@/lib/specRegistry";
 import { Cropper, type ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { track, deviceClass } from "@/lib/analytics";
@@ -50,8 +50,7 @@ const DEFAULT_AR = 3.5 / 4.5;
  */
 function presetFromSpec(id: string, label: string, specId: string): Preset {
   const s = getPortalSpec(specId);
-  const dims =
-    s?.photoWidthPx && s?.photoHeightPx ? `${s.photoWidthPx}×${s.photoHeightPx}px` : "";
+  const dims = (s && photoDimsPx(s)) || "";
   const kbRange = s
     ? s.photoMinKb
       ? `${s.photoMinKb}–${s.photoLimitKb} KB`

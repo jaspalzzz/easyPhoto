@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
-import { specProvenance } from "@/lib/specRegistry";
+import { photoDimsPx, sigDimsPx, specProvenance } from "@/lib/specRegistry";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
 import type { ToolSource } from "@/components/tools/ImageToolShell";
@@ -86,13 +86,13 @@ export function PortalResizer({
           <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
             <Camera className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
             Photo: {spec.photoMinKb ? `${spec.photoMinKb}–` : ""}{spec.photoLimitKb} KB
-            {spec.photoWidthPx && ` · Min ${spec.photoWidthPx}×${spec.photoHeightPx}px`}
+            {photoDimsPx(spec) && ` · Min ${photoDimsPx(spec)}`}
           </div>
           {hasSignature && (
             <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
               <PenLine className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
               Signature: {spec.sigMinKb ? `${spec.sigMinKb}–` : ""}{spec.sigLimitKb} KB
-              {spec.sigWidthPx && ` · Min ${spec.sigWidthPx}×${spec.sigHeightPx}px`}
+              {sigDimsPx(spec) && ` · Min ${sigDimsPx(spec)}`}
             </div>
           )}
         </div>

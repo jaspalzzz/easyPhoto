@@ -12,7 +12,7 @@
  * Framing is allowed for /embed/* via a public/_headers override (the site-wide
  * CSP is frame-ancestors 'none').
  */
-import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { getPortalSpec, photoDimsPx, sigDimsPx, specProvenance } from "@/lib/specRegistry";
 import { PORTAL_KEYS } from "@/lib/portalPresets";
 import type { PortalSpec } from "@/lib/portalPresets";
 
@@ -33,10 +33,8 @@ const kb = (min: number | undefined, max: number) =>
 function renderEmbed(spec: PortalSpec): string {
   const short = spec.name.split(" (")[0];
   const prov = specProvenance(spec);
-  const photoDim =
-    spec.photoWidthPx && spec.photoHeightPx ? `${spec.photoWidthPx}×${spec.photoHeightPx} px` : null;
-  const sigDim =
-    spec.sigWidthPx && spec.sigHeightPx ? `${spec.sigWidthPx}×${spec.sigHeightPx} px` : null;
+  const photoDim = photoDimsPx(spec, " px");
+  const sigDim = sigDimsPx(spec, " px");
   const hasSig = spec.sigLimitKb !== undefined;
   const resizer = `${SITE}/exam-requirements/${spec.id}/`;
 

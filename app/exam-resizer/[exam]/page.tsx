@@ -8,7 +8,7 @@ import {
   getSubExamResizer,
   RESIZER_YEAR,
 } from "@/lib/subExamResizers";
-import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { getPortalSpec, photoDimsPx, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { PortalResizer } from "@/components/tools/PortalResizer";
 import { ExploreTools } from "@/components/site/ExploreTools";
@@ -51,7 +51,7 @@ export async function generateMetadata({
     titleAbsolute: true,
     description:
       `Resize your ${e.name} photo to ${photoKb(spec.photoMinKb, spec.photoLimitKb)}` +
-      (spec.photoWidthPx ? ` (${spec.photoWidthPx}×${spec.photoHeightPx}px)` : "") +
+      (photoDimsPx(spec) ? ` (${photoDimsPx(spec)})` : "") +
       (sig ? ` and signature to ${photoKb(spec.sigMinKb, sig)}` : "") +
       `, in the exact size the ${e.name} application form needs. Free, 100% in your browser — nothing uploaded.`,
     path: `/exam-resizer/${exam}/`,

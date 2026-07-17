@@ -1,7 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { SignatureKbTool } from "@/components/tools/SignatureKbTool";
-import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { getPortalSpec, sigDimsPx, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { ExamSpecTable } from "@/components/site/ExamSpecTable";
 import { ExamContext } from "@/components/site/ExamContext";
@@ -11,10 +11,8 @@ const spec = getPortalSpec("ssc")!;
 const prov = specProvenance(spec);
 // Only mention pixels when the authority actually publishes them — several
 // portals (UPSC/SSC/RRB) publish a KB band but no pixel requirement.
-const sigDims =
-  spec.sigWidthPx && spec.sigHeightPx
-    ? ` and ${spec.sigWidthPx}×${spec.sigHeightPx}px`
-    : "";
+const px = sigDimsPx(spec);
+const sigDims = px ? ` and ${px}` : "";
 
 export const metadata = pageMetadata({
   title: "SSC Signature Resizer — Compress Signature to 10–20 KB",

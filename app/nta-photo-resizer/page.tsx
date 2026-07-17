@@ -1,7 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ExamResizerSteps } from "@/components/tools/ExamResizerSteps";
-import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { getPortalSpec, photoDimsPx, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems, resizerMetaDescription } from "@/lib/faqs";
 import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
 import { ExamSpecTable } from "@/components/site/ExamSpecTable";
@@ -10,6 +10,8 @@ import { Info } from "lucide-react";
 
 const spec = getPortalSpec("nta")!;
 const prov = specProvenance(spec);
+const px = photoDimsPx(spec);
+const photoDims = px ? ` and ${px}` : "";
 
 export const metadata = pageMetadata({
   title: "NEET / JEE Photo Resizer 2026 — NTA Application Photo Size",
@@ -25,7 +27,7 @@ export default function Page() {
       faqItems={portalFaqItems(spec)}
       path="/nta-photo-resizer/"
       dateModified={spec.verifiedOn}
-      blurb={`Resize your passport photo to ${spec.photoMinKb}–${spec.photoLimitKb} KB and ${spec.photoWidthPx}×${spec.photoHeightPx}px for NTA exams (NEET-UG, JEE Main, CUET) — the exact format the NTA portal accepts.`}
+      blurb={`Resize your passport photo to ${spec.photoMinKb}–${spec.photoLimitKb} KB${photoDims} for NTA exams (NEET-UG, JEE Main, CUET) — the exact format the NTA portal accepts.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >
       <ExamSubmitTips hasSignature={spec.sigLimitKb !== undefined} className="mb-6" />
