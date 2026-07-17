@@ -409,10 +409,13 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 10,
     sigLimitKb: 50,
     sigMinKb: 10,
-    description: "Joint CSIR-UGC NET (conducted by NTA). Photo 10-200 KB; signature 10-50 KB; JPG/JPEG only. NTA specifies file size and format but no fixed pixel dimensions.",
-    source: { url: "https://csirnet.nta.ac.in", label: "NTA CSIR-NET (csirnet.nta.ac.in)" },
+    description: "Joint CSIR-UGC NET (conducted by NTA). Photo 10-200 KB; signature 10-50 KB (running hand, no capitals, blue/black ink on white paper); JPG/JPEG only. NTA specifies file size and format but no fixed pixel dimensions.",
+    source: {
+      url: "https://cdnbbsr.s3waas.gov.in/s3efdf562ce2fb0ad460fd8e9d33e57f57/uploads/2025/09/202510072139225285.pdf",
+      label: "Joint CSIR-UGC NET — Information Bulletin (NTA)",
+    },
     verification: "official",
-    verifiedOn: "2026-06-10",
+    verifiedOn: "2026-07-17",
     context:
       "The joint CSIR-UGC NET is conducted by NTA for eligibility in science and research fields; like UGC-NET, NTA specifies file size and format but no fixed pixel dimensions for the photo or signature.",
   },
