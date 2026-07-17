@@ -19,10 +19,93 @@ export interface TransparentOptions {
   softness?: number;
   /** Force the remaining ink to solid black (deprecated, use inkColor instead). */
   darkenInk?: boolean;
-  /** Force ink to a specific color preset: original, black, or blue. */
-  inkColor?: "original" | "black" | "blue";
+  /** Force ink to a colour preset, or use customInkColor with "custom". */
+  inkColor?: SignatureInkColor;
+  /** Six-digit hex colour used when inkColor is "custom". */
+  customInkColor?: string;
   /** Contrast multiplier for signature strokes (1.0 to 3.0). */
   inkContrast?: number;
+  /** Expand the extracted ink outwards by this many pixels (0 to 6). */
+  strokeWidth?: number;
+}
+
+export type SignatureInkColor =
+  | "original"
+  | "black"
+  | "dark-blue"
+  | "blue"
+  | "red"
+  | "custom";
+
+interface Rgb {
+  r: number;
+  g: number;
+  b: number;
+}
+
+const INK_PRESET_RGB: Record<Exclude<SignatureInkColor, "original" | "custom">, Rgb> = {
+  black: { r: 0, g: 0, b: 0 },
+  "dark-blue": { r: 11, g: 42, b: 111 },
+  blue: { r: 0, g: 51, b: 203 },
+  red: { r: 180, g: 35, b: 24 },
+};
+
+function parseHexColour(value: string): Rgb | null {
+  const match = /^#([0-9a-f]{6})$/i.exec(value.trim());
+  if (!match) return null;
+  const number = Number.parseInt(match[1], 16);
+  return {
+    r: (number >> 16) & 0xff,
+    g: (number >> 8) & 0xff,
+    b: number & 0xff,
+  };
+}
+
+/** Resolve a UI colour choice once, before the full pixel pass. */
+export function resolveSignatureInkRgb(
+  inkColor: SignatureInkColor,
+  customInkColor = "#0033cb"
+): Rgb | null {
+  if (inkColor === "original") return null;
+  if (inkColor === "custom") {
+    return parseHexColour(customInkColor) ?? INK_PRESET_RGB.blue;
+  }
+  return INK_PRESET_RGB[inkColor];
+}
+
+/** Integer offsets forming a circular brush used to expand extracted strokes. */
+export function signatureStrokeOffsets(radius: number): Array<{ x: number; y: number }> {
+  const r = Math.min(6, Math.max(0, Math.round(radius)));
+  const offsets: Array<{ x: number; y: number }> = [];
+  for (let y = -r; y <= r; y++) {
+    for (let x = -r; x <= r; x++) {
+      if (x * x + y * y <= r * r) {
+        // Normalise -0 to 0: at radius 0 the loop bounds produce -0, which
+        // Object.is (and therefore toEqual) treats as distinct from 0.
+        offsets.push({ x: x === 0 ? 0 : x, y: y === 0 ? 0 : y });
+      }
+    }
+  }
+  return offsets;
+}
+
+/**
+ * Expand transparent ink strokes without resizing the canvas. Repeated canvas
+ * compositing is handled natively and is substantially faster than a nested
+ * per-pixel neighbourhood scan on full-resolution phone photographs.
+ */
+function expandInkStrokes(source: HTMLCanvasElement, radius: number): HTMLCanvasElement {
+  const offsets = signatureStrokeOffsets(radius);
+  if (offsets.length <= 1) return source;
+
+  const out = document.createElement("canvas");
+  out.width = source.width;
+  out.height = source.height;
+  const ctx = out.getContext("2d");
+  if (!ctx) throw new Error("Could not acquire 2D canvas context.");
+
+  for (const { x, y } of offsets) ctx.drawImage(source, x, y);
+  return out;
 }
 
 /**
@@ -37,6 +120,7 @@ export function whiteToTransparent(
   const softness = Math.max(1, opts.softness ?? 40);
   const contrast = opts.inkContrast ?? 1.0;
   const inkColor = opts.inkColor ?? (opts.darkenInk ? "black" : "original");
+  const solidInk = resolveSignatureInkRgb(inkColor, opts.customInkColor);
 
   const out = document.createElement("canvas");
   out.width = source.width;
@@ -60,20 +144,14 @@ export function whiteToTransparent(
     alpha = alpha < 0 ? 0 : alpha > 255 ? 255 : alpha;
     d[i + 3] = Math.round((d[i + 3] / 255) * alpha);
     
-    if (alpha > 0) {
-      if (inkColor === "black") {
-        d[i] = 0;
-        d[i + 1] = 0;
-        d[i + 2] = 0;
-      } else if (inkColor === "blue") {
-        d[i] = 0;
-        d[i + 1] = 51;  // Compliant dark blue ink
-        d[i + 2] = 203;
-      }
+    if (alpha > 0 && solidInk) {
+      d[i] = solidInk.r;
+      d[i + 1] = solidInk.g;
+      d[i + 2] = solidInk.b;
     }
   }
   octx.putImageData(img, 0, 0);
-  return out;
+  return expandInkStrokes(out, opts.strokeWidth ?? 0);
 }
 
 export interface BBox {

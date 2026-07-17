@@ -41,8 +41,6 @@ Download means the tool has no downloadable output.
 | ResizeKbTool | ✅ | ✅ | ✅ | ✅ | ✅ | Full lifecycle; shared download helper emits the save event. |
 | SignImageTool | ✅ | ✅ | ✅ | ✅ | ✅ | First valid image starts; export output/failure and central download are tracked. |
 | SignPdfTool | ✅ | ✅ | ✅ | ✅ | ✅ | PDF input starts; decode/render outcomes and central PDF download are tracked. |
-| SignatureCleanTool | ✅ | ✅ | ✅ | ✅ | ✅ | Standalone cleaner has full lifecycle; live routes primarily use SignatureWorkflowTool. |
-| SignatureCropTool | ✅ | ✅ | ✅ | ✅ | ✅ | Standalone cropper has full lifecycle; live crop route uses SignatureManualCropTool. |
 | SignatureKbTool | ✅ | ✅ | ✅ | ✅ | ✅ | Full lifecycle; shared download helper emits the save event. |
 | SignatureManualCropTool | ✅ | ✅ | ✅ | ✅ | ✅ | Upload starts; valid preview/failure and central download are tracked. |
 | SignatureWorkflowTool | ✅ | ✅ | ✅ | ✅ | ✅ | Shared engine covers transparent, background-removal, cleaner and resize routes. |

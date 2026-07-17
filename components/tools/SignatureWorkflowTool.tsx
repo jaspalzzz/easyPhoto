@@ -6,7 +6,10 @@ import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, canvasToBlob, pngUnderKb, picaResizeTo } from "@/lib/imaging";
-import { whiteToTransparent, trimToContent } from "@/lib/signature";
+import {
+  whiteToTransparent,
+  trimToContent,
+} from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
@@ -14,6 +17,10 @@ import { compressToCap } from "@/lib/compress";
 import { padBlobToMin } from "@/lib/padBytes";
 import { track, deviceClass } from "@/lib/analytics";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
+import {
+  SignatureInkControls,
+  useSignatureInkControls,
+} from "./SignatureInkControls";
 
 type Tab = "clean" | "crop" | "resize";
 
@@ -92,8 +99,7 @@ function Body({
   // Clean Settings
   const [threshold, setThreshold] = React.useState(200);
   const [softness, setSoftness] = React.useState(40);
-  const [inkColor, setInkColor] = React.useState<"original" | "black" | "blue">("original");
-  const [inkContrast, setInkContrast] = React.useState(1.0);
+  const inkControls = useSignatureInkControls();
 
   // Crop Settings
   const [autoCrop, setAutoCrop] = React.useState(autoCropDefault);
@@ -229,7 +235,6 @@ function Body({
   // bound to the raw state, so the controls themselves remain instant.
   const dThreshold = useDebouncedValue(threshold, 150);
   const dSoftness = useDebouncedValue(softness, 150);
-  const dInkContrast = useDebouncedValue(inkContrast, 150);
   const dPadding = useDebouncedValue(padding, 150);
   const dSmoothing = useDebouncedValue(smoothing, 150);
   const dTargetKb = useDebouncedValue(targetKb, 200);
@@ -252,8 +257,10 @@ function Body({
         const cleaned = whiteToTransparent(base, {
           threshold: dThreshold,
           softness: dSoftness,
-          inkColor,
-          inkContrast: dInkContrast,
+          inkColor: inkControls.inkColor,
+          customInkColor: inkControls.customInkColor,
+          inkContrast: inkControls.processedInkContrast,
+          strokeWidth: inkControls.processedStrokeWidth,
         });
 
         // Apply Eraser Mask if it exists
@@ -415,8 +422,10 @@ function Body({
     source,
     dThreshold,
     dSoftness,
-    inkColor,
-    dInkContrast,
+    inkControls.inkColor,
+    inkControls.customInkColor,
+    inkControls.processedInkContrast,
+    inkControls.processedStrokeWidth,
     autoCrop,
     dPadding,
     resizeMode,
@@ -675,7 +684,7 @@ function Body({
                   className="w-full cursor-pointer accent-brand"
                 />
                 <span className="text-xs text-muted-foreground block mt-0.5">
-                  Increase if gray smudges appear; decrease if ink lines break.
+                  Adjust gradually to remove paper texture while keeping faint ink visible.
                 </span>
               </label>
 
@@ -755,50 +764,7 @@ function Body({
               </div>
 
               <div className="border-t border-hairline pt-4 space-y-4">
-                <div className="space-y-1">
-                  <h4 className="text-xs font-semibold eyebrow uppercase tracking-wider text-muted-foreground">Ink Adjustments</h4>
-                </div>
-
-                <div className="space-y-2">
-                  <span className="text-xs font-medium text-muted-foreground block">Ink Color Preset</span>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(["original", "black", "blue"] as const).map((color) => (
-                      <button
-                        id={`sig-ink-color-${color}`}
-                        key={color}
-                        type="button"
-                        onClick={() => setInkColor(color)}
-                        className={`rounded-md border py-1.5 text-xs font-medium transition-colors ${
-                          inkColor === color
-                            ? "bg-brand/10 border-brand text-brand"
-                            : "bg-background border-hairline hover:bg-accent/40"
-                        }`}
-                      >
-                        {color === "original" ? "Original Ink" : color === "black" ? "Solid Black" : "Solid Blue"}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <label className="block text-sm">
-                  <span className="mb-1 flex items-center justify-between">
-                    <span className="eyebrow">Ink Stroke Thickness (Contrast)</span>
-                    <span className="font-mono text-xs text-brand font-semibold">{inkContrast.toFixed(1)}x</span>
-                  </span>
-                  <input
-                    id="sig-ink-contrast"
-                    type="range"
-                    min={1.0}
-                    max={3.0}
-                    step={0.1}
-                    value={inkContrast}
-                    onChange={(e) => setInkContrast(Number(e.target.value))}
-                    className="w-full cursor-pointer accent-brand"
-                  />
-                  <span className="text-xs text-muted-foreground block mt-0.5">
-                    Enhance faint ink writing for better biometric readability.
-                  </span>
-                </label>
+                <SignatureInkControls controls={inkControls} />
 
                 <label className="block text-sm">
                   <span className="mb-1 flex items-center justify-between">

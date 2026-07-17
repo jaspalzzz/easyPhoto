@@ -11,6 +11,10 @@ import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
+import {
+  SignatureInkControls,
+  useSignatureInkControls,
+} from "./SignatureInkControls";
 
 interface Out {
   url: string;
@@ -29,6 +33,7 @@ interface BodyProps {
 
 function Body({ source, kb, toolName }: BodyProps) {
   const [threshold, setThreshold] = React.useState(200);
+  const inkControls = useSignatureInkControls(180);
   // The pipeline below is a full-pixel pass + PNG encode loop — far too heavy
   // per slider tick. Recompute only after the user pauses.
   const dThreshold = useDebouncedValue(threshold, 180);
@@ -56,7 +61,14 @@ function Body({ source, kb, toolName }: BodyProps) {
       setError(null);
       try {
         const base = imageToCanvas(source.image, source.size.width, source.size.height);
-        const transparent = whiteToTransparent(base, { threshold: dThreshold, softness: 40 });
+        const transparent = whiteToTransparent(base, {
+          threshold: dThreshold,
+          softness: 40,
+          inkColor: inkControls.inkColor,
+          customInkColor: inkControls.customInkColor,
+          inkContrast: inkControls.processedInkContrast,
+          strokeWidth: inkControls.processedStrokeWidth,
+        });
         const trimmed = trimToContent(transparent, { mode: "alpha", padding: 12 }).canvas;
         const res = await pngUnderKb(trimmed, kb);
         if (cancelled) return;
@@ -96,7 +108,16 @@ function Body({ source, kb, toolName }: BodyProps) {
     return () => {
       cancelled = true;
     };
-  }, [source, dThreshold, kb, toolName]);
+  }, [
+    source,
+    dThreshold,
+    inkControls.inkColor,
+    inkControls.customInkColor,
+    inkControls.processedInkContrast,
+    inkControls.processedStrokeWidth,
+    kb,
+    toolName,
+  ]);
 
   const handleDownload = () => {
     if (!out) return;
@@ -136,6 +157,10 @@ function Body({ source, kb, toolName }: BodyProps) {
           className="w-full"
         />
       </label>
+
+      <div className="space-y-4 border-t border-hairline pt-4">
+        <SignatureInkControls controls={inkControls} idPrefix="sig-kb-ink" />
+      </div>
 
       {out && !busy && (
         <div className="space-y-2 rounded-md border border-hairline bg-card p-3 text-sm">
