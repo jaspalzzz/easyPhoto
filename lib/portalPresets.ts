@@ -258,16 +258,18 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 10,
     sigLimitKb: 100,
     sigMinKb: 10,
-    photoWidthPx: 350,
-    photoHeightPx: 450,
-    sigWidthPx: 280,
-    sigHeightPx: 120,
+    // NTA publishes file-size limits only — the NEET-UG 2026 bulletin (and the
+    // UGC-NET bulletin) state no pixel dimensions for the photo or signature.
+    // Aspect ratios kept as crop hints from the conventional "passport size".
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 3.5 / 1.5,
-    description: "NTA exams (NEET, JEE Main). Passport photo 3.5x4.5cm, 10-200 KB; signature 3.5x1.5cm, 10-100 KB, JPG. (NEET also needs a separate 4x6 inch postcard photo.)",
-    source: { url: "https://nta.ac.in", label: "NTA (nta.ac.in)" },
+    description: "NTA exams (NEET, JEE Main). Passport-size photo, 10-200 KB; signature 10-100 KB, JPG, white background with ~80% face. NTA publishes no pixel dimensions. (NEET also needs a separate 4x6 inch postcard photo.)",
+    source: {
+      url: "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/02/20260208939209382.pdf",
+      label: "NEET-UG 2026 — Information Bulletin (NTA)",
+    },
     verification: "official",
-    verifiedOn: "2026-06-08",
+    verifiedOn: "2026-07-17",
     context:
       "The National Testing Agency (NTA) conducts NEET-UG and JEE Main; you upload the photo and signature during the online application. NEET applicants also need a separate 4×6 inch (postcard-size) photograph in addition to the passport-size one.",
   },
