@@ -113,7 +113,8 @@ export function BlogPostLayout({
             [&_a]:font-medium [&_a]:text-brand [&_a]:underline [&_a]:decoration-brand/30 [&_a]:underline-offset-2 [&_a:hover]:decoration-brand
             [&_h2]:mb-2 [&_h2]:mt-11 [&_h2]:text-[1.45rem] [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-ink
             [&_li]:ml-1 [&_p]:mt-5 [&_strong]:font-semibold [&_strong]:text-ink
-            [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5"
+            [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5
+            [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto"
         >
           {children}
         </article>

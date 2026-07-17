@@ -146,7 +146,7 @@ export default function Page() {
           aria-label="Bar chart: approximate file size at different JPEG quality settings for a 413×531 pixel passport photo. Q95: 180 KB, Q80: 45 KB, Q70: 30 KB, Q60: 20 KB, Q50: 15 KB."
         >
           <title>JPEG quality vs file size for a 413×531 px passport photo</title>
-          <desc>Quality 95 gives about 180 KB. Quality 80 gives about 45 KB — the ideal for most 50 KB portals. Quality 70 gives 30 KB, quality 60 gives 20 KB, quality 50 gives 15 KB. Source: easyPhoto internal testing, 2025.</desc>
+          <desc>Illustrative example for a 413×531 px photo: quality 95 gives about 180 KB, quality 80 about 45 KB — a good target for most 50 KB portals — quality 70 about 30 KB, quality 60 about 20 KB, quality 50 about 15 KB. Actual sizes vary with image content.</desc>
 
           {[
             { q: "Q95 (max)", kb: 180, note: "uncompressed export", color: "#a78bfa" },
@@ -168,7 +168,7 @@ export default function Page() {
           })}
 
           <text x="280" y="228" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.35">
-            Source: easyPhoto internal testing on a plain-background face photo at 413×531 px (2025)
+            Illustrative estimates for a plain-background face photo at 413×531 px — actual sizes vary
           </text>
         </svg>
       </figure>

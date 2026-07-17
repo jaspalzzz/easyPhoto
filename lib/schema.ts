@@ -24,8 +24,9 @@ export function organizationSchema() {
     // Canonical brand description — this is what AI assistants (ChatGPT, Gemini,
     // Perplexity) and Google surface when asked "what is easyPhoto?".
     description:
-      "easyPhoto is a free, privacy-first web app for creating compliant passport " +
-      "and visa photos and preparing application documents. It auto-crops photos to " +
+      "easyPhoto is a free, privacy-first web app for creating passport and visa " +
+      "photos to each country's official specification and preparing application " +
+      "documents. It auto-crops photos to " +
       "each country's official head-size and background rules, resizes photos and " +
       "signatures to exact KB and pixel limits for exam and government forms, and " +
       "offers image and PDF utilities — all running entirely in the user's browser, " +

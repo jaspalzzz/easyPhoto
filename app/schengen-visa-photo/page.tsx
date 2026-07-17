@@ -13,7 +13,7 @@ const spec = COUNTRY_SPECS["schengen"]!;
 export const metadata = pageMetadata({
   title: "Schengen Visa Photo Requirements 2026 — Free Maker (All 29 Countries)",
   description:
-    "Official Schengen visa photo requirements: 35×45mm, light grey background, ICAO standard. Works for all 29 Schengen countries. Free, nothing uploaded.",
+    "Schengen visa photo requirements: 35×45mm, light grey background, ICAO standard — the common format for all 29 Schengen countries. Free, nothing uploaded.",
   path: "/schengen-visa-photo/",
 });
 
@@ -24,11 +24,11 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "What background does a Schengen visa photo need?",
-    a: "A plain light grey background is the universally safe choice. Some states accept white (e.g. France), but Switzerland requires grey and rejects white. Light grey satisfies all 29 Schengen countries.",
+    a: "A plain light grey background is the safest choice. Some states accept white (e.g. France), but Switzerland requires grey and rejects white, so light grey meets the requirement across all 29 Schengen countries.",
   },
   {
     q: "Does the same photo work for all Schengen countries?",
-    a: "Yes. The ICAO standard is shared across all 29 Schengen member states (including Bulgaria and Romania which joined in 2025). One compliant 35×45mm light-grey photo is accepted at every consulate.",
+    a: "The ICAO photo standard is shared across all 29 Schengen member states (including Bulgaria and Romania, which joined in 2025), so a 35×45mm light-grey photo meets the common format for all of them. Individual consulates can still apply their own checks, so confirm your consulate's current guidance before submitting.",
   },
   {
     q: "Are glasses allowed in a Schengen visa photo?",
@@ -88,8 +88,9 @@ export default function Page() {
         <p className="text-base leading-relaxed text-muted-foreground max-w-2xl">
           The Schengen visa uses the <strong>ICAO biometric standard: 35×45mm, light grey
           background</strong>, face filling 70–80% of the frame. This single standard applies to all
-          29 member states. One compliant photo works for Germany, France, Italy, Spain,
-          Switzerland and every other Schengen country.
+          29 member states, so one photo built to it meets the common format for Germany, France,
+          Italy, Spain, Switzerland and the rest — confirm your consulate&apos;s current guidance
+          before you submit.
         </p>
       </header>
 
@@ -99,7 +100,7 @@ export default function Page() {
           <p className="font-semibold text-sm">Make your Schengen visa photo free</p>
           <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" />
-            GDPR-safe — your photo is never uploaded. Works for all 29 Schengen countries.
+            GDPR-safe — your photo is never uploaded. Built to the ICAO standard for all 29 Schengen countries.
           </p>
         </div>
         <Link
@@ -209,7 +210,7 @@ export default function Page() {
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-sm">Ready to make your photo?</p>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Free, instant, 100% in-browser. Light grey background applied. Works for all 29 Schengen countries.
+            Free, instant, 100% in-browser. Light grey background applied — the ICAO format for all 29 Schengen countries.
           </p>
         </div>
         <Link

@@ -85,7 +85,7 @@ export const PASSPORT_FAQ: FaqItem[] = [
   { q: "What size is a passport photo?", a: "Most countries use 35×45mm. The US and a few others use 2×2 inches (51×51mm). EasyPhoto sets the correct size automatically once you pick your country." },
   { q: "How do I make a passport photo at home for free?", a: "Upload a clear, front-facing photo, choose your country, and download the compliant result. No app, no payment, no watermark." },
   { q: "Can I take a passport photo on my phone?", a: "Yes. Any recent phone photo in even lighting works, and the tool crops and sizes it for you." },
-  { q: "What background colour should a passport photo have?", a: "White for the US and India, and light grey or cream for the UK, where plain white is the top reason photos get rejected. EasyPhoto applies the right colour by country." },
+  { q: "What background colour should a passport photo have?", a: "White for the US and India, and light grey or cream for the UK, where plain white is a common reason photos get rejected. EasyPhoto applies the right colour by country." },
   { q: "What is the correct head size in a passport photo?", a: "It depends on the country. The US wants 25–35mm chin-to-crown, for instance, and India wants larger. We size your head to the exact band so it isn't rejected for being too big or small." },
   { q: "Can I smile in a passport photo?", a: "No. Keep a neutral expression with your mouth closed, which is what most countries require for biometric matching." },
   { q: "Can I wear glasses in a passport photo?", a: "Generally no. The US has banned glasses since 2016 and most countries discourage them, so it's safest to take them off." },
@@ -384,7 +384,7 @@ export function countryFaqItems(
     },
     uk: {
       q: "Why shouldn't a UK passport photo have a white background?",
-      a: "Plain white is the top reason UK photos get rejected. HMPO wants a light grey or cream background, which this tool applies for you.",
+      a: "Plain white is a common reason UK photos get rejected. HMPO wants a light grey or cream background, which this tool applies for you.",
     },
     australia: {
       q: "Does the Australian passport photo need a guarantor?",
