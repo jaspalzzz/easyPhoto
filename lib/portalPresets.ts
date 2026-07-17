@@ -599,16 +599,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "HPSC (Haryana PSC)",
     photoLimitKb: 500,
     sigLimitKb: 500,
-    photoWidthPx: 150,
-    photoHeightPx: 190,
-    sigWidthPx: 150,
-    sigHeightPx: 60,
-    description: "Haryana PSC (online registration). Photo up to 500 KB (132x170 to 160x204 px); signature up to 500 KB (132x57 to 160x68 px); JPG/JPEG/PNG.",
-    source: { url: "https://hpsc.gov.in", label: "HPSC (hpsc.gov.in)" },
-    verification: "official",
-    verifiedOn: "2026-06-10",
+    description: "Haryana PSC online registration. The current recruitment advertisement (Advt 24/2026) lists a scanned photo and scanned signatures among the uploads but publishes no KB or pixel specification; those limits are shown only inside the online registration portal (regn.hpsc.gov.in) at the upload step. The 500 KB values here are unconfirmed and could not be checked against a public source — confirm the exact figures on the portal before preparing files.",
+    source: {
+      url: "https://regn.hpsc.gov.in/",
+      label: "HPSC online registration portal (photo/signature limits shown at the upload step)",
+    },
+    verification: "needs-review",
     context:
-      "Haryana Public Service Commission's online registration accepts a comparatively generous 500 KB limit for both photo and signature — well above the 20-100 KB range typical of most exam portals in this list.",
+      "Haryana Public Service Commission sets the photo and signature upload limits inside its online registration portal rather than in the recruitment advertisement, so they are not publicly documented. Confirm the current figures on the portal at the time of applying.",
   },
 
   // ---------------------------------------------------------------------------
