@@ -143,6 +143,13 @@ export function ExamPackageTool() {
     try {
       const canvas = await fileToCanvas(file);
       const res = await compressToCap(canvas, spec.photoLimitKb, {
+        // Let dimensions shrink to reach a tight KB cap, matching the standalone
+        // resizers. When the portal DOES publish a pixel minimum, minDimensions
+        // below raises the floor (compressToCap takes the max), so this never
+        // undercuts a required size. Without it, a portal with no fixed pixel
+        // size (SSC, UPSC, RRB) can only drop quality — which bottoms out above
+        // a tight cap like SSC's 50 KB and blocks the workflow at "Next".
+        minScale: 0.1,
         minDimensions:
           spec.photoWidthPx && spec.photoHeightPx
             ? { width: spec.photoWidthPx, height: spec.photoHeightPx }
