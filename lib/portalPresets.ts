@@ -485,22 +485,24 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   rpsc: {
     id: "rpsc",
     name: "RPSC (Rajasthan PSC)",
-    photoLimitKb: 100,
-    photoMinKb: 50,
+    // Compatibility-only photo target. RPSC captures the photograph LIVE during
+    // OTR KYC (webcam) — there is no pre-existing photo file to upload, and no
+    // photo KB or pixel requirement is published. Value kept only so the photo
+    // tool has a sensible default; it is not an RPSC requirement.
+    photoLimitKb: 50,
+    photoMinKb: 20,
+    // Real, uploadable spec: two signatures (English + Hindi), each JPEG 20-50 KB.
     sigLimitKb: 50,
-    sigMinKb: 10,
-    photoWidthPx: 350,
-    photoHeightPx: 450,
-    sigWidthPx: 420,
-    sigHeightPx: 120,
-    photoAspectRatio: 3.5 / 4.5,
-    sigAspectRatio: 420 / 120,
-    description: "Rajasthan PSC (via SSO Rajasthan recruitment portal). Photo 50-100 KB (3.5x4.5 cm, 240x320 to 480x640 px); signature 10-50 KB (7x2 cm box, 280x80 to 560x160 px); JPG/JPEG.",
-    source: { url: "https://rpsc.rajasthan.gov.in", label: "RPSC (rpsc.rajasthan.gov.in)" },
-    verification: "official",
-    verifiedOn: "2026-06-10",
+    sigMinKb: 20,
+    description: "Rajasthan PSC applies via the SSO Rajasthan / recruitment portal with One-Time Registration (OTR). The photograph is CAPTURED LIVE during OTR KYC (webcam) — there is no photo file to upload. Candidates upload two signatures (English and Hindi), each JPEG 20-50 KB, plus a left thumb impression (JPEG 20-50 KB) and a handwritten specimen (PDF 10-200 KB). RPSC publishes no pixel dimensions. Confirm the current OTR instructions before preparing files.",
+    source: {
+      url: "https://recruitment.rajasthan.gov.in/",
+      label: "RPSC OTR-based Online Application Manual (19 May 2026), KYC upload section",
+    },
+    verification: "needs-review",
+    verifiedOn: "2026-07-17",
     context:
-      "Rajasthan Public Service Commission recruitment applications go through the state's SSO (Single Sign-On) Rajasthan portal, sharing the same photo and signature size band as several other UPSC-pattern state exams.",
+      "Rajasthan Public Service Commission recruitment goes through the SSO Rajasthan recruitment portal's One-Time Registration. The photograph is taken live via webcam during KYC, so no photo file is uploaded; the uploadable items are two signatures (English and Hindi), a left thumb impression, and a handwritten specimen. Confirm the current OTR instructions for the specific recruitment before preparing files.",
   },
   tnpsc: {
     id: "tnpsc",
