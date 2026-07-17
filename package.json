@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "check:specs": "node scripts/check-specs.mjs",
+    "check:links": "node scripts/check-links.mjs",
     "freshness": "node scripts/freshness-audit.mjs",
     "indexnow": "node scripts/indexnow.mjs"
   },
