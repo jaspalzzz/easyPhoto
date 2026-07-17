@@ -92,6 +92,30 @@ export function relatedPortals(id: string, limit = 6): PortalSpec[] {
   return [...same, ...rest].slice(0, limit);
 }
 
+/**
+ * The published pixel dimensions as "200×230px", or null when the authority
+ * publishes none. Several portals (UPSC, SSC, RRB) publish a KB band and no
+ * pixel requirement at all, so these fields are legitimately absent.
+ *
+ * Always build copy from these helpers. Interpolating spec.photoWidthPx and
+ * friends directly renders "undefined×undefinedpx" the moment a spec turns out
+ * to have no published dimensions — which happens every time we re-verify a
+ * spec against its source. test/specCopy.test.ts enforces this.
+ */
+function formatDims(w?: number, h?: number, unit = "px"): string | null {
+  return w && h ? `${w}×${h}${unit}` : null;
+}
+
+/** Published photo dimensions, e.g. "200×230px" — null when unpublished. */
+export function photoDimsPx(spec: PortalSpec, unit = "px"): string | null {
+  return formatDims(spec.photoWidthPx, spec.photoHeightPx, unit);
+}
+
+/** Published signature dimensions, e.g. "140×60px" — null when unpublished. */
+export function sigDimsPx(spec: PortalSpec, unit = "px"): string | null {
+  return formatDims(spec.sigWidthPx, spec.sigHeightPx, unit);
+}
+
 /** UI-ready trust descriptor for a spec's provenance. */
 export interface SpecProvenance {
   /** True only when confirmed against the official source. */

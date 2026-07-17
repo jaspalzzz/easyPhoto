@@ -1,7 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ExamResizerSteps } from "@/components/tools/ExamResizerSteps";
-import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { getPortalSpec, photoDimsPx, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems, resizerMetaDescription } from "@/lib/faqs";
 import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
 import { ExamSpecTable } from "@/components/site/ExamSpecTable";
@@ -12,10 +12,8 @@ const spec = getPortalSpec("rrb")!;
 const prov = specProvenance(spec);
 // Only mention pixels when the authority actually publishes them — several
 // portals (UPSC/SSC/RRB) publish a KB band but no pixel requirement.
-const photoDims =
-  spec.photoWidthPx && spec.photoHeightPx
-    ? ` and ${spec.photoWidthPx}×${spec.photoHeightPx}px`
-    : "";
+const px = photoDimsPx(spec);
+const photoDims = px ? ` and ${px}` : "";
 
 export const metadata = pageMetadata({
   title: `Railway RRB Photo Resizer — Compress to ${spec.photoLimitKb} KB`,

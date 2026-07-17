@@ -6,6 +6,7 @@
 import type { FaqItem } from "@/components/site/Faq";
 import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
 import type { PortalSpec } from "@/lib/portalPresets";
+import { photoDimsPx, sigDimsPx } from "@/lib/specRegistry";
 
 /**
  * Meta description for an exam photo/signature resizer page. Covers BOTH the
@@ -16,9 +17,8 @@ export function resizerMetaDescription(spec: PortalSpec, label: string): string 
   const photo = spec.photoMinKb
     ? `${spec.photoMinKb}–${spec.photoLimitKb} KB`
     : `under ${spec.photoLimitKb} KB`;
-  const px = spec.photoWidthPx
-    ? ` (${spec.photoWidthPx}×${spec.photoHeightPx}px)`
-    : "";
+  const dims = photoDimsPx(spec);
+  const px = dims ? ` (${dims})` : "";
   const sig = spec.sigLimitKb
     ? ` and signature to ${spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}${spec.sigLimitKb} KB`
     : "";
@@ -34,19 +34,15 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
   const photoKb = spec.photoMinKb
     ? `${spec.photoMinKb}–${spec.photoLimitKb} KB`
     : `under ${spec.photoLimitKb} KB`;
-  const photoDim =
-    spec.photoWidthPx && spec.photoHeightPx
-      ? `, around ${spec.photoWidthPx}×${spec.photoHeightPx} px`
-      : "";
+  const photoPx = photoDimsPx(spec, " px");
+  const photoDim = photoPx ? `, around ${photoPx}` : "";
   const sigKb = spec.sigLimitKb
     ? spec.sigMinKb
       ? `${spec.sigMinKb}–${spec.sigLimitKb} KB`
       : `under ${spec.sigLimitKb} KB`
     : null;
-  const sigDim =
-    spec.sigWidthPx && spec.sigHeightPx
-      ? `, around ${spec.sigWidthPx}×${spec.sigHeightPx} px`
-      : "";
+  const sigPx = sigDimsPx(spec, " px");
+  const sigDim = sigPx ? `, around ${sigPx}` : "";
 
   const items: FaqItem[] = [
     {

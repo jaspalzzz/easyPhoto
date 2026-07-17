@@ -1,7 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ExamResizerSteps } from "@/components/tools/ExamResizerSteps";
-import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { getPortalSpec, photoDimsPx, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems, resizerMetaDescription } from "@/lib/faqs";
 import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
 import { ExamSpecTable } from "@/components/site/ExamSpecTable";
@@ -10,6 +10,8 @@ import { Info } from "lucide-react";
 
 const spec = getPortalSpec("rbi")!;
 const prov = specProvenance(spec);
+const px = photoDimsPx(spec);
+const photoDims = px ? ` and ${px}` : "";
 
 export const metadata = pageMetadata({
   title: "RBI Grade B Photo Resizer — Compress Photo for RBI Application",
@@ -25,7 +27,7 @@ export default function Page() {
       faqItems={portalFaqItems(spec)}
       path="/rbi-photo-resizer/"
       dateModified={spec.verifiedOn}
-      blurb={`Resize and compress your photo to ${spec.photoMinKb}–${spec.photoLimitKb} KB and ${spec.photoWidthPx}×${spec.photoHeightPx}px for RBI Grade B and RBI Assistant online applications.`}
+      blurb={`Resize and compress your photo to ${spec.photoMinKb}–${spec.photoLimitKb} KB${photoDims} for RBI Grade B and RBI Assistant online applications.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >
       <ExamSubmitTips hasSignature={spec.sigLimitKb !== undefined} className="mb-6" />

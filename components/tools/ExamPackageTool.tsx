@@ -20,6 +20,7 @@ import { PORTAL_PRESETS, PORTAL_KEYS, type PortalSpec } from "@/lib/portalPreset
 import {
   specProvenance,
   portalCategory,
+  photoDimsPx,
   PORTAL_CATEGORY_LABEL,
   type PortalCategory,
 } from "@/lib/specRegistry";
@@ -441,7 +442,7 @@ export function ExamPackageTool() {
               <p className="font-semibold text-ink">{spec.name.split(" (")[0]}</p>
               <p className="mt-0.5 font-mono text-[12px] leading-relaxed text-ink-soft">
                 Photo {photoKbText(spec)}
-                {spec.photoWidthPx ? ` · ${spec.photoWidthPx}×${spec.photoHeightPx}px` : ""}
+                {photoDimsPx(spec) ? ` · ${photoDimsPx(spec)}` : ""}
                 {needsSignature && sigKbText(spec) ? ` · Signature ${sigKbText(spec)}` : ""}
               </p>
               {prov && !prov.verified && prov.url ? (

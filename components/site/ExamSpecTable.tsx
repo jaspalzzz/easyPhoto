@@ -1,4 +1,5 @@
 import type { PortalSpec } from "@/lib/portalPresets";
+import { photoDimsPx, sigDimsPx } from "@/lib/specRegistry";
 import { EmbedSpec } from "@/components/site/EmbedSpec";
 
 /**
@@ -34,14 +35,8 @@ export function ExamSpecTable({
 }) {
   const label = name ?? spec.name.split(" (")[0];
   const hasSig = spec.sigLimitKb !== undefined;
-  const photoDim =
-    spec.photoWidthPx && spec.photoHeightPx
-      ? `${spec.photoWidthPx}×${spec.photoHeightPx} px`
-      : null;
-  const sigDim =
-    spec.sigWidthPx && spec.sigHeightPx
-      ? `${spec.sigWidthPx}×${spec.sigHeightPx} px`
-      : null;
+  const photoDim = photoDimsPx(spec, " px");
+  const sigDim = sigDimsPx(spec, " px");
 
   // Answer-first prose summary, built from the SAME fields as the register
   // below so the two can never disagree. AI answer engines (ChatGPT, Perplexity,

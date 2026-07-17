@@ -8,6 +8,8 @@ import {
   specProvenance,
   relatedPortals,
   portalCategory,
+  photoDimsPx,
+  sigDimsPx,
   PORTAL_CATEGORY_LABEL,
 } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
@@ -32,7 +34,10 @@ const photoKb = (s: PortalSpec) =>
   s.photoMinKb ? `${s.photoMinKb}–${s.photoLimitKb} KB` : `under ${s.photoLimitKb} KB`;
 const sigKb = (s: PortalSpec) =>
   s.sigLimitKb ? (s.sigMinKb ? `${s.sigMinKb}–${s.sigLimitKb} KB` : `under ${s.sigLimitKb} KB`) : null;
+/** Dimensions for the spec table, where an em-dash honestly means "not published". */
 const px = (w?: number, h?: number) => (w && h ? `${w} × ${h} px` : "—");
+/** " (200 × 230 px)" — or nothing at all, for prose and meta descriptions. */
+const parens = (dims: string | null) => (dims ? ` (${dims})` : "");
 
 /** Human label for a photo aspect ratio (width / height). */
 function aspectLabel(r: number): string {
@@ -93,8 +98,10 @@ export async function generateMetadata({
     titleAbsolute: !!EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam],
     description:
       descriptionOverride ??
-      `${shortName}: photo ${photoKb(spec)} (${px(spec.photoWidthPx, spec.photoHeightPx)})` +
-      (sig ? `, signature ${sig} (${px(spec.sigWidthPx, spec.sigHeightPx)})` : "") +
+      // Omit the pixel clause when the authority publishes none — px() renders an
+      // em-dash for the spec table, which reads as "(—)" in a SERP snippet.
+      `${shortName}: photo ${photoKb(spec)}${parens(photoDimsPx(spec, " px"))}` +
+      (sig ? `, signature ${sig}${parens(sigDimsPx(spec, " px"))}` : "") +
       `. Exact size & format for the form — verified against the official source.`,
     path: `/exam-requirements/${exam}/`,
   });
@@ -381,8 +388,9 @@ export default async function Page({
           <div className="space-y-2">
             <h2 className="text-lg font-semibold">SSC photo and signature use different upload bands</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The SSC record specifies a {photoKb(spec)} photo at {px(spec.photoWidthPx, spec.photoHeightPx)}.
-              The signature has its own {sig} band and {px(spec.sigWidthPx, spec.sigHeightPx)} dimensions.
+              The SSC record specifies a {photoKb(spec)} photo, and the signature has
+              its own {sig} band. SSC publishes these file-size bands rather than a
+              pixel requirement, so match the size limits and keep the scan sharp.
               Preparing the two files separately matters because one file cannot satisfy both sets of limits.
             </p>
           </div>
@@ -411,14 +419,12 @@ export default async function Page({
       {exam === "upsc" && (
         <section className="space-y-6 border-t border-hairline pt-8">
           <div className="space-y-2">
-            <h2 className="text-lg font-semibold">UPSC uses separate square upload ranges</h2>
+            <h2 className="text-lg font-semibold">UPSC sets separate file-size bands for photo and signature</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The verified UPSC record sets the photo at {photoKb(spec)} and starts
-              its square pixel range at {px(spec.photoWidthPx, spec.photoHeightPx)}.
-              The signature is also {sig}, with its recorded square range starting
-              at {px(spec.sigWidthPx, spec.sigHeightPx)}. Both are JPG uploads, and
-              the photo uses a plain white background with the candidate&apos;s name
-              and date at the bottom.
+              The verified UPSC record sets the photo at {photoKb(spec)} and the
+              signature at {sig} — two separate bands, so one file cannot satisfy
+              both. UPSC publishes these size limits rather than a pixel requirement.
+              Both are JPG uploads, and the photo uses a plain white background.
             </p>
           </div>
           <div className="space-y-2">

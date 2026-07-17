@@ -1,7 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { ExamResizerSteps } from "@/components/tools/ExamResizerSteps";
-import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import { getPortalSpec, photoDimsPx, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems, resizerMetaDescription } from "@/lib/faqs";
 import { ExamSubmitTips } from "@/components/site/AcceptanceTips";
 import { ExamSpecTable } from "@/components/site/ExamSpecTable";
@@ -10,6 +10,8 @@ import { Info } from "lucide-react";
 
 const spec = getPortalSpec("ibps")!;
 const prov = specProvenance(spec);
+const px = photoDimsPx(spec);
+const photoDims = px ? ` and ${px}` : "";
 
 export const metadata = pageMetadata({
   title: "IBPS Photo Resizer — Compress Photo for IBPS Bank Exams",
@@ -25,7 +27,7 @@ export default function Page() {
       faqItems={portalFaqItems(spec)}
       path="/ibps-photo-resizer/"
       dateModified={spec.verifiedOn}
-      blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB) and standard dimensions (${spec.photoWidthPx}×${spec.photoHeightPx}px) for IBPS online bank application forms.`}
+      blurb={`Resize and compress your passport photo to under ${spec.photoLimitKb} KB (${spec.photoMinKb}–${spec.photoLimitKb} KB)${photoDims} for IBPS online bank application forms.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >
       <ExamSubmitTips hasSignature={spec.sigLimitKb !== undefined} className="mb-6" />
