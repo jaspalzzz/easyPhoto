@@ -75,6 +75,28 @@ describe("spec copy — renders cleanly for every portal in the registry", () =>
     }
   );
 
+  // A portal that publishes neither pixels nor an aspect ratio constrains nothing
+  // but file size. Promising we keep "the correct dimensions", or blaming the wrong
+  // ones for rejection, invents a requirement — the same class of error as a wrong
+  // KB band, and the reason four "official" specs turned out to be wrong.
+  const noGeometry = specs.filter(
+    (s) => photoDimsPx(s) === null && s.photoAspectRatio === undefined
+  );
+
+  it("still covers portals that constrain nothing but file size", () => {
+    expect(noGeometry.length).toBeGreaterThan(0);
+  });
+
+  it.each(noGeometry.map((s) => [s.id, s] as const))(
+    "%s: claims no dimension requirement the authority never published",
+    (_id, spec) => {
+      const answers = portalFaqItems(spec)
+        .map((f) => f.a)
+        .join("\n");
+      expect(answers).not.toMatch(/pixel dimensions|correct dimensions/i);
+    }
+  );
+
   it.each(specs.map((s) => [s.id, s] as const))(
     "%s: dimension helpers return a clean phrase or null",
     (_id, spec) => {

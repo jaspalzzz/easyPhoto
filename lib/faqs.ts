@@ -43,6 +43,10 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
     : null;
   const sigPx = sigDimsPx(spec, " px");
   const sigDim = sigPx ? `, around ${sigPx}` : "";
+  // 18 of the 52 portals constrain nothing but file size — no pixel spec and no
+  // aspect ratio. Claiming we keep "the correct dimensions", or that the wrong
+  // ones cause rejection, invents a requirement the authority never published.
+  const hasGeometry = photoPx !== null || spec.photoAspectRatio !== undefined;
 
   const items: FaqItem[] = [
     {
@@ -59,11 +63,11 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
   items.push(
     {
       q: `How do I resize my photo to ${photoKb} for ${spec.name}?`,
-      a: `Upload your photo and the tool compresses it under the ${spec.name} limit while keeping the correct dimensions. Everything runs in your browser.`,
+      a: `Upload your photo and the tool compresses it under the ${spec.name} limit ${hasGeometry ? "while keeping the correct dimensions" : "without stretching or distorting it"}. Everything runs in your browser.`,
     },
     {
       q: `Why do ${spec.name} photos${sigKb ? " and signatures" : ""} get rejected?`,
-      a: `The most common reasons are the wrong file size (outside the ${photoKb}${sigKb ? ` photo / ${sigKb} signature` : ""} range), wrong pixel dimensions, a non-JPG file, a busy or coloured background, or a blurry, low-resolution scan.${sigKb ? " Signatures are also rejected when they are faint, sit on a grey or coloured background, or show the paper edge." : ""} This tool fixes the size, dimensions and format automatically — just start from a clear, well-lit photo on a plain background.`,
+      a: `The most common reasons are the wrong file size (outside the ${photoKb}${sigKb ? ` photo / ${sigKb} signature` : ""} range)${hasGeometry ? ", wrong pixel dimensions" : ""}, a non-JPG file, a busy or coloured background, or a blurry, low-resolution scan.${sigKb ? " Signatures are also rejected when they are faint, sit on a grey or coloured background, or show the paper edge." : ""} This tool fixes the ${hasGeometry ? "size, dimensions and format" : "size and format"} automatically — just start from a clear, well-lit photo on a plain background.`,
     },
     {
       q: `Is this ${spec.name} resizer free and private?`,
