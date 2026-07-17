@@ -646,12 +646,18 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 60,
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
-    description: "NABARD recruitment (IBPS-administered). Photo 20-50 KB (200x230 px); signature 10-20 KB (140x60 px); JPG/JPEG, min 200 DPI.",
-    source: { url: "https://www.nabard.org", label: "NABARD (nabard.org)" },
+    dpi: 200,
+    signatureInk: "Black",
+    description:
+      "NABARD Grade A 2025 requires separate JPG/JPEG photograph and signature uploads, plus an additional live photograph captured by webcam or mobile phone. The published upload values are shown in the requirement table; confirm the notice for a later recruitment cycle.",
+    source: {
+      url: "https://www.nabard.org/auth/writereaddata/CareerNotices/0512255230Final%20Advertisement%20Grade%20A%20(RDBS,%20Legal,%20P%26SS)%202025%20(1).pdf",
+      label: "NABARD Grade A 2025 advertisement — pages 29–30",
+    },
     verification: "official",
-    verifiedOn: "2026-06-10",
+    verifiedOn: "2026-07-18",
     context:
-      "NABARD (National Bank for Agriculture and Rural Development) recruitment for Grade A and Grade B officers is IBPS-administered on NABARD's behalf, using the same photo and signature spec as most IBPS-administered banking exams.",
+      "NABARD's 2025 Grade A notice documents a prepared photograph upload and a separate live-photo capture. It routes application grievances through cgrs.ibps.in, but the values here are scoped to that NABARD notice rather than assumed from a generic banking pattern.",
   },
   lic: {
     id: "lic",
@@ -666,12 +672,18 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 60,
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
-    description: "LIC recruitment (AAO / ADO). Photo 20-50 KB (200x230 px); signature 10-20 KB (140x60 px); JPG/JPEG.",
-    source: { url: "https://licindia.in", label: "LIC India (licindia.in)" },
+    dpi: 200,
+    signatureInk: "Black",
+    description:
+      "LIC AAO Specialist 2025 requires separate JPG photograph and signature uploads, plus an additional live photograph captured by webcam or mobile phone. The published upload values are shown in the requirement table; confirm the applicable notice for ADO or a later AAO cycle.",
+    source: {
+      url: "https://licindia.in/documents/d/guest/aao-specialist-notification-2025-final",
+      label: "LIC AAO Specialist 2025 notification — pages 15–17",
+    },
     verification: "official",
-    verifiedOn: "2026-06-10",
+    verifiedOn: "2026-07-18",
     context:
-      "LIC (Life Insurance Corporation of India) recruits Apprentice Development Officers (ADO) and Assistant Administrative Officers (AAO) through its own portal at licindia.in, using the same photo and signature spec as most banking-sector recruitments.",
+      "LIC's 2025 AAO Specialist notice documents a prepared photograph upload and a separate live-photo capture. The source does not establish that the same values apply to every LIC role or future recruitment cycle.",
   },
   niacl: {
     id: "niacl",
@@ -686,12 +698,18 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 60,
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
-    description: "New India Assurance (NIACL AO / Assistant). Photo 20-50 KB (200x230 px); signature 10-20 KB (140x60 px); JPG/JPEG.",
-    source: { url: "https://www.newindia.co.in", label: "NIACL (newindia.co.in)" },
+    dpi: 200,
+    signatureInk: "Black",
+    description:
+      "NIACL Administrative Officer 2025 requires separate JPG/JPEG photograph and signature uploads, plus an additional live photograph captured by webcam or mobile phone. The published upload values are shown in the requirement table; confirm the applicable notice for an Assistant or later cycle.",
+    source: {
+      url: "https://www.newindia.co.in/assets/docs/recruitment/RECRUITMENT%20OF%20ADMINISTRATIVE%20OFFICERS%202025/RECRUITMENT%20OF%20_5_50%20ADMINISTRATIVE%20OFFICERS%20(GENERALISTS%20%26%20SPECIALISTS)%20(SCALE-I)%20202_5.pdf",
+      label: "NIACL Administrative Officers 2025 advertisement — pages 11–12",
+    },
     verification: "official",
-    verifiedOn: "2026-06-10",
+    verifiedOn: "2026-07-18",
     context:
-      "NIACL (New India Assurance Company Limited) recruits Administrative Officers and Assistants through its own portal, using the same photo and signature spec as most banking and insurance-sector recruitments.",
+      "NIACL's 2025 Administrative Officer advertisement links to the NIACL application on ibpsonline.ibps.in and documents both a prepared photograph upload and a separate live-photo capture. The source does not establish the same values for every NIACL role.",
   },
   irdai: {
     id: "irdai",
@@ -706,12 +724,18 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 60,
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
-    description: "IRDAI recruitment (Assistant Manager). Photo 20-50 KB (200x230 px); signature 10-20 KB (140x60 px); JPG/JPEG, min 200 DPI.",
-    source: { url: "https://irdai.gov.in", label: "IRDAI (irdai.gov.in)" },
+    dpi: 200,
+    signatureInk: "Black",
+    description:
+      "IRDAI Assistant Manager 2024 requires separate JPG/JPEG photograph and signature uploads. The published upload values are shown in the requirement table; this is the latest public Assistant Manager notice located, so confirm a later recruitment notice before use.",
+    source: {
+      url: "https://irdai.gov.in/documents/37343/366120/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE+-+%E0%A4%B8%E0%A4%B9%E0%A4%BE%E0%A4%AF%E0%A4%95+%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%AC%E0%A4%82%E0%A4%A7%E0%A4%95+%E0%A4%AD%E0%A4%B0%E0%A5%8D%E0%A4%A4%E0%A5%80+2024+_+Notification+-+Assistant+Manager+Recruitment+2024.pdf/406da4a0-f2d7-16c8-228a-4870e280a44c?version=2.2&t=1724302079930&download=true",
+      label: "IRDAI Assistant Manager 2024 notification — pages 26–27",
+    },
     verification: "official",
-    verifiedOn: "2026-06-10",
+    verifiedOn: "2026-07-18",
     context:
-      "IRDAI (Insurance Regulatory and Development Authority of India) recruits Assistant Managers through its own portal at irdai.gov.in, using the same photo and signature spec as most banking and insurance-sector recruitments.",
+      "IRDAI's 2024 Assistant Manager notification documents photograph and signature uploads and routes application queries through cgrs.ibps.in. No newer public Assistant Manager notice was located during this review, so future-cycle instructions should be checked.",
   },
   cat: {
     id: "cat",
