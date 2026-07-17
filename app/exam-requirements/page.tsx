@@ -11,10 +11,10 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
 
 export const metadata = pageMetadata({
-  title: "Exam Photo & Signature Size Requirements 2026 (Official, India)",
+  title: "Exam Photo & Signature Size Requirements 2026 — India",
   titleAbsolute: true,
   description:
-    "Official photo and signature size, dimensions and file-size limits for 30+ Indian exam & recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA (NEET/JEE), RBI, NABARD, LIC, and State PSCs (RPSC, TNPSC, KPSC, UPPSC, BPSC and more). Each with its official source. Resize free in your browser.",
+    "Photo and signature size, dimensions and file-size limits for 30+ Indian exam & recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA (NEET/JEE), RBI, NABARD, LIC, and State PSCs (RPSC, TNPSC, KPSC, UPPSC, BPSC and more). Each linked to its official source. Resize free in your browser.",
   path: "/exam-requirements/",
 });
 
@@ -51,7 +51,7 @@ export default function Page() {
           collectionPageSchema({
             name: "Exam Photo & Signature Size Requirements 2026",
             description:
-              "Official photo and signature size, dimensions and file-size limits for 30+ Indian exam & recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA and State PSCs. Each with its official source.",
+              "Photo and signature size, dimensions and file-size limits for 30+ Indian exam & recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA and State PSCs. Each linked to its official source.",
             url: "/exam-requirements/",
           }),
         ]}

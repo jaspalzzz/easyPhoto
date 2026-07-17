@@ -420,7 +420,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "What background colour should a Schengen visa photo have?",
-        a: "Light grey is the safest universal choice. Some states accept white (e.g. France), but Switzerland requires grey and rejects white, so the tool defaults to light grey, which every consulate accepts.",
+        a: "Light grey is the safest choice. Some states accept white (e.g. France), but Switzerland requires grey and rejects white, so the tool defaults to light grey, which meets the requirement across the Schengen states. Confirm your consulate's current guidance before submitting.",
       },
       {
         q: "Does the same photo work for every Schengen country?",
