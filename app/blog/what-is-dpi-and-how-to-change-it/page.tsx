@@ -230,7 +230,7 @@ export default function Page() {
         &ldquo;large enough.&rdquo; A 413&times;531&nbsp;px image is a standard
         35&times;45&nbsp;mm passport photo at 300&nbsp;DPI. The same image at
         72&nbsp;DPI is still 413&times;531&nbsp;px — just the metadata differs.
-        Most portals reject on pixel dimensions (e.g., &ldquo;minimum 350&times;350
+        Most portals reject on pixel dimensions (e.g., &ldquo;minimum 200&times;230
         pixels&rdquo;), not on DPI.
       </p>
 

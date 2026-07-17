@@ -22,7 +22,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can I use the same photo for multiple exams?",
-    a: "Only if the specs match exactly. SSC and IBPS both want 20–50 KB JPG but at different pixel dimensions (275×354 vs 200×230). UPSC requires square minimum 350×350 px — a completely different shape. Resize separately for each portal using its specific preset.",
+    a: "Only if the specs match exactly. SSC and IBPS both want 20–50 KB JPG but at different pixel dimensions (275×354 vs 200×230). UPSC allows a wider 20–200 KB with no fixed pixel size. Resize separately for each portal using its specific preset.",
   },
   {
     q: "Do these tools upload my photo to a server?",
@@ -46,7 +46,7 @@ export default function Page() {
         <Link href="/blog/ssc-cgl-chsl-photo-signature-guide-2026/" className="text-brand underline">SSC CGL</Link>{" "}
         wants a 275×354 px JPG between 20 KB and 50 KB. IBPS PO wants 200×230 px in the same KB range.{" "}
         <Link href="/blog/upsc-cse-ias-photo-signature-guide-2026/" className="text-brand underline">UPSC</Link>{" "}
-        requires a square minimum 350×350 px. Upload the wrong size and the form shows an error before you can submit.
+        allows a wider 20–200 KB with no fixed pixel size. Upload the wrong size and the form shows an error before you can submit.
       </p>
 
       <p>
@@ -109,10 +109,10 @@ export default function Page() {
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">UPSC CSE / NDA / CDS</td>
-              <td className="px-4 py-3 text-muted-foreground">350×350 px min (square)</td>
-              <td className="px-4 py-3 text-muted-foreground">20–300 KB</td>
-              <td className="px-4 py-3 text-muted-foreground">350×350 px min (square)</td>
-              <td className="px-4 py-3 text-muted-foreground">20–300 KB</td>
+              <td className="px-4 py-3 text-muted-foreground">no fixed size</td>
+              <td className="px-4 py-3 text-muted-foreground">20–200 KB</td>
+              <td className="px-4 py-3 text-muted-foreground">350–500 px</td>
+              <td className="px-4 py-3 text-muted-foreground">20–100 KB</td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">Railway RRB</td>

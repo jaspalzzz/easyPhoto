@@ -157,8 +157,8 @@ export default function Page() {
 
       <p>
         It also handles exam photos that Cutout.pro has no support for. SSC CGL requires
-        275×354 px between 20–50 KB; IBPS PO requires 200×230 px in the same range; UPSC needs
-        a square minimum 350×350 px. The tool knows the exact spec from each board&apos;s official
+        275×354 px between 20–50 KB; IBPS PO requires 200×230 px in the same range; UPSC allows
+        a wider 20–200 KB with no fixed pixel size. The tool knows the exact spec from each board&apos;s official
         notification and resizes to fit in one step for{" "}
         <Link href="/blog/exam-photo-signature-size-guide/" className="text-brand underline">40+ portals</Link>.
       </p>

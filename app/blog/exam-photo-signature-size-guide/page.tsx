@@ -21,8 +21,8 @@ const FAQ_ITEMS = [
     a: "A grey or cream background may not match a portal's listed white-background requirement. Use the signature resizer to remove the paper background and whiten a grey or cream tone. Photograph the signature near a window (not under yellow indoor lighting) to minimise the grey cast before processing.",
   },
   {
-    q: "UPSC asks for a square photo but my camera takes portrait shots. What should I do?",
-    a: "The recorded UPSC requirement lists a minimum 350×350 px square, not a 35×45 mm portrait. Crop your photo to a 1:1 square with your head centred and face filling most of the frame, then resize to meet the KB requirement. The UPSC photo resizer applies the square crop and KB target in one step. A portrait photo does not match the listed square format and may fail the portal's upload check.",
+    q: "What are the exact UPSC photo and signature sizes?",
+    a: "UPSC's current instructions publish a 20–200 KB JPG photograph on a plain white background with about 75% face coverage — no fixed pixel size or aspect ratio, so a normal passport-style portrait is fine. The signature is a single JPG holding three signatures arranged vertically, 20–100 KB. Confirm the current figures in the notification before applying, as UPSC can revise them between cycles.",
   },
   {
     q: "What format should I use — JPG or PNG?",
@@ -48,8 +48,8 @@ export default function Page() {
       <p>
         Every Indian competitive exam and recruitment portal asks for a photo and
         a signature. Almost every candidate gets at least one of them wrong on the
-        first try: wrong KB, wrong pixel dimensions, grey background on the
-        signature, or a portrait photo where the portal expects a square. This
+        first try: wrong KB, wrong pixel dimensions, or a grey background on the
+        signature. This
         guide covers the recorded specs for many major exams, how the KB band works,
         how to prepare your signature correctly, and what to fix when the portal
         bounces your upload.
@@ -60,7 +60,7 @@ export default function Page() {
         <ul className="!mt-2 text-[15px]">
           <li>Most exams want a <strong>20–50&nbsp;KB JPG photo</strong> and a <strong>10–20&nbsp;KB JPG signature</strong>.</li>
           <li>Portals check a <em>band</em>: a photo under the minimum is rejected as firmly as one over the cap.</li>
-          <li>UPSC and NDA/CDS use a wider 20–300&nbsp;KB range and require a <em>square</em> photo (min 350×350&nbsp;px).</li>
+          <li>UPSC and NDA/CDS use a wider <strong>20–200&nbsp;KB</strong> photo range and a <strong>20–100&nbsp;KB</strong> three-signature sheet — with no fixed pixel size or square requirement.</li>
           <li>NTA (NEET, JEE) allows up to 200&nbsp;KB and accepts JPG or PNG.</li>
           <li>Always confirm the exact KB and pixel figures in the official exam notification — they can change between cycles.</li>
         </ul>
@@ -114,7 +114,7 @@ export default function Page() {
       <figure className="my-8">
         <svg viewBox="0 0 760 310" role="img" aria-label="Exam photo spec comparison: photo and signature pixel sizes for SSC, IBPS, UPSC and NTA" style={{maxWidth:"100%",height:"auto",fontFamily:"system-ui,sans-serif"}}>
           <title>Exam Photo Spec Comparison</title>
-          <desc>Horizontal bars showing photo and signature KB limits for SSC CGL (photo 50KB, sig 30KB), IBPS PO (200KB, 50KB), UPSC CSE (300KB, 300KB), NTA NEET (200KB, 200KB)</desc>
+          <desc>Horizontal bars showing photo and signature KB limits for SSC CGL (photo 50KB, sig 20KB), IBPS PO (50KB, 20KB), UPSC CSE (200KB, 100KB), NTA NEET (200KB, 100KB)</desc>
           {/* Header */}
           <rect x="0" y="0" width="760" height="42" fill="#163A6B" rx="10"/>
           <text x="380" y="27" textAnchor="middle" fill="#F4C63F" fontSize="14" fontWeight="700">Exam Photo &amp; Signature KB Limits — Quick Comparison</text>
@@ -127,10 +127,10 @@ export default function Page() {
           ))}
           {/* Rows */}
           {[
-            {exam:"SSC CGL / CHSL",photo:50,sig:30,photoPx:"275×354",sigPx:"140×60"},
-            {exam:"IBPS PO / Clerk",photo:200,sig:50,photoPx:"200×230",sigPx:"140×60"},
-            {exam:"UPSC CSE / IAS",photo:300,sig:300,photoPx:"350×350",sigPx:"350×140"},
-            {exam:"NTA NEET / JEE",photo:200,sig:200,photoPx:"Varies",sigPx:"Varies"},
+            {exam:"SSC CGL / CHSL",photo:50,sig:20,photoPx:"live capture",sigPx:"140×60"},
+            {exam:"IBPS PO / Clerk",photo:50,sig:20,photoPx:"200×230",sigPx:"140×60"},
+            {exam:"UPSC CSE / IAS",photo:200,sig:100,photoPx:"no fixed size",sigPx:"350–500"},
+            {exam:"NTA NEET / JEE",photo:200,sig:100,photoPx:"350×450",sigPx:"280×120"},
           ].map((row, i) => {
             const y = 62 + i * 55;
             return (
@@ -214,18 +214,18 @@ export default function Page() {
             </tr>
             <tr>
               <td className="px-3 py-2 font-medium text-ink">UPSC CSE / IAS</td>
-              <td className="px-3 py-2">20–300 KB</td>
-              <td className="px-3 py-2">min 350×350 (square)</td>
-              <td className="px-3 py-2">20–300 KB</td>
-              <td className="px-3 py-2">varies</td>
+              <td className="px-3 py-2">20–200 KB</td>
+              <td className="px-3 py-2">no fixed size published</td>
+              <td className="px-3 py-2">20–100 KB</td>
+              <td className="px-3 py-2">350–500 (three on one sheet)</td>
               <td className="px-3 py-2">JPG</td>
             </tr>
             <tr>
               <td className="px-3 py-2 font-medium text-ink">UPSC NDA / CDS</td>
-              <td className="px-3 py-2">20–300 KB</td>
-              <td className="px-3 py-2">min 350×350 (square)</td>
-              <td className="px-3 py-2">20–300 KB</td>
-              <td className="px-3 py-2">varies</td>
+              <td className="px-3 py-2">20–200 KB</td>
+              <td className="px-3 py-2">no fixed size published</td>
+              <td className="px-3 py-2">20–100 KB</td>
+              <td className="px-3 py-2">350–500 (three on one sheet)</td>
               <td className="px-3 py-2">JPG</td>
             </tr>
             <tr>
@@ -345,36 +345,31 @@ export default function Page() {
 
       <h2>UPSC exams: CSE / IAS, NDA, CDS</h2>
       <p>
-        UPSC uses completely different specs from SSC and banking portals. The
-        photo must be a minimum of{" "}
-        <strong>350×350&nbsp;px — square, not portrait</strong> — between
-        20&nbsp;KB and 300&nbsp;KB in JPG. The wider KB range means almost any
-        reasonably sized photo file will fit, but the square format catches almost
-        everyone: candidates upload a standard passport-size portrait (taller than
-        wide) and the portal rejects it outright.
+        UPSC uses a wider file-size band than SSC and banking portals. Its current
+        instructions ask for a{" "}
+        <strong>20–200&nbsp;KB JPG photograph</strong> on a plain white background
+        with the face covering about 75% of the frame. UPSC publishes{" "}
+        <strong>no fixed pixel size and no aspect ratio</strong>, so a normal
+        passport-style portrait is accepted — there is no square-crop requirement.
       </p>
       <p>
-        UPSC CSE added further requirements in 2026: your name and the date the
-        photo was taken must be printed at the bottom of the image, the photo must
-        be within 10 days old at the time of upload, and the portal includes a live
-        webcam matching step that compares your uploaded photo against your current
-        appearance. The DAF (Detailed Application Form) also requires{" "}
-        <strong>three signatures on one page</strong>, each in a separate box;
-        not a single signature submitted three times.
+        The signature is where UPSC differs most: instead of one signature, the
+        portal expects a single JPG image holding{" "}
+        <strong>three signatures arranged vertically</strong>, 20–100&nbsp;KB in
+        total. Prepare all three on one plain white sheet in black ink, then scan
+        and resize the sheet as a single file.
       </p>
       <p>
-        NDA and CDS share the square photo rule and the name-and-date requirement.
-        For the complete UPSC CSE spec table, three-signature workflow and webcam
-        step, see the{" "}
-        <Link href="/blog/upsc-cse-ias-photo-signature-guide-2026/">UPSC CSE / IAS photo and signature guide</Link>.
-        For NDA and CDS specifically, see the{" "}
+        NDA and CDS upload through the same UPSC OTR portal and use the same
+        file-size bands. UPSC can add cycle-specific rules — such as a photo-recency
+        window — so always read the specific notification before you apply. For the
+        full UPSC CSE workflow see the{" "}
+        <Link href="/blog/upsc-cse-ias-photo-signature-guide-2026/">UPSC CSE / IAS photo and signature guide</Link>,
+        and for NDA and CDS the{" "}
         <Link href="/blog/nda-cds-photo-signature-guide-2026/">NDA &amp; CDS photo and signature guide</Link>.
-        How to add the name and date text to the photo is covered step by step in
-        the{" "}
-        <Link href="/blog/add-name-date-on-exam-photo/">add name and date on exam photo guide</Link>.
       </p>
       <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
-        <strong>Prepare your UPSC square photo:</strong>{" "}
+        <strong>Prepare your UPSC photo:</strong>{" "}
         <Link href="/upsc-photo-resizer/" className="text-brand underline font-medium">UPSC photo resizer →</Link>
       </p>
 
@@ -520,9 +515,10 @@ export default function Page() {
           entirely — check the notification for your exam).
         </li>
         <li>
-          <strong>Recency:</strong> SSC requires within 3 months; UPSC CSE within
-          10 days. Do not use an old photo even if the portal does not state a
-          window — an invigilator can and will flag a visible difference in
+          <strong>Recency:</strong> some notifications specify how recent the photo
+          must be, and UPSC in particular can set a tight window in a given cycle —
+          check the notification. Do not use an old photo even where no window is
+          stated: an invigilator can and will flag a visible difference in
           appearance.
         </li>
       </ul>
@@ -568,20 +564,17 @@ export default function Page() {
           printed capital letters. Re-sign in cursive.
         </li>
         <li>
-          <strong>Photo not recent enough (UPSC / Army):</strong> the notification
-          specifies a recency window. Use a fresh photo taken for this application.
+          <strong>Photo not recent enough:</strong> where a notification specifies a
+          recency window, use a fresh photo taken for this application rather than an
+          old file.
         </li>
         <li>
-          <strong>Missing name and date text (UPSC / Army):</strong> UPSC CSE, NDA
-          and Indian Army forms require your name and the date printed at the bottom
-          of the photo. See{" "}
+          <strong>Missing name and date text (where required):</strong> a few forms —
+          notably the Indian Air Force Agniveer intake, which needs a physical slate
+          with your name and date held in the photo — reject images without it. This
+          is not a UPSC requirement. See{" "}
           <Link href="/blog/add-name-date-on-exam-photo/">how to add name and date</Link>{" "}
-          for the exact positioning rule.
-        </li>
-        <li>
-          <strong>Portrait photo where square is required (UPSC / NDA / CDS):</strong>{" "}
-          crop to a 1:1 square with your head centred before uploading. The
-          UPSC photo resizer applies this crop automatically.
+          when your specific notification asks for it.
         </li>
       </ul>
       <p>

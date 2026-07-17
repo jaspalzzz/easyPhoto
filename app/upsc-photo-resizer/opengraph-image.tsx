@@ -8,6 +8,6 @@ export const alt = "UPSC Photo Resizer — easyPhoto";
 export default function Image() {
   return ogImage({
     title: "UPSC Photo Resizer",
-    subtitle: "Compress and crop passport photos to 20-300 KB for the Union Public Service Commission.",
+    subtitle: "Compress and crop passport photos to 20-200 KB for the Union Public Service Commission.",
   });
 }

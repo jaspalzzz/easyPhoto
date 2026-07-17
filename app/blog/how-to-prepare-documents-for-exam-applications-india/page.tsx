@@ -32,8 +32,8 @@ export default function Page() {
         <ul className="!mt-2 list-none space-y-1.5 pl-0 text-[15px]">
           <li>
             <span className="mr-2 text-green-400">&#10003;</span>
-            <strong>Photo</strong> — JPG, white background, 20–50&nbsp;KB,
-            350&#215;350&nbsp;px minimum (some portals want portrait, check yours)
+            <strong>Photo</strong> — JPG, white background, 20–50&nbsp;KB for most
+            portals (UPSC allows 20–200&nbsp;KB); match the pixel size your portal states
           </li>
           <li>
             <span className="mr-2 text-green-400">&#10003;</span>
@@ -55,27 +55,28 @@ export default function Page() {
 
       <h2>What do exam portals actually need for your photo?</h2>
       <p>
-        Most Indian exam portals — SSC, UPSC, IBPS, Railway — require a JPG photo
-        between 20&nbsp;KB and 50&nbsp;KB. Pixel dimensions vary: UPSC and NDA ask
-        for a square image of at least 350&#215;350&nbsp;px. These exam uploads
-        should not be compared with an ordinary adult Passport Seva application:
-        the adult&apos;s photograph is captured at the PSK/POPSK, while the
-        630&#215;810&nbsp;px guidance belongs to the overseas mission workflow.
+        Most Indian exam portals — SSC, IBPS, Railway — require a JPG photo
+        between 20&nbsp;KB and 50&nbsp;KB. UPSC (and the NDA/CDS exams on the same
+        portal) allow a wider 20&#8211;200&nbsp;KB and publish no fixed pixel size
+        or square requirement. These exam uploads should not be compared with an
+        ordinary adult Passport Seva application: the adult&apos;s photograph is
+        captured at the PSK/POPSK, while the 630&#215;810&nbsp;px guidance belongs
+        to the overseas mission workflow.
       </p>
       <p>
         The safest approach: use the{" "}
         <Link href="/tools/exam-package/">exam document package tool</Link>, which
         knows the exact KB and pixel spec for each portal and resizes to it in one
         step. That way you don&apos;t guess whether 48&nbsp;KB qualifies as
-        &ldquo;under 50&nbsp;KB&rdquo; (it does) or whether a slightly rectangular
-        photo will pass a &ldquo;square&rdquo; portal (it won&apos;t). For a
+        &ldquo;under 50&nbsp;KB&rdquo; (it does) or whether your file matches the
+        portal&apos;s stated size band. For a
         detailed breakdown of photo specs by exam, see the{" "}
         <Link href="/exam-requirements/">exam requirements directory</Link>.
       </p>
       <p>
         A few rules apply everywhere, regardless of portal. No glasses. No
-        accessories that obscure the face. Taken recently — UPSC added a 10-day
-        recency rule for CSE 2026. Good, even lighting with no shadows on the face
+        accessories that obscure the face. Taken recently — some notifications set
+        a recency window, so check yours. Good, even lighting with no shadows on the face
         or background. If your photo was taken in a studio more than a few weeks
         ago, retake it on a plain white wall.
       </p>
@@ -219,7 +220,7 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             ["SSC (CGL, CHSL, MTS)", "20–50 KB", "10–20 KB", "50 KB per document"],
-            ["UPSC (CSE, NDA, CDS)", "20–300 KB", "up to 100 KB", "100–300 KB"],
+            ["UPSC (CSE, NDA, CDS)", "20–200 KB", "20–100 KB", "100–300 KB"],
             ["IBPS (PO, Clerk, SO)", "20–50 KB", "10–20 KB", "varies by doc"],
             ["Railway (RRB NTPC, Group D)", "up to 100 KB", "up to 30 KB", "200 KB"],
             ["NTA (NEET, JEE)", "10–200 KB", "4–30 KB", "100–300 KB"],
@@ -325,9 +326,9 @@ export default function Page() {
               "Mask to show only last 4 digits before uploading",
             ],
             [
-              "Wrong photo dimensions (portrait submitted to square portal)",
-              "UPSC and NDA require square — rectangular image is rejected",
-              "Check the requirements page for your exam; crop to square",
+              "Wrong photo dimensions for the portal's stated spec",
+              "Some portals publish a required width × height; a mismatch is rejected",
+              "Check the requirements page for your exam and match its stated size",
             ],
             [
               "PDF with the wrong pages (entire 60-page marksheet booklet)",
@@ -349,7 +350,7 @@ export default function Page() {
           items={[
             {
               q: "What file size should my exam photo be?",
-              a: "Most Indian exam portals require a JPG photo between 20 KB and 50 KB. SSC caps at 50 KB, IBPS at 50 KB, and UPSC accepts up to 300 KB. Always check the official notification for your specific exam cycle — portals occasionally update their specs.",
+              a: "Most Indian exam portals require a JPG photo between 20 KB and 50 KB. SSC caps at 50 KB, IBPS at 50 KB, and UPSC accepts up to 200 KB. Always check the official notification for your specific exam cycle — portals occasionally update their specs.",
             },
             {
               q: "Can I upload a colour scan of my marksheet, or does it need to be greyscale?",
