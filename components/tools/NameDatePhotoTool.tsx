@@ -39,6 +39,9 @@ interface Preset {
   height: number | null;
   ar: number;
   kb: number;
+  minKb: number | null;
+  /** Published fixed strip height, when the authority specifies one. */
+  stripHeightPx: number | null;
 }
 
 const DEFAULT_AR = 3.5 / 4.5;
@@ -57,19 +60,32 @@ function presetFromSpec(id: string, label: string, specId: string): Preset {
       : `≤${s.photoLimitKb} KB`
     : "";
   const detail = [dims, kbRange].filter(Boolean).join(", ");
+  const stripMatch = s?.description.match(/lower\s+(\d+)\s*px/i);
+  const stripHeightPx = stripMatch ? Number(stripMatch[1]) : null;
   return {
     id,
     name: detail ? `${label} (${detail})` : label,
     specId,
     width: s?.photoWidthPx ?? null,
     height: s?.photoHeightPx ?? null,
-    ar: s?.photoAspectRatio ?? DEFAULT_AR,
+    ar:
+      s?.photoWidthPx && s.photoHeightPx
+        ? s.photoWidthPx /
+          Math.max(
+            1,
+            s.photoHeightPx -
+              (stripHeightPx ?? Math.round(s.photoHeightPx * 0.15))
+          )
+        : s?.photoAspectRatio ?? DEFAULT_AR,
     kb: s?.photoLimitKb ?? 100,
+    minKb: s?.photoMinKb ?? null,
+    stripHeightPx,
   };
 }
 
 const PRESETS: Preset[] = [
   presetFromSpec("appsc", "APPSC Direct Recruitment", "appsc"),
+  presetFromSpec("tnpsc", "TNPSC", "tnpsc"),
   presetFromSpec("kerala-psc", "Kerala PSC", "kerala-psc"),
   // Free-form crop: NaN is Cropper.js's "no aspect-ratio lock" value, so the
   // box can be dragged to ANY size — including the full width/height of a tall
@@ -78,13 +94,16 @@ const PRESETS: Preset[] = [
   // hatch for anyone who needs to crop an arbitrary region. Was mistakenly
   // pinned to DEFAULT_AR, which made "Free Resize" behave identically to a
   // locked preset and blocked full-length cropping.
-  { id: "custom", name: "Custom / Free Resize", specId: null, width: null, height: null, ar: NaN, kb: 100 },
+  { id: "custom", name: "Custom / Free Resize", specId: null, width: null, height: null, ar: NaN, kb: 100, minKb: null, stripHeightPx: null },
 ];
 
 interface RenderOptions {
   name: string;
   date: string;
   stripHeightPercent: number;
+  /** Final frame height; when present, the strip stays inside this frame. */
+  totalHeight?: number;
+  stripHeightPx?: number;
 }
 
 function drawNameDateStrip(
@@ -94,11 +113,17 @@ function drawNameDateStrip(
   const w = imgCanvas.width;
   const h = imgCanvas.height;
   
-  const s = Math.round(h * (options.stripHeightPercent / 100));
+  const s = Math.max(
+    1,
+    options.stripHeightPx ??
+      Math.round((options.totalHeight ?? h) * (options.stripHeightPercent / 100))
+  );
+  const outHeight = options.totalHeight ?? h + s;
+  const imageHeight = Math.max(1, outHeight - s);
   
   const out = document.createElement("canvas");
   out.width = w;
-  out.height = h + s;
+  out.height = outHeight;
   
   const ctx = out.getContext("2d");
   if (!ctx) throw new Error("Could not acquire 2D canvas context");
@@ -108,18 +133,18 @@ function drawNameDateStrip(
   ctx.fillRect(0, 0, out.width, out.height);
   
   // Draw main cropped image
-  ctx.drawImage(imgCanvas, 0, 0);
+  ctx.drawImage(imgCanvas, 0, 0, w, imageHeight);
   
   // Draw white strip at the bottom (covers any image bleed)
   ctx.fillStyle = "#FFFFFF";
-  ctx.fillRect(0, h, w, s);
+  ctx.fillRect(0, imageHeight, w, s);
   
   // Draw a thin grey border at the top of the strip to separate photo from text area
   ctx.strokeStyle = "#E5E7EB";
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(0, h);
-  ctx.lineTo(w, h);
+  ctx.moveTo(0, imageHeight);
+  ctx.lineTo(w, imageHeight);
   ctx.stroke();
 
   // Draw text
@@ -135,7 +160,7 @@ function drawNameDateStrip(
   const fontSize = Math.round(s * 0.3);
   
   if (textLines.length === 1) {
-    const textY = h + s / 2;
+    const textY = imageHeight + s / 2;
     let currentFontSize = fontSize;
     ctx.font = `bold ${currentFontSize}px sans-serif`;
     let measured = ctx.measureText(textLines[0]);
@@ -148,8 +173,8 @@ function drawNameDateStrip(
   } else if (textLines.length === 2) {
     const pad = s * 0.1;
     const lineH = (s - 2 * pad) / 2;
-    const y1 = h + pad + lineH * 0.5;
-    const y2 = h + pad + lineH * 1.5;
+    const y1 = imageHeight + pad + lineH * 0.5;
+    const y2 = imageHeight + pad + lineH * 1.5;
     
     // Line 1
     let currentFontSize1 = fontSize;
@@ -242,6 +267,17 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
   const dDate = useDebouncedValue(date, 200);
   const dStripHeight = useDebouncedValue(stripHeight, 150);
 
+  const fixedStripHeight = React.useCallback(
+    (percent: number) => {
+      if (!activePreset.height) return undefined;
+      return (
+        activePreset.stripHeightPx ??
+        Math.max(1, Math.round(activePreset.height * (percent / 100)))
+      );
+    },
+    [activePreset.height, activePreset.stripHeightPx]
+  );
+
   // Generate live preview when crop boundaries or text options change
   const updatePreview = React.useCallback(() => {
     const cropper = cropperRef.current?.cropper;
@@ -250,9 +286,14 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     // Use low-res crop to keep preview rendering snappy.
     // Pass both width and height when known so the preview aspect ratio
     // matches the final export exactly.
+    const previewStripPx = fixedStripHeight(dStripHeight);
     const croppedCanvas = cropper.getCroppedCanvas(
       activePreset.width && activePreset.height
-        ? { width: activePreset.width, height: activePreset.height, fillColor: "#ffffff" }
+        ? {
+            width: activePreset.width,
+            height: Math.max(1, activePreset.height - (previewStripPx ?? 0)),
+            fillColor: "#ffffff",
+          }
         : { width: 400, fillColor: "#ffffff" }
     );
     if (!croppedCanvas) return;
@@ -262,6 +303,8 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
         name: dName,
         date: isoToDmy(dDate),
         stripHeightPercent: dStripHeight,
+        totalHeight: activePreset.height ?? undefined,
+        stripHeightPx: previewStripPx,
       });
 
       // Object URL, not a base64 data URI: each data URI held a ~1.37× copy
@@ -276,7 +319,7 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     } catch (e) {
       console.error("Preview render failed:", e);
     }
-  }, [dName, dDate, dStripHeight, activePreset, cropperReady]);
+  }, [dName, dDate, dStripHeight, activePreset, cropperReady, fixedStripHeight]);
 
   React.useEffect(() => {
     updatePreview();
@@ -322,7 +365,14 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
     try {
       // Get full resolution cropped canvas for high-quality output
+      const exportStripPx = fixedStripHeight(stripHeight);
       const croppedCanvas = cropper.getCroppedCanvas({
+        ...(activePreset.width && activePreset.height
+          ? {
+              width: activePreset.width,
+              height: Math.max(1, activePreset.height - (exportStripPx ?? 0)),
+            }
+          : {}),
         imageSmoothingEnabled: true,
         imageSmoothingQuality: "high",
         fillColor: "#ffffff",
@@ -335,11 +385,18 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
         name,
         date: isoToDmy(date),
         stripHeightPercent: stripHeight,
+        totalHeight: activePreset.height ?? undefined,
+        stripHeightPx: exportStripPx,
       });
 
       // Compress output canvas to target KB
       const res = await compressToCap(annotCanvas, targetKb, {
-        minScale: 0.1,
+        minScale: activePreset.width && activePreset.height ? 1 : 0.1,
+        minDimensions:
+          activePreset.width && activePreset.height
+            ? { width: activePreset.width, height: activePreset.height }
+            : undefined,
+        minKb: activePreset.minKb ?? undefined,
       });
 
       // Previous result URL is revoked by the cleanup effect on result change.
@@ -444,8 +501,9 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
         <div className="panel p-5 space-y-5">
           {/* Preset Selector */}
           <div>
-            <label className="block text-sm font-semibold mb-2">Select Exam Preset</label>
+            <label htmlFor="name-date-preset" className="block text-sm font-semibold mb-2">Select Exam Preset</label>
             <select
+              id="name-date-preset"
               value={activePreset.id}
               onChange={(e) => handlePresetChange(e.target.value)}
               className="w-full h-10 rounded-md border border-hairline-strong bg-background px-3 text-sm focus:border-brand"
@@ -480,11 +538,12 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
 
           {/* Name Input */}
           <div>
-            <label className="block text-sm font-semibold mb-1.5 flex items-center gap-1.5">
+            <label htmlFor="name-date-candidate" className="block text-sm font-semibold mb-1.5 flex items-center gap-1.5">
               <User className="h-4 w-4 text-ink-soft" />
               Candidate Name
             </label>
             <input
+              id="name-date-candidate"
               type="text"
               placeholder="e.g. JASPAL SINGH"
               value={name}
@@ -499,11 +558,12 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
 
           {/* Date Input */}
           <div>
-            <label className="block text-sm font-semibold mb-1.5 flex items-center gap-1.5">
+            <label htmlFor="name-date-photo-date" className="block text-sm font-semibold mb-1.5 flex items-center gap-1.5">
               <Calendar className="h-4 w-4 text-ink-soft" />
               Date of Photo (DOP)
             </label>
             <input
+              id="name-date-photo-date"
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
@@ -518,7 +578,9 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
           <div>
             <div className="flex items-center justify-between text-sm mb-1.5">
               <span className="font-semibold">White Strip Height</span>
-              <span className="font-mono text-xs text-ink-soft">{stripHeight}%</span>
+              <span className="font-mono text-xs text-ink-soft">
+                {activePreset.stripHeightPx ? `${activePreset.stripHeightPx}px` : `${stripHeight}%`}
+              </span>
             </div>
             <input
               type="range"
@@ -526,12 +588,18 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
               max={25}
               value={stripHeight}
               onChange={(e) => setStripHeight(Number(e.target.value))}
+              disabled={activePreset.stripHeightPx !== null}
               className="w-full h-1.5 bg-hairline rounded-lg cursor-pointer accent-brand"
               aria-label="White Strip Height"
               aria-valuemin={10}
               aria-valuemax={25}
               aria-valuenow={stripHeight}
             />
+            {activePreset.stripHeightPx && (
+              <span className="mt-1 block text-xs text-muted-foreground">
+                Fixed by the selected preset and included inside the final {activePreset.height}px frame.
+              </span>
+            )}
           </div>
 
           {/* Target KB slider */}
@@ -542,13 +610,13 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
             </div>
             <input
               type="range"
-              min={15}
+              min={activePreset.minKb ?? 15}
               max={500}
               value={targetKb}
-              onChange={(e) => setTargetKb(Number(e.target.value))}
+              onChange={(e) => setTargetKb(Math.max(activePreset.minKb ?? 15, Number(e.target.value)))}
               className="w-full h-1.5 bg-hairline rounded-lg cursor-pointer accent-brand"
               aria-label="Target File Size in KB"
-              aria-valuemin={15}
+              aria-valuemin={activePreset.minKb ?? 15}
               aria-valuemax={500}
               aria-valuenow={targetKb}
             />

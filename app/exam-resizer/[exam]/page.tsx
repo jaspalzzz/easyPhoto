@@ -53,7 +53,7 @@ export async function generateMetadata({
       `Resize your ${e.name} photo to ${photoKb(spec.photoMinKb, spec.photoLimitKb)}` +
       (photoDimsPx(spec) ? ` (${photoDimsPx(spec)})` : "") +
       (sig ? ` and signature to ${photoKb(spec.sigMinKb, sig)}` : "") +
-      `, in the exact size the ${e.name} application form needs. Free, 100% in your browser — nothing uploaded.`,
+      `, using the selected stored target. Verify the current ${e.name} application instructions before use. Free and processed in your browser.`,
     path: `/exam-resizer/${exam}/`,
     // Sub-exam resizers inherit the parent portal's spec and duplicate the
     // /exam-requirements/ intent (0 organic clicks, deep rankings). Kept live and
@@ -94,7 +94,7 @@ export default async function Page({
           ]),
           softwareApplicationSchema({
             name: `${e.name} Photo & Signature Resizer`,
-            description: `Resize a ${e.name} photo and signature to the exact size and KB the application form requires, in your browser.`,
+            description: `Prepare a ${e.name} photo and signature to the selected stored size and KB target in your browser; verify the current form before use.`,
             url: path,
             dateModified: spec.verifiedOn,
           }),
@@ -115,9 +115,9 @@ export default async function Page({
           {e.name} Photo &amp; Signature Resizer {RESIZER_YEAR}
         </h1>
         <p className="text-[15px] leading-relaxed text-muted-foreground">
-          Get your {e.name} ({e.context}) photo and signature to the exact size,
-          dimensions and KB the application form demands — auto-resized and
-          compliance-checked, free, entirely in your browser.
+          Prepare your {e.name} ({e.context}) photo and signature to the selected
+          stored dimensions and KB target. Verify the current form before use;
+          processing stays in your browser.
         </p>
         <p className="flex flex-wrap items-center gap-1.5 text-xs text-ink-soft">
           <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />

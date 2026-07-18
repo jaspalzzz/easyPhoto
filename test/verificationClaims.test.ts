@@ -1,8 +1,8 @@
 /**
- * Guards the "verified against the official source" claim.
+ * Guards the bounded "checked against the linked official source" claim.
  *
  * Exam pages carry a trust line in their meta description. Claiming a spec is
- * "verified against the official source" is only honest when the spec is
+ * "checked against the linked official source" is only honest when the spec is
  * actually confirmed (verification: "official") AND dated. 11 of 52 presets are
  * needs-review — asserting they are verified is an AdSense misleading-
  * representation risk and, worse, tells an applicant a number is trustworthy
@@ -17,15 +17,15 @@ import { describe, it, expect } from "vitest";
 import { generateMetadata } from "@/app/exam-requirements/[exam]/page";
 import { allPortalSpecs, specProvenance } from "@/lib/specRegistry";
 
-const VERIFIED_CLAIM = /verified against the official source/i;
+const VERIFIED_CLAIM = /checked against the linked official source/i;
 
 async function descriptionFor(exam: string): Promise<string> {
   const meta = await generateMetadata({ params: Promise.resolve({ exam }) });
   return String(meta.description ?? "");
 }
 
-describe("exam meta descriptions only claim 'verified' for verified specs", () => {
-  it("a verified preset (upsc) claims verification", async () => {
+describe("exam meta descriptions only claim source checking for verified specs", () => {
+  it("a verified preset (upsc) claims source checking", async () => {
     expect(specProvenance(allPortalSpecs().find((s) => s.id === "upsc")!).verified).toBe(true);
     expect(await descriptionFor("upsc")).toMatch(VERIFIED_CLAIM);
   });

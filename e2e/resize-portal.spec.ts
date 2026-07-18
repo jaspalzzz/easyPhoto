@@ -84,3 +84,22 @@ test("voter-id-photo-resizer: surfaces the ECI spec and binds output to a set ta
   const bytes = await compressAndDownload(page, 100);
   expect(bytes.length / 1024, `downloaded ${(bytes.length / 1024).toFixed(1)} KB`).toBeLessThanOrEqual(100);
 });
+
+test("tnpsc-photo-resizer: exports the published 130x170 frame instead of treating it as a minimum", async ({
+  page,
+}) => {
+  await page.goto("/tnpsc-photo-resizer/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await page.locator('input[type="number"]').fill("10");
+  await expect(page.locator('input[type="number"]')).toHaveValue("20");
+  await page.getByRole("button", { name: /compress to size/i }).click();
+  await expect(page.getByText(/needs 130×170/i)).toBeVisible({ timeout: 30_000 });
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: /download jpg/i }).click(),
+  ]);
+  const filePath = await download.path();
+  expect(filePath).not.toBeNull();
+  const bytes = fs.readFileSync(filePath!);
+  expect(await decode(page, bytes)).toEqual([130, 170]);
+});

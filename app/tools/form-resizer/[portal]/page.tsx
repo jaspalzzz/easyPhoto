@@ -28,6 +28,9 @@ export async function generateMetadata({
   if (!spec) return {};
 
   const hasSignature = spec.sigLimitKb !== undefined;
+  const usesLivePhoto = /live.{0,20}(?:photo|photograph)|(?:photo|photograph).{0,35}(?:capture|captured).{0,20}live/i.test(
+    `${spec.description} ${spec.context ?? ""}`
+  );
   const sigText = hasSignature ? ` and signature under ${spec.sigLimitKb} KB` : "";
   return pageMetadata({
     // Combined-intent title — distinct from the single-document /{exam}-photo-resizer/
@@ -35,7 +38,9 @@ export async function generateMetadata({
     title: hasSignature
       ? `${spec.name.split(" (")[0]} Photo & Signature Resizer`
       : `${spec.name.split(" (")[0]} Photo Resizer`,
-    description: `Free all-in-one tool to compress your photo under ${spec.photoLimitKb} KB${sigText} for ${spec.name} application forms — both documents in one place. 100% private, no upload.`,
+    description: usesLivePhoto
+      ? `Review the stored ${spec.name} live-photo workflow${hasSignature ? ` and prepare the separate signature to the ${spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}${spec.sigLimitKb} KB target` : ""}. Verify the current form.`
+      : `Prepare your photo to the stored ${spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}${spec.photoLimitKb} KB target${sigText} for ${spec.name}; verify the current form.`,
     path: `/tools/form-resizer/${portal}/`,
     // Duplicate transactional surface for the richer /exam-requirements/{portal}/
     // authority page. Keep usable for visitors, but out of the index for
@@ -68,8 +73,8 @@ export default async function Page({
       path={`/tools/form-resizer/${portal}/`}
       blurb={
         hasSignature
-          ? `Compress your photo and signature to the exact size and KB the ${spec.name} form needs — both documents in one place.`
-          : `Compress your photo to the exact size and KB the ${spec.name} form needs.`
+          ? `Prepare your photo and signature to the selected stored ${spec.name} targets — both documents in one place. Confirm the current form before use.`
+          : `Prepare your photo to the selected stored ${spec.name} target. Confirm the current form before use.`
       }
       faqItems={portalFaqItems(spec)}
     >

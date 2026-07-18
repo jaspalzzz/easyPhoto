@@ -10,19 +10,19 @@ const post = getPost("best-free-exam-photo-resizer-india")!;
 const FAQ_ITEMS = [
   {
     q: "Does ExamMint cover SSC CGL photo and signature?",
-    a: "Yes. ExamMint Resizer covers SSC CGL along with 104+ other exams, handling photo (275×354 px, 20–50 KB) and signature (140×60 px, 10–20 KB) in one tool. It is free and processes on your device.",
+    a: "Its public page lists SSC CGL among its presets. Current SSC instructions capture the photograph live and publish a separate 10–20 KB JPG/JPEG signature upload, so a prepared-photo preset does not replace the live camera step.",
   },
   {
     q: "What is the SSC CGL photo size requirement?",
-    a: "SSC CGL requires a JPG photo at 275×354 pixels, between 20 KB and 50 KB. The signature must be 140×60 pixels, between 10 KB and 20 KB. SSC now requires live capture for the photo — gallery uploads are blocked on the portal. Resize your photo to these specs before the live capture step.",
+    a: "Current SSC applications capture the photograph live; the notice does not publish a photo file-size or pixel upload requirement. It separately lists a 10–20 KB JPG/JPEG signature at about 6.0×2.0 cm and no fixed signature pixels.",
   },
   {
     q: "What is the myexamphoto.in Image Upload Validator?",
-    a: "It is a pre-submission checker: you select your exam, upload your prepared photo, and the tool checks whether the file meets the exact dimensions, file size, format, and aspect ratio that the portal requires — before you ever open the application form. If anything is wrong, it tells you what to fix. No other tool in this comparison has an equivalent feature.",
+    a: "Its public page describes a pre-submission file checker. Treat any result as a measurable file check, not an acceptance decision, and compare the displayed target with the current authority notice before use.",
   },
   {
     q: "Can I use the same photo for multiple exams?",
-    a: "Only if the specs match exactly. SSC and IBPS both want 20–50 KB JPG but at different pixel dimensions (275×354 vs 200×230). UPSC allows a wider 20–200 KB with no fixed pixel size. Resize separately for each portal using its specific preset.",
+    a: "Only when the current workflows match. IBPS uses a prepared 20–50 KB, 200×230 px photo, UPSC lists a prepared 20–200 KB photo with no fixed photo pixels, and current SSC uses live capture rather than a prepared photo upload.",
   },
   {
     q: "Do these tools upload my photo to a server?",
@@ -41,10 +41,12 @@ export default function Page() {
   return (
     <BlogPostLayout slug="best-free-exam-photo-resizer-india" ctaHref="/tools/exam-package/" ctaLabel="Try the exam photo tool" faqItems={FAQ_ITEMS}>
       <p>
-        Every Indian government exam portal specifies its own photo and signature size: not just
-        dimensions, but an exact kilobyte range.{" "}
+        Indian exam portals use different photograph and signature workflows.
+        Some publish prepared-file dimensions and KB bands; others capture the
+        photograph live.{" "}
         <Link href="/blog/ssc-cgl-chsl-photo-signature-guide-2026/" className="text-brand underline">SSC CGL</Link>{" "}
-        wants a 275×354 px JPG between 20 KB and 50 KB. IBPS PO wants 200×230 px in the same KB range.{" "}
+        currently uses live photograph capture and a separate signature upload. IBPS PO lists a
+        200×230 px prepared photo in a 20–50 KB band.{" "}
         <Link href="/blog/upsc-cse-ias-photo-signature-guide-2026/" className="text-brand underline">UPSC</Link>{" "}
         allows a wider 20–200 KB with no fixed pixel size. Upload the wrong size and the form shows an error before you can submit.
       </p>
@@ -55,21 +57,21 @@ export default function Page() {
       </p>
 
       <p>
-        <strong>Transparency:</strong> easyPhoto is our product. Every claim about the other tools
-        is sourced from their own websites and verified pages. Where a competitor does something
-        better, we say so.
+        <strong>Transparency:</strong> easyPhoto is our product. The comparison below
+        summarizes claims visible on the other products&apos; public pages at the stated
+        review date; those features can change and should be checked directly.
       </p>
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
           src="/images/best-free-exam-photo-resizer-india.webp"
-          alt="easyPhoto exam photo resizer interface showing UPSC CSE Passport preset selected, 88 KB output at 413×531 px, with face visible and UPSC rule checklist passed"
+          alt="easyPhoto exam application tool interface with an exam preset and measurable output checks"
           width={1024}
           height={1024}
           className="w-full h-auto"
         />
         <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
-          easyPhoto&apos;s exam resizer with the UPSC CSE Passport preset: outputs 413×531&nbsp;px JPG at under 100&nbsp;KB with a built-in compliance checklist.
+          easyPhoto&apos;s exam workflow shows the selected registry target and measurable output checks; applicants should confirm the current notice.
         </figcaption>
       </figure>
 
@@ -95,16 +97,16 @@ export default function Page() {
           <tbody className="divide-y divide-hairline">
             <tr>
               <td className="px-4 py-3 font-medium text-ink">SSC CGL / CHSL</td>
-              <td className="px-4 py-3 text-muted-foreground">275×354 px</td>
-              <td className="px-4 py-3 text-muted-foreground">20–50 KB</td>
-              <td className="px-4 py-3 text-muted-foreground">140×60 px</td>
+              <td className="px-4 py-3 text-muted-foreground">Live capture</td>
+              <td className="px-4 py-3 text-muted-foreground">No prepared photo upload</td>
+              <td className="px-4 py-3 text-muted-foreground">No fixed pixels published</td>
               <td className="px-4 py-3 text-muted-foreground">10–20 KB</td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">IBPS PO / Clerk</td>
               <td className="px-4 py-3 text-muted-foreground">200×230 px</td>
               <td className="px-4 py-3 text-muted-foreground">20–50 KB</td>
-              <td className="px-4 py-3 text-muted-foreground">200×80 px</td>
+              <td className="px-4 py-3 text-muted-foreground">140×60 px</td>
               <td className="px-4 py-3 text-muted-foreground">10–20 KB</td>
             </tr>
             <tr>
@@ -116,24 +118,23 @@ export default function Page() {
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">Railway RRB</td>
-              <td className="px-4 py-3 text-muted-foreground">200×230 px</td>
-              <td className="px-4 py-3 text-muted-foreground">20–50 KB</td>
-              <td className="px-4 py-3 text-muted-foreground">200×80 px</td>
-              <td className="px-4 py-3 text-muted-foreground">10–20 KB</td>
+              <td className="px-4 py-3 text-muted-foreground">Live capture in current notice</td>
+              <td className="px-4 py-3 text-muted-foreground">Confirm current cycle</td>
+              <td className="px-4 py-3 text-muted-foreground">Stored target needs review</td>
+              <td className="px-4 py-3 text-muted-foreground">Confirm current cycle</td>
             </tr>
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
-          Specs sourced from official board notifications.
+          Registry snapshot: dated official sources are distinguished from entries that still need review.
         </p>
       </div>
 
       <p>
-        This table is a snapshot; for the full, regularly-verified breakdown of
-        every exam&apos;s photo and signature spec — KB bands, pixel sizes and the
-        official source for each — see our{" "}
+        This table is a snapshot. For the broader breakdown, including source and
+        verification status for each entry, see our{" "}
         <Link href="/blog/exam-photo-signature-size-guide/">exam photo &amp; signature size guide</Link>,
-        the canonical reference we keep updated as portals change their rules.
+        exam photo and signature guide.
       </p>
 
       <h2>Five tools compared</h2>
@@ -175,7 +176,7 @@ export default function Page() {
             <text key={i} x={220 + i * 108} y="266" textAnchor="middle" fontSize="11" fontWeight="700" fill="#163A6B">{s}/6</text>
           ))}
         </svg>
-        <figcaption className="mt-2 text-center text-xs text-muted-foreground">Feature comparison based on testing as of June 2026. Exam coverage and features change — verify before use.</figcaption>
+        <figcaption className="mt-2 text-center text-xs text-muted-foreground">Feature snapshot from the products&apos; public pages as reviewed in June 2026. Coverage and features can change; verify before use.</figcaption>
       </figure>
 
       <div className="my-8 overflow-x-auto rounded-xl border border-hairline text-sm">

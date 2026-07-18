@@ -78,7 +78,7 @@ export function PortalResizer({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-0.5 font-medium text-brand hover:underline"
             >
-              Official source <ExternalLink className="h-3 w-3" />
+              {provenance.verified ? "Official source" : "Source to confirm"} <ExternalLink className="h-3 w-3" />
             </a>
           )}
         </p>
@@ -86,13 +86,13 @@ export function PortalResizer({
           <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
             <Camera className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
             Photo: {spec.photoMinKb ? `${spec.photoMinKb}–` : ""}{spec.photoLimitKb} KB
-            {photoDimsPx(spec) && ` · Min ${photoDimsPx(spec)}`}
+            {photoDimsPx(spec) && ` · ${photoDimsPx(spec)}`}
           </div>
           {hasSignature && (
             <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
               <PenLine className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
               Signature: {spec.sigMinKb ? `${spec.sigMinKb}–` : ""}{spec.sigLimitKb} KB
-              {sigDimsPx(spec) && ` · Min ${sigDimsPx(spec)}`}
+              {sigDimsPx(spec) && ` · ${sigDimsPx(spec)}`}
             </div>
           )}
         </div>
@@ -132,12 +132,12 @@ export function PortalResizer({
           <div className="space-y-3">
             <div className="px-1">
               <h4 className="text-sm font-semibold mb-1">Photo Sizer</h4>
-              <p className="text-xs text-muted-foreground">Upload your passport-style photograph to compress below {spec.photoLimitKb} KB.</p>
+              <p className="text-xs text-muted-foreground">Upload a prepared photograph to apply the selected stored {spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}{spec.photoLimitKb} KB target.</p>
             </div>
             <ResizeKbTool
               defaultKb={spec.photoLimitKb}
-              minWidth={spec.photoWidthPx}
-              minHeight={spec.photoHeightPx}
+              requiredWidth={spec.photoWidthPx}
+              requiredHeight={spec.photoHeightPx}
               minKb={spec.photoMinKb}
               densityDpi={spec.dpi}
               requirementLabel={shownName}
@@ -149,12 +149,14 @@ export function PortalResizer({
           <div className="space-y-3">
             <div className="px-1">
               <h4 className="text-sm font-semibold mb-1">Signature Workspace</h4>
-              <p className="text-xs text-muted-foreground">Upload a scan/photo of your signature to remove the background paper, auto-crop, and compress under {spec.sigLimitKb} KB.</p>
+              <p className="text-xs text-muted-foreground">Upload a scan/photo of your signature to remove the background paper, auto-crop, and apply the selected {spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}{spec.sigLimitKb} KB target.</p>
             </div>
             <SignatureWorkflowTool
               defaultTab="resize"
               defaultKb={spec.sigLimitKb}
               minKb={spec.sigMinKb}
+              defaultPresetKey={portalId}
+              defaultFormat={/\b(?:JPG|JPEG)\b/i.test(spec.description) ? "jpeg" : "png"}
               autoCropDefault={true}
               onSourceChange={handleSourceChange}
             />

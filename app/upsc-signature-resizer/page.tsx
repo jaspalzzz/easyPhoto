@@ -48,7 +48,14 @@ export default function Page() {
         </div>
       </div>
 
-      <SignatureKbTool kb={spec.sigLimitKb || 300} toolName="upsc-signature-resizer" />
+      <SignatureKbTool
+        kb={spec.sigLimitKb || 300}
+        minKb={spec.sigMinKb}
+        requiredWidth={spec.sigWidthPx}
+        requiredHeight={spec.sigHeightPx}
+        outputFormat="jpeg"
+        toolName="upsc-signature-resizer"
+      />
 
       <ExamContext spec={spec} />
 

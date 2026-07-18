@@ -37,7 +37,8 @@ test("exam-package: SSC bundles a compliant photo + signature + README into a va
   // exam CARDS (button.ep-card) — a bare /SSC/i button also matches the nav
   // mega-menu's "SSC Photo Tool" entry, which is not the wizard's selector.
   await page.locator("button.ep-card").filter({ hasText: "SSC" }).first().click();
-  await expect(page.getByText(/Upload your passport-style photo/i)).toBeVisible();
+  await expect(page.getByText(/captures the photograph live/i).first()).toBeVisible();
+  await expect(page.getByText(/optional compatibility photo/i).first()).toBeVisible();
 
   // Step 2 — photo. The kit auto-sizes it to the SSC spec; the "Next: signature"
   // button only appears once a real processed asset exists.
@@ -70,11 +71,14 @@ test("exam-package: SSC bundles a compliant photo + signature + README into a va
   const names = Object.keys(zip.files);
 
   const photoName = names.find((n) => /-photo\.jpg$/i.test(n));
-  const sigName = names.find((n) => /-signature\.png$/i.test(n));
+  const sigName = names.find((n) => /-signature\.jpg$/i.test(n));
   const readmeName = names.find((n) => /README/i.test(n));
   expect(photoName, `photo missing from zip: ${names}`).toBeTruthy();
   expect(sigName, `signature missing from zip: ${names}`).toBeTruthy();
   expect(readmeName, `README missing from zip: ${names}`).toBeTruthy();
+  const readme = await zip.file(readmeName!)!.async("string");
+  expect(readme).toMatch(/captures the photograph live/i);
+  expect(readme).toMatch(/Do not upload this compatibility photo/i);
 
   // The photo must be a real, non-empty JPEG (FF D8 magic bytes).
   const photoBuf = await zip.file(photoName!)!.async("nodebuffer");
@@ -82,9 +86,59 @@ test("exam-package: SSC bundles a compliant photo + signature + README into a va
   expect(photoBuf[0]).toBe(0xff);
   expect(photoBuf[1]).toBe(0xd8);
 
-  // The signature must be a real, non-empty PNG (89 50 magic bytes).
+  // SSC publishes JPG/JPEG for the signature, so the actual file must be JPEG.
   const sigBuf = await zip.file(sigName!)!.async("nodebuffer");
   expect(sigBuf.length, "signature is empty").toBeGreaterThan(100);
-  expect(sigBuf[0]).toBe(0x89);
-  expect(sigBuf[1]).toBe(0x50);
+  expect(sigBuf[0]).toBe(0xff);
+  expect(sigBuf[1]).toBe(0xd8);
+});
+
+test("exam-package: IBPS exports the published fixed photo/signature frames and KB bands", async ({
+  page,
+}) => {
+  await page.goto("/tools/exam-package/");
+  await page.locator("button.ep-card").filter({ hasText: "IBPS" }).first().click();
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  const nextPhoto = page.getByRole("button", { name: /next: signature/i });
+  await expect(nextPhoto).toBeEnabled({ timeout: 30_000 });
+  await nextPhoto.click();
+  await page.setInputFiles('input[type="file"]', {
+    name: "sig.png",
+    mimeType: "image/png",
+    buffer: await makeScannedSignature(page),
+  });
+  const finish = page.getByRole("button", { name: /^finish/i });
+  await expect(finish).toBeEnabled({ timeout: 30_000 });
+  await finish.click();
+
+  const [dl] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: /download all as zip/i }).click(),
+  ]);
+  const zipPath = await dl.path();
+  expect(zipPath).not.toBeNull();
+  const JSZip = (await import("jszip")).default;
+  const zip = await JSZip.loadAsync(fs.readFileSync(zipPath!));
+  const photoBuf = await zip.file(/-photo\.jpg$/i)[0].async("nodebuffer");
+  const signatureBuf = await zip.file(/-signature\.jpg$/i)[0].async("nodebuffer");
+
+  const dimensions = async (bytes: Buffer) =>
+    page.evaluate(async (b64) => {
+      const img = new Image();
+      img.src = `data:image/jpeg;base64,${b64}`;
+      await new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve();
+        img.onerror = () => reject(new Error("output did not decode"));
+      });
+      return [img.naturalWidth, img.naturalHeight];
+    }, bytes.toString("base64"));
+
+  expect(await dimensions(photoBuf)).toEqual([200, 230]);
+  expect(photoBuf.length).toBeGreaterThanOrEqual(20 * 1024);
+  expect(photoBuf.length).toBeLessThanOrEqual(50 * 1024);
+  expect(await dimensions(signatureBuf)).toEqual([140, 60]);
+  expect(signatureBuf.length).toBeGreaterThanOrEqual(10 * 1024);
+  expect(signatureBuf.length).toBeLessThanOrEqual(20 * 1024);
+  expect(signatureBuf[0]).toBe(0xff);
+  expect(signatureBuf[1]).toBe(0xd8);
 });

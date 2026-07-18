@@ -18,6 +18,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { allPortalSpecs } from "@/lib/specRegistry";
+import { SUB_EXAM_RESIZERS } from "@/lib/subExamResizers";
 
 const ROOTS = ["app", "components", "lib"];
 const SOURCE_EXT = /\.(ts|tsx)$/;
@@ -50,6 +51,13 @@ function normalise(text: string): string {
 }
 
 describe("UPSC/exam copy does not reassert the retired 350×350 / 20–300 KB spec", () => {
+  it("UPSC sub-exam copy does not claim a name/date strip", () => {
+    const notes = SUB_EXAM_RESIZERS.filter((item) => item.parentId === "upsc")
+      .map((item) => item.note)
+      .join("\n");
+    expect(notes).toMatch(/do not list|no listed|do not.*name-and-date/i);
+    expect(notes).not.toMatch(/requires your name|printed name-and-date requirement|name-and-date-on-photo rule/i);
+  });
   it("no exam preset uses a 350×350 square or a 20–300 KB band (registry sanity)", () => {
     // A 350px width paired with a taller height (e.g. NTA 350×450) is legitimate;
     // only the 350×350 SQUARE was the invented UPSC claim.

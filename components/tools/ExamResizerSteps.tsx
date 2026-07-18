@@ -22,8 +22,11 @@ export function ExamResizerSteps({
   const photo = (
     <ResizeKbTool
       defaultKb={spec.photoLimitKb}
-      minWidth={spec.photoWidthPx}
-      minHeight={spec.photoHeightPx}
+      requiredWidth={spec.photoWidthPx}
+      requiredHeight={spec.photoHeightPx}
+      minKb={spec.photoMinKb}
+      densityDpi={spec.dpi}
+      requirementLabel={spec.name.split(" (")[0]}
       toolName={`${slug}-photo-resizer`}
     />
   );
@@ -43,7 +46,14 @@ export function ExamResizerSteps({
           background, auto-crop, and compress it to {spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}
           {spec.sigLimitKb} KB — no need to leave this page.
         </p>
-        <SignatureKbTool kb={spec.sigLimitKb!} toolName={`${slug}-signature-step`} />
+        <SignatureKbTool
+          kb={spec.sigLimitKb!}
+          minKb={spec.sigMinKb}
+          requiredWidth={spec.sigWidthPx}
+          requiredHeight={spec.sigHeightPx}
+          outputFormat={/\b(?:JPG|JPEG)\b/i.test(spec.description) ? "jpeg" : "png"}
+          toolName={`${slug}-signature-step`}
+        />
       </div>
     </div>
   );

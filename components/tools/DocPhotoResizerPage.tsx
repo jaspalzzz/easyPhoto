@@ -47,7 +47,7 @@ export function DocPhotoResizerPage({
           ]),
           softwareApplicationSchema({
             name: `${displayName} Photo & Signature Resizer`,
-            description: `Resize a ${displayName} photo and signature to the exact size and KB the application requires, in your browser.`,
+            description: `Prepare a ${displayName} photo and signature to the selected stored size and KB target in your browser; verify the current application before use.`,
             url: path,
           }),
           faqSchema(portalFaqItems(spec)),

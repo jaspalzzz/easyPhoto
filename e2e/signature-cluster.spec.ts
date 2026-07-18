@@ -157,6 +157,24 @@ test("signature-resize: output is genuinely bound to the KB target", async ({ pa
   expect(bytes / 1024, `downloaded ${(bytes / 1024).toFixed(1)} KB`).toBeLessThanOrEqual(target + 0.5);
 });
 
+test("upsc-signature-resizer: exports a JPG inside the stored 20–100 KB band", async ({ page }) => {
+  await page.goto("/upsc-signature-resizer/");
+  await page.setInputFiles('input[type="file"]', {
+    name: "sig.png",
+    mimeType: "image/png",
+    buffer: await makeScannedSignature(page, true),
+  });
+  const download = page.getByRole("button", { name: /download jpg/i });
+  await expect(download).toBeVisible({ timeout: 30_000 });
+  const [dl] = await Promise.all([page.waitForEvent("download"), download.click()]);
+  const b64 = await readDownloadBase64(dl);
+  const bytes = Buffer.from(b64, "base64");
+  expect(bytes[0]).toBe(0xff);
+  expect(bytes[1]).toBe(0xd8);
+  expect(bytes.length).toBeGreaterThanOrEqual(20 * 1024);
+  expect(bytes.length).toBeLessThanOrEqual(100 * 1024);
+});
+
 test("signature-crop: auto-detect crops the output tighter than the input", async ({ page }) => {
   await page.goto("/tools/signature-crop/");
 
