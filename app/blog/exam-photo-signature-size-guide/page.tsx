@@ -62,14 +62,14 @@ export default function Page() {
           <li>Portals check a <em>band</em>: a photo under the minimum is rejected as firmly as one over the cap.</li>
           <li>UPSC and NDA/CDS use a wider <strong>20–200&nbsp;KB</strong> photo range and a <strong>20–100&nbsp;KB</strong> three-signature sheet — with no fixed pixel size or square requirement.</li>
           <li>NTA (NEET, JEE) allows up to 200&nbsp;KB and accepts JPG or PNG.</li>
-          <li>Always confirm the exact KB and pixel figures in the official exam notification — they can change between cycles.</li>
+          <li>Always confirm the current KB and pixel figures in the exam notification — they can change between cycles.</li>
         </ul>
       </div>
 
       <div className="my-6 rounded-xl border border-brand/20 bg-brand-soft/10 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Resize your photo or signature right now</p>
         <p className="!mt-1 text-[15px] text-ink-soft">
-          Pick your exam — the tool applies the exact KB target, pixel dimensions, and background spec automatically. No sign-up, nothing uploaded.
+          Pick your exam — the tool applies the selected KB target and published pixel dimensions where available. Confirm the current notification. No sign-up, nothing uploaded.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link href="/ssc-photo-resizer/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">SSC</Link>
@@ -552,7 +552,7 @@ export default function Page() {
         <li>
           <strong>Wrong pixel dimensions:</strong> the photo or signature does not
           match the portal&apos;s required width × height. Use the exam-specific
-          resizer to apply the exact pixel preset.
+          resizer to apply the published pixel preset where the authority provides one.
         </li>
         <li>
           <strong>Signature background grey or cream:</strong> use the signature
@@ -593,7 +593,7 @@ export default function Page() {
       <p>To prepare each file separately:</p>
       <ul>
         <li>
-          <strong>Photo to exact KB:</strong>{" "}
+          <strong>Photo to a selected KB target:</strong>{" "}
           <Link href="/tools/resize-kb/?target=50">resize to 50&nbsp;KB</Link> for the
           standard ceiling, or{" "}
           <Link href="/tools/resize-kb/">set a custom KB target</Link> for exams
@@ -610,7 +610,8 @@ export default function Page() {
           <Link href="/ssc-photo-resizer/">SSC</Link>,{" "}
           <Link href="/upsc-photo-resizer/">UPSC</Link>, and{" "}
           <Link href="/ibps-photo-resizer/">IBPS</Link>{" "}
-          apply each board&apos;s exact pixel and KB preset automatically.
+          apply the selected KB target and any published pixel dimensions recorded
+          for that board. Confirm the current notification before submitting.
         </li>
       </ul>
       <p>

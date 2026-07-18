@@ -26,7 +26,8 @@ export function GET() {
   lines.push(
     "> easyPhoto (easyphoto.in) is a free, privacy-first toolkit for creating " +
       "compliant passport and visa photos, resizing exam photos and signatures " +
-      "to exact KB and pixel limits, and preparing application documents. Every " +
+      "to selected KB targets and published pixel dimensions where available, and " +
+      "preparing application documents. Every " +
       "tool runs entirely in the user's browser — nothing is uploaded, and there " +
       "is no sign-up or watermark."
   );
@@ -57,11 +58,12 @@ export function GET() {
   );
   lines.push(
     `- [Exam photo & signature requirements](${u("/exam-requirements/")}): the ` +
-      "official, dated size specs for 30+ Indian exam and recruitment portals."
+      "recorded size requirements, named sources and verification status for 30+ " +
+      "Indian exam and recruitment portals."
   );
   lines.push(
-    `- [Exam Application Kit](${u("/tools/exam-package/")}): produce a photo + ` +
-      "signature in the correct size for a chosen exam, in one guided flow."
+    `- [Exam Application Kit](${u("/tools/exam-package/")}): prepare a photo + ` +
+      "signature to the selected stored targets for a chosen exam, in one guided flow."
   );
   lines.push("");
 

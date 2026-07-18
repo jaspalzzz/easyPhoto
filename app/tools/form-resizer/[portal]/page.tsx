@@ -28,9 +28,7 @@ export async function generateMetadata({
   if (!spec) return {};
 
   const hasSignature = spec.sigLimitKb !== undefined;
-  const usesLivePhoto = /live.{0,20}(?:photo|photograph)|(?:photo|photograph).{0,35}(?:capture|captured).{0,20}live/i.test(
-    `${spec.description} ${spec.context ?? ""}`
-  );
+  const usesLivePhoto = spec.isLiveCapture === true;
   const sigText = hasSignature ? ` and signature under ${spec.sigLimitKb} KB` : "";
   return pageMetadata({
     // Combined-intent title — distinct from the single-document /{exam}-photo-resizer/
@@ -105,7 +103,7 @@ export default async function Page({
         <Link href={`/exam-requirements/${portal}/`} className="text-brand hover:underline">
           {spec.name.split(" (")[0]} photo &amp; signature requirements
         </Link>{" "}
-        — official size, dimensions &amp; source.
+        — stored requirements, provenance and a link to the named source.
       </p>
 
       {/* Cluster the matrix: link to topically related exam resizers. */}

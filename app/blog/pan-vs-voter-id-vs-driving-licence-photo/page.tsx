@@ -13,7 +13,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Which of the three has the strictest photo size limit?",
-    a: "PAN via UTIITSL is the strictest at 30 KB, then the driving licence (Sarathi) at 40 KB, PAN via NSDL at 50 KB, and voter ID (NVSP) is the most generous at 200 KB. If you compress a single photo to under 30 KB, it clears all three portals on file size.",
+    a: "Do not use one assumed cap across all three. Their application routes publish different instructions, and ECI's public Form 6 does not state a universal digital KB cap. Check the current upload screen for the route you use.",
   },
   {
     q: "Can I use one photo for my PAN card, voter ID and driving licence?",
@@ -141,8 +141,8 @@ export default function Page() {
           <title>Photo file-size cap: PAN vs Voter ID vs Driving Licence</title>
           <desc>
             PAN via UTIITSL caps at 30 KB, the driving licence (Sarathi) at 40 KB,
-            PAN via NSDL at 50 KB, and voter ID (NVSP) at 200 KB. Compressing under
-            30 KB clears all of them. Source: respective government portals, 2026.
+            PAN via NSDL at 50 KB, and voter ID (NVSP) at 200 KB. These recorded
+            figures do not establish that one file is suitable for every current application route.
           </desc>
           {(() => {
             const data = [

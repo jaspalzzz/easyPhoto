@@ -25,7 +25,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can I use an Aadhaar or PAN card photo for my driving licence?",
-    a: "Technically yes if it meets the Sarathi spec (JPEG, <40 KB, white background). However, the photo on your EPIC or Aadhaar is usually low-resolution when downloaded, and the background may not be plain white. It's safer to take a fresh photo specifically for the DL application to avoid rejection.",
+    a: "Technically yes if it meets the Sarathi spec (JPEG, <40 KB, white background). However, the photo on your EPIC or Aadhaar is usually low-resolution when downloaded, and the background may not be plain white. A fresh photo prepared for the current DL form may reduce those common upload problems.",
   },
 ];
 

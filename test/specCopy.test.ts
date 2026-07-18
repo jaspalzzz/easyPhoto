@@ -80,9 +80,31 @@ describe("spec copy — renders cleanly for every portal in the registry", () =>
     const ssc = specs.find((s) => s.id === "ssc")!;
     const answers = portalFaqItems(ssc).map((f) => f.a).join("\n");
     expect(answers).toMatch(/live (?:photograph|capture)|live camera/i);
-    expect(answers).toMatch(/no pre-existing photo|rather than a pre-existing photo upload/i);
+    expect(answers).toMatch(/rather than an ordinary prepared-photo upload/i);
     expect(answers).not.toMatch(/photo should be 20[–-]50 KB/i);
   });
+
+  const liveCaptureIds = ["ssc", "rrb", "bpsc", "rpsc"];
+
+  it("marks only the source-confirmed replacement live-photo workflows", () => {
+    expect(
+      specs
+        .filter((spec) => spec.isLiveCapture)
+        .map((spec) => spec.id)
+        .sort()
+    ).toEqual([...liveCaptureIds].sort());
+  });
+
+  it.each(liveCaptureIds)(
+    "%s: live-photo FAQs never tell the candidate to upload a photo for the tool to resize",
+    (id) => {
+      const spec = specs.find((candidate) => candidate.id === id)!;
+      const answers = portalFaqItems(spec).map((item) => item.a).join("\n");
+      expect(answers).toMatch(/live[- ](?:photo|photograph)|live capture/i);
+      expect(answers).not.toMatch(/upload your photo and the tool/i);
+      expect(answers).not.toMatch(/upload(?:ing)?[^.]{0,80}photo[^.]{0,80}(?:resize|compress)/i);
+    }
+  );
 
   it("keeps every SSC sub-exam note on the live-photo workflow", () => {
     const notes = SUB_EXAM_RESIZERS.filter((item) => item.parentId === "ssc")
@@ -99,6 +121,27 @@ describe("spec copy — renders cleanly for every portal in the registry", () =>
     )!.a;
     expect(signatureAnswer).not.toMatch(/black ink/i);
     expect(signatureAnswer).toMatch(/current notice/i);
+  });
+
+  it.each(["kpsc", "oci"])(
+    "%s: signature FAQ stays neutral when its source publishes no ink rule",
+    (id) => {
+      const spec = specs.find((candidate) => candidate.id === id)!;
+      expect(spec.signatureInk).toBeUndefined();
+      const signatureAnswer = portalFaqItems(spec).find((item) =>
+        /signature size/i.test(item.q)
+      )!.a;
+      expect(signatureAnswer).not.toMatch(/black|blue/i);
+      expect(signatureAnswer).toMatch(/current notice/i);
+    }
+  );
+
+  it("uses RRB's stored black-ink instruction in its signature FAQ", () => {
+    const rrb = specs.find((spec) => spec.id === "rrb")!;
+    const signatureAnswer = portalFaqItems(rrb).find((item) =>
+      /signature size/i.test(item.q)
+    )!.a;
+    expect(signatureAnswer).toContain(rrb.signatureInk);
   });
 
   // A portal that publishes neither pixels nor an aspect ratio constrains nothing

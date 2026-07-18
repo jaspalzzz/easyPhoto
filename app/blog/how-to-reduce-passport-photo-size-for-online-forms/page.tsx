@@ -134,14 +134,14 @@ export default function Page() {
         Compression can&apos;t fix a non-compliant photo. Crop and set the
         correct background with the{" "}
         <Link href="/passport-photo/">passport photo maker</Link> first, then
-        compress the result. For exact KB and pixel specs by exam, see the{" "}
+        compress the result. For recorded KB bands and published pixel dimensions by exam, see the{" "}
         <Link href="/exam-requirements/ssc/">SSC requirement page</Link>. Everything runs in your browser, so your photo is
         never uploaded to a server.
       </p>
 
       <h2>Troubleshooting upload failures</h2>
       <table className="my-5 w-full border-collapse text-[14px]"><thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead><tbody className="text-ink-soft">{[
-        ["File is below the maximum but still rejected", "Check whether the portal also sets a minimum, plus exact pixel and format rules."],
+        ["File is below the maximum but still rejected", "Check whether the portal also sets a minimum, plus published pixel and format rules."],
         ["Correct KB, wrong dimensions", "Set the required width and height first, then compress without resizing the canvas again."],
         ["PNG remains too large", "Use JPG only when the published requirement allows JPG; do not silently change a mandated format."],
         ["Text says file is too small", "Increase the target into the published band instead of lowering quality further."],

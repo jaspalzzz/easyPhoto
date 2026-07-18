@@ -55,10 +55,7 @@ const sigKbText = (s: PortalSpec) =>
       ? `${s.sigMinKb}–${s.sigLimitKb} KB`
       : `≤ ${s.sigLimitKb} KB`
     : null;
-const usesLivePhotoCapture = (s: PortalSpec) =>
-  /live.{0,20}(?:photo|photograph)|(?:photo|photograph).{0,35}(?:capture|captured).{0,20}live/i.test(
-    `${s.description} ${s.context ?? ""}`
-  );
+const usesLivePhotoCapture = (s: PortalSpec) => s.isLiveCapture === true;
 
 /** Display order of exam categories in the picker. */
 const CATEGORY_ORDER: PortalCategory[] = [

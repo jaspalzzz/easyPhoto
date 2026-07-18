@@ -61,6 +61,13 @@ export interface PortalSpec {
    */
   requiresSlateNameDate?: boolean;
   /**
+   * The primary photograph step is completed as a live-photo capture in the
+   * authority's application flow, instead of uploading an ordinary prepared
+   * photo file. Do not set this for portals that require both a prepared photo
+   * upload and an additional live identity check.
+   */
+  isLiveCapture?: boolean;
+  /**
    * Signature ink requirement, when the official source specifies one exactly
    * (e.g. driving-licence and up-police confirm "black" only, not blue). Only
    * set this when actually confirmed — the exam-requirements template falls
@@ -95,6 +102,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       label: "SSC Combined Hindi Translators Examination 2026 notice, paragraphs 8.4–8.7",
     },
     verification: "needs-review",
+    isLiveCapture: true,
     context:
       "The current SSC application module captures a live photograph from the candidate's computer or mobile camera. A pre-existing photograph is not uploaded. The signature remains a separate JPEG/JPG upload; confirm the current notice for the specific SSC examination before preparing files.",
   },
@@ -194,6 +202,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       label: "RRB CEN 03/2025, paragraphs 14.4–14.5.1",
     },
     verification: "needs-review",
+    isLiveCapture: true,
     context:
       "Current Railway Recruitment Board notices use webcam or mobile-camera live photo capture during the application. Only the signature is prepared as an image file; confirm the current CEN because recruitment-cycle instructions can change.",
   },
@@ -348,6 +357,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-06-10",
+    isLiveCapture: true,
     context:
       "Bihar Public Service Commission captures the candidate's photograph live via webcam during the online application, rather than accepting an uploaded photo file — only the signature (in both Hindi and English) is uploaded as a file.",
   },
@@ -509,6 +519,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "needs-review",
     verifiedOn: "2026-07-17",
+    isLiveCapture: true,
     context:
       "Rajasthan Public Service Commission recruitment goes through the SSO Rajasthan recruitment portal's One-Time Registration. The photograph is taken live via webcam during KYC, so no photo file is uploaded; the uploadable items are two signatures (English and Hindi), a left thumb impression, and a handwritten specimen. Confirm the current OTR instructions for the specific recruitment before preparing files.",
   },
@@ -857,7 +868,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 2.5 / 3.5,
     sigAspectRatio: 4.5 / 2,
     description:
-      "Online PAN application (Form 49A/49AA via Protean-NSDL or UTIITSL). Photo 3.5×2.5 cm colour JPEG at 200 DPI, max 20 KB; signature 2×4.5 cm JPEG at 200 DPI, max 10 KB. These are the strictest official caps — a file that meets them is accepted in every application mode.",
+      "Online PAN application (Form 49A/49AA via Protean-NSDL or UTIITSL). Photo 3.5×2.5 cm colour JPEG at 200 DPI, max 20 KB; signature 2×4.5 cm JPEG at 200 DPI, max 10 KB. Application methods can differ, so confirm the current instructions for the route you use.",
     source: {
       url: "https://tin.tin.proteantech.in/pan/InstructionDSC.html",
       label: "Protean (NSDL e-Gov) PAN instructions",
@@ -866,7 +877,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-06-11",
     dpi: 200, // officially mandated scan resolution
     context:
-      "A PAN card application (Form 49A or 49AA) can be filed through either Protean (formerly NSDL e-Gov) or UTIITSL — both processors enforce the same 200 DPI scan requirement and KB caps, so a photo and signature meeting this spec is accepted through either route.",
+      "A PAN card application (Form 49A or 49AA) can be filed through Protean (formerly NSDL e-Gov) or UTIITSL. This preset records the linked Protean instructions; confirm the current photo and signature fields on the application route you use.",
   },
   "driving-licence": {
     id: "driving-licence",
