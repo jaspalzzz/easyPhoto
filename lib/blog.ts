@@ -152,7 +152,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "ssc-cgl-chsl-photo-signature-guide-2026",
     title: "SSC CGL & CHSL 2026 Photo: Live Capture Only — Spec & Resizer",
     description:
-      "SSC now blocks gallery uploads — your photo must be taken live on the portal. 20–50 KB JPG, 10–20 KB signature, 6 rejection reasons, and a free one-click resizer.",
+      "Current SSC forms capture the photo live; the cited notice separately lists a 10–20 KB JPG/JPEG signature. See what is published and what is not.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     excerpt:
@@ -163,7 +163,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "why-exam-photo-signature-rejected",
     title: "Exam Photo Rejected? 7 Reasons SSC, IBPS & UPSC Say No (2026)",
     description:
-      "Wrong KB, wrong pixels, grey signature background — 7 reasons exam portals reject your upload and the exact one-click fix for each. Check before you submit.",
+      "Common photo and signature problems across upload and live-capture exam workflows, with bounded fixes and links to current requirements.",
     date: "June 13, 2026",
     dateISO: "2026-06-13",
     excerpt:
@@ -241,11 +241,11 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "how-to-prepare-documents-for-exam-applications-india",
     title: "How to Prepare Documents for Online Exam Applications in India",
     description:
-      "Photo 20–50 KB, signature 10–20 KB, certificates under 100 KB, Aadhaar masked — complete prep workflow before you open an SSC, UPSC, IBPS or Railway portal.",
+      "Prepare photos, signatures and document scans for SSC, UPSC, IBPS and Railway workflows, with current source checks instead of one universal size.",
     date: "June 21, 2026",
     dateISO: "2026-06-21",
     excerpt:
-      "Most exam application rejections come from the same four documents: photo, signature, certificates and Aadhaar. Here's the complete preparation workflow for every major Indian exam portal.",
+      "Prepare photos, signatures, certificates and masked Aadhaar for online forms while checking the workflow and limits shown by the selected portal.",
     readMins: 10,
   },
   {

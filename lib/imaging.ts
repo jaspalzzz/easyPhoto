@@ -71,6 +71,130 @@ export async function picaResizeTo(
 }
 
 /**
+ * Whether encoded integer pixel dimensions still represent a published aspect
+ * ratio. A one-pixel rounding allowance is needed when proportional compression
+ * turns, for example, a 35:45 crop into a much smaller integer-sized JPEG.
+ */
+export function matchesAspectRatio(
+  width: number,
+  height: number,
+  requiredAspect: number
+): boolean {
+  if (width <= 0 || height <= 0 || requiredAspect <= 0) return false;
+  const actualAspect = width / height;
+  const roundingAllowance = 1 / height;
+  return Math.abs(actualAspect - requiredAspect) <= roundingAllowance;
+}
+
+/**
+ * Centre-crop an image to a published aspect ratio without inventing an output
+ * pixel size. The largest possible crop is retained; the KB compressor may then
+ * scale it proportionally when a portal has only a size cap.
+ */
+export function cropToAspectRatio(
+  source: HTMLImageElement | HTMLCanvasElement,
+  targetAspect: number,
+  background = "#ffffff"
+): HTMLCanvasElement {
+  if (!Number.isFinite(targetAspect) || targetAspect <= 0) {
+    throw new Error("Target aspect ratio must be a positive number.");
+  }
+
+  const sourceWidth =
+    source instanceof HTMLCanvasElement ? source.width : source.naturalWidth;
+  const sourceHeight =
+    source instanceof HTMLCanvasElement ? source.height : source.naturalHeight;
+  const sourceAspect = sourceWidth / sourceHeight;
+
+  let sx = 0;
+  let sy = 0;
+  let sw = sourceWidth;
+  let sh = sourceHeight;
+  if (sourceAspect > targetAspect) {
+    sw = Math.max(1, Math.round(sourceHeight * targetAspect));
+    sx = Math.max(0, Math.round((sourceWidth - sw) / 2));
+  } else if (sourceAspect < targetAspect) {
+    sh = Math.max(1, Math.round(sourceWidth / targetAspect));
+    sy = Math.max(0, Math.round((sourceHeight - sh) / 2));
+  }
+
+  const cropped = document.createElement("canvas");
+  cropped.width = sw;
+  cropped.height = sh;
+  const ctx = cropped.getContext("2d");
+  if (!ctx) throw new Error("Could not acquire 2D canvas context.");
+  ctx.imageSmoothingQuality = "high";
+  if (background) {
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, sw, sh);
+  }
+  ctx.drawImage(source, sx, sy, sw, sh, 0, 0, sw, sh);
+  return cropped;
+}
+
+/**
+ * Centre-crop an image to the requested aspect ratio, then resize it to the
+ * exact output dimensions. Portal fields such as 130x170 are output sizes, not
+ * lower bounds: keeping a larger square image would still fail their validator.
+ */
+export async function cropAndResizeToExact(
+  source: HTMLImageElement | HTMLCanvasElement,
+  width: number,
+  height: number,
+  background = "#ffffff"
+): Promise<HTMLCanvasElement> {
+  const targetWidth = Math.max(1, Math.round(width));
+  const targetHeight = Math.max(1, Math.round(height));
+  const cropped = cropToAspectRatio(
+    source,
+    targetWidth / targetHeight,
+    background
+  );
+
+  return picaResizeTo(cropped, targetWidth, targetHeight);
+}
+
+/**
+ * Fit a signature inside an exact portal-sized frame without stretching the
+ * handwriting. Empty space is centred and filled with the requested background.
+ */
+export async function fitToExactFrame(
+  source: HTMLCanvasElement,
+  width: number,
+  height: number,
+  background?: string
+): Promise<HTMLCanvasElement> {
+  const targetWidth = Math.max(1, Math.round(width));
+  const targetHeight = Math.max(1, Math.round(height));
+  const padding = Math.max(2, Math.round(Math.min(targetWidth, targetHeight) * 0.04));
+  const availableWidth = Math.max(1, targetWidth - padding * 2);
+  const availableHeight = Math.max(1, targetHeight - padding * 2);
+  const scale = Math.min(
+    availableWidth / Math.max(1, source.width),
+    availableHeight / Math.max(1, source.height)
+  );
+  const fittedWidth = Math.max(1, Math.round(source.width * scale));
+  const fittedHeight = Math.max(1, Math.round(source.height * scale));
+  const fitted = await picaResizeTo(source, fittedWidth, fittedHeight);
+
+  const framed = document.createElement("canvas");
+  framed.width = targetWidth;
+  framed.height = targetHeight;
+  const ctx = framed.getContext("2d");
+  if (!ctx) throw new Error("Could not acquire 2D canvas context.");
+  if (background) {
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, targetWidth, targetHeight);
+  }
+  ctx.drawImage(
+    fitted,
+    Math.round((targetWidth - fittedWidth) / 2),
+    Math.round((targetHeight - fittedHeight) / 2)
+  );
+  return framed;
+}
+
+/**
  * Compress a TRANSPARENT canvas to a PNG under `maxKb`. PNG has no quality
  * knob, so we shrink dimensions (preserving the alpha channel) until it fits —
  * the right approach for signatures, which must keep a transparent background.

@@ -21,11 +21,20 @@ import {
   specProvenance,
   portalCategory,
   photoDimsPx,
+  sigDimsPx,
   PORTAL_CATEGORY_LABEL,
   type PortalCategory,
 } from "@/lib/specRegistry";
 import { ensureDecodable } from "@/lib/heic";
-import { imageToCanvas, pngUnderKb } from "@/lib/imaging";
+import {
+  cropAndResizeToExact,
+  cropToAspectRatio,
+  fitToExactFrame,
+  flattenForJpeg,
+  imageToCanvas,
+  matchesAspectRatio,
+  pngUnderKb,
+} from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
 import { padBlobToMin } from "@/lib/padBytes";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
@@ -46,6 +55,10 @@ const sigKbText = (s: PortalSpec) =>
       ? `${s.sigMinKb}–${s.sigLimitKb} KB`
       : `≤ ${s.sigLimitKb} KB`
     : null;
+const usesLivePhotoCapture = (s: PortalSpec) =>
+  /live.{0,20}(?:photo|photograph)|(?:photo|photograph).{0,35}(?:capture|captured).{0,20}live/i.test(
+    `${s.description} ${s.context ?? ""}`
+  );
 
 /** Display order of exam categories in the picker. */
 const CATEGORY_ORDER: PortalCategory[] = [
@@ -73,6 +86,7 @@ interface AssetResult {
   height: number;
   compliant: boolean;
   kind: "photo" | "signature";
+  format: "jpg" | "png";
 }
 
 /** Decode a File (incl. HEIC) into a canvas at its natural size. */
@@ -104,6 +118,7 @@ export function ExamPackageTool() {
 
   const spec = examId ? PORTAL_PRESETS[examId] : undefined;
   const needsSignature = !!spec?.sigLimitKb;
+  const livePhoto = !!spec && usesLivePhotoCapture(spec);
   const prov = spec ? specProvenance(spec) : undefined;
 
   React.useEffect(() => {
@@ -141,7 +156,23 @@ export function ExamPackageTool() {
     setBusy(true);
     setError(null);
     try {
-      const canvas = await fileToCanvas(file);
+      const sourceCanvas = await fileToCanvas(file);
+      const hasRequiredDimensions = !!(spec.photoWidthPx && spec.photoHeightPx);
+      const hasRequiredAspect =
+        !hasRequiredDimensions &&
+        !!spec.photoAspectRatio &&
+        Number.isFinite(spec.photoAspectRatio) &&
+        spec.photoAspectRatio > 0;
+      const canvas = hasRequiredDimensions
+        ? await cropAndResizeToExact(
+            sourceCanvas,
+            spec.photoWidthPx!,
+            spec.photoHeightPx!,
+            "#ffffff"
+          )
+        : hasRequiredAspect
+          ? cropToAspectRatio(sourceCanvas, spec.photoAspectRatio!, "#ffffff")
+        : sourceCanvas;
       const res = await compressToCap(canvas, spec.photoLimitKb, {
         // Let dimensions shrink to reach a tight KB cap, matching the standalone
         // resizers. When the portal DOES publish a pixel minimum, minDimensions
@@ -149,7 +180,7 @@ export function ExamPackageTool() {
         // undercuts a required size. Without it, a portal with no fixed pixel
         // size (SSC, UPSC, RRB) can only drop quality — which bottoms out above
         // a tight cap like SSC's 50 KB and blocks the workflow at "Next".
-        minScale: 0.1,
+        minScale: hasRequiredDimensions ? 1 : 0.1,
         minDimensions:
           spec.photoWidthPx && spec.photoHeightPx
             ? { width: spec.photoWidthPx, height: spec.photoHeightPx }
@@ -160,7 +191,12 @@ export function ExamPackageTool() {
       });
       if (photo?.url) URL.revokeObjectURL(photo.url);
       const photoCompliant =
-        res.underCap && (!spec.photoMinKb || res.bytes >= spec.photoMinKb * 1024);
+        res.underCap &&
+        (!spec.photoMinKb || res.bytes >= spec.photoMinKb * 1024) &&
+        (!hasRequiredDimensions ||
+          (res.width === spec.photoWidthPx && res.height === spec.photoHeightPx)) &&
+        (!hasRequiredAspect ||
+          matchesAspectRatio(res.width, res.height, spec.photoAspectRatio!));
       setPhoto({
         url: URL.createObjectURL(res.blob),
         blob: res.blob,
@@ -169,6 +205,7 @@ export function ExamPackageTool() {
         height: res.height,
         compliant: photoCompliant,
         kind: "photo",
+        format: "jpg",
       });
     } catch (e) {
       console.error(e);
@@ -195,27 +232,62 @@ export function ExamPackageTool() {
         padding: 8,
       });
       if (!bbox) throw new Error("No signature detected.");
-      // Auto-reduce to fit the KB cap. A signature is simple line-art, so allow a
-      // much lower scale floor than the default 0.2 — this lets tight limits
-      // (e.g. SSC's 20 KB) be met automatically instead of surfacing a size error.
-      const res = await pngUnderKb(trimmed, spec.sigLimitKb, 0.05);
-      // Portals reject signatures below the band's floor too — pad up to it
-      // (inert PNG chunk; the drawn pixels are untouched).
-      const sigBlob =
-        spec.sigMinKb && res.underCap && res.blob.size < spec.sigMinKb * 1024
-          ? await padBlobToMin(res.blob, spec.sigMinKb * 1024)
-          : res.blob;
+      const hasRequiredDimensions = !!(spec.sigWidthPx && spec.sigHeightPx);
+      const signatureFormat: "jpg" | "png" = /\b(?:JPG|JPEG)\b/i.test(spec.description)
+        ? "jpg"
+        : "png";
+      const framed = hasRequiredDimensions
+        ? await fitToExactFrame(
+            trimmed,
+            spec.sigWidthPx!,
+            spec.sigHeightPx!,
+            signatureFormat === "jpg" ? "#ffffff" : undefined
+          )
+        : trimmed;
+
+      let sigBlob: Blob;
+      let sigWidth: number;
+      let sigHeight: number;
+      let underCap: boolean;
+      if (signatureFormat === "jpg") {
+        const jpegCanvas = hasRequiredDimensions ? framed : flattenForJpeg(framed);
+        const res = await compressToCap(jpegCanvas, spec.sigLimitKb, {
+          minScale: hasRequiredDimensions ? 1 : 0.05,
+          minDimensions: hasRequiredDimensions
+            ? { width: spec.sigWidthPx!, height: spec.sigHeightPx! }
+            : undefined,
+          minKb: spec.sigMinKb,
+          maxQuality: 1,
+        });
+        sigBlob = res.blob;
+        sigWidth = res.width;
+        sigHeight = res.height;
+        underCap = res.underCap;
+      } else {
+        const res = await pngUnderKb(framed, spec.sigLimitKb, hasRequiredDimensions ? 1 : 0.05);
+        sigBlob =
+          spec.sigMinKb && res.underCap && res.blob.size < spec.sigMinKb * 1024
+            ? await padBlobToMin(res.blob, spec.sigMinKb * 1024)
+            : res.blob;
+        sigWidth = res.canvas.width;
+        sigHeight = res.canvas.height;
+        underCap = res.underCap;
+      }
       if (signature?.url) URL.revokeObjectURL(signature.url);
       const sigCompliant =
-        res.underCap && (!spec.sigMinKb || sigBlob.size >= spec.sigMinKb * 1024);
+        underCap &&
+        (!spec.sigMinKb || sigBlob.size >= spec.sigMinKb * 1024) &&
+        (!hasRequiredDimensions ||
+          (sigWidth === spec.sigWidthPx && sigHeight === spec.sigHeightPx));
       setSignature({
         url: URL.createObjectURL(sigBlob),
         blob: sigBlob,
         bytes: sigBlob.size,
-        width: res.canvas.width,
-        height: res.canvas.height,
+        width: sigWidth,
+        height: sigHeight,
         compliant: sigCompliant,
         kind: "signature",
+        format: signatureFormat,
       });
     } catch (e) {
       console.error(e);
@@ -232,8 +304,7 @@ export function ExamPackageTool() {
   };
 
   const download = (asset: AssetResult) => {
-    const ext = asset.kind === "signature" ? "png" : "jpg";
-    downloadBlob(asset.blob, `${examId}-${asset.kind}.${ext}`, "exam-package");
+    downloadBlob(asset.blob, `${examId}-${asset.kind}.${asset.format}`, "exam-package");
   };
 
   const [zipping, setZipping] = React.useState(false);
@@ -248,7 +319,7 @@ export function ExamPackageTool() {
       const zip = new JSZip();
       const base = examId;
       zip.file(`${base}-photo.jpg`, photo.blob);
-      if (signature) zip.file(`${base}-signature.png`, signature.blob);
+      if (signature) zip.file(`${base}-signature.${signature.format}`, signature.blob);
 
       const examName = spec.name;
       const readme = [
@@ -257,9 +328,9 @@ export function ExamPackageTool() {
         `processed in your browser.`,
         ``,
         `Files in this kit:`,
-        `  • ${base}-photo.jpg   — ${photo.width}x${photo.height}px, ${formatKb(photo.bytes)}`,
+        `  • ${base}-photo.jpg   — ${photo.width}x${photo.height}px, ${formatKb(photo.bytes)}${livePhoto ? " (compatibility file; current workflow uses live capture)" : ""}`,
         signature
-          ? `  • ${base}-signature.png — ${signature.width}x${signature.height}px, ${formatKb(signature.bytes)}`
+          ? `  • ${base}-signature.${signature.format} — ${signature.width}x${signature.height}px, ${formatKb(signature.bytes)}`
           : null,
         ``,
         `Spec this kit was sized to:`,
@@ -270,6 +341,9 @@ export function ExamPackageTool() {
         prov?.url ? `  • Official source: ${prov.url}` : null,
         ``,
         `Always confirm against the official portal before you submit.`,
+        livePhoto
+          ? `IMPORTANT: the stored current workflow captures the photograph live. Do not upload this compatibility photo unless the active form explicitly provides a photo-file field.`
+          : null,
       ]
         .filter((l) => l !== null)
         .join("\n");
@@ -423,7 +497,7 @@ export function ExamPackageTool() {
                         </span>
                         <span className="flex min-w-0 flex-wrap gap-1.5">
                           <span className="rounded-md bg-[hsl(174_72%_30%/0.10)] px-2 py-0.5 font-mono text-xs font-medium text-[hsl(174_72%_28%)]">
-                            Photo {photoKbText(s)}
+                            {usesLivePhotoCapture(s) ? "Photo: live capture" : `Photo ${photoKbText(s)}`}
                           </span>
                           {sig && (
                             <span className="rounded-md bg-[hsl(8_75%_45%/0.10)] px-2 py-0.5 font-mono text-xs font-medium text-[hsl(8_75%_45%)]">
@@ -448,7 +522,7 @@ export function ExamPackageTool() {
             <div className="min-w-0 text-sm">
               <p className="font-semibold text-ink">{spec.name.split(" (")[0]}</p>
               <p className="mt-0.5 font-mono text-[12px] leading-relaxed text-ink-soft">
-                Photo {photoKbText(spec)}
+                {livePhoto ? "Photo: live capture" : `Photo ${photoKbText(spec)}`}
                 {photoDimsPx(spec) ? ` · ${photoDimsPx(spec)}` : ""}
                 {needsSignature && sigKbText(spec) ? ` · Signature ${sigKbText(spec)}` : ""}
               </p>
@@ -468,18 +542,25 @@ export function ExamPackageTool() {
 
         {/* Step 2: photo */}
         {step === "photo" && spec && (
-          <StepUpload
-            kind="photo"
-            label="Upload your passport-style photo"
-            asset={photo}
-            busy={busy}
-            onFile={processPhoto}
-            onNext={() => setStep(needsSignature ? "signature" : "done")}
-            onBack={() => setStep("exam")}
-            nextLabel={needsSignature ? "Next: signature" : "Finish"}
-            targetKb={spec.photoLimitKb}
-            minKb={spec.photoMinKb}
-          />
+          <div className="space-y-4">
+            {livePhoto && (
+              <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
+                The stored current workflow captures the photograph live. This optional file is for compatibility or preparation only; do not upload it unless the active form provides a photo-file field.
+              </p>
+            )}
+            <StepUpload
+              kind="photo"
+              label={livePhoto ? "Add an optional compatibility photo" : "Upload your passport-style photo"}
+              asset={photo}
+              busy={busy}
+              onFile={processPhoto}
+              onNext={() => setStep(needsSignature ? "signature" : "done")}
+              onBack={() => setStep("exam")}
+              nextLabel={needsSignature ? "Next: signature" : "Finish"}
+              targetKb={spec.photoLimitKb}
+              minKb={spec.photoMinKb}
+            />
+          </div>
         )}
 
         {/* Step 3: signature */}
@@ -512,7 +593,7 @@ export function ExamPackageTool() {
             ) : (
               <div className="space-y-4">
                 <h3 className="text-sm font-semibold flex items-center gap-2">
-                  <Check className="h-4 w-4 text-brand" /> Your {spec?.name} package is ready
+                  <Check className="h-4 w-4 text-brand" /> Your {spec?.name} prepared files
                 </h3>
 
                 {/* The compliance receipt — the verdict the applicant came for. */}
@@ -521,12 +602,37 @@ export function ExamPackageTool() {
                     requirement={spec.name.split(" (")[0]}
                     checks={[
                       {
-                        label: "Photo size",
+                        label: livePhoto ? "Compatibility photo size" : "Photo size",
                         value: spec.photoMinKb
                           ? `${formatKb(photo.bytes)} (needs ${spec.photoMinKb}–${spec.photoLimitKb} KB)`
                           : `${formatKb(photo.bytes)} (needs ≤ ${spec.photoLimitKb} KB)`,
-                        ok: photo.compliant,
+                        ok:
+                          photo.bytes <= spec.photoLimitKb * 1024 &&
+                          (!spec.photoMinKb || photo.bytes >= spec.photoMinKb * 1024),
                       },
+                      ...(spec.photoWidthPx && spec.photoHeightPx
+                        ? [
+                            {
+                              label: "Photo dimensions",
+                              value: `${photo.width}×${photo.height}px (needs ${photoDimsPx(spec)})`,
+                              ok:
+                                photo.width === spec.photoWidthPx &&
+                                photo.height === spec.photoHeightPx,
+                            },
+                          ]
+                        : spec.photoAspectRatio
+                          ? [
+                              {
+                                label: "Photo aspect ratio",
+                                value: `${photo.width}×${photo.height}px (width ÷ height ${spec.photoAspectRatio.toFixed(3)})`,
+                                ok: matchesAspectRatio(
+                                  photo.width,
+                                  photo.height,
+                                  spec.photoAspectRatio
+                                ),
+                              },
+                            ]
+                          : []),
                       ...(signature && spec.sigLimitKb
                         ? [
                             {
@@ -534,11 +640,29 @@ export function ExamPackageTool() {
                               value: spec.sigMinKb
                                 ? `${formatKb(signature.bytes)} (needs ${spec.sigMinKb}–${spec.sigLimitKb} KB)`
                                 : `${formatKb(signature.bytes)} (needs ≤ ${spec.sigLimitKb} KB)`,
-                              ok: signature.compliant,
+                              ok:
+                                signature.bytes <= spec.sigLimitKb * 1024 &&
+                                (!spec.sigMinKb ||
+                                  signature.bytes >= spec.sigMinKb * 1024),
                             },
                           ]
                         : []),
-                      { label: "Format", value: signature ? "JPG + PNG" : "JPG", ok: true },
+                      ...(signature && spec.sigWidthPx && spec.sigHeightPx
+                        ? [
+                            {
+                              label: "Signature dimensions",
+                              value: `${signature.width}×${signature.height}px (needs ${sigDimsPx(spec)})`,
+                              ok:
+                                signature.width === spec.sigWidthPx &&
+                                signature.height === spec.sigHeightPx,
+                            },
+                          ]
+                        : []),
+                      {
+                        label: "Format",
+                        value: signature ? `JPG + ${signature.format.toUpperCase()}` : "JPG",
+                        ok: true,
+                      },
                     ]}
                   />
                 )}
@@ -579,7 +703,11 @@ export function ExamPackageTool() {
                   <p className="font-semibold text-ink">Next steps</p>
                   <ol className="mt-1.5 list-decimal space-y-1 pl-4 text-muted-foreground">
                     <li>Log in to the {spec?.name.split(" (")[0]} application portal.</li>
-                    <li>Upload these files where the form asks for photo{signature ? " and signature" : ""}.</li>
+                    {livePhoto ? (
+                      <li>Complete the portal&apos;s live photograph step. Upload only the separate files the active form requests{signature ? ", such as the signature" : ""}.</li>
+                    ) : (
+                      <li>Upload these files where the form asks for photo{signature ? " and signature" : ""}.</li>
+                    )}
                     <li>
                       Double-check the live form&apos;s stated limits match{" "}
                       <span className="font-mono text-[13px]">{photoKbText(spec!)}</span> — portals

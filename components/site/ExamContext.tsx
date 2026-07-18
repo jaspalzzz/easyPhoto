@@ -28,7 +28,7 @@ export function ExamContext({
             About the {short} photo {hasSig && <>&amp; signature </>}requirement
           </h2>
           <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">{spec.context}</p>
-          {nameDateHref && (
+          {nameDateHref && spec.requiresNameDate && (
             <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
               Need your name and the date printed on the photo?{" "}
               <Link href={nameDateHref} className="font-medium text-brand underline">

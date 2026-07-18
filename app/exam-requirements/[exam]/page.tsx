@@ -105,7 +105,7 @@ export async function generateMetadata({
       // Only claim "verified" for specs actually confirmed against their source
       // and dated; needs-review presets get an honest "confirm on the source".
       (specProvenance(spec).verified
-        ? `. Exact size & format for the form — verified against the official source.`
+        ? `. Stored size & format checked against the linked official source.`
         : `. Size & format for the form — confirm the current figures on the official source.`),
     path: `/exam-requirements/${exam}/`,
   });
@@ -308,10 +308,10 @@ export default async function Page({
       <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
         <div>
           <h2 className="text-base font-semibold tracking-tight">
-            Resize your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null} to the exact size
+            Prepare your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null} to the selected stored target
           </h2>
           <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Compress to these exact limits, free and in your browser — nothing is uploaded.
+            Verify the current form before use. Processing is free and stays in your browser.
           </p>
         </div>
 

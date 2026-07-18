@@ -3,13 +3,15 @@ import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
+import { PORTAL_PRESETS } from "@/lib/portalPresets";
 
 const post = getPost("how-to-reduce-passport-photo-size-for-online-forms")!;
+const ibps = PORTAL_PRESETS.ibps;
 
 const FAQ_ITEMS = [
   {
     q: "Why is my photo rejected even though it's under the file-size cap?",
-    a: "Some portals set a band, not just a ceiling. The verified SSC entry is 20–50 KB, while the verified UPSC entry is 20–200 KB. Use the exact current band for the application instead of assuming all exam portals share one limit.",
+    a: "Some upload portals set a band, not just a ceiling. IBPS publishes a 20–50 KB prepared-photo band, while UPSC publishes 20–200 KB. Current SSC applications instead capture the photograph live, so no prepared-photo band applies there.",
   },
   {
     q: "Can I compress a photo without losing face clarity?",
@@ -48,7 +50,7 @@ export default function Page() {
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>Use the exact minimum, maximum, dimensions and format shown by the specific application portal; there is no universal government-form limit.</li>
-          <li>For example, the verified SSC registry entry is 20–50&nbsp;KB, while OCI uses a square 200–900&nbsp;px JPEG/JPG up to 200&nbsp;KB.</li>
+          <li>For example, IBPS publishes a 20–50&nbsp;KB prepared-photo band, while OCI uses a square 200–900&nbsp;px JPEG/JPG up to 200&nbsp;KB.</li>
           <li>Use a target-KB tool that finds the right compression automatically — never guess a manual quality slider.</li>
         </ul>
       </div>
@@ -63,8 +65,8 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["SSC photo", "20–50 KB — official SSC source"],
             ["IBPS photo", "20–50 KB — official IBPS source"],
+            ["SSC photo", "Live capture — no prepared-photo KB upload in the cited current notice"],
             ["OCI online photo", "Square 200–900 px JPEG/JPG, up to 200 KB — official OCI source"],
             ["Schengen portal upload", "No shared cap in the registry; confirm on the consulate/VFS form"],
           ].map(([type, limit]) => (
@@ -78,8 +80,8 @@ export default function Page() {
       <p>
         Always read the form&apos;s instructions. Limits vary, and some portals
         set a minimum as well as a maximum. Official sources:{" "}
-        <a href="https://ssc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>,{" "}
-        <a href="https://www.ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>, and the{" "}
+        <a href={PORTAL_PRESETS.ssc.source!.url} className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC current notice</a>,{" "}
+        <a href={ibps.source!.url} className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS recruitment instructions</a>, and the{" "}
         <a href="https://ociservices.gov.in/onlineOCI/onlineOCI/faq" className="text-brand underline" target="_blank" rel="noopener noreferrer">OCI Services FAQ</a>.
       </p>
 
@@ -88,8 +90,9 @@ export default function Page() {
         If an OCI application requires its published photo format, prepare a
         square JPEG/JPG between 200×200 and 900×900&nbsp;px and keep it at or
         below 200&nbsp;KB. Compression changes JPEG encoding quality, not the
-        square canvas. For SSC, target the verified 20–50&nbsp;KB band instead
-        and confirm the current notice on the official SSC source.
+        square canvas. For an IBPS upload, target its published 20–50&nbsp;KB band.
+        For current SSC applications, follow the live photograph interface rather
+        than preparing a photo file.
       </p>
 
       <h2>How to compress without losing sharpness</h2>

@@ -3,25 +3,29 @@ import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
+import { PORTAL_PRESETS } from "@/lib/portalPresets";
 
 const post = getPost("why-exam-photo-signature-rejected")!;
+const ssc = PORTAL_PRESETS.ssc;
+const ibps = PORTAL_PRESETS.ibps;
+const upsc = PORTAL_PRESETS.upsc;
 
 const FAQ_ITEMS = [
   {
-    q: "Why does the portal say 'photo not as per specification' without explaining why?",
-    a: "Indian exam portals run automated validators that check file size, dimensions, format and sometimes image colour distribution. When any check fails, they return a generic rejection string rather than listing which check failed. Work through the six reasons above in order — file size band first, then format, then dimensions.",
+    q: "Why does an exam portal show a generic photo or signature error?",
+    a: "A generic validation message may cover file size, format, dimensions or a visual capture problem. First identify whether the current form uses a prepared upload or live capture, then compare only the published requirements for that workflow.",
   },
   {
-    q: "What is the most common reason exam photo uploads fail?",
-    a: "File size out of band. Most people know to compress a photo if it's too large, but they don't know portals also enforce a minimum. A photo compressed to 12 KB is rejected just as firmly as a 2 MB one. Use a resizer that targets the exact 20–50 KB band.",
+    q: "Does every exam photo need to be 20–50 KB?",
+    a: "No. IBPS publishes a 20–50 KB prepared photo, UPSC publishes 20–200 KB with no fixed photo pixels, and current SSC applications capture the photograph live rather than accepting a prepared photo file.",
   },
   {
-    q: "My phone saves photos as HEIC. How do I convert them to JPG for the portal?",
-    a: "On iPhone, go to Settings → Camera → Formats and switch from High Efficiency (HEIC) to Most Compatible (JPEG) before taking the photo. For existing HEIC files, use the easyPhoto format converter — it outputs a standard JPG ready for any exam portal.",
+    q: "Should I add my name and date to an exam photo?",
+    a: "Only when the current notice asks for it. TNPSC, APPSC and Kerala PSC record a digital treatment. Current UPSC, SSC and IBPS instructions do not. Airforce and Navy Agniveer use a physical slate workflow, which a digital strip cannot replace.",
   },
   {
-    q: "Can I fix a photo that already has shadows or a non-white background?",
-    a: "Sometimes. The white background tool can replace an off-white or lightly coloured background with clean white. But heavy shadows on the face itself, a cluttered background or a blurry photo need a retake — no tool can recover lost detail from a poorly lit source image.",
+    q: "Can a photo checker guarantee that my application will accept the file?",
+    a: "No. A checker can inspect measurable properties such as encoded dimensions, file size and format. It cannot reproduce every portal validator, assess identity or guarantee the authority's decision.",
   },
 ];
 
@@ -35,358 +39,134 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo" faqItems={FAQ_ITEMS}>
+    <BlogPostLayout
+      slug={post.slug}
+      ctaHref="/tools/exam-package/"
+      ctaLabel="Check a stored exam target"
+      faqItems={FAQ_ITEMS}
+    >
+      <p className="text-sm text-ink-soft">Last reviewed: 18 July 2026</p>
       <p>
-        You upload your photo to the{" "}
-        <a href="https://ssc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>{" "}
-        or{" "}
-        <a href="https://ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>{" "}
-        portal, click submit, and the
-        page throws it back: <em>&quot;Photo is not as per specification.&quot;</em>{" "}
-        No detail, no reason. Just a red error and a closing deadline. The good
-        news: portals reject for a small, predictable set of reasons, and every
-        one has a quick fix. Here&apos;s the full list.
+        A photo or signature can fail for different reasons depending on the
+        portal. The first distinction is whether the form accepts a prepared
+        file or captures the photograph live. A KB resizer helps with a file
+        upload; it cannot replace a camera step controlled by the authority.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
-        <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
+        <p className="!mt-0 text-sm font-semibold text-ink">Start here</p>
         <ul className="!mt-2 text-[15px]">
-          <li>Six reasons cover almost every rejection: <strong>file size band</strong>, wrong dimensions, signature background, wrong format, missing name/date, photo quality.</li>
-          <li>Most are fixed by running your files through the correct exam-specific resizer <em>before</em> you open the form.</li>
-          <li>Check the exact spec at the <Link href="/exam-requirements/" className="text-brand underline">exam requirements directory</Link> — each entry links the official notification.</li>
+          <li>Open the current notice for the exact exam and cycle.</li>
+          <li>Separate live photograph capture from prepared photo/signature uploads.</li>
+          <li>Check measurable requirements: format, KB band and published dimensions.</li>
+          <li>Then check the source image: visibility, lighting, background and framing stated by that notice.</li>
         </ul>
       </div>
 
-      <h2>All six rejection reasons at a glance</h2>
-      <table className="my-5 w-full border-collapse text-[14px]">
-        <thead>
-          <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-3 font-semibold text-ink">Rejection reason</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Fix</th>
-          </tr>
-        </thead>
-        <tbody className="text-ink-soft">
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">File size out of band</td>
-            <td className="py-2 pr-3">Use an exam-specific resizer targeting the exact KB band (e.g. 20–50 KB)</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Wrong pixel dimensions or aspect ratio</td>
-            <td className="py-2 pr-3">Exam resizer applies the correct width×height automatically</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Signature has paper / grey background</td>
-            <td className="py-2 pr-3">Signature tool removes the background; clean white result compresses smaller</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Wrong file format (HEIC, PNG, WebP)</td>
-            <td className="py-2 pr-3">Tools output JPG automatically; format converter for HEIC from iPhone</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Missing name and date on photo</td>
-            <td className="py-2 pr-3">Add a clean strip with the name &amp; date photo tool (TNPSC, IAF Agniveer and a few others — check your notification)</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Photo quality (background, shadows, glasses)</td>
-            <td className="py-2 pr-3">Retake against a plain, evenly lit wall — compression cannot fix a bad source photo</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h2>Exact specifications by exam</h2>
-      <p>
-        Each portal enforces its own numbers. Using the wrong spec — even for a
-        closely related exam — causes instant rejection. The table below covers
-        the most-searched exams as of the 2024–25 notification cycle; always
-        cross-check with the current official notification before submitting.
-      </p>
-      <table className="my-5 w-full border-collapse text-[13px]">
-        <thead>
-          <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-3 font-semibold text-ink">Exam</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Photo size (KB)</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Photo pixels</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Signature size (KB)</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Signature pixels</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Format</th>
-          </tr>
-        </thead>
-        <tbody className="text-ink-soft">
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">SSC CGL / CHSL / MTS</td>
-            <td className="py-2 pr-3">20–50 KB</td>
-            <td className="py-2 pr-3">live capture</td>
-            <td className="py-2 pr-3">10–20 KB</td>
-            <td className="py-2 pr-3">no fixed size</td>
-            <td className="py-2 pr-3">JPG</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">IBPS PO / Clerk / RRB</td>
-            <td className="py-2 pr-3">20–50 KB</td>
-            <td className="py-2 pr-3">200×230 px</td>
-            <td className="py-2 pr-3">10–20 KB</td>
-            <td className="py-2 pr-3">140×60 px</td>
-            <td className="py-2 pr-3">JPG</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">UPSC CSE / IFS</td>
-            <td className="py-2 pr-3">20–200 KB</td>
-            <td className="py-2 pr-3">no fixed size</td>
-            <td className="py-2 pr-3">20–100 KB</td>
-            <td className="py-2 pr-3">350–500 px</td>
-            <td className="py-2 pr-3">JPG</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">SBI PO / Clerk</td>
-            <td className="py-2 pr-3">20–50 KB</td>
-            <td className="py-2 pr-3">200×230 px</td>
-            <td className="py-2 pr-3">10–20 KB</td>
-            <td className="py-2 pr-3">140×60 px</td>
-            <td className="py-2 pr-3">JPG</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">RRB NTPC / Group D</td>
-            <td className="py-2 pr-3">20–50 KB</td>
-            <td className="py-2 pr-3">live capture</td>
-            <td className="py-2 pr-3">30–49 KB</td>
-            <td className="py-2 pr-3">140×60 px min</td>
-            <td className="py-2 pr-3">JPG</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">NDA / CDS (UPSC)</td>
-            <td className="py-2 pr-3">20–200 KB</td>
-            <td className="py-2 pr-3">no fixed size</td>
-            <td className="py-2 pr-3">20–100 KB</td>
-            <td className="py-2 pr-3">no fixed size</td>
-            <td className="py-2 pr-3">JPG</td>
-          </tr>
-        </tbody>
-      </table>
-      <p className="text-[13px] text-ink-soft">
-        Note: UPSC allows a wide 20–200&nbsp;KB photo band, so files rarely fall
-        outside it — rejections on file-size grounds are less common than for the
-        tighter SSC or IBPS ranges.
-      </p>
-
-      <h2>1. The file size is wrong — too big or too small</h2>
-      <p>
-        This is the single most common rejection. Exam portals specify a{" "}
-        <strong>band</strong>, not just a ceiling: SSC wants the photo between
-        20 and 50&nbsp;KB, the signature between 10 and 20&nbsp;KB. A 2&nbsp;MB
-        phone photo is rejected for being too large; a heavily compressed
-        12&nbsp;KB one is rejected for being <em>too small</em>. Most people only
-        fix the &quot;too big&quot; half and get caught by the floor.
-      </p>
-      <p>
-        <strong>Fix:</strong> use a resizer that targets the exact band. Pick your
-        exam from the{" "}
-        <Link href="/exam-requirements/">exam requirements directory</Link> — for
-        example the{" "}
-        <Link href="/exam-resizer/ssc-cgl/">SSC CGL resizer</Link> or{" "}
-        <Link href="/exam-resizer/ibps-po/">IBPS PO resizer</Link> — and it lands
-        your file inside the band automatically.
-      </p>
-
-      <h2>2. The pixel dimensions or aspect ratio don&apos;t match</h2>
-      <p>
-        Many portals check width × height, not just KB. IBPS and SBI expect
-        roughly 200×230&nbsp;px (a portrait ratio); a square crop or a landscape
-        selfie is rejected even at the right file size. Always match the pixel
-        size your own notification states — several portals (UPSC, and SSC&apos;s
-        live-capture flow) publish none.
-      </p>
-      <p>
-        <strong>Fix:</strong> the exam resizers apply the correct dimensions and
-        never shrink below the portal&apos;s pixel minimum.
-      </p>
-
-      <h2>3. The signature has paper or shadow behind it</h2>
-      <p>
-        Signature uploads are rejected when the scan shows the grey of the paper,
-        a shadow, or a coloured background instead of clean ink on white. Portals
-        expect a crisp black-or-blue signature on a plain white field.
-      </p>
-      <p>
-        <strong>Fix:</strong> the{" "}
-        <Link href="/tools/signature-resize/">signature tool</Link> removes the
-        paper background, trims the empty space around your signature, and
-        compresses it into the required KB band in one step.
-      </p>
-
-      <h2>4. The wrong file format</h2>
-      <p>
-        Nearly every Indian portal wants <strong>JPG/JPEG</strong>. A PNG, a
-        WebP, or an iPhone HEIC file is rejected at upload, and phones now shoot
-        HEIC by default, so this catches a lot of people without warning.
-      </p>
-      <p>
-        <strong>Fix:</strong> our tools output JPG automatically. If you have a
-        HEIC or PNG from elsewhere, the{" "}
-        <Link href="/convert/">format converter</Link> turns it into a clean JPG
-        first.
-      </p>
-
-      <h2>5. Missing name and date on the photo</h2>
-      <p>
-        UPSC, the Indian Army and a few others require your name and the date the
-        photo was taken to be <em>printed on the photo itself</em>. A perfectly
-        sized photo without that text is rejected at document verification.
-      </p>
-      <p>
-        <strong>Fix:</strong> add it cleanly with the{" "}
-        <Link href="/tools/photo-with-name-date/">name &amp; date photo tool</Link>.
-        See the{" "}
-        <Link href="/blog/add-name-date-on-exam-photo/">step-by-step guide</Link>{" "}
-        for details.
-      </p>
-
-      <h2>6. The background or the photo itself</h2>
-      <p>
-        A non-white background, heavy shadows, glasses glare, a smiling
-        expression, or an old/blurry photo will fail a manual check even when the
-        file specs are perfect. These can&apos;t be fixed by resizing; they need
-        a better source photo (plain wall, even light, neutral face).
-      </p>
-      <p>
-        The specific rules differ slightly by exam, but the following apply almost
-        universally across SSC, IBPS, UPSC, and RRB portals:
-      </p>
-      <ul>
-        <li>
-          <strong>Background must be white or off-white.</strong> Cream, light
-          grey, or any colour is usually rejected. A studio white-backdrop or a
-          plain white wall in good lighting is the safest choice. AI background
-          replacement tools can help but are not a substitute for a clean source.
-        </li>
-        <li>
-          <strong>No sunglasses, tinted lenses, or coloured frames.</strong> Clear
-          prescription glasses were historically allowed, but SSC specifically
-          banned them starting with the 2022 notification cycle. When in doubt,
-          remove glasses entirely.
-        </li>
-        <li>
-          <strong>Neutral, closed-mouth expression.</strong> A slight natural
-          smile is acceptable on some portals, but open-mouth smiles, raised
-          eyebrows, or squinting cause manual-review failures. Eyes must be
-          fully open and looking directly at the camera.
-        </li>
-        <li>
-          <strong>No cap, hat, or head covering</strong> (religious head coverings
-          are exempt on most portals but must not obscure the face or hairline).
-        </li>
-        <li>
-          <strong>Photo must be recent — typically within 6 months.</strong> The
-          date requirement on UPSC and Army photos exists specifically to prove
-          recency. Even without a printed date, a photo that looks clearly dated
-          (different hair, significant weight change) can be flagged at document
-          verification.
-        </li>
-        <li>
-          <strong>Face must occupy 70–80% of the frame.</strong> A photo taken
-          from too far away — where your shoulders or chest dominate — is rejected
-          because the face resolution is insufficient for biometric matching.
-        </li>
-      </ul>
-      <p>
-        The critical difference between this category and the previous five is
-        that file-spec errors are caught by the portal automatically and
-        immediately. Photo quality errors sometimes pass the automated upload
-        check only to be caught by a human reviewer during document verification,
-        which can happen weeks later, closer to the exam date, when there is
-        far less time to correct the application.
-      </p>
-
-      <h2>The reliable order of operations</h2>
-      <p>
-        To avoid the back-and-forth entirely, prepare the file before you open
-        the form:
-      </p>
-      <ul>
-        <li>Take a clear, front-facing photo against a plain, evenly lit wall.</li>
-        <li>
-          Run it through your exam&apos;s resizer so the size, KB band and format
-          are all correct at once.
-        </li>
-        <li>Clean and size your signature the same way.</li>
-        <li>Add name and date if your exam requires it.</li>
-      </ul>
-      <p>
-        Everything runs entirely in your browser — your photo and signature are
-        never uploaded to a server. Find the recorded requirement in the{" "}
-        <Link href="/exam-requirements/">exam requirements directory</Link>, each
-        linked to the official notification so you can confirm before you submit.
-      </p>
-
-      <h2>Before-you-submit checklist</h2>
-      <p>
-        Use this checklist immediately before uploading. If any item fails,
-        fix it. Most take under two minutes with the right tool. For the photo
-        specifically, the free{" "}
-        <Link href="/tools/photo-rejection-check/">photo issue checker</Link>
-        {" "}runs 9 automated checks (centering, background, expression markers, tilt)
-        entirely on your device.
-      </p>
-
-      <div className="my-6 space-y-3">
-        <div className="rounded-lg border border-hairline bg-surface p-4">
-          <p className="!mt-0 text-[13px] font-semibold uppercase tracking-wide text-ink-soft">Photo file</p>
-          <ul className="!mt-2 space-y-1 text-[14px]">
-            <li>File is <strong>JPG/JPEG</strong> (not PNG, HEIC, or WebP)</li>
-            <li>File size is within your exam&apos;s KB band (e.g. <strong>20–50 KB for SSC</strong>, signature <strong>30–49 KB for RRB</strong>)</li>
-            <li>Pixel dimensions match the notification where it states them (e.g. <strong>200×230 px for IBPS/SBI</strong>; UPSC and SSC publish none)</li>
-            <li>Background is plain <strong>white or off-white</strong> with no shadows</li>
-            <li>Face is centred, front-facing, fully visible — no hats, no glasses, no hair covering face</li>
-            <li>Expression is neutral with both eyes open</li>
-            <li>Photo is recent (taken within the last 6 months)</li>
-            <li>Name and date printed on photo <em>if required</em> (UPSC, Indian Army — check your notification)</li>
-          </ul>
-        </div>
-        <div className="rounded-lg border border-hairline bg-surface p-4">
-          <p className="!mt-0 text-[13px] font-semibold uppercase tracking-wide text-ink-soft">Signature file</p>
-          <ul className="!mt-2 space-y-1 text-[14px]">
-            <li>File is <strong>JPG/JPEG</strong></li>
-            <li>File size is within band (typically <strong>10–20 KB</strong> for SSC, IBPS, SBI, RRB)</li>
-            <li>Pixel dimensions match notification (typically <strong>140×60 px</strong>)</li>
-            <li>Background is <strong>pure white</strong> — no paper grain, no shadow, no grey tint</li>
-            <li>Signature is in <strong>black or blue ink</strong> only</li>
-            <li>Signature matches the name as registered; do not use initials if your full name is registered</li>
-          </ul>
-        </div>
-        <div className="rounded-lg border border-hairline bg-surface p-4">
-          <p className="!mt-0 text-[13px] font-semibold uppercase tracking-wide text-ink-soft">Before clicking Submit</p>
-          <ul className="!mt-2 space-y-1 text-[14px]">
-            <li>Preview the uploaded images in the portal — confirm they render correctly and are not blurry</li>
-            <li>Keep the original high-resolution photo and signature files; you will need them for document verification at the exam centre</li>
-            <li>Save or print the application form immediately after submission — edit windows often close within hours</li>
-          </ul>
-        </div>
+      <h2>Three workflows that should not be mixed</h2>
+      <div className="my-5 overflow-x-auto rounded-xl border border-hairline">
+        <table className="min-w-[720px] w-full border-collapse text-[14px]">
+          <thead>
+            <tr className="border-b border-hairline text-left">
+              <th className="px-4 py-3 font-semibold text-ink">Example</th>
+              <th className="px-4 py-3 font-semibold text-ink">Photograph workflow</th>
+              <th className="px-4 py-3 font-semibold text-ink">Separate signature</th>
+              <th className="px-4 py-3 font-semibold text-ink">What a tool can help with</th>
+            </tr>
+          </thead>
+          <tbody className="text-ink-soft">
+            <tr className="border-b border-hairline/60">
+              <td className="px-4 py-3 font-medium text-ink">SSC</td>
+              <td className="px-4 py-3">Live capture; no prepared photo upload in the cited notice</td>
+              <td className="px-4 py-3">{ssc.sigMinKb}–{ssc.sigLimitKb} KB JPG/JPEG, about 6.0×2.0 cm</td>
+              <td className="px-4 py-3">Prepare the separate signature; follow the camera interface for the photo</td>
+            </tr>
+            <tr className="border-b border-hairline/60">
+              <td className="px-4 py-3 font-medium text-ink">IBPS</td>
+              <td className="px-4 py-3">{ibps.photoMinKb}–{ibps.photoLimitKb} KB JPG/JPEG at 200×230 px</td>
+              <td className="px-4 py-3">{ibps.sigMinKb}–{ibps.sigLimitKb} KB at 140×60 px</td>
+              <td className="px-4 py-3">Prepare both stored frames and KB bands</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-3 font-medium text-ink">UPSC</td>
+              <td className="px-4 py-3">{upsc.photoMinKb}–{upsc.photoLimitKb} KB prepared JPG plus mandatory live photograph</td>
+              <td className="px-4 py-3">One {upsc.sigMinKb}–{upsc.sigLimitKb} KB JPG containing three signatures vertically</td>
+              <td className="px-4 py-3">Prepare the upload files; the live capture still happens in the portal</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <p className="text-[13px] text-ink-soft">
+        Sources: <a href={ssc.source!.url} target="_blank" rel="noopener noreferrer" className="text-brand underline">SSC 2026 notice</a>,{" "}
+        <a href={ibps.source!.url} target="_blank" rel="noopener noreferrer" className="text-brand underline">IBPS notification</a>, and{" "}
+        <a href={upsc.source!.url} target="_blank" rel="noopener noreferrer" className="text-brand underline">UPSC upload instructions</a>.
+      </p>
 
-      <h2>Two stages where rejections happen — and why that matters</h2>
+      <h2>1. The file is outside the published KB band</h2>
       <p>
-        Knowing <em>when</em> a rejection can occur changes how urgently you need
-        to act. There are two distinct gates:
+        A prepared upload can have both a minimum and a maximum. For example,
+        IBPS records {ibps.photoMinKb}–{ibps.photoLimitKb}&nbsp;KB for the photo
+        and {ibps.sigMinKb}–{ibps.sigLimitKb}&nbsp;KB for the signature. Compressing
+        below the minimum does not satisfy that band. SSC&apos;s current live
+        photograph has no prepared-photo band, so do not apply the IBPS number to it.
       </p>
+
+      <h2>2. Published dimensions do not match</h2>
       <p>
-        <strong>Gate 1 — automated portal validation (at upload).</strong> This
-        checks file size, pixel dimensions, format, and basic colour histogram.
-        Failures here are immediate: the page shows an error and you cannot
-        proceed. You fix and resubmit before the form closes. This is the gate
-        that catches reasons 1–4 above.
+        Some upload fields publish a final pixel frame. IBPS records 200×230&nbsp;px
+        for the photo and 140×60&nbsp;px for the signature. Other sources, including
+        current UPSC photo instructions and the current SSC live-photo workflow,
+        publish no fixed photo pixels. When no dimensions are published, do not
+        invent them or copy them from another exam.
       </p>
+
+      <h2>3. The encoded format is different</h2>
       <p>
-        <strong>Gate 2 — manual review at document verification.</strong> This
-        happens on the exam day or during the document-verification stage (DV)
-        that follows the written exam. A human scrutinises the physical printout
-        of your form against original documents. Photo quality issues — wrong
-        background, glasses, expression, recency — are almost always caught here,
-        not at Gate 1. A rejection at this stage is far more costly: you may be
-        disqualified from a test you have already passed.
+        A file named <code>.jpg</code> should contain JPEG bytes when the field
+        asks for JPG/JPEG. Renaming a PNG or HEIC file does not convert it. Use a
+        portal-specific workflow or the <Link href="/convert/">format converter</Link>,
+        then open the downloaded file once before uploading it.
       </p>
+
+      <h2>4. The signature crop or paper field is unclear</h2>
       <p>
-        This is why fixing <em>only</em> the technical specs is not enough. A
-        photo that passes Gate 1 automatically but contains quality issues will
-        wait until DV to bite you.
+        A large paper margin, shadow, faint stroke or clipped signature can make
+        the prepared image hard to read. The <Link href="/tools/signature-resize/">signature tool</Link>{" "}
+        can clean and crop the image, choose ink presentation and prepare a KB
+        target. Use the ink colour and background stated by the selected notice;
+        there is no universal black-or-blue rule.
+      </p>
+
+      <h2>5. The wrong name/date treatment is used</h2>
+      <p>
+        A digital strip is recorded for TNPSC, APPSC and Kerala PSC. Current
+        UPSC, SSC and IBPS instructions do not list one. Airforce and Navy
+        Agniveer notices instead describe a physical black slate held when the
+        photograph is taken. The <Link href="/tools/photo-with-name-date/">digital name/date tool</Link>{" "}
+        should be used only for a notice that requests the digital treatment.
+      </p>
+
+      <h2>6. The live capture or source image is unclear</h2>
+      <p>
+        For a live camera step, follow the on-screen framing, lighting and
+        background instructions. For a prepared file, start with a clear source
+        that shows everything the current notice requests. Compression can change
+        bytes and dimensions; it cannot restore missing detail, prove identity or
+        reproduce the authority&apos;s final review.
+      </p>
+
+      <h2>A practical pre-submission check</h2>
+      <ul>
+        <li>Confirm the exam, year and notice URL.</li>
+        <li>Confirm whether the photograph is live capture, prepared upload, or both.</li>
+        <li>For each prepared file, check encoded format, KB band and published dimensions.</li>
+        <li>Follow only the ink, background, name/date and composition rules stated for that workflow.</li>
+        <li>Preview the result in the portal before final submission.</li>
+      </ul>
+      <p>
+        The <Link href="/exam-requirements/">exam requirements directory</Link>{" "}
+        shows each registry entry&apos;s source and verification status. Entries marked
+        needs review should be confirmed in the live form before use.
       </p>
 
       <div className="mt-12">

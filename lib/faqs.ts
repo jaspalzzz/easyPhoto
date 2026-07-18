@@ -22,7 +22,7 @@ export function resizerMetaDescription(spec: PortalSpec, label: string): string 
   const sig = spec.sigLimitKb
     ? ` and signature to ${spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}${spec.sigLimitKb} KB`
     : "";
-  return `Compress your ${label} photo to ${photo}${px}${sig} — the exact size the ${label} form needs. Free, no watermark, 100% in your browser.`;
+  return `Prepare your ${label} photo to the stored ${photo}${px}${sig} target. Verify the current form instructions before use. Free, no watermark, processed in your browser.`;
 }
 
 /**
@@ -47,27 +47,41 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
   // aspect ratio. Claiming we keep "the correct dimensions", or that the wrong
   // ones cause rejection, invents a requirement the authority never published.
   const hasGeometry = photoPx !== null || spec.photoAspectRatio !== undefined;
+  const usesLivePhotoCapture = /(?:photograph|photo).{0,35}(?:captured|capture).{0,20}live|live.{0,20}(?:photograph|photo)|no pre-existing photo upload/i.test(
+    `${spec.description} ${spec.context ?? ""}`
+  );
+  const signaturePreparation = spec.signatureInk
+    ? `Follow the stored ink instruction (${spec.signatureInk}) on white paper, then upload it here to clean and resize it.`
+    : "Follow the current notice's ink and paper instructions, then upload it here to clean and resize it.";
 
   const items: FaqItem[] = [
     {
       q: `What is the photo size for the ${spec.name} application?`,
-      a: `The ${spec.name} photo should be ${photoKb}${photoDim}, in JPG format. This tool resizes and compresses your photo to fit automatically.`,
+      a: usesLivePhotoCapture
+        ? `The current stored instructions describe live photograph capture rather than a pre-existing photo upload. The ${photoKb}${photoDim} value shown by this tool is a compatibility target, not a current live-capture upload requirement. Confirm the active form before preparing a file.`
+        : `The stored ${spec.name} target is ${photoKb}${photoDim}, in JPG format. This tool resizes and compresses a prepared photo to that target; confirm the active form before submitting.`,
     },
   ];
   if (sigKb) {
     items.push({
       q: `What is the signature size for ${spec.name}?`,
-      a: `The signature should be ${sigKb}${sigDim}. Sign on white paper in black ink, then upload it here to clean and resize it.`,
+      a: `The stored signature target is ${sigKb}${sigDim}. ${signaturePreparation}`,
     });
   }
   items.push(
     {
-      q: `How do I resize my photo to ${photoKb} for ${spec.name}?`,
-      a: `Upload your photo and the tool compresses it under the ${spec.name} limit ${hasGeometry ? "while keeping the correct dimensions" : "without stretching or distorting it"}. Everything runs in your browser.`,
+      q: usesLivePhotoCapture
+        ? `How does the ${spec.name} live-photo step work?`
+        : `How do I resize my photo to ${photoKb} for ${spec.name}?`,
+      a: usesLivePhotoCapture
+        ? `The current instructions use live capture, so there may be no photo file to resize. If a later form exposes a file upload, first confirm its limits; this tool can then compress a prepared image without stretching or distorting it.`
+        : `Upload your photo and the tool compresses it to the stored ${spec.name} target ${hasGeometry ? "and applies the recorded dimensions" : "without stretching or distorting it"}. Everything runs in your browser.`,
     },
     {
       q: `Why do ${spec.name} photos${sigKb ? " and signatures" : ""} get rejected?`,
-      a: `The most common reasons are the wrong file size (outside the ${photoKb}${sigKb ? ` photo / ${sigKb} signature` : ""} range)${hasGeometry ? ", wrong pixel dimensions" : ""}, a non-JPG file, a busy or coloured background, or a blurry, low-resolution scan.${sigKb ? " Signatures are also rejected when they are faint, sit on a grey or coloured background, or show the paper edge." : ""} This tool fixes the ${hasGeometry ? "size, dimensions and format" : "size and format"} automatically — just start from a clear, well-lit photo on a plain background.`,
+      a: usesLivePhotoCapture
+        ? `For a live photograph, follow the capture screen's lighting, framing and background instructions. No pre-existing photo file is uploaded in the stored workflow.${sigKb ? ` A separate signature can still fail when it falls outside ${sigKb}, uses an unsupported format, is faint, or includes the paper edge.` : ""} This tool cannot validate the authority's live camera step.`
+        : `Common upload problems include a file outside the ${photoKb}${sigKb ? ` photo / ${sigKb} signature` : ""} range${hasGeometry ? ", dimensions that do not match the recorded frame" : ""}, an unsupported format, a busy background, or a blurry scan.${sigKb ? " A signature can also fail when it is faint or includes the paper edge." : ""} The tool checks measurable output properties; it cannot guarantee acceptance.`,
     },
     {
       q: `Is this ${spec.name} resizer free and private?`,
@@ -143,16 +157,16 @@ export const PHOTO_RESIZE_FAQ: FaqItem[] = [
 
 export const SIGNATURE_FAQ: FaqItem[] = [
   { q: "How do I resize my signature for an online form?", a: "Upload a scan or photo of your signature, set the size, and download. The paper background is removed and transparency is kept." },
-  { q: "What size should a signature be for a form?", a: "Often 10–20KB and a few hundred pixels wide. Check the limit stated on your form." },
+  { q: "What size should a signature be for a form?", a: "It varies by authority and cycle. Check the current form for its format, KB band and any published dimensions before resizing." },
   { q: "How do I make my signature 10KB or 20KB?", a: "Use the signature-to-20KB tool, which compresses to the cap while keeping a transparent background." },
-  { q: "How do I resize a signature for UPSC or SSC?", a: "These typically want a 10–20KB signature on a clean background, which is exactly what the signature tools produce." },
-  { q: "What are the signature dimensions in pixels for forms?", a: "Commonly around 140×60 to 300×80 pixels. Use the resize-by-dimensions option for an exact size." },
+  { q: "How do I resize a signature for UPSC or SSC?", a: "Current UPSC instructions request one 20–100 KB JPG containing three signatures vertically. The cited SSC notice requests a separate 10–20 KB JPG/JPEG signature at about 6.0×2.0 cm. Confirm your exam notice before use." },
+  { q: "What are the signature dimensions in pixels for forms?", a: "Use pixel dimensions only when the current authority source publishes them. Several portals publish a KB band or physical size but no fixed pixels." },
   { q: "How do I get a transparent signature?", a: "The tool lifts the paper background and exports a transparent PNG so it sits cleanly on documents." },
   { q: "How do I scan my signature for a form?", a: "Sign on plain white paper, photograph or scan it in good light, then upload, and we clean it up." },
   { q: "Can I resize my signature on my phone?", a: "Yes, photograph your signature and process it directly in the mobile browser." },
   { q: "How do I remove the background from a signature?", a: "Use the signature background-removal tool or the transparent option to drop the paper." },
-  { q: "Why won't my signature upload?", a: "Usually it's too large or has a white box around it. Compress it and keep a transparent background." },
-  { q: "What format should a signature be, PNG or JPG?", a: "PNG if you need transparency, which most forms expect. JPG works if a white background is acceptable." },
+  { q: "Why won't my signature upload?", a: "Compare the actual encoded format, KB band and any published dimensions with the current field. A transparent PNG will not satisfy a field that requests JPG/JPEG." },
+  { q: "What format should a signature be, PNG or JPG?", a: "Use the format requested by the destination. PNG preserves transparency for overlays; many exam portals instead request JPG/JPEG on a white field." },
   { q: "How do I crop my signature?", a: "The signature crop tool auto-trims the empty space around the ink." },
   { q: "Is the signature resizer free?", a: "Yes, free with no watermark." },
   { q: "Is my signature uploaded anywhere?", a: "No, it's processed on your device only." },
@@ -213,9 +227,9 @@ export const WHITE_BACKGROUND_FAQ: FaqItem[] = [
 ];
 
 export const EXAM_PACKAGE_FAQ: FaqItem[] = [
-  { q: "What is the Exam Application Kit?", a: "It's a guided flow that gets your photo and signature into the exact size, dimensions and file size an exam form needs. Pick your exam, add your photo and signature, and download an application-ready set in one go." },
-  { q: "Which exams does it support?", a: "Indian exam and recruitment portals including SSC, UPSC, IBPS, SBI, Railway (RRB), NEET/JEE (NTA), RBI, CTET and state PSCs. Each preset uses that exam's published photo and signature requirements." },
-  { q: "What photo and signature size do exam forms need?", a: "It varies by exam, but photos are commonly 20–50 KB and signatures 10–20 KB, each within set pixel dimensions. The kit applies the right values for the exam you pick, so you don't have to look them up." },
+  { q: "What is the Exam Application Kit?", a: "It is a guided flow that prepares photo and signature files to the selected stored preset, then bundles them for download. Confirm the preset against the current form before submitting." },
+  { q: "Which exams does it support?", a: "It includes stored presets for SSC, UPSC, IBPS, SBI, Railway (RRB), NTA, RBI, CTET and state PSCs. Each page shows whether its source is dated official evidence or still needs review." },
+  { q: "What photo and signature size do exam forms need?", a: "It varies by exam and workflow. Some portals publish prepared-file KB bands and dimensions; some use live capture; some presets still need review. Select the exam and verify its current source." },
   { q: "Do I need to resize the photo and signature separately?", a: "No. The kit handles both in one flow — it sizes the photo, cleans and sizes the signature, and gives you files that fit the form's limits." },
   { q: "Is the Exam Application Kit free and private?", a: "Yes. It's free, with no watermark and no sign-up, and everything runs in your browser — your photo and signature are never uploaded to any server." },
   { q: "Should I still check the official exam notification?", a: "Yes. Requirements can change between notification cycles, so confirm the current photo and signature limits in the official notification before you submit." },

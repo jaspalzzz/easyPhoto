@@ -5,7 +5,7 @@ import { Download, ShieldCheck, Eraser, Crop, Maximize2, Info } from "lucide-rea
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
-import { imageToCanvas, canvasToBlob, pngUnderKb, picaResizeTo } from "@/lib/imaging";
+import { fitToExactFrame, imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import {
   whiteToTransparent,
   trimToContent,
@@ -31,6 +31,9 @@ interface SignatureWorkflowProps {
   toolName?: string;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
+  /** Preselect and enforce the signature settings for an embedded portal tool. */
+  defaultPresetKey?: string;
+  defaultFormat?: "png" | "jpeg";
   /** Reports the currently-loaded source up to a parent that embeds this tool
    *  inline (e.g. a photo/signature tab switcher) so it can hand the same
    *  file to a sibling tool instead of losing it on switch. */
@@ -74,6 +77,8 @@ function Body({
   autoCropDefault = true,
   toolName = "signature-workflow",
   minKb,
+  defaultPresetKey,
+  defaultFormat,
   onSourceChange,
 }: {
   source: ToolSource;
@@ -82,6 +87,8 @@ function Body({
   autoCropDefault?: boolean;
   toolName?: string;
   minKb?: number;
+  defaultPresetKey?: string;
+  defaultFormat?: "png" | "jpeg";
   onSourceChange?: (source: ToolSource | null) => void;
 }) {
   React.useEffect(() => {
@@ -94,7 +101,13 @@ function Body({
   const [activeTab, setActiveTab] = React.useState<Tab>(defaultTab);
 
   // Background Settings (PNG vs JPEG)
-  const [bgFormat, setBgFormat] = React.useState<"png" | "jpeg">("png");
+  const initialPreset = defaultPresetKey ? PORTAL_PRESETS[defaultPresetKey] : undefined;
+  const inferredFormat = /\b(?:JPG|JPEG)\b/i.test(initialPreset?.description ?? "")
+    ? "jpeg"
+    : "png";
+  const [bgFormat, setBgFormat] = React.useState<"png" | "jpeg">(
+    defaultFormat ?? inferredFormat
+  );
 
   // Clean Settings
   const [threshold, setThreshold] = React.useState(200);
@@ -106,13 +119,15 @@ function Body({
   const [padding, setPadding] = React.useState(12);
 
   // Resize Settings
-  const [presetKey, setPresetKey] = React.useState<string>("");
-  const [resizeMode, setResizeMode] = React.useState<"kb" | "pixels">("kb");
-  const [targetKb, setTargetKb] = React.useState(defaultKb);
+  const [presetKey, setPresetKey] = React.useState<string>(defaultPresetKey ?? "");
+  const [resizeMode, setResizeMode] = React.useState<"kb" | "pixels">(
+    initialPreset?.sigWidthPx && initialPreset.sigHeightPx ? "pixels" : "kb"
+  );
+  const [targetKb, setTargetKb] = React.useState(initialPreset?.sigLimitKb ?? defaultKb);
   
   // Custom Dimension Resizing
-  const [width, setWidth] = React.useState<number>(0);
-  const [height, setHeight] = React.useState<number>(0);
+  const [width, setWidth] = React.useState<number>(initialPreset?.sigWidthPx ?? 0);
+  const [height, setHeight] = React.useState<number>(initialPreset?.sigHeightPx ?? 0);
   const [lock, setLock] = React.useState(true);
   // Stable aspect ratio derived from source on first pipeline output — not from stale `out`
   const lockedAspectRef = React.useRef<number | null>(null);
@@ -360,17 +375,33 @@ function Body({
             resultBlob = await padBlobToMin(resultBlob, minKb * 1024);
           }
         } else {
-          // Custom pixels resizing
-          const resized = await picaResizeTo(
+          // Exact portal frame: preserve handwriting proportions, then enforce
+          // the selected KB band without shrinking away from the required pixels.
+          const targetWidth = dWidth || renderCanvas.width;
+          const targetHeight = dHeight || renderCanvas.height;
+          const resized = await fitToExactFrame(
             renderCanvas,
-            dWidth || renderCanvas.width,
-            dHeight || renderCanvas.height
+            targetWidth,
+            targetHeight,
+            bgFormat === "jpeg" ? "#ffffff" : undefined
           );
-          resultBlob = await canvasToBlob(
-            resized,
-            bgFormat === "jpeg" ? "image/jpeg" : "image/png",
-            bgFormat === "jpeg" ? 0.9 : undefined
-          );
+          if (bgFormat === "jpeg") {
+            const compressed = await compressToCap(resized, dTargetKb, {
+              minScale: 1,
+              minDimensions: { width: targetWidth, height: targetHeight },
+              minKb,
+              maxQuality: 1,
+            });
+            resultBlob = compressed.blob;
+            isUnderCap = compressed.underCap;
+          } else {
+            const compressed = await pngUnderKb(resized, dTargetKb, 1);
+            resultBlob = compressed.blob;
+            isUnderCap = compressed.underCap;
+            if (minKb && isUnderCap && resultBlob.size < minKb * 1024) {
+              resultBlob = await padBlobToMin(resultBlob, minKb * 1024);
+            }
+          }
           resultCanvas = resized;
         }
 
@@ -450,6 +481,7 @@ function Body({
         setResizeMode("kb");
         setTargetKb(preset.sigLimitKb);
       }
+      setBgFormat(/\b(?:JPG|JPEG)\b/i.test(preset.description) ? "jpeg" : "png");
       
       // If portal specifies preset dimensions, we lock those dimensions
       if (preset.sigWidthPx && preset.sigHeightPx) {
@@ -895,10 +927,10 @@ function Body({
                     <input
                       id="sig-resize-target-kb"
                       type="range"
-                      min={5}
+                      min={minKb ?? 5}
                       max={150}
                       value={targetKb}
-                      onChange={(e) => setTargetKb(Number(e.target.value))}
+                      onChange={(e) => setTargetKb(Math.max(minKb ?? 5, Number(e.target.value)))}
                       className="w-full cursor-pointer accent-brand"
                     />
                   </label>
@@ -956,6 +988,8 @@ export function SignatureWorkflowTool({
   autoCropDefault = true,
   toolName = "signature-workflow",
   minKb,
+  defaultPresetKey,
+  defaultFormat,
   onSourceChange,
 }: SignatureWorkflowProps) {
   React.useEffect(() => {
@@ -972,6 +1006,8 @@ export function SignatureWorkflowTool({
           autoCropDefault={autoCropDefault}
           toolName={toolName}
           minKb={minKb}
+          defaultPresetKey={defaultPresetKey}
+          defaultFormat={defaultFormat}
           onSourceChange={onSourceChange}
         />
       )}

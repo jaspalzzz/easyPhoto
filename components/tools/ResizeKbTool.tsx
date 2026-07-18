@@ -5,7 +5,12 @@ import { Loader2, Download, Share2, Crop, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
-import { imageToCanvas } from "@/lib/imaging";
+import {
+  cropAndResizeToExact,
+  cropToAspectRatio,
+  imageToCanvas,
+  matchesAspectRatio,
+} from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
 import { downloadBlob, shareFile } from "@/lib/download";
@@ -16,9 +21,11 @@ interface BodyProps {
   source: ToolSource;
   defaultKb: number;
   toolName: string;
-  /** Portal minimum pixel size — compression won't shrink below this. */
-  minWidth?: number;
-  minHeight?: number;
+  /** Published portal output dimensions. When present, the export is exact. */
+  requiredWidth?: number;
+  requiredHeight?: number;
+  /** Published width/height ratio when the portal does not publish fixed pixels. */
+  requiredAspectRatio?: number;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -31,7 +38,7 @@ interface BodyProps {
   onSourceChange?: (source: ToolSource | null) => void;
 }
 
-function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, densityDpi, requirementLabel, onSourceChange }: BodyProps) {
+function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, minKb, densityDpi, requirementLabel, onSourceChange }: BodyProps) {
   React.useEffect(() => {
     onSourceChange?.(source);
     return () => onSourceChange?.(null);
@@ -77,19 +84,35 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
     setError(null);
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
     try {
-      const canvas = imageToCanvas(
-        source.image,
-        source.size.width,
-        source.size.height,
-        "#ffffff"   // JPEG output — fill white so transparent areas don't go black
-      );
-      // Compress to the KB cap. If the portal specifies a minimum pixel size,
-      // never shrink below it (an undersized photo gets rejected); otherwise
-      // allow downscaling to 10% so small KB targets stay reachable.
-      const minDimensions =
-        minWidth && minHeight ? { width: minWidth, height: minHeight } : undefined;
+      const hasRequiredDimensions = !!(requiredWidth && requiredHeight);
+      const hasRequiredAspect =
+        !hasRequiredDimensions &&
+        !!requiredAspectRatio &&
+        Number.isFinite(requiredAspectRatio) &&
+        requiredAspectRatio > 0;
+      const canvas = hasRequiredDimensions
+        ? await cropAndResizeToExact(
+            source.image,
+            requiredWidth!,
+            requiredHeight!,
+            "#ffffff"
+          )
+        : hasRequiredAspect
+          ? cropToAspectRatio(source.image, requiredAspectRatio!, "#ffffff")
+        : imageToCanvas(
+            source.image,
+            source.size.width,
+            source.size.height,
+            "#ffffff" // JPEG output — fill white so transparent areas don't go black
+          );
+      // A published width/height is the final output frame, not a lower bound.
+      // Start at that exact frame and prevent compression from shrinking it.
+      // Portals without published pixels can still scale down to hit a tight cap.
+      const minDimensions = hasRequiredDimensions
+        ? { width: requiredWidth!, height: requiredHeight! }
+        : undefined;
       const res = await compressToCap(canvas, targetKb, {
-        minScale: 0.1,
+        minScale: hasRequiredDimensions ? 1 : 0.1,
         minDimensions,
         minKb,
         densityDpi,
@@ -194,9 +217,9 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
           <input
             type="number"
             inputMode="numeric"
-            min={5}
+            min={minKb ?? 5}
             value={targetKb}
-            onChange={(e) => setTargetKb(Math.max(5, Number(e.target.value) || 0))}
+            onChange={(e) => setTargetKb(Math.max(minKb ?? 5, Number(e.target.value) || 0))}
             className="h-10 w-32 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
           />
         </label>
@@ -207,9 +230,13 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
             "Compress to size"
           )}
         </Button>
-        {minWidth && minHeight ? (
+        {requiredWidth && requiredHeight ? (
           <span className="text-xs text-muted-foreground">
-            Kept at ≥ {minWidth}×{minHeight}px
+            Output: {requiredWidth}×{requiredHeight}px
+          </span>
+        ) : requiredAspectRatio ? (
+          <span className="text-xs text-muted-foreground">
+            Output width ÷ height: {requiredAspectRatio.toFixed(3)}
           </span>
         ) : null}
       </div>
@@ -235,13 +262,26 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
                   result.underCap &&
                   (!minKb || result.bytes >= minKb * 1024),
               },
-              ...(minWidth && minHeight
+              ...(requiredWidth && requiredHeight
                 ? [
                     {
                       label: "Dimensions",
-                      value: `${result.width}×${result.height}px (min ${minWidth}×${minHeight})`,
+                      value: `${result.width}×${result.height}px (needs ${requiredWidth}×${requiredHeight})`,
                       ok:
-                        result.width >= minWidth && result.height >= minHeight,
+                        result.width === requiredWidth && result.height === requiredHeight,
+                    },
+                  ]
+                : []),
+              ...(!requiredWidth && !requiredHeight && requiredAspectRatio
+                ? [
+                    {
+                      label: "Aspect ratio",
+                      value: `${result.width}×${result.height}px (width ÷ height ${requiredAspectRatio.toFixed(3)})`,
+                      ok: matchesAspectRatio(
+                        result.width,
+                        result.height,
+                        requiredAspectRatio
+                      ),
                     },
                   ]
                 : []),
@@ -264,13 +304,22 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
               shrink it further.
             </p>
           )}
-          {minWidth && minHeight && (result.width < minWidth || result.height < minHeight) && (
+          {requiredWidth && requiredHeight &&
+            (result.width !== requiredWidth || result.height !== requiredHeight) && (
             <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
-              Your original photo doesn&apos;t have enough pixels for this
-              portal&apos;s {minWidth}×{minHeight}px minimum. Retake with your
-              phone&apos;s main (back) camera, or use a less-cropped original.
+              The output could not be prepared at the required {requiredWidth}×
+              {requiredHeight}px. Try a clearer, less-cropped original.
             </p>
           )}
+          {!requiredWidth &&
+            !requiredHeight &&
+            requiredAspectRatio &&
+            !matchesAspectRatio(result.width, result.height, requiredAspectRatio) && (
+              <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
+                The output could not retain the published width-to-height ratio.
+                Try a larger or clearer original.
+              </p>
+            )}
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="cta" size="sm" onClick={handleDownload}>
               <Download className="h-4 w-4" strokeWidth={1.75} /> Download JPG ·{" "}
@@ -313,8 +362,9 @@ function Body({ source, defaultKb, toolName, minWidth, minHeight, minKb, density
 export function ResizeKbTool({
   defaultKb = 200,
   toolName = "resize-kb",
-  minWidth,
-  minHeight,
+  requiredWidth,
+  requiredHeight,
+  requiredAspectRatio,
   minKb,
   densityDpi,
   requirementLabel,
@@ -322,8 +372,9 @@ export function ResizeKbTool({
 }: {
   defaultKb?: number;
   toolName?: string;
-  minWidth?: number;
-  minHeight?: number;
+  requiredWidth?: number;
+  requiredHeight?: number;
+  requiredAspectRatio?: number;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -344,8 +395,9 @@ export function ResizeKbTool({
           source={source}
           defaultKb={defaultKb}
           toolName={toolName}
-          minWidth={minWidth}
-          minHeight={minHeight}
+          requiredWidth={requiredWidth}
+          requiredHeight={requiredHeight}
+          requiredAspectRatio={requiredAspectRatio}
           minKb={minKb}
           densityDpi={densityDpi}
           requirementLabel={requirementLabel}

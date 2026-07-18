@@ -269,7 +269,10 @@ export async function compressToCap(
     bytes: blob.size,
     width: res.payload.width,
     height: res.payload.height,
-    underCap: res.underCap,
+    // Padding can only satisfy a portal band when its floor is not above the
+    // selected ceiling. Re-evaluate the final blob instead of reporting the
+    // pre-padding encoder verdict.
+    underCap: res.underCap && blob.size <= maxKb * 1024,
   };
 }
 

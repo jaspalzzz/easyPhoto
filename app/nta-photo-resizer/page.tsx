@@ -27,7 +27,7 @@ export default function Page() {
       faqItems={portalFaqItems(spec)}
       path="/nta-photo-resizer/"
       dateModified={spec.verifiedOn}
-      blurb={`Resize your passport photo to ${spec.photoMinKb}–${spec.photoLimitKb} KB${photoDims} for NTA exams (NEET-UG, JEE Main, CUET) — the exact format the NTA portal accepts.`}
+      blurb={`Resize your passport photo to the ${spec.photoMinKb}–${spec.photoLimitKb} KB${photoDims} range the NTA application lists for NEET-UG, JEE Main and CUET. Confirm the current exam notice before applying.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >
       <ExamSubmitTips hasSignature={spec.sigLimitKb !== undefined} className="mb-6" />

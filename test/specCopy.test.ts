@@ -16,6 +16,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { allPortalSpecs, photoDimsPx, sigDimsPx } from "@/lib/specRegistry";
 import { resizerMetaDescription, portalFaqItems } from "@/lib/faqs";
+import { SUB_EXAM_RESIZERS } from "@/lib/subExamResizers";
 
 const ROOTS = ["app", "components", "lib"];
 const SOURCE_EXT = /\.(ts|tsx)$/;
@@ -74,6 +75,31 @@ describe("spec copy — renders cleanly for every portal in the registry", () =>
       expect(copy).not.toMatch(/undefined|null|NaN/);
     }
   );
+
+  it("describes SSC's current live-photo workflow instead of a file-upload requirement", () => {
+    const ssc = specs.find((s) => s.id === "ssc")!;
+    const answers = portalFaqItems(ssc).map((f) => f.a).join("\n");
+    expect(answers).toMatch(/live (?:photograph|capture)|live camera/i);
+    expect(answers).toMatch(/no pre-existing photo|rather than a pre-existing photo upload/i);
+    expect(answers).not.toMatch(/photo should be 20[–-]50 KB/i);
+  });
+
+  it("keeps every SSC sub-exam note on the live-photo workflow", () => {
+    const notes = SUB_EXAM_RESIZERS.filter((item) => item.parentId === "ssc")
+      .map((item) => item.note)
+      .join("\n");
+    expect(notes).toMatch(/live photograph capture/i);
+    expect(notes).not.toMatch(/photo and signature are uploaded|photo.*uploaded once/i);
+  });
+
+  it("does not invent black ink when a portal has no stored signature-ink rule", () => {
+    const withoutInk = specs.find((s) => s.sigLimitKb && !s.signatureInk)!;
+    const signatureAnswer = portalFaqItems(withoutInk).find((f) =>
+      /signature size/i.test(f.q)
+    )!.a;
+    expect(signatureAnswer).not.toMatch(/black ink/i);
+    expect(signatureAnswer).toMatch(/current notice/i);
+  });
 
   // A portal that publishes neither pixels nor an aspect ratio constrains nothing
   // but file size. Promising we keep "the correct dimensions", or blaming the wrong

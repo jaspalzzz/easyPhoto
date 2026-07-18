@@ -21,7 +21,7 @@ export default function Page() {
       <p>
         Online exam portals reject documents for predictable, preventable reasons.
         The photo is too large. The signature has a grey background. The marksheet
-        PDF is 3&nbsp;MB when the portal caps it at 100&nbsp;KB. The Aadhaar shows
+        PDF exceeds the limit displayed by the portal. The Aadhaar shows
         all 12 digits when the form wanted a masked copy. None of these take more
         than a few minutes to fix — if you know what each portal expects before you
         start filling the form.
@@ -32,18 +32,18 @@ export default function Page() {
         <ul className="!mt-2 list-none space-y-1.5 pl-0 text-[15px]">
           <li>
             <span className="mr-2 text-green-400">&#10003;</span>
-            <strong>Photo</strong> — JPG, white background, 20–50&nbsp;KB for most
-            portals (UPSC allows 20–200&nbsp;KB); match the pixel size your portal states
+            <strong>Photo</strong> — follow the selected portal&apos;s workflow;
+            some request a prepared JPG while current SSC and RRB notices use live capture
           </li>
           <li>
             <span className="mr-2 text-green-400">&#10003;</span>
-            <strong>Signature</strong> — JPG or PNG, black ink on white paper,
-            10–20&nbsp;KB, transparent background for some portals
+            <strong>Signature</strong> — follow the current format, ink, dimensions
+            and KB instructions; these differ by portal
           </li>
           <li>
             <span className="mr-2 text-green-400">&#10003;</span>
-            <strong>Certificate PDFs</strong> — marksheets, degree certificate,
-            caste/category proof compressed to 50–100&nbsp;KB each
+            <strong>Certificate PDFs</strong> — marksheets, degree certificate and
+            category proof compressed only to the limit shown by the current form
           </li>
           <li>
             <span className="mr-2 text-green-400">&#10003;</span>
@@ -55,10 +55,10 @@ export default function Page() {
 
       <h2>What do exam portals actually need for your photo?</h2>
       <p>
-        Most Indian exam portals — SSC, IBPS, Railway — require a JPG photo
-        between 20&nbsp;KB and 50&nbsp;KB. UPSC (and the NDA/CDS exams on the same
-        portal) allow a wider 20&#8211;200&nbsp;KB and publish no fixed pixel size
-        or square requirement. These exam uploads should not be compared with an
+        Current workflows differ. IBPS publishes a 20–50&nbsp;KB prepared photo;
+        UPSC (and NDA/CDS on the same portal) publishes 20&#8211;200&nbsp;KB and no
+        fixed photo pixels, while the current SSC and RRB notices cited in the
+        registry use live capture. These workflows should not be compared with an
         ordinary adult Passport Seva application: the adult&apos;s photograph is
         captured at the PSK/POPSK, while the 630&#215;810&nbsp;px guidance belongs
         to the overseas mission workflow.
@@ -66,19 +66,16 @@ export default function Page() {
       <p>
         The safest approach: use the{" "}
         <Link href="/tools/exam-package/">exam document package tool</Link>, which
-        knows the exact KB and pixel spec for each portal and resizes to it in one
-        step. That way you don&apos;t guess whether 48&nbsp;KB qualifies as
-        &ldquo;under 50&nbsp;KB&rdquo; (it does) or whether your file matches the
-        portal&apos;s stated size band. For a
+        applies the stored KB and pixel target for the selected preset. Check its
+        source and verification status first; a needs-review entry must be
+        confirmed in the current form. For a
         detailed breakdown of photo specs by exam, see the{" "}
         <Link href="/exam-requirements/">exam requirements directory</Link>.
       </p>
       <p>
-        A few rules apply everywhere, regardless of portal. No glasses. No
-        accessories that obscure the face. Taken recently — some notifications set
-        a recency window, so check yours. Good, even lighting with no shadows on the face
-        or background. If your photo was taken in a studio more than a few weeks
-        ago, retake it on a plain white wall.
+        Visual rules are also portal-specific. Follow the current notice for
+        glasses, background, recency, expression and framing rather than assuming
+        that one passport-photo checklist applies to every exam.
       </p>
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
@@ -109,23 +106,22 @@ export default function Page() {
           </div>
         </div>
         <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
-          Left: original selfie. Right: auto-corrected photo with white background and correct head framing — ready for any exam portal.
+          Illustration of a source photo and a prepared white-background version. The selected portal&apos;s current instructions still control submission.
         </figcaption>
       </figure>
 
       <h2>How do you prepare a digital signature for exam forms?</h2>
       <p>
-        Sign your name on plain white paper with a black or blue pen. Take a clear
-        photo of it in good light, or scan it at 200&nbsp;DPI. Crop out the blank
-        space around the signature and save as JPG. Most portals want the file
-        between 10&nbsp;KB and 20&nbsp;KB. SSC caps it at 20&nbsp;KB; IBPS and
-        SBI at 20&nbsp;KB; UPSC accepts up to 100&nbsp;KB for the signature sheet.
+        Follow the current notice&apos;s ink, paper, format, dimensions and KB band.
+        Take a clear photo or scan in even light and keep the complete signature
+        visible. SSC, IBPS and SBI record 10–20&nbsp;KB prepared signatures;
+        UPSC instead records one 20–100&nbsp;KB image containing three signatures
+        vertically. These are not interchangeable workflows.
       </p>
       <p>
-        A few portals render your signature on a coloured form background. If your
-        signature has a white JPG background, it will look like a white rectangle
-        sitting on the form. To avoid that, remove the background so only the ink
-        is visible. The{" "}
+        Use a transparent signature only when the destination accepts PNG or the
+        image is being overlaid on a document. When a portal requires JPG/JPEG,
+        export a white-background JPG instead. The{" "}
         <Link href="/tools/transparent-signature/">transparent signature tool</Link>{" "}
         does this in one click. For a broader walkthrough of portal
         signature rule, read{" "}
@@ -138,47 +134,42 @@ export default function Page() {
         If your signature is the right content but the wrong dimensions or KB, use
         the{" "}
         <Link href="/tools/signature-resize/">signature resize tool</Link> to hit
-        the exact spec without redoing the whole process. It keeps your aspect
+        the selected target without redoing the whole process. It keeps your aspect
         ratio intact so the signature doesn&apos;t look squashed.
       </p>
 
       <h2>How do you compress certificate PDFs for exam portals?</h2>
       <p>
-        A scanned marksheet typically comes off a scanner at 1–4&nbsp;MB. A phone
-        photo of a certificate can be 3–8&nbsp;MB. Most exam portals cap each
-        document at 50–200&nbsp;KB. The gap feels huge, but it&apos;s very
-        achievable: a greyscale scan of a single-page A4 document compresses to
-        under 100&nbsp;KB without losing legibility at reading size.
+        Certificate limits are set by the active form and are not stored in the
+        photo/signature registry. Read the document field&apos;s size and format
+        instructions before compressing; do not apply a generic 50 or 100&nbsp;KB
+        target to every certificate.
       </p>
       <p>
-        Target ranges by document type:
+        A safer document workflow:
       </p>
       <ul>
         <li>
-          <strong>10th and 12th marksheets</strong> — aim for 50–80&nbsp;KB per
-          page. If yours is multi-page, extract only the required page first using
+          <strong>10th and 12th marksheets</strong> — extract only the pages the
+          form requests using
           the <Link href="/tools/pdf-split/">PDF split tool</Link>, then compress.
         </li>
         <li>
-          <strong>Degree or diploma certificate</strong> — usually one page;
-          80–120&nbsp;KB is achievable. If the portal cap is 100&nbsp;KB, use{" "}
-          <Link href="/tools/pdf-compress/?target=100">compress PDF to 100&nbsp;KB</Link>.
+          <strong>Degree or diploma certificate</strong> — keep the required page
+          legible and compress to the limit displayed by the current field.
         </li>
         <li>
-          <strong>Caste, category, income or domicile certificate</strong> — these
-          are typically one page and compress well. Target 50–80&nbsp;KB.
+          <strong>Caste, category, income or domicile certificate</strong> — include
+          the complete requested certificate and preserve readable seals and text.
         </li>
         <li>
-          <strong>Experience letter or NOC</strong> — one to two pages;
-          80–150&nbsp;KB is usually fine.
+          <strong>Experience letter or NOC</strong> — combine only the pages the
+          form requests, in the stated order and format.
         </li>
       </ul>
       <p>
-        For portals with a 50&nbsp;KB hard cap (SSC and UPSC annexures), use{" "}
-        <Link href="/tools/pdf-compress/?target=50">compress PDF to 50&nbsp;KB</Link>. For
-        the broader category of portals that allow 100&nbsp;KB,{" "}
-        <Link href="/tools/pdf-compress/">the custom PDF compress tool</Link> lets
-        you enter any target. The full compression guide at{" "}
+        Enter the exact limit shown by the active field in the{" "}
+        <Link href="/tools/pdf-compress/">custom PDF compress tool</Link>. The full compression guide at{" "}
         <Link href="/blog/how-to-compress-pdf/">how to compress a PDF</Link>{" "}
         explains what to do when a document won&apos;t go below a certain size.
       </p>
@@ -219,12 +210,12 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["SSC (CGL, CHSL, MTS)", "20–50 KB", "10–20 KB", "50 KB per document"],
-            ["UPSC (CSE, NDA, CDS)", "20–200 KB", "20–100 KB", "100–300 KB"],
-            ["IBPS (PO, Clerk, SO)", "20–50 KB", "10–20 KB", "varies by doc"],
-            ["Railway (RRB NTPC, Group D)", "up to 100 KB", "up to 30 KB", "200 KB"],
-            ["NTA (NEET, JEE)", "10–200 KB", "4–30 KB", "100–300 KB"],
-            ["SBI PO / Clerk", "20–50 KB", "10–20 KB", "50–200 KB"],
+            ["SSC (CGL, CHSL, MTS)", "Live capture", "10–20 KB", "Confirm the current notice"],
+            ["UPSC (CSE, NDA, CDS)", "20–200 KB", "20–100 KB", "Confirm the current notice"],
+            ["IBPS (PO, Clerk, SO)", "20–50 KB", "10–20 KB", "Confirm the current notice"],
+            ["Railway (RRB NTPC, Group D)", "Live capture in the cited notice", "Current figures need review", "Confirm the current notice"],
+            ["NTA (NEET, JEE)", "10–200 KB", "4–30 KB", "Confirm the current notice"],
+            ["SBI PO / Clerk", "20–50 KB", "10–20 KB", "Confirm the current notice"],
           ].map(([portal, photo, sig, pdf]) => (
             <tr key={portal} className="border-b border-hairline/60">
               <td className="py-2 pr-3 font-medium text-ink">{portal}</td>
@@ -306,9 +297,9 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             [
-              "Photo over 50 KB",
-              "Portal rejects at file-size check before any human review",
-              "Use exam package tool — it targets the exact KB limit",
+              "Photo outside the current field's stated band",
+              "Prepared uploads may enforce both a minimum and a maximum",
+              "Use the selected stored target, then compare it with the live form",
             ],
             [
               "Signature with grey background",
@@ -316,9 +307,9 @@ export default function Page() {
               "Scan in good light or remove background with transparent signature tool",
             ],
             [
-              "Marksheet PDF at 2 MB",
-              "Portal cap is 100 KB — standard scanned page is 10-30x too large",
-              "Compress to 100 KB; scan greyscale next time",
+              "Certificate exceeds the displayed PDF limit",
+              "Document limits vary by form and field",
+              "Compress to the displayed limit while checking that text and seals remain readable",
             ],
             [
               "Full Aadhaar (all 12 digits visible)",
@@ -331,9 +322,9 @@ export default function Page() {
               "Check the requirements page for your exam and match its stated size",
             ],
             [
-              "PDF with the wrong pages (entire 60-page marksheet booklet)",
-              "Portal cap is per document — only the result page is needed",
-              "Extract required pages with PDF split, then compress",
+              "PDF contains pages the form did not request",
+              "Extra pages consume the file budget and may make the upload unclear",
+              "Extract only the explicitly requested pages, then compress",
             ],
           ].map(([mistake, reason, fix]) => (
             <tr key={mistake} className="border-b border-hairline/60 align-top">
@@ -350,19 +341,19 @@ export default function Page() {
           items={[
             {
               q: "What file size should my exam photo be?",
-              a: "Most Indian exam portals require a JPG photo between 20 KB and 50 KB. SSC caps at 50 KB, IBPS at 50 KB, and UPSC accepts up to 200 KB. Always check the official notification for your specific exam cycle — portals occasionally update their specs.",
+              a: "There is no universal exam-photo size. IBPS publishes a 20–50 KB prepared photo, UPSC publishes 20–200 KB, and current SSC applications capture the photograph live. Check the current notice for your exact exam and cycle.",
             },
             {
               q: "Can I upload a colour scan of my marksheet, or does it need to be greyscale?",
-              a: "Colour scans are usually accepted, but they're much larger — sometimes 3-5 times bigger than a greyscale scan of the same page. If you're struggling to get a PDF under 100 KB, switch to greyscale. The text is black-on-white anyway, so nothing is lost.",
+              a: "Use the colour mode requested by the form. Greyscale can reduce file size for text-only pages, but it may remove colour information from seals, stamps or annotations, so preview the result before submitting.",
             },
             {
               q: "Does my Aadhaar need to be masked for exam applications?",
               a: "Most exam portals accept masked Aadhaar for identity proof. UIDAI recommends sharing a masked copy (only the last 4 digits visible) whenever the full number isn't legally required. Check your portal's instruction; if it doesn't specifically ask for the full number, share the masked version.",
             },
             {
-              q: "My certificate PDF is 4 MB. Can it really be compressed to 100 KB?",
-              a: "Yes, for most scanned government documents. A greyscale A4 page is mostly white space with black text — that data compresses extremely well. A 4 MB colour scan of a single-page certificate typically reaches 80-120 KB after greyscale compression. Multi-page documents compress proportionally; extract only the required page first if the cap is tight.",
+              q: "How far can I compress a certificate PDF?",
+              a: "Compress only to the limit shown by the active form and inspect every page afterward. Very tight targets can make text, stamps, signatures or QR codes unreadable; extract unneeded pages before reducing quality further.",
             },
           ]}
         />

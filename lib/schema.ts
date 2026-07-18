@@ -25,13 +25,12 @@ export function organizationSchema() {
     // Perplexity) and Google surface when asked "what is easyPhoto?".
     description:
       "easyPhoto is a free, privacy-first web app for creating passport and visa " +
-      "photos to each country's official specification and preparing application " +
-      "documents. It auto-crops photos to " +
-      "each country's official head-size and background rules, resizes photos and " +
-      "signatures to exact KB and pixel limits for exam and government forms, and " +
+      "photos to selected country presets and preparing application documents. " +
+      "It crops photos using recorded head-size and background rules, resizes photos and " +
+      "signatures to selected KB and pixel targets for exam and government forms, and " +
       "offers image and PDF utilities — all running entirely in the user's browser, " +
       "with no upload, no sign-up and no watermark.",
-    slogan: "Document photos, exact to the millimetre.",
+    slogan: "Private tools for document-photo preparation.",
     knowsAbout: [
       "Passport photo requirements",
       "Visa photo specifications",
