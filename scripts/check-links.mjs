@@ -24,7 +24,10 @@ const run = promisify(execFile);
 const src = readFileSync(new URL("../lib/portalPresets.ts", import.meta.url), "utf8");
 
 const specs = [];
-for (const block of src.split(/\n  (?=[a-z0-9-]+: \{)/)) {
+// Match BOTH unquoted keys (nta:) and quoted kebab-case keys ("ccc-nielit":) —
+// the object literal quotes any key with a hyphen, and skipping those silently
+// under-checked 11 of 52 presets (kept in sync with scripts/check-specs.mjs).
+for (const block of src.split(/\n  (?=["']?[a-z0-9-]+["']?: \{)/)) {
   const id = (block.match(/id:\s*"([^"]+)"/) || [])[1];
   const url = (block.match(/url:\s*"(https?:[^"]+)"/) || [])[1];
   const verification = (block.match(/verification:\s*"([^"]+)"/) || [])[1];

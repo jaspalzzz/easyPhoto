@@ -84,7 +84,7 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">Missing name and date on photo</td>
-            <td className="py-2 pr-3">Add a clean strip with the name &amp; date photo tool (UPSC, Army only)</td>
+            <td className="py-2 pr-3">Add a clean strip with the name &amp; date photo tool (TNPSC, IAF Agniveer and a few others — check your notification)</td>
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">Photo quality (background, shadows, glasses)</td>
@@ -146,10 +146,10 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">RRB NTPC / Group D</td>
-            <td className="py-2 pr-3">15–40 KB</td>
-            <td className="py-2 pr-3">200×230 px</td>
-            <td className="py-2 pr-3">10–20 KB</td>
-            <td className="py-2 pr-3">140×60 px</td>
+            <td className="py-2 pr-3">20–50 KB</td>
+            <td className="py-2 pr-3">live capture</td>
+            <td className="py-2 pr-3">30–49 KB</td>
+            <td className="py-2 pr-3">140×60 px min</td>
             <td className="py-2 pr-3">JPG</td>
           </tr>
           <tr className="border-b border-hairline/60">
@@ -163,9 +163,9 @@ export default function Page() {
         </tbody>
       </table>
       <p className="text-[13px] text-ink-soft">
-        Note: UPSC sets a maximum only — it does not enforce a minimum KB floor,
-        which is why UPSC rejections are rarer on file-size grounds than SSC or
-        IBPS ones.
+        Note: UPSC allows a wide 20–200&nbsp;KB photo band, so files rarely fall
+        outside it — rejections on file-size grounds are less common than for the
+        tighter SSC or IBPS ranges.
       </p>
 
       <h2>1. The file size is wrong — too big or too small</h2>
@@ -332,7 +332,7 @@ export default function Page() {
           <p className="!mt-0 text-[13px] font-semibold uppercase tracking-wide text-ink-soft">Photo file</p>
           <ul className="!mt-2 space-y-1 text-[14px]">
             <li>File is <strong>JPG/JPEG</strong> (not PNG, HEIC, or WebP)</li>
-            <li>File size is within your exam&apos;s exact KB band (e.g. <strong>20–50 KB for SSC</strong>, <strong>15–40 KB for RRB</strong>)</li>
+            <li>File size is within your exam&apos;s KB band (e.g. <strong>20–50 KB for SSC</strong>, signature <strong>30–49 KB for RRB</strong>)</li>
             <li>Pixel dimensions match the notification where it states them (e.g. <strong>200×230 px for IBPS/SBI</strong>; UPSC and SSC publish none)</li>
             <li>Background is plain <strong>white or off-white</strong> with no shadows</li>
             <li>Face is centred, front-facing, fully visible — no hats, no glasses, no hair covering face</li>
