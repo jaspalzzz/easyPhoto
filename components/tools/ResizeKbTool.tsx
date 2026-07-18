@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, Share2, Crop, FileText } from "lucide-react";
+import { Loader2, Download, Share2, Crop, FileStack, ScanSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
@@ -16,6 +16,10 @@ import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
 import { downloadBlob, shareFile } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
+import {
+  examPhotoNextAction,
+  type ExamPhotoWorkflowFlags,
+} from "@/lib/examWorkflow";
 
 interface BodyProps {
   source: ToolSource;
@@ -32,13 +36,15 @@ interface BodyProps {
   densityDpi?: number;
   /** Named requirement for the compliance receipt, e.g. "SSC (Staff Selection Commission)". */
   requirementLabel?: string;
+  /** Registry-derived routing for an embedded exam photo result. */
+  examWorkflow?: ExamPhotoWorkflowFlags;
   /** Reports the currently-loaded source up to a parent that embeds this tool
    *  inline (e.g. a photo/signature tab switcher) so it can hand the same
    *  file to a sibling tool instead of losing it on switch. */
   onSourceChange?: (source: ToolSource | null) => void;
 }
 
-function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, minKb, densityDpi, requirementLabel, onSourceChange }: BodyProps) {
+function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, minKb, densityDpi, requirementLabel, examWorkflow, onSourceChange }: BodyProps) {
   React.useEffect(() => {
     onSourceChange?.(source);
     return () => onSourceChange?.(null);
@@ -338,20 +344,30 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
           <WorkflowNextSteps
             getBlob={async () => result.blob}
             filename="resized-photo.jpg"
-            steps={[
-              {
-                slug: "photo-with-name-date",
-                label: "Add Name & Date",
-                hint: "Add exam strip with your name, roll number, and date",
-                icon: <FileText className="h-4 w-4" strokeWidth={1.75} />,
-              },
-              {
-                slug: "image-crop",
-                label: "Crop Image",
-                hint: "Trim margins or adjust framing before submitting",
-                icon: <Crop className="h-4 w-4" strokeWidth={1.75} />,
-              },
-            ]}
+            assetKind={examWorkflow ? "photo" : undefined}
+            examId={examWorkflow?.examId}
+            steps={examWorkflow
+              ? (() => {
+                  const next = examPhotoNextAction(examWorkflow);
+                  return [{
+                    ...next,
+                    icon: <FileStack className="h-4 w-4" strokeWidth={1.75} />,
+                  }];
+                })()
+              : [
+                  {
+                    slug: "photo-rejection-check",
+                    label: "Run a photo pre-check",
+                    hint: "Check measurable image issues before using the file",
+                    icon: <ScanSearch className="h-4 w-4" strokeWidth={1.75} />,
+                  },
+                  {
+                    slug: "image-crop",
+                    label: "Adjust the crop",
+                    hint: "Trim the image, then return here to recheck its final KB size",
+                    icon: <Crop className="h-4 w-4" strokeWidth={1.75} />,
+                  },
+                ]}
           />
         </div>
       )}
@@ -368,6 +384,7 @@ export function ResizeKbTool({
   minKb,
   densityDpi,
   requirementLabel,
+  examWorkflow,
   onSourceChange,
 }: {
   defaultKb?: number;
@@ -381,6 +398,8 @@ export function ResizeKbTool({
   densityDpi?: number;
   /** Named requirement for the compliance receipt, e.g. "SSC (Staff Selection Commission)". */
   requirementLabel?: string;
+  /** Registry-derived workflow routing for an embedded portal tool. */
+  examWorkflow?: ExamPhotoWorkflowFlags;
   /** See BodyProps.onSourceChange. */
   onSourceChange?: (source: ToolSource | null) => void;
 }) {
@@ -401,6 +420,7 @@ export function ResizeKbTool({
           minKb={minKb}
           densityDpi={densityDpi}
           requirementLabel={requirementLabel}
+          examWorkflow={examWorkflow}
           onSourceChange={onSourceChange}
         />
       )}

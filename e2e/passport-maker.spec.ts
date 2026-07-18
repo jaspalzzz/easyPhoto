@@ -46,4 +46,10 @@ test("us-passport maker: exports a square 2x2 photo per the US spec", async ({ p
   // spec never reached the exporter.
   expect(w, `output ${w}x${h} must be square (US 2x2)`).toBe(h);
   expect(w, "US digital minimum is 600px").toBeGreaterThanOrEqual(600);
+
+  await page.getByRole("button", { name: /adjust the file size/i }).click();
+  await expect(page).toHaveURL(/\/tools\/resize-kb\/$/);
+  await expect(page.getByText(/us-passport-digital\.jpg/i).first()).toBeVisible({
+    timeout: 15_000,
+  });
 });

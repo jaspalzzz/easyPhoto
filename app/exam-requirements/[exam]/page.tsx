@@ -529,7 +529,14 @@ export default async function Page({
               upload workflow even though the issuing RTO is administered by the
               state. This page follows the national Sarathi scan guide rather than
               inferring different image numbers for each state; confirm the current
-              instructions shown for your selected state and service.
+              instructions shown for your selected state and service. The existing{" "}
+              <Link
+                href="/blog/driving-licence-photo-size-sarathi/"
+                className="font-medium text-brand hover:underline"
+              >
+                Sarathi photo-size guide
+              </Link>{" "}
+              explains where these two uploads appear in the application journey.
             </p>
           </div>
           <div className="space-y-2">
@@ -581,7 +588,15 @@ export default async function Page({
               missing slate details, or a signature scan that includes the whole sheet
               can prevent a clean submission. The registration flow also captures a
               live image, so use a current portrait that represents your appearance and
-              confirm the current intake notice before submitting.
+              confirm the current intake notice before submitting. Before starting the
+              form, use the{" "}
+              <Link
+                href="/blog/how-to-prepare-documents-for-exam-applications-india/"
+                className="font-medium text-brand hover:underline"
+              >
+                exam document-preparation checklist
+              </Link>{" "}
+              to keep the photo and signature as separate files.
             </p>
           </div>
           {spec.source && (
@@ -592,6 +607,61 @@ export default async function Page({
               className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
             >
               Check the IAF Agniveervayu Intake 01/2027 notice <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          )}
+        </section>
+      )}
+
+      {exam === "army-agniveer" && (
+        <section className="space-y-6 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">What the current Army notice actually confirms</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The recruiting-year 2027 notice tells applicants to upload a recent
+              photograph through joinindianarmy.nic.in. It does not publish a photo or
+              signature KB band, pixel canvas, aspect ratio, file format, or name/date
+              rule. The figures shown in this compatibility tool therefore remain
+              unconfirmed until the active candidate portal displays its upload fields.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Prepare from the live upload screen, not a guessed template</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Open the current CEE application first and note the file types and limits
+              printed beside each upload control. Use this resizer only when those
+              displayed figures match the stored compatibility targets. If they differ,
+              follow the live portal rather than forcing the file into this preset.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Keep each application file separate</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Start with the recent photograph requested by the notice, then add only
+              the other documents named by the active form. The{" "}
+              <Link
+                href="/tools/exam-package/"
+                className="font-medium text-brand hover:underline"
+              >
+                Exam Application Kit
+              </Link>{" "}
+              keeps separately prepared photo and signature files together, while the{" "}
+              <Link
+                href="/blog/how-to-prepare-documents-for-exam-applications-india/"
+                className="font-medium text-brand hover:underline"
+              >
+                document-preparation guide
+              </Link>{" "}
+              provides a pre-upload checklist without adding Army-specific numbers.
+            </p>
+          </div>
+          {spec.source && (
+            <a
+              href={spec.source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
+            >
+              Check the Indian Army Agniveer RY 2027 notice <ExternalLink className="h-3.5 w-3.5" />
             </a>
           )}
         </section>

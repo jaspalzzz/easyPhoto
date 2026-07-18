@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Download, ShieldCheck, Eraser, Crop, Maximize2, Info } from "lucide-react";
+import { Download, ShieldCheck, Eraser, Crop, Maximize2, Info, FileStack } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
@@ -21,6 +21,7 @@ import {
   SignatureInkControls,
   useSignatureInkControls,
 } from "./SignatureInkControls";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 
 type Tab = "clean" | "crop" | "resize";
 
@@ -610,6 +611,24 @@ function Body({
                 <Download className="h-4 w-4 mr-2" /> Download {bgFormat === "png" ? "Transparent PNG" : "Solid White JPG"}
               </Button>
             </div>
+            <WorkflowNextSteps
+              getBlob={async () => out.blob}
+              filename={`prepared-signature.${bgFormat === "jpeg" ? "jpg" : "png"}`}
+              assetKind="signature"
+              examId={defaultPresetKey}
+              steps={[
+                {
+                  slug: "exam-package",
+                  label: defaultPresetKey
+                    ? "Continue in the Exam Kit"
+                    : "Add this signature to an Exam Kit",
+                  hint: defaultPresetKey
+                    ? "The selected exam and signature will carry into the package builder"
+                    : "Choose the application, then add its separate photo",
+                  icon: <FileStack className="h-4 w-4" strokeWidth={1.75} />,
+                },
+              ]}
+            />
           </div>
         )}
       </div>

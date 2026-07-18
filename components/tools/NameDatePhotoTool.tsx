@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, AlertCircle, Calendar, User, Info, ShieldCheck, Minimize2 } from "lucide-react";
+import { Loader2, Download, AlertCircle, Calendar, User, Info, ShieldCheck, Minimize2, FileStack } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { compressToCap } from "@/lib/compress";
@@ -17,6 +17,7 @@ import { Cropper, type ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { track, deviceClass } from "@/lib/analytics";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
+import { getExamWorkflowDraft } from "@/lib/workflowHandoff";
 
 // Returns today as YYYY-MM-DD (value format for type='date' inputs).
 function getTodayIsoString() {
@@ -152,7 +153,15 @@ function drawNameDateStrip(
   return out;
 }
 
-function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId?: string }) {
+function Body({
+  source,
+  defaultPresetId,
+  workflowExamId,
+}: {
+  source: ToolSource;
+  defaultPresetId?: string;
+  workflowExamId?: string;
+}) {
   const cropperRef = React.useRef<ReactCropperElement>(null);
   
   const initialPreset = React.useMemo(() => {
@@ -638,14 +647,25 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
           <WorkflowNextSteps
             getBlob={async () => result.blob}
             filename="photo-with-name-date.jpg"
-            steps={[
-              {
-                slug: "resize-kb",
-                label: "Compress to KB",
-                hint: "Adjust to the file-size limit listed by the application portal",
-                icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
-              },
-            ]}
+            assetKind={workflowExamId ? "photo" : undefined}
+            examId={workflowExamId}
+            steps={workflowExamId
+              ? [
+                  {
+                    slug: "exam-package",
+                    label: "Continue in the Exam Kit",
+                    hint: "The updated photo and selected exam will carry into the package builder",
+                    icon: <FileStack className="h-4 w-4" strokeWidth={1.75} />,
+                  },
+                ]
+              : [
+                  {
+                    slug: "resize-kb",
+                    label: "Compress to KB",
+                    hint: "Adjust to the file-size limit listed by the application portal",
+                    icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+                  },
+                ]}
           />
         )}
 
@@ -661,13 +681,29 @@ function Body({ source, defaultPresetId }: { source: ToolSource; defaultPresetId
 }
 
 export function NameDatePhotoTool({ defaultPresetId }: { defaultPresetId?: string }) {
+  const [workflowExamId, setWorkflowExamId] = React.useState<string>();
+
   React.useEffect(() => {
     track({ name: "tool_view", tool: "photo-with-name-date" });
+    setWorkflowExamId(getExamWorkflowDraft()?.examId);
   }, []);
+
+  const workflowPresetId =
+    workflowExamId && NAME_DATE_PRESETS.some((preset) => preset.id === workflowExamId)
+      ? workflowExamId
+      : undefined;
+  const resolvedPresetId = defaultPresetId ?? workflowPresetId;
 
   return (
     <ImageToolShell>
-      {(source) => <Body source={source} defaultPresetId={defaultPresetId} />}
+      {(source) => (
+        <Body
+          key={resolvedPresetId ?? "default"}
+          source={source}
+          defaultPresetId={resolvedPresetId}
+          workflowExamId={workflowExamId}
+        />
+      )}
     </ImageToolShell>
   );
 }

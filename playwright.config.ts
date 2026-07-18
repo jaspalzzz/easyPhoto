@@ -19,10 +19,11 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  // Capped even locally: several of these tests load the same ~large ML
-  // model (background removal, face detection) — running many at once
-  // causes CPU/memory contention that reads as flakiness, not real bugs.
-  workers: 2,
+  // One worker is intentional. Concurrent route compilation in Next's custom
+  // `.next-e2e` dev directory races the webpack pack-cache writer while the
+  // ML routes load, producing corrupt JSON/500 responses unrelated to product
+  // behavior. Serial browser coverage is slower but deterministic.
+  workers: 1,
   reporter: [["list"]],
   timeout: 60_000,
   use: {

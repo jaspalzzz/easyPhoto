@@ -3,7 +3,10 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2 } from "lucide-react";
-import { setWorkflowPayload } from "@/lib/workflowHandoff";
+import {
+  setWorkflowPayload,
+  type WorkflowAssetKind,
+} from "@/lib/workflowHandoff";
 
 export interface NextStepDef {
   slug: string;
@@ -21,9 +24,18 @@ interface Props {
   /** Suggested filename displayed in the receiving tool's file-info bar. */
   filename: string;
   steps: NextStepDef[];
+  /** Typed exam assets are also retained for the multi-file Exam Kit journey. */
+  assetKind?: Extract<WorkflowAssetKind, "photo" | "signature">;
+  examId?: string;
 }
 
-export function WorkflowNextSteps({ getBlob, filename, steps }: Props) {
+export function WorkflowNextSteps({
+  getBlob,
+  filename,
+  steps,
+  assetKind,
+  examId,
+}: Props) {
   const router = useRouter();
   const [loading, setLoading] = React.useState<string | null>(null);
 
@@ -32,7 +44,10 @@ export function WorkflowNextSteps({ getBlob, filename, steps }: Props) {
     setLoading(slug);
     try {
       const blob = await getBlob();
-      setWorkflowPayload(blob, filename);
+      setWorkflowPayload(blob, filename, {
+        ...(assetKind ? { kind: assetKind, rememberForExamKit: true } : {}),
+        ...(examId ? { examId } : {}),
+      });
       router.push(`/tools/${slug}/`);
     } catch {
       setLoading(null);
