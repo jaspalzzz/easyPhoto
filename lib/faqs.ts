@@ -47,18 +47,15 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
   // aspect ratio. Claiming we keep "the correct dimensions", or that the wrong
   // ones cause rejection, invents a requirement the authority never published.
   const hasGeometry = photoPx !== null || spec.photoAspectRatio !== undefined;
-  const usesLivePhotoCapture = /(?:photograph|photo).{0,35}(?:captured|capture).{0,20}live|live.{0,20}(?:photograph|photo)|no pre-existing photo upload/i.test(
-    `${spec.description} ${spec.context ?? ""}`
-  );
   const signaturePreparation = spec.signatureInk
-    ? `Follow the stored ink instruction (${spec.signatureInk}) on white paper, then upload it here to clean and resize it.`
+    ? `Follow the stored signature instruction: ${spec.signatureInk}. Then upload it here to clean and resize it.`
     : "Follow the current notice's ink and paper instructions, then upload it here to clean and resize it.";
 
   const items: FaqItem[] = [
     {
       q: `What is the photo size for the ${spec.name} application?`,
-      a: usesLivePhotoCapture
-        ? `The current stored instructions describe live photograph capture rather than a pre-existing photo upload. The ${photoKb}${photoDim} value shown by this tool is a compatibility target, not a current live-capture upload requirement. Confirm the active form before preparing a file.`
+      a: spec.isLiveCapture
+        ? `The current stored instructions describe a live-photograph step rather than an ordinary prepared-photo upload. The ${photoKb}${photoDim} value shown by this tool is a compatibility target, not a current live-photo requirement. Follow the active form's capture instructions.`
         : `The stored ${spec.name} target is ${photoKb}${photoDim}, in JPG format. This tool resizes and compresses a prepared photo to that target; confirm the active form before submitting.`,
     },
   ];
@@ -70,17 +67,17 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
   }
   items.push(
     {
-      q: usesLivePhotoCapture
+      q: spec.isLiveCapture
         ? `How does the ${spec.name} live-photo step work?`
         : `How do I resize my photo to ${photoKb} for ${spec.name}?`,
-      a: usesLivePhotoCapture
-        ? `The current instructions use live capture, so there may be no photo file to resize. If a later form exposes a file upload, first confirm its limits; this tool can then compress a prepared image without stretching or distorting it.`
+      a: spec.isLiveCapture
+        ? `Complete the live-photo step inside the application and follow its on-screen instructions for camera position, lighting and framing. The compatibility photo target shown by this tool does not replace that step. This tool cannot perform or validate the authority's live capture.`
         : `Upload your photo and the tool compresses it to the stored ${spec.name} target ${hasGeometry ? "and applies the recorded dimensions" : "without stretching or distorting it"}. Everything runs in your browser.`,
     },
     {
       q: `Why do ${spec.name} photos${sigKb ? " and signatures" : ""} get rejected?`,
-      a: usesLivePhotoCapture
-        ? `For a live photograph, follow the capture screen's lighting, framing and background instructions. No pre-existing photo file is uploaded in the stored workflow.${sigKb ? ` A separate signature can still fail when it falls outside ${sigKb}, uses an unsupported format, is faint, or includes the paper edge.` : ""} This tool cannot validate the authority's live camera step.`
+      a: spec.isLiveCapture
+        ? `For a live photograph, follow the capture screen's lighting, framing and background instructions.${sigKb ? ` A separate signature can still fail when it falls outside ${sigKb}, uses an unsupported format, is faint, or includes the paper edge.` : ""} This tool cannot validate the authority's live-photo step.`
         : `Common upload problems include a file outside the ${photoKb}${sigKb ? ` photo / ${sigKb} signature` : ""} range${hasGeometry ? ", dimensions that do not match the recorded frame" : ""}, an unsupported format, a busy background, or a blurry scan.${sigKb ? " A signature can also fail when it is faint or includes the paper edge." : ""} The tool checks measurable output properties; it cannot guarantee acceptance.`,
     },
     {

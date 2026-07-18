@@ -61,6 +61,13 @@ export interface PortalSpec {
    */
   requiresSlateNameDate?: boolean;
   /**
+   * The primary photograph step is completed as a live-photo capture in the
+   * authority's application flow, instead of uploading an ordinary prepared
+   * photo file. Do not set this for portals that require both a prepared photo
+   * upload and an additional live identity check.
+   */
+  isLiveCapture?: boolean;
+  /**
    * Signature ink requirement, when the official source specifies one exactly
    * (e.g. driving-licence and up-police confirm "black" only, not blue). Only
    * set this when actually confirmed — the exam-requirements template falls
@@ -95,6 +102,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       label: "SSC Combined Hindi Translators Examination 2026 notice, paragraphs 8.4–8.7",
     },
     verification: "needs-review",
+    isLiveCapture: true,
     context:
       "The current SSC application module captures a live photograph from the candidate's computer or mobile camera. A pre-existing photograph is not uploaded. The signature remains a separate JPEG/JPG upload; confirm the current notice for the specific SSC examination before preparing files.",
   },
@@ -194,6 +202,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       label: "RRB CEN 03/2025, paragraphs 14.4–14.5.1",
     },
     verification: "needs-review",
+    isLiveCapture: true,
     context:
       "Current Railway Recruitment Board notices use webcam or mobile-camera live photo capture during the application. Only the signature is prepared as an image file; confirm the current CEN because recruitment-cycle instructions can change.",
   },
@@ -348,6 +357,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-06-10",
+    isLiveCapture: true,
     context:
       "Bihar Public Service Commission captures the candidate's photograph live via webcam during the online application, rather than accepting an uploaded photo file — only the signature (in both Hindi and English) is uploaded as a file.",
   },
@@ -509,6 +519,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "needs-review",
     verifiedOn: "2026-07-17",
+    isLiveCapture: true,
     context:
       "Rajasthan Public Service Commission recruitment goes through the SSO Rajasthan recruitment portal's One-Time Registration. The photograph is taken live via webcam during KYC, so no photo file is uploaded; the uploadable items are two signatures (English and Hindi), a left thumb impression, and a handwritten specimen. Confirm the current OTR instructions for the specific recruitment before preparing files.",
   },
