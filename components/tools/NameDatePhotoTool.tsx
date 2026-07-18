@@ -8,7 +8,11 @@ import { compressToCap } from "@/lib/compress";
 import { downloadBlob } from "@/lib/download";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { formatKb } from "@/lib/utils";
-import { getPortalSpec, photoDimsPx, specProvenance } from "@/lib/specRegistry";
+import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
+import {
+  NAME_DATE_PRESETS,
+  type NameDatePreset,
+} from "@/lib/nameDatePresets";
 import { Cropper, type ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { track, deviceClass } from "@/lib/analytics";
@@ -31,62 +35,8 @@ function isoToDmy(iso: string): string {
   return `${parts[2]}/${parts[1]}/${parts[0]}`;
 }
 
-interface Preset {
-  id: string;
-  name: string;
-  specId: string | null;
-  width: number | null;
-  height: number | null;
-  ar: number;
-  kb: number;
-  minKb: number | null;
-  /** Published fixed strip height, when the authority specifies one. */
-  stripHeightPx: number | null;
-}
-
-const DEFAULT_AR = 3.5 / 4.5;
-
-/**
- * Build a preset from the spec registry — never hardcode KB/dimension numbers,
- * so presets stay in lock-step with the single source of truth (and its
- * verification status). Falls back gracefully if a spec is missing.
- */
-function presetFromSpec(id: string, label: string, specId: string): Preset {
-  const s = getPortalSpec(specId);
-  const dims = (s && photoDimsPx(s)) || "";
-  const kbRange = s
-    ? s.photoMinKb
-      ? `${s.photoMinKb}–${s.photoLimitKb} KB`
-      : `≤${s.photoLimitKb} KB`
-    : "";
-  const detail = [dims, kbRange].filter(Boolean).join(", ");
-  const stripMatch = s?.description.match(/lower\s+(\d+)\s*px/i);
-  const stripHeightPx = stripMatch ? Number(stripMatch[1]) : null;
-  return {
-    id,
-    name: detail ? `${label} (${detail})` : label,
-    specId,
-    width: s?.photoWidthPx ?? null,
-    height: s?.photoHeightPx ?? null,
-    ar:
-      s?.photoWidthPx && s.photoHeightPx
-        ? s.photoWidthPx /
-          Math.max(
-            1,
-            s.photoHeightPx -
-              (stripHeightPx ?? Math.round(s.photoHeightPx * 0.15))
-          )
-        : s?.photoAspectRatio ?? DEFAULT_AR,
-    kb: s?.photoLimitKb ?? 100,
-    minKb: s?.photoMinKb ?? null,
-    stripHeightPx,
-  };
-}
-
-const PRESETS: Preset[] = [
-  presetFromSpec("appsc", "APPSC Direct Recruitment", "appsc"),
-  presetFromSpec("tnpsc", "TNPSC", "tnpsc"),
-  presetFromSpec("kerala-psc", "Kerala PSC", "kerala-psc"),
+const PRESETS: Array<NameDatePreset | (Omit<NameDatePreset, "specId"> & { specId: null })> = [
+  ...NAME_DATE_PRESETS,
   // Free-form crop: NaN is Cropper.js's "no aspect-ratio lock" value, so the
   // box can be dragged to ANY size — including the full width/height of a tall
   // screenshot or an odd source photo. The spec presets above stay locked to
@@ -94,7 +44,7 @@ const PRESETS: Preset[] = [
   // hatch for anyone who needs to crop an arbitrary region. Was mistakenly
   // pinned to DEFAULT_AR, which made "Free Resize" behave identically to a
   // locked preset and blocked full-length cropping.
-  { id: "custom", name: "Custom / Free Resize", specId: null, width: null, height: null, ar: NaN, kb: 100, minKb: null, stripHeightPx: null },
+  { id: "custom", name: "Custom / Free Resize", specId: null, width: null, height: null, ar: Number.NaN, kb: 100, minKb: null, stripHeightPx: null },
 ];
 
 interface RenderOptions {
