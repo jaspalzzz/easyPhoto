@@ -9,23 +9,23 @@ const post = getPost("driving-licence-photo-size-sarathi")!;
 const FAQ_ITEMS = [
   {
     q: "What is the photo size for a driving licence on the Sarathi portal?",
-    a: "The Sarathi portal (sarathi.parivahan.gov.in) requires a JPEG photo under 40 KB, with minimum dimensions of 200×230 px in portrait orientation. The background must be plain white or light-coloured, face centred, eyes open. The same spec applies for both Learner's Licence (LL) and Driving Licence (DL) applications.",
+    a: "Sarathi's published scan guide specifies a JPG colour photo between 10 KB and 20 KB, with a minimum 420 px width and 525 px height; 420×525 px is preferred. The physical dimensions are 35 mm wide by 45 mm high, against a light-coloured, preferably white background.",
   },
   {
     q: "What is the signature size for a driving licence on Sarathi?",
-    a: "For the Sarathi portal, the signature must be in JPEG format, under 20 KB, on a plain white background. Take a clear photo or scan of your signature on unlined white paper with a black or dark blue pen. Crop tightly so the signature fills the frame, then compress to under 20 KB using a free resizer.",
+    a: "Sarathi's scan guide specifies a JPG signature between 10 KB and 20 KB, with a preferred 256×64 px canvas. The applicant must sign on white paper with a black pen.",
   },
   {
     q: "Why is my photo being rejected on the Sarathi driving licence portal?",
-    a: "The most common reasons are: file over 40 KB (even 41 KB fails), wrong format (PNG/PDF instead of JPEG), a coloured or busy background, glasses or dark tint causing reflection, or a photo where the face isn't centred. Compress the file to 30–38 KB and ensure the background is plain white before re-uploading.",
+    a: "The Sarathi guide says the upload shows an error when file size or format is not prescribed, and warns that an unclear photo or signature may be rejected. Prepare JPG files within 10–20 KB, use the published canvas, and check the preview before saving.",
   },
   {
     q: "Do I need separate photos for LL and DL applications?",
-    a: "No — the photo and signature specifications are identical for a Learner's Licence (LL) and a full Driving Licence (DL). You can use the same JPEG file for both applications as long as it meets the spec: under 40 KB, portrait orientation, white background, clear frontal face.",
+    a: "Sarathi publishes one photo-and-signature scan guide, but the service shown after you select a state can control the current workflow. Use the published guide as preparation and confirm the instructions displayed for the LL or DL service you choose.",
   },
   {
     q: "Can I use an Aadhaar or PAN card photo for my driving licence?",
-    a: "Technically yes if it meets the Sarathi spec (JPEG, <40 KB, white background). However, the photo on your EPIC or Aadhaar is usually low-resolution when downloaded, and the background may not be plain white. A fresh photo prepared for the current DL form may reduce those common upload problems.",
+    a: "Do not assume an image prepared for another document matches Sarathi. The cited Sarathi guide asks for a recent colour JPG at 420×525 px preferred, 10–20 KB, with a light-coloured, preferably white background.",
   },
 ];
 
@@ -46,50 +46,45 @@ export default function Page() {
       ctaLabel="Resize driving licence photo free"
     >
       <p>
-        India had over 20&nbsp;crore valid driving licences in circulation as of
-        2024 (Ministry of Road Transport and Highways, Vahan data portal). Every
-        new licence, renewal, and address-change application now goes through the
+        The Ministry of Road Transport and Highways publishes a{" "}
         <a
-          href="https://sarathi.parivahan.gov.in"
+          href="https://sarathi.parivahan.gov.in/sarathiservice/pdf/PhotoSign.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="text-brand underline"
         >
-          Sarathi portal (sarathi.parivahan.gov.in)
-        </a>
-        , and every one of them requires a
-        photo and signature upload. The file-size limits on Sarathi are tighter than
-        most other government portals — 40&nbsp;KB for the photo, 20&nbsp;KB for the
-        signature — and the portal rejects files automatically without a manual
-        review. Here is every number you need before you open the upload screen.
+          Sarathi photo and signature scan guide
+        </a>{" "}
+        for preparing both files before the relevant online application. It specifies
+        10–20&nbsp;KB JPG files for both photo and signature, along
+        with preferred pixel canvases. Confirm the instructions displayed after you
+        select your state and service.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>
-            <strong>Photo:</strong> JPEG, under 40&nbsp;KB, at least
-            200×230&nbsp;px portrait, plain white / light background
+            <strong>Photo:</strong> JPG, 10–20&nbsp;KB, 420×525&nbsp;px preferred,
+            light-coloured / preferably white background
           </li>
           <li>
-            <strong>Signature:</strong> JPEG, under 20&nbsp;KB, black or dark-blue
-            ink on white paper
+            <strong>Signature:</strong> JPG, 10–20&nbsp;KB, 256×64&nbsp;px preferred,
+            black ink on white paper
           </li>
           <li>
-            <strong>Same spec for:</strong> Learner&apos;s Licence (LL), Driving
-            Licence (DL), renewal, International Driving Permit (IDP)
+            <strong>Scan resolution:</strong> minimum approximately 300&nbsp;DPI;
+            confirm the current state/service screen
           </li>
         </ul>
       </div>
 
-      <h2>What is the exact photo and signature size for the Sarathi portal?</h2>
+      <h2>What photo and signature size does the Sarathi guide publish?</h2>
 
       <p>
-        Sarathi enforces stricter KB limits than most other government portals
-        because every RTO (Regional Transport Office) that processes applications
-        stores millions of images and the smaller footprint reduces system load.
-        The portal validates file size, format, and minimum resolution automatically
-        — a file 1&nbsp;KB over the limit triggers an instant error.
+        The guide says the online application displays an error when the file size or
+        format is not prescribed. It also says an unclear photo or signature may be
+        rejected and can be re-uploaded before scrutiny is complete.
       </p>
 
       <img
@@ -112,13 +107,13 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             ["File format", "JPEG / JPG", "JPEG / JPG"],
-            ["Maximum file size", "40 KB", "20 KB"],
-            ["Minimum dimensions", "200×230 px (portrait)", "140×60 px (landscape)"],
+            ["File-size band", "10–20 KB", "10–20 KB"],
+            ["Published canvas", "420×525 px preferred", "256×64 px preferred"],
+            ["Scan resolution", "Minimum approximately 300 DPI", "Minimum approximately 300 DPI"],
             ["Background", "White or light-coloured, plain", "White paper"],
             ["Orientation", "Portrait", "Landscape"],
-            ["Colour", "Colour photograph", "Black or dark-blue ink"],
-            ["Expression", "Neutral, eyes open", "—"],
-            ["Glasses", "Remove if possible", "—"],
+            ["Colour / ink", "Colour photograph", "Black pen"],
+            ["Glasses", "No reflections; eyes clearly visible", "—"],
           ].map(([req, photo, sig]) => (
             <tr key={req} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{req}</td>
@@ -134,46 +129,19 @@ export default function Page() {
         <Link href="/driving-licence-photo-resizer/" className="text-brand underline">
           driving licence photo resizer
         </Link>{" "}
-        on easyPhoto handles both uploads: it compresses the photo to just under
-        40&nbsp;KB (or 20&nbsp;KB for the signature), converts to JPEG, and crops to
-        the correct portrait proportions — all in your browser with nothing sent to a
-        server.
+        prepares the photo and signature inside the 10–20&nbsp;KB band and applies
+        their published preferred canvases — all in your browser with nothing sent to
+        a server. Confirm the current state/service screen before submitting.
       </p>
 
-      <h2>Which Sarathi forms require a photo upload?</h2>
+      <h2>Which Sarathi service does this scan guide cover?</h2>
 
       <p>
-        The Sarathi portal groups applications by licence stage. A photo and signature
-        are required for any form that issues or updates a physical licence card.
+        The source is a general Sarathi photo-and-signature upload guide; it does not
+        enumerate every state/service combination on the document itself. Treat it as
+        preparation guidance and follow the current upload fields shown after selecting
+        your state and service.
       </p>
-
-      <table className="my-5 w-full border-collapse text-[14px]">
-        <thead>
-          <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-4 font-semibold text-ink">Application type</th>
-            <th className="py-2 pr-4 font-semibold text-ink">Photo required</th>
-            <th className="py-2 font-semibold text-ink">Signature required</th>
-          </tr>
-        </thead>
-        <tbody className="text-ink-soft">
-          {[
-            ["Learner's Licence (LL) — fresh", "Yes", "Yes"],
-            ["Driving Licence (DL) — fresh", "Yes", "Yes"],
-            ["DL renewal", "Yes", "Yes"],
-            ["Duplicate DL (lost / damaged)", "Yes", "Yes"],
-            ["Address change on DL", "Yes", "Yes"],
-            ["Vehicle class addition (e.g. MCWOG → LMV)", "Yes", "Yes"],
-            ["International Driving Permit (IDP)", "Yes", "Yes"],
-            ["LL mock test / slot booking only", "No", "No"],
-          ].map(([type, photo, sig]) => (
-            <tr key={type} className="border-b border-hairline/60">
-              <td className="py-2 pr-4 font-medium text-ink">{type}</td>
-              <td className="py-2 pr-4">{photo}</td>
-              <td className="py-2">{sig}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
 
       <h2>Why do driving licence photos get rejected on Sarathi?</h2>
 
@@ -195,14 +163,14 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["File over 40 KB (photo) or 20 KB (signature)", "Use the DL resizer — it targets 1–2 KB under the cap"],
+            ["File outside 10–20 KB", "Prepare each JPG inside the published band"],
             ["PNG, PDF, or HEIC format", "Convert to JPEG before uploading"],
             ["Coloured or patterned background", "Shoot against white; or use background removal tool"],
             ["Black-and-white photo", "Portal requires colour even though DL prints are monochrome"],
-            ["Blurry or pixelated image", "Minimum 200×230 px; retake in good daylight"],
-            ["Glasses with heavy frame or tinted lenses", "Remove glasses — reflections are detected as face obstruction by some RTO systems"],
+            ["Blurry or unclear image", "Use a clear source and check the upload preview"],
+            ["Glasses with reflections", "Avoid reflections so the eyes remain clearly visible"],
             ["Signature on ruled / tinted paper", "White unlined paper only — ruled lines cause rejection"],
-            ["Signature too light or faint", "Use a dark pen; thin pencil signatures are rejected on scan"],
+            ["Signature uses another ink colour", "Use the black pen specified by the guide"],
           ].map(([reason, fix]) => (
             <tr key={reason} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{reason}</td>
@@ -212,49 +180,11 @@ export default function Page() {
         </tbody>
       </table>
 
-      {/* CHART: Sarathi KB limits vs other portals */}
-      <figure className="my-8">
-        <svg
-          viewBox="0 0 560 240"
-          style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif" }}
-          role="img"
-          aria-label="Horizontal bar chart comparing photo KB limits across Indian government online upload portals: Sarathi DL 40 KB, NVSP Voter ID 200 KB, NSDL PAN 50 KB, UTIITSL PAN 30 KB"
-        >
-          <title>Photo KB limit comparison — Indian government online upload portals</title>
-          <desc>Sarathi portal (driving licence) has the tightest limit at 40 KB. NVSP voter ID portal allows up to 200 KB. NSDL PAN allows 50 KB, UTIITSL PAN 30 KB. Aadhaar is not shown — its photo is captured at a centre, not uploaded.</desc>
-
-          {[0, 50, 100, 150, 200].map((v) => {
-            const x = 170 + (v / 220) * 360;
-            return (
-              <g key={v}>
-                <line x1={x} y1="20" x2={x} y2="195" stroke="currentColor" opacity="0.08" strokeWidth="1" />
-                <text x={x} y="212" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.45">{v} KB</text>
-              </g>
-            );
-          })}
-
-          {[
-            { label: "Sarathi (DL)", val: 40, color: "#f97316" },
-            { label: "UTIITSL (PAN)", val: 30, color: "#38bdf8" },
-            { label: "NSDL (PAN)", val: 50, color: "#38bdf8" },
-            { label: "NVSP (Voter ID)", val: 200, color: "#22c55e" },
-          ].map(({ label, val, color }, i) => {
-            const y = 28 + i * 34;
-            const w = (val / 220) * 360;
-            return (
-              <g key={label}>
-                <text x="165" y={y + 14} textAnchor="end" fontSize="11" fill="currentColor" opacity="0.8">{label}</text>
-                <rect x="170" y={y} width={w} height="20" rx="3" fill={color} />
-                <text x={170 + w + 6} y={y + 14} fontSize="11" fill="currentColor" opacity="0.8" fontWeight="500">{val} KB</text>
-              </g>
-            );
-          })}
-
-          <text x="350" y="228" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.35">
-            Source: Sarathi, NSDL, UTIITSL, UIDAI, and ECI portals (2025)
-          </text>
-        </svg>
-      </figure>
+      <div className="my-8 rounded-xl border border-hairline bg-paper p-5 text-sm leading-relaxed text-ink-soft">
+        Sarathi source note: the published scan guide specifies 10–20&nbsp;KB for
+        both files, a preferred 420×525&nbsp;px photo and 256×64&nbsp;px signature.
+        Other ID workflows are not used as substitutes for these values.
+      </div>
 
       <h2>How to prepare your Sarathi photo and signature in three steps</h2>
 
@@ -262,12 +192,12 @@ export default function Page() {
         <li>
           <strong>Take the photo:</strong> Stand against a plain white or light wall
           in good natural light. Face the camera directly, neutral expression, no
-          glasses. Use portrait orientation and make sure your face fills at least
-          60% of the frame.
+          glasses if they reflect light. Use the published 420×525&nbsp;px portrait
+          canvas and check that both eyes remain clearly visible.
         </li>
         <li>
           <strong>Take the signature:</strong> Sign your name on a blank white A4
-          sheet with a black or dark-blue ballpoint pen. Photograph it from directly
+          sheet with a black pen. Photograph it from directly
           above with even light — no shadows. Crop the signature tightly, leaving a
           small white margin on all sides.
         </li>
@@ -276,8 +206,8 @@ export default function Page() {
           <Link href="/driving-licence-photo-resizer/" className="text-brand underline">
             driving licence photo resizer
           </Link>{" "}
-          to output the photo at under 40&nbsp;KB and the signature at under
-          20&nbsp;KB, both as JPEG. The tool runs entirely in your browser —
+          to output the photo and signature inside the 10–20&nbsp;KB band, both as
+          JPG. The tool runs entirely in your browser —
           no upload, no account.
         </li>
       </ol>

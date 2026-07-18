@@ -10,7 +10,7 @@ const APPLY = "https://www.passportindia.gov.in/psp/Apply";
 const MINOR_GUIDELINES =
   "https://www.passportindia.gov.in/AppOnlineProject/pdf/GUIDELINES%20FOR%20CAPTURING%20PHOTOGRAPHS%20FOR%20MINORS_v2.1.pdf";
 const OVERSEAS_GUIDELINES =
-  "https://embassy.passportindia.gov.in/pdf/Guidelines_for_ICAO_Compliant_Photographs_for_Passport_Applications.pdf";
+  "https://portal4.passportindia.gov.in/Online/pdf/Guidelines_for_ICAO_Compliant_Photographs_for_Passport_Applications.pdf";
 const OCI_FAQ = "https://ociservices.gov.in/onlineOCI/onlineOCI/faq";
 const EVISA_GUIDANCE = "https://indianvisaonline.gov.in/evisa/tvoa.html";
 
