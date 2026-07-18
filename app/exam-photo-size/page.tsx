@@ -3,8 +3,10 @@ import { ArrowRight } from "lucide-react";
 import type { PortalSpec } from "@/lib/portalPresets";
 import {
   allPortalSpecs,
+  photoDimsPx,
   portalCategory,
   PORTAL_CATEGORY_LABEL,
+  sigDimsPx,
   type PortalCategory,
 } from "@/lib/specRegistry";
 import { pageMetadata } from "@/lib/seo";
@@ -28,8 +30,6 @@ const sigKb = (s: PortalSpec) =>
       ? `${s.sigMinKb}–${s.sigLimitKb} KB`
       : `≤ ${s.sigLimitKb} KB`
     : "—";
-const px = (w?: number, h?: number) => (w && h ? `${w}×${h}` : "cm-based");
-
 const CATEGORY_ORDER: PortalCategory[] = [
   "central",
   "banking",
@@ -119,9 +119,9 @@ export default function Page() {
                       </Link>
                     </td>
                     <td className="px-3 py-2.5 font-mono text-[13px] text-ink-soft">{photoKb(s)}</td>
-                    <td className="px-3 py-2.5 font-mono text-[13px] text-ink-soft">{px(s.photoWidthPx, s.photoHeightPx)}</td>
+                    <td className="px-3 py-2.5 font-mono text-[13px] text-ink-soft">{photoDimsPx(s, "") ?? "Not published"}</td>
                     <td className="px-3 py-2.5 font-mono text-[13px] text-ink-soft">{sigKb(s)}</td>
-                    <td className="px-3 py-2.5 font-mono text-[13px] text-ink-soft">{px(s.sigWidthPx, s.sigHeightPx)}</td>
+                    <td className="px-3 py-2.5 font-mono text-[13px] text-ink-soft">{sigDimsPx(s, "") ?? "Not published"}</td>
                   </tr>
                 ))}
               </tbody>

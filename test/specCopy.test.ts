@@ -54,6 +54,26 @@ describe("spec copy — pixel dimensions are never interpolated unguarded", () =
         `undefined for portals that publish no pixel spec:\n  ${offenders.join("\n  ")}`
     ).toEqual([]);
   });
+
+  it("does not reintroduce unsupported Voter ID digital dimensions or KB bands", () => {
+    const unsupported =
+      /(?:\b(?:voter(?: ID)?|NVSP|ECI)\b[^\n]{0,140}(?:10[–-]200\s*KB|200×240)|(?:10[–-]200\s*KB|200×240)[^\n]{0,140}\b(?:voter(?: ID)?|NVSP|ECI)\b)/i;
+    const offenders: string[] = [];
+
+    for (const root of ROOTS) {
+      for (const file of sourceFiles(root)) {
+        if (file.endsWith(".test.ts")) continue;
+        readFileSync(file, "utf8").split("\n").forEach((line, i) => {
+          if (unsupported.test(line)) offenders.push(`${file}:${i + 1}`);
+        });
+      }
+    }
+
+    expect(
+      offenders,
+      `ECI Form 6 publishes no 10–200 KB or 200×240 px digital rule:\n  ${offenders.join("\n  ")}`
+    ).toEqual([]);
+  });
 });
 
 describe("spec copy — renders cleanly for every portal in the registry", () => {
@@ -75,6 +95,38 @@ describe("spec copy — renders cleanly for every portal in the registry", () =>
       expect(copy).not.toMatch(/undefined|null|NaN/);
     }
   );
+
+  it("keeps unsupported geometry off audited needs-review presets", () => {
+    for (const id of ["clat", "army-agniveer", "itbp"]) {
+      const spec = specs.find((candidate) => candidate.id === id)!;
+      expect(photoDimsPx(spec), `${id} photo`).toBeNull();
+      expect(sigDimsPx(spec), `${id} signature`).toBeNull();
+      expect(spec.photoAspectRatio, `${id} photo aspect`).toBeUndefined();
+      expect(spec.sigAspectRatio, `${id} signature aspect`).toBeUndefined();
+    }
+
+    const passport = specs.find((candidate) => candidate.id === "passport-seva")!;
+    expect(photoDimsPx(passport)).toBe("630×810px");
+    expect(sigDimsPx(passport)).toBeNull();
+    expect(passport.sigAspectRatio).toBeUndefined();
+  });
+
+  it("uses Sarathi's preferred pixel canvas without a conflicting photo aspect", () => {
+    const drivingLicence = specs.find(
+      (candidate) => candidate.id === "driving-licence"
+    )!;
+    expect(photoDimsPx(drivingLicence)).toBe("420×525px");
+    expect(sigDimsPx(drivingLicence)).toBe("256×64px");
+    expect(drivingLicence.photoAspectRatio).toBeUndefined();
+  });
+
+  it("puts the current-figures disclosure inside every needs-review description", () => {
+    const disclosure =
+      /\b(?:confirm|check|verify)\b.{0,120}\b(?:current|latest)\b|\b(?:current|latest)\b.{0,120}\b(?:confirm|check|verify)\b/i;
+    for (const spec of specs.filter((candidate) => candidate.verification === "needs-review")) {
+      expect(spec.description, spec.id).toMatch(disclosure);
+    }
+  });
 
   it("describes SSC's current live-photo workflow instead of a file-upload requirement", () => {
     const ssc = specs.find((s) => s.id === "ssc")!;

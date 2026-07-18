@@ -442,11 +442,11 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "driving-licence-photo-size-sarathi",
     title: "Driving Licence Photo Size for Sarathi Portal 2026 — RTO Upload Spec",
     description:
-      "Sarathi (sarathi.parivahan.gov.in) requires a JPEG photo under 40 KB and signature under 20 KB. Full spec for LL, DL, renewal, and duplicate applications.",
+      "Sarathi's scan guide lists 10–20 KB JPG photo and signature files, with preferred 420×525 and 256×64 px canvases. Confirm the selected state and service.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
     excerpt:
-      "Sarathi's 40 KB photo limit is tighter than most government portals. Here's every requirement for Learner's Licence and Driving Licence applications, plus what causes rejections.",
+      "Sarathi's scan guide lists 10–20 KB JPG photo and signature files, preferred pixel canvases and black-pen guidance, with a reminder to confirm the selected service.",
     readMins: 6,
   },
 ];

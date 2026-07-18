@@ -17,7 +17,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What is the minimum KB for a passport photo upload?",
-    a: "Most portals have both a minimum and maximum: NVSP (Voter ID) requires 10–200 KB; NSDL (PAN card) requires 20–50 KB; Sarathi (Driving Licence) requires the photo to be under 40 KB. UPSC and SSC typically require 10–40 KB. Check your specific portal before compressing.",
+    a: "There is no universal minimum: each workflow publishes its own fields. ECI's public Voter ID Form 6 guidance does not publish a digital KB band; Sarathi publishes 10–20 KB for its photo workflow. Check the current portal or notice before compressing.",
   },
   {
     q: "Will compressing a photo to 50 KB get my application rejected?",
@@ -109,8 +109,8 @@ export default function Page() {
           {[
             ["NSDL / Protean (PAN card)", "20–50 KB", "10–20 KB"],
             ["UTIITSL (PAN card)", "≤30 KB", "≤20 KB"],
-            ["NVSP / ECI (Voter ID)", "10–200 KB", "—"],
-            ["Sarathi (Driving Licence)", "≤40 KB", "≤20 KB"],
+            ["Voters' Service Portal / ECI (Form 6)", "Not published in public Form 6 guidance", "—"],
+            ["Sarathi (Driving Licence)", "10–20 KB", "10–20 KB"],
             ["UPSC CSE / IES / CMS", "10–40 KB", "4–30 KB"],
             ["SSC exams", "10–100 KB", "4–30 KB"],
             ["IBPS / SBI bank exams", "20–50 KB", "10–20 KB"],

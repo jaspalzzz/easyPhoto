@@ -5,8 +5,8 @@ export const metadata = pageMetadata({
   title: "ECI Voter ID Photo Resizer — Resize to 100 KB Online Free",
   titleAbsolute: true,
   description:
-    "Resize your Voter ID (Form 6) photo to the ECI specification — 4.5×3.5 cm, " +
-    "under 100 KB, white background — free and in your browser. Nothing is uploaded.",
+    "Prepare a Voter ID Form 6 photo to the published 4.5×3.5 cm physical proportion " +
+    "and a selected compatibility target. Confirm the current portal's digital fields.",
   path: "/voter-id-photo-resizer/",
 });
 

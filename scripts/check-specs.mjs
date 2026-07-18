@@ -14,8 +14,8 @@ const MAX_MONTHS = 6;
 const today = new Date().toISOString().slice(0, 10);
 
 // Parse portalPresets.ts without a build step: pull each entry's id, verification,
-// verifiedOn, source metadata and review disclosure via lightweight regex over
-// the source file.
+// verifiedOn, source metadata and the description-field review disclosure via
+// lightweight regex over the source file.
 const src = readFileSync(new URL("../lib/portalPresets.ts", import.meta.url), "utf8");
 const blocks = src.split(/\n  [a-z0-9"'-]+: \{/i).slice(1);
 
@@ -35,10 +35,19 @@ const specs = blocks.map((b) => {
   const sourceBlock = (b.match(/source:\s*\{([\s\S]*?)\}/) || [])[1] ?? "";
   const url = (sourceBlock.match(/url:\s*"([^"]+)"/) || [])[1] ?? null;
   const sourceLabel = (sourceBlock.match(/label:\s*"([^"]+)"/) || [])[1] ?? null;
+  const description = (b.match(/description:\s*"([^"]+)"/) || [])[1] ?? "";
   const hasCurrentDisclosure =
-    /\b(?:confirm|check|verify)\b[\s\S]{0,120}\b(?:current|latest)\b/i.test(b) ||
-    /\b(?:current|latest)\b[\s\S]{0,120}\b(?:confirm|check|verify)\b/i.test(b);
-  return { id, verification, verifiedOn, url, sourceLabel, hasCurrentDisclosure };
+    /\b(?:confirm|check|verify)\b[\s\S]{0,120}\b(?:current|latest)\b/i.test(description) ||
+    /\b(?:current|latest)\b[\s\S]{0,120}\b(?:confirm|check|verify)\b/i.test(description);
+  return {
+    id,
+    verification,
+    verifiedOn,
+    url,
+    sourceLabel,
+    description,
+    hasCurrentDisclosure,
+  };
 });
 
 const documentedReviews = specs.filter(

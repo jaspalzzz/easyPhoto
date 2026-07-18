@@ -13,11 +13,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "Which Indian government portal has the strictest photo size limit?",
-    a: "Among the limits recorded here, UTIITSL for PAN cards has a 30 KB ceiling and the Sarathi driving-licence preset has a 40 KB ceiling. File size is only one requirement; crop, dimensions and workflow can differ, so prepare and verify a separate export for the selected portal.",
+    a: "Among the cited upload workflows, Sarathi publishes a 10–20 KB photo band and UTIITSL records a 30 KB ceiling for its PAN route. ECI's public Form 6 does not publish a universal Voter ID digital cap. File size is only one requirement, so verify the selected portal.",
   },
   {
     q: "What file format do Indian government ID applications need?",
-    a: "The voter ID, PAN and Sarathi presets recorded here list JPEG/JPG. If your phone saves another format, convert the image to the format named by the selected portal and confirm its current instructions. Aadhaar photos are captured at a centre, so there is no photo file to upload for that workflow.",
+    a: "PAN and Sarathi publish format instructions for their own workflows. ECI's public Voter ID Form 6 guidance does not publish a digital format, so confirm the current upload screen rather than assuming JPEG/JPG. Aadhaar photos are captured at a centre.",
   },
   {
     q: "Can I use the same photo for my PAN card, voter ID and driving licence?",
@@ -98,10 +98,10 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["Voter ID (EPIC)", "voters.eci.gov.in", "200 KB", "≥200×240 px", "JPEG"],
+            ["Voter ID (Form 6)", "voters.eci.gov.in", "Not publicly specified", "4.5×3.5 cm physical", "Not publicly specified"],
             ["PAN (NSDL / Protean)", "onlineservices.proteantech.in", "50 KB", "197×276 px", "JPEG"],
             ["PAN (UTIITSL)", "myutiitsl.com", "30 KB", "213×213 px (square)", "JPEG"],
-            ["Driving Licence", "sarathi.parivahan.gov.in", "40 KB", "≥200×230 px", "JPEG"],
+            ["Driving Licence", "sarathi.parivahan.gov.in", "20 KB", "420×525 px preferred", "JPEG"],
             ["Aadhaar (photo)", "Aadhaar Seva Kendra — in person", "No online upload", "Captured at centre", "—"],
           ].map(([doc, portal, kb, px, fmt]) => (
             <tr key={doc} className="border-b border-hairline/60">
@@ -134,62 +134,17 @@ export default function Page() {
       </p>
 
       <p>
-        The practical fix is to work to the <strong>strictest</strong> spec, not the
-        loosest. Compress your photo to under 30&nbsp;KB and it slides under every
-        cap on the table — 40&nbsp;KB, 50&nbsp;KB and 200&nbsp;KB alike — while
-        staying sharp enough to meet each portal&apos;s pixel minimum.
+        The practical fix is to keep one good source photo and make a separate export
+        for each workflow. A single low-KB file is not automatically suitable for all
+        portals, and public Form 6 does not establish a Voter ID digital cap or pixel
+        minimum to include in a numeric comparison.
       </p>
 
-      {/* CHART: KB limit comparison across the online-upload portals (Aadhaar
-          excluded — its photo is captured at a centre, not uploaded). */}
-      <figure className="my-8">
-        <svg
-          viewBox="0 0 560 254"
-          style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif" }}
-          role="img"
-          aria-label="Bar chart comparing maximum photo file size across Indian government ID online upload portals: UTIITSL PAN 30 KB, Sarathi driving licence 40 KB, NSDL PAN 50 KB, voter ID 200 KB"
-        >
-          <title>Maximum photo file size by Indian government ID online upload portal</title>
-          <desc>
-            UTIITSL (PAN) has the tightest limit at 30 KB, then Sarathi (driving
-            licence) at 40 KB, NSDL (PAN) at 50 KB, and the NVSP voter ID portal at
-            200 KB. Compressing to under 30 KB clears them all. Aadhaar is not shown
-            because its photo is captured at a centre, not uploaded. Source:
-            respective government portals, 2026.
-          </desc>
-
-          {(() => {
-            const data = [
-              ["PAN — UTIITSL", 30, "#f97316"],
-              ["Driving Licence", 40, "#38bdf8"],
-              ["PAN — NSDL", 50, "#a78bfa"],
-              ["Voter ID (EPIC)", 200, "#22c55e"],
-            ] as const;
-            const x0 = 140;
-            const max = 200;
-            const barW = 380;
-            return data.map(([label, kb, color], i) => {
-              const y = 30 + i * 46;
-              const w = (kb / max) * barW;
-              return (
-                <g key={label}>
-                  <text x={x0 - 10} y={y + 15} textAnchor="end" fontSize="12" fill="currentColor" opacity="0.8">
-                    {label}
-                  </text>
-                  <rect x={x0} y={y} width={w} height="22" rx="3" fill={color} />
-                  <text x={x0 + w + 6} y={y + 16} fontSize="11" fill="currentColor" opacity="0.7" fontWeight="600">
-                    {kb} KB
-                  </text>
-                </g>
-              );
-            });
-          })()}
-
-          <text x="280" y="244" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.35">
-            Source: NVSP, NSDL, UTIITSL &amp; Sarathi portals (2026)
-          </text>
-        </svg>
-      </figure>
+      <div className="my-8 rounded-xl border border-hairline bg-paper p-5 text-sm leading-relaxed text-ink-soft">
+        Voter ID is intentionally omitted from a digital-cap chart: ECI&apos;s public
+        Form 6 guidance publishes the physical photo and composition, not a national
+        KB limit or pixel canvas. Confirm those fields on the current upload screen.
+      </div>
 
       <h2>PAN card photo requirements</h2>
 
@@ -237,18 +192,18 @@ export default function Page() {
       <p>
         The Election Commission&apos;s{" "}
         <a
-          href="https://voters.eci.gov.in"
+          href="https://voters.eci.gov.in/guidelines/Form-6_en.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="text-brand underline"
         >
-          NVSP portal (voters.eci.gov.in)
+          ECI Form 6 guidance
         </a>{" "}
-        is the most forgiving on size: a colour JPEG between <strong>10&nbsp;KB and 200&nbsp;KB</strong>
-        , at least 200×240&nbsp;px, on a plain white or light background. It applies to
-        Form&nbsp;6 (new enrollment), Form&nbsp;6A (overseas voters) and Form&nbsp;8
-        (corrections). Even though 200&nbsp;KB is generous, several state ERO portals
-        tighten it to 50&nbsp;KB, so under 100&nbsp;KB is the safe target.
+        publishes a recent good-quality unsigned colour Form&nbsp;6 photo measuring
+        <strong>4.5&nbsp;cm high by 3.5&nbsp;cm wide</strong>, with a white background,
+        open eyes and both face edges visible. Its public Form&nbsp;6 guidance does not
+        publish a universal digital KB cap, pixel size, format or DPI; confirm those
+        fields on the current application screen.
       </p>
 
       <p>
@@ -260,7 +215,7 @@ export default function Page() {
         <Link href="/exam-requirements/voter-id/" className="text-brand underline">
           voter ID photo spec &amp; resizer
         </Link>{" "}
-        to hit the exact KB target.
+        to choose a compatibility target after checking the current upload screen.
       </p>
 
       <h2>Driving licence photo requirements</h2>
@@ -268,18 +223,18 @@ export default function Page() {
       <p>
         The{" "}
         <a
-          href="https://sarathi.parivahan.gov.in"
+          href="https://sarathi.parivahan.gov.in/sarathiservice/pdf/PhotoSign.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="text-brand underline"
         >
-          Sarathi portal (sarathi.parivahan.gov.in)
+          Sarathi photo and signature scan guide
         </a>{" "}
-        has the tightest realistic cap
-        of the four everyday IDs: a colour JPEG under <strong>40&nbsp;KB</strong>, at
-        least 200×230&nbsp;px, white background. It applies to a learner&apos;s
-        licence, a permanent licence, and renewal. Because 40&nbsp;KB is so tight, a
-        straight phone photo almost never passes without compression.
+        publishes a colour JPG photo between <strong>10&nbsp;KB and 20&nbsp;KB</strong>,
+        with 420×525&nbsp;px preferred and a light-coloured, preferably white
+        background. It also publishes a 10–20&nbsp;KB, 256×64&nbsp;px preferred
+        signature written in black pen on white paper. Confirm the current state and
+        service screen before submitting.
       </p>
 
       <p>

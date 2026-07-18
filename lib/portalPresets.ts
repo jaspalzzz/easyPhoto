@@ -148,15 +148,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigMinKb: 10,
     photoWidthPx: 630,
     photoHeightPx: 810,
-    sigWidthPx: 450,
-    sigHeightPx: 150,
     photoAspectRatio: 3.5 / 4.5,
-    sigAspectRatio: 4.5 / 1.5,
     description:
-      "Conditional compatibility preset, not an ordinary domestic Passport Seva upload requirement. The 630x810 px photo format is confirmed for the overseas Indian-mission ICAO workflow; the stored KB and signature limits need workflow-specific verification.",
+      "Conditional compatibility preset, not an ordinary domestic Passport Seva upload requirement. The 630x810 px photo format is confirmed for the overseas Indian-mission ICAO workflow; the stored KB and signature limits have no published support in that photo guide. Confirm the current mission workflow before using those compatibility limits.",
     source: {
-      url: "https://embassy.passportindia.gov.in/pdf/Guidelines_for_ICAO_Compliant_Photographs_for_Passport_Applications.pdf",
-      label: "Passport Seva at Indian Embassies — ICAO photograph guidance",
+      url: "https://portal4.passportindia.gov.in/Online/pdf/Guidelines_for_ICAO_Compliant_Photographs_for_Passport_Applications.pdf",
+      label: "Passport Seva overseas portal — ICAO photograph guidance",
     },
     verification: "needs-review",
     context:
@@ -617,7 +614,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "GPSC (Gujarat PSC)",
     photoLimitKb: 15,
     sigLimitKb: 15,
-    description: "Gujarat PSC applications use Gujarat's OJAS service, but the current public portal does not establish whether photo/signature are uploaded or captured live and does not support the stored 15 KB targets or the former centimetre and ink claims. Treat the values as compatibility targets and confirm the active OJAS instructions.",
+    description: "Gujarat PSC applications use Gujarat's OJAS service, but the current public portal does not establish whether photo/signature are uploaded or captured live and does not support the stored 15 KB targets or the former centimetre and ink claims. Treat the values as compatibility targets and confirm the current OJAS instructions.",
     source: {
       url: "https://ojas.gujarat.gov.in/",
       label: "Gujarat OJAS — live application portal",
@@ -631,7 +628,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "HPSC (Haryana PSC)",
     photoLimitKb: 500,
     sigLimitKb: 500,
-    description: "Haryana PSC online registration. The current recruitment advertisement (Advt 24/2026) lists a scanned photo and scanned signatures among the uploads but publishes no KB or pixel specification; those limits are shown only inside the online registration portal (regn.hpsc.gov.in) at the upload step. The 500 KB values here are unconfirmed and could not be checked against a public source — confirm the exact figures on the portal before preparing files.",
+    description: "Haryana PSC online registration. The current recruitment advertisement (Advt 24/2026) lists a scanned photo and scanned signatures among the uploads but publishes no KB or pixel specification; those limits are shown only inside the online registration portal (regn.hpsc.gov.in) at the upload step. The 500 KB values here are unconfirmed and could not be checked against a public source — confirm the current figures on the portal before preparing files.",
     source: {
       url: "https://regn.hpsc.gov.in/",
       label: "HPSC online registration portal (photo/signature limits shown at the upload step)",
@@ -774,14 +771,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 20,
     sigLimitKb: 20,
     sigMinKb: 10,
-    photoWidthPx: 200,
-    photoHeightPx: 230,
-    sigWidthPx: 140,
-    sigHeightPx: 60,
-    photoAspectRatio: 20 / 23,
-    sigAspectRatio: 14 / 6,
     description:
-      "Compatibility preset for the CLAT application. The public CLAT 2026 instructions confirm a front-facing recent passport-size photograph with a plain background and a candidate signature, but publish no KB, pixel, DPI, file-format or ink limits. The stored 20-50 KB / 200×230 px photo and 10-20 KB / 140×60 px signature values remain unconfirmed; check the current application screen before use.",
+      "Compatibility preset for the CLAT application. The public CLAT 2026 instructions confirm a front-facing recent passport-size photograph with a plain background and a candidate signature, but publish no KB, pixel, aspect-ratio, DPI, file-format or ink limits. The stored 20-50 KB photo and 10-20 KB signature bands remain unconfirmed; check the current application screen before use.",
     source: {
       url: "https://consortiumofnlus.ac.in/clat-2026/ug-instructions.html",
       label: "CLAT 2026 UG application instructions",
@@ -797,14 +788,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 20,
     sigLimitKb: 20,
     sigMinKb: 10,
-    photoWidthPx: 413,
-    photoHeightPx: 531,
-    sigWidthPx: 413,
-    sigHeightPx: 177,
-    photoAspectRatio: 413 / 531,
-    sigAspectRatio: 413 / 177,
     description:
-      "Compatibility preset for Indian Army Agniveer registration. The recruiting-year 2027 notice confirms that a recent photograph is uploaded on joinindianarmy.nic.in, but publishes no photo/signature KB band, pixel dimensions, format or name/date rule. The stored 20-50 KB / 413×531 px photo and 10-20 KB / 413×177 px signature values remain unconfirmed; check the current candidate portal before use.",
+      "Compatibility preset for Indian Army Agniveer registration. The recruiting-year 2027 notice confirms that a recent photograph is uploaded on joinindianarmy.nic.in, but publishes no photo/signature KB band, pixel dimensions, aspect ratio, format or name/date rule. The stored 20-50 KB photo and 10-20 KB signature bands remain unconfirmed; check the current candidate portal before use.",
     source: {
       url: "https://www.telangana.gov.in/wp-content/uploads/2026/02/Recruitment-Notification-for-AGNIVEER-2027.pdf",
       label: "Indian Army Agniveer RY 2027 notice (government-hosted copy)",
@@ -890,7 +875,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoHeightPx: 525,
     sigWidthPx: 256,
     sigHeightPx: 64,
-    photoAspectRatio: 35 / 45,
     sigAspectRatio: 256 / 64,
     signatureInk: "Black pen on white paper",
     description:
@@ -1049,7 +1033,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigMinKb: 10,
     sigAspectRatio: 6.0 / 2.0,
     description:
-      "BSF (Border Security Force) Constable/HC/SI recruitment. Signature 10-20 KB, 6.0cm×2.0cm — confirmed via the SSC GD 2026 notice (SSC administers BSF's Constable GD hiring stream). That same notice describes the photo step as a live webcam capture through the application portal, not a file-size/dimension upload — so the 20-50 KB photo figure here is an unconfirmed standard-pattern assumption for BSF's own SI/HC recruitment (a separate stream from SSC GD), not something this source confirms.",
+      "BSF (Border Security Force) Constable/HC/SI recruitment. Signature 10-20 KB, 6.0cm×2.0cm — confirmed via the SSC GD 2026 notice (SSC administers BSF's Constable GD hiring stream). That same notice describes the photo step as a live webcam capture through the application portal, not a file-size/dimension upload — so the 20-50 KB photo figure here is an unconfirmed standard-pattern assumption for BSF's own SI/HC recruitment (a separate stream from SSC GD), not something this source confirms. Confirm the current post-specific notice before using the photo target.",
     source: {
       url: "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/notice_01122025.pdf",
       label: "SSC GD Constable (CAPFs incl. BSF) 2026 notice",
@@ -1107,17 +1091,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 20,
     sigLimitKb: 20,
     sigMinKb: 10,
-    photoWidthPx: 200,
-    photoHeightPx: 230,
-    sigWidthPx: 140,
-    sigHeightPx: 60,
-    photoAspectRatio: 20 / 23,
-    sigAspectRatio: 14 / 6,
     description:
-      "Compatibility preset for ITBP online recruitment. No current public ITBP notice or instruction page located in this audit publishes the stored 20-50 KB / 200×230 px photo and 10-20 KB / 140×60 px signature limits, format or background rule. Check the current recruitment application before use.",
+      "Compatibility preset for ITBP online recruitment. The reachable ITBP career page links to its recruitment portal but publishes no photo or signature KB, pixel, aspect-ratio, format or background rule. The stored 20-50 KB photo and 10-20 KB signature bands remain unconfirmed; check the current post-specific recruitment application before use.",
     source: {
-      url: "https://recruitment.itbpolice.nic.in/rect/index.php",
-      label: "ITBP recruitment portal",
+      url: "https://www.itbpolice.nic.in/Home/Career/1000",
+      label: "ITBP official career page linking to the recruitment portal",
     },
     verification: "needs-review",
     context:

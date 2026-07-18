@@ -34,8 +34,6 @@ const photoKb = (s: PortalSpec) =>
   s.photoMinKb ? `${s.photoMinKb}–${s.photoLimitKb} KB` : `under ${s.photoLimitKb} KB`;
 const sigKb = (s: PortalSpec) =>
   s.sigLimitKb ? (s.sigMinKb ? `${s.sigMinKb}–${s.sigLimitKb} KB` : `under ${s.sigLimitKb} KB`) : null;
-/** Dimensions for the spec table, where an em-dash honestly means "not published". */
-const px = (w?: number, h?: number) => (w && h ? `${w} × ${h} px` : "—");
 /** " (200 × 230 px)" — or nothing at all, for prose and meta descriptions. */
 const parens = (dims: string | null) => (dims ? ` (${dims})` : "");
 
@@ -120,18 +118,25 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-function rejectionReasons(hasSignature: boolean): string[] {
+function rejectionReasons(spec: PortalSpec, hasSignature: boolean): string[] {
   const reasons = [
-    "File size over the limit — even 1 KB above the cap is auto-rejected by many portals.",
-    "Wrong pixel dimensions or aspect ratio.",
-    "Wrong file format (most portals want JPG/JPEG).",
+    spec.verification === "official"
+      ? "File size falls outside the published band."
+      : "File size does not match the current application's displayed range.",
   ];
+  if (photoDimsPx(spec) || spec.photoAspectRatio) {
+    reasons.push("Photo does not match the published pixel canvas or aspect ratio.");
+  }
+  reasons.push("File format differs from the current application's accepted formats.");
   // Only applies to forms that actually take a signature upload — showing this
   // for exams with photo-only uploads would be inaccurate, not just repetitive.
   if (hasSignature) {
-    reasons.push("Signature uploaded with a white box / paper background instead of clean ink.");
+    if (sigDimsPx(spec) || spec.sigAspectRatio) {
+      reasons.push("Signature does not match the published canvas or aspect ratio.");
+    }
+    reasons.push("Signature is unclear or includes excess paper around the writing.");
   }
-  reasons.push("Old, blurry, or low-contrast photo, or wrong (non-white) background.");
+  reasons.push("Photo is blurry or too low-contrast to review clearly.");
   return reasons;
 }
 
@@ -230,7 +235,7 @@ export default async function Page({
           <h2 className="eyebrow">Photo requirement</h2>
           <dl>
             <Row label="File size" value={photoKb(spec)} />
-            <Row label="Dimensions" value={px(spec.photoWidthPx, spec.photoHeightPx)} />
+            <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? "—"} />
             {spec.photoAspectRatio && (
               <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
             )}
@@ -243,9 +248,9 @@ export default async function Page({
           {sig ? (
             <dl>
               <Row label="File size" value={sig} />
-              <Row label="Dimensions" value={px(spec.sigWidthPx, spec.sigHeightPx)} />
+              <Row label="Dimensions" value={sigDimsPx(spec, " px") ?? "—"} />
               <Row label="Format" value="JPG / JPEG" />
-              <Row label="Ink" value={spec.signatureInk ?? "Black/blue on white paper"} />
+              <Row label="Ink" value={spec.signatureInk ?? "Confirm current notice"} />
             </dl>
           ) : (
             <p className="text-sm text-muted-foreground">
@@ -459,9 +464,9 @@ export default async function Page({
             <h2 className="text-lg font-semibold">SBI uses separate photo and signature upload targets</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               The SBI PO record sets the photograph at {photoKb(spec)}, with a
-              preferred {px(spec.photoWidthPx, spec.photoHeightPx)} canvas. The
+              preferred {photoDimsPx(spec, " px")} canvas. The
               signature uses its own {sig} band and preferred
-              {" "}{px(spec.sigWidthPx, spec.sigHeightPx)} canvas. The advertisement
+              {" "}{sigDimsPx(spec, " px")} canvas. The advertisement
               specifies JPG or JPEG files, a minimum {spec.dpi} DPI scan setting,
               and a signature written in {spec.signatureInk?.toLowerCase()}.
             </p>
@@ -507,9 +512,9 @@ export default async function Page({
             <h2 className="text-lg font-semibold">Sarathi checks two separately prepared JPG files</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               The Sarathi record sets the colour photo at {photoKb(spec)}, with
-              {" "}a preferred {px(spec.photoWidthPx, spec.photoHeightPx)} canvas.
+              {" "}a preferred {photoDimsPx(spec, " px")} canvas.
               The black-pen signature uses its own {sig} band and preferred
-              {" "}{px(spec.sigWidthPx, spec.sigHeightPx)} canvas. The upload guide
+              {" "}{sigDimsPx(spec, " px")} canvas. The upload guide
               requires JPG format for both files.
             </p>
           </div>
@@ -592,7 +597,7 @@ export default async function Page({
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Why {spec.name.split(" (")[0]} uploads get rejected</h2>
         <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-          {rejectionReasons(!!sig).map((r) => (
+          {rejectionReasons(spec, !!sig).map((r) => (
             <li key={r} className="flex items-start gap-2">
               <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-faint" strokeWidth={1.75} />
               {r}

@@ -146,11 +146,11 @@ export default function Page() {
       <h2>When does DPI matter for Indian government portals?</h2>
 
       <p>
-        Most Indian government upload portals (NVSP for Voter ID, Sarathi for driving
-        licence, most exam boards) check two things: file size in KB and pixel
-        dimensions. They do not enforce the DPI metadata tag. NSDL (Protean) is the
-        main exception — it explicitly states a minimum of 200 DPI in the
-        requirements. UTIITSL similarly lists 200 DPI for PAN card photos.
+        Many Indian government upload portals check file size and, where published,
+        pixel dimensions. ECI&apos;s public Voter ID Form 6 guidance is different: it
+        publishes a physical photo size but no digital KB, pixel, format or DPI rule.
+        NSDL (Protean) explicitly states a minimum of 200 DPI in its requirements.
+        UTIITSL similarly lists 200 DPI for PAN card photos.
       </p>
 
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -165,8 +165,8 @@ export default function Page() {
           {[
             ["NSDL / Protean (PAN card)", "Yes — minimum 200 DPI", "File size (20–50 KB), pixel dims, DPI tag"],
             ["UTIITSL (PAN card)", "Yes — 200 DPI", "File size (≤30 KB), DPI tag"],
-            ["NVSP / ECI (Voter ID)", "Not specified", "File size (10–200 KB), JPEG format"],
-            ["Sarathi (Driving Licence)", "Not specified", "File size (≤40 KB photo, ≤20 KB sig)"],
+            ["Voters' Service Portal / ECI (Form 6)", "Not specified", "Digital KB, pixel and format fields are not published in public Form 6 guidance"],
+            ["Sarathi (Driving Licence)", "Minimum 300 DPI scanning guidance", "File size (10–20 KB photo and signature), published pixel canvas"],
             ["UPSC / SSC / IBPS exam portals", "Not specified", "File size in KB and pixel dimensions"],
             ["India overseas passport guidance", "Not specified", "630×810 px and photo composition"],
           ].map(([portal, dpi, checked]) => (
