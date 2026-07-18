@@ -395,12 +395,14 @@ export default async function Page({
       {exam === "ssc" && (
         <section className="space-y-6 border-t border-hairline pt-8">
           <div className="space-y-2">
-            <h2 className="text-lg font-semibold">SSC photo and signature use different upload bands</h2>
+            <h2 className="text-lg font-semibold">SSC captures the photo live — the signature is the file you prepare</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The SSC record specifies a {photoKb(spec)} photo, and the signature has
-              its own {sig} band. SSC publishes these file-size bands rather than a
-              pixel requirement, so match the size limits and keep the scan sharp.
-              Preparing the two files separately matters because one file cannot satisfy both sets of limits.
+              Current SSC applications capture the photograph live through the
+              portal&apos;s camera, so there is no pre-existing photo file to upload.
+              The signature is the upload to prepare: {sig}, JPG, on plain white
+              paper. The {photoKb(spec)} photo figure stored here is a
+              compatibility target, not a current SSC upload requirement — set up
+              good light and a plain background before you open the form.
             </p>
           </div>
           <div className="space-y-2">
@@ -408,8 +410,8 @@ export default async function Page({
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               SSC uses these files across recruitments including CGL, CHSL, MTS,
               GD Constable, Stenographer and Junior Engineer through its One-Time
-              Registration flow. Its recorded photo instructions also require the
-              candidate&apos;s name and the date of photography on the image.
+              Registration flow. The current notice publishes no name-and-date rule
+              for the image, so no digital name/date strip is needed.
             </p>
           </div>
           {spec.source && (
@@ -437,12 +439,14 @@ export default async function Page({
             </p>
           </div>
           <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Upload limits are not the paper-scan guide</h2>
+            <h2 className="text-lg font-semibold">A live photograph and three signatures on one sheet</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              UPSC&apos;s recorded paste-on-paper guidance describes a 5 × 6 cm photo
-              and a 6 × 3 cm signature scanned at 200 DPI. Those measurements are
-              scanning guidance; the online portal values shown above are the
-              actual KB and pixel constraints for the uploaded files.
+              Besides the uploaded photograph, UPSC&apos;s portal captures a live
+              photograph during the application and matches it against the file you
+              uploaded — so use a current photo that looks like you today. The
+              signature upload is one image holding your signature{" "}
+              <strong>three times, arranged vertically</strong> on plain white
+              paper; a single signature is not what the form expects.
             </p>
           </div>
           {spec.source && (
