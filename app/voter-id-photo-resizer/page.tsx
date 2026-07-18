@@ -16,7 +16,7 @@ export default function Page() {
       portalId="voter-id"
       displayName="ECI Voter ID"
       slug="voter-id-photo-resizer"
-      intro="Get your new-voter (Form 6) photo to the size, dimensions and file limit the ECI Voters' Service Portal accepts — auto-resized and checked, free, entirely in your browser."
+      intro="Prepare your new-voter (Form 6) photo to the stored compatibility target and published physical proportions. ECI's public Form 6 does not publish one universal digital KB limit, so confirm the current portal before submitting."
       learnMoreHref="/blog/voter-id-photo-requirements-2026/"
       learnMoreLabel="Voter ID photo requirements & NVSP upload spec →"
     />

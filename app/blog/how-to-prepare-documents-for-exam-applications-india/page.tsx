@@ -243,7 +243,8 @@ export default function Page() {
           <strong>Step 1 - Photo.</strong> Take or select a recent photo on a
           white background. Use the{" "}
           <Link href="/tools/exam-package/">exam package tool</Link> to resize it
-          to the exact KB and pixel spec for your target exam.
+          to the stored KB target and published pixel dimensions where available.
+          Confirm the current exam notification before submitting.
         </li>
         <li>
           <strong>Step 2 - Signature.</strong> Sign on white paper, photograph it,

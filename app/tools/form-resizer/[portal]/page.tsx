@@ -105,7 +105,7 @@ export default async function Page({
         <Link href={`/exam-requirements/${portal}/`} className="text-brand hover:underline">
           {spec.name.split(" (")[0]} photo &amp; signature requirements
         </Link>{" "}
-        — official size, dimensions &amp; source.
+        — stored requirements, provenance and a link to the named source.
       </p>
 
       {/* Cluster the matrix: link to topically related exam resizers. */}

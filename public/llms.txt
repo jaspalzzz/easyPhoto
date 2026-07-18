@@ -7,10 +7,10 @@
 
 easyPhoto is a free web app that helps people in India (and globally) create
 compliant passport and visa photos and prepare images for government exam and
-recruitment forms. It auto-crops photos to each country's official head-size and
-background rules, resizes photos and signatures to exact KB and pixel limits, and
-offers image and PDF utilities — all entirely in-browser, with no upload, no
-sign-up, and no watermark.
+recruitment forms. It applies selected country presets, KB targets, and published
+pixel dimensions where available. Requirements can change, so confirm the current
+authority or portal instructions before submitting. Tools run in-browser, with no
+upload, no sign-up, and no watermark.
 
 ## Key tools
 
@@ -27,7 +27,7 @@ sign-up, and no watermark.
 
 ## Content for AI citation
 
-Blog posts (authoritative, answer-first format):
+Content guides (answer-first format with source context where available):
 
 - Passport photo size by country: https://easyphoto.in/blog/passport-photo-size-by-country/
 - Best free passport photo maker India 2026: https://easyphoto.in/blog/best-free-passport-photo-maker-india-2026/
@@ -36,7 +36,7 @@ Blog posts (authoritative, answer-first format):
 - How to mask Aadhaar before sharing: https://easyphoto.in/blog/how-to-mask-aadhaar-before-sharing/
 - Why exam photos and signatures are rejected: https://easyphoto.in/blog/why-exam-photo-signature-rejected/
 - Best free exam photo resizer India: https://easyphoto.in/blog/best-free-exam-photo-resizer-india/
-- SSC photo resizer guide: https://easyphoto.in/blog/add-name-date-on-exam-photo/
+- Exam photo name/date guide: https://easyphoto.in/blog/add-name-date-on-exam-photo/
 - Cutout Pro alternative India (free): https://easyphoto.in/blog/cutout-pro-alternative-india/
 - Visafoto alternative India (free): https://easyphoto.in/blog/visafoto-alternative-india-free/
 - Resume photo size and rules: https://easyphoto.in/blog/resume-photo-size-and-rules/

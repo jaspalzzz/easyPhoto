@@ -50,7 +50,7 @@ export default function Page() {
         <ul className="!mt-2 text-[15px]">
           <li>Size is standard across Schengen: <strong>35 × 45 mm</strong>, face 70–80% of the frame, neutral expression, last 6 months.</li>
           <li>The <strong>background colour varies by country</strong> — Germany wants grey and rejects white; Italy wants white.</li>
-          <li><strong>Light grey is the safe universal choice</strong> (accepted everywhere, including Switzerland, which rejects white).</li>
+          <li><strong>Do not assume one background works everywhere.</strong> Follow the current embassy, consulate or application-centre instruction for your destination.</li>
         </ul>
       </div>
 
@@ -105,8 +105,8 @@ export default function Page() {
         </tbody>
       </table>
       <p>
-        If you&apos;re unsure, <strong>light grey is the safest universal choice</strong> —
-        it&apos;s accepted everywhere, including Switzerland (which rejects white).
+        If you&apos;re unsure, do not rely on a universal background colour. Check the
+        current embassy, consulate or application-centre instruction for your destination.
         For EU Schengen visa requirements, see the{" "}
         <a href="https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en" className="text-brand underline" target="_blank" rel="noopener noreferrer">European Commission Schengen visa guidance</a>.
       </p>

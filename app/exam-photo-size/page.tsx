@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
   title: "Exam Photo & Signature Size 2026 — Full List for Indian Exams",
   titleAbsolute: true,
   description:
-    "The complete, official photo and signature size list for 30+ Indian exam and recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA, RBI, NABARD, LIC and State PSCs. Compare KB limits and pixel dimensions in one table, each with its source.",
+    "Compare recorded photo and signature requirements for 30+ Indian exam and recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA, RBI, NABARD, LIC and State PSCs — with source and verification context.",
   path: "/exam-photo-size/",
 });
 
@@ -46,12 +46,12 @@ const FAQS: FaqItem[] = [
     a: "Most Indian exam portals want the photo at 20–50 KB and the signature at 10–20 KB, usually around 3.5×4.5 cm. But it varies by exam — UPSC allows up to 200 KB, GATE up to 600 KB, and some State PSCs differ — so always match the exact exam, which is what this table is for.",
   },
   {
-    q: "Why does the exact size matter so much?",
-    a: "Online exam portals reject uploads that are over the file-size cap or the wrong dimensions, which can cost you the application window. Matching the exact KB and pixel spec for your exam avoids rejection.",
+    q: "Why do the listed size requirements matter?",
+    a: "A portal can flag an upload that exceeds its file-size cap or does not match published dimensions. Prepare the file to the listed requirements and confirm the current notification before submitting.",
   },
   {
-    q: "How do I resize my photo to the exact size?",
-    a: "Pick your exam below to open its page, then use the in-browser resizer to hit the exact KB and dimensions. It runs entirely on your device — nothing is uploaded — and it's free with no watermark.",
+    q: "How do I resize my photo to the listed requirements?",
+    a: "Pick your exam below to open its page, then use the in-browser resizer for its stored KB target and published dimensions where available. Confirm the current notification. It runs entirely on your device — nothing is uploaded — and it is free with no watermark.",
   },
   {
     q: "How are these sizes sourced?",
@@ -88,7 +88,8 @@ export default function Page() {
           Recorded photo and signature sizes for 30+ Indian exam and
           recruitment forms, in one place — file-size (KB) limits and pixel
           dimensions side by side. Find your exam, then resize free in your
-          browser. Each exam links to its full spec with the official source.
+          browser. Each exam links to its full preset, named source and
+          verification status.
         </p>
       </header>
 
@@ -130,7 +131,7 @@ export default function Page() {
       ))}
 
       <section className="rounded-lg border border-hairline bg-paper p-5 sm:p-6">
-        <h2 className="text-base font-semibold tracking-tight">Resize to the exact size — free</h2>
+        <h2 className="text-base font-semibold tracking-tight">Resize to the selected requirements — free</h2>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Found your exam? Open its page for the full spec and the in-browser
           resizer, or jump straight to a tool. Everything runs on your device —
@@ -151,8 +152,8 @@ export default function Page() {
 
       <p className="text-xs text-muted-foreground">
         Specs can change between notification cycles — each exam page links to its
-        official source and the date it was confirmed. Always verify on the
-        official portal before submitting.
+        named source and shows its review status. Always verify on the current
+        authority portal before submitting.
       </p>
 
       <section>

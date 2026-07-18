@@ -137,8 +137,8 @@ export default function Page() {
       <p>
         The other reason to use easyPhoto over Visafoto for Indian applicants: it also handles
         exam photos. If you&apos;re applying for SSC CGL, IBPS PO, UPSC CSE, SBI PO, or any of
-        40+ other exams, the tool knows the exact KB limit and pixel dimensions from each
-        board&apos;s official notification and resizes to fit in one step. Visafoto has no exam
+        40+ other exams, the tool applies stored KB targets and published pixel dimensions
+        where available. Confirm the current board notification before submitting. Visafoto has no exam
         portal presets at all.
       </p>
 

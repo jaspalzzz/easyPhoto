@@ -20,6 +20,6 @@ export default async function Image({
   return ogImage({
     title: spec ? `${spec.name} Form Resizer` : "Form Photo & Signature Resizer",
     subtitle:
-      "Resize photos and signatures to exact KB limits for government and exam portals.",
+      "Apply selected photo and signature KB targets; confirm the current portal instructions.",
   });
 }

@@ -187,18 +187,18 @@ export default function Page() {
 
       <p>
         easyPhoto prepares the India 35×45 mm under-four print and passport photos for the US, UK, Canada, Schengen and 20+
-        other countries), resizes exam photos to the exact KB and pixel limits of 40+ Indian exam
+        other countries), resizes exam photos to selected KB targets and published pixel dimensions where available for 40+ Indian exam
         portals (SSC, IBPS, UPSC, SBI, RRB, NTA and more), and handles PDF compression, signature
         resize, and format conversion. Nothing is uploaded: every operation runs in your browser
-        using WebAssembly. The specs come from each board&apos;s official notification, verified
-        against the source.
+        using WebAssembly. Each preset shows its named source and verification status; confirm
+        the current portal instructions before submitting.
       </p>
 
       <p>
-        The reason we built it specifically for India is that no Western tool covers exam photo
-        requirements. A SSC CGL applicant needs a 275×354 px JPG between 20 KB and 50 KB, a spec
-        that doesn&apos;t exist anywhere in Visafoto&apos;s or iLoveIMG&apos;s interface. The tool
-        is free with no account required.
+        The reason we built it specifically for India is that general photo tools do not usually
+        include per-exam KB targets or published dimensions. Some current workflows use live
+        capture or do not publish fixed pixels, so the tool also surfaces provenance and review
+        caveats. It is free with no account required.
       </p>
 
       <h2>PassportSizePhoto.in — free, WebAssembly, India-first</h2>

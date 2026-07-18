@@ -857,7 +857,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 2.5 / 3.5,
     sigAspectRatio: 4.5 / 2,
     description:
-      "Online PAN application (Form 49A/49AA via Protean-NSDL or UTIITSL). Photo 3.5×2.5 cm colour JPEG at 200 DPI, max 20 KB; signature 2×4.5 cm JPEG at 200 DPI, max 10 KB. These are the strictest official caps — a file that meets them is accepted in every application mode.",
+      "Online PAN application (Form 49A/49AA via Protean-NSDL or UTIITSL). Photo 3.5×2.5 cm colour JPEG at 200 DPI, max 20 KB; signature 2×4.5 cm JPEG at 200 DPI, max 10 KB. Application methods can differ, so confirm the current instructions for the route you use.",
     source: {
       url: "https://tin.tin.proteantech.in/pan/InstructionDSC.html",
       label: "Protean (NSDL e-Gov) PAN instructions",
@@ -866,7 +866,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-06-11",
     dpi: 200, // officially mandated scan resolution
     context:
-      "A PAN card application (Form 49A or 49AA) can be filed through either Protean (formerly NSDL e-Gov) or UTIITSL — both processors enforce the same 200 DPI scan requirement and KB caps, so a photo and signature meeting this spec is accepted through either route.",
+      "A PAN card application (Form 49A or 49AA) can be filed through Protean (formerly NSDL e-Gov) or UTIITSL. This preset records the linked Protean instructions; confirm the current photo and signature fields on the application route you use.",
   },
   "driving-licence": {
     id: "driving-licence",

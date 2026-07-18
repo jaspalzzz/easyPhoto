@@ -57,7 +57,8 @@ export const metadata: Metadata = {
   },
   description:
     "Create a compliant passport or visa photo for free, or resize photos & " +
-    "signatures to exact exam-form limits. 100% in your browser — your photo " +
+    "signatures to selected exam-form targets. Confirm the current instructions. " +
+    "100% in your browser — your photo " +
     "never leaves your device.",
   applicationName: SITE_NAME,
   // These reference files you drop into /public (see public/site.webmanifest).

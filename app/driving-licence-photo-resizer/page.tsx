@@ -16,7 +16,7 @@ export default function Page() {
       portalId="driving-licence"
       displayName="Driving Licence"
       slug="driving-licence-photo-resizer"
-      intro="Get your driving licence / learner's licence photo and signature to the size and KB the Sarathi Parivahan portal accepts — auto-resized and checked, free, entirely in your browser. Limits can vary by state, so confirm what your portal shows."
+      intro="Prepare your driving licence / learner's licence photo and signature to the stored Sarathi targets. Limits can vary by state, so confirm the fields shown by your current portal before submitting. Processing stays in your browser."
       learnMoreHref="/blog/driving-licence-photo-size-sarathi/"
       learnMoreLabel="Sarathi photo & signature requirements guide →"
     />

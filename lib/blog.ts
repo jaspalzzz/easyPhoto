@@ -26,22 +26,22 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "pan-vs-voter-id-vs-driving-licence-photo",
     title: "PAN vs Voter ID vs Driving Licence Photo: What's Different (2026)",
     description:
-      "The KB limit swings from 30 KB (PAN/UTIITSL) to 200 KB (voter ID) — 6.7× — and only PAN needs a square crop. A side-by-side of all three photo specs, and the one file that passes all.",
+      "Compare the recorded PAN, voter ID and driving-licence photo requirements, why the workflows differ, and why one file should not be assumed suitable for every portal.",
     date: "July 10, 2026",
     dateISO: "2026-07-10",
     excerpt:
-      "The three IDs look like they'd take the same photo — they don't. The KB cap ranges 6.7× across them and only one needs a square crop. Here's exactly what differs, and the single file that clears all three.",
+      "The three IDs may start from the same portrait, but their application workflows differ. Compare the recorded requirements and confirm the current route before submitting.",
     readMins: 7,
   },
   {
     slug: "indian-government-id-photo-requirements",
     title: "Indian Government ID Photo Size 2026: PAN, Voter ID, DL & Aadhaar",
     description:
-      "The exact photo size, KB limit and pixel dimensions for PAN, Voter ID, Driving Licence and Aadhaar online applications — one verified 2026 reference, every portal compared.",
+      "Compare the recorded photo requirements for PAN, voter ID, driving licence and Aadhaar applications, with source and verification context for each workflow.",
     date: "July 4, 2026",
     dateISO: "2026-07-04",
     excerpt:
-      "A PAN, a voter ID, an Aadhaar and a driving licence — and no two portals accept the same photo. Here is every 2026 spec, the one file that passes the online portals, and why Aadhaar is the exception.",
+      "PAN, voter ID, Aadhaar and driving-licence workflows do not publish one interchangeable photo specification. Compare the recorded requirements and source notes.",
     readMins: 8,
   },
   {
@@ -279,7 +279,7 @@ export const BLOG_POSTS: BlogPost[] = [
     dateISO: "2026-06-08",
     updatedISO: "2026-06-21",
     excerpt:
-      "Wrong KB, wrong pixels, grey signature background — these three mistakes account for nearly every upload rejection. Here's the exact spec for every major Indian exam and how to fix each failure.",
+      "Wrong KB, wrong published dimensions and an unsuitable signature background are common measurable upload problems. Compare the recorded requirements and practical fixes.",
     readMins: 10,
   },
   {
@@ -379,7 +379,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "June 23, 2026",
     dateISO: "2026-06-23",
     excerpt:
-      "NSDL and UTIITSL accept the same physical 25×35 mm photo but different pixel dimensions and KB limits. Here's every spec, why they differ, and what gets photos rejected.",
+      "Compare the recorded Protean and UTIITSL photo and signature requirements, why application routes can differ, and what to verify before uploading.",
     readMins: 7,
   },
   {
@@ -430,12 +430,12 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "voter-id-photo-requirements-2026",
     title: "Voter ID Photo Size & Requirements 2026 — NVSP Upload Spec",
     description:
-      "NVSP (voters.eci.gov.in) requires a JPEG photo between 10 KB and 200 KB. Compress to under 100 KB to clear all state portals. Background, pixel size, and form-by-form guide.",
+      "ECI Form 6 publishes physical photo and composition guidance but no universal digital KB cap. Review the source and confirm the current upload screen.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
     updatedISO: "2026-07-08",
     excerpt:
-      "The ECI portal accepts photos between 10 KB and 200 KB, but state ERO portals can be stricter. Here's every spec for Form 6, 6A, 8 and why photos get rejected.",
+      "ECI Form 6 publishes physical photo and composition guidance but no universal digital KB cap. Review what is published and what the current upload screen must confirm.",
     readMins: 6,
   },
   {

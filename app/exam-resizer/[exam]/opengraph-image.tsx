@@ -22,7 +22,7 @@ export default async function Image({
   return ogImage({
     title: e ? `${e.name} Photo & Signature Resizer ${RESIZER_YEAR}` : "Exam Photo & Signature Resizer",
     subtitle: spec
-      ? `Exact size, dimensions and KB the ${e!.name} application form needs.`
-      : "Resize your photo and signature to the exact size your exam form needs.",
+      ? `Apply the stored ${e!.name} size and KB targets; confirm the current form.`
+      : "Prepare a photo and signature for an exam form; confirm its current instructions.",
   });
 }

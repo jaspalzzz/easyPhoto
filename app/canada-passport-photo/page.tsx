@@ -40,7 +40,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "Are glasses allowed in a Canadian passport photo?",
-    a: "Glasses are permitted only if there is no glare on the lenses and your eyes are fully visible and clearly readable. Removing them is strongly recommended to avoid rejection.",
+    a: "Glasses are permitted only if there is no glare on the lenses and your eyes are fully visible and clearly readable. Removing them can reduce glare-related photo problems.",
   },
   {
     q: "Can Indians in Canada use this for an Indian passport renewal?",
