@@ -120,6 +120,40 @@ describe("spec copy — renders cleanly for every portal in the registry", () =>
     expect(drivingLicence.photoAspectRatio).toBeUndefined();
   });
 
+  it("keeps Navy Agniveer's dual upload-and-live-photo workflow free of invented geometry", () => {
+    const navy = specs.find((candidate) => candidate.id === "navy-agniveer")!;
+
+    expect(navy.photoMinKb).toBe(10);
+    expect(navy.photoLimitKb).toBe(50);
+    expect(photoDimsPx(navy)).toBeNull();
+    expect(sigDimsPx(navy)).toBeNull();
+    expect(navy.photoAspectRatio).toBeUndefined();
+    expect(navy.sigAspectRatio).toBeUndefined();
+    expect(navy.sigMinKb).toBeUndefined();
+    expect(navy.sigLimitKb).toBeUndefined();
+    expect(navy.isLiveCapture).toBeUndefined();
+    expect(navy.verification).toBe("official");
+    expect(navy.verifiedOn).toBe("2026-07-18");
+    expect(navy.source?.url).toBe(
+      "https://www.joinindiannavy.gov.in/files/Advt_Agniveer_MR_English.pdf"
+    );
+    expect(`${navy.description} ${navy.context}`).toMatch(/separate webcam live photograph/i);
+    expect(`${navy.description} ${navy.context}`).toMatch(/no (?:photo )?pixel|no fixed pixels/i);
+  });
+
+  it("does not present UPSSSC's unreachable numeric guideline as verified", () => {
+    const upsssc = specs.find((candidate) => candidate.id === "upsssc")!;
+
+    expect(upsssc.verification).toBe("needs-review");
+    expect(upsssc.verifiedOn).toBeUndefined();
+    expect(upsssc.source?.url).toBe(
+      "https://up.nic.in/news/nic-uttar-pradesh-develops-advanced-examination-management-system-for-upsssc/"
+    );
+    expect(upsssc.source?.url).not.toMatch(/upsssc\.gov\.in/i);
+    expect(upsssc.description).toMatch(/targets remain unconfirmed/i);
+    expect(upsssc.description).toMatch(/confirm the current figures/i);
+  });
+
   it("puts the current-figures disclosure inside every needs-review description", () => {
     const disclosure =
       /\b(?:confirm|check|verify)\b.{0,120}\b(?:current|latest)\b|\b(?:current|latest)\b.{0,120}\b(?:confirm|check|verify)\b/i;

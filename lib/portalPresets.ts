@@ -1010,15 +1010,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 3.5 / 1.5,
     description:
-      "Uttar Pradesh Subordinate Services Selection Commission online application (upsssc.gov.in). Photo 50-100 KB (3.5×4.5 cm), JPG/JPEG/JPE; signature 20-50 KB (3.5×1.5 cm), JPG/JPEG/JPE — per UPSSSC's standing photo/signature upload guideline.",
+      "UPSSSC online-application compatibility preset. The former UPSSSC photo/signature guideline URL no longer resolves, and the current official NIC page about UPSSSC's examination system publishes no upload figures. The stored photo 50-100 KB / 3.5×4.5 cm and signature 20-50 KB / 3.5×1.5 cm targets remain unconfirmed; confirm the current figures and formats in the active application before use.",
     source: {
-      url: "http://upsssc.gov.in/GuidLineUploadPhoto.htm",
-      label: "UPSSSC photo/signature upload guideline",
+      url: "https://up.nic.in/news/nic-uttar-pradesh-develops-advanced-examination-management-system-for-upsssc/",
+      label: "NIC Uttar Pradesh — UPSSSC Examination Management System overview",
     },
-    verification: "official",
-    verifiedOn: "2026-07-01",
+    verification: "needs-review",
     context:
-      "UPSSSC (Uttar Pradesh Subordinate Services Selection Commission) conducts recruitments for Lekhpal, Junior Assistant, Forest Guard, VDO and many other Group B/C posts under the UP state government. Applications are submitted on upsssc.gov.in.",
+      "The current official NIC Uttar Pradesh overview confirms that its examination-management system supports UPSSSC application management, but it gives no photo or signature validation figures. The former UPSSSC guideline host was unreachable during this review, so check the active recruitment form before preparing files.",
   },
 
   // ---------------------------------------------------------------------------
@@ -1108,16 +1107,16 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoLimitKb: 50,
     photoMinKb: 10,
     description:
-      "Indian Navy Agniveer SSR/MR recruitment (joinindiannavy.gov.in). Photo 10-50 KB JPEG, passport-style, candidate holding a black slate with name and date of photograph written on it in white chalk. The official notification describes no separate signature upload step at all — earlier third-party figures for a 413×177 px signature could not be traced to any Navy document and have been removed rather than left unverified.",
+      "Indian Navy Agniveer SSR/MR recruitment. The notice requires a 10-50 KB recent colour passport-style photo with the candidate holding a black slate showing their name and the photograph date in white chalk, plus a separate webcam live photograph during the application. It publishes no photo pixel dimensions or separate signature upload.",
     source: {
       url: "https://www.joinindiannavy.gov.in/files/Advt_Agniveer_MR_English.pdf",
-      label: "Indian Navy Agniveer INET 2025 notice, paragraph 34",
+      label: "Indian Navy Agniveer MR 02/2025, 01/2026 and 02/2026 notice, paragraph 34",
     },
     verification: "official",
-    verifiedOn: "2026-07-16",
+    verifiedOn: "2026-07-18",
     requiresSlateNameDate: true,
     context:
-      "Indian Navy Agniveer applications are submitted on joinindiannavy.gov.in. The photo must show the candidate holding a black slate with the name and photography date written in white chalk; this is a physical slate workflow, not a digital name/date strip. The cited notice does not list a separate signature upload.",
+      "Indian Navy Agniveer applications require both the prepared slate photograph upload and an additional webcam live photograph. This hybrid workflow is not the replacement live-capture flow represented by isLiveCapture. The slate is physical, not a digital name/date strip; the notice lists no fixed pixels or separate signature upload.",
   },
 
   // ---------------------------------------------------------------------------

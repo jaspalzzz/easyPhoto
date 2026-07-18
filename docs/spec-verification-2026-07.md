@@ -90,6 +90,13 @@ with live capture.
 | /exam-requirements/niacl/ | Administrative Officers 2025 pages 11–12 specify a preferred 200×230 px photograph at 20–50 KB and a preferred 140×60 px black-ink signature at 10–20 KB, JPG/JPEG, with a minimum 200 DPI scan. A separate webcam/mobile live photograph is also required. | https://www.newindia.co.in/assets/docs/recruitment/RECRUITMENT%20OF%20ADMINISTRATIVE%20OFFICERS%202025/RECRUITMENT%20OF%20_5_50%20ADMINISTRATIVE%20OFFICERS%20(GENERALISTS%20%26%20SPECIALISTS)%20(SCALE-I)%20202_5.pdf | NIACL Recruitment of 550 Administrative Officers (Generalists & Specialists) (Scale I), 2025 | 2025-08-07 | 2026-07-18 | Confirmed | **Confirmed unchanged and completed.** Replaced the homepage citation with the exact notice; recorded its black-ink, 200 DPI and additional live-photo requirements. Scope is AO 2025, not every NIACL role. |
 | /exam-requirements/irdai/ | Assistant Manager 2024 pages 26–27 specify a preferred 200×230 px photograph at 20–50 KB and a preferred 140×60 px black-ink signature at 10–20 KB, JPG/JPEG, with a minimum 200 DPI scan. The notice documents file upload and does not state a separate live-photo capture. | https://irdai.gov.in/documents/37343/366120/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE+-+%E0%A4%B8%E0%A4%B9%E0%A4%BE%E0%A4%AF%E0%A4%95+%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%AC%E0%A4%82%E0%A4%A7%E0%A4%95+%E0%A4%AD%E0%A4%B0%E0%A5%8D%E0%A4%A4%E0%A5%80+2024+_+Notification+-+Assistant+Manager+Recruitment+2024.pdf/406da4a0-f2d7-16c8-228a-4870e280a44c?version=2.2&t=1724302079930&download=true | IRDAI Notification — Assistant Manager Recruitment 2024 | 2024-08-21 | 2026-07-18 | Confirmed for the latest public notice located | **Confirmed unchanged and completed.** Replaced the homepage citation with the exact notice and recorded its black-ink and 200 DPI requirements. No 2025/2026 Assistant Manager notice was located, so later cycles must be rechecked. |
 
+## Defence and UPSSSC follow-up
+
+| URL | Claim | Official source URL | Source title | Source date | Verified date | Confidence | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| /exam-requirements/navy-agniveer/ | Indian Navy Agniveer MR paragraph 34 requires a recent colour passport-size photograph of 10–50 KB with the candidate holding a black slate showing their name and photograph date in white chalk. It also requires a separate webcam live photograph. The notice publishes no fixed photo pixels, photo aspect ratio or separate signature upload. | https://www.joinindiannavy.gov.in/files/Advt_Agniveer_MR_English.pdf | Indian Navy Agniveer MR 02/2025, 01/2026 and 02/2026 notice, paragraph 34 | Applications 2025-03-29–2025-04-10; covers batches through 02/2026 | 2026-07-18 | Confirmed | **Confirmed and clarified.** Retained the source-supported 10–50 KB photo band and physical-slate rule. Kept all photo/signature pixel and aspect fields absent, kept the separate signature fields absent, and documented the dual upload-plus-webcam workflow. |
+| /exam-requirements/upsssc/ | The former UPSSSC photo/signature guideline host does not resolve. A current NIC Uttar Pradesh page confirms an examination-management system for UPSSSC and says it supports application management, but publishes no photo/signature validation figures. The stored photo 50–100 KB / 3.5×4.5 cm and signature 20–50 KB / 3.5×1.5 cm targets could not be reverified. | https://up.nic.in/news/nic-uttar-pradesh-develops-advanced-examination-management-system-for-upsssc/ | NIC Uttar Pradesh Develops Advanced Examination Management System for UPSSSC | Published 2026-06-30; page updated 2026-07-02 | 2026-07-18 | Unverified numeric figures | **Downgraded to needs-review.** Preserved the existing numeric targets as explicitly unconfirmed compatibility values, removed the false Verified badge, replaced the DNS-failing link with the reachable government page and directed applicants to confirm the active form. |
+
 ## Next-audit stubs
 
 These entries still need their own claim-level rows with a live-source date,
@@ -112,10 +119,10 @@ precise first-party source currently stored in lib/countrySpecs.ts.
 
 - Core: nta, rbi, ctet
 - National/admissions: gate, ugc-net, csir-net, cat, cuet
-- Defence: nda, cds, afcat, navy-agniveer
+- Defence: nda, cds, afcat
 - State PSC: bpsc, mpsc, rpsc, appsc, hpsc, kerala-psc
 - Police/CAPF: up-police, crpf, cisf
-- Services/other recruitment: pan, driving-licence, voter-id, upsssc
+- Services/other recruitment: pan, driving-licence, voter-id
 - Travel/document uploads: ds160; recheck oci on the normal review cadence
 
 For each entry, audit photo/signature KB bands, pixel dimensions, aspect ratio,
