@@ -15,13 +15,56 @@ export interface WorkflowPayload {
   blob: Blob;
   /** Suggested filename for the receiving tool's file-info header. */
   filename: string;
+  /** Prevents a photo from being mistaken for a signature (and vice versa). */
+  kind?: WorkflowAssetKind;
+  /** Portal preset that the asset is being prepared for, when known. */
+  examId?: string;
+}
+
+export type WorkflowAssetKind = "image" | "photo" | "signature" | "pdf";
+
+export interface WorkflowPayloadOptions {
+  kind?: WorkflowAssetKind;
+  examId?: string;
+  /** Keep photo/signature assets together for the Exam Application Kit. */
+  rememberForExamKit?: boolean;
+}
+
+export interface ExamWorkflowDraft {
+  examId?: string;
+  photo?: WorkflowPayload;
+  signature?: WorkflowPayload;
 }
 
 let pending: WorkflowPayload | null = null;
+let examDraft: ExamWorkflowDraft | null = null;
 
 /** Store an output blob so the next tool can auto-load it on mount. */
-export function setWorkflowPayload(blob: Blob, filename: string): void {
-  pending = { blob, filename };
+export function setWorkflowPayload(
+  blob: Blob,
+  filename: string,
+  options: WorkflowPayloadOptions = {}
+): void {
+  const payload: WorkflowPayload = {
+    blob,
+    filename,
+    ...(options.kind ? { kind: options.kind } : {}),
+    ...(options.examId ? { examId: options.examId } : {}),
+  };
+  pending = payload;
+
+  if (
+    options.rememberForExamKit &&
+    (options.kind === "photo" || options.kind === "signature")
+  ) {
+    const sameExamDraft =
+      !!options.examId && examDraft?.examId === options.examId ? examDraft : null;
+    examDraft = {
+      ...(sameExamDraft ?? {}),
+      ...(options.examId ? { examId: options.examId } : {}),
+      [options.kind]: payload,
+    };
+  }
 }
 
 /**
@@ -33,4 +76,14 @@ export function consumeWorkflowPayload(): WorkflowPayload | null {
   const p = pending;
   pending = null;
   return p;
+}
+
+/** Read the current exam draft without clearing it between workflow steps. */
+export function getExamWorkflowDraft(): ExamWorkflowDraft | null {
+  return examDraft;
+}
+
+/** Clear only the longer-lived exam bundle; generic consume-once handoffs remain intact. */
+export function clearExamWorkflowDraft(): void {
+  examDraft = null;
 }

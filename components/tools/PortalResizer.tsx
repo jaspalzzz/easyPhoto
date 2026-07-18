@@ -22,25 +22,32 @@ export function PortalResizer({
   const shownName = displayName ?? spec?.name.split(" (")[0];
   const [activeSubTool, setActiveSubTool] = React.useState<"photo" | "signature">("photo");
 
-  // The photo and signature sub-tools are two separate mounted components —
-  // switching tabs used to just unmount one and mount the other, silently
-  // dropping whatever the user had uploaded. This remembers the last-loaded
-  // file (from whichever tab is currently active) so it can be handed to the
-  // newly-active tab instead of forcing a re-upload.
-  const lastSourceRef = React.useRef<ToolSource | null>(null);
-  const handleSourceChange = React.useCallback((source: ToolSource | null) => {
-    if (source) lastSourceRef.current = source;
+  // Keep the two inputs separate. A face photo must never be auto-loaded into
+  // the signature workspace; each tab only restores its own previous source.
+  const sourceByToolRef = React.useRef<Record<"photo" | "signature", ToolSource | null>>({
+    photo: null,
+    signature: null,
+  });
+  const handlePhotoSourceChange = React.useCallback((source: ToolSource | null) => {
+    if (source) sourceByToolRef.current.photo = source;
+  }, []);
+  const handleSignatureSourceChange = React.useCallback((source: ToolSource | null) => {
+    if (source) sourceByToolRef.current.signature = source;
   }, []);
   const switchSubTool = (tool: "photo" | "signature") => {
-    if (tool !== activeSubTool && lastSourceRef.current) {
-      setWorkflowPayload(lastSourceRef.current.file, lastSourceRef.current.file.name);
+    const targetSource = sourceByToolRef.current[tool];
+    if (tool !== activeSubTool && targetSource) {
+      setWorkflowPayload(targetSource.file, targetSource.file.name, {
+        kind: tool,
+        examId: portalId,
+      });
     }
     setActiveSubTool(tool);
   };
 
   React.useEffect(() => {
     setActiveSubTool("photo");
-    lastSourceRef.current = null;
+    sourceByToolRef.current = { photo: null, signature: null };
   }, [portalId]);
 
   if (!spec) {
@@ -143,7 +150,13 @@ export function PortalResizer({
               densityDpi={spec.dpi}
               requirementLabel={shownName}
               toolName={`form-resizer-${portalId}`}
-              onSourceChange={handleSourceChange}
+              examWorkflow={{
+                examId: portalId,
+                hasSignature,
+                requiresNameDate: spec.requiresNameDate === true,
+                requiresSlateNameDate: spec.requiresSlateNameDate === true,
+              }}
+              onSourceChange={handlePhotoSourceChange}
             />
           </div>
         ) : (
@@ -159,7 +172,7 @@ export function PortalResizer({
               defaultPresetKey={portalId}
               defaultFormat={/\b(?:JPG|JPEG)\b/i.test(spec.description) ? "jpeg" : "png"}
               autoCropDefault={true}
-              onSourceChange={handleSourceChange}
+              onSourceChange={handleSignatureSourceChange}
             />
           </div>
         )}

@@ -44,6 +44,12 @@ import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
+import {
+  clearExamWorkflowDraft,
+  consumeWorkflowPayload,
+  getExamWorkflowDraft,
+  type WorkflowPayload,
+} from "@/lib/workflowHandoff";
 
 type Step = "exam" | "photo" | "signature" | "done";
 
@@ -112,6 +118,7 @@ export function ExamPackageTool() {
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const { query: examQuery, setQuery: setExamQuery } = useExamSearch();
+  const handoffHydratedRef = React.useRef(false);
 
   const spec = examId ? PORTAL_PRESETS[examId] : undefined;
   const needsSignature = !!spec?.sigLimitKb;
@@ -120,6 +127,9 @@ export function ExamPackageTool() {
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "exam-package" });
+    // Exam Kit reads the longer-lived typed draft below; discard the generic
+    // consume-once copy so it cannot leak into a later unrelated image tool.
+    consumeWorkflowPayload();
   }, []);
 
   const reset = () => {
@@ -130,6 +140,8 @@ export function ExamPackageTool() {
     setExamId("");
     setError(null);
     setStep("exam");
+    handoffHydratedRef.current = false;
+    clearExamWorkflowDraft();
   };
 
   const chooseExam = (id: string) => {
@@ -148,8 +160,8 @@ export function ExamPackageTool() {
     track({ name: "tool_start", tool: "exam-package", device: deviceClass() });
   };
 
-  const processPhoto = async (file: File) => {
-    if (!spec) return;
+  const processPhoto = async (file: File): Promise<boolean> => {
+    if (!spec) return false;
     setBusy(true);
     setError(null);
     try {
@@ -204,17 +216,19 @@ export function ExamPackageTool() {
         kind: "photo",
         format: "jpg",
       });
+      return true;
     } catch (e) {
       console.error(e);
       setError("Could not process that photo. Try a clear JPG/PNG.");
       track({ name: "tool_failure", tool: "exam-package", device: deviceClass(), reason: "photo-error" });
+      return false;
     } finally {
       setBusy(false);
     }
   };
 
-  const processSignature = async (file: File) => {
-    if (!spec?.sigLimitKb) return;
+  const processSignature = async (file: File): Promise<boolean> => {
+    if (!spec?.sigLimitKb) return false;
     setBusy(true);
     setError(null);
     try {
@@ -286,14 +300,65 @@ export function ExamPackageTool() {
         kind: "signature",
         format: signatureFormat,
       });
+      return true;
     } catch (e) {
       console.error(e);
       setError("Could not detect a signature. Use a dark signature on white paper.");
       track({ name: "tool_failure", tool: "exam-package", device: deviceClass(), reason: "signature-error" });
+      return false;
     } finally {
       setBusy(false);
     }
   };
+
+  React.useEffect(() => {
+    if (handoffHydratedRef.current) return;
+    const draft = getExamWorkflowDraft();
+    if (!draft) return;
+
+    // A portal result can preselect its exam. A generic signature result keeps
+    // the picker visible until the visitor chooses the relevant application.
+    if (!examId) {
+      if (draft.examId && PORTAL_PRESETS[draft.examId]) {
+        setExamId(draft.examId);
+        setStep("photo");
+      }
+      return;
+    }
+    if (draft.examId && draft.examId !== examId) return;
+
+    handoffHydratedRef.current = true;
+    const toFile = (payload: WorkflowPayload) =>
+      new File([payload.blob], payload.filename, {
+        type: payload.blob.type || "application/octet-stream",
+      });
+
+    void (async () => {
+      try {
+        const photoReady = draft.photo
+          ? await processPhoto(toFile(draft.photo))
+          : false;
+        const signatureReady = draft.signature
+          ? await processSignature(toFile(draft.signature))
+          : false;
+
+        if (!photoReady) {
+          setStep("photo");
+        } else if (needsSignature && !signatureReady) {
+          setStep("signature");
+        } else {
+          setStep("done");
+        }
+      } finally {
+        // Assets now live in component state; do not surprise a later, separate
+        // Exam Kit visit by replaying this completed handoff.
+        clearExamWorkflowDraft();
+      }
+    })();
+    // processPhoto/processSignature intentionally use the selected spec from
+    // this render; the ref guarantees this hydration runs once per draft.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [examId]);
 
   const finish = () => {
     setStep("done");

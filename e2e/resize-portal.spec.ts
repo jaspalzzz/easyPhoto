@@ -108,3 +108,37 @@ test("tnpsc-photo-resizer: exports the published 130x170 frame instead of treati
   const bytes = fs.readFileSync(filePath!);
   expect(await decode(page, bytes)).toEqual([130, 170]);
 });
+
+test("portal resizer: photo and signature tabs restore only their own source", async ({
+  page,
+}) => {
+  await page.goto("/exam-requirements/ibps/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await expect(page.getByText(/face-photo\.jpg/i)).toBeVisible();
+
+  await page.getByRole("button", { name: /clean & compress signature/i }).click();
+  await expect(page.getByText(/face-photo\.jpg/i)).toHaveCount(0);
+  await expect(page.getByText(/drop a photo, or click to browse/i)).toBeVisible();
+
+  await page.getByRole("button", { name: /compress portal photo/i }).click();
+  await expect(page.getByText(/face-photo\.jpg/i)).toBeVisible({ timeout: 15_000 });
+});
+
+test("portal resizer: prepared photo carries into the selected Exam Kit", async ({
+  page,
+}) => {
+  await page.goto("/exam-requirements/ibps/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await page.getByRole("button", { name: /compress to size/i }).click();
+  const next = page.getByRole("button", { name: /prepare the signature next/i });
+  await expect(next).toBeVisible({ timeout: 30_000 });
+  await next.click();
+
+  await expect(page).toHaveURL(/\/tools\/exam-package\/$/);
+  await expect(page.getByText(/^IBPS Exams$/i)).toBeVisible({
+    timeout: 30_000,
+  });
+  await expect(page.getByText(/upload a scan\/photo of your signature/i)).toBeVisible({
+    timeout: 30_000,
+  });
+});

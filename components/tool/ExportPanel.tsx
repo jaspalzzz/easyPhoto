@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Download, Printer, Globe, LayoutGrid, Loader2, Share2 } from "lucide-react";
+import { Download, Printer, Globe, LayoutGrid, Loader2, Share2, Minimize2, ScanSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
@@ -11,6 +11,7 @@ import { compressToCap, encode } from "@/lib/compress";
 import { generatePrintSheet, getSheetLayout, maxCopiesPerSheet } from "@/lib/printSheet";
 import { downloadBlob as download, shareFile } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
+import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 
 interface ExportPanelProps {
   spec: CountrySpec;
@@ -216,6 +217,27 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
           )}
         </div>
       </div>
+
+      {digitalBlob && (
+        <WorkflowNextSteps
+          getBlob={async () => digitalBlob}
+          filename={`${base}-passport-digital.jpg`}
+          steps={[
+            {
+              slug: "photo-rejection-check",
+              label: "Run a photo pre-check",
+              hint: "Review measurable image issues before using the file",
+              icon: <ScanSearch className="h-4 w-4" strokeWidth={1.75} />,
+            },
+            {
+              slug: "resize-kb",
+              label: "Adjust the file size",
+              hint: "Carry this photo into a different portal KB target",
+              icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} />,
+            },
+          ]}
+        />
+      )}
 
       <div className="rounded-md border border-hairline">
         <div className="flex items-center gap-2 border-b border-hairline px-3 py-2 text-[13px] font-semibold">

@@ -109,6 +109,12 @@ test("transparent-signature: removes the white paper (transparent) and keeps the
   expect(centre[3], `centre alpha, got ${centre}`).toBeGreaterThan(200);
   expect(centre[0] + centre[1] + centre[2], `centre should be dark ink`).toBeLessThan(180);
   expect(corner[3], `corner should be transparent paper, got alpha ${corner[3]}`).toBeLessThan(40);
+
+  await page
+    .getByRole("button", { name: /add this signature to an exam kit/i })
+    .click();
+  await expect(page).toHaveURL(/\/tools\/exam-package\/$/);
+  await expect(page.getByText(/Which exam or form are you applying for/i)).toBeVisible();
 });
 
 test("signature-resize: output is genuinely bound to the KB target", async ({ page }) => {

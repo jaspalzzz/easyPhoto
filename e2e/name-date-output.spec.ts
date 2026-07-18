@@ -46,3 +46,38 @@ for (const preset of [
     }
   });
 }
+
+test("TNPSC workflow carries the sized photo through name/date into the Exam Kit", async ({
+  page,
+}) => {
+  await page.goto("/exam-requirements/tnpsc/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await page.getByRole("button", { name: /compress to size/i }).click();
+
+  const addStrip = page.getByRole("button", { name: /add the required name & date/i });
+  await expect(addStrip).toBeVisible({ timeout: 30_000 });
+  await addStrip.click();
+  await expect(page).toHaveURL(/\/tools\/photo-with-name-date\/$/);
+
+  const presetSelect = page.getByLabel("Select Exam Preset");
+  await expect(presetSelect).toHaveValue("tnpsc", { timeout: 15_000 });
+  await page.getByLabel("Candidate Name").fill("TEST USER");
+  await expect(page.getByAltText(/real-time preview/i)).toBeVisible({ timeout: 30_000 });
+
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: /download & export jpg/i }).click(),
+  ]);
+  expect(await download.path()).not.toBeNull();
+
+  const continueToKit = page.getByRole("button", { name: /continue in the exam kit/i });
+  await expect(continueToKit).toBeVisible();
+  await continueToKit.click();
+  await expect(page).toHaveURL(/\/tools\/exam-package\/$/);
+  await expect(page.getByText(/^TNPSC$/i)).toBeVisible({
+    timeout: 30_000,
+  });
+  await expect(page.getByText(/upload a scan\/photo of your signature/i)).toBeVisible({
+    timeout: 30_000,
+  });
+});
