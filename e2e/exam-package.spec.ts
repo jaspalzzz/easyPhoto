@@ -110,6 +110,8 @@ test("exam-package: IBPS exports the published fixed photo/signature frames and 
   const finish = page.getByRole("button", { name: /^finish/i });
   await expect(finish).toBeEnabled({ timeout: 30_000 });
   await finish.click();
+  await expect(page.getByText(/Photo dimensions/i)).toBeVisible();
+  await expect(page.getByText(/200×230px \(needs 200×230px\)/i)).toBeVisible();
 
   const [dl] = await Promise.all([
     page.waitForEvent("download"),
@@ -141,4 +143,38 @@ test("exam-package: IBPS exports the published fixed photo/signature frames and 
   expect(signatureBuf.length).toBeLessThanOrEqual(20 * 1024);
   expect(signatureBuf[0]).toBe(0xff);
   expect(signatureBuf[1]).toBe(0xd8);
+});
+
+test("exam-package: an aspect-only photo is cropped before it is marked ready", async ({
+  page,
+}) => {
+  await page.goto("/tools/exam-package/");
+  await page.locator("button.ep-card").filter({ hasText: "Voter ID" }).first().click();
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  const finish = page.getByRole("button", { name: /^finish/i });
+  await expect(finish).toBeEnabled({ timeout: 30_000 });
+  await finish.click();
+
+  await expect(page.getByText(/Photo aspect ratio/i)).toBeVisible();
+  await expect(page.getByText(/width ÷ height 0\.778/i)).toBeVisible();
+
+  const [dl] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: /download all as zip/i }).click(),
+  ]);
+  const zipPath = await dl.path();
+  expect(zipPath).not.toBeNull();
+  const JSZip = (await import("jszip")).default;
+  const zip = await JSZip.loadAsync(fs.readFileSync(zipPath!));
+  const photoBuf = await zip.file(/-photo\.jpg$/i)[0].async("nodebuffer");
+  const [width, height] = await page.evaluate(async (b64) => {
+    const img = new Image();
+    img.src = `data:image/jpeg;base64,${b64}`;
+    await new Promise<void>((resolve, reject) => {
+      img.onload = () => resolve();
+      img.onerror = () => reject(new Error("output did not decode"));
+    });
+    return [img.naturalWidth, img.naturalHeight];
+  }, photoBuf.toString("base64"));
+  expect(width / height).toBeCloseTo(35 / 45, 2);
 });

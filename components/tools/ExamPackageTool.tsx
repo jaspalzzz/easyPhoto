@@ -21,15 +21,18 @@ import {
   specProvenance,
   portalCategory,
   photoDimsPx,
+  sigDimsPx,
   PORTAL_CATEGORY_LABEL,
   type PortalCategory,
 } from "@/lib/specRegistry";
 import { ensureDecodable } from "@/lib/heic";
 import {
   cropAndResizeToExact,
+  cropToAspectRatio,
   fitToExactFrame,
   flattenForJpeg,
   imageToCanvas,
+  matchesAspectRatio,
   pngUnderKb,
 } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
@@ -155,6 +158,11 @@ export function ExamPackageTool() {
     try {
       const sourceCanvas = await fileToCanvas(file);
       const hasRequiredDimensions = !!(spec.photoWidthPx && spec.photoHeightPx);
+      const hasRequiredAspect =
+        !hasRequiredDimensions &&
+        !!spec.photoAspectRatio &&
+        Number.isFinite(spec.photoAspectRatio) &&
+        spec.photoAspectRatio > 0;
       const canvas = hasRequiredDimensions
         ? await cropAndResizeToExact(
             sourceCanvas,
@@ -162,6 +170,8 @@ export function ExamPackageTool() {
             spec.photoHeightPx!,
             "#ffffff"
           )
+        : hasRequiredAspect
+          ? cropToAspectRatio(sourceCanvas, spec.photoAspectRatio!, "#ffffff")
         : sourceCanvas;
       const res = await compressToCap(canvas, spec.photoLimitKb, {
         // Let dimensions shrink to reach a tight KB cap, matching the standalone
@@ -184,7 +194,9 @@ export function ExamPackageTool() {
         res.underCap &&
         (!spec.photoMinKb || res.bytes >= spec.photoMinKb * 1024) &&
         (!hasRequiredDimensions ||
-          (res.width === spec.photoWidthPx && res.height === spec.photoHeightPx));
+          (res.width === spec.photoWidthPx && res.height === spec.photoHeightPx)) &&
+        (!hasRequiredAspect ||
+          matchesAspectRatio(res.width, res.height, spec.photoAspectRatio!));
       setPhoto({
         url: URL.createObjectURL(res.blob),
         blob: res.blob,
@@ -594,8 +606,33 @@ export function ExamPackageTool() {
                         value: spec.photoMinKb
                           ? `${formatKb(photo.bytes)} (needs ${spec.photoMinKb}–${spec.photoLimitKb} KB)`
                           : `${formatKb(photo.bytes)} (needs ≤ ${spec.photoLimitKb} KB)`,
-                        ok: photo.compliant,
+                        ok:
+                          photo.bytes <= spec.photoLimitKb * 1024 &&
+                          (!spec.photoMinKb || photo.bytes >= spec.photoMinKb * 1024),
                       },
+                      ...(spec.photoWidthPx && spec.photoHeightPx
+                        ? [
+                            {
+                              label: "Photo dimensions",
+                              value: `${photo.width}×${photo.height}px (needs ${photoDimsPx(spec)})`,
+                              ok:
+                                photo.width === spec.photoWidthPx &&
+                                photo.height === spec.photoHeightPx,
+                            },
+                          ]
+                        : spec.photoAspectRatio
+                          ? [
+                              {
+                                label: "Photo aspect ratio",
+                                value: `${photo.width}×${photo.height}px (width ÷ height ${spec.photoAspectRatio.toFixed(3)})`,
+                                ok: matchesAspectRatio(
+                                  photo.width,
+                                  photo.height,
+                                  spec.photoAspectRatio
+                                ),
+                              },
+                            ]
+                          : []),
                       ...(signature && spec.sigLimitKb
                         ? [
                             {
@@ -603,7 +640,21 @@ export function ExamPackageTool() {
                               value: spec.sigMinKb
                                 ? `${formatKb(signature.bytes)} (needs ${spec.sigMinKb}–${spec.sigLimitKb} KB)`
                                 : `${formatKb(signature.bytes)} (needs ≤ ${spec.sigLimitKb} KB)`,
-                              ok: signature.compliant,
+                              ok:
+                                signature.bytes <= spec.sigLimitKb * 1024 &&
+                                (!spec.sigMinKb ||
+                                  signature.bytes >= spec.sigMinKb * 1024),
+                            },
+                          ]
+                        : []),
+                      ...(signature && spec.sigWidthPx && spec.sigHeightPx
+                        ? [
+                            {
+                              label: "Signature dimensions",
+                              value: `${signature.width}×${signature.height}px (needs ${sigDimsPx(spec)})`,
+                              ok:
+                                signature.width === spec.sigWidthPx &&
+                                signature.height === spec.sigHeightPx,
                             },
                           ]
                         : []),

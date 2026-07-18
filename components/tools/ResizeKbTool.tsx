@@ -5,7 +5,12 @@ import { Loader2, Download, Share2, Crop, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
-import { cropAndResizeToExact, imageToCanvas } from "@/lib/imaging";
+import {
+  cropAndResizeToExact,
+  cropToAspectRatio,
+  imageToCanvas,
+  matchesAspectRatio,
+} from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
 import { downloadBlob, shareFile } from "@/lib/download";
@@ -19,6 +24,8 @@ interface BodyProps {
   /** Published portal output dimensions. When present, the export is exact. */
   requiredWidth?: number;
   requiredHeight?: number;
+  /** Published width/height ratio when the portal does not publish fixed pixels. */
+  requiredAspectRatio?: number;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -31,7 +38,7 @@ interface BodyProps {
   onSourceChange?: (source: ToolSource | null) => void;
 }
 
-function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, minKb, densityDpi, requirementLabel, onSourceChange }: BodyProps) {
+function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, minKb, densityDpi, requirementLabel, onSourceChange }: BodyProps) {
   React.useEffect(() => {
     onSourceChange?.(source);
     return () => onSourceChange?.(null);
@@ -78,6 +85,11 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, minK
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
     try {
       const hasRequiredDimensions = !!(requiredWidth && requiredHeight);
+      const hasRequiredAspect =
+        !hasRequiredDimensions &&
+        !!requiredAspectRatio &&
+        Number.isFinite(requiredAspectRatio) &&
+        requiredAspectRatio > 0;
       const canvas = hasRequiredDimensions
         ? await cropAndResizeToExact(
             source.image,
@@ -85,6 +97,8 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, minK
             requiredHeight!,
             "#ffffff"
           )
+        : hasRequiredAspect
+          ? cropToAspectRatio(source.image, requiredAspectRatio!, "#ffffff")
         : imageToCanvas(
             source.image,
             source.size.width,
@@ -220,6 +234,10 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, minK
           <span className="text-xs text-muted-foreground">
             Output: {requiredWidth}×{requiredHeight}px
           </span>
+        ) : requiredAspectRatio ? (
+          <span className="text-xs text-muted-foreground">
+            Output width ÷ height: {requiredAspectRatio.toFixed(3)}
+          </span>
         ) : null}
       </div>
 
@@ -254,6 +272,19 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, minK
                     },
                   ]
                 : []),
+              ...(!requiredWidth && !requiredHeight && requiredAspectRatio
+                ? [
+                    {
+                      label: "Aspect ratio",
+                      value: `${result.width}×${result.height}px (width ÷ height ${requiredAspectRatio.toFixed(3)})`,
+                      ok: matchesAspectRatio(
+                        result.width,
+                        result.height,
+                        requiredAspectRatio
+                      ),
+                    },
+                  ]
+                : []),
               { label: "Format", value: "JPG", ok: true },
             ]}
           />
@@ -280,6 +311,15 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, minK
               {requiredHeight}px. Try a clearer, less-cropped original.
             </p>
           )}
+          {!requiredWidth &&
+            !requiredHeight &&
+            requiredAspectRatio &&
+            !matchesAspectRatio(result.width, result.height, requiredAspectRatio) && (
+              <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
+                The output could not retain the published width-to-height ratio.
+                Try a larger or clearer original.
+              </p>
+            )}
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="cta" size="sm" onClick={handleDownload}>
               <Download className="h-4 w-4" strokeWidth={1.75} /> Download JPG ·{" "}
@@ -324,6 +364,7 @@ export function ResizeKbTool({
   toolName = "resize-kb",
   requiredWidth,
   requiredHeight,
+  requiredAspectRatio,
   minKb,
   densityDpi,
   requirementLabel,
@@ -333,6 +374,7 @@ export function ResizeKbTool({
   toolName?: string;
   requiredWidth?: number;
   requiredHeight?: number;
+  requiredAspectRatio?: number;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -355,6 +397,7 @@ export function ResizeKbTool({
           toolName={toolName}
           requiredWidth={requiredWidth}
           requiredHeight={requiredHeight}
+          requiredAspectRatio={requiredAspectRatio}
           minKb={minKb}
           densityDpi={densityDpi}
           requirementLabel={requirementLabel}

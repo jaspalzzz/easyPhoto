@@ -71,23 +71,39 @@ export async function picaResizeTo(
 }
 
 /**
- * Centre-crop an image to the requested aspect ratio, then resize it to the
- * exact output dimensions. Portal fields such as 130x170 are output sizes, not
- * lower bounds: keeping a larger square image would still fail their validator.
+ * Whether encoded integer pixel dimensions still represent a published aspect
+ * ratio. A one-pixel rounding allowance is needed when proportional compression
+ * turns, for example, a 35:45 crop into a much smaller integer-sized JPEG.
  */
-export async function cropAndResizeToExact(
-  source: HTMLImageElement | HTMLCanvasElement,
+export function matchesAspectRatio(
   width: number,
   height: number,
+  requiredAspect: number
+): boolean {
+  if (width <= 0 || height <= 0 || requiredAspect <= 0) return false;
+  const actualAspect = width / height;
+  const roundingAllowance = 1 / height;
+  return Math.abs(actualAspect - requiredAspect) <= roundingAllowance;
+}
+
+/**
+ * Centre-crop an image to a published aspect ratio without inventing an output
+ * pixel size. The largest possible crop is retained; the KB compressor may then
+ * scale it proportionally when a portal has only a size cap.
+ */
+export function cropToAspectRatio(
+  source: HTMLImageElement | HTMLCanvasElement,
+  targetAspect: number,
   background = "#ffffff"
-): Promise<HTMLCanvasElement> {
-  const targetWidth = Math.max(1, Math.round(width));
-  const targetHeight = Math.max(1, Math.round(height));
+): HTMLCanvasElement {
+  if (!Number.isFinite(targetAspect) || targetAspect <= 0) {
+    throw new Error("Target aspect ratio must be a positive number.");
+  }
+
   const sourceWidth =
     source instanceof HTMLCanvasElement ? source.width : source.naturalWidth;
   const sourceHeight =
     source instanceof HTMLCanvasElement ? source.height : source.naturalHeight;
-  const targetAspect = targetWidth / targetHeight;
   const sourceAspect = sourceWidth / sourceHeight;
 
   let sx = 0;
@@ -113,6 +129,27 @@ export async function cropAndResizeToExact(
     ctx.fillRect(0, 0, sw, sh);
   }
   ctx.drawImage(source, sx, sy, sw, sh, 0, 0, sw, sh);
+  return cropped;
+}
+
+/**
+ * Centre-crop an image to the requested aspect ratio, then resize it to the
+ * exact output dimensions. Portal fields such as 130x170 are output sizes, not
+ * lower bounds: keeping a larger square image would still fail their validator.
+ */
+export async function cropAndResizeToExact(
+  source: HTMLImageElement | HTMLCanvasElement,
+  width: number,
+  height: number,
+  background = "#ffffff"
+): Promise<HTMLCanvasElement> {
+  const targetWidth = Math.max(1, Math.round(width));
+  const targetHeight = Math.max(1, Math.round(height));
+  const cropped = cropToAspectRatio(
+    source,
+    targetWidth / targetHeight,
+    background
+  );
 
   return picaResizeTo(cropped, targetWidth, targetHeight);
 }

@@ -83,6 +83,11 @@ test("voter-id-photo-resizer: surfaces the ECI spec and binds output to a set ta
   await page.setInputFiles('input[type="file"]', FACE_PHOTO);
   const bytes = await compressAndDownload(page, 100);
   expect(bytes.length / 1024, `downloaded ${(bytes.length / 1024).toFixed(1)} KB`).toBeLessThanOrEqual(100);
+  const [w, h] = await decode(page, bytes);
+  expect(
+    w / h,
+    `Voter ID output ${w}×${h} must retain the stored 35:45 portrait ratio`
+  ).toBeCloseTo(35 / 45, 2);
 });
 
 test("tnpsc-photo-resizer: exports the published 130x170 frame instead of treating it as a minimum", async ({
