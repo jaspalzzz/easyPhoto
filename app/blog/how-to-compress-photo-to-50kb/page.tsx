@@ -21,7 +21,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Will compressing a photo to 50 KB get my application rejected?",
-    a: "No — provided the photo meets the portal's minimum size requirement and the dimensions are correct. Portal software checks the JPEG file size, not visual sharpness. A 50 KB face photo at the right dimensions is perfectly acceptable. Rejection happens when the file is too large, too small, or in the wrong format.",
+    a: "Compressing to 50 KB addresses only the file-size field. The photo must still match any published dimensions, format and visual instructions, and heavy compression can reduce clarity. Verify the current portal requirements and inspect the downloaded image before submitting.",
   },
   {
     q: "Can I compress a photo without making it blurry?",
@@ -257,7 +257,8 @@ export default function Page() {
         <Link href="/driving-licence-photo-resizer/" className="text-brand underline">
           Driving Licence resizer
         </Link>{" "}
-        handle both automatically — you upload the photo and get a compliant output
+        handle both measurable targets — you upload the photo and get an output
+        at the selected size, then check it against the current form instructions
         without tweaking any settings. For generic exam portals, the{" "}
         <Link href="/tools/resize-kb/" className="text-brand underline">
           resize-by-KB tool

@@ -25,7 +25,7 @@ export function GET() {
   lines.push("");
   lines.push(
     "> easyPhoto (easyphoto.in) is a free, privacy-first toolkit for creating " +
-      "compliant passport and visa photos, resizing exam photos and signatures " +
+      "passport and visa photo preparation, resizing exam photos and signatures " +
       "to selected KB targets and published pixel dimensions where available, and " +
       "preparing application documents. Every " +
       "tool runs entirely in the user's browser — nothing is uploaded, and there " +
@@ -48,7 +48,7 @@ export function GET() {
       "keep the specs accurate, and our privacy-first approach (nothing is uploaded)."
   );
   lines.push(
-    `- [Passport Photo Maker](${u("/passport-photo/")}): make a compliant passport ` +
+    `- [Passport Photo Maker](${u("/passport-photo/")}): prepare a passport ` +
       "photo for India, the US, UK, Canada, Australia and Schengen — exact head " +
       "size and background, checked automatically."
   );

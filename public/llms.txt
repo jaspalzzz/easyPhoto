@@ -6,7 +6,7 @@
 ## About
 
 easyPhoto is a free web app that helps people in India (and globally) create
-compliant passport and visa photos and prepare images for government exam and
+passport and visa photo preparation and prepare images for government exam and
 recruitment forms. It applies selected country presets, KB targets, and published
 pixel dimensions where available. Requirements can change, so confirm the current
 authority or portal instructions before submitting. Tools run in-browser, with no

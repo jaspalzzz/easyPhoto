@@ -176,8 +176,8 @@ export default function Page() {
 
       <ol className="my-4 space-y-4 text-[15px]">
         <li>
-          <strong>Prepare the photo:</strong> start with a properly cropped and
-          compliant photo. If you haven&apos;t taken the photo yet, the{" "}
+          <strong>Prepare the photo:</strong> start with a clear photo cropped to
+          the listed frame. If you haven&apos;t taken the photo yet, the{" "}
           <Link href="/passport-photo/" className="text-brand underline">
             passport photo maker
           </Link>{" "}

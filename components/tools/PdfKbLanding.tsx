@@ -103,7 +103,7 @@ export function PdfKbLanding({ kb }: { kb: number }) {
         <h2 className="text-lg font-semibold">{uc?.heading ?? `Compress documents to ${kb} KB`}</h2>
         <p className="text-sm leading-relaxed text-muted-foreground">
           {uc?.intro ??
-            `Many application portals cap the size of supporting documents. This tool gets scanned marksheets, certificates and other PDFs under ${kb} KB so the upload isn't rejected for being too large.`}
+            `Many application portals cap the size of supporting documents. This tool targets scanned marksheets, certificates and other PDFs under ${kb} KB; confirm the portal's other document requirements before uploading.`}
         </p>
         {uc && (
           <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">

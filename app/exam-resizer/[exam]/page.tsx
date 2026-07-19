@@ -136,7 +136,7 @@ export default async function Page({
       </header>
 
       {/* Pre-upload self-check — above the tool, where it pre-empts the fear. */}
-      <ExamSubmitTips hasSignature={spec.sigLimitKb !== undefined} />
+      <ExamSubmitTips spec={spec} />
 
       <PortalResizer portalId={e.parentId} displayName={e.name} />
 

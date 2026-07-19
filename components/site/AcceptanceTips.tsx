@@ -1,5 +1,6 @@
 import { Check, X } from "lucide-react";
 import type { CountrySpec } from "@/lib/countrySpecs";
+import type { PortalSpec } from "@/lib/portalPresets";
 
 /**
  * Presentational do/don't strip — the honest version of competitors' do/don't
@@ -75,21 +76,36 @@ export function AcceptanceTips({ spec }: { spec: CountrySpec }) {
  * (paper/shadow behind the signature is the #1 signature rejection).
  */
 export function ExamSubmitTips({
-  hasSignature,
+  spec,
   className = "",
 }: {
-  hasSignature: boolean;
+  spec: PortalSpec;
   className?: string;
 }) {
+  const hasSignature = spec.sigLimitKb !== undefined;
+  const photoDos = [
+    spec.isLiveCapture
+      ? "Use a working camera and clear, even front lighting"
+      : "Use a clear image with even front lighting",
+    "Face straight on, neutral expression, both eyes open",
+    ...(spec.photoBackground
+      ? [`Use the published photo background: ${spec.photoBackground}`]
+      : []),
+    ...(spec.photoFormat ? [`Export the photo as ${spec.photoFormat}`] : []),
+  ];
+  const signatureDos = [
+    spec.signatureInk
+      ? `Follow the published ink instruction: ${spec.signatureInk}`
+      : "Check the current form's ink and paper instructions",
+    "Sign large and clear, photographed in good light",
+    ...(spec.sigFormat ? [`Export the signature as ${spec.sigFormat}`] : []),
+  ];
+
   return (
     <section className={`space-y-4 rounded-xl border border-hairline bg-card p-5 ${className}`}>
       <DoDontStrip
-        title="Photo preparation checklist"
-        dos={[
-          "Plain, evenly lit light background",
-          "Face straight on, neutral expression, both eyes open",
-          "A recent, sharp photo — JPG output",
-        ]}
+        title={spec.isLiveCapture ? "Before the live-photo step" : "Photo preparation checklist"}
+        dos={photoDos}
         donts={[
           "Shadows behind you or glare on glasses",
           "Hats, caps, or hair across the eyes",
@@ -100,15 +116,11 @@ export function ExamSubmitTips({
         <div className="border-t border-hairline pt-4">
           <DoDontStrip
             title="Signature preparation checklist"
-            dos={[
-              "Black or blue ink on plain white paper",
-              "Signed large and clear, photographed in good light",
-              "Clean white background (we remove the paper for you)",
-            ]}
+            dos={signatureDos}
             donts={[
-              "Grey paper or a shadow showing behind the ink",
+              "Paper texture or a shadow that reduces legibility",
               "Faint pencil, or a smudged / cut-off signature",
-              "Block capitals or a printed name instead of a signature",
+              "Typed text or an image that is not your signature",
             ]}
           />
         </div>

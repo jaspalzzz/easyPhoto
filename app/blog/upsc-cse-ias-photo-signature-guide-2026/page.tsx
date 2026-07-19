@@ -169,8 +169,8 @@ export default function Page() {
       <h2>Does UPSC CSE require a square photo, or name and date on it?</h2>
       <p>
         No. UPSC&apos;s instructions publish no fixed photo pixel size and no
-        aspect ratio, so a normal passport-style portrait is accepted — there is
-        no square-crop requirement — and they do not ask for a name-and-date
+        aspect ratio, so the instructions do not impose a square crop. They also
+        do not ask for a name-and-date
         strip on the image. What UPSC does specify is the file format (JPG), the
         20–200&nbsp;KB size band, a plain white background, and a face covering
         about 75% of the frame. If a future notification adds a requirement,

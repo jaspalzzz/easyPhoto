@@ -9,6 +9,6 @@ export default function Image() {
   return ogImage({
     title: "Baby & Infant Passport Photo",
     subtitle:
-      "Lay your baby on a white sheet, upload, and get a compliant passport photo — free, in your browser.",
+      "Lay your baby on a white sheet and prepare the selected passport-photo frame — free, in your browser.",
   });
 }

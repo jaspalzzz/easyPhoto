@@ -159,7 +159,7 @@ export function BlogPostLayout({
         <div className="mt-12 flex flex-col items-start gap-3 rounded-xl border border-brand/25 bg-brand-soft/20 p-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-ink">
             <span className="font-semibold">Ready to make yours?</span>{" "}
-            Compliant size &amp; background, checked before you download — free, in your browser.
+            Selected size and background, checked before you download — free, in your browser.
           </p>
           <Link
             href={ctaHref}

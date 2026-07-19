@@ -152,8 +152,8 @@ export default function Page() {
         This is where the millimetres matter, and it&apos;s where home attempts
         usually slip. Instead of guessing, upload your photo to the{" "}
         <Link href="/passport-photo/">passport photo maker</Link>, choose your
-        country, and it crops your head to the exact required size and applies the
-        correct background colour. If your country&apos;s portal caps the file
+        country, and it crops your head to the selected recorded size and applies the
+        selected background colour. If your country&apos;s portal caps the file
         size, run the result through{" "}
         <Link href="/tools/resize-kb/?target=50">resize to 50&nbsp;KB</Link>.
       </p>
@@ -162,7 +162,7 @@ export default function Page() {
       <p>
         For a printed application, download the 4×6&quot; sheet and print it at a
         photo kiosk on photo paper. For online applications, use the upload-ready
-        file. A compliant photo, and you never left home.
+        file, inspect the result, and confirm the current authority instructions.
       </p>
       <h2>Troubleshooting a home passport photo</h2>
       <table className="my-5 w-full border-collapse text-[14px]"><thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead><tbody className="text-ink-soft">{[

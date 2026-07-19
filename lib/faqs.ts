@@ -22,7 +22,36 @@ export function resizerMetaDescription(spec: PortalSpec, label: string): string 
   const sig = spec.sigLimitKb
     ? ` and signature to ${spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}${spec.sigLimitKb} KB`
     : "";
+  if (spec.isLiveCapture) {
+    const signature = spec.sigLimitKb
+      ? ` Prepare the separate ${spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}${spec.sigLimitKb} KB signature${spec.sigFormat ? ` in ${spec.sigFormat} format` : ""}.`
+      : "";
+    return `${label} currently captures the photograph live in the application.${signature} The optional photo tool is a compatibility aid, not the live-photo step.`;
+  }
   return `Prepare your ${label} photo to the stored ${photo}${px}${sig} target. Verify the current form instructions before use. Free, no watermark, processed in your browser.`;
+}
+
+/** Visible upload-problem list, limited to fields the registry actually carries. */
+export function portalRejectionReasons(spec: PortalSpec, hasSignature: boolean): string[] {
+  const reasons = [
+    spec.verification === "official"
+      ? "File size falls outside the published band."
+      : "File size does not match the current application's displayed range.",
+  ];
+  if (photoDimsPx(spec) || spec.photoAspectRatio) {
+    reasons.push("Photo does not match the published pixel canvas or aspect ratio.");
+  }
+  if (spec.photoFormat || (hasSignature && spec.sigFormat)) {
+    reasons.push("File format differs from the current application's accepted formats.");
+  }
+  if (hasSignature) {
+    if (sigDimsPx(spec) || spec.sigAspectRatio) {
+      reasons.push("Signature does not match the published canvas or aspect ratio.");
+    }
+    reasons.push("Signature is unclear or includes excess paper around the writing.");
+  }
+  reasons.push("Photo is blurry or too low-contrast to review clearly.");
+  return reasons;
 }
 
 /**
@@ -36,6 +65,7 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
     : `under ${spec.photoLimitKb} KB`;
   const photoPx = photoDimsPx(spec, " px");
   const photoDim = photoPx ? `, around ${photoPx}` : "";
+  const photoFormat = spec.photoFormat ? `, in ${spec.photoFormat} format` : "";
   const sigKb = spec.sigLimitKb
     ? spec.sigMinKb
       ? `${spec.sigMinKb}–${spec.sigLimitKb} KB`
@@ -43,6 +73,10 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
     : null;
   const sigPx = sigDimsPx(spec, " px");
   const sigDim = sigPx ? `, around ${sigPx}` : "";
+  const sigFormat = spec.sigFormat ? `, in ${spec.sigFormat} format` : "";
+  const backgroundIssue = spec.photoBackground
+    ? `, a background that does not match ${spec.photoBackground}`
+    : "";
   // 18 of the 52 portals constrain nothing but file size — no pixel spec and no
   // aspect ratio. Claiming we keep "the correct dimensions", or that the wrong
   // ones cause rejection, invents a requirement the authority never published.
@@ -56,13 +90,13 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
       q: `What is the photo size for the ${spec.name} application?`,
       a: spec.isLiveCapture
         ? `The current stored instructions describe a live-photograph step rather than an ordinary prepared-photo upload. The ${photoKb}${photoDim} value shown by this tool is a compatibility target, not a current live-photo requirement. Follow the active form's capture instructions.`
-        : `The stored ${spec.name} target is ${photoKb}${photoDim}, in JPG format. This tool resizes and compresses a prepared photo to that target; confirm the active form before submitting.`,
+        : `The stored ${spec.name} target is ${photoKb}${photoDim}${photoFormat}. This tool resizes and compresses a prepared photo to that target; confirm the active form before submitting.`,
     },
   ];
   if (sigKb) {
     items.push({
       q: `What is the signature size for ${spec.name}?`,
-      a: `The stored signature target is ${sigKb}${sigDim}. ${signaturePreparation}`,
+      a: `The stored signature target is ${sigKb}${sigDim}${sigFormat}. ${signaturePreparation}`,
     });
   }
   items.push(
@@ -77,8 +111,8 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
     {
       q: `Why do ${spec.name} photos${sigKb ? " and signatures" : ""} get rejected?`,
       a: spec.isLiveCapture
-        ? `For a live photograph, follow the capture screen's lighting, framing and background instructions.${sigKb ? ` A separate signature can still fail when it falls outside ${sigKb}, uses an unsupported format, is faint, or includes the paper edge.` : ""} This tool cannot validate the authority's live-photo step.`
-        : `Common upload problems include a file outside the ${photoKb}${sigKb ? ` photo / ${sigKb} signature` : ""} range${hasGeometry ? ", dimensions that do not match the recorded frame" : ""}, an unsupported format, a busy background, or a blurry scan.${sigKb ? " A signature can also fail when it is faint or includes the paper edge." : ""} The tool checks measurable output properties; it cannot guarantee acceptance.`,
+        ? `For a live photograph, follow the capture screen's lighting, framing and background instructions.${sigKb ? ` A separate signature can still fail when it falls outside ${sigKb}${spec.sigFormat ? ", uses an unsupported format" : ""}, is faint, or includes the paper edge.` : ""} This tool cannot validate the authority's live-photo step.`
+        : `Common upload problems include a file outside the ${photoKb}${sigKb ? ` photo / ${sigKb} signature` : ""} range${hasGeometry ? ", dimensions that do not match the recorded frame" : ""}${spec.photoFormat || (sigKb && spec.sigFormat) ? ", an unsupported format" : ""}${backgroundIssue}, or a blurry scan.${sigKb ? " A signature can also fail when it is faint or includes the paper edge." : ""} The tool checks measurable output properties; it cannot guarantee acceptance.`,
     },
     {
       q: `Is this ${spec.name} resizer free and private?`,
@@ -94,10 +128,10 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
 
 export const PASSPORT_FAQ: FaqItem[] = [
   { q: "What size is a passport photo?", a: "Most countries use 35×45mm. The US and a few others use 2×2 inches (51×51mm). EasyPhoto sets the correct size automatically once you pick your country." },
-  { q: "How do I make a passport photo at home for free?", a: "Upload a clear, front-facing photo, choose your country, and download the compliant result. No app, no payment, no watermark." },
+  { q: "How do I make a passport photo at home for free?", a: "Upload a clear, front-facing photo, choose your country, and download the prepared result. Check it against the linked current requirements before submitting. No app, no payment, no watermark." },
   { q: "Can I take a passport photo on my phone?", a: "Yes. Any recent phone photo in even lighting works, and the tool crops and sizes it for you." },
   { q: "What background colour should a passport photo have?", a: "White for the US and India, and light grey or cream for the UK, where plain white is a common reason photos get rejected. EasyPhoto applies the right colour by country." },
-  { q: "What is the correct head size in a passport photo?", a: "It depends on the country. The US wants 25–35mm chin-to-crown, for instance, and India wants larger. We size your head to the exact band so it isn't rejected for being too big or small." },
+  { q: "What is the correct head size in a passport photo?", a: "It depends on the country. The US lists 25–35mm chin-to-crown, for instance, while other workflows differ. The tool sizes the head to the selected recorded band; inspect the result and confirm the current instructions before submitting." },
   { q: "Can I smile in a passport photo?", a: "No. Keep a neutral expression with your mouth closed, which is what most countries require for biometric matching." },
   { q: "Can I wear glasses in a passport photo?", a: "Generally no. The US has banned glasses since 2016 and most countries discourage them, so it's safest to take them off." },
   { q: "How many passport photos do I need?", a: "Usually two for a printed application. The 4×6 inch print sheet gives you several copies on one sheet." },
@@ -399,7 +433,7 @@ export function countryFaqItems(
     },
     australia: {
       q: "Does the Australian passport photo need a guarantor?",
-      a: "Yes, your guarantor must sign the back of the printed photo. This tool makes the compliant image, and the signature is added after printing.",
+      a: "Yes, your guarantor must sign the back of the printed photo. This tool prepares the recorded image dimensions and background; the signature is added after printing.",
     },
     schengen: {
       q: "Is the background the same for every Schengen country?",

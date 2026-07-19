@@ -185,7 +185,7 @@ export default async function MakerPage({
           ]),
           softwareApplicationSchema({
             name: `${spec.label} ${Doc} Photo Maker`,
-            description: `Make a compliant ${spec.label} ${doc} photo in your browser — exact size, correct background, compliance-checked.`,
+            description: `Prepare a ${spec.label} ${doc} photo at the selected size and background in your browser, then confirm the current authority instructions.`,
             url: `/${maker}/`,
           }),
           faqSchema(faqItems),
@@ -210,7 +210,7 @@ export default async function MakerPage({
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           {content?.intro ??
-            `Make a compliant ${spec.label} ${doc} photo at ${mm.width}×${mm.height}mm with the correct background. Free, and fully in your browser.`}
+            `Prepare a ${spec.label} ${doc} photo at ${mm.width}×${mm.height}mm with the selected background. Confirm the current authority instructions before submitting.`}
         </p>
         <div className="spec flex flex-wrap items-center gap-x-3 gap-y-1 pt-0.5">
           <span>

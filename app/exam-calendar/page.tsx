@@ -154,7 +154,7 @@ export default function ExamCalendarPage() {
         </h2>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           The photo and signature sizes are published long before each window —
-          prepare compliant files now and apply in minutes on day one.
+          prepare the listed file targets now and review the current notice before applying.
         </p>
         <div className="mt-4 flex flex-wrap gap-1.5">
           <Link

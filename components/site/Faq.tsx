@@ -24,7 +24,7 @@ export const HOME_FAQ: FaqItem[] = [
   },
   {
     q: "What photo should I use?",
-    a: "A clear, front-facing photo in good, even lighting with a neutral expression and your whole head and the top of your shoulders visible. Higher-resolution photos give sharper, more compliant results.",
+    a: "A clear, front-facing photo in good, even lighting with a neutral expression and your whole head and the top of your shoulders visible. Higher-resolution photos give sharper results that are easier to inspect.",
   },
   {
     q: "Can I use this for both printing and online upload?",

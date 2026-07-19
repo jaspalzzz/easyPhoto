@@ -12,7 +12,7 @@ import {
   sigDimsPx,
   PORTAL_CATEGORY_LABEL,
 } from "@/lib/specRegistry";
-import { portalFaqItems } from "@/lib/faqs";
+import { portalFaqItems, portalRejectionReasons } from "@/lib/faqs";
 import { SUB_EXAM_RESIZERS, RESIZER_YEAR } from "@/lib/subExamResizers";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -82,9 +82,11 @@ export async function generateMetadata({
   // well past the ~155-160 char SERP display width, so they were truncating.
   const shortName = spec.name.split(" (")[0];
   const titleBase = `${shortName} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR}`;
+  const hasRecordedFormat = Boolean(spec.photoFormat || (sig && spec.sigFormat));
+  const recordedFields = hasRecordedFormat ? "size & format" : "size";
   const descriptionOverride =
     exam === "airforce-agniveer"
-      ? `${shortName}: photo ${photoKb(spec)}, signature ${sig}, both JPG/JPEG. ` +
+      ? `${shortName}: photo ${photoKb(spec)}${spec.photoFormat ? ` (${spec.photoFormat})` : ""}, signature ${sig}${spec.sigFormat ? ` (${spec.sigFormat})` : ""}. ` +
         "No fixed pixel dimensions are published; confirm the current intake notice."
       : undefined;
   return pageMetadata({
@@ -103,8 +105,8 @@ export async function generateMetadata({
       // Only claim "verified" for specs actually confirmed against their source
       // and dated; needs-review presets get an honest "confirm on the source".
       (specProvenance(spec).verified
-        ? `. Stored size & format checked against the linked official source.`
-        : `. Size & format for the form — confirm the current figures on the official source.`),
+        ? `. Stored ${recordedFields} checked against the linked official source.`
+        : `. Stored ${recordedFields} for the form — confirm the current figures on the official source.`),
     path: `/exam-requirements/${exam}/`,
   });
 }
@@ -116,28 +118,6 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
       <dd className="text-right font-mono text-[13px] font-medium tabular-nums">{value}</dd>
     </div>
   );
-}
-
-function rejectionReasons(spec: PortalSpec, hasSignature: boolean): string[] {
-  const reasons = [
-    spec.verification === "official"
-      ? "File size falls outside the published band."
-      : "File size does not match the current application's displayed range.",
-  ];
-  if (photoDimsPx(spec) || spec.photoAspectRatio) {
-    reasons.push("Photo does not match the published pixel canvas or aspect ratio.");
-  }
-  reasons.push("File format differs from the current application's accepted formats.");
-  // Only applies to forms that actually take a signature upload — showing this
-  // for exams with photo-only uploads would be inaccurate, not just repetitive.
-  if (hasSignature) {
-    if (sigDimsPx(spec) || spec.sigAspectRatio) {
-      reasons.push("Signature does not match the published canvas or aspect ratio.");
-    }
-    reasons.push("Signature is unclear or includes excess paper around the writing.");
-  }
-  reasons.push("Photo is blurry or too low-contrast to review clearly.");
-  return reasons;
 }
 
 // Sub-exams that share the parent's ONE common photo/signature spec (e.g. SSC's
@@ -239,8 +219,10 @@ export default async function Page({
             {spec.photoAspectRatio && (
               <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
             )}
-            <Row label="Format" value="JPG / JPEG" />
-            <Row label="Background" value="Plain white" />
+            {spec.photoFormat && <Row label="Format" value={spec.photoFormat} />}
+            {spec.photoBackground && (
+              <Row label="Background" value={spec.photoBackground} />
+            )}
           </dl>
         </div>
         <div className="space-y-3">
@@ -249,7 +231,7 @@ export default async function Page({
             <dl>
               <Row label="File size" value={sig} />
               <Row label="Dimensions" value={sigDimsPx(spec, " px") ?? "—"} />
-              <Row label="Format" value="JPG / JPEG" />
+              {spec.sigFormat && <Row label="Format" value={spec.sigFormat} />}
               <Row label="Ink" value={spec.signatureInk ?? "Confirm current notice"} />
             </dl>
           ) : (
@@ -471,7 +453,8 @@ export default async function Page({
               preferred {photoDimsPx(spec, " px")} canvas. The
               signature uses its own {sig} band and preferred
               {" "}{sigDimsPx(spec, " px")} canvas. The advertisement
-              specifies JPG or JPEG files, a minimum {spec.dpi} DPI scan setting,
+              specifies {spec.photoFormat} photographs and {spec.sigFormat} signatures,
+              a minimum {spec.dpi} DPI scan setting,
               and a signature written in {spec.signatureInk?.toLowerCase()}.
             </p>
           </div>
@@ -493,7 +476,7 @@ export default async function Page({
               The advertisement says the form displays an error when a file&apos;s size
               or format is outside the prescribed values. It also tells candidates
               to re-upload an unclear or smudged image, so keep the photo and
-              signature as separate JPG/JPEG files and check each preview before
+              signature as separate files in their published formats and check each preview before
               submitting.
             </p>
           </div>
@@ -513,13 +496,13 @@ export default async function Page({
       {exam === "driving-licence" && (
         <section className="space-y-6 border-t border-hairline pt-8">
           <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Sarathi checks two separately prepared JPG files</h2>
+            <h2 className="text-lg font-semibold">Sarathi checks two separately prepared files</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               The Sarathi record sets the colour photo at {photoKb(spec)}, with
               {" "}a preferred {photoDimsPx(spec, " px")} canvas.
               The black-pen signature uses its own {sig} band and preferred
-              {" "}{sigDimsPx(spec, " px")} canvas. The upload guide
-              requires JPG format for both files.
+              {" "}{sigDimsPx(spec, " px")} canvas. Confirm the accepted file
+              format in the current Sarathi upload screen.
             </p>
           </div>
           <div className="space-y-2">
@@ -542,8 +525,8 @@ export default async function Page({
           <div className="space-y-2">
             <h2 className="text-lg font-semibold">What can block the Sarathi upload</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Sarathi displays an error when the file size or format is outside the
-              prescribed values. Its guide also warns that an unclear face or
+              Sarathi displays an error when a file is outside the prescribed
+              values. Its guide also warns that an unclear face or
               signature can require a re-upload, so crop each image to its edges and
               keep the photograph and signature as separate files.
             </p>
@@ -568,7 +551,7 @@ export default async function Page({
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               The Agniveervayu Intake 01/2027 record sets the recent colour photo at
               {" "}{photoKb(spec)} and the candidate&apos;s signature at {sig}. Both
-              files must be JPG or JPEG. The notice publishes no fixed pixel
+              files use {spec.photoFormat} and {spec.sigFormat}, respectively. The notice publishes no fixed pixel
               dimensions, so this page does not prescribe a pixel canvas.
             </p>
           </div>
@@ -584,7 +567,7 @@ export default async function Page({
           <div className="space-y-2">
             <h2 className="text-lg font-semibold">What to check before the IAF upload</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              A photo or signature outside its recorded KB band, a non-JPG/JPEG file,
+              A photo or signature outside its recorded KB band, a file outside the published format,
               missing slate details, or a signature scan that includes the whole sheet
               can prevent a clean submission. The registration flow also captures a
               live image, so use a current portrait that represents your appearance and
@@ -671,7 +654,7 @@ export default async function Page({
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Why {spec.name.split(" (")[0]} uploads get rejected</h2>
         <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-          {rejectionReasons(spec, !!sig).map((r) => (
+          {portalRejectionReasons(spec, !!sig).map((r) => (
             <li key={r} className="flex items-start gap-2">
               <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-faint" strokeWidth={1.75} />
               {r}

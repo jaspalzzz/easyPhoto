@@ -79,9 +79,60 @@ const BANNED: Array<{ label: string; pattern: RegExp }> = [
     label: "guaranteed rejection outcome",
     pattern: /\b(?:will\s+be\s+rejected|avoids?\s+rejection)\b/i,
   },
+  {
+    label: "compliant-result promise",
+    pattern: /\bcompliant\s+(?:results?|outputs?)\b/i,
+  },
+  {
+    label: "perfect-acceptance promise",
+    pattern: /\bperfectly\s+acceptable\b/i,
+  },
+  {
+    label: "non-rejection sizing promise",
+    pattern: /\bso\s+it\s+isn['’]?t\s+rejected\b/i,
+  },
+  {
+    label: "non-rejection upload promise",
+    pattern: /\bso\s+(?:the\s+)?uploads?\s+(?:isn['’]?t|aren['’]?t)\s+rejected\b/i,
+  },
+  {
+    label: "unlikely-rejection outcome promise",
+    pattern: /\brejection\s+becomes\s+(?:very\s+)?unlikely\b/i,
+  },
+  {
+    label: "eliminates-problem promise",
+    pattern: /\bremoves?\s+(?:this|the)\s+problem\s+entirely\b/i,
+  },
+  {
+    label: "one-photo acceptance promise",
+    pattern: /\b(?:one|same)\s+photo.{0,100}\bis\s+accepted\b/is,
+  },
+  {
+    label: "non-failure promise",
+    pattern: /\bso\s+you\s+don['’]?t\s+fail\b/i,
+  },
+  {
+    label: "tool-compliance outcome promise",
+    pattern: /\b(?:makes?|creates?|produces?|downloads?|gets?|applies?)\s+(?:a\s+)?compliant.{0,30}\b(?:photo|image|result|output|background|file)\b/i,
+  },
 ];
 
 describe("public copy keeps authority and acceptance claims bounded", () => {
+  it.each([
+    "download the compliant result",
+    "a 50 KB photo is perfectly acceptable",
+    "size it so it isn't rejected",
+    "this removes the problem entirely",
+    "one photo for every country is accepted",
+    "use this background so you don't fail",
+    "make a compliant photo",
+    "compress it so the upload isn't rejected",
+    "fix these issues and rejection becomes very unlikely",
+  ])("recognises a prohibited regression: %s", (copy) => {
+    const normalised = normalise(copy);
+    expect(BANNED.some(({ pattern }) => pattern.test(normalised))).toBe(true);
+  });
+
   it("contains none of the banned phrases, including HTML-entity variants", () => {
     const offenders: string[] = [];
 

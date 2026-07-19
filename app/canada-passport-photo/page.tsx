@@ -13,7 +13,7 @@ const spec = COUNTRY_SPECS["canada"]!;
 export const metadata = pageMetadata({
   title: "Canada Passport Photo Requirements 2026 — Free Maker (Visa, PR, Renewal)",
   description:
-    "Canada visa, PR, Express Entry and online passport renewal photo: 35×45mm, white background. Make a compliant photo free — nothing uploaded. IRCC-spec, instant.",
+    "Canada visa, PR, Express Entry and online passport renewal photo: prepare the listed 35×45mm dimensions and background free in your browser. Confirm the current IRCC instructions.",
   path: "/canada-passport-photo/",
 });
 
@@ -32,7 +32,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "What photo do I need for Express Entry or PR?",
-    a: "A 35×45mm photo on a plain white or light background, with the head measuring 31–36mm from chin to crown. This maker produces the correct size and applies a compliant white background.",
+    a: "A 35×45mm photo on a plain white or light background, with the head measuring 31–36mm from chin to crown. This maker prepares the selected size and white background; confirm the current IRCC instructions before use.",
   },
   {
     q: "Can I upload a digital photo for Canada's online passport renewal?",
@@ -65,7 +65,7 @@ export default function Page() {
           softwareApplicationSchema({
             name: "Canada Passport Photo Maker",
             description:
-              "Make a compliant Canada visa/PR/renewal photo free — 35×45mm, white background, no upload.",
+              "Prepare a Canada visa, PR or renewal photo at the selected 35×45mm frame and white background; confirm the current IRCC instructions.",
             url: "/canada-passport-photo/",
           }),
           faqSchema(FAQ_ITEMS),

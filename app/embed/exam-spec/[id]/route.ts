@@ -70,7 +70,7 @@ function renderEmbed(spec: PortalSpec): string {
 <body>
 <div class="card">
   <div class="hd">
-    <p class="ey">Official requirement</p>
+    <p class="ey">${prov.verified ? "Source-backed requirement" : "Compatibility target · confirm current form"}</p>
     <h1>${esc(short)} photo${hasSig ? " &amp; signature" : ""} size</h1>
   </div>
   <div class="bd">
@@ -79,7 +79,8 @@ function renderEmbed(spec: PortalSpec): string {
       ${row("File size", kb(spec.photoMinKb, spec.photoLimitKb))}
       ${photoDim ? row("Dimensions", photoDim) : ""}
       ${spec.dpi ? row("Scan DPI", String(spec.dpi)) : ""}
-      ${row("Format", "JPG / JPEG")}
+      ${spec.photoFormat ? row("Format", spec.photoFormat) : ""}
+      ${spec.photoBackground ? row("Background", spec.photoBackground) : ""}
     </div>
     ${
       hasSig
@@ -87,7 +88,7 @@ function renderEmbed(spec: PortalSpec): string {
       <div class="t">Signature</div>
       ${row("File size", kb(spec.sigMinKb, spec.sigLimitKb!))}
       ${sigDim ? row("Dimensions", sigDim) : ""}
-      ${row("Format", "JPG / JPEG")}
+      ${spec.sigFormat ? row("Format", spec.sigFormat) : ""}
     </div>`
         : ""
     }

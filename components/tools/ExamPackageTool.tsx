@@ -244,7 +244,7 @@ export function ExamPackageTool() {
       });
       if (!bbox) throw new Error("No signature detected.");
       const hasRequiredDimensions = !!(spec.sigWidthPx && spec.sigHeightPx);
-      const signatureFormat: "jpg" | "png" = /\b(?:JPG|JPEG)\b/i.test(spec.description)
+      const signatureFormat: "jpg" | "png" = spec.sigFormat && /\b(?:JPG|JPEG)\b/i.test(spec.sigFormat)
         ? "jpg"
         : "png";
       const framed = hasRequiredDimensions
@@ -961,7 +961,7 @@ function AssetCard({ asset, onDownload }: { asset: AssetResult; onDownload?: () 
         {asset.kind} · {formatKb(asset.bytes)} · {asset.width}×{asset.height}px{" "}
         {asset.compliant ? (
           <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-            <Check className="h-3 w-3" strokeWidth={2.25} /> compliant
+            <Check className="h-3 w-3" strokeWidth={2.25} /> no measurable issue detected
           </span>
         ) : (
           <span className="inline-flex items-center gap-1 text-amber-600">

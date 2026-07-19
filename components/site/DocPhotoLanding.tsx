@@ -17,7 +17,7 @@ import {
 } from "@/lib/schema";
 
 const HERO_TRUST = [
-  { Icon: ShieldCheck, text: "ICAO-compliant specs for every country" },
+  { Icon: ShieldCheck, text: "Country-specific requirements with linked sources" },
   { Icon: Lock,        text: "100% private — nothing is uploaded" },
   { Icon: Gift,        text: "Free — no sign-up required" },
 ];
@@ -75,11 +75,11 @@ export function DocPhotoLanding({
           faqSchema(faqItems),
           howToSchema({
             name: `How to make a ${doc} photo online`,
-            description: `Create a compliant ${doc} photo in your browser in three steps.`,
+            description: `Prepare a ${doc} photo at the selected size and background in your browser in three steps.`,
             steps: [
               { name: "Choose your country", text: `Select the country you need the ${doc} photo for.` },
               { name: "Upload your photo", text: "Drop in a clear, front-facing photo — it stays on your device." },
-              { name: "Download", text: `We size the head and set the correct background, check compliance, and you download the ${doc}-ready photo.` },
+              { name: "Download", text: `We size the head and set the selected background; inspect the result and confirm the current destination instructions.` },
             ],
           }),
         ]}

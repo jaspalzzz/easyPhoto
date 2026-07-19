@@ -20,7 +20,8 @@ export function PortalResizer({
 }) {
   const spec = PORTAL_PRESETS[portalId];
   const shownName = displayName ?? spec?.name.split(" (")[0];
-  const [activeSubTool, setActiveSubTool] = React.useState<"photo" | "signature">("photo");
+  const defaultSubTool = spec?.isLiveCapture && spec.sigLimitKb !== undefined ? "signature" : "photo";
+  const [activeSubTool, setActiveSubTool] = React.useState<"photo" | "signature">(defaultSubTool);
 
   // Keep the two inputs separate. A face photo must never be auto-loaded into
   // the signature workspace; each tab only restores its own previous source.
@@ -46,9 +47,9 @@ export function PortalResizer({
   };
 
   React.useEffect(() => {
-    setActiveSubTool("photo");
+    setActiveSubTool(defaultSubTool);
     sourceByToolRef.current = { photo: null, signature: null };
-  }, [portalId]);
+  }, [defaultSubTool, portalId]);
 
   if (!spec) {
     return (
@@ -68,7 +69,9 @@ export function PortalResizer({
     <div className="space-y-6">
       {/* Specs Summary Banner */}
       <div className="rounded-lg border border-brand bg-brand-soft/10 p-5">
-        <h3 className="font-semibold text-brand text-base mb-1.5">{shownName} Requirements</h3>
+        <h3 className="font-semibold text-brand text-base mb-1.5">
+          {shownName} {spec.isLiveCapture ? "application workflow" : "requirements"}
+        </h3>
         <p className="text-sm text-muted-foreground leading-relaxed mb-3">{spec.description}</p>
         <p className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-ink-soft">
           <ProvenanceIcon
@@ -92,8 +95,14 @@ export function PortalResizer({
         <div className="flex flex-wrap gap-4 text-xs font-mono">
           <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
             <Camera className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
-            Photo: {spec.photoMinKb ? `${spec.photoMinKb}–` : ""}{spec.photoLimitKb} KB
-            {photoDimsPx(spec) && ` · ${photoDimsPx(spec)}`}
+            {spec.isLiveCapture ? (
+              <>Photo: live capture in the application</>
+            ) : (
+              <>
+                Photo: {spec.photoMinKb ? `${spec.photoMinKb}–` : ""}{spec.photoLimitKb} KB
+                {photoDimsPx(spec) && ` · ${photoDimsPx(spec)}`}
+              </>
+            )}
           </div>
           {hasSignature && (
             <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
@@ -117,7 +126,7 @@ export function PortalResizer({
                 : "border-transparent text-muted-foreground hover:text-foreground"
             }`}
           >
-            Compress Portal Photo
+            {spec.isLiveCapture ? "Optional photo tool" : "Compress Portal Photo"}
           </button>
           <button
             type="button"
@@ -128,7 +137,7 @@ export function PortalResizer({
                 : "border-transparent text-muted-foreground hover:text-foreground"
             }`}
           >
-            Clean &amp; Compress Signature
+            {spec.isLiveCapture ? "Prepare Signature File" : "Clean & Compress Signature"}
           </button>
         </div>
       )}
@@ -138,8 +147,14 @@ export function PortalResizer({
         {activeSubTool === "photo" ? (
           <div className="space-y-3">
             <div className="px-1">
-              <h4 className="text-sm font-semibold mb-1">Photo Sizer</h4>
-              <p className="text-xs text-muted-foreground">Upload a prepared photograph to apply the selected stored {spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}{spec.photoLimitKb} KB target.</p>
+              <h4 className="text-sm font-semibold mb-1">
+                {spec.isLiveCapture ? "Optional compatibility photo tool" : "Photo Sizer"}
+              </h4>
+              <p className="text-xs text-muted-foreground">
+                {spec.isLiveCapture
+                  ? `This stored ${spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}${spec.photoLimitKb} KB target is not a current portal requirement and does not replace the live-photo step.`
+                  : `Upload a prepared photograph to apply the selected stored ${spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}${spec.photoLimitKb} KB target.`}
+              </p>
             </div>
             <ResizeKbTool
               defaultKb={spec.photoLimitKb}
@@ -170,7 +185,7 @@ export function PortalResizer({
               defaultKb={spec.sigLimitKb}
               minKb={spec.sigMinKb}
               defaultPresetKey={portalId}
-              defaultFormat={/\b(?:JPG|JPEG)\b/i.test(spec.description) ? "jpeg" : "png"}
+              defaultFormat={spec.sigFormat && /\b(?:JPG|JPEG)\b/i.test(spec.sigFormat) ? "jpeg" : "png"}
               autoCropDefault={true}
               onSourceChange={handleSignatureSourceChange}
             />

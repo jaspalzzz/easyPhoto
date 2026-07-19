@@ -13,7 +13,7 @@ const spec = COUNTRY_SPECS["us"]!;
 export const metadata = pageMetadata({
   title: "US Passport Photo Requirements 2026 — Free 2×2 Photo Maker",
   description:
-    "Official US passport photo requirements: 2×2 inch (51×51mm), white background, no glasses. Make a compliant photo free — nothing uploaded. Save $17 vs Walgreens.",
+    "US passport photo requirements: prepare the listed 2×2 inch dimensions and white background free in your browser. Confirm the current State Department instructions.",
   path: "/us-passport-photo/",
 });
 
@@ -65,7 +65,7 @@ export default function Page() {
           softwareApplicationSchema({
             name: "US Passport Photo Maker",
             description:
-              "Make a compliant US passport photo free — 2×2 inch, white background, no upload.",
+              "Prepare a US passport photo at the selected 2×2 inch frame and white background; confirm the current State Department instructions.",
             url: "/us-passport-photo/",
           }),
           faqSchema(FAQ_ITEMS),
