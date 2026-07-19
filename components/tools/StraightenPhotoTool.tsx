@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_PHOTO_KINDS } from "@/lib/workflowHandoff";
 import { Download, Share2, Loader2, RotateCcw, Scissors, Crop, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, type ToolSource } from "./ImageToolShell";
@@ -188,6 +189,7 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
           return b;
         }}
         filename="straightened.jpg"
+        assetKind="photo"
         steps={[
           {
             slug: "background-removal",
@@ -215,7 +217,7 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
 
 export function StraightenPhotoTool() {
   return (
-    <ImageToolShell uploaderTitle="photo" uploaderHint="Upload a tilted photo to straighten">
+    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_PHOTO_KINDS} uploaderTitle="photo" uploaderHint="Upload a tilted photo to straighten">
       {(source, reset) => <Body source={source} reset={reset} />}
     </ImageToolShell>
   );

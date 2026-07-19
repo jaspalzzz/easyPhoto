@@ -269,13 +269,13 @@ export default function Page() {
       </p>
 
       <p>
-        For exam forms, most portals (UPSC, SSC, IBPS, SBI) require the digital upload
-        and also instruct candidates to paste a physical photo on the printed
-        acknowledgement slip. The{" "}
+        Exam workflows differ: IBPS and SBI use prepared photo files, UPSC lists a
+        prepared upload plus a live photograph step, and current SSC forms capture
+        the photograph live. Check the active notice before printing or preparing a file. The{" "}
         <Link href="/blog/exam-photo-signature-size-guide/" className="text-brand underline">
           exam photo size guide
         </Link>{" "}
-        covers the per-portal physical and digital specs side by side.
+        compares the recorded workflows and file requirements side by side.
       </p>
 
       <div className="mt-12">

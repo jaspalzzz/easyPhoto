@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_GENERIC_IMAGE_KINDS } from "@/lib/workflowHandoff";
 import { Loader2, Download, Link2, Link2Off, Minimize2, Scissors, Crop } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
@@ -180,6 +181,7 @@ function Body({ source }: { source: ToolSource }) {
           <WorkflowNextSteps
             getBlob={async () => canvasToBlob(flattenForJpeg(out.canvas), "image/jpeg", 0.95)}
             filename="resized-photo.jpg"
+            assetKind="image"
             steps={[
               {
                 slug: "resize-kb",
@@ -208,5 +210,5 @@ function Body({ source }: { source: ToolSource }) {
 }
 
 export function ResizeDimensionsTool() {
-  return <ImageToolShell>{(source) => <Body source={source} />}</ImageToolShell>;
+  return <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}>{(source) => <Body source={source} />}</ImageToolShell>;
 }

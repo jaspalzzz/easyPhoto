@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Download, FileUp, ShieldCheck } from "lucide-react";
-import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
+import { consumeWorkflowPayload, WORKFLOW_PDF_KINDS } from "@/lib/workflowHandoff";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -51,7 +51,7 @@ export function PdfPageNumbersTool() {
   }, []);
 
   React.useEffect(() => {
-    const payload = consumeWorkflowPayload();
+    const payload = consumeWorkflowPayload(WORKFLOW_PDF_KINDS);
     if (payload) {
       const f = new File([payload.blob], payload.filename, { type: "application/pdf" });
       void pick(f);
@@ -241,6 +241,7 @@ export function PdfPageNumbersTool() {
               <WorkflowNextSteps
                 getBlob={async () => resultBlob}
                 filename={`${file.name.replace(/\.[^/.]+$/, "")}-numbered.pdf`}
+                assetKind="pdf"
                 steps={pdfNextSteps("pdf-page-numbers")}
               />
             )}

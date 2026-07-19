@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_PHOTO_KINDS } from "@/lib/workflowHandoff";
 import { Download, Share2, Undo2, Scissors, Minimize2, Crop, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, type ToolSource } from "./ImageToolShell";
@@ -346,6 +347,7 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
             return b;
           }}
           filename="red-eye-fixed.jpg"
+          assetKind="photo"
           steps={[
             {
               slug: "background-removal",
@@ -374,7 +376,7 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
 
 export function RedEyeTool() {
   return (
-    <ImageToolShell uploaderTitle="photo" uploaderHint="Upload a photo with red-eye">
+    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_PHOTO_KINDS} uploaderTitle="photo" uploaderHint="Upload a photo with red-eye">
       {(source, reset) => <Body source={source} reset={reset} />}
     </ImageToolShell>
   );

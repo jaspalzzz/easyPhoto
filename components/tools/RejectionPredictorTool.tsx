@@ -56,7 +56,7 @@ export function RejectionPredictorTool() {
   const [error, setError] = React.useState<string | null>(null);
   // Retain the analysed file so a fix routes WITH the photo — no re-upload.
   const [sourceFile, setSourceFile] = React.useState<File | null>(null);
-  const handoff = useWorkflowHandoff();
+  const handoff = useWorkflowHandoff("photo");
   const inputRef = React.useRef<HTMLInputElement>(null);
   const prevUrlRef = React.useRef<string | null>(null);
 

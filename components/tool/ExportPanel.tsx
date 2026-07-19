@@ -222,6 +222,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
         <WorkflowNextSteps
           getBlob={async () => digitalBlob}
           filename={`${base}-passport-digital.jpg`}
+          assetKind="photo"
           steps={[
             {
               slug: "photo-rejection-check",

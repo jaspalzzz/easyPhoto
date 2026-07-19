@@ -2,7 +2,10 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { setWorkflowPayload } from "@/lib/workflowHandoff";
+import {
+  setWorkflowPayload,
+  type WorkflowAssetKind,
+} from "@/lib/workflowHandoff";
 
 /**
  * Carry a blob to another tool with NO re-upload, then navigate there. The
@@ -14,13 +17,13 @@ import { setWorkflowPayload } from "@/lib/workflowHandoff";
  * over the exact file the user just checked. `href` is a full route, e.g.
  * "/tools/resize-kb/".
  */
-export function useWorkflowHandoff() {
+export function useWorkflowHandoff(kind: WorkflowAssetKind) {
   const router = useRouter();
   return React.useCallback(
     (blob: Blob, filename: string, href: string) => {
-      setWorkflowPayload(blob, filename);
+      setWorkflowPayload(blob, filename, { kind });
       router.push(href);
     },
-    [router]
+    [kind, router]
   );
 }

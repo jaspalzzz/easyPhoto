@@ -4,6 +4,7 @@ import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
+import { PORTAL_PRESETS } from "@/lib/portalPresets";
 
 const post = getPost("exam-photo-signature-size-guide")!;
 
@@ -46,19 +47,17 @@ export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo" faqItems={FAQ_ITEMS}>
       <p>
-        Every Indian competitive exam and recruitment portal asks for a photo and
-        a signature. Almost every candidate gets at least one of them wrong on the
-        first try: wrong KB, wrong pixel dimensions, or a grey background on the
-        signature. This
-        guide covers the recorded specs for many major exams, how the KB band works,
-        how to prepare your signature correctly, and what to fix when the portal
-        bounces your upload.
+        Exam application workflows differ: some accept prepared photo files, while
+        current SSC and RRB instructions capture the photograph live and ask for a
+        separate signature file. This guide compares the recorded workflows, how
+        published KB bands work, and what to check before opening the active form.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
-          <li>Most exams want a <strong>20–50&nbsp;KB JPG photo</strong> and a <strong>10–20&nbsp;KB JPG signature</strong>.</li>
+          <li>IBPS and several bank forms publish a <strong>20–50&nbsp;KB JPG photo</strong> and a <strong>10–20&nbsp;KB JPG signature</strong>.</li>
+          <li>Current SSC and RRB notices use live photo capture; prepare the separately listed signature file instead.</li>
           <li>Portals check a <em>band</em>: a photo under the minimum is rejected as firmly as one over the cap.</li>
           <li>UPSC and NDA/CDS use a wider <strong>20–200&nbsp;KB</strong> photo range and a <strong>20–100&nbsp;KB</strong> three-signature sheet — with no fixed pixel size or square requirement.</li>
           <li>NTA (NEET, JEE) allows up to 200&nbsp;KB and accepts JPG or PNG.</li>
@@ -101,20 +100,20 @@ export default function Page() {
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
           src="/images/exam-photo-signature-size-guide.webp"
-          alt="Exam photo acceptance criteria side-by-side: accepted photo with white background and 50 KB vs rejected photo with dark background and 1.2 MB file size"
+          alt="Prepared exam photo comparison showing a plain-background 50 KB example beside a dark-background oversized example"
           width={760}
           height={760}
           className="w-full h-auto"
         />
         <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
-          Accepted vs rejected exam photo: white background, sharp focus, and correct file size (20–50&nbsp;KB) vs dark background, low quality, and oversize file.
+          Prepared-file illustration only; live-capture exams use the camera workflow in the current notice instead.
         </figcaption>
       </figure>
 
       <figure className="my-8">
-        <svg viewBox="0 0 760 310" role="img" aria-label="Exam photo spec comparison: photo and signature pixel sizes for SSC, IBPS, UPSC and NTA" style={{maxWidth:"100%",height:"auto",fontFamily:"system-ui,sans-serif"}}>
+        <svg viewBox="0 0 760 310" role="img" aria-label="Exam photo workflow and signature limit comparison for SSC, IBPS, UPSC and NTA" style={{maxWidth:"100%",height:"auto",fontFamily:"system-ui,sans-serif"}}>
           <title>Exam Photo Spec Comparison</title>
-          <desc>Horizontal bars showing photo and signature KB limits for SSC CGL (photo 50KB, sig 20KB), IBPS PO (50KB, 20KB), UPSC CSE (200KB, 100KB), NTA NEET (200KB, 100KB)</desc>
+          <desc>Comparison of current photo workflows and signature KB limits: SSC uses live photo capture with a 20KB signature cap; IBPS PO, UPSC CSE and NTA NEET use the listed prepared-file ranges.</desc>
           {/* Header */}
           <rect x="0" y="0" width="760" height="42" fill="#163A6B" rx="10"/>
           <text x="380" y="27" textAnchor="middle" fill="#F4C63F" fontSize="14" fontWeight="700">Exam Photo &amp; Signature KB Limits — Quick Comparison</text>
@@ -127,7 +126,7 @@ export default function Page() {
           ))}
           {/* Rows */}
           {[
-            {exam:"SSC CGL / CHSL",photo:50,sig:20,photoPx:"live capture",sigPx:"140×60"},
+            {exam:"SSC CGL / CHSL",photo:0,sig:20,photoPx:"live capture",sigPx:"no fixed size"},
             {exam:"IBPS PO / Clerk",photo:50,sig:20,photoPx:"200×230",sigPx:"140×60"},
             {exam:"UPSC CSE / IAS",photo:200,sig:100,photoPx:"no fixed size",sigPx:"350–500"},
             {exam:"NTA NEET / JEE",photo:200,sig:100,photoPx:"no fixed size",sigPx:"no fixed size"},
@@ -138,10 +137,14 @@ export default function Page() {
                 <text x="195" y={y + 12} textAnchor="end" fontSize="11.5" fontWeight="600" fill="currentColor">{row.exam}</text>
                 {/* Photo bar */}
                 <rect x="200" y={y} width={row.photo * 1.4} height="16" rx="3" fill="#163A6B" opacity="0.85"/>
-                <text x={200 + row.photo * 1.4 + 5} y={y + 12} fontSize="10" fill="currentColor" opacity="0.7">Photo {row.photo}KB · {row.photoPx}px</text>
+                <text x={200 + row.photo * 1.4 + 5} y={y + 12} fontSize="10" fill="currentColor" opacity="0.7">
+                  {row.photo ? `Photo ${row.photo}KB · ${row.photoPx}px` : "Photo · live capture"}
+                </text>
                 {/* Sig bar */}
                 <rect x="200" y={y + 20} width={row.sig * 1.4} height="12" rx="3" fill="#F4C63F" opacity="0.8"/>
-                <text x={200 + row.sig * 1.4 + 5} y={y + 30} fontSize="9.5" fill="currentColor" opacity="0.6">Sig {row.sig}KB · {row.sigPx}px</text>
+                <text x={200 + row.sig * 1.4 + 5} y={y + 30} fontSize="9.5" fill="currentColor" opacity="0.6">
+                  {`Sig ${row.sig}KB · ${row.sigPx === "no fixed size" ? row.sigPx : `${row.sigPx}px`}`}
+                </text>
               </g>
             );
           })}
@@ -157,9 +160,9 @@ export default function Page() {
 
       <h2>Spec table: photo and signature requirements by exam</h2>
       <p>
-        The pixel dimensions below are the most commonly reported values for each
-        portal. They can vary between notification cycles — always confirm in the
-        official notification PDF before applying. Official sources:{" "}
+        The table distinguishes prepared-file requirements from live capture and
+        omits photo pixels where the current cited source publishes none. Always
+        confirm the active notification before applying. Sources:{" "}
         <a href="https://ssc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>,{" "}
         <a href="https://ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>,{" "}
         <a href="https://sbi.co.in/careers" className="text-brand underline" target="_blank" rel="noopener noreferrer">SBI</a>,{" "}
@@ -182,19 +185,19 @@ export default function Page() {
           <tbody className="divide-y divide-hairline text-ink-soft">
             <tr>
               <td className="px-3 py-2 font-medium text-ink">SSC CGL / CHSL</td>
-              <td className="px-3 py-2">20–50 KB</td>
-              <td className="px-3 py-2">275×354 typical</td>
+              <td className="px-3 py-2">Live capture</td>
+              <td className="px-3 py-2">No photo file</td>
               <td className="px-3 py-2">10–20 KB</td>
-              <td className="px-3 py-2">140×60 typical</td>
-              <td className="px-3 py-2">JPG</td>
+              <td className="px-3 py-2">No fixed pixels published</td>
+              <td className="px-3 py-2">Signature: JPG/JPEG</td>
             </tr>
             <tr>
               <td className="px-3 py-2 font-medium text-ink">SSC MTS / CAPF</td>
-              <td className="px-3 py-2">20–50 KB</td>
-              <td className="px-3 py-2">portal-resized (live)</td>
+              <td className="px-3 py-2">Live capture</td>
+              <td className="px-3 py-2">No photo file</td>
               <td className="px-3 py-2">10–20 KB</td>
-              <td className="px-3 py-2">140×60 typical</td>
-              <td className="px-3 py-2">JPG</td>
+              <td className="px-3 py-2">No fixed pixels published</td>
+              <td className="px-3 py-2">Signature: JPG/JPEG</td>
             </tr>
             <tr>
               <td className="px-3 py-2 font-medium text-ink">IBPS PO / Clerk</td>
@@ -230,19 +233,19 @@ export default function Page() {
             </tr>
             <tr>
               <td className="px-3 py-2 font-medium text-ink">RRB NTPC / ALP</td>
-              <td className="px-3 py-2">20–50 KB</td>
-              <td className="px-3 py-2">200×230 typical</td>
-              <td className="px-3 py-2">10–20 KB</td>
-              <td className="px-3 py-2">140×60 typical</td>
-              <td className="px-3 py-2">JPG</td>
+              <td className="px-3 py-2">Live capture</td>
+              <td className="px-3 py-2">No photo file</td>
+              <td className="px-3 py-2">30–49 KB</td>
+              <td className="px-3 py-2">At least 140×60</td>
+              <td className="px-3 py-2">Signature: JPG/JPEG</td>
             </tr>
             <tr>
               <td className="px-3 py-2 font-medium text-ink">RRB Group D</td>
-              <td className="px-3 py-2">20–50 KB</td>
-              <td className="px-3 py-2">200×230 typical</td>
-              <td className="px-3 py-2">10–20 KB</td>
-              <td className="px-3 py-2">140×60 typical</td>
-              <td className="px-3 py-2">JPG</td>
+              <td className="px-3 py-2">Live capture</td>
+              <td className="px-3 py-2">No photo file</td>
+              <td className="px-3 py-2">30–49 KB</td>
+              <td className="px-3 py-2">At least 140×60</td>
+              <td className="px-3 py-2">Signature: JPG/JPEG</td>
             </tr>
             <tr>
               <td className="px-3 py-2 font-medium text-ink">NTA NEET</td>
@@ -263,7 +266,7 @@ export default function Page() {
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
-          Pixel dimensions are typical reported values. Verify in the official notification PDF before applying — specs can change between cycles.
+          Values follow the cited registry sources; verify the active notification because workflows can change between cycles.
         </p>
       </div>
 
@@ -271,10 +274,9 @@ export default function Page() {
       <p>
         The{" "}
         <a href="https://ssc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">Staff Selection Commission</a>{" "}
-        runs India&apos;s largest combined recruitment exams. For CGL, CHSL, MTS
-        and CAPF, the typical band is{" "}
-        <strong>20–50&nbsp;KB for the photo and 10–20&nbsp;KB for the
-        signature</strong>, both JPG.
+        runs India&apos;s combined recruitment exams. The current cited workflow
+        captures the photograph live and separately lists a
+        <strong> 10–20&nbsp;KB JPG/JPEG signature</strong>.
       </p>
       <p>
         The most important change in recent SSC cycles:{" "}
@@ -291,7 +293,7 @@ export default function Page() {
         SSC also enforces a signature style rule almost no other portal has:{" "}
         <strong>all-capitals signatures are explicitly rejected.</strong> Your
         signature must be in cursive or running hand. Print block letters do not
-        pass the validator. The physical size is 4.0&nbsp;×&nbsp;2.0&nbsp;cm on
+        match that instruction. The listed physical size is about 6.0&nbsp;×&nbsp;2.0&nbsp;cm on
         white paper with black ink.
       </p>
       <p>
@@ -301,7 +303,7 @@ export default function Page() {
       </p>
       <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
         <strong>Prepare your SSC signature:</strong>{" "}
-        <Link href="/ssc-photo-resizer/" className="text-brand underline font-medium">SSC photo &amp; signature resizer →</Link>
+        <Link href="/ssc-photo-resizer/" className="text-brand underline font-medium">SSC live-photo guide &amp; signature resizer →</Link>
       </p>
 
       <h2>Banking exams: IBPS PO, IBPS Clerk, SBI PO, SBI Clerk</h2>
@@ -377,25 +379,21 @@ export default function Page() {
       <p>
         Railway Recruitment Boards run exams across 21 regional boards, and specs
         are confirmed per notification at{" "}
-        <a href="https://indianrailways.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">indianrailways.gov.in</a>.
-        The typical photo requirement mirrors banking exams:{" "}
-        <strong>20–50&nbsp;KB, JPG, 200×230&nbsp;px</strong>. The signature band
-        is <strong>10–20&nbsp;KB, JPG, 140×60&nbsp;px</strong>. Verify the exact
-        pixel dimensions for your specific RRB region — different boards can state
-        slightly different values in the same notification cycle.
+        <a href={PORTAL_PRESETS.rrb.source!.url} className="text-brand underline" target="_blank" rel="noopener noreferrer">the cited RRB notice</a>.
+        The current cited RRB instructions use live photograph capture rather
+        than a prepared photo upload. They list a separate JPG/JPEG signature of
+        <strong> 30–49&nbsp;KB</strong>, at least
+        <strong> 140×60&nbsp;px</strong>, scanned at a minimum 100&nbsp;DPI.
+        Confirm the active CEN because recruitment-cycle instructions can change.
       </p>
       <p>
-        Railway portals upload the photo and signature as separate files. The
-        background must be plain white. Recent RRB Group D cycles have also
-        included a{" "}
-        <strong>thumb impression upload</strong> — a separate 10–20&nbsp;KB JPG
-        of your right thumb on white paper. Check the notification for this
-        requirement if you&apos;re applying for Group D or technical posts and
-        prepare the thumb impression image the same way you prepare the signature:
-        photograph flat on a white surface with even light.
+        Open the live-photo step with a working front camera, even lighting and a
+        plain background. Prepare only the separate signature file in advance;
+        do not substitute a saved photograph for the camera step described by the
+        current notice.
       </p>
       <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
-        <strong>Resize for RRB exams:</strong>{" "}
+        <strong>Prepare for RRB exams:</strong>{" "}
         <Link href="/tools/exam-package/" className="text-brand underline font-medium">All-exam photo &amp; signature package →</Link>
       </p>
 
@@ -405,8 +403,8 @@ export default function Page() {
         other portals. For both NEET and JEE Main, the photo is a{" "}
         <strong>JPG or PNG between 10&nbsp;KB and 200&nbsp;KB</strong>; and the
         signature is between <strong>4&nbsp;KB and 30&nbsp;KB</strong> in JPG or
-        PNG. This is the widest tolerance of any major exam portal; almost any
-        clear phone photo will pass on KB alone.
+        PNG. A clear phone photo may fit that KB range, but the current notice&apos;s
+        other photo instructions still need to be checked before submission.
       </p>
       <p>
         NTA does not require live portal capture — you upload a saved file. The
@@ -482,11 +480,11 @@ export default function Page() {
         to the specified KB target using the custom resizer.
       </p>
 
-      <h2>How to take a compliant exam photo</h2>
+      <h2>How to prepare a clear exam photo</h2>
       <p>
         Unlike a studio passport photo, an exam portal photo needs to match your
-        current appearance closely enough that an invigilator can verify you on
-        exam day. Here is what the portal validator and the invigilator both check:
+        current appearance. Where the active notice asks for a prepared file,
+        use its published photo instructions as the checklist:
       </p>
       <ul>
         <li>
@@ -584,11 +582,10 @@ export default function Page() {
 
       <h2>How to resize for any exam in one step</h2>
       <p>
-        The fastest path: pick your exam in the{" "}
-        <Link href="/tools/exam-package/">Exam Application Kit</Link> and it applies
-        the correct photo and signature spec — KB target, pixel dimensions,
-        background — in one flow. It covers 40+ Indian exam portals including SSC,
-        IBPS, SBI, UPSC, RRB and NTA.
+        Pick your exam in the{" "}
+        <Link href="/tools/exam-package/">Exam Application Kit</Link> to see whether
+        the registry records live capture or prepared files, then apply its stored
+        KB targets and published dimensions where available. Confirm the active notice.
       </p>
       <p>To prepare each file separately:</p>
       <ul>

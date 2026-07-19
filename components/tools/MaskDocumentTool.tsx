@@ -410,6 +410,7 @@ export function MaskDocumentTool() {
                 return b;
               }}
               filename="masked-document.jpg"
+              assetKind="image"
               steps={[
                 { slug: "resize-kb", label: "Resize to KB", hint: "Hit an upload size limit", icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} /> },
                 { slug: "image-crop", label: "Crop image", hint: "Trim to just the card", icon: <Crop className="h-4 w-4" strokeWidth={1.75} /> },

@@ -4,7 +4,7 @@ import * as React from "react";
 import { Download, FileUp, ShieldCheck, LockOpen, Minimize2, PenLine, Hash } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
-import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
+import { consumeWorkflowPayload, WORKFLOW_PDF_KINDS } from "@/lib/workflowHandoff";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { unlockPdf, PdfPasswordError } from "@/lib/pdfUnlock";
@@ -28,7 +28,7 @@ export function UnlockPdfTool() {
   }, []);
 
   React.useEffect(() => {
-    const payload = consumeWorkflowPayload();
+    const payload = consumeWorkflowPayload(WORKFLOW_PDF_KINDS);
     if (payload) {
       const f = new File([payload.blob], payload.filename, { type: "application/pdf" });
       pick(f);
@@ -198,6 +198,7 @@ export function UnlockPdfTool() {
                   return unlockedBlob.blob;
                 }}
                 filename={unlockedBlob.name}
+                assetKind="pdf"
                 steps={[
                   {
                     slug: "pdf-compress",

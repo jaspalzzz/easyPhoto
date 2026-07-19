@@ -172,7 +172,8 @@ export default function Page() {
             ["Voter ID — NVSP / ECI", "Plain white or light-coloured background"],
             ["Driving Licence — Sarathi", "White or light background, no patterns"],
             ["Aadhaar update (in-person)", "Captured live at centre — white background used on-site"],
-            ["UPSC / SSC / IBPS exam forms", "White background (most portals)"],
+            ["UPSC / IBPS prepared-photo forms", "Use the background stated in the current notice"],
+            ["SSC current forms", "Photo captured live — prepare the setting, not a background-edited file"],
             ["Schengen / UK visa", "Grey or cream (not white) — see country guide"],
           ].map(([doc, bg]) => (
             <tr key={doc} className="border-b border-hairline/60">

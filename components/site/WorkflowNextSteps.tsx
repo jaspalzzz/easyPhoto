@@ -25,7 +25,8 @@ interface Props {
   filename: string;
   steps: NextStepDef[];
   /** Typed exam assets are also retained for the multi-file Exam Kit journey. */
-  assetKind?: Extract<WorkflowAssetKind, "photo" | "signature">;
+  assetKind: WorkflowAssetKind;
+  rememberForExamKit?: boolean;
   examId?: string;
 }
 
@@ -34,6 +35,7 @@ export function WorkflowNextSteps({
   filename,
   steps,
   assetKind,
+  rememberForExamKit,
   examId,
 }: Props) {
   const router = useRouter();
@@ -45,7 +47,10 @@ export function WorkflowNextSteps({
     try {
       const blob = await getBlob();
       setWorkflowPayload(blob, filename, {
-        ...(assetKind ? { kind: assetKind, rememberForExamKit: true } : {}),
+        kind: assetKind,
+        ...(rememberForExamKit && (assetKind === "photo" || assetKind === "signature")
+          ? { rememberForExamKit: true }
+          : {}),
         ...(examId ? { examId } : {}),
       });
       router.push(`/tools/${slug}/`);

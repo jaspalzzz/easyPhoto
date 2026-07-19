@@ -87,7 +87,7 @@ function runValidation(file: File, widthPx: number, heightPx: number): Validatio
   } else if (arDiff(squareAr) < 0.02) {
     arStatus = "pass"; arHint = "Square (1:1) — suitable for LinkedIn, some visa portals.";
   } else if (arDiff(20 / 23) < 0.02) {
-    arStatus = "pass"; arHint = "200×230 px exam pattern (standard IBPS/SSC ratio).";
+    arStatus = "pass"; arHint = "200×230 px prepared-photo pattern used by IBPS and similar bank forms.";
   } else {
     arHint = "Non-standard ratio. Check exam notification for required pixel dimensions.";
   }
@@ -136,7 +136,7 @@ export function PhotoValidatorTool() {
   const [dragging, setDragging] = React.useState(false);
   // Retain the validated file so an adjust routes WITH it — no re-upload.
   const [sourceFile, setSourceFile] = React.useState<File | null>(null);
-  const handoff = useWorkflowHandoff();
+  const handoff = useWorkflowHandoff("photo");
   const prevPreviewRef = React.useRef<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 

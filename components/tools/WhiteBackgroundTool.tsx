@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_GENERIC_IMAGE_KINDS } from "@/lib/workflowHandoff";
 import { Download, Minimize2, Crop, FileText } from "lucide-react";
 import { ScanProgress } from "@/components/site/ScanProgress";
 import { Button } from "@/components/ui/button";
@@ -157,6 +158,7 @@ function Body({ source }: { source: ToolSource }) {
           return canvasToBlob(outRef.current, "image/jpeg", 0.92);
         }}
         filename="photo-white-bg.jpg"
+        assetKind="photo"
         steps={[
           {
             slug: "resize-kb",
@@ -186,5 +188,5 @@ export function WhiteBackgroundTool() {
   React.useEffect(() => {
     track({ name: "tool_view", tool: TOOL });
   }, []);
-  return <ImageToolShell>{(source) => <Body source={source} />}</ImageToolShell>;
+  return <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}>{(source) => <Body source={source} />}</ImageToolShell>;
 }

@@ -252,6 +252,7 @@ export function AutoCropTool() {
               )
             }
             filename={`passport-photo-${specId}.jpg`}
+            assetKind="photo"
             steps={[
               { slug: "resize-kb", label: "Resize to KB", hint: "Hit an upload size limit", icon: <Crop className="h-4 w-4" strokeWidth={1.75} /> },
               { slug: "white-background", label: "White background", hint: "Clean plain background", icon: <ImageIcon className="h-4 w-4" strokeWidth={1.75} /> },

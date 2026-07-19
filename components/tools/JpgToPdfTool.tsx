@@ -191,6 +191,7 @@ export function JpgToPdfTool() {
           <WorkflowNextSteps
             getBlob={async () => resultBlob}
             filename="images.pdf"
+            assetKind="pdf"
             steps={pdfNextSteps("jpg-to-pdf")}
           />
         )}

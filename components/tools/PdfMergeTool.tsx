@@ -234,6 +234,7 @@ export function PdfMergeTool() {
                 return mergedBlob;
               }}
               filename="merged-document.pdf"
+              assetKind="pdf"
               steps={[
                 {
                   slug: "pdf-compress",

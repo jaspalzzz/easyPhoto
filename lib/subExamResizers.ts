@@ -24,8 +24,8 @@ export interface SubExamResizer {
   context: string;
   /**
    * 2–3 sentences of ACCURATE, exam-specific prose that differentiate this page
-   * from its same-spec siblings (conducting body, post type, where the photo is
-   * uploaded). Rendered as a unique on-page block. Facts only — NEVER restate
+   * from its same-spec siblings (conducting body, post type, and application
+   * workflow). Rendered as a unique on-page block. Facts only — NEVER restate
    * photo/signature numbers here (those come from the parent's verified spec)
    * and never invent details.
    */
@@ -132,21 +132,21 @@ export const SUB_EXAM_RESIZERS: SubExamResizer[] = [
     parentId: "rrb",
     name: "RRB NTPC",
     context: "Non-Technical Popular Categories",
-    note: "RRB NTPC recruits for Non-Technical Popular Categories — Station Master, Goods Train Manager, clerk and typist posts. Applications go through the Railway Recruitment Boards' online portal, where the photo and signature are uploaded once.",
+    note: "RRB NTPC recruits for Non-Technical Popular Categories — Station Master, Goods Train Manager, clerk and typist posts. Current cited RRB instructions use live photograph capture and a separate prepared signature upload; confirm the active CEN before applying.",
   },
   {
     slug: "rrb-group-d",
     parentId: "rrb",
     name: "RRB Group D",
     context: "Level 1 posts",
-    note: "RRB Group D recruits Level 1 posts — Track Maintainer, Pointsman, and assistant roles across Indian Railways departments. The photo and signature are uploaded on the RRB portal and follow the same Railway recruitment specification.",
+    note: "RRB Group D recruits Level 1 posts — Track Maintainer, Pointsman, and assistant roles across Indian Railways departments. Current cited RRB instructions use live photograph capture and a separate prepared signature upload; confirm the active CEN before applying.",
   },
   {
     slug: "rrb-alp",
     parentId: "rrb",
     name: "RRB ALP",
     context: "Assistant Loco Pilot",
-    note: "RRB ALP recruits Assistant Loco Pilots for Indian Railways. Registration runs through the Railway Recruitment Boards' portal, so the photo and signature requirements match the other RRB exams.",
+    note: "RRB ALP recruits Assistant Loco Pilots for Indian Railways. Current cited RRB instructions use live photograph capture and a separate prepared signature upload; confirm the active ALP CEN rather than assuming another Railway cycle is identical.",
   },
   // UPSC
   {

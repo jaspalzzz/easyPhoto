@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_SIGNATURE_KINDS } from "@/lib/workflowHandoff";
 import { Loader2, Download, FilePen, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
@@ -265,6 +266,7 @@ function Body({
             return out.blob;
           }}
           filename={`signature-${kb}kb.${out.format === "jpeg" ? "jpg" : "png"}`}
+          assetKind="signature"
           steps={[
             {
               slug: "sign-image",
@@ -306,6 +308,7 @@ export function SignatureKbTool({
 
   return (
     <ImageToolShell
+      acceptedWorkflowKinds={WORKFLOW_SIGNATURE_KINDS}
       uploaderTitle="Drop your signature, or click to browse"
       uploaderHint="A scan or photo of your signature on white paper works best"
     >

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_PHOTO_KINDS } from "@/lib/workflowHandoff";
 import { Loader2, Download, AlertCircle, Calendar, User, Info, ShieldCheck, Minimize2, FileStack } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
@@ -647,7 +648,8 @@ function Body({
           <WorkflowNextSteps
             getBlob={async () => result.blob}
             filename="photo-with-name-date.jpg"
-            assetKind={workflowExamId ? "photo" : undefined}
+            assetKind="photo"
+            rememberForExamKit={!!workflowExamId}
             examId={workflowExamId}
             steps={workflowExamId
               ? [
@@ -695,7 +697,7 @@ export function NameDatePhotoTool({ defaultPresetId }: { defaultPresetId?: strin
   const resolvedPresetId = defaultPresetId ?? workflowPresetId;
 
   return (
-    <ImageToolShell>
+    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_PHOTO_KINDS}>
       {(source) => (
         <Body
           key={resolvedPresetId ?? "default"}

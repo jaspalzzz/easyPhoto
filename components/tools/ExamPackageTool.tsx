@@ -43,10 +43,11 @@ import { useExamSearch } from "@/components/tools/ExamSearch";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
+import { displayFileFormatBundle } from "@/lib/fileFormats";
 import { track, deviceClass } from "@/lib/analytics";
 import {
   clearExamWorkflowDraft,
-  consumeWorkflowPayload,
+  discardWorkflowPayload,
   getExamWorkflowDraft,
   type WorkflowPayload,
 } from "@/lib/workflowHandoff";
@@ -129,7 +130,7 @@ export function ExamPackageTool() {
     track({ name: "tool_view", tool: "exam-package" });
     // Exam Kit reads the longer-lived typed draft below; discard the generic
     // consume-once copy so it cannot leak into a later unrelated image tool.
-    consumeWorkflowPayload();
+    discardWorkflowPayload();
   }, []);
 
   const reset = () => {
@@ -722,7 +723,9 @@ export function ExamPackageTool() {
                         : []),
                       {
                         label: "Format",
-                        value: signature ? `JPG + ${signature.format.toUpperCase()}` : "JPG",
+                        value: signature
+                          ? displayFileFormatBundle(["jpg", signature.format])
+                          : "JPG",
                         ok: true,
                       },
                     ]}

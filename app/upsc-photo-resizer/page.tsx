@@ -11,7 +11,7 @@ import { Info } from "lucide-react";
 const spec = getPortalSpec("upsc")!;
 const prov = specProvenance(spec);
 // Only mention pixels when the authority actually publishes them — several
-// portals (UPSC/SSC/RRB) publish a KB band but no pixel requirement.
+// UPSC publishes a KB band but no fixed pixel requirement.
 const px = photoDimsPx(spec);
 const photoDims = px ? ` and ${px}` : "";
 

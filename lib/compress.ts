@@ -207,7 +207,7 @@ export async function compressToCap(
      */
     minScale?: number;
     /**
-     * Portal's MINIMUM file size in KB (e.g. SSC photo is a 20–50 KB band —
+     * Portal's MINIMUM file size in KB (e.g. IBPS photo is a 20–50 KB band —
      * below 20 KB is rejected too). When the best result lands under this,
      * the JPEG is padded with inert COM segments up to the floor. Pixels and
      * quality are untouched; every JPEG reader skips the padding.

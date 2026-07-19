@@ -480,6 +480,7 @@ export function PdfReorderTool() {
               <WorkflowNextSteps
                 getBlob={async () => resultBlob}
                 filename={`${fileName.replace(/\.[^/.]+$/, "")}-modified.pdf`}
+                assetKind="pdf"
                 steps={pdfNextSteps("pdf-reorder")}
               />
             )}

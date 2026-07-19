@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_GENERIC_IMAGE_KINDS } from "@/lib/workflowHandoff";
 import { Loader2, Download, Share2, Crop, FileStack, ScanSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
@@ -344,7 +345,8 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
           <WorkflowNextSteps
             getBlob={async () => result.blob}
             filename="resized-photo.jpg"
-            assetKind={examWorkflow ? "photo" : undefined}
+            assetKind={examWorkflow ? "photo" : "image"}
+            rememberForExamKit={!!examWorkflow}
             examId={examWorkflow?.examId}
             steps={examWorkflow
               ? (() => {
@@ -408,7 +410,7 @@ export function ResizeKbTool({
   }, [toolName]);
 
   return (
-    <ImageToolShell>
+    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}>
       {(source) => (
         <Body
           source={source}

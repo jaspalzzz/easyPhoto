@@ -44,7 +44,7 @@ export const HINGLISH_PAGES: HinglishPage[] = [
     slug: "photo-resize-kaise-kare",
     title: "Photo Resize Kaise Kare — Free Online Photo Size Kam Kare",
     description:
-      "Photo ka size online free me kam kare. Exam aur sarkari form (SSC, UPSC, Passport) ke liye photo ko KB me compress kare. Koi upload nahi, 100% private.",
+      "Photo ka size online free me kam kare. UPSC, IBPS aur un forms ke liye photo ko KB me compress kare jahan prepared photo upload hoti hai. Koi server upload nahi.",
     h1: "Photo Resize Kaise Kare",
     blurb:
       "Apni photo ka size seconds me kam kare — exam aur sarkari form ke liye. Sab kuch browser me, koi upload nahi.",
@@ -56,10 +56,10 @@ export const HINGLISH_PAGES: HinglishPage[] = [
     slug: "photo-ka-size-20kb-kaise-kare",
     title: "Photo Ka Size 20KB Kaise Kare — Free Online Tool",
     description:
-      "Photo ka size 20 KB kaise kare? Online free me photo ko 20 KB se kam kare — SSC, UPSC aur form upload ke liye. Private, koi upload nahi.",
+      "Photo ka size 20 KB kaise kare? IBPS jaise prepared-photo upload forms ke liye online free me photo ko 20 KB tak compress kare. Current SSC forms photo live capture karte hain.",
     h1: "Photo Ka Size 20KB Kaise Kare",
     blurb:
-      "Photo ko 20 KB se kam karne ka sabse aasaan tarika — form upload ke liye perfect.",
+      "Jis form me prepared photo file maangi gayi ho, uski current KB limit dekhkar photo ko 20 KB tak compress kare. SSC ke current form me photo live capture hoti hai.",
     tool: "photo-kb",
     kb: 20,
     faqs: photoFaqs(20),
@@ -177,7 +177,7 @@ export const HINGLISH_PAGES: HinglishPage[] = [
     slug: "photo-ka-size-kam-kaise-kare",
     title: "Photo Ka Size Kam Kaise Kare — Free Online Photo Compressor",
     description:
-      "Photo ka size kam kaise kare online free me? Photo ko KB me compress kare — SSC, UPSC aur form upload ke liye. Private, koi upload nahi.",
+      "Photo ka size kam kaise kare online free me? UPSC, IBPS aur prepared-photo upload forms ke liye photo ko KB me compress kare. Private, koi server upload nahi.",
     h1: "Photo Ka Size Kam Kaise Kare",
     blurb:
       "Apni photo ka size aasani se kam kare aur form ki KB limit me laaye. Sab kuch browser me, koi upload nahi.",

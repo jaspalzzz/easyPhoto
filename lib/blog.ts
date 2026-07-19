@@ -99,7 +99,7 @@ export const BLOG_POSTS: BlogPost[] = [
     dateISO: "2026-06-18",
     updatedISO: "2026-06-18",
     excerpt:
-      "Every exam portal has its own KB and pixel spec — a general resize tool won't hit it. Five free tools that know the exact SSC, IBPS, UPSC, and RRB requirements, compared honestly on coverage, privacy, and breadth.",
+      "Exam workflows differ: SSC and RRB use live photo capture, while IBPS and UPSC publish prepared-file requirements. Five free tools compared on coverage, privacy, and breadth.",
     readMins: 7,
   },
   {
@@ -139,7 +139,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "nda-cds-photo-signature-guide-2026",
-    title: "NDA & CDS 2026 Photo & Signature Requirements — Exact Size",
+    title: "NDA & CDS 2026 Photo & Signature Size — Published KB Ranges",
     description:
       "NDA and CDS use the same UPSC OTR portal: a 20–200 KB JPG photo on a plain white background, plus three signatures on one sheet at 20–100 KB. UPSC publishes no fixed pixel size or name/date strip.",
     date: "June 18, 2026",
@@ -390,7 +390,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "June 25, 2026",
     dateISO: "2026-06-25",
     excerpt:
-      "Set the target KB and the tool adjusts JPEG quality automatically. Q80 ≈ 45 KB for a 413×531 px photo — perfect for most 50 KB portals. Start from a high-res original for best results.",
+      "Set the target KB and the tool adjusts JPEG quality automatically. Output size varies with the source image, so inspect the downloaded file and compare it with the current portal instructions.",
     readMins: 6,
   },
   {

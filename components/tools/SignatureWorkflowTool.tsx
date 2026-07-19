@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_SIGNATURE_KINDS } from "@/lib/workflowHandoff";
 import { Download, ShieldCheck, Eraser, Crop, Maximize2, Info, FileStack } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
@@ -615,6 +616,7 @@ function Body({
               getBlob={async () => out.blob}
               filename={`prepared-signature.${bgFormat === "jpeg" ? "jpg" : "png"}`}
               assetKind="signature"
+              rememberForExamKit
               examId={defaultPresetKey}
               steps={[
                 {
@@ -1016,7 +1018,7 @@ export function SignatureWorkflowTool({
   }, [toolName]);
 
   return (
-    <ImageToolShell>
+    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_SIGNATURE_KINDS}>
       {(source) => (
         <Body
           source={source}

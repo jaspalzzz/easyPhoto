@@ -221,6 +221,7 @@ export function WatermarkPdfTool() {
               <WorkflowNextSteps
                 getBlob={async () => resultBlob}
                 filename={`${file.name.replace(/\.[^/.]+$/, "")}-watermarked.pdf`}
+                assetKind="pdf"
                 steps={pdfNextSteps("watermark-pdf")}
               />
             )}

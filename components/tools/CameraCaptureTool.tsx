@@ -109,6 +109,7 @@ export function CameraCaptureTool() {
         <WorkflowNextSteps
           getBlob={async () => file}
           filename="camera-photo.jpg"
+          assetKind="photo"
           steps={[
             { slug: "image-crop", label: "Crop photo", hint: "Trim or reframe the shot", icon: <Crop className="h-4 w-4" strokeWidth={1.75} /> },
             { slug: "background-removal", label: "Remove background", hint: "Plain white background", icon: <Eraser className="h-4 w-4" strokeWidth={1.75} /> },

@@ -314,6 +314,7 @@ export function PhotoSignatureMergeTool() {
               return resultBlob;
             }}
             filename="photo-signature.jpg"
+            assetKind="photo"
             steps={[
               {
                 slug: "resize-kb",

@@ -46,12 +46,10 @@ export default function Page() {
       ctaLabel="Compress photo to exact KB — free, no upload"
     >
       <p>
-        Every Indian exam portal — UPSC, SSC, IBPS, SBI, NTA, RRB — and most
-        government document forms set a photo file-size limit between 10&nbsp;KB and
-        50&nbsp;KB. Uploading a 2&nbsp;MB phone photo gets rejected instantly, but
-        aggressively compressing it to 20&nbsp;KB can introduce visible JPEG noise.
-        Here is the right way to compress a photo to a specific KB target without
-        unnecessary quality loss.
+        Prepared-photo upload limits vary by portal. IBPS and several bank forms
+        publish a 20–50&nbsp;KB band, while current SSC and RRB applications capture
+        the photograph live instead of accepting a prepared photo file. Here is
+        how to compress a photo when the active form actually lists a KB target.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
@@ -112,10 +110,10 @@ export default function Page() {
             ["Voters' Service Portal / ECI (Form 6)", "Not published in public Form 6 guidance", "—"],
             ["Sarathi (Driving Licence)", "10–20 KB", "10–20 KB"],
             ["UPSC CSE / IES / CMS", "10–40 KB", "4–30 KB"],
-            ["SSC exams", "10–100 KB", "4–30 KB"],
+            ["SSC exams", "Live photo capture", "10–20 KB"],
             ["IBPS / SBI bank exams", "20–50 KB", "10–20 KB"],
             ["NTA (JEE / NEET / CUET)", "10–100 KB", "4–30 KB"],
-            ["RRB exams", "15–100 KB", "10–40 KB"],
+            ["RRB exams", "Live photo capture", "30–49 KB"],
           ].map(([portal, photo, sig]) => (
             <tr key={portal} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{portal}</td>

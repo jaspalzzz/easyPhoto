@@ -8,7 +8,10 @@ import { ProcessingState } from "@/components/site/ProcessingState";
 import { CropMarks } from "@/components/site/CropMarks";
 import { loadImageFromFile, type LoadedImage } from "@/lib/pipeline";
 import { ensureDecodable } from "@/lib/heic";
-import { consumeWorkflowPayload } from "@/lib/workflowHandoff";
+import {
+  consumeWorkflowPayload,
+  type WorkflowImageAssetKind,
+} from "@/lib/workflowHandoff";
 
 export interface ToolSource extends LoadedImage {
   file: File;
@@ -53,10 +56,13 @@ function makeThumbDataUrl(
  */
 export function ImageToolShell({
   children,
+  acceptedWorkflowKinds,
   uploaderTitle,
   uploaderHint,
 }: {
   children: (source: ToolSource, reset: () => void) => React.ReactNode;
+  /** Asset kinds this workspace can safely interpret. */
+  acceptedWorkflowKinds: readonly WorkflowImageAssetKind[];
   /** Override the dropzone copy (e.g. for signature scans, not photos). */
   uploaderTitle?: string;
   uploaderHint?: string;
@@ -87,11 +93,11 @@ export function ImageToolShell({
   // Auto-load a blob passed from the previous tool via the workflow handoff.
   // Runs once on mount; consume-once semantics prevent strict-mode double-fire.
   React.useEffect(() => {
-    const payload = consumeWorkflowPayload();
+    const payload = consumeWorkflowPayload(acceptedWorkflowKinds);
     if (!payload) return;
     const file = new File([payload.blob], payload.filename, { type: payload.blob.type });
     void loadFile(file);
-  }, [loadFile]);
+  }, [acceptedWorkflowKinds, loadFile]);
 
   const onFile = loadFile;
 

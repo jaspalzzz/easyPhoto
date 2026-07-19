@@ -16,15 +16,32 @@ export interface WorkflowPayload {
   /** Suggested filename for the receiving tool's file-info header. */
   filename: string;
   /** Prevents a photo from being mistaken for a signature (and vice versa). */
-  kind?: WorkflowAssetKind;
+  kind: WorkflowAssetKind;
   /** Portal preset that the asset is being prepared for, when known. */
   examId?: string;
 }
 
 export type WorkflowAssetKind = "image" | "photo" | "signature" | "pdf";
+export type WorkflowImageAssetKind = Exclude<WorkflowAssetKind, "pdf">;
+
+/** Receiver contracts shared by every workflow-aware tool. */
+export const WORKFLOW_GENERIC_IMAGE_KINDS = [
+  "image",
+  "photo",
+  "signature",
+] as const satisfies readonly WorkflowImageAssetKind[];
+export const WORKFLOW_PHOTO_KINDS = [
+  "photo",
+] as const satisfies readonly WorkflowImageAssetKind[];
+export const WORKFLOW_SIGNATURE_KINDS = [
+  "signature",
+] as const satisfies readonly WorkflowImageAssetKind[];
+export const WORKFLOW_PDF_KINDS = [
+  "pdf",
+] as const satisfies readonly WorkflowAssetKind[];
 
 export interface WorkflowPayloadOptions {
-  kind?: WorkflowAssetKind;
+  kind: WorkflowAssetKind;
   examId?: string;
   /** Keep photo/signature assets together for the Exam Application Kit. */
   rememberForExamKit?: boolean;
@@ -43,12 +60,12 @@ let examDraft: ExamWorkflowDraft | null = null;
 export function setWorkflowPayload(
   blob: Blob,
   filename: string,
-  options: WorkflowPayloadOptions = {}
+  options: WorkflowPayloadOptions
 ): void {
   const payload: WorkflowPayload = {
     blob,
     filename,
-    ...(options.kind ? { kind: options.kind } : {}),
+    kind: options.kind,
     ...(options.examId ? { examId: options.examId } : {}),
   };
   pending = payload;
@@ -72,10 +89,20 @@ export function setWorkflowPayload(
  * Consume-once: a second call returns null so accidental double-mounts
  * (React strict mode) don't load the image twice.
  */
-export function consumeWorkflowPayload(): WorkflowPayload | null {
+export function consumeWorkflowPayload<
+  const AcceptedKinds extends readonly WorkflowAssetKind[],
+>(
+  acceptedKinds: AcceptedKinds
+): (WorkflowPayload & { kind: AcceptedKinds[number] }) | null {
   const p = pending;
   pending = null;
-  return p;
+  if (!p || !acceptedKinds.includes(p.kind)) return null;
+  return p as WorkflowPayload & { kind: AcceptedKinds[number] };
+}
+
+/** Clear a pending one-shot payload without offering it to a receiver. */
+export function discardWorkflowPayload(): void {
+  pending = null;
 }
 
 /** Read the current exam draft without clearing it between workflow steps. */

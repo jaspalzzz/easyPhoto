@@ -4,22 +4,44 @@ import { PORTAL_PRESETS } from "@/lib/portalPresets";
 import {
   clearExamWorkflowDraft,
   consumeWorkflowPayload,
+  discardWorkflowPayload,
   getExamWorkflowDraft,
   setWorkflowPayload,
+  WORKFLOW_GENERIC_IMAGE_KINDS,
+  WORKFLOW_PHOTO_KINDS,
+  WORKFLOW_SIGNATURE_KINDS,
 } from "@/lib/workflowHandoff";
 
 beforeEach(() => {
   clearExamWorkflowDraft();
-  consumeWorkflowPayload();
+  discardWorkflowPayload();
 });
 
 describe("typed workflow handoff", () => {
-  it("keeps the legacy consume-once handoff working", () => {
+  it("keeps a compatible consume-once handoff working", () => {
     const blob = new Blob(["image"], { type: "image/jpeg" });
-    setWorkflowPayload(blob, "photo.jpg");
+    setWorkflowPayload(blob, "photo.jpg", { kind: "photo" });
 
-    expect(consumeWorkflowPayload()).toMatchObject({ blob, filename: "photo.jpg" });
-    expect(consumeWorkflowPayload()).toBeNull();
+    expect(consumeWorkflowPayload(WORKFLOW_PHOTO_KINDS)).toMatchObject({
+      blob,
+      filename: "photo.jpg",
+      kind: "photo",
+    });
+    expect(consumeWorkflowPayload(WORKFLOW_PHOTO_KINDS)).toBeNull();
+  });
+
+  it("does not load an incompatible payload into a receiver", () => {
+    setWorkflowPayload(new Blob(["photo"]), "photo.jpg", { kind: "photo" });
+
+    expect(consumeWorkflowPayload(WORKFLOW_SIGNATURE_KINDS)).toBeNull();
+    // An incompatible consume is safe and one-shot; it cannot leak later.
+    expect(consumeWorkflowPayload(WORKFLOW_GENERIC_IMAGE_KINDS)).toBeNull();
+  });
+
+  it("does not treat an ambiguous generic image as a signature", () => {
+    setWorkflowPayload(new Blob(["image"]), "image.png", { kind: "image" });
+
+    expect(consumeWorkflowPayload(WORKFLOW_SIGNATURE_KINDS)).toBeNull();
   });
 
   it("retains separate photo and signature slots for one exam", () => {

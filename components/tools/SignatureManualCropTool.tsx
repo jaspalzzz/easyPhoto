@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_SIGNATURE_KINDS } from "@/lib/workflowHandoff";
 import { Download, Wand2, Maximize, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
@@ -373,6 +374,7 @@ function Body({ source }: { source: ToolSource }) {
 export function SignatureManualCropTool() {
   return (
     <ImageToolShell
+      acceptedWorkflowKinds={WORKFLOW_SIGNATURE_KINDS}
       uploaderTitle="Upload your signature"
       uploaderHint="A scan or a phone photo of your signature on paper. JPG, PNG or HEIC."
     >

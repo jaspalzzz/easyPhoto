@@ -43,7 +43,7 @@ const BOTTOM_CARDS: Card[] = [
     icon: <GraduationCap className="h-5 w-5 text-amber-600" strokeWidth={1.75} />,
     title: "Exam Application Kit",
     outcome:
-      "Prepare a photo and signature for the dimensions listed by the selected exam portal — SSC, UPSC, Railway, Banking and more.",
+      "Follow the selected exam portal's photo workflow and prepare the separate files it lists — SSC, UPSC, Railway, Banking and more.",
     includes: ["Photo + signature", "Photo issue checker", "50+ exam specs"],
     href: "/tools/exam-package/",
     cta: "Build your exam kit",

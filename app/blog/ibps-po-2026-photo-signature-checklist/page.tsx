@@ -21,7 +21,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can I reuse the same photo and signature for IBPS Clerk and SBI PO?",
-    a: "Usually yes. IBPS Clerk, IBPS RRB, and SBI PO all use the same 20–50 KB photo and 10–20 KB signature specs. A file prepared for IBPS PO will pass the other portals too, as long as you confirm each notification before applying.",
+    a: "The cited IBPS Clerk, IBPS RRB and SBI PO instructions list the same 20–50 KB photo and 10–20 KB signature bands. Still compare the current notification for the application you are completing before reusing a file.",
   },
 ];
 
@@ -130,11 +130,11 @@ export default function Page() {
         </li>
       </ul>
 
-      <h2>Do it once, reuse it everywhere</h2>
+      <h2>Compare before reusing the files</h2>
       <p>
         The IBPS PO spec is shared across IBPS Clerk, SO and RRB, and is close to
-        the SBI and SSC bands. A clean 20–50&nbsp;KB photo and 10–20&nbsp;KB
-        signature will serve most banking and SSC applications this cycle. If
+        the cited SBI bands. A clean 20–50&nbsp;KB photo and 10–20&nbsp;KB
+        signature can be compared with the current banking notice before use. If
         you&apos;re applying to more than one, the{" "}
         <Link href="/tools/exam-package/">Exam Application Kit</Link> prepares a
         photo + signature for any chosen exam in one guided flow. Applying to SSC

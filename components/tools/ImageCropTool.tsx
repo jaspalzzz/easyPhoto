@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_GENERIC_IMAGE_KINDS } from "@/lib/workflowHandoff";
 import { Download, Maximize, ShieldCheck, Scissors, Palette, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
@@ -358,6 +359,7 @@ function Body({ source }: { source: ToolSource }) {
             return canvasToBlob(out, "image/jpeg", 0.95);
           }}
           filename="image-cropped.jpg"
+          assetKind="image"
           steps={[
             {
               slug: "background-removal",
@@ -392,6 +394,7 @@ function Body({ source }: { source: ToolSource }) {
 export function ImageCropTool() {
   return (
     <ImageToolShell
+      acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}
       uploaderTitle="Upload an image to crop"
       uploaderHint="JPG, PNG, WebP or HEIC — any size."
     >

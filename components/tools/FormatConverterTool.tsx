@@ -535,6 +535,7 @@ export function FormatConverterTool({
                 <WorkflowNextSteps
                   getBlob={async () => singleResult.resultBlob!}
                   filename={singleResult.name.replace(/\.[^/.]+$/, "") + (targetFormat === "image/jpeg" ? ".jpg" : targetFormat === "image/png" ? ".png" : ".webp")}
+                  assetKind="image"
                   steps={[
                     { slug: "resize-kb", label: "Resize to KB", hint: "Hit an upload size limit", icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} /> },
                     { slug: "image-crop", label: "Crop image", hint: "Trim or reframe", icon: <Crop className="h-4 w-4" strokeWidth={1.75} /> },

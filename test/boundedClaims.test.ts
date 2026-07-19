@@ -115,6 +115,22 @@ const BANNED: Array<{ label: string; pattern: RegExp }> = [
     label: "tool-compliance outcome promise",
     pattern: /\b(?:makes?|creates?|produces?|downloads?|gets?|applies?)\s+(?:a\s+)?compliant.{0,30}\b(?:photo|image|result|output|background|file)\b/i,
   },
+  {
+    label: "contextual perfect authority claim",
+    pattern: /\bperfect(?:ly)?\s+(?:photos?|images?|files?|results?|outputs?|acceptable)\b[^.\n]{0,100}\b(?:passport|visa|portal|exam|application|accepted?|rejected?)\b/i,
+  },
+  {
+    label: "contextual exact acceptance claim",
+    pattern: /\bexact\s+(?:photos?\s+)?(?:size|format|dimensions?|kb|pixels?)\b[^.\n]{0,100}\b(?:passport|visa|portal|exam|application)\b[^.\n]{0,50}\baccept(?:s|ed)?\b/i,
+  },
+  {
+    label: "contextual guaranteed authority claim",
+    pattern: /\bguaranteed\s+(?:passport|visa|portal|exam|application|acceptance|result|outcome)\b|\b(?:passport|visa|portal|exam|application)\b[^.\n]{0,80}\b(?<!cannot be )(?<!not be )guaranteed\b/i,
+  },
+  {
+    label: "cross-portal pass promise",
+    pattern: /\bwill\s+pass\b[^.\n]{0,100}\b(?:portal|exam|application)s?\b/i,
+  },
 ];
 
 describe("public copy keeps authority and acceptance claims bounded", () => {
@@ -128,9 +144,21 @@ describe("public copy keeps authority and acceptance claims bounded", () => {
     "make a compliant photo",
     "compress it so the upload isn't rejected",
     "fix these issues and rejection becomes very unlikely",
+    "Perfect photos for your passport application",
+    "The exact size the exam portal accepts",
+    "A guaranteed visa result",
+    "This file will pass the other portals",
   ])("recognises a prohibited regression: %s", (copy) => {
     const normalised = normalise(copy);
     expect(BANNED.some(({ pattern }) => pattern.test(normalised))).toBe(true);
+  });
+
+  it.each([
+    "The straighten tool gives a perfect result.",
+    "Make a perfect LinkedIn profile picture.",
+  ])("does not flatten ordinary non-authority marketing copy: %s", (copy) => {
+    const normalised = normalise(copy);
+    expect(BANNED.some(({ pattern }) => pattern.test(normalised))).toBe(false);
   });
 
   it("contains none of the banned phrases, including HTML-entity variants", () => {

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { WORKFLOW_PHOTO_KINDS } from "@/lib/workflowHandoff";
 import { Cropper, type ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { Download, Share2, FileDown, Crop, Check, X, RotateCcw } from "lucide-react";
@@ -488,7 +489,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
 
 export function PrintSheetTool() {
   return (
-    <ImageToolShell uploaderTitle="passport photo" uploaderHint="Upload any photo — we'll tile it">
+    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_PHOTO_KINDS} uploaderTitle="passport photo" uploaderHint="Upload any photo — we'll tile it">
       {(source, reset) => <Body source={source} reset={reset} />}
     </ImageToolShell>
   );

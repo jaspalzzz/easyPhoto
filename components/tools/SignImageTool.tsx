@@ -325,6 +325,7 @@ export function SignImageTool() {
                     return exportedBlob;
                   }}
                   filename={`${baseFile?.name.replace(/\.[^/.]+$/, "") || "signed-image"}-signed.jpg`}
+                  assetKind="image"
                   steps={[
                     {
                       slug: "resize-kb",

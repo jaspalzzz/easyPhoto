@@ -64,20 +64,20 @@ export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
   20: {
     heading: "Where a 20 KB photo is used",
     intro:
-      "20 KB is the common lower band for Indian exam photos — small enough to upload fast, large enough to keep a head-and-shoulders shot readable.",
+      "20 KB is the lower edge of several prepared-photo upload bands, including IBPS — small enough to upload quickly while keeping a head-and-shoulders shot readable.",
     useCases: [
-      { label: "SSC, RRB and state PSC exams", detail: "Many staff-selection and railway recruitment forms accept a photo around 20 KB." },
+      { label: "IBPS and bank recruitment", detail: "IBPS and several bank recruitment portals publish prepared-photo bands that start at 20 KB." },
       { label: "Bank recruitment forms", detail: "IBPS and some bank portals sit in the 20–50 KB photo band; 20 KB clears the lower limit." },
       { label: "College and scholarship portals", detail: "University admission and scholarship sites frequently ask for a roughly 20 KB photo." },
     ],
     tip: "Pair a 20 KB photo with a 10–20 KB signature — most exam forms want the signature even smaller than the photo.",
     faq: {
       q: "Which exams ask for a 20 KB photo?",
-      a: "It is common across SSC, RRB and several state PSC and university forms. Always confirm the exact figure on your form, then set it above.",
+      a: "IBPS and several bank recruitment forms publish a 20 KB lower edge for prepared photos. Current SSC and RRB forms use live photo capture instead, so confirm the active form before preparing a file.",
     },
     qualityFaq: {
       q: "Will a 20 KB photo still look sharp?",
-      a: "At typical exam dimensions (around 350×450 px) a 20 KB JPEG keeps the face clearly defined — the background and clothing lose subtle texture first. It reads perfectly well at the size portals actually display it.",
+      a: "At typical small portal dimensions, a 20 KB JPEG can keep the face readable while background and clothing texture softens first. Inspect the export at normal viewing size before using it.",
     },
   },
   30: {
@@ -102,16 +102,16 @@ export const PHOTO_KB_USECASES: Record<number, KbUseCase> = {
   50: {
     heading: "Where a 50 KB photo is used",
     intro:
-      "50 KB is the most common exam-photo cap in India — the safe default for the majority of UPSC, SSC, NTA and bank application forms.",
+      "50 KB is a published upper edge in several prepared-photo workflows, including IBPS and multiple bank recruitment portals.",
     useCases: [
-      { label: "UPSC and SSC application forms", detail: "Most civil-services and staff-selection forms accept a photo up to 50 KB." },
-      { label: "NTA exams (NEET, JEE)", detail: "National Testing Agency portals commonly allow a photo around 20–50 KB." },
-      { label: "Bank and PSU recruitment", detail: "Bank and public-sector job forms typically permit up to 50 KB for the photo." },
+      { label: "IBPS applications", detail: "IBPS publishes a 20–50 KB band for the prepared photograph in its cited upload instructions." },
+      { label: "Bank recruitment", detail: "Several cited bank recruitment instructions use the same 20–50 KB prepared-photo band." },
+      { label: "Forms with a 50 KB ceiling", detail: "Use this target only when the active application instructions publish a 50 KB maximum." },
     ],
     tip: "When a form just says ‘photo under 50 KB’, this is your default — it balances a sharp photo with a small file.",
     faq: {
       q: "Is 50 KB the standard exam photo size?",
-      a: "For most Indian exams, yes — 50 KB is the most widely accepted photo cap. Confirm your form's exact limit, but 50 KB is the safe default.",
+      a: "It is a published upper limit for IBPS and several bank recruitment photo uploads, but it is not universal. Current SSC and RRB forms capture the photograph live, and other portals publish different bands.",
     },
     qualityFaq: {
       q: "Will compressing to 50 KB reduce quality?",

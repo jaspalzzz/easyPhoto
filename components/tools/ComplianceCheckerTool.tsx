@@ -73,7 +73,7 @@ export function ComplianceCheckerTool() {
   const [photoChecks, setPhotoChecks] = React.useState<PhotoCheck[] | null>(null);
   // Retain the checked file so a fix routes WITH the photo — no re-upload.
   const [sourceFile, setSourceFile] = React.useState<File | null>(null);
-  const handoff = useWorkflowHandoff();
+  const handoff = useWorkflowHandoff(kind === "signature" ? "signature" : "photo");
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "compliance-checker" });

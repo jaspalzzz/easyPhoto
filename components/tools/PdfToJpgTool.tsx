@@ -204,6 +204,7 @@ export function PdfToJpgTool() {
               <WorkflowNextSteps
                 getBlob={async () => pages[0].blob}
                 filename="page-1.jpg"
+                assetKind="image"
                 steps={[
                   { slug: "image-crop", label: "Crop image", hint: "Trim or reframe the page", icon: <Crop className="h-4 w-4" strokeWidth={1.75} /> },
                   { slug: "resize-kb", label: "Resize to KB", hint: "Hit an upload size limit", icon: <Minimize2 className="h-4 w-4" strokeWidth={1.75} /> },

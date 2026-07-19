@@ -110,14 +110,18 @@ export default async function Page({
       </Link>
 
       <header className="space-y-3">
-        <span className="eyebrow block text-brand">Exam photo &amp; signature resizer</span>
+        <span className="eyebrow block text-brand">
+          {spec.isLiveCapture ? "Live photo guidance & signature resizer" : "Exam photo & signature resizer"}
+        </span>
         <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
-          {e.name} Photo &amp; Signature Resizer {RESIZER_YEAR}
+          {spec.isLiveCapture
+            ? `${e.name} Live Photo Guide & Signature Resizer ${RESIZER_YEAR}`
+            : `${e.name} Photo & Signature Resizer ${RESIZER_YEAR}`}
         </h1>
         <p className="text-[15px] leading-relaxed text-muted-foreground">
-          Prepare your {e.name} ({e.context}) photo and signature to the selected
-          stored dimensions and KB target. Verify the current form before use;
-          processing stays in your browser.
+          {spec.isLiveCapture
+            ? `Current cited ${e.name} instructions capture the photograph live. Prepare the separate signature file here; the compatibility photo tool does not replace the live-camera step. Verify the active form before use.`
+            : `Prepare your ${e.name} (${e.context}) photo and signature to the selected stored dimensions and KB target. Verify the current form before use; processing stays in your browser.`}
         </p>
         <p className="flex flex-wrap items-center gap-1.5 text-xs text-ink-soft">
           <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />

@@ -228,6 +228,7 @@ export function PdfSplitTool() {
               <WorkflowNextSteps
                 getBlob={async () => resultBlob}
                 filename={`${file.name.replace(/\.[^/.]+$/, "")}-extracted.pdf`}
+                assetKind="pdf"
                 steps={pdfNextSteps("pdf-split")}
               />
             )}

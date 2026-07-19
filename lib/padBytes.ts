@@ -1,7 +1,7 @@
 /**
  * Minimum-file-size padding.
  * --------------------------
- * Exam/government portals commonly specify a KB *band* (e.g. SSC photo
+ * Exam/government portals commonly specify a KB *band* (e.g. IBPS photo
  * 20–50 KB) and reject uploads BELOW the minimum just as they reject ones
  * above the cap. When a clean source compresses to under the minimum, the only
  * way to raise the byte size without touching pixels or quality is to embed

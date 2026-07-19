@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 const CATEGORY_CARDS = [
   {
     title: "Passport & Visa",
-    desc: "Perfect photos for your passport & visa.",
+    desc: "Prepare photos for passport & visa requirements.",
     href: "/passport-photo/",
     Icon: Globe,
     badge: "Most Used",
