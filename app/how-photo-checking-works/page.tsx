@@ -68,6 +68,24 @@ export default function HowPhotoCheckingWorksPage() {
           for how those records are maintained.
         </p>
       </section>
+
+      <section className="space-y-3">
+        <h2 className="text-xl font-semibold tracking-tight text-ink">
+          A practical checking sequence
+        </h2>
+        <ol className="list-decimal space-y-2 pl-5">
+          <li>Select the preset for the application workflow you are actually using.</li>
+          <li>Start from the uncropped camera image so there is room to adjust framing.</li>
+          <li>Resolve visible blur, glare, shadows, or obstruction by retaking where possible.</li>
+          <li>Download and reopen the result to confirm its format, dimensions, and file size.</li>
+          <li>Compare the finished file with the linked current authority instructions.</li>
+        </ol>
+        <p>
+          This order prevents a technically correct file size from hiding a poor
+          source photograph. Repeated resizing cannot recreate detail that was
+          absent from the original.
+        </p>
+      </section>
     </TrustPageLayout>
   );
 }

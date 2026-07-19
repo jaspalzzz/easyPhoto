@@ -31,6 +31,24 @@ export default function SourceMethodologyPage() {
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold tracking-tight text-ink">
+          Claim-level recording
+        </h2>
+        <p>
+          A source can support one field without supporting every field. For
+          example, an instruction may publish a KB band but no fixed pixel size,
+          or describe a live-capture workflow without a prepared-photo upload.
+          In that case the unpublished field is omitted rather than inferred from
+          a common template or another portal.
+        </p>
+        <p>
+          Cycle-dependent recruitment notices are reviewed in their own context.
+          A value from an earlier notice is not automatically presented as current
+          merely because the authority and exam name are unchanged.
+        </p>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-xl font-semibold tracking-tight text-ink">
           What is compared
         </h2>
         <p>

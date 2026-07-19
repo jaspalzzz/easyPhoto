@@ -91,6 +91,34 @@ export default function JaspalKumarPage() {
             pages linked in the site footer.
           </p>
         </section>
+
+        <section className="space-y-3">
+          <h2 className="text-xl font-semibold tracking-tight text-ink">
+            Work on easyPhoto
+          </h2>
+          <p>
+            Jaspal maintains the browser-side image pipelines, PDF utilities,
+            accessibility and mobile behaviour, and the shared records that feed
+            specification pages and exam tools. That includes writing automated
+            checks for file dimensions and formats, reviewing corrections, and
+            keeping uncertainty visible when a primary source does not publish a
+            value.
+          </p>
+          <p>
+            Tool output is tested as software behaviour: whether a file opens,
+            has the requested measurable properties, and remains usable on common
+            screen sizes. Application decisions remain with the relevant
+            authority, and readers are directed to its current instructions.
+          </p>
+          <p>
+            Specification research is recorded separately from product code so a
+            source can be reviewed without relying on a marketing claim. When an
+            authority publishes only a file-size band, the interface should not
+            invent pixels, background colour, or signature ink from a familiar
+            portal template.
+          </p>
+          <p>That omission is an intentional accuracy decision.</p>
+        </section>
       </TrustPageLayout>
     </>
   );

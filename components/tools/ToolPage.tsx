@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { breadcrumbSchema, faqSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
 import { TrackedLink } from "@/components/site/TrackedLink";
+import { ToolDepth } from "@/components/tools/ToolDepth";
 
 /** Shared chrome for a tool page: breadcrumb, heading, body, related links. */
 export function ToolPage({
@@ -132,6 +133,8 @@ export function ToolPage({
       ) : (
         <div className="mt-6">{children}</div>
       )}
+
+      <ToolDepth slug={slug} />
 
       <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />

@@ -17,7 +17,7 @@ export default function Page() {
   return (
     <BlogPostLayout slug="best-free-passport-photo-maker-india-2026">
       <p>
-        Most online passport photo tools have at least one of three problems: they charge ₹600 per
+        Most online passport photo tools have at least one of three problems: they require payment
         photo, they upload your biometric face photo to a remote server, or they use the US 2×2 inch
         spec without explaining that India&apos;s 35×45 mm print applies to children below four,
         while ordinary adults are photographed at the PSK/POPSK. If you&apos;re preparing a
@@ -54,7 +54,7 @@ export default function Page() {
           <text x="87" y="165" textAnchor="middle" fontSize="10" fill="#6b7280">35×45 mm</text>
           {/* Cons list */}
           {[
-            ["✗ Costs ₹150 – ₹600 per print", "#dc2626"],
+            ["✗ Price varies by provider", "#dc2626"],
             ["✗ Uploads your photo to a server", "#dc2626"],
             ["✗ Often uses US spec, not India's", "#dc2626"],
             ["✗ No exam portal presets (KB/px)", "#dc2626"],
@@ -146,28 +146,28 @@ export default function Page() {
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">Visafoto</td>
-              <td className="px-4 py-3 text-muted-foreground">₹600 / photo</td>
+              <td className="px-4 py-3 text-muted-foreground">Paid · local price shown at checkout</td>
               <td className="px-4 py-3 font-medium text-amber-700">Yes — server-processed</td>
               <td className="px-4 py-3 text-muted-foreground">✓ India page</td>
               <td className="px-4 py-3 text-muted-foreground">None</td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">AI passport photo apps</td>
-              <td className="px-4 py-3 text-muted-foreground">$5–$17 / photo</td>
+              <td className="px-4 py-3 text-muted-foreground">Paid · varies by app</td>
               <td className="px-4 py-3 font-medium text-amber-700">Yes — cloud AI</td>
               <td className="px-4 py-3 text-muted-foreground">Often wrong spec</td>
               <td className="px-4 py-3 text-muted-foreground">None</td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">PhotoGov</td>
-              <td className="px-4 py-3 text-muted-foreground">Free (limited) + paid from $5.90</td>
+              <td className="px-4 py-3 text-muted-foreground">Limited free use + paid options</td>
               <td className="px-4 py-3 font-medium text-amber-700">Yes — server + email required</td>
               <td className="px-4 py-3 text-muted-foreground">⚠ Generic India page shows US spec</td>
               <td className="px-4 py-3 text-muted-foreground">None</td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">Cutout.pro</td>
-              <td className="px-4 py-3 text-muted-foreground">5 free credits, then ₹246.50+/mo</td>
+              <td className="px-4 py-3 text-muted-foreground">5 free credits, then paid credits</td>
               <td className="px-4 py-3 font-medium text-amber-700">Yes — AWS server</td>
               <td className="px-4 py-3 text-muted-foreground">India listed (spec unconfirmed)</td>
               <td className="px-4 py-3 text-muted-foreground">None</td>
@@ -175,7 +175,8 @@ export default function Page() {
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
-          Pricing verified June 2026. Sources: each tool&apos;s own website and terms.
+          Pricing models checked 19 July 2026. Exact local amounts change; verify
+          each provider&apos;s current checkout and terms before paying.
         </p>
       </div>
 
@@ -248,15 +249,26 @@ export default function Page() {
       <h2>Visafoto — the paid option with an accuracy guarantee</h2>
 
       <p>
-        Visafoto charges ₹600 per photo (confirmed June 2026) and adds a human expert review of
-        compliance. If the photo fails the official check, they redo it. That guarantee is
-        genuinely valuable for an embassy-grade visa photo where rejection causes a real problem.
+        Visafoto charges a localised one-time fee and includes a human review and
+        refund terms. Its{" "}
+        <a
+          href="https://visafoto.com/visafoto-prices"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          public price page
+        </a>{" "}
+        can display different currencies, so
+        verify the current checkout amount before ordering. A human second opinion
+        can be useful for a foreign-visa workflow with detailed photo rules.
       </p>
 
       <p>
         For most Indian passport or exam photo use cases — where the official portal simply checks
-        dimensions and file size — that guarantee is overkill. The ₹600 fee makes sense for a
-        Schengen visa with strict biometric requirements, not for a SSC CGL exam registration. It
+        dimensions and file size — a paid review may be unnecessary. Compare the
+        current fee and service scope for a Schengen visa rather than assuming the
+        same value for an SSC CGL registration. It
         also uploads your photo to a remote server for processing, which is the same privacy
         trade-off as other server-based tools. There are no exam photo presets.
       </p>
@@ -264,7 +276,7 @@ export default function Page() {
       <h2>What about AI passport photo apps?</h2>
 
       <p>
-        Several AI tools — Passport Photo Online ($16.95), AIPassportPhoto (~$5), and others —
+        Several paid photo apps — including Passport Photo Online, AIPassportPhoto, and others —
         use machine learning to adjust background, lighting, and expression automatically. They
         generally require server upload and payment before you can download the result.
         AIPassportPhoto&apos;s India page (as of June 2026) lists the spec as 2×2 inches,
@@ -288,16 +300,26 @@ export default function Page() {
       <p>
         Other caveats: PhotoGov requires an email address and uploads your photo to their server
         for processing. The free tier is location-dependent; Indian users may face a paywall;
-        paid options start from approximately $5.90 USD. There is a human expert review add-on
-        available (pricing not publicly listed). No exam portal support of any kind.
+        paid options may be offered. There is also a human expert-review add-on;
+        check the live checkout for its current availability and price. No exam
+        portal support of any kind.
       </p>
 
       <h2>Cutout.pro — AI background removal, but credit-gated for passport photos</h2>
 
       <p>
         Cutout.pro gives 5 free credits on sign-up. A passport photo costs 2 credits. You get
-        two complete photos before credits run out. After that, the cheapest plan is ₹246.50/month
-        (confirmed June 2026 from their pricing page). Free previews are watermarked. Photos are
+        two complete photos before credits run out. After that, paid subscription
+        or pay-as-you-go credit packages are listed on Cutout.pro&apos;s{" "}
+        <a
+          href="https://www.cutout.pro/image-pricing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          current pricing page
+        </a>
+        . Free previews are watermarked. Photos are
         uploaded to Amazon Web Services and retained for 24–48 hours. Public reports (Cybernews
         2023; Trustpilot references to a BreachForums posting in February 2024) document past
         data security incidents.

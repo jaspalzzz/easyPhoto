@@ -33,8 +33,19 @@ export default function Page() {
     <BlogPostLayout slug="visafoto-alternative-india-free" faqItems={FAQ_ITEMS}>
       <p>
         Visafoto supports a 35×45 mm India preset and adds a human
-        expert review. It also charges ₹600 per photo (confirmed June
-        2026) and uploads your biometric photo to a remote server for processing. For most Indian
+        expert review. It is a paid, server-processed service and uploads your
+        biometric photo for processing. Its{" "}
+        <a
+          href="https://visafoto.com/visafoto-prices"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          public price page
+        </a>{" "}
+        displays a
+        localised one-time fee, so check the checkout amount in your currency.
+        For most Indian
         passport and exam photo tasks, that&apos;s more than necessary. Here are four free
         alternatives that get the spec right without the cost or the upload.
       </p>
@@ -50,8 +61,8 @@ export default function Page() {
       <p>
         Visafoto&apos;s human expert review layer is a real differentiator. A trained reviewer
         checks your photo against the named authority&apos;s published requirements before you download it. For a Schengen or US
-        visa where another review is useful, that service may be worth
-        ₹600. Its India{" "}
+        visa where another review is useful, that paid service may be worth
+        considering. Its India{" "}
         <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">35×45 mm crop</Link>{" "}
         can be used for the below-four printed-photo exception. The tool is polished and the
         output quality is high.
@@ -79,7 +90,7 @@ export default function Page() {
           <tbody className="divide-y divide-hairline">
             <tr>
               <td className="px-4 py-3 font-medium text-ink">Visafoto</td>
-              <td className="px-4 py-3 text-muted-foreground">₹600 / photo</td>
+              <td className="px-4 py-3 text-muted-foreground">Paid · local price shown at checkout</td>
               <td className="px-4 py-3 font-medium text-amber-700">No</td>
               <td className="px-4 py-3 text-muted-foreground">✓</td>
               <td className="px-4 py-3 font-medium text-emerald-700">✓ Included</td>
@@ -107,7 +118,7 @@ export default function Page() {
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">Passport Photo Online</td>
-              <td className="px-4 py-3 text-muted-foreground">$16.95 / photo</td>
+              <td className="px-4 py-3 text-muted-foreground">Paid · check current price</td>
               <td className="px-4 py-3 font-medium text-amber-700">No</td>
               <td className="px-4 py-3 text-muted-foreground">✓ India listed</td>
               <td className="px-4 py-3 font-medium text-emerald-700">✓ Included</td>
@@ -115,7 +126,8 @@ export default function Page() {
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
-          Pricing verified June 2026 from each tool&apos;s own website.
+          Pricing models checked 19 July 2026. Exact local amounts can change;
+          confirm each provider&apos;s current checkout before paying.
         </p>
       </div>
 
@@ -168,7 +180,7 @@ export default function Page() {
         The important caveat comes from their own terms: &quot;uploaded picture will be stored on
         the website&apos;s server during processing&quot; and is deleted within six hours. That is
         how Visafoto also works — both tools upload your photo to a server. If you&apos;re fine
-        with that trade-off, IDPhoto4You removes the ₹600 cost. If you&apos;d prefer your face
+        with that trade-off, IDPhoto4You removes the paid-order cost. If you&apos;d prefer your face
         never leave your device, use easyPhoto or PassportSizePhoto.in instead.
       </p>
 
@@ -178,11 +190,10 @@ export default function Page() {
         Visafoto is worth paying for when the cost of rejection is high and the stakes are real.
         A{" "}
         <Link href="/blog/schengen-europe-visa-photo-size/" className="text-brand underline">Schengen visa</Link>{" "}
-        appointment that gets pushed back by weeks because the photo wasn&apos;t
-        quite right is a much bigger problem than ₹600. The expert review layer gives you a
+        application can justify paying for another review. The expert review layer gives you a
         human second opinion before submission. For a foreign visa application, or when an
-        employer or embassy requires a photo that provably meets biometric standards, the fee
-        is reasonable.
+        workflow where a human pre-check is valuable, compare the current fee with
+        the provider&apos;s stated refund terms before ordering.
       </p>
 
       <p>

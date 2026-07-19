@@ -46,10 +46,11 @@ export default function Page() {
       ctaLabel="Create a print-ready photo sheet free"
     >
       <p>
-        Studio passport photo services in India charge ₹50–₹150 per set of 4–6
-        prints. A home inkjet printer on photo paper costs roughly ₹3–₹8 per
-        print at the same quality — a full sheet of 8 photos for under ₹20. The
-        challenge isn&apos;t the printing; it&apos;s getting the tile layout and
+        Studio, paper, ink and kiosk prices vary by city and provider. Printing a
+        prepared sheet at home or through a local photo service can reduce waste
+        because several correctly sized copies share one page. Check the current
+        local price before choosing a method. The challenge isn&apos;t the
+        purchase; it&apos;s getting the tile layout and
         dimensions exactly right before you send the file to the printer. Here is
         the complete approach.
       </p>

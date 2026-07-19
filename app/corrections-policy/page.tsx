@@ -34,6 +34,23 @@ export default function CorrectionsPolicyPage() {
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold tracking-tight text-ink">
+          What makes a report actionable
+        </h2>
+        <ul className="list-disc space-y-2 pl-5">
+          <li>The easyPhoto URL where the statement appears.</li>
+          <li>The exact sentence, table row, or tool value that may be outdated.</li>
+          <li>The application workflow and notice cycle you are using.</li>
+          <li>A first-party instruction page or PDF, including its paragraph or page number.</li>
+        </ul>
+        <p>
+          We do not need a copy of your photo, signature, identity document, or
+          completed application to investigate a specification. Please remove
+          personal details from any screenshot you choose to send.
+        </p>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-xl font-semibold tracking-tight text-ink">
           What happens next
         </h2>
         <p>
@@ -49,6 +66,20 @@ export default function CorrectionsPolicyPage() {
       <p className="rounded-xl border border-hairline bg-card p-6">
         A review date shows when a source comparison occurred. It does not mean
         the receiving authority has endorsed easyPhoto or guarantees acceptance.
+      </p>
+
+      <p>
+        Corrections are applied to the shared source record where possible so the
+        affected guide, specification table, and tool read the same revised value.
+        Editorial wording is updated separately when the change alters the
+        workflow rather than a number. We do not silently turn unresolved reports
+        into confirmed requirements.
+      </p>
+      <p>
+        Reports about broken downloads or browser behaviour follow the same
+        evidence-first approach. We reproduce the steps with a non-sensitive test
+        file, identify the affected browser or device, and distinguish a software
+        defect from a portal-side message before changing user guidance.
       </p>
     </TrustPageLayout>
   );

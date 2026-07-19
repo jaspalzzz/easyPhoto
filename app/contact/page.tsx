@@ -150,6 +150,16 @@ export default function ContactPage() {
           </p>
         </section>
 
+        <section className="space-y-2 border-t border-hairline pt-8">
+          <h2 className="text-lg font-semibold tracking-tight">What to include in a bug report</h2>
+          <p className="leading-relaxed text-muted-foreground">
+            Tell us the page, device and browser, the step that failed, and what
+            you expected to happen. For privacy, do not email an identity document
+            or a real application photo. A screen recording made with a harmless
+            sample file is usually enough to reproduce a visual or download issue.
+          </p>
+        </section>
+
         <p className="inline-flex items-start gap-2 border-t border-hairline pt-8 text-xs text-muted-foreground">
           <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
           We don&apos;t collect your photos. There&apos;s nothing to ask about

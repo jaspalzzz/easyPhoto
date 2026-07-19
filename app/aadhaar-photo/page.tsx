@@ -90,7 +90,7 @@ export default function AadhaarPhotoPage() {
         <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
           <li className="flex gap-2"><span className="font-semibold text-ink">1.</span> Go to an Aadhaar Seva Kendra or an authorised enrolment/update centre with your Aadhaar number.</li>
           <li className="flex gap-2"><span className="font-semibold text-ink">2.</span> Your photo (and biometrics) are recaptured on the spot — you don&apos;t bring or submit a photo.</li>
-          <li className="flex gap-2"><span className="font-semibold text-ink">3.</span> Pay the small biometric-update fee (around ₹100 — confirm the current UIDAI fee).</li>
+          <li className="flex gap-2"><span className="font-semibold text-ink">3.</span> Pay the current biometric-update fee shown by UIDAI or the authorised centre.</li>
           <li className="flex gap-2"><span className="font-semibold text-ink">4.</span> The updated Aadhaar is generated after processing; you can download the e-Aadhaar online afterward.</li>
         </ul>
         <p className="text-xs text-muted-foreground">

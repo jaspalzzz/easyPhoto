@@ -133,10 +133,6 @@ export default function RootLayout({
             late during HTML parse — the primary mobile LCP bottleneck here. */}
         <link rel="preload" as="image" href="/images/sample4_after_384.webp" fetchPriority="high" />
         <link rel="preload" as="image" href="/images/sample4_before_384.webp" fetchPriority="high" />
-        {/* AdSense connection warming — even with lazyOnload, establishing the
-            TCP+TLS handshake early saves ~200ms on first-ad impression. */}
-        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="" />
-        <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net" />
       </head>
       <body className="flex min-h-screen flex-col antialiased">
         <a

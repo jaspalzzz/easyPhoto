@@ -251,6 +251,154 @@ export default async function Page({
         </section>
       )}
 
+      {exam === "ugc-net" && (
+        <section className="space-y-5 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">UGC-NET uses file limits, not a fixed pixel canvas</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The UGC-NET bulletin records the photograph at {photoKb(spec)} and
+              the signature at {sig}, both in {spec.photoFormat}. It does not
+              publish fixed photo or signature pixels, so preserve a clear source
+              image and compress it into the listed bands instead of forcing it
+              into a borrowed 200×230 template.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Keep this application separate from CSIR-NET</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              UGC-NET is the NTA eligibility examination for Assistant Professor
+              and Junior Research Fellowship recorded by this preset. Although its
+              file bands match the joint CSIR-UGC NET record, use the UGC-NET
+              bulletin and application session named on this page. Matching KB
+              values do not make the two registrations interchangeable.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {exam === "csir-net" && (
+        <section className="space-y-5 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">CSIR-NET specifies how the signature is written</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The joint CSIR-UGC NET record uses a {photoKb(spec)} photograph and
+              a {sig} signature in {spec.sigFormat}. Its bulletin asks for a
+              running-hand signature rather than capital letters, written in blue
+              or black ink on white paper. No fixed pixel canvas is published for
+              either file.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Use the joint CSIR-UGC NET application record</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              This preset is scoped to the NTA science and research eligibility
+              examination. Do not select the general UGC-NET entry merely because
+              the current file-size bands look the same: confirm the joint
+              CSIR-UGC NET bulletin, keep the signature in running hand, and check
+              the preview shown inside that application before submission.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {exam === "nda" && (
+        <section className="space-y-5 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">NDA uses the common UPSC upload workflow</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The National Defence Academy application does not publish a separate
+              NDA-only image band. UPSC&apos;s portal instructions apply to this
+              examination: photograph {photoKb(spec)}, signature {sig}, and
+              {" "}{spec.photoFormat} files. The photo has no published fixed
+              pixel dimensions or name-and-date strip.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Prepare the NDA live-photo and triple-signature steps</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              During the NDA application, UPSC also captures a live photograph to
+              compare with the uploaded portrait. The signature file is one image
+              showing the same signature three times vertically on plain white
+              paper. Select NDA in your saved filenames so these assets are not
+              confused with a separate CDS application using the same UPSC bands.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {exam === "cds" && (
+        <section className="space-y-5 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">CDS inherits UPSC&apos;s portal instructions</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Combined Defence Services candidates prepare a {photoKb(spec)}
+              photograph and a {sig} signature file under the common UPSC
+              instructions. Both are {spec.photoFormat}; UPSC does not publish a
+              fixed photo pixel canvas, aspect ratio, DPI value, or digital
+              name/date strip for this workflow.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Check the CDS preview as its own submission</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The CDS form includes UPSC&apos;s live-photograph step and expects one
+              signature image containing three vertically arranged signatures on
+              white paper. Even if you also applied for NDA, reopen and review the
+              CDS upload preview and current examination notice; shared technical
+              limits do not mean one application record completes the other.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {exam === "bpsc" && (
+        <section className="space-y-5 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">BPSC captures the portrait through the webcam</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The Bihar PSC manual describes live webcam capture rather than a
+              prepared photograph upload. Before opening the form, arrange even
+              front lighting, a clear background and a stable camera. The stored
+              photo target remains compatibility-only and is not a BPSC upload
+              specification.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">Prepare two language-specific signature files</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              BPSC&apos;s upload step calls for Hindi and English signatures as
+              separate {spec.sigFormat} files under {spec.sigLimitKb} KB. Label
+              them before starting the application and inspect both previews; a
+              successful live portrait does not replace either signature upload.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {exam === "rpsc" && (
+        <section className="space-y-5 border-t border-hairline pt-8">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">RPSC OTR takes the photograph live during KYC</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The Rajasthan recruitment workflow uses webcam capture in One-Time
+              Registration, so it does not ask for a pre-existing photo file. Use
+              the compatibility photo control only for general preparation and
+              follow the live KYC prompts shown in the current SSO session.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold">RPSC has more than one signature-related upload</h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              The recorded OTR flow lists separate English and Hindi signatures in
+              {spec.sigFormat}, each {sig}, as well as a left thumb impression and
+              a handwritten specimen with their own form instructions. Do not merge
+              these items into one image, and confirm the current figures because
+              this preset remains marked for review.
+            </p>
+          </div>
+        </section>
+      )}
+
       {SUB_EXAMS[exam] && (
         <section className="space-y-3">
           <h2 className="eyebrow">Covers these {spec.name.split(" (")[0]} exams</h2>

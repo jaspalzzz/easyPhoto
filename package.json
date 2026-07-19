@@ -12,6 +12,10 @@
     "test:e2e": "playwright test",
     "check:specs": "node scripts/check-specs.mjs",
     "check:links": "node scripts/check-links.mjs",
+    "check:adsense-export:on": "ADSENSE_EXPORT_EXPECT=on vitest run test/adsenseExport.test.ts",
+    "check:adsense-export:off": "ADSENSE_EXPORT_EXPECT=off vitest run test/adsenseExport.test.ts",
+    "audit:thin-content": "node scripts/audit-thin-content.mjs",
+    "audit:content-similarity": "node scripts/audit-content-similarity.mjs",
     "freshness": "node scripts/freshness-audit.mjs",
     "indexnow": "node scripts/indexnow.mjs"
   },

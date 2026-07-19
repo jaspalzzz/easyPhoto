@@ -151,13 +151,30 @@ export default function Page() {
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold">Save $17 vs Walgreens or CVS</h2>
+          <h2 className="text-lg font-semibold">Compare pharmacy passport-photo prices</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Walgreens charges $16.99 and CVS charges $17.99 for two 2×2 inch passport prints. With
-            a free tool and a home printer plus photo paper, the same two prints cost under $0.50.
-            Alternatively, take the finished file to a pharmacy kiosk and print a 4×6 sheet for
-            $0.25–$0.39 (cut out two 2×2 prints). The tool produces both a single 2×2 image and a
-            4×6 print sheet so you get two prints from one sheet with no waste.
+            As checked on 19 July 2026, the official{" "}
+            <a
+              href="https://photo.walgreens.com/store/prints"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-brand underline"
+            >
+              Walgreens Photo price list
+            </a>{" "}
+            lists its passport-photo service at $16.99, while the official{" "}
+            <a
+              href="https://www.cvs.com/photo/passport-photos/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-brand underline"
+            >
+              CVS passport-photo page
+            </a>{" "}
+            lists two 2×2-inch prints at $17.99. Prices and promotions can change
+            by date or location. This tool creates a single 2×2 image and a 4×6
+            print sheet; check the current price and print settings at whichever
+            home printer, kiosk, or lab you choose.
           </p>
         </div>
 

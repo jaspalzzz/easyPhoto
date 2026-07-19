@@ -71,12 +71,14 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="What is downloaded to your browser">
-          To run the AI features locally, your browser downloads a few read-only
-          program files (the face-detection and background-removal models and
-          their WebAssembly runtimes) from public content-delivery networks
-          (jsDelivr, Google Cloud Storage, and staticimgly.com). This is a
-          one-directional download of software to your device, so your image data
-          is never sent in the other direction.
+          To run image analysis locally, your browser downloads read-only program
+          files and model weights. MediaPipe and OCR runtimes come from jsDelivr,
+          the face-landmark model comes from Google Cloud Storage, and the primary
+          background-removal files come from models.easyphoto.in, an easyPhoto
+          asset host. If that self-hosted background model file is unavailable,
+          the code may request the same fallback model file from Hugging Face.
+          These are one-directional software downloads to your device: your image
+          or PDF bytes are not sent to any of those hosts.
         </Section>
 
         <Section title="Analytics and tracking">

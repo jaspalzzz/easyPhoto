@@ -81,6 +81,25 @@ export default function EditorialPolicyPage() {
           to report it.
         </p>
       </section>
+
+      <section className="space-y-3">
+        <h2 className="text-xl font-semibold tracking-tight text-ink">
+          What a content review covers
+        </h2>
+        <p>
+          A reviewer checks that the page identifies the correct application
+          workflow, that every displayed number is present in the recorded source,
+          and that examples do not turn a preferred value into a universal rule.
+          Links, visible disclosures, tool labels, and dependent guidance are also
+          compared so a corrected registry value is not contradicted elsewhere.
+        </p>
+        <p>
+          Copy is written to describe deterministic behaviour rather than personal
+          testing or approval experience. We distinguish a tool measurement from
+          an authority decision and avoid urgency, endorsement, or guaranteed-outcome
+          language.
+        </p>
+      </section>
     </TrustPageLayout>
   );
 }

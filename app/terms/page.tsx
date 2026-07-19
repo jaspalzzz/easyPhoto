@@ -98,6 +98,14 @@ export default function TermsPage() {
           identity documents.
         </Section>
 
+        <Section title="Your source and downloaded files">
+          Keep your original file and inspect every download before using it.
+          Compression, cropping, background treatment, OCR, and PDF operations can
+          change visible detail or arrangement. You decide whether the result is
+          suitable for the intended form and whether you have permission to edit,
+          sign, or share the underlying material.
+        </Section>
+
         <Section title="Changes">
           We may update these terms from time to time; the date above reflects the
           latest version.

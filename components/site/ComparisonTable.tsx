@@ -42,7 +42,7 @@ const ROWS: CompRow[] = [
   {
     Icon: IndianRupee,
     label: "Cost",
-    studio: { sub: "You pay for each visit",            primary: "₹200 – ₹500", secondary: "per visit",      kind: "bad"   },
+    studio: { sub: "You pay for each visit",            primary: "Varies",       secondary: "by provider",    kind: "bad"   },
     easy:   { sub: "100% free to use",                  primary: "FREE",         secondary: "Always",         kind: "good"  },
   },
   {
