@@ -96,10 +96,20 @@ export default function PrivacyPage() {
           EasyPhoto may show Google AdSense ads on content pages that do not
           contain private user files. Google and its advertising partners may
           use cookies or similar technologies to serve, limit, and measure ads.
-          You can learn about Google&apos;s advertising practices and control ad
-          personalisation in your Google ad settings. We do not place ads inside
-          upload areas, result previews, private document workflows, or pages
-          that contain your images or PDFs.
+          When advertising is enabled and the European-regulations message is
+          published, visitors in the European Economic Area, the United Kingdom,
+          and Switzerland are shown Google&apos;s consent choices before eligible
+          ads are served. Google determines that regional eligibility; the
+          consent message is not shown to visitors outside those regions unless
+          Google requires another regional message or the visitor opens a message
+          test URL. After making a choice, an eligible visitor can use the
+          &quot;Privacy and cookie settings&quot; link that Google adds to an
+          ad-supported page to reopen the message and change that choice. You can
+          also learn about Google&apos;s advertising practices and control ad
+          personalisation in your Google ad settings. We do not place ads or load
+          Google&apos;s advertising or consent scripts inside upload areas, result
+          previews, private document workflows, or pages that contain your
+          images or PDFs.
         </Section>
 
         <Section title="Accounts and payments">

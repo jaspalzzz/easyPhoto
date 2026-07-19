@@ -39,7 +39,26 @@ describe("privacy network-host disclosure", () => {
   it("retains the AdSense cookie and ad-free workspace disclosure", () => {
     expect(privacy).toContain("Google AdSense");
     expect(privacy).toContain("use cookies or similar technologies");
-    expect(privacy).toContain("do not place ads inside");
-    expect(privacy).toMatch(/pages\s+that contain your images or PDFs/);
+    expect(privacy).toContain("do not place ads or load");
+    expect(privacy).toMatch(/pages\s+that\s+contain\s+your\s+images\s+or\s+PDFs/);
+  });
+
+  it("documents the regional consent flow and keeps its required hosts constrained", () => {
+    expect(privacy).toContain("European Economic Area");
+    expect(privacy).toContain("United Kingdom");
+    expect(privacy).toContain("Switzerland");
+    expect(privacy).toContain("Privacy and cookie settings");
+
+    const csp = headers.match(/Content-Security-Policy: ([^\n]+)/)?.[1] || "";
+    for (const directive of ["script-src", "frame-src", "connect-src"]) {
+      const value = csp.match(new RegExp(`${directive} ([^;]+)`))?.[1] || "";
+      expect(value).toContain("https://fundingchoicesmessages.google.com");
+      expect(value).not.toContain("*.google.com");
+    }
+    const imageSources = csp.match(/img-src ([^;]+)/)?.[1] || "";
+    expect(imageSources).toContain("https://ep1.adtrafficquality.google");
+    expect(imageSources).not.toContain("*.adtrafficquality.google");
+    expect(headers).toContain("Referrer-Policy: strict-origin-when-cross-origin");
+    expect(headers).not.toContain("Referrer-Policy: no-referrer");
   });
 });
