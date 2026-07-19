@@ -139,7 +139,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "nda-cds-photo-signature-guide-2026",
-    title: "NDA & CDS 2026 Photo & Signature Size — Published KB Ranges",
+    title: "NDA & CDS 2026 Photo & Signature Requirements — Published KB Ranges",
     description:
       "NDA and CDS use the same UPSC OTR portal: a 20–200 KB JPG photo on a plain white background, plus three signatures on one sheet at 20–100 KB. UPSC publishes no fixed pixel size or name/date strip.",
     date: "June 18, 2026",

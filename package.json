@@ -16,6 +16,8 @@
     "check:adsense-export:off": "ADSENSE_EXPORT_EXPECT=off vitest run test/adsenseExport.test.ts",
     "audit:thin-content": "node scripts/audit-thin-content.mjs",
     "audit:content-similarity": "node scripts/audit-content-similarity.mjs",
+    "verify": "npm run check:specs && tsc --noEmit && vitest run && npm run build && npm run audit:thin-content && npm run audit:content-similarity && npm run check:adsense-export:off",
+    "verify:adsense-on": "NEXT_PUBLIC_ADSENSE_ENABLED=true npm run build && npm run check:adsense-export:on",
     "freshness": "node scripts/freshness-audit.mjs",
     "indexnow": "node scripts/indexnow.mjs"
   },
