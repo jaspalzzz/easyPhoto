@@ -5,35 +5,14 @@ import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
+import {
+  EXAM_GUIDE_ROWS,
+  EXAM_SIZE_GUIDE_FAQ_ITEMS,
+} from "@/lib/examGuideCopy";
 
 const post = getPost("exam-photo-signature-size-guide")!;
 
-const FAQ_ITEMS = [
-  {
-    q: "Can I use the same photo for SSC, IBPS and SBI in the same cycle?",
-    a: "The recorded KB ranges may overlap, but pixel requirements can differ. IBPS and SBI are listed at 200×230 px, while SSC CGL is listed at 275×354 px. Prepare a separate export for each selected portal and confirm its current instructions; matching a KB range alone does not confirm that the dimensions are suitable.",
-  },
-  {
-    q: "Why do exam portals set a minimum file size as well as a maximum?",
-    a: "A minimum KB floor ensures the image has enough data to be clearly readable on screen and printable on the admit card. A photo compressed below roughly 10 KB at 200×230 px becomes noticeably blurry and unreliable for identity verification. The band (e.g. 20–50 KB) ensures images are both small enough to upload quickly and sharp enough to verify identity.",
-  },
-  {
-    q: "My signature scan looks grey or cream — will it be rejected?",
-    a: "A grey or cream background may not match a portal's listed white-background requirement. Use the signature resizer to remove the paper background and whiten a grey or cream tone. Photograph the signature near a window (not under yellow indoor lighting) to minimise the grey cast before processing.",
-  },
-  {
-    q: "What are the exact UPSC photo and signature sizes?",
-    a: "UPSC's current instructions publish a 20–200 KB JPG photograph on a plain white background with about 75% face coverage — no fixed pixel size or aspect ratio, so a normal passport-style portrait is fine. The signature is a single JPG holding three signatures arranged vertically, 20–100 KB. Confirm the current figures in the notification before applying, as UPSC can revise them between cycles.",
-  },
-  {
-    q: "What format should I use — JPG or PNG?",
-    a: "The recorded SSC, IBPS, SBI, UPSC and RRB specifications list JPG. The recorded NTA specification lists JPG or PNG. If your phone saves HEIC or WebP, convert the image to a format named in the current portal instructions before uploading.",
-  },
-  {
-    q: "Do specs change between exam cycles?",
-    a: "Yes. KB bands, pixel dimensions, and background requirements can all change from one notification cycle to the next — even for the same exam. The specs in this guide are the most commonly reported current values, but always download the official notification PDF for the specific exam and cycle you are applying for. The official sources are ssc.gov.in, ibps.in, upsc.gov.in, indianrailways.gov.in and nta.ac.in.",
-  },
-];
+const FAQ_ITEMS = EXAM_SIZE_GUIDE_FAQ_ITEMS;
 
 export const metadata = pageMetadata({
   title: post.title,
@@ -60,7 +39,7 @@ export default function Page() {
           <li>Current SSC and RRB notices use live photo capture; prepare the separately listed signature file instead.</li>
           <li>Portals check a <em>band</em>: a photo under the minimum is rejected as firmly as one over the cap.</li>
           <li>UPSC and NDA/CDS use a wider <strong>20–200&nbsp;KB</strong> photo range and a <strong>20–100&nbsp;KB</strong> three-signature sheet — with no fixed pixel size or square requirement.</li>
-          <li>NTA (NEET, JEE) allows up to 200&nbsp;KB and accepts JPG or PNG.</li>
+          <li>NTA (NEET, JEE) records a 10–200&nbsp;KB JPG photo and a 10–100&nbsp;KB JPG signature.</li>
           <li>Always confirm the current KB and pixel figures in the exam notification — they can change between cycles.</li>
         </ul>
       </div>
@@ -125,25 +104,24 @@ export default function Page() {
             </g>
           ))}
           {/* Rows */}
-          {[
-            {exam:"SSC CGL / CHSL",photo:0,sig:20,photoPx:"live capture",sigPx:"no fixed size"},
-            {exam:"IBPS PO / Clerk",photo:50,sig:20,photoPx:"200×230",sigPx:"140×60"},
-            {exam:"UPSC CSE / IAS",photo:200,sig:100,photoPx:"no fixed size",sigPx:"350–500"},
-            {exam:"NTA NEET / JEE",photo:200,sig:100,photoPx:"no fixed size",sigPx:"no fixed size"},
-          ].map((row, i) => {
+          {EXAM_GUIDE_ROWS.filter((row) =>
+            ["ssc", "ibps", "upsc", "nta"].includes(row.id)
+          ).map((row, i) => {
             const y = 62 + i * 55;
             return (
-              <g key={row.exam}>
-                <text x="195" y={y + 12} textAnchor="end" fontSize="11.5" fontWeight="600" fill="currentColor">{row.exam}</text>
+              <g key={row.id}>
+                <text x="195" y={y + 12} textAnchor="end" fontSize="11.5" fontWeight="600" fill="currentColor">{row.label}</text>
                 {/* Photo bar */}
-                <rect x="200" y={y} width={row.photo * 1.4} height="16" rx="3" fill="#163A6B" opacity="0.85"/>
-                <text x={200 + row.photo * 1.4 + 5} y={y + 12} fontSize="10" fill="currentColor" opacity="0.7">
-                  {row.photo ? `Photo ${row.photo}KB · ${row.photoPx}px` : "Photo · live capture"}
+                <rect x="200" y={y} width={row.photoLimitForChart * 1.4} height="16" rx="3" fill="#163A6B" opacity="0.85"/>
+                <text x={200 + row.photoLimitForChart * 1.4 + 5} y={y + 12} fontSize="10" fill="currentColor" opacity="0.7">
+                  {row.photoLimitForChart
+                    ? `Photo ${row.photoLimitForChart}KB · ${row.photoDimensions}`
+                    : "Photo · live capture"}
                 </text>
                 {/* Sig bar */}
-                <rect x="200" y={y + 20} width={row.sig * 1.4} height="12" rx="3" fill="#F4C63F" opacity="0.8"/>
-                <text x={200 + row.sig * 1.4 + 5} y={y + 30} fontSize="9.5" fill="currentColor" opacity="0.6">
-                  {`Sig ${row.sig}KB · ${row.sigPx === "no fixed size" ? row.sigPx : `${row.sigPx}px`}`}
+                <rect x="200" y={y + 20} width={row.signatureLimitForChart * 1.4} height="12" rx="3" fill="#F4C63F" opacity="0.8"/>
+                <text x={200 + row.signatureLimitForChart * 1.4 + 5} y={y + 30} fontSize="9.5" fill="currentColor" opacity="0.6">
+                  {`Sig ${row.signatureLimitForChart}KB · ${row.signatureDimensions}`}
                 </text>
               </g>
             );
@@ -183,86 +161,16 @@ export default function Page() {
             </tr>
           </thead>
           <tbody className="divide-y divide-hairline text-ink-soft">
-            <tr>
-              <td className="px-3 py-2 font-medium text-ink">SSC CGL / CHSL</td>
-              <td className="px-3 py-2">Live capture</td>
-              <td className="px-3 py-2">No photo file</td>
-              <td className="px-3 py-2">10–20 KB</td>
-              <td className="px-3 py-2">No fixed pixels published</td>
-              <td className="px-3 py-2">Signature: JPG/JPEG</td>
-            </tr>
-            <tr>
-              <td className="px-3 py-2 font-medium text-ink">SSC MTS / CAPF</td>
-              <td className="px-3 py-2">Live capture</td>
-              <td className="px-3 py-2">No photo file</td>
-              <td className="px-3 py-2">10–20 KB</td>
-              <td className="px-3 py-2">No fixed pixels published</td>
-              <td className="px-3 py-2">Signature: JPG/JPEG</td>
-            </tr>
-            <tr>
-              <td className="px-3 py-2 font-medium text-ink">IBPS PO / Clerk</td>
-              <td className="px-3 py-2">20–50 KB</td>
-              <td className="px-3 py-2">200×230</td>
-              <td className="px-3 py-2">10–20 KB</td>
-              <td className="px-3 py-2">140×60</td>
-              <td className="px-3 py-2">JPG</td>
-            </tr>
-            <tr>
-              <td className="px-3 py-2 font-medium text-ink">SBI PO / Clerk</td>
-              <td className="px-3 py-2">20–50 KB</td>
-              <td className="px-3 py-2">200×230</td>
-              <td className="px-3 py-2">10–20 KB</td>
-              <td className="px-3 py-2">140×60</td>
-              <td className="px-3 py-2">JPG</td>
-            </tr>
-            <tr>
-              <td className="px-3 py-2 font-medium text-ink">UPSC CSE / IAS</td>
-              <td className="px-3 py-2">20–200 KB</td>
-              <td className="px-3 py-2">no fixed size published</td>
-              <td className="px-3 py-2">20–100 KB</td>
-              <td className="px-3 py-2">350–500 (three on one sheet)</td>
-              <td className="px-3 py-2">JPG</td>
-            </tr>
-            <tr>
-              <td className="px-3 py-2 font-medium text-ink">UPSC NDA / CDS</td>
-              <td className="px-3 py-2">20–200 KB</td>
-              <td className="px-3 py-2">no fixed size published</td>
-              <td className="px-3 py-2">20–100 KB</td>
-              <td className="px-3 py-2">350–500 (three on one sheet)</td>
-              <td className="px-3 py-2">JPG</td>
-            </tr>
-            <tr>
-              <td className="px-3 py-2 font-medium text-ink">RRB NTPC / ALP</td>
-              <td className="px-3 py-2">Live capture</td>
-              <td className="px-3 py-2">No photo file</td>
-              <td className="px-3 py-2">30–49 KB</td>
-              <td className="px-3 py-2">At least 140×60</td>
-              <td className="px-3 py-2">Signature: JPG/JPEG</td>
-            </tr>
-            <tr>
-              <td className="px-3 py-2 font-medium text-ink">RRB Group D</td>
-              <td className="px-3 py-2">Live capture</td>
-              <td className="px-3 py-2">No photo file</td>
-              <td className="px-3 py-2">30–49 KB</td>
-              <td className="px-3 py-2">At least 140×60</td>
-              <td className="px-3 py-2">Signature: JPG/JPEG</td>
-            </tr>
-            <tr>
-              <td className="px-3 py-2 font-medium text-ink">NTA NEET</td>
-              <td className="px-3 py-2">10–200 KB</td>
-              <td className="px-3 py-2">3.5×4.5 cm portrait</td>
-              <td className="px-3 py-2">4–30 KB</td>
-              <td className="px-3 py-2">—</td>
-              <td className="px-3 py-2">JPG / PNG</td>
-            </tr>
-            <tr>
-              <td className="px-3 py-2 font-medium text-ink">NTA JEE (Main)</td>
-              <td className="px-3 py-2">10–200 KB</td>
-              <td className="px-3 py-2">3.5×4.5 cm portrait</td>
-              <td className="px-3 py-2">4–30 KB</td>
-              <td className="px-3 py-2">—</td>
-              <td className="px-3 py-2">JPG / PNG</td>
-            </tr>
+            {EXAM_GUIDE_ROWS.map((row) => (
+              <tr key={row.id}>
+                <td className="px-3 py-2 font-medium text-ink">{row.label}</td>
+                <td className="px-3 py-2">{row.photo}</td>
+                <td className="px-3 py-2">{row.photoDimensions}</td>
+                <td className="px-3 py-2">{row.signature}</td>
+                <td className="px-3 py-2">{row.signatureDimensions}</td>
+                <td className="px-3 py-2">{row.format}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
@@ -319,8 +227,9 @@ export default function Page() {
         <strong>10&nbsp;KB and 20&nbsp;KB at 140×60&nbsp;px</strong>.
       </p>
       <p>
-        These portals accept regular file uploads — no live capture. The common
-        mistake here is resizing to the right pixels but the wrong KB: a
+        These portals use prepared photo and signature uploads and also record a
+        separate live-photograph step. The common file-preparation mistake is
+        resizing to the right pixels but the wrong KB: a
         200×230&nbsp;px photo saved as a high-quality JPG can exceed 50&nbsp;KB,
         while the same image compressed too hard can fall under 20&nbsp;KB. Use a
         KB-target resizer — set it to output 35&nbsp;KB — to land safely in the
@@ -351,8 +260,8 @@ export default function Page() {
         instructions ask for a{" "}
         <strong>20–200&nbsp;KB JPG photograph</strong> on a plain white background
         with the face covering about 75% of the frame. UPSC publishes{" "}
-        <strong>no fixed pixel size and no aspect ratio</strong>, so a normal
-        passport-style portrait is accepted — there is no square-crop requirement.
+        <strong>no fixed pixel size and no aspect ratio</strong>. Prepare a normal
+        passport-style portrait rather than imposing a square crop the source does not list.
       </p>
       <p>
         The signature is where UPSC differs most: instead of one signature, the
@@ -399,18 +308,16 @@ export default function Page() {
 
       <h2>NTA exams: NEET and JEE (Main)</h2>
       <p>
-        The National Testing Agency uses a more relaxed file size range than most
-        other portals. For both NEET and JEE Main, the photo is a{" "}
-        <strong>JPG or PNG between 10&nbsp;KB and 200&nbsp;KB</strong>; and the
-        signature is between <strong>4&nbsp;KB and 30&nbsp;KB</strong> in JPG or
-        PNG. A clear phone photo may fit that KB range, but the current notice&apos;s
+        The stored NTA source lists a <strong>JPG photo between 10&nbsp;KB and
+        200&nbsp;KB</strong> and a <strong>JPG signature between 10&nbsp;KB and
+        100&nbsp;KB</strong>. A clear phone photo may fit that KB range, but the current notice&apos;s
         other photo instructions still need to be checked before submission.
       </p>
       <p>
         NTA does not require live portal capture — you upload a saved file. The
         photo should be on a plain white or off-white background, front-facing,
         taken within the last six months. The common mistake for NTA applications
-        is format confusion: NTA explicitly accepts both JPG and PNG, but some
+        is format confusion: the stored source lists JPG, while some
         candidates upload WebP or HEIC (common default formats on recent iPhones
         and Android phones) — those are rejected. Convert to JPG before uploading
         if you&apos;re not sure of your phone&apos;s output format.
@@ -424,11 +331,10 @@ export default function Page() {
       <p>
         State Public Service Commissions — BPSC, UPPSC, MPSC, TNPSC, KPSC, WBCS
         and others — each set their own photo and signature specs per notification.
-        Most follow the 20–50&nbsp;KB, JPG, 200×230&nbsp;px convention, but
-        state boards differ more than national boards. Always download the
-        official notification PDF for the specific state exam and use the exact
-        figures listed there. If the state portal specifies an unusual dimension
-        (e.g. 350×400&nbsp;px), use the{" "}
+        The registry records different KB bands and pixel canvases across these
+        boards, while several current sources publish no fixed photo pixels at all.
+        Always download the notification for the specific state exam and use only
+        the figures it lists. If the state portal publishes a fixed canvas, use the{" "}
         <Link href="/tools/resize-kb/">custom KB resizer</Link>{" "}
         and set the pixel dimensions manually.
       </p>

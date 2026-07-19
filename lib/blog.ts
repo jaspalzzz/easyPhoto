@@ -94,7 +94,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "best-free-exam-photo-resizer-india",
     title: "5 Free Exam Photo & Signature Resizers Compared (2026)",
     description:
-      "Resize SSC, IBPS, UPSC or RRB exam photos to the KB and pixel specs each portal lists, for free. Five tools compared: ExamMint, myexamphoto.in, SarkariResizer, govtphotoresizer.com, and easyPhoto.",
+      "Compare tools for SSC and RRB live-photo preparation plus IBPS and UPSC prepared-file requirements. Five free exam workflows reviewed for coverage and privacy.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     updatedISO: "2026-06-18",
@@ -156,7 +156,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "June 18, 2026",
     dateISO: "2026-06-18",
     excerpt:
-      "SSC now requires live photo capture — no gallery uploads. Here are the exact specs for CGL and CHSL, the six rejection reasons, and how to prepare your signature in one step.",
+      "SSC now requires live photo capture — no gallery uploads. See the published signature band, live-camera preparation and common measurable problems for CGL and CHSL.",
     readMins: 7,
   },
   {
@@ -219,11 +219,11 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "how-to-sign-exam-application-forms-india",
     title: "How to Sign an Exam Application Form in India (SSC, UPSC, IBPS Rules)",
     description:
-      "Sign on white paper in black or blue ink, scan to JPG, keep it under 10–20 KB. Portal rules for SSC, UPSC, IBPS, RRB and Army Agniveer — and why some need a transparent background.",
+      "Compare the recorded signature workflows for SSC, UPSC, IBPS, RRB and Army Agniveer, including published KB bands, formats and unconfirmed fields.",
     date: "June 21, 2026",
     dateISO: "2026-06-21",
     excerpt:
-      "Every major exam portal has its own KB limit and pixel dimension for your signature. Here's the exact spec for SSC, UPSC, IBPS, RRB and Army Agniveer — and why a transparent background matters for some forms.",
+      "Signature rules differ by portal: compare published KB bands and formats, omitted pixel fields, UPSC's three-signature image and Army's unconfirmed public limits.",
     readMins: 8,
   },
   {
@@ -274,7 +274,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "exam-photo-signature-size-guide",
     title: "Exam Photo & Signature Size 2026: SSC, UPSC, IBPS, RRB — Full Guide",
     description:
-      "Rejected for wrong KB or wrong pixels? Exact photo and signature limits for every major Indian exam — SSC, UPSC, IBPS, SBI, RRB, NTA. Free resizer included.",
+      "Compare recorded photo and signature workflows for SSC, UPSC, IBPS, SBI, RRB and NTA, including live capture, published KB bands and available dimensions.",
     date: "June 8, 2026",
     dateISO: "2026-06-08",
     updatedISO: "2026-06-21",

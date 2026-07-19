@@ -112,7 +112,7 @@ export default function Page() {
           {[
             ["Indian passport — child below four", "35×45 mm", "413×531 px"],
             ["PAN Card (physical)", "25×35 mm", "295×413 px"],
-            ["Most Indian exam forms", "35×45 mm", "413×531 px"],
+            ["Indian exam forms", "Varies by portal", "Use the exam preset; many list KB only"],
             ["US Passport", "51×51 mm (2×2 inch)", "600×600 px"],
             ["UK / Schengen Visa", "35×45 mm", "413×531 px"],
           ].map(([doc, size, px]) => (

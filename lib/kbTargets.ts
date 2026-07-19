@@ -2,6 +2,8 @@
  * Supported target values for the consolidated KB tools. Historical root-level
  * landing pages redirect to these parent-tool query URLs.
  */
+import { PORTAL_PRESETS } from "@/lib/portalPresets";
+
 export const KB_TARGETS = [10, 20, 30, 50, 100, 200] as const;
 
 export type KbTarget = (typeof KB_TARGETS)[number];
@@ -244,13 +246,13 @@ export const SIGNATURE_KB_USECASES: Record<number, KbUseCase> = {
       "10 KB is the strictest signature limit — the lower bound that staff-selection and banking exams expect.",
     useCases: [
       { label: "SSC, IBPS and SBI", detail: "These forms usually want the signature in a 10–20 KB band; 10 KB clears the floor." },
-      { label: "RRB recruitment", detail: "Railway recruitment signature uploads sit in the same small range." },
+      { label: "RRB is different", detail: `The recorded RRB signature band is ${PORTAL_PRESETS.rrb.sigMinKb}–${PORTAL_PRESETS.rrb.sigLimitKb} KB, so this 10 KB target is not suitable for the cited CEN.` },
       { label: "Strict ‘≤10 KB’ fields", detail: "When a form says the signature must be under 10 KB, this preset hits it." },
     ],
     tip: "A signature compresses smaller than a photo — 10 KB is usually achievable while keeping the ink crisp.",
     faq: {
       q: "Which exams want a 10 KB signature?",
-      a: "SSC, IBPS, SBI and RRB forms commonly cap the signature in the 10–20 KB range. Set the exact figure your form shows.",
+      a: `The recorded SSC, IBPS and SBI bands start at 10 KB. The cited RRB notice instead lists ${PORTAL_PRESETS.rrb.sigMinKb}–${PORTAL_PRESETS.rrb.sigLimitKb} KB, so use the selected portal's current band rather than applying this preset universally.`,
     },
     qualityFaq: {
       q: "Will my signature stay crisp at 10 KB?",
@@ -264,7 +266,7 @@ export const SIGNATURE_KB_USECASES: Record<number, KbUseCase> = {
     useCases: [
       { label: "SSC and IBPS", detail: "Most staff-selection and bank forms cap the signature at around 20 KB." },
       { label: "State PSC forms", detail: "Many state public-service commissions use a 20 KB signature limit." },
-      { label: "RRB and PSU jobs", detail: "Railway and public-sector recruitment signatures sit at roughly 20 KB." },
+      { label: "RRB is not a 20 KB target", detail: `The recorded RRB signature band is ${PORTAL_PRESETS.rrb.sigMinKb}–${PORTAL_PRESETS.rrb.sigLimitKb} KB; use 20 KB only when another form explicitly lists it.` },
     ],
     tip: "Pair a 20 KB signature with a 20–50 KB photo — the signature is almost always the smaller of the two.",
     faq: {
