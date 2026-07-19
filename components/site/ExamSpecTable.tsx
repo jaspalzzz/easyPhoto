@@ -44,12 +44,14 @@ export function ExamSpecTable({
   // this sentence hands them a clean, citable answer with the recorded numbers —
   // worded the way people ask ("what is the SSC photo size?").
   const photoSentence =
-    `The registry lists the ${label} photo as a JPG/JPEG file of ${kbRange(spec.photoMinKb, spec.photoLimitKb)}` +
+    `The registry lists the ${label} photo target as ${kbRange(spec.photoMinKb, spec.photoLimitKb)}` +
+    (spec.photoFormat ? ` in ${spec.photoFormat} format` : "") +
     (photoDim ? ` at ${photoDim}` : "") +
     (spec.dpi ? ` (${spec.dpi} DPI)` : "") +
     ".";
   const sigSentence = hasSig
-    ? ` It lists the signature as a JPG/JPEG file of ${kbRange(spec.sigMinKb, spec.sigLimitKb!)}` +
+    ? ` It lists the signature target as ${kbRange(spec.sigMinKb, spec.sigLimitKb!)}` +
+      (spec.sigFormat ? ` in ${spec.sigFormat} format` : "") +
       (sigDim ? ` at ${sigDim}` : "") +
       "."
     : "";
@@ -88,7 +90,10 @@ export function ExamSpecTable({
             />
             {photoDim && <SpecRow label="Dimensions" value={photoDim} />}
             {spec.dpi && <SpecRow label="Scan DPI" value={spec.dpi} />}
-            <SpecRow label="Format" value="JPG / JPEG" />
+            {spec.photoFormat && <SpecRow label="Format" value={spec.photoFormat} />}
+            {spec.photoBackground && (
+              <SpecRow label="Background" value={spec.photoBackground} />
+            )}
           </dl>
 
           {/* Signature */}
@@ -100,7 +105,7 @@ export function ExamSpecTable({
                 value={kbRange(spec.sigMinKb, spec.sigLimitKb!)}
               />
               {sigDim && <SpecRow label="Dimensions" value={sigDim} />}
-              <SpecRow label="Format" value="JPG / JPEG" />
+              {spec.sigFormat && <SpecRow label="Format" value={spec.sigFormat} />}
             </dl>
           )}
         </div>

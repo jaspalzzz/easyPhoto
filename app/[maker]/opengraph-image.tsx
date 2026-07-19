@@ -24,6 +24,6 @@ export default async function Image({
   const Doc = page.kind === "visa" ? "Visa" : "Passport";
   return ogImage({
     title: `${spec.label} ${Doc} Photo`,
-    subtitle: `${mm.width}×${mm.height}mm · ${spec.background.description} · compliant & made in your browser.`,
+    subtitle: `${mm.width}×${mm.height}mm · ${spec.background.description} · prepared in your browser`,
   });
 }

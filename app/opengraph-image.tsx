@@ -9,6 +9,6 @@ export default function Image() {
   return ogImage({
     title: "Passport & Visa Photo Maker",
     subtitle:
-      "Compliant size, head proportion and background for every country — plus free image & PDF tools.",
+      "Country-aware size, head proportion and background preparation — plus free image & PDF tools.",
   });
 }

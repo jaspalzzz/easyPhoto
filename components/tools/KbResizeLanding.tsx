@@ -103,7 +103,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
         <h2 className="text-lg font-semibold">{uc?.heading ?? `Where a ${kb} KB photo is needed`}</h2>
         <p className="text-sm leading-relaxed text-muted-foreground">
           {uc?.intro ??
-            `Many application portals cap the photo file size. This tool gets your image under ${kb} KB while keeping it as clear as possible, so uploads aren't rejected for being too large.`}
+            `Many application portals cap the photo file size. This tool targets under ${kb} KB while keeping the image as clear as possible; confirm the portal's other requirements before uploading.`}
         </p>
         {uc && (
           <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">

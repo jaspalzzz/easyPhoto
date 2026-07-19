@@ -347,7 +347,7 @@ export default function ToolsHubPage() {
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">🇪🇺 Schengen Maker</span>
-            <span className="text-muted-foreground leading-normal">Full tool — ICAO compliant</span>
+            <span className="text-muted-foreground leading-normal">Country-aware size and background</span>
           </Link>
         </div>
       </section>
@@ -401,7 +401,7 @@ export default function ToolsHubPage() {
       <section className="mt-12 rounded-lg border border-hairline bg-card p-6">
         <h2 className="text-lg font-semibold">Passport &amp; visa photos</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Need a compliant ID photo? Use the country-aware makers for exact size,
+          Need to prepare an ID photo? Use the country-aware makers for the selected size,
           selected background and a pre-submission photo check.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">

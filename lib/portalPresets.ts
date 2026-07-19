@@ -36,6 +36,12 @@ export interface PortalSpec {
   sigHeightPx?: number;
   photoAspectRatio?: number; // width / height
   sigAspectRatio?: number;
+  /** File format published for the prepared photograph upload. */
+  photoFormat?: string;
+  /** Background published for the prepared photograph upload. */
+  photoBackground?: string;
+  /** File format published for the signature upload. */
+  sigFormat?: string;
   description: string;
   /** Provenance (optional for back-compat; should be set for all live specs). */
   source?: SpecSource;
@@ -95,6 +101,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigLimitKb: 20,
     sigMinKb: 10,
     sigAspectRatio: 6 / 2,
+    sigFormat: "JPEG / JPG",
     description:
       "Current 2026 SSC applications capture the candidate's photograph live and do not use a pre-existing photo upload. The stored 20–50 KB photo target is compatibility-only, not a current SSC requirement. The current notice specifies a JPEG/JPG signature of 10–20 KB at about 6.0×2.0 cm; it publishes no photo or signature pixel dimensions, photo aspect ratio, DPI, or name/date rule. Confirm the current exam notice before using the compatibility photo output.",
     source: {
@@ -113,6 +120,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 20,
     sigLimitKb: 100,
     sigMinKb: 20,
+    photoFormat: "JPG",
+    photoBackground: "Plain white",
+    sigFormat: "JPG",
     description:
       "UPSC's current application portal requires a JPG photograph of 20–200 KB with a plain white background and about 75% face coverage, plus a JPG image containing three signatures arranged vertically at 20–100 KB and 350–500 pixels. The instructions publish no fixed photo pixel dimensions, photo aspect ratio, DPI, or name/date strip.",
     source: {
@@ -132,6 +142,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoWidthPx: 600,
     photoHeightPx: 600,
     photoAspectRatio: 1,
+    photoBackground: "White",
     description: "Online US Visa Application DS-160. Square photo (600x600px up to 1200x1200px), under 240 KB limit, white background.",
     source: { url: "https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/photos.html", label: "US Dept. of State photo requirements" },
     verification: "official",
@@ -165,6 +176,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoLimitKb: 200,
     sigLimitKb: 200,
     photoAspectRatio: 1,
+    photoFormat: "JPEG / JPG",
+    photoBackground: "Plain light-coloured (not white)",
+    sigFormat: "JPEG / JPG",
     description: "OCI registration. The photograph upload must be square, 200x200 to 900x900 px, JPEG/JPG, up to 200 KB, on a plain light-coloured background that is not white. A signature image is also uploaded as JPEG/JPG up to 200 KB, but the OCI FAQ publishes no signature pixel dimensions or aspect ratio.",
     source: {
       url: "https://ociservices.gov.in/onlineOCI/onlineOCI/faq",
@@ -191,6 +205,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigWidthPx: 140,
     sigHeightPx: 60,
     sigAspectRatio: 14 / 6,
+    sigFormat: "JPG / JPEG",
     signatureInk: "Black ink on white paper",
     description:
       "Current RRB CEN applications capture the candidate's photograph live and do not accept a pre-existing photo upload. The stored 20–50 KB photo target is compatibility-only, not a current RRB requirement. The current notice specifies a JPG/JPEG signature of 30–49 KB, at least 140×60 px, scanned at a minimum 100 DPI in running handwriting. Confirm the current CEN before using the compatibility photo output.",
@@ -217,6 +232,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     dpi: 200,
+    photoFormat: "JPG / JPEG",
+    sigFormat: "JPG / JPEG",
     signatureInk: "Black ink on white paper",
     description:
       "IBPS CRP-XVI photo 20–50 KB at a preferred 200×230 px and signature 10–20 KB at a preferred 140×60 px, JPG/JPEG, with a minimum 200 DPI scan setting. The signature is written in black ink on white paper; registration also includes a separately captured live photograph.",
@@ -243,6 +260,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     dpi: 200,
+    photoFormat: "JPG / JPEG",
+    sigFormat: "JPG / JPEG",
     signatureInk: "Black ink on white paper",
     description:
       "SBI PO 2026 photo 20–50 KB at a preferred 200×230 px and signature 10–20 KB at a preferred 140×60 px, JPG/JPEG, with a minimum 200 DPI scan setting. The signature is written in black ink on white paper; registration also includes a separately captured live photograph.",
@@ -267,6 +286,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     // Aspect ratios kept as crop hints from the conventional "passport size".
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 3.5 / 1.5,
+    photoFormat: "JPG",
+    photoBackground: "White",
+    sigFormat: "JPG",
     description: "NTA exams (NEET, JEE Main). Passport-size photo, 10-200 KB; signature 10-100 KB, JPG, white background with ~80% face. NTA publishes no pixel dimensions. (NEET also needs a separate 4x6 inch postcard photo.)",
     source: {
       url: "https://cdnbbsr.s3waas.gov.in/s37bc1ec1d9c3426357e69acd5bf320061/uploads/2026/02/20260208939209382.pdf",
@@ -291,6 +313,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     dpi: 200,
+    photoFormat: "JPG / JPEG",
+    photoBackground: "Light or white",
+    sigFormat: "JPG / JPEG",
     description: "Reserve Bank of India recruitment (Grade B, Assistant). Photo 20-50 KB, 200x230 px (preferred), light/white background; signature 10-20 KB, 140x60 px (preferred), black ink on white paper; JPG/JPEG, scanned at 200 dpi true colour.",
     source: {
       url: "https://rbidocs.rbi.org.in/rdocs/content/pdfs/RPJECE07012019_AN1.pdf",
@@ -314,6 +339,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 120,
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 3.5 / 1.5,
+    photoFormat: "JPG",
+    sigFormat: "JPG",
     description: "CBSE CTET. Photo 3.5x4.5cm, 10-100 KB; signature 3.5x1.5cm, 3-30 KB, JPG. The portal auto-rejects wrong dimensions, so match exactly.",
     source: {
       url: "https://cdnbbsr.s3waas.gov.in/s3443dec3062d0286986e21dc0631734c9/uploads/2026/05/202605111250310617.pdf",
@@ -347,6 +374,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "BPSC (Bihar PSC)",
     photoLimitKb: 50,
     sigLimitKb: 20,
+    sigFormat: "JPG",
     description: "Bihar PSC captures your photograph live via webcam during the online application — there is no photo file to upload, so use the photo tool only for general passport-photo prep. The signature is uploaded under 20 KB (both a Hindi and an English signature), JPG.",
     source: {
       url: "https://bpsconline.bihar.gov.in/downloads/User_Manual.pdf",
@@ -363,6 +391,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "MPSC (Maharashtra PSC)",
     photoLimitKb: 50,
     sigLimitKb: 50,
+    photoFormat: "JPG / JPEG",
+    photoBackground: "Solid colour (blue, green or red)",
+    sigFormat: "JPG / JPEG",
     description: "Maharashtra PSC. Photo up to 50 KB (3.5 cm x 4.5 cm, solid-colour background); signature up to 50 KB (3.5 cm x 1.5 cm, black ink on white paper); JPG/JPEG only. The official instructions give cm dimensions and a 50 KB max for both — no pixel size and no minimum.",
     source: {
       url: "https://mpsconline.gov.in/downloads/Instructions-for-Filling-the-Application-Form.pdf",
@@ -390,6 +421,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 130,
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 400 / 130,
+    photoFormat: "JPEG",
+    sigFormat: "JPEG",
     description: "Graduate Aptitude Test in Engineering. Photo 5-600 KB (200x260 to 530x690 px, 3.5x4.5 cm); signature 3-300 KB (250x80 to 580x180 px), JPEG. The KB cap is set by the conducting IIT each year (600 KB for GATE 2026 / IIT Guwahati) — confirm the current bulletin.",
     source: {
       url: "https://gate2026.iitg.ac.in/photograph-and-signature.html",
@@ -407,6 +440,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 10,
     sigLimitKb: 50,
     sigMinKb: 10,
+    photoFormat: "JPG / JPEG",
+    sigFormat: "JPG / JPEG",
     description: "UGC National Eligibility Test (conducted by NTA). Photo 10-200 KB; signature 10-50 KB; JPG/JPEG only. NTA specifies file size and format but no fixed pixel dimensions.",
     source: {
       url: "https://cdnbbsr.s3waas.gov.in/s301eee509ee2f68dc6014898c309e86bf/uploads/2026/04/202604301078678748.pdf",
@@ -424,6 +459,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 10,
     sigLimitKb: 50,
     sigMinKb: 10,
+    photoFormat: "JPG / JPEG",
+    sigFormat: "JPG / JPEG",
     description: "Joint CSIR-UGC NET (conducted by NTA). Photo 10-200 KB; signature 10-50 KB (running hand, no capitals, blue/black ink on white paper); JPG/JPEG only. NTA specifies file size and format but no fixed pixel dimensions.",
     source: {
       url: "https://cdnbbsr.s3waas.gov.in/s3efdf562ce2fb0ad460fd8e9d33e57f57/uploads/2025/09/202510072139225285.pdf",
@@ -445,6 +482,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 20,
     sigLimitKb: 100,
     sigMinKb: 20,
+    photoFormat: "JPG",
+    sigFormat: "JPG",
     description:
       "NDA is conducted by UPSC, whose upload instructions apply \"for any examination\" on the portal: a JPG photograph of 20–200 KB with about 75% face coverage, plus a JPG image containing three signatures arranged vertically at 20–100 KB and 350–500 pixels. The instructions publish no fixed photo pixel dimensions, photo aspect ratio, DPI, or name/date strip.",
     source: {
@@ -464,6 +503,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 20,
     sigLimitKb: 100,
     sigMinKb: 20,
+    photoFormat: "JPG",
+    sigFormat: "JPG",
     description:
       "CDS is conducted by UPSC, whose upload instructions apply \"for any examination\" on the portal: a JPG photograph of 20–200 KB with about 75% face coverage, plus a JPG image containing three signatures arranged vertically at 20–100 KB and 350–500 pixels. The instructions publish no fixed photo pixel dimensions, photo aspect ratio, DPI, or name/date strip.",
     source: {
@@ -483,6 +524,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 10,
     sigLimitKb: 50,
     sigMinKb: 10,
+    photoFormat: "JPG / JPEG",
+    sigFormat: "JPG / JPEG",
     description: "Air Force Common Admission Test. Passport-size colour photo, signature and thumb impression each 10-50 KB, JPG/JPEG. AFCAT specifies file size and format but no fixed pixel dimensions.",
     source: {
       url: "https://afcat.cdac.in/AFCAT/assets/images/news/AFCAT_01_2025/English_Notification_AFCAT_01-2025.pdf",
@@ -509,6 +552,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     // Real, uploadable spec: two signatures (English + Hindi), each JPEG 20-50 KB.
     sigLimitKb: 50,
     sigMinKb: 20,
+    sigFormat: "JPEG",
     description: "Rajasthan PSC applies via the SSO Rajasthan / recruitment portal with One-Time Registration (OTR). The photograph is CAPTURED LIVE during OTR KYC (webcam) — there is no photo file to upload. Candidates upload two signatures (English and Hindi), each JPEG 20-50 KB, plus a left thumb impression (JPEG 20-50 KB) and a handwritten specimen (PDF 10-200 KB). RPSC publishes no pixel dimensions. Confirm the current OTR instructions before preparing files.",
     source: {
       url: "https://recruitment.rajasthan.gov.in/",
@@ -534,6 +578,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 130 / 170,
     sigAspectRatio: 230 / 75,
     dpi: 200,
+    photoFormat: "JPG",
+    photoBackground: "White",
+    sigFormat: "JPG",
     requiresNameDate: true,
     signatureInk: "Blue or black ink on white paper",
     description: "Tamil Nadu PSC application upload. Photo 20-50 KB at 130x170 px with a white background and name plus photography date in the lower 55 px; signature 10-20 KB at 230x75 px in blue or black ink on white paper. Both files are JPG at 200 DPI.",
@@ -553,6 +600,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 50,
     sigLimitKb: 70,
     sigMinKb: 50,
+    photoFormat: "JPEG",
+    sigFormat: "JPEG",
     description: "KPSC UDYOGA registration upload. The current applicant manual specifies a JPEG photograph of 50-200 KB and a JPEG signature of 50-70 KB. It publishes no pixel dimensions, aspect ratio, DPI, ink or name/date rule, so the preset applies none.",
     source: {
       url: "https://kpsconline.karnataka.gov.in/Master/Download_applicant_user_manual",
@@ -568,6 +617,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "APPSC (Andhra Pradesh PSC)",
     photoLimitKb: 50,
     sigLimitKb: 30,
+    photoFormat: "JPG",
+    sigFormat: "JPG",
     description: "Andhra Pradesh PSC (OTPR registration). Photo about 50 KB (3.5x4.5 cm, with name + date printed on it); signature about 30 KB (3.5x1.5 cm), uploaded separately; JPG. The official manual gives cm + KB but no pixel dimensions.",
     source: {
       url: "https://psc.ap.gov.in/UserManuals/DirectRecruitmentOTPRUserManual.pdf",
@@ -655,6 +706,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     dpi: 200,
+    photoFormat: "JPG / JPEG",
+    sigFormat: "JPG / JPEG",
     signatureInk: "Black",
     description:
       "NABARD Grade A 2025 requires separate JPG/JPEG photograph and signature uploads, plus an additional live photograph captured by webcam or mobile phone. The published upload values are shown in the requirement table; confirm the notice for a later recruitment cycle.",
@@ -681,6 +734,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     dpi: 200,
+    photoFormat: "JPG",
+    sigFormat: "JPG",
     signatureInk: "Black",
     description:
       "LIC AAO Specialist 2025 requires separate JPG photograph and signature uploads, plus an additional live photograph captured by webcam or mobile phone. The published upload values are shown in the requirement table; confirm the applicable notice for ADO or a later AAO cycle.",
@@ -707,6 +762,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     dpi: 200,
+    photoFormat: "JPG / JPEG",
+    sigFormat: "JPG / JPEG",
     signatureInk: "Black",
     description:
       "NIACL Administrative Officer 2025 requires separate JPG/JPEG photograph and signature uploads, plus an additional live photograph captured by webcam or mobile phone. The published upload values are shown in the requirement table; confirm the applicable notice for an Assistant or later cycle.",
@@ -733,6 +790,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     dpi: 200,
+    photoFormat: "JPG / JPEG",
+    sigFormat: "JPG / JPEG",
     signatureInk: "Black",
     description:
       "IRDAI Assistant Manager 2024 requires separate JPG/JPEG photograph and signature uploads. The published upload values are shown in the requirement table; this is the latest public Assistant Manager notice located, so confirm a later recruitment notice before use.",
@@ -753,6 +812,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoWidthPx: 1200,
     photoHeightPx: 1200,
     photoAspectRatio: 1,
+    photoFormat: "JPG / JPEG",
+    photoBackground: "White",
+    sigFormat: "JPG / JPEG",
     description:
       "IIM Common Admission Test registration (iimcat.ac.in). Photo 1200×1200 px JPG/JPEG up to 80 KB, recent colour photo (within 6 months) on a white background, no selfies; signature 80×35 mm JPG/JPEG up to 80 KB, in ballpoint pen, scanned.",
     source: {
@@ -771,6 +833,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 20,
     sigLimitKb: 20,
     sigMinKb: 10,
+    photoBackground: "Plain",
     description:
       "Compatibility preset for the CLAT application. The public CLAT 2026 instructions confirm a front-facing recent passport-size photograph with a plain background and a candidate signature, but publish no KB, pixel, aspect-ratio, DPI, file-format or ink limits. The stored 20-50 KB photo and 10-20 KB signature bands remain unconfirmed; check the current application screen before use.",
     source: {
@@ -805,6 +868,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 100,
     sigLimitKb: 150,
     sigMinKb: 80,
+    photoFormat: "JPG / JPEG",
+    sigFormat: "JPG / JPEG",
     description:
       "Indian Air Force Agniveervayu Intake 01/2027 online application. Photo 100-200 KB in JPG/JPEG — a recent passport-size colour photo holding a black slate at chest level with the candidate's name and the date written in white chalk. Signature 80-150 KB in JPG/JPEG, signed in black ink on white paper. The notice publishes no fixed pixel dimensions.",
     source: {
@@ -826,6 +891,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigLimitKb: 20,
     sigMinKb: 5,
     photoAspectRatio: 35 / 45,
+    photoFormat: "JPEG / JPG / JPE",
     signatureInk: "Black ink on white paper",
     description:
       "Uttar Pradesh Police Recruitment & Promotion Board (UPPBPB) online registration — constable, SI and other posts. Photo 35×45 mm JPEG/JPG/JPE, 20-50 KB; signature 35×15 mm, 5-20 KB, black ink. Limits can change per recruitment notification — the portal validates at upload.",
@@ -852,6 +918,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 157,
     photoAspectRatio: 2.5 / 3.5,
     sigAspectRatio: 4.5 / 2,
+    photoFormat: "JPEG",
+    sigFormat: "JPEG",
     description:
       "Online PAN application (Form 49A/49AA via Protean-NSDL or UTIITSL). Photo 3.5×2.5 cm colour JPEG at 200 DPI, max 20 KB; signature 2×4.5 cm JPEG at 200 DPI, max 10 KB. Application methods can differ, so confirm the current instructions for the route you use.",
     source: {
@@ -895,6 +963,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     // physical dimensions/composition but does not publish an upload file cap.
     photoLimitKb: 2048,
     photoAspectRatio: 3.5 / 4.5,
+    photoBackground: "White",
     description:
       "ECI Form 6 specifies a recent, good-quality, unsigned colour passport-size photograph measuring 4.5×3.5 cm on a white background, with eyes open and both face edges visible. The public instructions do not publish a digital file-size cap, pixel dimensions, format or DPI. The stored 2 MB target is compatibility-only; confirm the current Voters' Service Portal upload screen before preparing a digital file.",
     source: {
@@ -912,6 +981,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 10,
     sigLimitKb: 50,
     sigMinKb: 10,
+    photoFormat: "JPG / JPEG",
+    photoBackground: "White",
+    sigFormat: "JPG / JPEG",
     description:
       "NTA CUET (UG) 2026 application (cuet.nta.nic.in). Photo 10-200 KB JPG/JPEG, ~80% face visible on a white background; signature 10-50 KB JPG/JPEG, black or blue ink on white paper. The official bulletin specifies file size only — no pixel dimensions are stated. A live photo is also captured during the application.",
     source: {
@@ -938,6 +1010,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 100,
     photoAspectRatio: 150 / 200,
     sigAspectRatio: 150 / 100,
+    photoFormat: "JPG / JPEG",
+    photoBackground: "Plain light",
+    sigFormat: "JPG / JPEG",
     description:
       "Kerala Public Service Commission (Thulasi portal — thulasi.psc.kerala.gov.in). Photo 150×200 px, under 30 KB, JPG/JPEG, plain light background, with the candidate's name and the date of photography printed at the bottom; signature 150×100 px, under 30 KB. The Thulasi portal is strict on file size — even 1 KB over is rejected.",
     source: {
@@ -967,6 +1042,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 132,
     photoAspectRatio: 132 / 170,
     sigAspectRatio: 170 / 132,
+    photoFormat: "JPEG / JPG",
+    photoBackground: "White",
+    sigFormat: "JPEG / JPG",
     description:
       "NIELIT DLC online examination application (BCC, CCC, CCC+, ECC and ACC). Photo 5-50 KB, 132×170 px, 3.5×4.5 cm, 96-300 DPI, JPEG/JPG, recent colour on white; signature 5-20 KB, 170×132 px, 4.5×3.5 cm, 96-200 DPI, JPEG/JPG, black or blue ink on white paper.",
     source: {
@@ -989,6 +1067,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigMinKb: 10,
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 3.5 / 1.5,
+    photoBackground: "Plain white or off-white",
     description:
       "DSSSB online application compatibility preset. Advertisement 02/2026 confirms a recent clear colour photo on a plain white/off-white background and a legible signature, but gives no photo/signature KB or dimensions. The stored photo 25-100 KB / 3.5×4.5 cm and signature 10-50 KB / 3.5×1.5 cm values come from archived 2012 OARS instructions; check the current upload screen before use.",
     source: {
@@ -1050,6 +1129,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigLimitKb: 100,
     sigMinKb: 50,
     photoAspectRatio: 35 / 45,
+    photoFormat: "JPG / JPEG",
+    photoBackground: "Plain colour",
+    sigFormat: "JPG / JPEG / PNG",
     description:
       "CRPF (Central Reserve Police Force) Constable (Technical & Tradesmen and Pioneer) 2026 recruitment. Photo 50-100 KB (35mm×45mm), JPG/JPEG, plain colour passport-size photo; signature 50-100 KB, JPG/JPEG/PNG, black ink on white paper — the official notice gives no pixel/cm dimension for the signature.",
     source: {
@@ -1071,6 +1153,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigMinKb: 10,
     photoAspectRatio: 3.5 / 4.5,
     sigAspectRatio: 4.0 / 2.0,
+    photoFormat: "JPEG",
+    photoBackground: "Plain white",
+    sigFormat: "JPEG",
     description:
       "CISF (Central Industrial Security Force) recruitment. Photo 20-50 KB (3.5cm×4.5cm), JPEG, plain white background; signature 10-20 KB (4.0cm×2.0cm), JPEG.",
     source: {
@@ -1129,6 +1214,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 10,
     sigLimitKb: 30,
     sigMinKb: 4,
+    photoFormat: "JPG",
+    photoBackground: "Light-shade plain",
+    sigFormat: "JPG / JPEG",
     description:
       "Historical EPFO Social Security Assistant preset from the 2023 direct-recruitment advertisement: photo 10-200 KB JPG on a light-shade plain background, with approximately 80% face coverage and no spectacles; signature 4-30 KB JPG/JPEG. EPFO has not published a newer SSA direct-recruitment notice, so check the current cycle before use.",
     source: {
@@ -1153,6 +1241,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigWidthPx: 140,
     sigHeightPx: 60,
     sigAspectRatio: 14 / 6,
+    photoFormat: "JPG / JPEG",
+    photoBackground: "Light or preferably white",
+    sigFormat: "JPG / JPEG",
     description:
       "Historical FCI Category III preset from Advertisement 01/2022: photo 20-50 KB, preferred 200×230 px, 4.5×3.5 cm, JPG/JPEG, recent colour on a light or preferably white background; signature 10-20 KB, preferred 140×60 px, JPG/JPEG, black ink. No current recruitment-cycle notice is published on FCI's recruitment page, so check the current notice before use.",
     source: {

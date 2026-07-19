@@ -13,7 +13,7 @@ const spec = COUNTRY_SPECS["uk"]!;
 export const metadata = pageMetadata({
   title: "UK Passport Photo Requirements 2026 — Free Online Maker",
   description:
-    "Official UK passport photo requirements: 35×45mm, light grey or cream background (NOT white). Make a compliant photo free — nothing uploaded, GDPR-safe.",
+    "UK passport photo requirements: prepare the listed 35×45mm dimensions and light grey or cream background free in your browser. Confirm the current HMPO instructions.",
   path: "/uk-passport-photo/",
 });
 
@@ -65,7 +65,7 @@ export default function Page() {
           softwareApplicationSchema({
             name: "UK Passport Photo Maker",
             description:
-              "Make a compliant UK passport photo free — 35×45mm, light grey background, no upload.",
+              "Prepare a UK passport photo at the selected 35×45mm frame and light background; confirm the current HMPO instructions.",
             url: "/uk-passport-photo/",
           }),
           faqSchema(FAQ_ITEMS),

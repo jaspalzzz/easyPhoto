@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     template: `%s — ${SITE_NAME}`,
   },
   description:
-    "Create a compliant passport or visa photo for free, or resize photos & " +
+    "Prepare a passport or visa photo for free, or resize photos & " +
     "signatures to selected exam-form targets. Confirm the current instructions. " +
     "100% in your browser — your photo " +
     "never leaves your device.",
@@ -94,7 +94,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: "Passport & Visa Photo Maker — Free, Private, In-Browser",
     description:
-      "Compliant passport & visa photos plus free image and PDF tools. " +
+      "Passport & visa photo preparation plus free image and PDF tools. " +
       "Everything runs in your browser — nothing is uploaded.",
     siteName: SITE_NAME,
     images: [{ url: "/og.png", width: 1200, height: 630, alt: SITE_NAME }],
@@ -102,7 +102,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Passport & Visa Photo Maker — Free, Private",
-    description: "Compliant passport & visa photos + free image/PDF tools, in your browser.",
+    description: "Passport & visa photo preparation + free image/PDF tools, in your browser.",
     images: ["/og.png"],
   },
 };

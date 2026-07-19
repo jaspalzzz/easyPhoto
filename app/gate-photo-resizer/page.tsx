@@ -30,7 +30,7 @@ export default function Page() {
       blurb={`Resize and compress your photo to ${spec.photoMinKb}–${spec.photoLimitKb} KB${photoDims} for the GATE 2026 online application — matches the IIT conducting authority's specifications.`}
       footnote="Your photo is processed entirely in your browser. No server uploads."
     >
-      <ExamSubmitTips hasSignature={spec.sigLimitKb !== undefined} className="mb-6" />
+      <ExamSubmitTips spec={spec} className="mb-6" />
 
       <div className="mb-6 flex gap-2 rounded-md bg-brand-soft/30 border border-brand/10 p-3 text-xs text-ink-soft leading-relaxed max-w-xl">
         <Info className="h-4 w-4 shrink-0 text-brand mt-0.5" />

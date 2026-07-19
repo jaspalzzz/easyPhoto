@@ -24,7 +24,7 @@ const mm = effectivePrintMm(spec);
 export const metadata = pageMetadata({
   title: "Baby & Infant Passport Photo Maker — Free, At Home",
   description:
-    "Make a compliant baby passport photo at home, free. Lay baby on a white " +
+    "Prepare a baby passport photo at home, free. Lay baby on a white " +
     "sheet, upload, and we crop to size and clean the background — nothing is " +
     "uploaded.",
   path: "/baby-passport-photo/",
@@ -52,7 +52,7 @@ const STEPS: { h: string; p: string }[] = [
   },
   {
     h: "4. Upload and let the tool finish it",
-    p: `Drop your chosen photo here. We crop to the exact ${mm.width}×${mm.height}mm head-size and apply a clean, compliant white background, then check it before you download.`,
+    p: `Drop your chosen photo here. We crop to the selected ${mm.width}×${mm.height}mm frame and apply a clean white background. Inspect the result and confirm the current minor-photo guidance before use.`,
   },
 ];
 
@@ -92,7 +92,7 @@ export default function BabyPassportPhotoPage() {
           softwareApplicationSchema({
             name: "Baby & Infant Passport Photo Maker",
             description:
-              "Make a compliant baby or infant passport photo at home — exact size, clean white background, compliance-checked, free and private.",
+              "Prepare a baby or infant passport photo at the selected size and white background in your browser, then confirm the current minor-photo guidance.",
             url: "/baby-passport-photo/",
           }),
           faqSchema(BABY_FAQS),

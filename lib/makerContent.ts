@@ -91,7 +91,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "Does a US passport photo need a white background?",
-        a: "It needs a plain white or off-white background with no shadows. The tool applies a compliant white background for you.",
+        a: "It needs a plain white or off-white background with no shadows. The tool applies the selected white background; inspect the result before submitting.",
       },
       {
         q: "How recent does my US passport photo have to be?",
@@ -102,7 +102,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
 
   "us-visa-photo-maker": {
     intro:
-      "US visa applications (the DS-160) use the same 2×2 inch composition as a passport, but the digital upload has its own rules. You need a square image at least 600×600 pixels, in JPEG, under 240 KB. This maker produces a compliant photo you can then compress to the upload limit.",
+      "US visa applications (the DS-160) use the same 2×2 inch composition as a passport, but the digital upload has its own rules. You need a square image at least 600×600 pixels, in JPEG, under 240 KB. This maker prepares the recorded square composition; confirm the current DS-160 instructions before upload.",
     sections: [
       {
         h: "DS-160 digital photo requirements",
@@ -198,7 +198,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "Does a Canada visa photo need a white background?",
-        a: "A plain white or light-coloured, evenly lit background with no shadows. The tool applies a compliant background automatically.",
+        a: "A plain white or light-coloured, evenly lit background with no shadows. The tool applies the selected recorded background automatically; inspect the result before upload.",
       },
       {
         q: "Can I use the same photo for a study or work permit?",
@@ -217,7 +217,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
     sections: [
       {
         h: "Why a UK passport photo isn't white",
-        p: "Plain white is one of the most common UK rejection reasons. HM Passport Office wants a plain light grey or cream background with no shadows or patterns. This maker defaults to a compliant light background, so you don't fail the most avoidable check.",
+        p: "HM Passport Office lists a plain light grey or cream background with no shadows or patterns. This maker defaults to that recorded light background; inspect the result and confirm the current guidance before submitting.",
       },
       {
         h: "UK passport photo specification",
@@ -250,7 +250,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
 
   "uk-visa-photo-maker": {
     intro:
-      "UK visa (UKVI) photos follow a 45×35mm digital standard with a plain light background and a neutral expression. This maker produces a compliant photo you can upload or compress to the required file size.",
+      "UK visa (UKVI) photos use a recorded 45×35mm frame with a plain light background and a neutral expression. This maker prepares those selected properties; confirm the current UKVI workflow before upload.",
     sections: [
       {
         h: "UK visa photo requirements",
@@ -258,7 +258,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         h: "Background colour matters here too",
-        p: "As with UK passports, a plain light grey or cream background is the safe choice. Avoid pure white and any pattern or shadow. The maker sets a compliant light background automatically so the photo isn't bounced for the background.",
+        p: "As with UK passports, this preset uses a plain light grey or cream background. Avoid patterns and shadows. The maker applies the selected light background automatically; inspect it and confirm the current UKVI instructions before upload.",
       },
       {
         h: "Uploading your UK visa photo",
@@ -272,7 +272,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "What background does a UK visa photo need?",
-        a: "A plain light-coloured background, with light grey or cream being safest. Avoid pure white, patterns and shadows. The tool applies a compliant background for you.",
+        a: "A plain light-coloured background. This preset uses light grey or cream; avoid patterns and shadows, then confirm the current application instructions before upload.",
       },
       {
         q: "Is a UK visa photo the same as a UK passport photo?",
@@ -287,7 +287,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
 
   "australia-passport-photo-maker": {
     intro:
-      "An Australian passport photo is 35×45mm on a plain white or light grey background, following the Australian Passport Office. There's one extra step: your guarantor signs the back of the printed photo. This maker creates the compliant image, and the endorsement is added after printing.",
+      "An Australian passport photo is 35×45mm on a plain white or light grey background, following the Australian Passport Office. There's one extra step: your guarantor signs the back of the printed photo. This maker prepares the selected image dimensions and background; the endorsement is added after printing.",
     sections: [
       {
         h: "Australia passport photo specification",
@@ -305,7 +305,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
     faqs: [
       {
         q: "Does an Australian passport photo need a guarantor's signature?",
-        a: "Yes. Your guarantor has to endorse the back of one printed photo confirming it's a true likeness, signed and dated. This tool makes the compliant photo, and the signature is added by hand after printing.",
+        a: "Yes. Your guarantor has to endorse the back of one printed photo confirming it's a true likeness, signed and dated. This tool prepares the selected photo dimensions and background; the signature is added by hand after printing.",
       },
       {
         q: "What size is an Australian passport photo?",
@@ -313,7 +313,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "Can the background be white for an Australian passport?",
-        a: "Plain white or light grey are both acceptable, as long as it's uniform with no shadows. The tool applies a compliant background for you.",
+        a: "The recorded options are plain white or light grey, uniform and without shadows. The tool applies the selected background; inspect the result before submitting.",
       },
       {
         q: "Can I take an Australian passport photo at home?",
@@ -332,7 +332,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         h: "No guarantor needed for a visa photo",
-        p: "The back-of-photo guarantor declaration applies to the Australian passport, not to visa applications. For an online visa you simply attach a compliant digital photo in ImmiAccount, so there's nothing to sign. Just upload the file this maker produces.",
+        p: "The back-of-photo guarantor declaration applies to the Australian passport, not to visa applications. For an online visa, prepare the digital photo for ImmiAccount, check it against the current application instructions, and upload only after reviewing the result.",
       },
       {
         h: "Uploading to ImmiAccount",
@@ -350,7 +350,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "Can I upload this photo to ImmiAccount?",
-        a: "Yes. It produces a compliant digital photo. If the application limits the file size, use the resize-to-KB tool to fit the cap while keeping the photo clear.",
+        a: "It prepares the selected digital dimensions and background. If the application limits the file size, use the resize-to-KB tool, then inspect the result and confirm the current instructions.",
       },
       {
         q: "Is an Australian visa photo the same as a passport photo?",
@@ -361,7 +361,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
 
   "india-visa-photo-maker": {
     intro:
-      "Visiting India? The Indian e-Visa photo isn't the same as a passport photo. It's a square image (350–1000px), JPEG, on a plain white or light background, uploaded to the e-Visa portal. This maker produces a compliant square photo you can then size to the file limit.",
+      "Visiting India? The Indian e-Visa photo isn't the same as a passport photo. It's a square image (350–1000px), JPEG, on a plain white or light background, uploaded to the e-Visa portal. This maker prepares that recorded square frame; confirm the current upload instructions before use.",
     sections: [
       {
         h: "Indian e-Visa photo requirements",
@@ -410,7 +410,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         h: "One photo for any Schengen country",
-        p: "Because the standard is shared, the same 35×45mm light-grey photo is accepted whether you apply through Germany, France, Italy, Spain or any other Schengen member. Still, check your specific consulate's notes, since a few add their own preferences.",
+        p: "Many Schengen applications use the same 35×45mm frame, but background and composition instructions can vary by member state and consulate. Prepare the selected light-grey version here, then check the destination consulate's current notes before submitting.",
       },
     ],
     faqs: [
@@ -424,7 +424,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "Does the same photo work for every Schengen country?",
-        a: "Yes. The 35×45mm ICAO standard is shared across all 29 Schengen countries, so one compliant photo works whether you apply through Germany, France, Italy, Spain and so on.",
+        a: "Do not assume one file works everywhere. Many Schengen applications use a 35×45mm frame, but each destination consulate can publish additional background or composition instructions. Confirm each application before reusing a photo.",
       },
       {
         q: "Are glasses allowed in a Schengen visa photo?",

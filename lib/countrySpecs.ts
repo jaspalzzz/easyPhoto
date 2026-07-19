@@ -343,7 +343,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "Australian passport photos are 35-40mm wide x 45-50mm high (we use " +
       "35x45mm) with the head 32-36mm chin-to-crown on a plain white or light " +
       "grey background. The PRINTED passport photo must be endorsed (signed) on " +
-      "the back by your guarantor — this tool makes the compliant photo; you " +
+      "the back by your guarantor — this tool prepares the selected dimensions and background; you " +
       "still need the guarantor's signature. Verify current specs at " +
       "passports.gov.au before submitting.",
     source: "https://www.passports.gov.au/help/passport-photos",
@@ -354,8 +354,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     advisory:
       "For the printed Australian passport, your guarantor must endorse the back " +
       "of one photo in black pen — “This is a true photo of [full name]” — " +
-      "and also sign section 11 of the form. This tool produces the compliant " +
-      "image; the endorsement is added by hand after printing.",
+      "and also sign section 11 of the form. This tool prepares the selected " +
+      "image dimensions and background; the endorsement is added by hand after printing.",
   },
 
   // ─────────────────────────────────────────────────────────────

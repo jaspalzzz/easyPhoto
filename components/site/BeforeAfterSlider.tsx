@@ -17,7 +17,7 @@ export function BeforeAfterSlider({
   beforeSrc,
   afterSrc,
   beforeLabel = "Your selfie",
-  afterLabel = "Compliant",
+  afterLabel = "Prepared",
   caption,
   className = "",
   priority = false,
@@ -79,7 +79,7 @@ export function BeforeAfterSlider({
         <div className="absolute inset-0">
           <img
             src={afterSrc}
-            alt="Compliant passport photo after processing"
+            alt="Prepared passport photo after processing"
             className="h-full w-full object-cover object-top"
             draggable={false}
             {...(priority ? { fetchPriority: "high" as const, loading: "eager" as const } : {})}

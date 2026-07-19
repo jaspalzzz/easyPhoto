@@ -152,7 +152,8 @@ export default function Page() {
         ). Ordinary adult Indian applicants are photographed at the PSK/POPSK.
         A generic square crop won&apos;t match every workflow. The{" "}
         <Link href="/passport-photo/">passport photo maker</Link> sizes the head
-        to the exact band per country, which removes this problem entirely.
+        to the selected recorded band, which can reduce this common mismatch.
+        Inspect the result and confirm the current authority guidance before use.
       </p>
 
       <p>The size and background most countries expect:</p>
@@ -225,9 +226,9 @@ export default function Page() {
       </p>
 
       <p>
-        Get these six right and rejection becomes very unlikely. The fastest way
-        is to let the tool handle size, background and the compliance check. Before
-        you print or upload, run your photo through the free{" "}
+        Addressing these six issues reduces common measurable mismatches, but it
+        cannot guarantee an authority&apos;s decision. Before you print or upload,
+        run your photo through the free{" "}
         <Link href="/tools/photo-rejection-check/">passport photo rejection checker</Link>
         {" "}— it tests face centering, background, tilt, and 6 other ICAO criteria
         on your device without uploading anything.

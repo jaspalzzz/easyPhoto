@@ -65,7 +65,7 @@ export default function Page() {
           softwareApplicationSchema({
             name: "Schengen Visa Photo Maker",
             description:
-              "Make a compliant Schengen visa photo free — 35×45mm, light grey background, no upload.",
+              "Prepare a Schengen visa photo at the selected 35×45mm frame and light grey background; confirm the destination consulate's current instructions.",
             url: "/schengen-visa-photo/",
           }),
           faqSchema(FAQ_ITEMS),
