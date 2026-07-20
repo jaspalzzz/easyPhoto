@@ -234,7 +234,7 @@ export function PdfSplitTool() {
             )}
 
             <div className="flex justify-end pt-2">
-              <Button variant="outline" size="sm" onClick={() => { setFile(null); setPages([]); setSelected([]); setResultBlob(null); }}>
+              <Button variant="outline" size="sm" onClick={() => { setFile(null); setPages([]); setSelected([]); setResultBlob(null); setError(null); }}>
                 Choose another file
               </Button>
             </div>

@@ -160,7 +160,7 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
               <h4 className="font-semibold text-sm truncate max-w-xs" title={file.name}>
                 {file.name} <span className="text-muted-foreground font-normal">· {formatKb(file.size)}</span>
               </h4>
-              <Button variant="ghost" size="sm" onClick={() => { setFile(null); setResult(null); setResultBlob(null); }}>Choose another file</Button>
+              <Button variant="ghost" size="sm" onClick={() => { setFile(null); setResult(null); setResultBlob(null); setError(null); }}>Choose another file</Button>
             </div>
 
             <div>

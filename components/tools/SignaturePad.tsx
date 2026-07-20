@@ -337,9 +337,18 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
             )}
           </div>
 
-          <div className="flex gap-2 justify-end">
+          {/* Stacked on phones: "Use Drawn Signature" plus Cancel needs ~268px but a
+              360px viewport leaves only ~248px inside the card, and both buttons are
+              whitespace-nowrap so they overflow the card instead of shrinking. */}
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             {onCancel && (
-              <Button id="sig-pad-cancel-btn" variant="outline" size="sm" onClick={onCancel}>
+              <Button
+                id="sig-pad-cancel-btn"
+                variant="outline"
+                size="sm"
+                onClick={onCancel}
+                className="w-full sm:w-auto"
+              >
                 Cancel
               </Button>
             )}
@@ -349,6 +358,7 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
               size="sm"
               onClick={applyDrawn}
               disabled={!hasDrawn}
+              className="w-full sm:w-auto"
             >
               <Check className="h-4 w-4" /> Use Drawn Signature
             </Button>

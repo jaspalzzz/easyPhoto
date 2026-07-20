@@ -169,7 +169,7 @@ export function PdfPageNumbersTool() {
                 {file.name}{" "}
                 <span className="font-normal text-muted-foreground">· {formatKb(file.size)}</span>
               </h4>
-              <Button variant="ghost" size="sm" onClick={() => { setFile(null); setDone(false); setResultBlob(null); }}>
+              <Button variant="ghost" size="sm" onClick={() => { setFile(null); setDone(false); setResultBlob(null); setError(null); }}>
                 Choose another file
               </Button>
             </div>

@@ -143,7 +143,7 @@ export function WatermarkPdfTool() {
                 {file.name}{" "}
                 <span className="font-normal text-muted-foreground">· {formatKb(file.size)}</span>
               </h4>
-              <Button variant="ghost" size="sm" onClick={() => { setFile(null); setDone(false); }}>
+              <Button variant="ghost" size="sm" onClick={() => { setFile(null); setDone(false); setError(null); }}>
                 Choose another file
               </Button>
             </div>
