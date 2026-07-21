@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, AlertTriangle } from "lucide-react";
+import { ExternalLink, AlertTriangle, ArrowDown } from "lucide-react";
 import { PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
 import {
   getPortalSpec,
@@ -16,13 +16,14 @@ import { portalFaqItems, portalRejectionReasons } from "@/lib/faqs";
 import { SUB_EXAM_RESIZERS, RESIZER_YEAR } from "@/lib/subExamResizers";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, faqSchema, webPageSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, webPageSchema, softwareApplicationSchema } from "@/lib/schema";
 import { Faq } from "@/components/site/Faq";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { AUTHOR } from "@/lib/author";
 import { PortalResizer } from "@/components/tools/PortalResizer";
 import { AffiliateCta } from "@/components/site/AffiliateCta";
 import { SpecificationProvenance } from "@/components/site/SpecificationProvenance";
+import { buttonVariants } from "@/components/ui/button";
 
 // One static page per exam (the cited Spec Database).
 export function generateStaticParams() {
@@ -165,6 +166,15 @@ export default async function Page({
             ...(prov.verifiedOn ? { dateModified: prov.verifiedOn } : {}),
             author: { name: AUTHOR.name, url: absoluteUrl(AUTHOR.url) },
           }),
+          // The resizer below is a real embedded tool, not just a spec table —
+          // give it its own SoftwareApplication node so AI Overviews and Google
+          // have a structured signal a tool exists on this page, not only prose.
+          softwareApplicationSchema({
+            name: `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Resizer`,
+            description: `Free browser-based resizer for the ${spec.name.split(" (")[0]} photo${sig ? " and signature" : ""} target.`,
+            url: path,
+            ...(prov.verifiedOn ? { dateModified: prov.verifiedOn } : {}),
+          }),
           faqSchema(faqItems),
         ]}
       />
@@ -208,6 +218,18 @@ export default async function Page({
           sourceLabel={prov.sourceLabel}
         />
       </header>
+
+      {/* Above-the-fold jump link to the embedded resizer further down this
+          same page. On mobile the tool section can sit several screens below
+          the spec table; this gives a visitor who already knows the numbers
+          a one-tap path to the tool without hunting for it. Pure in-page
+          anchor — no new route, no change to the H1 or section order. */}
+      <a
+        href="#resizer"
+        className={buttonVariants({ variant: "cta", className: "min-h-11 w-full sm:w-auto" })}
+      >
+        Resize your {spec.name.split(" (")[0]} photo{sig ? " & signature" : ""} now <ArrowDown className="h-4 w-4" />
+      </a>
 
       {/* The spec table — the authoritative, citable data */}
       <section className="grid gap-8 md:grid-cols-2">
