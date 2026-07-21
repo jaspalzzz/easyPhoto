@@ -83,6 +83,17 @@ export function ToolPage({
             {title}
           </h1>
           <p className="text-[15px] leading-relaxed text-muted-foreground">{blurb}</p>
+          {/* Visible trust signals, up where the visitor decides whether to use
+              the tool. Previously this promise lived only in the meta
+              description and a footnote at the very bottom of the page. */}
+          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium text-ink-soft">
+            <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
+            <span>Nothing leaves your browser</span>
+            <span aria-hidden className="text-ink-faint">·</span>
+            <span>No sign-up</span>
+            <span aria-hidden className="text-ink-faint">·</span>
+            <span>No watermark</span>
+          </p>
           {dateModified && (
             <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-[10px] font-bold text-brand">JK</span>

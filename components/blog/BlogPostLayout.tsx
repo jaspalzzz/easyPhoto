@@ -5,7 +5,7 @@ import { getPost, relatedPosts } from "@/lib/blog";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { ReadingProgress } from "@/components/blog/ReadingProgress";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, faqSchema, ORG_ID } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, ORG_ID, AUTHOR_ID } from "@/lib/schema";
 import type { FaqItem } from "@/components/site/Faq";
 import { absoluteUrl } from "@/lib/seo";
 import { AUTHOR } from "@/lib/author";
@@ -59,6 +59,7 @@ export function BlogPostLayout({
               },
               author: {
                 "@type": "Person",
+                "@id": AUTHOR_ID,
                 name: AUTHOR.name,
                 url: absoluteUrl(AUTHOR.url),
                 sameAs: AUTHOR.sameAs,

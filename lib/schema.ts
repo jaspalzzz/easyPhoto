@@ -12,6 +12,14 @@ import { AUTHOR } from "./author";
 
 export const ORG_ID = `${SITE_URL}/#organization`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
+/**
+ * Canonical author node @id. The full Person (name, bio, sameAs, knowsAbout…)
+ * is defined once on /authors/jaspal-kumar/; every other page keeps its own
+ * inline author properties (Google evaluates structured data per page and does
+ * not resolve @id across pages) but shares this @id so the entity is identified
+ * consistently everywhere.
+ */
+export const AUTHOR_ID = `${absoluteUrl(AUTHOR.url)}#person`;
 
 /** Publisher/brand. Add real social profiles to `sameAs` when available. */
 export function organizationSchema() {
@@ -53,6 +61,7 @@ export function organizationSchema() {
     // Named founder strengthens entity disambiguation for AI knowledge graphs.
     founder: {
       "@type": "Person",
+      "@id": AUTHOR_ID,
       name: AUTHOR.name,
       url: absoluteUrl(AUTHOR.url),
       sameAs: AUTHOR.sameAs,
@@ -180,7 +189,7 @@ export function webPageSchema(opts: {
     isPartOf: { "@id": WEBSITE_ID },
     ...(opts.dateModified ? { dateModified: opts.dateModified } : {}),
     ...(opts.author
-      ? { author: { "@type": "Person", name: opts.author.name, url: opts.author.url } }
+      ? { author: { "@type": "Person", "@id": AUTHOR_ID, name: opts.author.name, url: opts.author.url } }
       : {}),
   };
 }

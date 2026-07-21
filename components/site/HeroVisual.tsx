@@ -114,7 +114,7 @@ export function HeroVisual() {
               <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-[8px] font-black sm:h-4 sm:w-4 sm:text-xs dark:bg-emerald-900/40">
                 ✓
               </span>
-              <span className="min-w-0 leading-tight sm:truncate">{item}</span>
+              <span className="min-w-0 leading-tight">{item}</span>
             </li>
           ))}
         </ul>

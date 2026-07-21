@@ -258,14 +258,23 @@ export default function Page() {
 
       <p>
         An ordinary adult Indian passport applicant does not submit a print. For
-        a child below four, the{" "}
+        a child below four, the official{" "}
+        <a
+          href="https://www.passportindia.gov.in/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          Passport Seva
+        </a>{" "}
+        rules require a recent 35×45 mm white-background photograph and specify
+        its composition; our{" "}
         <Link href="/blog/indian-passport-photo-requirements/" className="text-brand underline">
-          MEA passport photo guidelines
+          Indian passport photo requirements guide
         </Link>{" "}
-        require a recent 35×45 mm white-background photograph and specify its
-        composition. Those requirements do not make every home print acceptable
-        or guarantee an application outcome. Follow the current guidance and ask
-        Passport Seva if the required print method is unclear.
+        breaks these down. Those requirements do not make every home print
+        acceptable or guarantee an application outcome. Follow the current
+        guidance and ask Passport Seva if the required print method is unclear.
       </p>
 
       <p>
