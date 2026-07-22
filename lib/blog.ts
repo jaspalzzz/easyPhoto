@@ -23,6 +23,17 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "sir-enumeration-form-photo-2026",
+    title: "SIR Form Photo Size 2026 — What the ECI Actually Requires",
+    description:
+      "The online SIR enumeration form has no photo-upload step and the ECI publishes no SIR photo size. Here is what is actually required, and when a standard voter photo genuinely applies.",
+    date: "July 22, 2026",
+    dateISO: "2026-07-22",
+    excerpt:
+      "Millions are searching for a \"SIR photo size\" during the electoral-roll revision. The online enumeration form has no photo upload, and the ECI publishes no such spec — here is what is actually true.",
+    readMins: 5,
+  },
+  {
     slug: "pan-vs-voter-id-vs-driving-licence-photo",
     title: "PAN vs Voter ID vs Driving Licence Photo: What's Different (2026)",
     description:
@@ -462,6 +473,7 @@ export function getPost(slug: string): BlogPost | undefined {
  */
 const CLUSTERS: Record<string, string[]> = {
   govId: [
+    "sir-enumeration-form-photo-2026",
     "indian-government-id-photo-requirements",
     "pan-card-photo-size",
     "voter-id-photo-requirements-2026",
