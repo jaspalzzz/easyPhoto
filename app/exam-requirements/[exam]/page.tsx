@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ExternalLink, AlertTriangle, ArrowDown } from "lucide-react";
@@ -24,6 +25,7 @@ import { PortalResizer } from "@/components/tools/PortalResizer";
 import { AffiliateCta } from "@/components/site/AffiliateCta";
 import { SpecificationProvenance } from "@/components/site/SpecificationProvenance";
 import { buttonVariants } from "@/components/ui/button";
+import { examGuideLinks } from "@/lib/examGuides";
 
 // One static page per exam (the cited Spec Database).
 export function generateStaticParams() {
@@ -149,6 +151,7 @@ export default async function Page({
   const faqItems = portalFaqItems(spec);
   const related = relatedPortals(exam, 6);
   const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(exam)];
+  const guideLinks = examGuideLinks(exam);
 
   return (
     <div className="container max-w-4xl space-y-8 py-10">
@@ -474,27 +477,27 @@ export default async function Page({
 
         <PortalResizer portalId={exam} />
 
-        {exam === "voter-id" && (
+        {/* Read-next guides. This used to be hardcoded for voter-id alone,
+            which left 48 exam pages with no route to the longer explanation.
+            The map only offers a guide that genuinely covers the portal. */}
+        {guideLinks.length > 0 && (
           <div className="rounded-lg border border-hairline bg-card p-4">
             <h3 className="text-sm font-semibold text-ink">
-              Voter ID photo guides
+              Before you upload
             </h3>
             <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-              Need the full NVSP/ECI rules before upload? Read the{" "}
-              <Link
-                href="/blog/voter-id-photo-requirements-2026/"
-                className="font-medium text-brand hover:underline"
-              >
-                Voter ID photo requirements guide
-              </Link>
-              {" "}
-              and compare all ID-card limits in the{" "}
-              <Link
-                href="/blog/indian-government-id-photo-requirements/"
-                className="font-medium text-brand hover:underline"
-              >
-                Indian government ID photo guide
-              </Link>
+              Read the{" "}
+              {guideLinks.map((guide, i) => (
+                <Fragment key={guide.slug}>
+                  {i > 0 && (i === guideLinks.length - 1 ? " and " : ", ")}
+                  <Link
+                    href={`/blog/${guide.slug}/`}
+                    className="font-medium text-brand hover:underline"
+                  >
+                    {guide.label}
+                  </Link>
+                </Fragment>
+              ))}
               .
             </p>
           </div>
