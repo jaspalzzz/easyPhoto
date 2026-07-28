@@ -47,3 +47,17 @@
 /upsc-photo-resizer/ /exam-requirements/upsc/ 301
 /upsc-signature-resizer/ /exam-requirements/upsc/ 301
 /voter-id-photo-resizer/ /exam-requirements/voter-id/ 301
+
+# Two form-resizer pages kept earning clicks after the June consolidation
+# noindexed them, while their /exam-requirements/ counterparts stayed invisible
+# (ccc-nielit: 42 clicks at position 5 vs 0 impressions for the counterpart).
+# A noindex discards the ranking signal; a 301 transfers it — which is how the
+# dedicated */-photo-resizer/ pages above were retired successfully. The
+# counterpart pages embed the same resizer, so nothing is lost for the visitor.
+/tools/form-resizer/ccc-nielit/ /exam-requirements/ccc-nielit/ 301
+/tools/form-resizer/cisf/ /exam-requirements/cisf/ 301
+
+# Duplicate of /blog/indian-passport-photo-requirements/ (same PSK-capture vs
+# under-four-print split, 566 words, zero impressions). The surviving post
+# carries a superset of its sources, so the merge loses no citation.
+/blog/indian-passport-photo-size-rules/ /blog/indian-passport-photo-requirements/ 301

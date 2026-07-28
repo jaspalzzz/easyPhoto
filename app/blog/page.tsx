@@ -17,7 +17,7 @@ export const metadata = pageMetadata({
 
 /* Sidebar "popular searches" — real internal links (discovery + link-equity). */
 const POPULAR_SEARCHES = [
-  { label: "Indian Passport Photo Size",   href: "/blog/indian-passport-photo-size-rules/" },
+  { label: "Indian Passport Photo Size",   href: "/blog/indian-passport-photo-requirements/" },
   { label: "US Visa Photo Requirements",   href: visaPath("us")                            },
   { label: "SSC Photo Size & Dimensions",  href: "/ssc-photo-resizer/"                     },
   { label: "Compress a Photo to 50 KB",    href: "/tools/resize-kb/"                       },

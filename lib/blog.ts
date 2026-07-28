@@ -79,18 +79,6 @@ export const BLOG_POSTS: BlogPost[] = [
     readMins: 6,
   },
   {
-    slug: "indian-passport-photo-size-rules",
-    title: "Indian Passport Photo Size & Rules (Passport Seva 2026)",
-    description:
-      "Indian passport photo rules by workflow: PSK/POPSK capture for adults, a 45×35 mm white-background print for children below four, and separate overseas guidance.",
-    date: "June 18, 2026",
-    dateISO: "2026-06-18",
-    updatedISO: "2026-07-13",
-    excerpt:
-      "The domestic adult workflow uses a photo captured at the PSK/POPSK. Children below four carry a 45×35 mm print; overseas, OCI and e-Visa photo workflows are separate.",
-    readMins: 6,
-  },
-  {
     slug: "cutout-pro-alternative-india",
     title: "Free Cutout Pro Alternative India: No Subscription, No Watermark, No Upload",
     description:
@@ -172,7 +160,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "why-exam-photo-signature-rejected",
-    title: "Exam Photo Rejected? 7 Reasons SSC, IBPS & UPSC Say No (2026)",
+    title: "Exam Photo Rejected? 6 Reasons SSC, IBPS & UPSC Say No (2026)",
     description:
       "Common photo and signature problems across upload and live-capture exam workflows, with bounded fixes and links to current requirements.",
     date: "June 13, 2026",
@@ -496,7 +484,6 @@ const CLUSTERS: Record<string, string[]> = {
   ],
   passport: [
     "indian-passport-photo-requirements",
-    "indian-passport-photo-size-rules",
     "how-to-compress-photo-to-50kb",
     "how-to-print-passport-photos-at-home",
     "what-is-dpi-and-how-to-change-it",

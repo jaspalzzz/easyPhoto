@@ -107,7 +107,7 @@ export default function Page() {
         This is a quick summary; for the complete, regularly-verified Passport Seva
         workflows — domestic centre capture, the below-four exception, overseas
         guidance, OCI and e-Visa differences — see our{" "}
-        <Link href="/blog/indian-passport-photo-size-rules/">Indian passport photo size &amp; rules</Link>{" "}
+        <Link href="/blog/indian-passport-photo-requirements/">Indian passport photo rules</Link>{" "}
         guide, the canonical reference we keep updated.
       </p>
 

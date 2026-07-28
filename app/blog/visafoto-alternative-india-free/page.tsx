@@ -63,7 +63,7 @@ export default function Page() {
         checks your photo against the named authority&apos;s published requirements before you download it. For a Schengen or US
         visa where another review is useful, that paid service may be worth
         considering. Its India{" "}
-        <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">35×45 mm crop</Link>{" "}
+        <Link href="/blog/indian-passport-photo-requirements/" className="text-brand underline">35×45 mm crop</Link>{" "}
         can be used for the below-four printed-photo exception. The tool is polished and the
         output quality is high.
       </p>

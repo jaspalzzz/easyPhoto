@@ -36,7 +36,7 @@ export default function Page() {
         you can make exactly two complete passport photos before the credits run out. After that,
         the cheapest plan is a monthly subscription starting at ₹246.50 for 80 credits (pricing
         confirmed June 2026 from cutout.pro/image-pricing). For someone who needs one{" "}
-        <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">Indian passport photo</Link>{" "}
+        <Link href="/blog/indian-passport-photo-requirements/" className="text-brand underline">Indian passport photo</Link>{" "}
         per year for a renewal, a monthly subscription makes no sense.
       </p>
 
@@ -149,7 +149,7 @@ export default function Page() {
 
       <p>
         easyPhoto makes{" "}
-        <Link href="/blog/indian-passport-photo-size-rules/" className="text-brand underline">the 35×45 mm under-four passport print</Link>{" "}
+        <Link href="/blog/indian-passport-photo-requirements/" className="text-brand underline">the 35×45 mm under-four passport print</Link>{" "}
         on a white background for free, with no account and no server upload. Ordinary adult applicants are photographed at the PSK/POPSK. Every operation runs in
         your browser — you can verify this yourself by watching the network tab while the tool
         processes your photo. No image upload request is sent.
