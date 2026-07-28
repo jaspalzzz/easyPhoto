@@ -154,6 +154,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Current SSC forms capture the photo live; the cited notice separately lists a 10–20 KB JPG/JPEG signature. See what is published and what is not.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
+    updatedISO: "2026-07-18",
     excerpt:
       "SSC now requires live photo capture — no gallery uploads. See the published signature band, live-camera preparation and common measurable problems for CGL and CHSL.",
     readMins: 7,
@@ -165,6 +166,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Common photo and signature problems across upload and live-capture exam workflows, with bounded fixes and links to current requirements.",
     date: "June 13, 2026",
     dateISO: "2026-06-13",
+    updatedISO: "2026-07-18",
     excerpt:
       "“Photo not as per specification.” “Invalid signature.” Exam portals reject for a handful of predictable reasons — here's every one, and the quick fix for each.",
     readMins: 6,
@@ -333,6 +335,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Passport photo sizes vary by country: 35×45 mm for most, 2×2 in for the US, 50×70 mm for Canada. Head height matters too. Get the exact spec per country.",
     date: "June 5, 2026",
     dateISO: "2026-06-05",
+    updatedISO: "2026-07-12",
     excerpt:
       "2×2 inch, 35×45mm, 50×70mm: passport photo size isn't universal. Here's every major country's spec and how to hit it exactly.",
     readMins: 6,
@@ -366,6 +369,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "White isn't universal. The UK requires grey or cream, Schengen prefers grey, the US wants white. The correct background per country and how to set it.",
     date: "June 2, 2026",
     dateISO: "2026-06-02",
+    updatedISO: "2026-07-12",
     excerpt:
       "Using the wrong background shade is a top reason photos bounce. Here's the right color for each country, and how to apply it.",
     readMins: 5,
@@ -466,6 +470,7 @@ const CLUSTERS: Record<string, string[]> = {
     "pan-card-photo-size",
     "voter-id-photo-requirements-2026",
     "driving-licence-photo-size-sarathi",
+    "pan-vs-voter-id-vs-driving-licence-photo",
   ],
   signature: [
     "how-to-sign-on-image-online",
@@ -523,6 +528,13 @@ export function clusterOf(slug: string): string | undefined {
  * Up to `n` posts to show as "Keep reading": same-cluster posts first (most
  * relevant), then fill any remaining slots in array order. Never returns the
  * current post.
+ *
+ * The cluster is rotated by this post's own position in it. Slicing the
+ * unrotated list returned the first `n` members of the cluster to every post in
+ * that cluster, so a 16-member cluster surfaced the same two posts 16 times and
+ * left 20 of 39 posts with no inbound "Keep reading" link at all. Rotating by
+ * index spreads the same number of links evenly and stays deterministic, which
+ * a static export needs for reproducible builds.
  */
 export function relatedPosts(slug: string, n = 2): BlogPost[] {
   const cluster = clusterOf(slug);
@@ -530,7 +542,11 @@ export function relatedPosts(slug: string, n = 2): BlogPost[] {
   const sameCluster = cluster
     ? others.filter((p) => clusterOf(p.slug) === cluster)
     : [];
+  const offset = cluster ? Math.max(0, CLUSTERS[cluster].indexOf(slug)) : 0;
+  const rotated = sameCluster.map(
+    (_, i) => sameCluster[(i + offset) % sameCluster.length]
+  );
   const sameSlugs = new Set(sameCluster.map((p) => p.slug));
   const rest = others.filter((p) => !sameSlugs.has(p.slug));
-  return [...sameCluster, ...rest].slice(0, n);
+  return [...rotated, ...rest].slice(0, n);
 }
