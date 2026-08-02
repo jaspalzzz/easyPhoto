@@ -497,10 +497,15 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   netherlands: {
     id: "netherlands",
     label: "Netherlands",
-    documents: ["Netherlands Schengen Visa", "MVV / residence", "Dutch passport"],
+    // ⚠ SCOPED to the visa routes. netherlandsworldwide.nl publishes the 26-30mm
+    // chin-to-crown figure for the DUTCH passport, ID card and driving licence —
+    // NOT for a Schengen visa. This record drives /netherlands-visa-photo-maker/,
+    // so it follows the EU Visa Code band the other Schengen states use. Applying
+    // the Dutch national head height to a visa produces a head ~6mm too small.
+    documents: ["Netherlands Schengen visa", "MVV (long-stay entry visa)"],
     printMm: { width: 35, height: 45 },
-    headHeightMm: { min: 26, max: 30 }, // chin to crown, ages 11+ (official)
-    headPercentOfFrame: { min: 58, max: 67 },
+    headHeightMm: { min: 32, max: 36 },
+    headPercentOfFrame: { min: 70, max: 80 },
     background: {
       description: "Plain, uniform light grey, light blue or white; no shadows",
       hex: "#D3D3D3",
@@ -511,14 +516,24 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       fileSizeKb: null,
       formats: ["jpg"],
     },
-    dpiMin: 400,
+    dpiMin: 300,
     glasses: "not permitted unless medically required",
     smileAllowed: "neutral only (biometric)",
     notes:
-      "Per the official Dutch government portal: 35x45mm, colour, face 26-30mm " +
-      "chin-to-crown (ages 11+), face width 16-20mm, plain light grey / light blue " +
-      "/ white background, max 6 months old, min 400 DPI for prints.",
-    source: "https://www.netherlandsworldwide.nl/passport-id-card/photo-requirements",
+      "The Netherlands is a Schengen state, so a Netherlands Schengen visa or " +
+      "MVV photo follows the EU Visa Code and ICAO Doc 9303: 35x45mm, colour, " +
+      "head 32-36mm chin-to-crown (roughly 70-80% of the frame), plain light " +
+      "background, taken within the last 6 months. The Dutch government's own " +
+      "photo page is a DIFFERENT standard - it publishes 26-30mm chin-to-crown " +
+      "for the Dutch passport, ID card and driving licence, and that figure " +
+      "does not apply to a visa application.",
+    advisory:
+      "This is the Schengen visa specification. If you need a photo for a Dutch " +
+      "passport, ID card or driving licence instead, the Netherlands uses its " +
+      "own national standard - a smaller head, 26-30mm chin to crown - so do " +
+      "not reuse this crop for those.",
+    source:
+      "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02009R0810-20200202",
     verified: "gov",
   },
 
@@ -562,7 +577,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   uae: {
     id: "uae",
     label: "UAE",
-    documents: ["UAE visit / tourist visa", "Employment & residence visa", "Emirates ID"],
+    // ⚠ Emirates ID is NOT 43x55. The ICP/Emirates ID route follows the ICAO
+    // 35x45 standard; 43x55 is the visa-channel size (GDRFA Dubai and typing
+    // centres). Listing Emirates ID here applied the wrong size to it.
+    documents: ["UAE visit / tourist visa", "Employment & residence visa"],
     printMm: { width: 43, height: 55 },
     // ICP's official ICAO guide mandates face = 70–80% of the photo; for the
     // 43×55 visa print that band is ≈39–44mm chin to crown.
@@ -587,8 +605,16 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "(ICAO) confirms: face 70-80% of the photo, max 6 months old, plain " +
       "light-coloured background, neutral expression, glasses only without tint " +
       "or glare, head covering for religious reasons only with the full face " +
-      "visible. Print size is the channel convention — confirm with your typing " +
-      "centre / portal before submitting.",
+      "visible. Note that the linked ICP guide is the ICAO standard document: it " +
+      "sets out the framing, background and quality rules, but the 43x55mm print " +
+      "size is the UAE visa-channel convention rather than a figure that guide " +
+      "states. An Emirates ID or other ICP application follows the ICAO 35x45mm " +
+      "size instead. Confirm with your typing centre or portal before submitting.",
+    advisory:
+      "43×55mm is the UAE VISA size. An Emirates ID or other ICP Smart Services " +
+      "application uses the ICAO 35×45mm size instead — do not reuse this crop " +
+      "for one. File limits also differ by channel (ICP, GDRFA, typing centre), " +
+      "so check the one you are submitting through.",
     source: "https://icp.gov.ae/wp-content/uploads/2021/11/icao_english.pdf",
     verified: "aggregator",
   },
@@ -801,7 +827,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "70-80% convention. In-country first-time applications capture biometrics " +
       "live at the office; the upload path serves online renewals (onlinemrp)." ,
     source: "https://onlinemrp.dgip.gov.pk/photo-requirements/",
-    verified: "aggregator",
+    // DGIP's own online-renewal portal states the 45x35mm size and the 5 MB cap.
+    verified: "gov",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -1060,7 +1087,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     },
     digital: {
       pxApprox300dpi: { width: 413, height: 591 },
-      fileSizeKb: null,
+      // Published guides agree on a 10-120 KB eVisa band. No imi.gov.my page
+      // states it, hence this record stays `aggregator`.
+      fileSizeKb: { min: 10, max: 120 },
       formats: ["jpg"],
     },
     dpiMin: 300,
@@ -1069,8 +1098,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     notes:
       "Malaysia visa / eVisa photo: a distinctive 35x50mm, plain white " +
       "background (light grey or cream sometimes accepted), head 30-35mm, face " +
-      "60-70% of the frame. A dark-coloured shirt is recommended. Confirm on the " +
-      "official Malaysia eVisa portal before submitting.",
+      "60-70% of the frame. A dark-coloured shirt is recommended. Published " +
+      "guides agree the eVisa upload must be JPEG between roughly 10 and 120 KB, " +
+      "which is a tight band - but no Immigration Department page states it, so " +
+      "check the limit shown on the eVisa form before submitting.",
     source: "https://malaysiavisa.imi.gov.my",
     verified: "aggregator",
   },
