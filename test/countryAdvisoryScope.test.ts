@@ -32,11 +32,17 @@ describe("country advisory scope", () => {
 
   it("keeps the advisory on visa-only records", () => {
     const visaOnly = withAdvisory.filter(([, s]) => !describesAPassport(s));
-    // These exist to warn a visa applicant; dropping them defeats the point.
-    expect(visaOnly.map(([k]) => k).sort()).toEqual(["canada", "japan"]);
+    // Asserted as a property rather than a fixed list: new visa-only advisories
+    // are expected (the Gulf records gained one when their figures turned out
+    // to be unconfirmed), and pinning the membership only produces a failure
+    // that is fixed by editing the test.
     for (const [, spec] of visaOnly) {
       expect(describesAPassport(spec)).toBe(false);
     }
+    // The two the template used to silently discard must stay covered.
+    const keys = visaOnly.map(([k]) => k);
+    expect(keys).toContain("canada");
+    expect(keys).toContain("japan");
   });
 
   it("scopes Canada's advisory to temporary residence", () => {

@@ -651,9 +651,15 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     glasses: "best avoided (eyes must be clearly visible)",
     smileAllowed: "neutral, mouth closed",
     notes:
-      "Bahrain visa / CPR photo: 35×45 mm on plain white background, neutral " +
-      "expression, taken within 6 months. Confirm current requirements with the " +
-      "Nationality, Passports & Residence Affairs (NPRA) portal or your visa agent.",
+      "⚠ Unconfirmed. 35×45 mm on plain white is the default used here, but the " +
+      "NPRA host does not resolve from our checks and no Bahraini government " +
+      "page stating a photo size could be read, so nothing here is confirmed " +
+      "against the authority. Neutral expression, taken within 6 months.",
+    advisory:
+      "We could not confirm Bahrain's visa photo size against any government " +
+      "page — the NPRA site did not respond. 35×45 mm is a common default, not " +
+      "a verified requirement. Use the size printed on your own application, or " +
+      "ask the visa centre handling it.",
     source: "https://www.npra.gov.bh",
     verified: "aggregator",
   },
@@ -680,10 +686,16 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     glasses: "best avoided (eyes must be clearly visible)",
     smileAllowed: "neutral, mouth closed",
     notes:
-      "Kuwait visa / Civil ID photo: 35×45 mm on plain white background, neutral " +
-      "expression, head covering for religious reasons only with full face visible. " +
-      "Confirm requirements with the Kuwait Ministry of Foreign Affairs or your " +
-      "visa centre before submitting.",
+      "⚠ Published figures for Kuwait disagree sharply. 35×45 mm is the default " +
+      "used here, but circulating guides also give 40×60 mm and a square " +
+      "51×51 mm. No Kuwaiti government page states a size we could read " +
+      "directly. Plain white background, neutral expression, head covering for " +
+      "religious reasons only with the full face visible.",
+    advisory:
+      "Sources disagree on Kuwait's visa photo size — 35×45 mm, 40×60 mm and " +
+      "51×51 mm are all in circulation, and we could not confirm any of them " +
+      "against a Kuwaiti government page. Take the size from your own " +
+      "application or visa centre before printing.",
     source: "https://e.gov.kw",
     verified: "aggregator",
   },
@@ -710,10 +722,17 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     glasses: "best avoided (eyes must be clearly visible)",
     smileAllowed: "neutral, mouth closed",
     notes:
-      "Qatar visa / QID photo: 35×45 mm on plain white background, neutral " +
-      "expression, taken within 6 months. For e-visas and QID applications verify " +
-      "current photo requirements on the Qatar Ministry of Interior (MOI) portal.",
-    source: "https://portal.moi.gov.qa",
+      "⚠ Published figures for Qatar disagree. 35×45 mm is the default used " +
+      "here, but circulating guides also give 38×48 mm for standard visa " +
+      "applications and 30×40 mm for the e-visa. No Ministry of Interior page " +
+      "states a size we could read directly, so the figure on your own " +
+      "application is the one that counts.",
+    advisory:
+      "Sources disagree on Qatar's visa photo size — 35×45 mm, 38×48 mm and " +
+      "30×40 mm for the e-visa are all in circulation. Check the size stated on " +
+      "your application or in Metrash before printing or uploading; we could " +
+      "not confirm any of them against a Ministry of Interior page.",
+    source: "https://www.moi.gov.qa/",
     verified: "aggregator",
   },
 
@@ -739,10 +758,18 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     glasses: "best avoided (eyes must be clearly visible)",
     smileAllowed: "neutral, mouth closed",
     notes:
-      "Oman visa / residence photo: 35×45 mm on plain white background, neutral " +
-      "expression, taken within 6 months. Confirm requirements via the Royal Oman " +
-      "Police e-services portal (rop.gov.om) or your visa processing agent.",
-    source: "https://www.rop.gov.om",
+      "⚠ Published figures for Oman disagree. 35×45 mm is what the Royal Oman " +
+      "Police eVisa route is generally described as taking, and it is the " +
+      "default used here, but widely-circulated guides also give 40×60 mm for " +
+      "counter/consular applications. No public ROP page states a size we could " +
+      "read directly, so treat this as a starting size and take the figure from " +
+      "the application you are actually filling in.",
+    advisory:
+      "Sources disagree on Oman's visa photo size: 35×45 mm is commonly cited " +
+      "for the ROP eVisa, while 40×60 mm is cited for consular applications. " +
+      "Check the size on your own application form before printing or " +
+      "uploading — we could not confirm either against a Royal Oman Police page.",
+    source: "https://evisa.rop.gov.om/",
     verified: "aggregator",
   },
 
