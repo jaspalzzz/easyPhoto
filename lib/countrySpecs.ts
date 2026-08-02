@@ -507,7 +507,12 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "Per the Irish DFA Passport Service: print size 35x45mm up to 38x50mm, face " +
       "70-80% of the frame, plain light grey / cream / white background. Online " +
       "photo: JPEG, minimum 715x951 px, up to 9 MB; max 6 months old, no selfies.",
-    source: "https://www.dfa.ie/passports/photo-guidelines/",
+    // The DFA page covers the PASSPORT photo. The visa application is a
+    // separate process run by Immigration Service Delivery: two printed
+    // photographs, 35x45mm up to 38x50mm, with the applicant name and
+    // transaction number written on the back. The visa maker page states
+    // that; this source covers the passport figures the spec is built on.
+    source: "https://www.irishimmigration.ie/photograph-rules-for-visa-applications/",
     verified: "gov",
   },
 
@@ -788,8 +793,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "default across Schengen consulates). NOTE: Spain's domestic passport/DNI " +
       "uses a smaller 26x32mm photo — that is a different document; this page " +
       "is for the visa.",
-    source: "https://www.exteriores.gob.es/en/ServiciosAlCiudadano/Paginas/Schengen-visas.aspx",
-    verified: "aggregator",
+    // The Spanish consular page this cited now 404s. The 35x45mm biometric
+    // photo for a Schengen visa is set by the EU Visa Code, which applies to
+    // Spain as a Schengen state and is the primary source for the figure.
+    source: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02009R0810-20200202",
+    verified: "gov",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -818,8 +826,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "face 70-80%, plain light background. Portugal is notably strict on " +
       "glasses — remove them even if prescription. The Portuguese Citizen Card " +
       "uses a smaller 30x40mm photo — a different document from the visa.",
-    source: "https://vistos.mne.gov.pt/en/short-stay-visas-schengen",
-    verified: "aggregator",
+    // The Portuguese consular page this cited now 404s. Portugal is a Schengen
+    // state, so the 35x45mm requirement comes from the EU Visa Code.
+    source: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02009R0810-20200202",
+    verified: "gov",
   },
 
   // ─────────────────────────────────────────────────────────────

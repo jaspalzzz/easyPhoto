@@ -120,11 +120,11 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
 
   "canada-visa-photo-maker": {
     intro:
-      "Canadian visitor, study and work visa photos are 35×45mm on a plain white or light background, following IRCC's requirements. This maker sizes the head, sets the background and checks compliance, all in your browser. The same 35×45mm image is what PR and Express Entry ask for; the printed passport booklet is the one exception, and it is covered below.",
+      "Canadian temporary-resident photos — visitor, study and work — are 35×45mm on a plain white or light background, following IRCC's requirements. This maker sizes the head, sets the background and checks compliance, all in your browser. Permanent residence, Express Entry and the printed passport booklet are separate processes with their own instructions; the sections below say what each one does differently rather than assuming one photo covers them all.",
     sections: [
       {
         h: "The printed passport booklet is the exception",
-        p: "Everything on this page applies to the 35×45mm digital photo used for visitor, study and work visas, PR and Express Entry, and online passport renewal. The printed photo for a new Canadian passport booklet is different: it is 50×70mm and canada.ca requires a commercial photographer to certify it and write the studio details on the back. No browser tool can produce that certification, so for the booklet you need a photographer — this maker will not pretend otherwise.",
+        p: "Everything on this page is the 35×45mm temporary-resident photo — visitor, study and work. Two things it is not. The printed photo for a new Canadian passport booklet is 50×70mm and canada.ca requires a commercial photographer to certify it and write the studio details on the back; no browser tool can produce that certification, so for the booklet you need a photographer and this maker will not pretend otherwise. Permanent residence and Express Entry are their own processes with their own instructions — check what your application asks for rather than assuming the visitor figure carries over.",
       },
       {
         h: "Canada visa photo specification",
@@ -329,6 +329,42 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       {
         q: "Are glasses allowed in a Schengen visa photo?",
         a: "No. The ICAO biometric standard requires glasses to be removed, with both eyes clearly visible and no glare.",
+      },
+    ],
+  },
+  "ireland-visa-photo-maker": {
+    intro:
+      "An Irish visa photograph is not a digital upload. Immigration Service Delivery asks for two printed colour photographs sent with the application, and they carry writing on the back. The size overlaps the passport photo — 35×45mm at the minimum, up to 38×50mm — so this maker produces the right image; the rest of this page is the part that catches people out.",
+    sections: [
+      {
+        h: "Two prints, not one upload",
+        p: "The application requires two recent colour photographs, printed on photographic paper, taken no more than six months ago. Use the print sheet to produce a pair rather than a single image, and do not submit only a digital file — the visa process is not the same as the online passport route, which is where the 35×45mm figure on most photo sites comes from.",
+      },
+      {
+        h: "Write your name and transaction number on the back",
+        p: "Immigration Service Delivery asks for the applicant's name and the transaction number written in block letters on the reverse of each photograph. That is done by hand after printing; no tool can add it for you. Photographs arriving without it are a routine reason for a visa application being returned.",
+      },
+      {
+        h: "Size, framing and background",
+        p: "The accepted range runs from 35×45mm to 38×50mm, with the face occupying roughly 70–80% of the frame, against a plain white, cream or light grey background. This maker crops to 35×45mm, which sits at the bottom of that range and is accepted; if your local office asks for a larger print, take the exported image to a photo shop at the size they specify.",
+      },
+    ],
+    faqs: [
+      {
+        q: "How many photographs does an Irish visa application need?",
+        a: "Two recent printed colour photographs, on photographic paper, taken within the last six months. This is different from the online passport application, which takes a single digital image.",
+      },
+      {
+        q: "Do I write anything on an Irish visa photo?",
+        a: "Yes. Immigration Service Delivery asks for your name and the transaction number in block letters on the back of each photograph. Write it by hand after printing.",
+      },
+      {
+        q: "What size is an Irish visa photo?",
+        a: "From 35×45mm up to 38×50mm, with the face about 70–80% of the frame on a plain white, cream or light grey background. Confirm the current rules on the Immigration Service Delivery photograph page before you send the application.",
+      },
+      {
+        q: "Can I use my Irish passport photo for a visa application?",
+        a: "The image itself can meet both descriptions, but the submission differs: a visa needs two printed copies with details written on the back, while the online passport route takes one digital file. Prepare the prints for the visa rather than reusing an upload.",
       },
     ],
   },
