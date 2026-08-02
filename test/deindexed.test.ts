@@ -116,6 +116,28 @@ describe("deindexed pages", () => {
     }
   });
 
+  it("never redirects to a deindexed page", () => {
+    // A 301 is a canonicalisation signal. Aiming one at a noindexed page asks
+    // Google to consolidate onto a URL it may not show — four retired
+    // PDF-compression URLs did exactly that after /tools/pdf-compress/ left the
+    // index. Redirect targets must be pages that can actually rank.
+    const redirects = fs.readFileSync(
+      path.join(process.cwd(), "public", "_redirects"),
+      "utf8",
+    );
+    const offenders: string[] = [];
+    for (const line of redirects.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const [from, to] = trimmed.split(/\s+/);
+      if (!from || !to || !to.startsWith("/")) continue;
+      // Compare the path only; a ?target= query does not change the document.
+      const target = to.split("?")[0]!;
+      if (isDeindexed(target)) offenders.push(`${from} -> ${to}`);
+    }
+    expect(offenders, "redirects landing on a noindexed page").toEqual([]);
+  });
+
   it("keeps the trust pages an ad reviewer looks for", () => {
     // Thin by nature, but they are the E-E-A-T signals a review wants to see.
     for (const keep of [

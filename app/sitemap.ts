@@ -96,7 +96,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // Google ignores changeFrequency and priority — omit them for a leaner sitemap.
-  return [
+  //
+  // The per-group filters below are belt; this final pass is braces. Claiming
+  // "every group filters" was wrong — maker, trust, exam and blog groups did
+  // not, and a deindexed path in any of them would have been published. One
+  // filter over the assembled list is the invariant that cannot be forgotten
+  // when a new group is added.
+  const entries = [
     // ── Simple pages (no images) ─────────────────────────────────────────────
     ...simpleRoutes.filter((path) => !isDeindexed(path)).map((path) => ({
       url: `${SITE_URL}${path}`,
@@ -155,4 +161,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: ogImg(`/blog/${p.slug}/`),
     })),
   ];
+
+  return entries.filter(
+    (entry) => !isDeindexed(entry.url.replace(SITE_URL, "")),
+  );
 }

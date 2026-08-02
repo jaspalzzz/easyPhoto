@@ -15,10 +15,15 @@
 /signature-resize-to-20kb/ /tools/signature-resize/?target=20 301
 /signature-resize-to-50kb/ /tools/signature-resize/?target=50 301
 /signature-resize-to-100kb/ /tools/signature-resize/?target=100 301
-/compress-pdf-to-50kb/ /tools/pdf-compress/?target=50 301
-/compress-pdf-to-100kb/ /tools/pdf-compress/?target=100 301
-/compress-pdf-to-200kb/ /tools/pdf-compress/?target=200 301
-/compress-pdf-to-500kb/ /tools/pdf-compress/?target=500 301
+# ⚠ These four point at the GUIDE, not /tools/pdf-compress/, because that tool
+# is noindexed. A 301 is a canonicalisation signal, so aiming it at a page
+# Google may not index asks it to consolidate onto something it cannot show.
+# The guide is 1,272 words, indexed, and links onward to the tool with the
+# matching ?target= preset for all four sizes, so the reader still lands on it.
+/compress-pdf-to-50kb/ /blog/how-to-compress-pdf/ 301
+/compress-pdf-to-100kb/ /blog/how-to-compress-pdf/ 301
+/compress-pdf-to-200kb/ /blog/how-to-compress-pdf/ 301
+/compress-pdf-to-500kb/ /blog/how-to-compress-pdf/ 301
 
 # Legacy dedicated resizer URLs → the indexed canonical spec page per portal.
 #
