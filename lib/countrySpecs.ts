@@ -41,6 +41,29 @@ export const COUNTRY_SPECS_VERIFIED_ON = "2026-06-04";
  * Checking `fileSizeKb` alone conflates the two and silently strips the upload
  * question from 17 countries that do have one.
  */
+/**
+ * The spec a maker page hands to the tool for a given document kind.
+ *
+ * Advisories on records that also cover a passport are written about the
+ * passport — Australia's guarantor rule, India's PSK capture — so they are
+ * dropped on a visa page. Records that only ever describe a visa carry
+ * visa-scoped advisories, and dropping those hid the warning on the one page
+ * the applicant lands on.
+ *
+ * This lives here, rather than inline in the page, so the behaviour can be
+ * asserted directly. A test that re-implements the predicate and then filters
+ * by it proves nothing: it passes whatever the page does.
+ */
+export function specForDocumentKind(
+  spec: CountrySpec,
+  kind: "passport" | "visa",
+): CountrySpec {
+  const alsoCoversAPassport = spec.documents.some((d) => /passport/i.test(d));
+  return kind === "visa" && alsoCoversAPassport
+    ? { ...spec, advisory: undefined }
+    : spec;
+}
+
 export function acceptsDigitalUpload(spec: CountrySpec): boolean {
   const d = spec.digital;
   return Boolean(
@@ -322,8 +345,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       acceptableHex: ["#FFFFFF", "#FAFAF7"],
     },
     digital: {
-      // IRCC temporary-residence online upload (visitor/study/work)
-      fileSizeKb: { min: 240, max: 5120 }, // ⚠ verify per IRCC portal
+      // ⚠ UNVERIFIED. No IRCC temporary-residence page we can read states this
+      // band, which is why the record is `conditional` rather than `gov` — a
+      // `gov` flag renders as "Exact" and "Verified" over a figure nobody
+      // confirmed. The TRV specification is print-based (two printed photos).
+      fileSizeKb: { min: 240, max: 5120 },
       formats: ["jpg"],
     },
     dpiMin: 300,
@@ -338,9 +364,12 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "and passport renewal are separate processes that publish their own " +
       "photo instructions; do not assume this size or file-size band applies " +
       "to them. Re-confirm the caps on whichever IRCC portal you are filing on.",
+    // Was pointed at the PASSPORT photo page while `documents` lists visitor,
+    // study and work — the citation backed a different application from the one
+    // the page claims to serve.
     source:
-      "https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html",
-    verified: "gov",
+      "https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html",
+    verified: "conditional",
     advisory:
       "Not for the printed Canadian PASSPORT (that requires a certified " +
       "photographer + guarantor signature on the back). The 35×45mm size here " +
@@ -497,15 +526,15 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   netherlands: {
     id: "netherlands",
     label: "Netherlands",
-    // ⚠ SCOPED to the visa routes. netherlandsworldwide.nl publishes the 26-30mm
-    // chin-to-crown figure for the DUTCH passport, ID card and driving licence —
-    // NOT for a Schengen visa. This record drives /netherlands-visa-photo-maker/,
-    // so it follows the EU Visa Code band the other Schengen states use. Applying
-    // the Dutch national head height to a visa produces a head ~6mm too small.
-    documents: ["Netherlands Schengen visa", "MVV (long-stay entry visa)"],
+    // ⚠ The Netherlands is the exception among Schengen states in this registry:
+    // its own Schengen visa checklist tells applicants to bring "a photo that
+    // meets DUTCH requirements", so the national 26-30mm chin-to-crown figure
+    // governs a visa application here, NOT the wider band used for Germany,
+    // France, Spain and Portugal. Do not "harmonise" this to the others.
+    documents: ["Netherlands Schengen Visa", "MVV / residence", "Dutch passport"],
     printMm: { width: 35, height: 45 },
-    headHeightMm: { min: 32, max: 36 },
-    headPercentOfFrame: { min: 70, max: 80 },
+    headHeightMm: { min: 26, max: 30 }, // chin to crown, ages 11+ (official)
+    headPercentOfFrame: { min: 58, max: 67 },
     background: {
       description: "Plain, uniform light grey, light blue or white; no shadows",
       hex: "#D3D3D3",
@@ -516,24 +545,19 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       fileSizeKb: null,
       formats: ["jpg"],
     },
-    dpiMin: 300,
+    dpiMin: 400,
     glasses: "not permitted unless medically required",
     smileAllowed: "neutral only (biometric)",
     notes:
-      "The Netherlands is a Schengen state, so a Netherlands Schengen visa or " +
-      "MVV photo follows the EU Visa Code and ICAO Doc 9303: 35x45mm, colour, " +
-      "head 32-36mm chin-to-crown (roughly 70-80% of the frame), plain light " +
-      "background, taken within the last 6 months. The Dutch government's own " +
-      "photo page is a DIFFERENT standard - it publishes 26-30mm chin-to-crown " +
-      "for the Dutch passport, ID card and driving licence, and that figure " +
-      "does not apply to a visa application.",
-    advisory:
-      "This is the Schengen visa specification. If you need a photo for a Dutch " +
-      "passport, ID card or driving licence instead, the Netherlands uses its " +
-      "own national standard - a smaller head, 26-30mm chin to crown - so do " +
-      "not reuse this crop for those.",
-    source:
-      "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02009R0810-20200202",
+      "Per the official Dutch government portal: 35x45mm, colour, face 26-30mm " +
+      "chin-to-crown (ages 11+), face width 16-20mm, plain light grey / light " +
+      "blue / white background, max 6 months old, min 400 DPI for prints. The " +
+      "Netherlands applies these national criteria to Schengen visa " +
+      "applications submitted to it - its own visa checklist asks for a photo " +
+      "meeting Dutch requirements - so the head here is deliberately smaller " +
+      "than on our German or French visa pages. If you apply through an " +
+      "external service provider, a digital photo is taken at the appointment.",
+    source: "https://www.netherlandsworldwide.nl/passport-id-card/photo-requirements",
     verified: "gov",
   },
 
@@ -577,9 +601,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   uae: {
     id: "uae",
     label: "UAE",
-    // ⚠ Emirates ID is NOT 43x55. The ICP/Emirates ID route follows the ICAO
-    // 35x45 standard; 43x55 is the visa-channel size (GDRFA Dubai and typing
-    // centres). Listing Emirates ID here applied the wrong size to it.
+    // ⚠ Emirates ID is not covered by this record. 43x55 is the visa-channel
+    // size (GDRFA Dubai and typing centres). We do NOT assert a size for
+    // Emirates ID: the ICP guide gives a width range of 35-40mm and no fixed
+    // height, so "Emirates ID is 35x45" would be inventing a figure.
     documents: ["UAE visit / tourist visa", "Employment & residence visa"],
     printMm: { width: 43, height: 55 },
     // ICP's official ICAO guide mandates face = 70–80% of the photo; for the
@@ -608,13 +633,15 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "visible. Note that the linked ICP guide is the ICAO standard document: it " +
       "sets out the framing, background and quality rules, but the 43x55mm print " +
       "size is the UAE visa-channel convention rather than a figure that guide " +
-      "states. An Emirates ID or other ICP application follows the ICAO 35x45mm " +
-      "size instead. Confirm with your typing centre or portal before submitting.",
+      "states - the guide gives a 35-40mm width range and no fixed height. An " +
+      "Emirates ID or other ICP application is a separate specification we do " +
+      "not reproduce here. Confirm with your typing centre or portal first.",
     advisory:
       "43×55mm is the UAE VISA size. An Emirates ID or other ICP Smart Services " +
-      "application uses the ICAO 35×45mm size instead — do not reuse this crop " +
-      "for one. File limits also differ by channel (ICP, GDRFA, typing centre), " +
-      "so check the one you are submitting through.",
+      "application uses a different specification, which we do not publish " +
+      "because ICP's guide gives only a width range and no fixed height — check " +
+      "ICP directly rather than reusing this crop. File limits also differ by " +
+      "channel (ICP, GDRFA, typing centre), so check the one you are using.",
     source: "https://icp.gov.ae/wp-content/uploads/2021/11/icao_english.pdf",
     verified: "aggregator",
   },
@@ -982,20 +1009,26 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     },
     digital: {
       px: { width: 400, height: 514 },
-      // ICA states an 8 MB ceiling on its photo-guidelines page. The old
-      // "60 KB or less" here matched no ICA figure.
-      fileSizeKb: { min: 10, max: 8192 },
-      formats: ["jpg", "jpeg", "png", "heic", "heif"],
+      // ⚠ 60 KB is the VISA figure and it is real: ICA's SAVE visa application
+      // guide states "Image file size must be less than 60Kbytes" and "Image
+      // dimension must be 400 x 514 pixels". The 8 MB / five-format allowance on
+      // ICA's generic photo-guidelines page is for passports, ID cards and
+      // e-Services — applying it to a visa upload produces a rejected file.
+      fileSizeKb: { min: 10, max: 60 },
+      formats: ["jpg"],
     },
     dpiMin: 300,
     glasses: "remove unless medically required",
     smileAllowed: "neutral, mouth closed",
     notes:
       "Singapore visa photo (ICA): 35x45mm on plain white, taken within 3 " +
-      "months. ICA's photo guidelines specify 400x514 px for e-Service " +
-      "uploads, accept jpg, jpeg, png, heic and heif, and cap the file at " +
-      "8 MB. No head coverings except for religious reasons.",
-    source: "https://www.ica.gov.sg/photo-guidelines",
+      "months. The visa upload is a JPEG of exactly 400x514 px and under 60 KB, " +
+      "per ICA's SAVE visa application guide - a tight cap, and different from " +
+      "the 8 MB allowed on ICA's general photo-guidelines page, which covers " +
+      "passports and ID cards rather than visas. No head coverings except for " +
+      "religious reasons.",
+    source:
+      "https://www.ica.gov.sg/docs/default-source/ica/files/save-non-pub-ava_sp-user-guide-for-family-visa-application.pdf",
     verified: "gov",
   },
 
@@ -1042,12 +1075,12 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     id: "japan",
     label: "Japan",
     documents: ["Japan visa (MOFA)"],
-    // ⚠ Japan has no single visa photo size. MOFA states that requirements
-    // vary by the mission you apply at, and missions genuinely differ:
-    // 45x45 square at some, 35x45 or 2x2in at others (e.g. Denver). 45x45 is
-    // the default here because it is the size MOFA's own pages cite, but it
-    // is a default, not a universal rule — hence `aggregator` + the advisory.
-    printMm: { width: 45, height: 45 },
+    // MOFA's own visa application form (mofa.go.jp/files/000124525.pdf) prints
+    // the photo box as 45mm x 35mm — height x width in the Japanese convention,
+    // i.e. 35 wide by 45 tall. The form the applicant actually fills in outranks
+    // the 45x45 square previously defaulted to here. Mission variation is still
+    // real (Denver publishes 35x45 or 2x2in), which the advisory covers.
+    printMm: { width: 35, height: 45 },
     headHeightMm: { min: 34, max: 36 },
     headPercentOfFrame: { min: 70, max: 80 },
     background: {
@@ -1065,17 +1098,19 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     glasses: "remove unless medically required",
     smileAllowed: "neutral, mouth closed",
     notes:
-      "Japan visa photo (MOFA): 45x45mm square on plain white, taken within 6 " +
-      "months, two prints required for paper applications. Some consulates also " +
-      "accept 35x45mm or 2x2 inch — check yours. Digital uploads are JPEG, " +
+      "Japan visa photo (MOFA): 35x45mm on plain white, taken within 6 " +
+      "months, two prints required for paper applications. The MOFA visa " +
+      "application form specifies the photo as 45mm high x 35mm wide. Some " +
+      "consulates publish other sizes, including 45x45mm square and 2x2 inch " +
+      "— check yours. Digital uploads are JPEG, " +
       "typically 120 KB or less. MOFA itself says the requirements vary by the " +
       "mission handling your application, so the size on your consulate's page " +
       "overrides the default used here.",
     advisory:
-      "Japan does not publish one visa photo size. MOFA says the rules depend " +
-      "on the mission you apply at — some ask for 45×45mm, others for 35×45mm " +
-      "or 2×2 inch. Check your embassy or consulate's own photograph page and " +
-      "switch the size if it differs before you print.",
+      "35×45mm is the size printed on MOFA's own visa application form, and is " +
+      "used here. Individual missions do publish other sizes — 45×45mm square " +
+      "and 2×2 inch both appear — so check your embassy or consulate's " +
+      "photograph page and switch the size if it differs before you print.",
     source: "https://www.mofa.go.jp",
     verified: "aggregator",
   },

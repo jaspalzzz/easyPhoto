@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
   effectivePrintMm,
+  specForDocumentKind,
   type CountrySpec,
 } from "@/lib/countrySpecs";
 import {
@@ -243,21 +244,8 @@ export default async function MakerPage({
         </p>
       </header>
 
-      {/*
-        Advisories on records that also cover a passport are written about the
-        passport (the AU guarantor rule, the Indian PSK capture), so they are
-        dropped on a visa page. Records that only ever describe a visa have
-        visa-scoped advisories — Canada's temporary-residence limit, Japan's
-        per-mission size — and dropping those hid the warning on the one page
-        the applicant actually lands on.
-      */}
-      <PhotoTool
-        spec={
-          kind === "visa" && spec.documents.some((d) => /passport/i.test(d))
-            ? { ...spec, advisory: undefined }
-            : spec
-        }
-      />
+      {/* Advisory scoping lives in specForDocumentKind so it can be tested. */}
+      <PhotoTool spec={specForDocumentKind(spec, kind)} />
 
       {/* Spec-aware do/don't — self-check against the real rules before submitting. */}
       <AcceptanceTips spec={spec} />
