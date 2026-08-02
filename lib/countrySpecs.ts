@@ -942,8 +942,13 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       acceptableHex: ["#FFFFFF", "#FAFAFA"],
     },
     digital: {
-      pxMin: { width: 354, height: 420 },
-      pxMax: { width: 472, height: 560 },
+      // The published spec gives two RANGES — horizontal 354-420, vertical
+      // 472-560 — and they were previously transcribed as if each pair were one
+      // photo, giving a 354x420 minimum. That is 52px shorter than the real
+      // minimum height, so a photo built to it is rejected for being too small.
+      // Both correct pairs are exactly 3:4; the old pair was not.
+      pxMin: { width: 354, height: 472 },
+      pxMax: { width: 420, height: 560 },
       fileSizeKb: { min: 40, max: 120 },
       formats: ["jpg"],
     },
@@ -953,9 +958,12 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     notes:
       "China visa photo: a distinctive 33x48mm (not the usual 35x45), white " +
       "background, head 28-33mm chin-to-crown. Digital upload (COVA / consulate): " +
-      "JPEG, 354x420 to 472x560 px, 40-120 KB. Numbers are consistent across " +
-      "reputable guides — confirm on the consulate / COVA portal before submitting.",
-    source: "https://www.visaforchina.cn",
+      "JPEG, 354x472 to 420x560 px, 40-120 KB. The Chinese Visa Application " +
+      "Service Centre FAQ states the 48x33mm print size; the pixel ranges are " +
+      "consistent across reputable guides but are not on that page, so confirm " +
+      "them on the consulate or COVA portal before submitting.",
+    source:
+      "https://www.visaforchina.cn/SYD3_EN/qianzhengyewu/jichuzhishi/changjianwenti/355135188537315328.html",
     verified: "aggregator",
   },
 
