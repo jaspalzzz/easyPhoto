@@ -112,11 +112,20 @@ export function computeCrop(
   const outW = opts.exactOutput?.width ?? mmToPx(spec.printMm.width, dpi);
   const outH = opts.exactOutput?.height ?? mmToPx(spec.printMm.height, dpi);
 
+  // Every millimetre-derived measurement below (head height, eye line) has to
+  // be expressed in the pixels of the canvas we are actually producing. When an
+  // exact output size is forced, that canvas is NOT `dpi` — Saudi's 200x200 from
+  // a 51x51mm spec is ~100 DPI. Leaving the head target at 300 DPI asked for a
+  // 455px head inside a 200px frame and the crop cut through the face.
+  const geomDpi = opts.exactOutput
+    ? (outH / spec.printMm.height) * 25.4
+    : dpi;
+
   const srcHeadPx = face.chinY - face.crownY;
   if (srcHeadPx <= 0)
     throw new Error("crownY must sit above chinY (a smaller Y value).");
 
-  const tgtHeadPx = mmToPx(targetHeadMm(spec), dpi);
+  const tgtHeadPx = mmToPx(targetHeadMm(spec), geomDpi);
   if (tgtHeadPx <= 0)
     throw new Error(
       "Spec head height resolves to 0 px — check headHeightMm values."
@@ -136,7 +145,7 @@ export function computeCrop(
   if (spec.eyeHeightFromBottomMm && face.eyeCenterY != null) {
     const tgtEyePx = mmToPx(
       (spec.eyeHeightFromBottomMm.min + spec.eyeHeightFromBottomMm.max) / 2,
-      dpi
+      geomDpi
     );
     const outEyeFromTop = outH - tgtEyePx;
     cropTopY = face.eyeCenterY - cropH * (outEyeFromTop / outH);

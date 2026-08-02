@@ -73,8 +73,10 @@ describe("maker page hands the scoped spec to the tool", () => {
 
   it("withholds a passport-scoped advisory from a visa page", async () => {
     // India's advisory is about PSK capture — meaningless on a visa page.
+    // Asserted non-null first: `if (spec)` let a broken or missing page pass.
     const spec = await specPassedToTool("india-visa-photo-maker");
-    if (spec) expect(spec.advisory).toBeUndefined();
+    expect(spec).not.toBeNull();
+    expect(spec!.advisory).toBeUndefined();
   });
 
   it("still shows the passport-scoped advisory on the passport page", async () => {

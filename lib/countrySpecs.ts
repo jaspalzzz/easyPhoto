@@ -205,6 +205,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       // The 10-250 KB band is retained for backwards-compatible export behavior;
       // no current official source was found for that band in the ordinary
       // domestic fresh/reissue workflow. Do not label it a PSK/POPSK upload rule.
+      // The overseas ICAO guidance specifies 630x810 rather than a floor, and
+      // the DPI path produced 631x811 — over by a pixel on both axes, which
+      // fails an exact check and gains nothing against a minimum. Recording it
+      // as exact satisfies both readings.
+      px: { width: 630, height: 810 },
       pxMin: { width: 630, height: 810 },
       fileSizeKb: { min: 10, max: 250 },
       formats: ["jpg"],
@@ -997,6 +1002,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       // Both correct pairs are exactly 3:4; the old pair was not.
       pxMin: { width: 354, height: 472 },
       pxMax: { width: 420, height: 560 },
+      // ⚠ The DPI path cannot serve this record. China's PRINT is 33x48mm
+      // (ratio 0.6875) but the DIGITAL upload must be 3:4, and 33x48mm at
+      // 300 DPI gives 390x567 — taller than the 560 maximum. Pinning the exact
+      // published maximum gives the right ratio inside both ranges.
+      px: { width: 420, height: 560 },
       fileSizeKb: { min: 40, max: 120 },
       formats: ["jpg"],
     },

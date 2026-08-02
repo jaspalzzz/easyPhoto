@@ -88,6 +88,26 @@ describe("exact upload sizes reach the export", () => {
     expect(out.output).toEqual({ width: 200, height: 200 });
   });
 
+  it("scales head geometry to the exact canvas, not the nominal DPI", () => {
+    // The first version of exactOutput overrode only the canvas size. Head and
+    // eye targets stayed at 300 DPI, so Saudi asked for a ~455px head inside a
+    // 200px frame (227%) and the crop cut through the face.
+    for (const key of ["singapore", "saudi-evisa"] as const) {
+      const spec = COUNTRY_SPECS[key]!;
+      const out = computeCrop(face, spec, {
+        source,
+        exactOutput: spec.digital.px,
+      });
+      const band = spec.headPercentOfFrame;
+      expect(band, `${key} needs a head band to check against`).toBeDefined();
+      expect(
+        out.achieved.headPercentOfFrame,
+        `${key} head must land inside its own ${band!.min}-${band!.max}% band`,
+      ).toBeGreaterThanOrEqual(band!.min);
+      expect(out.achieved.headPercentOfFrame).toBeLessThanOrEqual(band!.max);
+    }
+  });
+
   it("leaves records without an exact size on the DPI path", () => {
     const uk = COUNTRY_SPECS.uk!;
     expect(uk.digital.px).toBeUndefined();
