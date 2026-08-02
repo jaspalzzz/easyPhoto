@@ -231,7 +231,15 @@ export default async function MakerPage({
           <span>{spec.dpiMin} dpi min</span>
         </div>
         <p className="text-xs text-ink-faint">
-          Prepared for the published requirements of: {spec.documents.join(", ")}.
+          {spec.verified === "gov" ? (
+            <>Prepared for the published requirements of: {spec.documents.join(", ")}.</>
+          ) : (
+            <>
+              Set up for: {spec.documents.join(", ")}. These figures come from a
+              published guide rather than the issuing authority — confirm them on
+              your application before you submit.
+            </>
+          )}
         </p>
       </header>
 

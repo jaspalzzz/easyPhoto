@@ -11,7 +11,7 @@ const PASSPORT_SEVA_GETTING_STARTED =
 const PASSPORT_SEVA_APPLY = "https://www.passportindia.gov.in/psp/Apply";
 const MINOR_PHOTO_GUIDELINES =
   "https://www.passportindia.gov.in/AppOnlineProject/pdf/GUIDELINES%20FOR%20CAPTURING%20PHOTOGRAPHS%20FOR%20MINORS_v2.1.pdf";
-const OVERSEAS_PASSPORT_PORTAL = "https://embassy.passportindia.gov.in/";
+const OVERSEAS_PASSPORT_PORTAL = "https://mportal.passportindia.gov.in/mission/";
 const OVERSEAS_PHOTO_GUIDELINES =
   "https://portal4.passportindia.gov.in/Online/pdf/Guidelines_for_ICAO_Compliant_Photographs_for_Passport_Applications.pdf";
 const OCI_FAQ = "https://ociservices.gov.in/onlineOCI/onlineOCI/faq";
@@ -160,9 +160,11 @@ export default function Page() {
         <a href={OVERSEAS_PASSPORT_PORTAL} target="_blank" rel="noopener noreferrer">
           Passport Seva at Indian Embassies and Consulates portal
         </a>{" "}
-        says ICAO-compliant photographs have been required for passport
-        applications from 1 September 2025 and directs applicants to select their
-        country or region.
+        asks you to pick your country or region first, because the filing steps
+        differ by mission. ICAO-compliant photographs have been required for
+        passport applications made through those missions since 1 September
+        2025 — the photograph rules below come from the guidance linked next,
+        not from any one mission&apos;s page.
       </p>
 
       <p>

@@ -456,11 +456,16 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     glasses: "not permitted unless medically required",
     smileAllowed: "neutral only (biometric)",
     notes:
-      "Per the official Italy Visa Management Service: colour photo, 30x40mm or " +
-      "35x45mm (we use 35x45mm), face 70-80% of the frame, on a WHITE background " +
-      "with no frames, taken within the last 6 months.",
+      "Per the Italy Visa Management Service, the outsourced visa application " +
+      "centre operator — NOT an Italian government host: colour photo, 30x40mm " +
+      "or 35x45mm (we use 35x45mm), face 70-80% of the frame, on a WHITE " +
+      "background with no frames, taken within the last 6 months. Italy is a " +
+      "Schengen state, so the binding rule is the EU Visa Code; re-confirm " +
+      "against the consulate handling your application.",
     source: "https://italyvms.com/photo-requirements/",
-    verified: "gov",
+    // The operator publishes the figures, but it is a contractor, not the
+    // issuing authority. `gov` would overstate what this source proves.
+    verified: "aggregator",
   },
 
   // ─────────────────────────────────────────────────────────────
