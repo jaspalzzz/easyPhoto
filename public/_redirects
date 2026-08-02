@@ -158,3 +158,18 @@
 /uk-visa-photo-maker/ /uk-passport-photo-maker/ 301
 /australia-visa-photo-maker/ /australia-passport-photo-maker/ 301
 /canada-passport-photo-maker/ /canada-visa-photo-maker/ 301
+
+# Nine per-pair converter landing pages, retired into /convert/. Each wrapped
+# the same tool in ~450 words and they earned no clicks between them in 90
+# days; the converter auto-detects the source format, so the pairing was never
+# a choice the reader had to make. /convert/ now explains what each format
+# costs you instead of repeating the tool nine times.
+/convert/heic-to-jpg/ /convert/ 301
+/convert/heic-to-png/ /convert/ 301
+/convert/webp-to-jpg/ /convert/ 301
+/convert/webp-to-png/ /convert/ 301
+/convert/png-to-jpg/ /convert/ 301
+/convert/jpg-to-png/ /convert/ 301
+/convert/jpg-to-webp/ /convert/ 301
+/convert/png-to-webp/ /convert/ 301
+/convert/heic-to-webp/ /convert/ 301

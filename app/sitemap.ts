@@ -4,7 +4,6 @@ import { MAKER_PAGES } from "@/lib/makerPages";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
 import { BLOG_POSTS } from "@/lib/blog";
 import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
-import { CONVERT_SLUGS, convertPath } from "@/lib/convertPairs";
 
 export const dynamic = "force-static";
 
@@ -51,7 +50,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/aadhaar-photo/",
     // Hinglish pages are noindex (thin duplicates) — intentionally not in sitemap.
     "/convert/",
-    ...CONVERT_SLUGS.map((slug) => convertPath(slug)),
   ];
 
   const trustRoutes: string[] = [
