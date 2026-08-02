@@ -8,6 +8,7 @@ import {
   FileText,
   ImageIcon,
 } from "lucide-react";
+import { READY_TOOLS } from "@/lib/toolsCatalog";
 
 /* ── data ─────────────────────────────────────────────────────────────── */
 
@@ -150,7 +151,7 @@ export function FeaturedTools() {
             href="/tools/"
             className="hidden shrink-0 items-center gap-1.5 text-[13px] font-semibold text-brand hover:underline sm:flex"
           >
-            View all 34 tools <ArrowRight className="h-3.5 w-3.5" />
+            View all {READY_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
@@ -215,7 +216,7 @@ export function FeaturedTools() {
         {/* mobile "view all" */}
         <div className="mt-6 sm:hidden">
           <Link href="/tools/" className="flex items-center gap-1 text-[13px] font-semibold text-brand hover:underline">
-            View all 34 tools <ArrowRight className="h-3.5 w-3.5" />
+            View all {READY_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 

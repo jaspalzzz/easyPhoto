@@ -208,10 +208,16 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigFormat: "JPG / JPEG",
     signatureInk: "Black ink on white paper",
     description:
-      "Current RRB CEN applications capture the candidate's photograph live and do not accept a pre-existing photo upload. The stored 20–50 KB photo target is compatibility-only, not a current RRB requirement. The current notice specifies a JPG/JPEG signature of 30–49 KB, at least 140×60 px, scanned at a minimum 100 DPI in running handwriting. Confirm the current CEN before using the compatibility photo output.",
+      "Current RRB CEN applications capture the candidate's photograph live and do not accept a pre-existing photo upload. The stored 20–50 KB photo target is compatibility-only, not a current RRB requirement. The signature figures recorded here — JPG/JPEG at 30–49 KB, at least 140×60 px, scanned at a minimum 100 DPI in running handwriting — come from CEN 03/2025, which the board has since taken offline. Treat them as unconfirmed and check the current instructions in the CEN for your own board before uploading.",
     source: {
-      url: "https://www.rrbcdg.gov.in/uploads/2025/03-PMED/CEN%2003_2025.pdf",
-      label: "RRB CEN 03/2025, paragraphs 14.4–14.5.1",
+      // The CEN 03/2025 PDF this preset was built from has been taken down:
+      // www.rrbcdg.gov.in now fails TLS (the certificate does not cover the www
+      // host) and the document itself 404s even with verification disabled.
+      // Pointing at the central application portal keeps the citation live and
+      // lands the reader where the current notice is actually published. The
+      // preset stays needs-review, which is what it already was.
+      url: "https://rrbapply.gov.in/",
+      label: "RRB centralised application portal — open the current CEN for your board",
     },
     verification: "needs-review",
     isLiveCapture: true,

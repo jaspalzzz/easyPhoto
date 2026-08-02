@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, User, GraduationCap, Aperture, FileText, PenLine } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { READY_TOOLS } from "@/lib/toolsCatalog";
 
 import {
   CreditCard, UserCircle, Printer, ScanLine, Camera,
@@ -142,7 +143,7 @@ export function ToolsTabs() {
             href="/tools/"
             className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand hover:underline"
           >
-            View all 34 tools <ArrowRight className="h-4 w-4" />
+            View all {READY_TOOLS.length} tools <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
