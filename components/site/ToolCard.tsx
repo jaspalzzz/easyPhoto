@@ -17,7 +17,13 @@ export function ToolCard({
 }: {
   slug: string;
   title: string;
-  blurb: string;
+  /**
+   * Optional so a shortcut strip can link a tool the page already describes
+   * below. The tools hub listed its six popular tools with the same blurbs the
+   * full catalog prints, which is the one thing a duplicate-content check
+   * should catch on a hub page.
+   */
+  blurb?: string;
   icon: string;
   /** Defaults to /tools/<slug>/. */
   href?: string;
@@ -36,9 +42,11 @@ export function ToolCard({
             strokeWidth={1.75}
           />
         </span>
-        <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
-          {blurb}
-        </span>
+        {blurb && (
+          <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+            {blurb}
+          </span>
+        )}
       </span>
     </Link>
   );

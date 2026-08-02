@@ -13,10 +13,17 @@ import { AlertCircle, AlertTriangle, Camera, ExternalLink, PenLine, ShieldCheck 
 export function PortalResizer({
   portalId,
   displayName,
+  hideDescription = false,
 }: {
   portalId: string;
   /** Override the shown name (sub-exam pages pass e.g. "SSC CGL"; spec stays the parent's). */
   displayName?: string;
+  /**
+   * Suppress the spec description when the surrounding page already prints it.
+   * /exam-requirements/{exam}/ shows it in the intro, so rendering it again in
+   * the embedded tool repeated the whole authority paragraph twice per page.
+   */
+  hideDescription?: boolean;
 }) {
   const spec = PORTAL_PRESETS[portalId];
   const shownName = displayName ?? spec?.name.split(" (")[0];
@@ -72,7 +79,9 @@ export function PortalResizer({
         <h3 className="font-semibold text-brand text-base mb-1.5">
           {shownName} {spec.isLiveCapture ? "application workflow" : "requirements"}
         </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-3">{spec.description}</p>
+        {!hideDescription && (
+          <p className="text-sm text-muted-foreground leading-relaxed mb-3">{spec.description}</p>
+        )}
         <p className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-ink-soft">
           <ProvenanceIcon
             className={`h-3.5 w-3.5 shrink-0 ${

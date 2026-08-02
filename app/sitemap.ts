@@ -2,15 +2,26 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 import { MAKER_PAGES } from "@/lib/makerPages";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
+import { isDeindexed } from "@/lib/deindexed";
 import { BLOG_POSTS } from "@/lib/blog";
 import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
 
 export const dynamic = "force-static";
 
-// Site-wide "last significant update". Bump MANUALLY on real content changes —
-// NOT new Date(), so lastmod reflects actual freshness instead of churning on
-// every build/deploy (which Google distrusts). Blog posts use their own date.
+// Per-section "last significant update". Bumped MANUALLY on real content
+// changes — never new Date(), so lastmod reflects actual freshness instead of
+// churning on every deploy (which Google distrusts). Blog posts use their own
+// date.
+//
+// These are split by section on purpose. A single site-wide constant meant that
+// editing one country record restamped all 194 URLs as freshly updated, which
+// is a freshness claim we cannot support for pages that did not change. Bump
+// only the section you actually edited.
 const LAST_UPDATED = "2026-08-02";
+/** Country/visa maker pages — moves when countrySpecs or maker copy changes. */
+const MAKERS_UPDATED = "2026-08-02";
+/** Tool pages and their category hubs — moves when a tool or its copy changes. */
+const TOOLS_UPDATED = "2026-08-02";
 const TRUST_PAGES_UPDATED = "2026-07-13";
 
 /**
@@ -108,21 +119,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Country/visa maker pages — all use [maker]/opengraph-image ────────────
     ...MAKER_PAGES.map((m) => ({
       url: `${SITE_URL}/${m.slug}/`,
-      lastModified: LAST_UPDATED,
+      lastModified: MAKERS_UPDATED,
       images: ogImg(`/${m.slug}/`),
     })),
 
     // ── Tool category landing pages (photo, pdf, signature, document, ocr) ───
-    ...CATEGORY_SLUGS.map((s) => ({
+    ...CATEGORY_SLUGS.filter((s) => !isDeindexed(`/tools/${s}/`)).map((s) => ({
       url: `${SITE_URL}/tools/${s}/`,
-      lastModified: LAST_UPDATED,
+      lastModified: TOOLS_UPDATED,
       images: ogImg(`/tools/${s}/`),
     })),
 
     // ── Individual tool pages — all have opengraph-image.tsx ─────────────────
-    ...READY_TOOLS.map((t) => ({
+    ...READY_TOOLS.filter((t) => !isDeindexed(`/tools/${t.slug}/`)).map((t) => ({
       url: `${SITE_URL}/tools/${t.slug}/`,
-      lastModified: LAST_UPDATED,
+      lastModified: TOOLS_UPDATED,
       images: ogImg(`/tools/${t.slug}/`),
     })),
 

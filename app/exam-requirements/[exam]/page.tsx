@@ -465,7 +465,7 @@ export default async function Page({
           </p>
         </div>
 
-        <PortalResizer portalId={exam} />
+        <PortalResizer portalId={exam} hideDescription />
 
         {/* Read-next guides. This used to be hardcoded for voter-id alone,
             which left 48 exam pages with no route to the longer explanation.

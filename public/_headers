@@ -82,3 +82,78 @@
   # Embeddable widgets, not content pages — keep them out of the search index so
   # they don't count as thin content (AdSense low-value audit). Not in sitemap.
   X-Robots-Tag: noindex
+
+# ── Thin, no-traffic tool pages ─────────────────────────────────────────────
+# Live and linked from /tools/, but out of the search index. Each drew fewer
+# than 100 impressions in 90 days while sitting under 500 visible words, and
+# together they were a third of the indexed inventory behind two "low value
+# content" rejections. `follow` so internal links still pass. The list is
+# lib/deindexed.ts; test/deindexed.test.ts fails if these drift apart.
+/tools/auto-crop
+  X-Robots-Tag: noindex, follow
+/tools/camera-capture
+  X-Robots-Tag: noindex, follow
+/tools/compliance-checker
+  X-Robots-Tag: noindex, follow
+/tools/compress-document
+  X-Robots-Tag: noindex, follow
+/tools/document
+  X-Robots-Tag: noindex, follow
+/tools/extract-pages
+  X-Robots-Tag: noindex, follow
+/tools/form-fill
+  X-Robots-Tag: noindex, follow
+/tools/format-converter
+  X-Robots-Tag: noindex, follow
+/tools/image-crop
+  X-Robots-Tag: noindex, follow
+/tools/image-to-text
+  X-Robots-Tag: noindex, follow
+/tools/jpg-to-pdf
+  X-Robots-Tag: noindex, follow
+/tools/linkedin-photo
+  X-Robots-Tag: noindex, follow
+/tools/mask-aadhaar
+  X-Robots-Tag: noindex, follow
+/tools/ocr
+  X-Robots-Tag: noindex, follow
+/tools/pdf
+  X-Robots-Tag: noindex, follow
+/tools/pdf-compress
+  X-Robots-Tag: noindex, follow
+/tools/pdf-merge
+  X-Robots-Tag: noindex, follow
+/tools/pdf-page-numbers
+  X-Robots-Tag: noindex, follow
+/tools/pdf-reorder
+  X-Robots-Tag: noindex, follow
+/tools/pdf-split
+  X-Robots-Tag: noindex, follow
+/tools/pdf-to-jpg
+  X-Robots-Tag: noindex, follow
+/tools/pdf-to-text
+  X-Robots-Tag: noindex, follow
+/tools/photo
+  X-Robots-Tag: noindex, follow
+/tools/photo-rejection-check
+  X-Robots-Tag: noindex, follow
+/tools/photo-validator
+  X-Robots-Tag: noindex, follow
+/tools/print-sheet
+  X-Robots-Tag: noindex, follow
+/tools/red-eye-removal
+  X-Robots-Tag: noindex, follow
+/tools/resize-dimensions
+  X-Robots-Tag: noindex, follow
+/tools/sign-pdf
+  X-Robots-Tag: noindex, follow
+/tools/signature
+  X-Robots-Tag: noindex, follow
+/tools/straighten-photo
+  X-Robots-Tag: noindex, follow
+/tools/transparent-signature
+  X-Robots-Tag: noindex, follow
+/tools/unlock-pdf
+  X-Robots-Tag: noindex, follow
+/tools/watermark-pdf
+  X-Robots-Tag: noindex, follow

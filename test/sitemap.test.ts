@@ -4,6 +4,7 @@ import { SITE_URL } from "@/lib/site";
 import { SUB_EXAM_SLUGS } from "@/lib/subExamResizers";
 import { HINGLISH_SLUGS } from "@/lib/hinglishPages";
 import { MAKER_PAGES } from "@/lib/makerPages";
+import { isDeindexed } from "@/lib/deindexed";
 import { READY_TOOLS } from "@/lib/toolsCatalog";
 
 describe("Sitemap Integrity & SEO Compliance", () => {
@@ -75,10 +76,21 @@ describe("Sitemap Integrity & SEO Compliance", () => {
     });
   });
 
-  it("confirms all core tools listed in ready tools are registered in the sitemap", () => {
+  it("registers every ready tool in the sitemap unless it is deliberately deindexed", () => {
+    // Previously asserted that EVERY ready tool is listed. 34 thin, no-traffic
+    // tools are now intentionally out of the index (see lib/deindexed.ts) while
+    // staying live and linked, so the rule is "listed OR deindexed" — a tool
+    // that is neither has been dropped by accident.
     const sitemapPaths = generatedSitemap.map((item) => item.url.replace(SITE_URL, ""));
     READY_TOOLS.forEach((tool) => {
-      expect(sitemapPaths).toContain(`/tools/${tool.slug}/`);
+      const route = `/tools/${tool.slug}/`;
+      const listed = sitemapPaths.includes(route);
+      expect(
+        listed !== isDeindexed(route),
+        listed
+          ? `${route} is deindexed but still in the sitemap`
+          : `${route} vanished from the sitemap without being deindexed`,
+      ).toBe(true);
     });
   });
 });

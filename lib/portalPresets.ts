@@ -491,7 +491,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPG",
     sigFormat: "JPG",
     description:
-      "NDA is conducted by UPSC, whose upload instructions apply \"for any examination\" on the portal: a JPG photograph of 20–200 KB with about 75% face coverage, plus a JPG image containing three signatures arranged vertically at 20–100 KB and 350–500 pixels. The instructions publish no fixed photo pixel dimensions, photo aspect ratio, DPI, or name/date strip.",
+      "The NDA & NA examination recruits unmarried candidates straight out of school into the Army, Navy and Air Force wings of the National Defence Academy, so most applicants are uploading an identity photograph for the first time. UPSC runs the upload through its common One Time Registration portal, whose instructions apply \"for any examination\": a JPG photograph of 20–200 KB with about 75% face coverage, and a separate JPG holding three signatures stacked vertically at 20–100 KB and 350–500 pixels. No pixel dimensions, aspect ratio, DPI or name/date strip are specified for the photograph.",
     source: {
       url: "https://upsconline.nic.in/ngrp/assets/PDF/instruction-photo-signature-upload-upsc.pdf",
       label: "UPSC — Instructions for Uploading the Photo & Signature",
@@ -512,7 +512,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPG",
     sigFormat: "JPG",
     description:
-      "CDS is conducted by UPSC, whose upload instructions apply \"for any examination\" on the portal: a JPG photograph of 20–200 KB with about 75% face coverage, plus a JPG image containing three signatures arranged vertically at 20–100 KB and 350–500 pixels. The instructions publish no fixed photo pixel dimensions, photo aspect ratio, DPI, or name/date strip.",
+      "The Combined Defence Services examination is the graduate entry route — to the Indian Military Academy, Naval Academy, Air Force Academy and Officers Training Academy — so candidates often already hold a UPSC One Time Registration from an earlier attempt and reuse whatever photograph is stored against it. That stored image still has to meet the current rule: a JPG of 20–200 KB at roughly 75% face coverage, with three vertically stacked signatures in a separate JPG of 20–100 KB and 350–500 pixels. UPSC publishes no pixel size, aspect ratio, DPI or name/date strip for it, so an old upload is worth re-checking rather than assuming.",
     source: {
       url: "https://upsconline.nic.in/ngrp/assets/PDF/instruction-photo-signature-upload-upsc.pdf",
       label: "UPSC — Instructions for Uploading the Photo & Signature",

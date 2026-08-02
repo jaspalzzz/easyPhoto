@@ -84,12 +84,12 @@ export default function ToolsHubPage() {
           Most popular
         </h2>
         <div className="ep-card-grid">
+          {/* Shortcuts only — the full catalog below carries each description. */}
           {POPULAR_TOOLS.slice(0, 6).map((tool) => (
             <ToolCard
               key={tool.slug}
               slug={tool.slug}
               title={tool.title}
-              blurb={tool.blurb}
               icon={tool.icon}
             />
           ))}
