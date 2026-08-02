@@ -31,12 +31,13 @@ const headers = fs.readFileSync(
  * the NEXT block and credit that header to the wrong page, so the check passed
  * on a page that had lost its rule.
  */
-function noindexedToolPathsInHeaders(): Set<string> {
+function noindexedPathsInHeaders(): Set<string> {
   const found = new Set<string>();
   const lines = headers.split("\n");
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]!;
-    if (!line.startsWith("/tools/") || line.includes("*")) continue;
+    // Any route line, not just /tools/ — the list is no longer tool-only.
+    if (!line.startsWith("/") || line.includes("*") || line.includes(".")) continue;
     let hasRule = false;
     for (let j = i + 1; j < lines.length; j++) {
       const next = lines[j]!;
@@ -58,7 +59,7 @@ describe("deindexed pages", () => {
   });
 
   it("marks every sitemap-excluded page noindex in _headers", () => {
-    const inHeaders = noindexedToolPathsInHeaders();
+    const inHeaders = noindexedPathsInHeaders();
     for (const p of DEINDEXED_PATHS) {
       expect(
         inHeaders.has(p),
@@ -68,7 +69,7 @@ describe("deindexed pages", () => {
   });
 
   it("does not noindex a page that is still in the sitemap", () => {
-    for (const p of noindexedToolPathsInHeaders()) {
+    for (const p of noindexedPathsInHeaders()) {
       expect(
         isDeindexed(p),
         `${p} serves noindex but is not in DEINDEXED_PATHS, so the sitemap still lists it`,

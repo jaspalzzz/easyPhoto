@@ -98,7 +98,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Google ignores changeFrequency and priority — omit them for a leaner sitemap.
   return [
     // ── Simple pages (no images) ─────────────────────────────────────────────
-    ...simpleRoutes.map((path) => ({
+    ...simpleRoutes.filter((path) => !isDeindexed(path)).map((path) => ({
       url: `${SITE_URL}${path}`,
       lastModified: LAST_UPDATED,
     })),
@@ -110,7 +110,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
 
     // ── Landing pages with OG images ─────────────────────────────────────────
-    ...ogRoutes.map((path) => ({
+    ...ogRoutes.filter((path) => !isDeindexed(path)).map((path) => ({
       url: `${SITE_URL}${path}`,
       lastModified: LAST_UPDATED,
       images: ogImg(path),

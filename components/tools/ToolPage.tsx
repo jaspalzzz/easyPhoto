@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { breadcrumbSchema, faqSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
+import { isDeindexed } from "@/lib/deindexed";
 import { TrackedLink } from "@/components/site/TrackedLink";
 import { ToolDepth } from "@/components/tools/ToolDepth";
 
@@ -57,7 +58,12 @@ export function ToolPage({
   if (urlPath) {
     if (urlPath.startsWith("/tools/") && urlPath !== "/tools/") {
       autoCrumbs.push({ name: "Tools", path: "/tools/" });
-      if (category) {
+      // Skip a category hub that has left the index. The five hubs are thin
+      // navigation pages and were deindexed, but they are the breadcrumb parent
+      // of the tools that stayed — which left 14 indexed pages publishing a
+      // hierarchy that terminates at a page Google is told to drop. The visible
+      // trail and the schema both step straight from Tools to the tool.
+      if (category && !isDeindexed(`/tools/${category.slug}/`)) {
         autoCrumbs.push({ name: category.group, path: `/tools/${category.slug}/` });
       }
     }

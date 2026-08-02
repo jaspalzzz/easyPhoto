@@ -89,6 +89,8 @@
 # together they were a third of the indexed inventory behind two "low value
 # content" rejections. `follow` so internal links still pass. The list is
 # lib/deindexed.ts; test/deindexed.test.ts fails if these drift apart.
+/unlock-aadhaar-pdf/
+  X-Robots-Tag: noindex, follow
 /tools/auto-crop/
   X-Robots-Tag: noindex, follow
 /tools/camera-capture/

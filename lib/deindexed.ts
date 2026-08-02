@@ -16,6 +16,9 @@
  * public/_headers by test/deindexed.test.ts.
  */
 export const DEINDEXED_PATHS: readonly string[] = [
+  // Not a tool page: a 372-word guide with zero clicks and zero impressions in
+  // 90 days, whose schema pointed at the deindexed /tools/unlock-pdf/.
+  "/unlock-aadhaar-pdf/",
   "/tools/auto-crop/",
   "/tools/camera-capture/",
   "/tools/compliance-checker/",
