@@ -10,8 +10,18 @@ export const dynamic = "force-static";
 // Site-wide "last significant update". Bump MANUALLY on real content changes —
 // NOT new Date(), so lastmod reflects actual freshness instead of churning on
 // every build/deploy (which Google distrusts). Blog posts use their own date.
-const LAST_UPDATED = "2026-06-25";
+const LAST_UPDATED = "2026-08-02";
 const TRUST_PAGES_UPDATED = "2026-07-13";
+
+/**
+ * When the exam-requirement template itself last changed, as opposed to when a
+ * given exam's specification was last verified. An exam page's lastmod is the
+ * later of the two: the spec can be six months old while the page around it
+ * gained a read-next block and an above-the-fold action row this week, and
+ * Google should be told the page changed without the spec pretending to be
+ * newer than it is.
+ */
+const EXAM_TEMPLATE_UPDATED = "2026-08-02";
 
 // Helper: add the page's OG image as an image sitemap entry.
 // Next.js 15 renders <image:image>/<image:loc> for each entry in `images`.
@@ -24,10 +34,15 @@ function ogImg(path: string): string[] {
 
 /** Static sitemap.xml generated at build (output: export). */
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Exam pages carry the date their spec was last verified against the official
-  // source (verifiedOn), so lastmod reflects real freshness per exam instead of
-  // a single site-wide date. Falls back to LAST_UPDATED when a spec has no date.
-  const examFreshness = (key: string) => PORTAL_PRESETS[key]?.verifiedOn ?? LAST_UPDATED;
+  // Exam pages carry the later of two dates: when the spec was last verified
+  // against the official source (verifiedOn) and when the template around it
+  // last changed. Using verifiedOn alone understated pages whose content moved
+  // this week; using the template date alone would claim a stale spec is fresh.
+  const examFreshness = (key: string) => {
+    const verified = PORTAL_PRESETS[key]?.verifiedOn;
+    if (!verified) return EXAM_TEMPLATE_UPDATED;
+    return verified > EXAM_TEMPLATE_UPDATED ? verified : EXAM_TEMPLATE_UPDATED;
+  };
 
   // ── Plain routes (no dedicated OG image) ─────────────────────────────────
   // These pages appear in the sitemap without image entries.
