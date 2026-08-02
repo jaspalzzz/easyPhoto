@@ -154,9 +154,9 @@ export const VISA_FAQ: FaqItem[] = [
   { q: "What size is a Schengen visa photo?", a: "35×45mm, with the head taking up roughly 70–80% of the frame." },
   { q: "What background should a Schengen visa photo have?", a: "Light grey is the safe universal choice. Some states accept white (France, for example), but Switzerland requires grey and won't accept white, so we default to light grey." },
   { q: "What are the UK visa photo requirements?", a: "35×45mm, a plain light-grey or cream background, a neutral expression, and no glasses." },
-  { q: "What size is a Canada visa photo?", a: "35×45mm for visas, study and work permits, and PR. That's different from the 50×70mm Canadian passport print." },
+  { q: "What size is a Canada visa photo?", a: "35×45mm for visitor visas and study or work permits. Permanent residence and Express Entry are a separate process specified in pixels rather than millimetres, and the printed Canadian passport booklet is different again at 50×70mm." },
   { q: "What size is an Australia visa photo?", a: "35–40mm wide by 45–50mm high on a plain light background. We use 35×45mm." },
-  { q: "Can I use the same photo for my passport and visa?", a: "Often yes if the size and background match, but check both specs because some visas differ." },
+  { q: "Can I use the same photo for my passport and visa?", a: "Check the visa's own rules before assuming so. Matching size and background is not always enough — the UK, for one, states the photo you submit must not be the one already in your passport or identity document. Where that applies, take a second photo to the same specification rather than reusing the print." },
   { q: "Can I smile or wear glasses in a visa photo?", a: "Keep a neutral expression and take your glasses off, since most consulates require it." },
   { q: "How do I upload a visa photo to VFS Global online?", a: "Use the digital file we generate. It's sized correctly and compressed under typical portal limits. Confirm the exact limit on your VFS page." },
   { q: "Do I need a printed or digital visa photo?", a: "It depends on the consulate, so you get both a print-ready and an upload-ready file." },
@@ -446,9 +446,18 @@ export function countryFaqItems(
     { q: `What background colour does a ${doc} photo for ${spec.label} need?`, a: `${spec.background.description}. The tool applies the correct colour for you.` },
     { q: `What is the head size in a ${doc} photo for ${spec.label}?`, a: `Your head should measure ${spec.headHeightMm.min}–${spec.headHeightMm.max}mm from chin to crown. We size it to that band and flag it if it's off.` },
     { q: `Can I wear glasses or smile in a ${doc} photo for ${spec.label}?`, a: `${glasses} Expression: ${spec.smileAllowed}.` },
-    { q: `What file size does the ${spec.label} online ${doc} upload need?`, a: fileSize },
     { q: `Is the ${spec.label} ${doc} photo maker free and private?`, a: "Yes. It's free, with no watermark, and processed entirely in your browser. Your photo is never uploaded." },
   ];
+  // Only ask about an upload where one exists. Some applications take printed
+  // photographs and nothing else — an Irish visa wants two prints with details
+  // written on the back — and generating "what file size does the online upload
+  // need?" for those contradicted the rest of the page.
+  if (spec.digital.fileSizeKb || spec.digital.pxMin) {
+    items.splice(4, 0, {
+      q: `What file size does the ${spec.label} online ${doc} upload need?`,
+      a: fileSize,
+    });
+  }
   // Country caveats are passport-flavoured; visa pages get their specifics from
   // the per-page maker content instead.
   if (kind === "passport" && EXTRA[spec.id]) items.push(EXTRA[spec.id]);

@@ -312,7 +312,7 @@ export default function ToolsHubPage() {
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">🇨🇦 Canada Photo</span>
-            <span className="text-muted-foreground leading-normal">Visa, PR, Express Entry, renewal</span>
+            <span className="text-muted-foreground leading-normal">Visitor visa, study &amp; work permit</span>
           </Link>
           <Link
             href="/schengen-visa-photo/"

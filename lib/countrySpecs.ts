@@ -281,9 +281,13 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   canada: {
     id: "canada",
     label: "Canada",
-    // ⚠ SCOPED: printed PASSPORT requires a commercial photographer +
-    // guarantor signature on the back — a self-serve tool CANNOT satisfy it.
-    documents: ["Visa / Study / Work / Visitor", "PR / Express Entry", "Online passport renewal"],
+    // ⚠ SCOPED to temporary residence only. `documents` is rendered to users as
+    // "Prepared for the published requirements of: …", so it must list only the
+    // applications these figures actually cover. PR and Express Entry specify a
+    // pixel-based upload rather than this millimetre size, and the printed
+    // passport booklet is 50x70mm requiring a commercial photographer's
+    // certification — neither belongs in this list.
+    documents: ["Visitor visa", "Study permit", "Work permit"],
     printMm: { width: 50, height: 70 }, // 50x70mm — passport print size (unique)
     visaPrintMm: { width: 35, height: 45 }, // Canada VISA/permit/PR uses 35x45mm
     headHeightMm: { min: 31, max: 36 }, // chin to crown
@@ -293,7 +297,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       acceptableHex: ["#FFFFFF", "#FAFAF7"],
     },
     digital: {
-      // PR / Express Entry / online renewal digital photo
+      // IRCC temporary-residence online upload (visitor/study/work)
       fileSizeKb: { min: 240, max: 5120 }, // ⚠ verify per IRCC portal
       formats: ["jpg"],
     },
@@ -303,16 +307,22 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     notes:
       "⚠ DO NOT advertise this for the PRINTED Canadian PASSPORT. canada.ca " +
       "requires a commercial photographer's certification + guarantor " +
-      "signature on the back, which a DIY tool cannot provide. Serve only: " +
-      "Canada visa/permit (35x45mm), PR/Express Entry, and online passport " +
-      "renewal (digital). Re-confirm IRCC digital file-size caps on the official portal.",
+      "signature on the back, which a DIY tool cannot provide. The 35×45mm " +
+      "figure here is the IRCC temporary-residence specification — visitor " +
+      "visa, study permit and work permit. Permanent residence, Express Entry " +
+      "and passport renewal are separate processes that publish their own " +
+      "photo instructions; do not assume this size or file-size band applies " +
+      "to them. Re-confirm the caps on whichever IRCC portal you are filing on.",
     source:
       "https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html",
     verified: "gov",
     advisory:
       "Not for the printed Canadian PASSPORT (that requires a certified " +
-      "photographer + guarantor signature on the back). Use this for Canada " +
-      "visa/permit, PR/Express Entry, and online passport renewal (35×45mm).",
+      "photographer + guarantor signature on the back). The 35×45mm size here " +
+      "is IRCC's temporary-residence specification — visitor visa, study " +
+      "permit, work permit. If you are filing for permanent residence, " +
+      "Express Entry or a passport renewal, check that application's own " +
+      "photo instructions before you use this crop.",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -486,7 +496,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   ireland: {
     id: "ireland",
     label: "Ireland",
-    documents: ["Irish passport (DFA)", "Ireland visa / study"],
+    documents: ["Ireland visa (Immigration Service Delivery)"],
     printMm: { width: 35, height: 45 },
     headHeightMm: { min: 32, max: 36 },
     headPercentOfFrame: { min: 70, max: 80 },
@@ -495,23 +505,25 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       hex: "#F5F5F0",
       acceptableHex: ["#F5F5F0", "#DCDCDC", "#FFFFFF"],
     },
+    // No pxMin: an Irish visa application takes two PRINTED photographs, so
+    // there is no upload for a pixel minimum to apply to. The 715x951 figure
+    // this record used to carry belongs to the DFA online PASSPORT service,
+    // which is a different application and has no maker page here.
     digital: {
-      pxMin: { width: 715, height: 951 },
-      fileSizeKb: null, // online: JPEG up to 9 MB, no published minimum
+      fileSizeKb: null,
       formats: ["jpg"],
     },
     dpiMin: 300,
     glasses: "remove if possible",
     smileAllowed: "neutral only (biometric)",
     notes:
-      "Per the Irish DFA Passport Service: print size 35x45mm up to 38x50mm, face " +
-      "70-80% of the frame, plain light grey / cream / white background. Online " +
-      "photo: JPEG, minimum 715x951 px, up to 9 MB; max 6 months old, no selfies.",
-    // The DFA page covers the PASSPORT photo. The visa application is a
-    // separate process run by Immigration Service Delivery: two printed
-    // photographs, 35x45mm up to 38x50mm, with the applicant name and
-    // transaction number written on the back. The visa maker page states
-    // that; this source covers the passport figures the spec is built on.
+      "Irish VISA photograph, per Immigration Service Delivery: TWO identical " +
+      "printed colour photographs on photographic paper, 35x45mm minimum up to " +
+      "38x50mm, face 70-80% of the frame, plain light grey / cream / white " +
+      "background, taken within the last 6 months, with the applicant's name and " +
+      "transaction number written in block letters on the back of each. The visa " +
+      "application takes prints, not an upload, so no digital pixel or file-size " +
+      "figure applies to it.",
     source: "https://www.irishimmigration.ie/photograph-rules-for-visa-applications/",
     verified: "gov",
   },
@@ -990,7 +1002,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
 /**
  * Quick launch-readiness audit:
  *   us       → READY (gov-verified)
- *   canada   → READY for visa/PR/renewal only (gov-verified; passport print excluded)
+ *   canada   → READY for temporary residence only — visitor visa, study
+ *               permit, work permit (gov-verified; printed passport excluded)
  *   schengen → verify per-state background defaults
  *   uk       → re-check gov.uk background shade + digital caps
  *   india    → CONDITIONAL: domestic adults use PSK/POPSK capture; 45x35mm is
