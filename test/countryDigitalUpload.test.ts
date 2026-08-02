@@ -15,6 +15,7 @@
 import { describe, it, expect } from "vitest";
 import { COUNTRY_SPECS, acceptsDigitalUpload } from "@/lib/countrySpecs";
 import { countryFaqItems } from "@/lib/faqs";
+import { computeCrop } from "@/lib/headPositioning";
 
 const UPLOAD_Q = /file size does .* online .* upload need/i;
 
@@ -51,5 +52,46 @@ describe("digital upload detection", () => {
     const nz = COUNTRY_SPECS["new-zealand"]!;
     expect(nz.digital.fileSizeKb?.min).toBe(512);
     expect(nz.notes).toMatch(/512 KB/);
+  });
+});
+
+/**
+ * Exact upload sizes must survive the export pipeline, not just the registry.
+ *
+ * Singapore's visa upload must be exactly 400x514 and Saudi's eVisa exactly
+ * 200x200. `recommendedDigitalDpi()` reads only `pxMin`, so both records fell
+ * through to 300 DPI and exported the mm-derived size instead (413x531 for
+ * Singapore). No integer DPI reproduces either target — 51mm at 100 DPI rounds
+ * to 201, not 200 — so `computeCrop` has to be handed the size directly.
+ */
+describe("exact upload sizes reach the export", () => {
+  const face = { crownY: 100, chinY: 400, eyeCenterY: 220, faceCenterX: 1000 };
+  const source = { width: 2000, height: 2600 };
+
+  it("exports Singapore at exactly 400x514", () => {
+    const spec = COUNTRY_SPECS.singapore!;
+    const px = spec.digital.px!;
+    expect(px).toEqual({ width: 400, height: 514 });
+
+    const withExact = computeCrop(face, spec, { source, exactOutput: px });
+    expect(withExact.output).toEqual({ width: 400, height: 514 });
+
+    // Without it, the mm-x-DPI path returns something else — the shipped bug.
+    const withoutExact = computeCrop(face, spec, { source });
+    expect(withoutExact.output).not.toEqual({ width: 400, height: 514 });
+  });
+
+  it("exports the Saudi eVisa at exactly 200x200", () => {
+    const spec = COUNTRY_SPECS["saudi-evisa"]!;
+    const px = spec.digital.px!;
+    const out = computeCrop(face, spec, { source, exactOutput: px });
+    expect(out.output).toEqual({ width: 200, height: 200 });
+  });
+
+  it("leaves records without an exact size on the DPI path", () => {
+    const uk = COUNTRY_SPECS.uk!;
+    expect(uk.digital.px).toBeUndefined();
+    const out = computeCrop(face, uk, { source });
+    expect(out.output.width).toBeGreaterThan(0);
   });
 });

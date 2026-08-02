@@ -7,6 +7,7 @@ import type { FaqItem } from "@/components/site/Faq";
 import {
   acceptsDigitalUpload,
   effectivePrintMm,
+  formatFileSizeKb,
   type CountrySpec,
 } from "@/lib/countrySpecs";
 import type { PortalSpec } from "@/lib/portalPresets";
@@ -415,7 +416,7 @@ export function countryFaqItems(
         : "No, glasses are not allowed."
       : `Glasses: ${spec.glasses}.`;
   const fileSize = spec.digital.fileSizeKb
-    ? `Online uploads typically accept ${spec.digital.fileSizeKb.min}–${spec.digital.fileSizeKb.max} KB, so compress your photo to fit if needed.`
+    ? `Online uploads accept ${formatFileSizeKb(spec.digital.fileSizeKb)}, so compress your photo to fit if needed.`
     : "The online file-size limit varies by portal, so check the limit on your form, then compress to fit.";
 
   const EXTRA: Record<string, FaqItem> = {

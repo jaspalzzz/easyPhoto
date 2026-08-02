@@ -37,6 +37,17 @@ export interface ComputeCropOpts {
   topMarginRatio?: number;
   maxUpscale?: number;
   source?: { width: number; height: number };
+  /**
+   * Force an exact output size in pixels, overriding the mm-x-DPI calculation.
+   *
+   * Some authorities require an EXACT upload size rather than a minimum —
+   * Singapore's visa upload must be 400x514, Saudi's eVisa 200x200. No integer
+   * DPI reproduces those from the print size (51mm at 100 DPI rounds to 201,
+   * not 200), so the digital preset has to be told the target directly.
+   * Callers pass `spec.digital.px`; the ratios there match the print ratio, so
+   * this changes resolution and not framing.
+   */
+  exactOutput?: { width: number; height: number };
 }
 
 export interface CropRect {
@@ -98,8 +109,8 @@ export function computeCrop(
   const maxUpscale = opts.maxUpscale ?? 1.15;
   const warnings: string[] = [];
 
-  const outW = mmToPx(spec.printMm.width, dpi);
-  const outH = mmToPx(spec.printMm.height, dpi);
+  const outW = opts.exactOutput?.width ?? mmToPx(spec.printMm.width, dpi);
+  const outH = opts.exactOutput?.height ?? mmToPx(spec.printMm.height, dpi);
 
   const srcHeadPx = face.chinY - face.crownY;
   if (srcHeadPx <= 0)

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
   effectivePrintMm,
+  formatFileSizeKb,
   specForDocumentKind,
   type CountrySpec,
 } from "@/lib/countrySpecs";
@@ -106,9 +107,7 @@ function SpecSheet({ spec }: { spec: CountrySpec }) {
       : d.pxApprox300dpi
         ? `~${d.pxApprox300dpi.width}×${d.pxApprox300dpi.height}px @300dpi`
         : "—";
-  const kb = d.fileSizeKb
-    ? `${d.fileSizeKb.min}–${d.fileSizeKb.max} KB`
-    : "varies by portal";
+  const kb = d.fileSizeKb ? formatFileSizeKb(d.fileSizeKb) : "varies by portal";
 
   return (
     <dl>
@@ -300,7 +299,7 @@ export default async function MakerPage({
         </h2>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           {spec.digital.fileSizeKb
-            ? `Online ${spec.label} uploads accept roughly ${spec.digital.fileSizeKb.min}–${spec.digital.fileSizeKb.max} KB. `
+            ? `Online ${spec.label} uploads accept ${formatFileSizeKb(spec.digital.fileSizeKb)}. `
             : ""}
           If your portal needs a smaller file, compress the finished photo to an
           exact size. Your image stays in your browser.

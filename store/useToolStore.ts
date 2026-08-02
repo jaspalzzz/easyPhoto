@@ -456,7 +456,8 @@ export const useToolStore = create<ToolState>((set, get) => ({
       measurements,
       rspec,
       digitalDpi,
-      { brightness, contrast }
+      { brightness, contrast },
+      rspec.digital?.px
     );
 
     set({
@@ -583,7 +584,15 @@ async function rebuildPresets(
     sourceSize,
     measurements,
     rspec,
-    { dpi: digitalDpi, source: sourceSize, brightness, contrast }
+    {
+      dpi: digitalDpi,
+      source: sourceSize,
+      brightness,
+      contrast,
+      // Authorities that require an exact upload size (Singapore 400x514,
+      // Saudi eVisa 200x200) cannot be satisfied by any integer DPI.
+      exactOutput: rspec.digital?.px,
+    }
   );
 
   set({

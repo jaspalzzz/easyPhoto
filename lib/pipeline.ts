@@ -232,11 +232,13 @@ export async function buildPresetFromCrop(
   measurements: FaceMeasurements,
   spec: CountrySpec,
   dpi: number,
-  adjustments?: { brightness: number; contrast: number }
+  adjustments?: { brightness: number; contrast: number },
+  /** See ComputeCropOpts.exactOutput — required upload sizes no DPI reproduces. */
+  exactOutput?: { width: number; height: number }
 ): Promise<{ result: CropResult; canvas: HTMLCanvasElement }> {
   const output = {
-    width: mmToPx(spec.printMm.width, dpi),
-    height: mmToPx(spec.printMm.height, dpi),
+    width: exactOutput?.width ?? mmToPx(spec.printMm.width, dpi),
+    height: exactOutput?.height ?? mmToPx(spec.printMm.height, dpi),
   };
   const crop: CropRect = {
     sx: Math.round(cropRect.sx),

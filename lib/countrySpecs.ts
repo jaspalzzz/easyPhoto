@@ -64,6 +64,13 @@ export function specForDocumentKind(
     : spec;
 }
 
+/** Human phrasing for an upload limit that may be a ceiling with no floor. */
+export function formatFileSizeKb(band: FileSizeKb): string {
+  return band.min === undefined
+    ? `under ${band.max} KB`
+    : `${band.min}–${band.max} KB`;
+}
+
 export function acceptsDigitalUpload(spec: CountrySpec): boolean {
   const d = spec.digital;
   return Boolean(
@@ -86,6 +93,19 @@ export interface Range {
   max: number;
 }
 
+/**
+ * An upload size limit.
+ *
+ * `min` is optional because most authorities publish only a ceiling. Singapore's
+ * visa guide says "Image file size must be less than 60Kbytes" and states no
+ * floor; recording `{min: 10, max: 60}` presented an invented 10 KB as though
+ * ICA required it.
+ */
+export interface FileSizeKb {
+  min?: number;
+  max: number;
+}
+
 export interface BackgroundSpec {
   description: string;
   hex: string;
@@ -99,7 +119,7 @@ export interface DigitalSpec {
   pxApprox300dpi?: Dimensions;
   pxApprox600dpi?: Dimensions;
   square?: boolean;
-  fileSizeKb: Range | null;
+  fileSizeKb: FileSizeKb | null;
   formats: string[];
 }
 
@@ -345,11 +365,12 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       acceptableHex: ["#FFFFFF", "#FAFAF7"],
     },
     digital: {
-      // ⚠ UNVERIFIED. No IRCC temporary-residence page we can read states this
-      // band, which is why the record is `conditional` rather than `gov` — a
-      // `gov` flag renders as "Exact" and "Verified" over a figure nobody
-      // confirmed. The TRV specification is print-based (two printed photos).
-      fileSizeKb: { min: 240, max: 5120 },
+      // ⚠ No band. The IRCC temporary-resident specification describes TWO
+      // PRINTED photographs and publishes no upload limit, so the 240 KB-5 MB
+      // figure previously here was unsourced. Downgrading the record's flag was
+      // not enough: the page still printed the range, put it in FAQ schema, and
+      // compressed exports against a 5 MB cap that nobody set.
+      fileSizeKb: null,
       formats: ["jpg"],
     },
     dpiMin: 300,
@@ -1014,7 +1035,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       // dimension must be 400 x 514 pixels". The 8 MB / five-format allowance on
       // ICA's generic photo-guidelines page is for passports, ID cards and
       // e-Services — applying it to a visa upload produces a rejected file.
-      fileSizeKb: { min: 10, max: 60 },
+      fileSizeKb: { max: 60 }, // ICA states a ceiling only; no minimum published
       formats: ["jpg"],
     },
     dpiMin: 300,
@@ -1089,8 +1110,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       acceptableHex: ["#FFFFFF", "#FAFAFA"],
     },
     digital: {
-      square: true,
-      pxApprox300dpi: { width: 531, height: 531 },
+      // Was `square: true` with 531x531, left behind when printMm became 35x45
+      // — the page then advertised a portrait print and a square upload at once.
+      pxApprox300dpi: { width: 413, height: 531 }, // 35x45mm at 300 DPI
       fileSizeKb: null, // ≤120 KB where uploaded digitally (see notes)
       formats: ["jpg"],
     },
@@ -1111,7 +1133,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "used here. Individual missions do publish other sizes — 45×45mm square " +
       "and 2×2 inch both appear — so check your embassy or consulate's " +
       "photograph page and switch the size if it differs before you print.",
-    source: "https://www.mofa.go.jp",
+    source: "https://www.mofa.go.jp/files/000124525.pdf",
     verified: "aggregator",
   },
 
