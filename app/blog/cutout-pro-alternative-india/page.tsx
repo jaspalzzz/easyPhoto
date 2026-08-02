@@ -13,7 +13,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Did Cutout.pro experience a data breach?",
-    a: "Cybernews researchers reported an exposed Elasticsearch server associated with Cutout.pro in early 2023. In February 2024, Trustpilot user reviews referenced a 5.93 GB dataset posted to BreachForums. These are sourced from public reports; we have not independently verified the contents. Cutout.pro's current privacy policy states photos are processed on AWS and deleted within 24–48 hours after the last edit.",
+    a: "Cybernews researchers reported an open Elasticsearch instance exposing usernames and user-generated images, which the company closed before the report was published (cybernews.com/security/ai-editing-service-leaks-images-customer-data). Cybernews separately reported that details of around 20 million users appeared on a leak forum (cybernews.com/news/cutoutpro-leak-exposed-millions-users). We are relaying those published reports and have not independently verified the data. Cutout.pro's current privacy policy states photos are processed on AWS and deleted within 24–48 hours after the last edit.",
   },
   {
     q: "Which free tool is most accurate for India passport photos?",
@@ -65,28 +65,55 @@ export default function Page() {
       <h2>Three issues with Cutout.pro for one-off passport photos</h2>
 
       <p>
-        <strong>1. Credits run out after two photos.</strong> Five free credits, two credits per
-        passport photo — that is two complete photos and one credit left over. After that, the
-        cheapest path is a ₹246.50/month subscription (80 credits). Pay-as-you-go is ₹254.15 for
-        30 credits, or roughly ₹17 per photo at minimum. For a tool marketed as &quot;free,&quot;
-        that is a significant paywall hidden behind the initial credits.
+        <strong>1. Credits run out after two photos.</strong> The free allowance is five credits
+        and a passport photo costs two, so you get two complete photos and one credit left over.
+        After that you are into a subscription or a pay-as-you-go pack. Check the current figures
+        on{" "}
+        <a
+          href="https://www.cutout.pro/image-pricing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          Cutout.pro&apos;s own pricing page
+        </a>{" "}
+        before deciding — plans and regional prices change, and we would rather point you at the
+        source than quote a number that has moved. For a tool marketed as &quot;free,&quot; the
+        paywall sits just behind the initial credits.
       </p>
 
       <p>
         <strong>2. Watermark on free previews.</strong> The low-resolution preview visible without
-        spending credits carries a watermark. Independent reviews confirm that a full-resolution,
-        watermark-free download requires credits (DCReport, March 2026; HitPaw review). Cutout.pro&apos;s
-        own marketing says &quot;free previews forever&quot; — the word &quot;preview&quot; is
-        doing significant work there.
+        spending credits carries a watermark; a full-resolution, watermark-free download requires
+        credits. Cutout.pro&apos;s own marketing says &quot;free previews forever&quot; — the word
+        &quot;preview&quot; is doing significant work there.
       </p>
 
       <p>
         <strong>3. Server upload to AWS.</strong> Cutout.pro&apos;s privacy policy confirms photos
         are processed on Amazon Web Services and retained for 24–48 hours after your last edit.
-        Public reports (Cybernews researchers, 2023; Trustpilot user reviews referencing a data
-        set posted to BreachForums in February 2024) indicate past data security incidents. Cutout.pro
-        has not issued a public statement about these incidents that we were able to find. For a
-        biometric face photo destined for a government document, a server upload carries real risk.
+        Two incidents have been reported publicly. Cybernews researchers{" "}
+        <a
+          href="https://cybernews.com/security/ai-editing-service-leaks-images-customer-data/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          reported an open Elasticsearch instance
+        </a>{" "}
+        exposing usernames and user-generated images, which the company closed before publication;
+        Cybernews separately reported that{" "}
+        <a
+          href="https://cybernews.com/news/cutoutpro-leak-exposed-millions-users/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          details of around 20 million users appeared on a leak forum
+        </a>
+        . We are relaying what those reports state and have not independently verified the data
+        ourselves. For a biometric face photo destined for a government document, a server upload
+        carries real risk — which is the whole reason easyPhoto processes images on your device.
       </p>
 
       <div className="my-8 overflow-x-auto rounded-xl border border-hairline text-sm">
