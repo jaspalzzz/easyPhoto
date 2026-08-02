@@ -85,11 +85,12 @@ export default function Page() {
           Exam Photo &amp; Signature Size — Full List
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          Recorded photo and signature sizes for 30+ Indian exam and
-          recruitment forms, in one place — file-size (KB) limits and pixel
-          dimensions side by side. Find your exam, then resize free in your
-          browser. Each exam links to its full preset, named source and
-          verification status.
+          Every recorded figure in one table: the KB limits and pixel dimensions
+          for {specs.length} Indian exam and recruitment forms, side by
+          side so you can compare them without opening a page each. Where a
+          portal publishes no pixel size we say so rather than filling the cell.
+          Each row links through to that exam&apos;s own page for the source and
+          the resizer.
         </p>
       </header>
 

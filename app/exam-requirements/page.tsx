@@ -63,9 +63,18 @@ export default function Page() {
           Exam Photo &amp; Signature Size Requirements
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          Recorded photo and signature sizes, dimensions and formats for Indian exam
-          and recruitment portals. Each specification page shows its named source and
-          verification status. Confirm the current portal instructions before submitting.
+          Pick your exam and open its own page: the recorded photo and signature
+          figures, the named source they came from, whether that source has been
+          confirmed, and the resizer already set to that portal&apos;s target. Confirm
+          the current instructions on the portal before submitting.
+        </p>
+        <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+          If you would rather see every exam&apos;s numbers side by side instead of
+          opening them one at a time, the{" "}
+          <Link href="/exam-photo-size/" className="font-medium text-brand hover:underline">
+            full size comparison
+          </Link>{" "}
+          puts the KB limits and pixel dimensions in one table.
         </p>
         <p className="text-sm">
           <Link href="/exam-photo-size/" className="font-medium text-brand hover:underline">
