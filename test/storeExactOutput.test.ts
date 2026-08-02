@@ -82,6 +82,27 @@ describe("store passes exact upload sizes to the export", () => {
     expect(buildPresetFromCrop.mock.calls[0][EXACT_ARG]).toBeUndefined();
   });
 
+  it("sends digital.px on the automatic path", async () => {
+    // recomputeAuto() -> rebuildPresets() -> buildPreset(). Covered separately
+    // because it is a different call site: dropping `exactOutput` from the
+    // automatic branch alone previously left every test green.
+    primeStore("singapore");
+    await useToolStore.getState().recomputeAuto();
+
+    expect(buildPreset).toHaveBeenCalledTimes(2);
+    // buildPreset(src, size, measurements, spec, opts) — opts is index 4.
+    const digitalOpts = buildPreset.mock.calls[1][4];
+    expect(digitalOpts.exactOutput).toEqual({ width: 400, height: 514 });
+    // The print preset must not be forced to the upload size.
+    expect(buildPreset.mock.calls[0][4].exactOutput).toBeUndefined();
+  });
+
+  it("leaves a record without an exact size unforced on the automatic path", async () => {
+    primeStore("uk");
+    await useToolStore.getState().recomputeAuto();
+    expect(buildPreset.mock.calls[1][4].exactOutput).toBeUndefined();
+  });
+
   it("leaves records without an exact size unforced", async () => {
     primeStore("uk");
     await useToolStore

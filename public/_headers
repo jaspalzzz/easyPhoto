@@ -89,71 +89,71 @@
 # together they were a third of the indexed inventory behind two "low value
 # content" rejections. `follow` so internal links still pass. The list is
 # lib/deindexed.ts; test/deindexed.test.ts fails if these drift apart.
-/tools/auto-crop
+/tools/auto-crop/
   X-Robots-Tag: noindex, follow
-/tools/camera-capture
+/tools/camera-capture/
   X-Robots-Tag: noindex, follow
-/tools/compliance-checker
+/tools/compliance-checker/
   X-Robots-Tag: noindex, follow
-/tools/compress-document
+/tools/compress-document/
   X-Robots-Tag: noindex, follow
-/tools/document
+/tools/document/
   X-Robots-Tag: noindex, follow
-/tools/extract-pages
+/tools/extract-pages/
   X-Robots-Tag: noindex, follow
-/tools/form-fill
+/tools/form-fill/
   X-Robots-Tag: noindex, follow
-/tools/format-converter
+/tools/format-converter/
   X-Robots-Tag: noindex, follow
-/tools/image-crop
+/tools/image-crop/
   X-Robots-Tag: noindex, follow
-/tools/image-to-text
+/tools/image-to-text/
   X-Robots-Tag: noindex, follow
-/tools/jpg-to-pdf
+/tools/jpg-to-pdf/
   X-Robots-Tag: noindex, follow
-/tools/linkedin-photo
+/tools/linkedin-photo/
   X-Robots-Tag: noindex, follow
-/tools/mask-aadhaar
+/tools/mask-aadhaar/
   X-Robots-Tag: noindex, follow
-/tools/ocr
+/tools/ocr/
   X-Robots-Tag: noindex, follow
-/tools/pdf
+/tools/pdf/
   X-Robots-Tag: noindex, follow
-/tools/pdf-compress
+/tools/pdf-compress/
   X-Robots-Tag: noindex, follow
-/tools/pdf-merge
+/tools/pdf-merge/
   X-Robots-Tag: noindex, follow
-/tools/pdf-page-numbers
+/tools/pdf-page-numbers/
   X-Robots-Tag: noindex, follow
-/tools/pdf-reorder
+/tools/pdf-reorder/
   X-Robots-Tag: noindex, follow
-/tools/pdf-split
+/tools/pdf-split/
   X-Robots-Tag: noindex, follow
-/tools/pdf-to-jpg
+/tools/pdf-to-jpg/
   X-Robots-Tag: noindex, follow
-/tools/pdf-to-text
+/tools/pdf-to-text/
   X-Robots-Tag: noindex, follow
-/tools/photo
+/tools/photo/
   X-Robots-Tag: noindex, follow
-/tools/photo-rejection-check
+/tools/photo-rejection-check/
   X-Robots-Tag: noindex, follow
-/tools/photo-validator
+/tools/photo-validator/
   X-Robots-Tag: noindex, follow
-/tools/print-sheet
+/tools/print-sheet/
   X-Robots-Tag: noindex, follow
-/tools/red-eye-removal
+/tools/red-eye-removal/
   X-Robots-Tag: noindex, follow
-/tools/resize-dimensions
+/tools/resize-dimensions/
   X-Robots-Tag: noindex, follow
-/tools/sign-pdf
+/tools/sign-pdf/
   X-Robots-Tag: noindex, follow
-/tools/signature
+/tools/signature/
   X-Robots-Tag: noindex, follow
-/tools/straighten-photo
+/tools/straighten-photo/
   X-Robots-Tag: noindex, follow
-/tools/transparent-signature
+/tools/transparent-signature/
   X-Robots-Tag: noindex, follow
-/tools/unlock-pdf
+/tools/unlock-pdf/
   X-Robots-Tag: noindex, follow
-/tools/watermark-pdf
+/tools/watermark-pdf/
   X-Robots-Tag: noindex, follow

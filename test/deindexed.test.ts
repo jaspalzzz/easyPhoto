@@ -16,23 +16,38 @@ import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import { DEINDEXED_PATHS, isDeindexed } from "@/lib/deindexed";
+import { pageMetadata } from "@/lib/seo";
 
 const headers = fs.readFileSync(
   path.join(process.cwd(), "public", "_headers"),
   "utf8",
 );
 
-/** Paths in _headers carrying a noindex X-Robots-Tag, restricted to /tools/. */
+/**
+ * Paths in _headers carrying a noindex X-Robots-Tag, restricted to /tools/.
+ *
+ * Parses each block up to the next unindented route line. A fixed look-ahead
+ * window was wrong: deleting one route's X-Robots-Tag let the window reach into
+ * the NEXT block and credit that header to the wrong page, so the check passed
+ * on a page that had lost its rule.
+ */
 function noindexedToolPathsInHeaders(): Set<string> {
   const found = new Set<string>();
   const lines = headers.split("\n");
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]!;
     if (!line.startsWith("/tools/") || line.includes("*")) continue;
-    const following = lines.slice(i + 1, i + 4).join("\n");
-    if (/X-Robots-Tag:\s*noindex/i.test(following)) {
-      found.add(line.trim().replace(/\/?$/, "/"));
+    let hasRule = false;
+    for (let j = i + 1; j < lines.length; j++) {
+      const next = lines[j]!;
+      // A new route (or any unindented non-comment content) ends this block.
+      if (next.startsWith("/") || (next.trim() !== "" && !/^\s/.test(next))) break;
+      if (/X-Robots-Tag:\s*noindex/i.test(next)) {
+        hasRule = true;
+        break;
+      }
     }
+    if (hasRule) found.add(line.trim().replace(/\/?$/, "/"));
   }
   return found;
 }
@@ -58,6 +73,27 @@ describe("deindexed pages", () => {
         isDeindexed(p),
         `${p} serves noindex but is not in DEINDEXED_PATHS, so the sitemap still lists it`,
       ).toBe(true);
+    }
+  });
+
+  it("puts a robots meta tag on every deindexed page", () => {
+    // The X-Robots-Tag header depends on edge path matching, and the rules were
+    // originally written without the trailing slash the site canonicalises to,
+    // so they would not have matched the served URL. The tag must also ship in
+    // the page's own HTML, which pageMetadata derives from this same list.
+    for (const p of DEINDEXED_PATHS) {
+      const meta = pageMetadata({ title: "t", description: "d", path: p });
+      expect(meta.robots, `${p} must carry robots noindex`).toEqual({
+        index: false,
+        follow: true,
+      });
+    }
+  });
+
+  it("does not put a robots meta tag on a page that stays indexed", () => {
+    for (const p of ["/tools/sign-image/", "/contact/", "/tools/"]) {
+      const meta = pageMetadata({ title: "t", description: "d", path: p });
+      expect(meta.robots, `${p} must stay indexable`).toBeUndefined();
     }
   });
 

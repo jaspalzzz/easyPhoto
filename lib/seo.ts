@@ -9,6 +9,7 @@
 
 import type { Metadata } from "next";
 import { SITE_URL, SITE_NAME } from "./site";
+import { isDeindexed } from "@/lib/deindexed";
 
 /** Absolute URL for a path (canonical/OG need absolute URLs). */
 export function absoluteUrl(path = "/"): string {
@@ -49,6 +50,12 @@ export function pageMetadata({
   type = "website",
 }: PageMetaInput): Metadata {
   const url = absoluteUrl(path);
+  // A deindexed page must carry the instruction in its own HTML. Relying on the
+  // _headers X-Robots-Tag alone put the whole reduction at the mercy of edge
+  // path matching — and those rules were written without the trailing slash the
+  // site canonicalises to, so they would not have matched the served URL at all.
+  // Deriving it here means the tag ships with the page and is build-verifiable.
+  const excluded = noIndex || isDeindexed(path);
   // Only pin images when explicitly given; otherwise the route's generated
   // opengraph-image.tsx (or the layout default) supplies the card.
   const img = image ? absoluteUrl(image) : undefined;
@@ -59,7 +66,7 @@ export function pageMetadata({
     alternates: { canonical: url },
     // Thin/duplicate tiers are kept live for users but removed from the index;
     // follow:true so link equity still flows to the canonical pages they link to.
-    ...(noIndex ? { robots: { index: false, follow: true } } : {}),
+    ...(excluded ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       type,
       url,
