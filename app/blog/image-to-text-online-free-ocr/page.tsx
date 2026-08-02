@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
 
 const post = getPost("image-to-text-online-free-ocr")!;
@@ -225,6 +226,9 @@ export default function Page() {
         tool matures. The Tesseract engine supports over 100 languages — it is a
         matter of bundling the additional training data.
       </p>
+      <div className="mt-12">
+        <Faq items={FAQ_ITEMS} noSchema />
+      </div>
     </BlogPostLayout>
   );
 }

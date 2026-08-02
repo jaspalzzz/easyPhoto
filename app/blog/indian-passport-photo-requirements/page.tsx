@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
+import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
 
 const post = getPost("indian-passport-photo-requirements")!;
@@ -222,6 +223,9 @@ export default function Page() {
         properties, but it cannot confirm identity, documents, eligibility or an
         application decision.
       </p>
+      <div className="mt-12">
+        <Faq items={FAQ_ITEMS} noSchema />
+      </div>
     </BlogPostLayout>
   );
 }

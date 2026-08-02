@@ -46,12 +46,14 @@ export default function Page() {
       ctaLabel="Remove background free — no upload"
     >
       <p>
-        Remove.bg processed over 150&nbsp;million background removals per month
-        in 2024 (Remove.bg company data, 2024) — but it uploads every image to a
-        remote server, charges after a free limit, and keeps a copy for model
-        training. There is a simpler option: an AI background remover that runs
-        entirely in your browser, costs nothing, and never sees your photo.
-        Here is how to use it, and how the technology works.
+        Most background removers work the same way: you upload the image to
+        their server, it comes back cut out, and a free allowance runs out. That
+        is fine for a product shot. It is a different question for a photograph
+        of your face destined for a government form, because the file leaves
+        your device to get there. There is a simpler option: an AI background
+        remover that runs entirely in your browser, costs nothing, and never
+        receives your photo at all. Here is how to use it, and how the
+        technology works.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
@@ -202,7 +204,7 @@ export default function Page() {
           aria-label="Comparison table: on-device background removal vs server-upload tools across price, privacy, speed, quality, and data retention"
         >
           <title>On-device vs server-upload background removal</title>
-          <desc>easyPhoto runs on-device: free, private, no data retention, 1–3s on desktop. Server-upload tools like remove.bg charge after limits, upload images, and retain data for model training.</desc>
+          <desc>easyPhoto runs on-device: free, private, no data retention, 1–3s on desktop. Server-upload tools charge after a free allowance and require the image to be sent to their servers.</desc>
 
           {/* Header row */}
           <rect x="0" y="0" width="560" height="34" rx="6" fill="currentColor" opacity="0.06" />
@@ -212,7 +214,7 @@ export default function Page() {
           {[
             ["Price", "Free, unlimited", "Free tier limited; paid after"],
             ["Photo upload", "Never — on-device only", "Uploaded to remote server"],
-            ["Data retention", "None — cleared on close", "Kept for model training"],
+            ["Where the image goes", "Stays on your device", "Sent to their server"],
             ["Processing speed", "1–3 s (desktop WebGPU)", "2–8 s (depends on network)"],
             ["Edge quality", "Sharp at 2048 px (desktop)", "Sharp (larger server model)"],
             ["Mobile support", "Yes (lightweight model)", "Yes"],

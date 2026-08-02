@@ -176,8 +176,8 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
         p: "When you apply online you can either upload a digital photo or use a code from a photo booth. This maker creates a digital photo you can upload directly. For a printed photo, download the 6×4 sheet and print it on photo paper.",
       },
       {
-        h: "The same photo for a UK visa (UKVI)",
-        p: "UK Visas and Immigration works to the same 35×45mm frame, plain light background, neutral expression and mouth-closed rules, so one photo serves the passport and the visa application alike. The visa route is digital rather than printed, so the only extra step is meeting whatever pixel and file-size limit the application screen states — make the photo here, then compress it to fit.",
+        h: "A UK visa photo: same rules, but it must be a different photo",
+        p: "UK Visas and Immigration works to the same 35×45mm frame, plain light background, neutral expression and mouth-closed rules — but it also states that the photo you submit must not be the one already in your passport or identity card. Same specification, different image, so take a fresh photo rather than reusing the one you printed. The visa route is digital: the guidance describes a JPG of at least 600×750 pixels between 50 KB and 6 MB. Make the new photo here, then compress it into that band, and confirm the figures on the application screen before uploading.",
       },
     ],
     faqs: [
@@ -198,8 +198,8 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
         a: "Generally no. Glasses should be removed unless you have to wear them for medical reasons, and there must be no glare.",
       },
       {
-        q: "Is a UK visa photo the same as a UK passport photo?",
-        a: "They share the 35×45mm frame, the plain light background and the neutral-expression rules, so the same photo works for both. The visa photo is uploaded rather than printed, so it also has to meet the file-size limit shown on the application screen.",
+        q: "Can I reuse my UK passport photo for a UK visa application?",
+        a: "No. The specification is the same — 35×45mm, plain light background, neutral expression — but UK Visas and Immigration states the photo you submit must not be the one already used in your passport or identity card. Take a fresh photo to the same rules. The digital guidance describes a JPG of at least 600×750 pixels between 50 KB and 6 MB; confirm the figures on the application screen before uploading.",
       },
       {
         q: "What background does a UK visa photo need?",
@@ -226,8 +226,8 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
         p: "Download the 35×45mm photo and the 6×4 print sheet, then print on photo paper at a pharmacy or photo lab. Make sure the printed size is exact, since the passport office measures the head height against the 32–36mm band.",
       },
       {
-        h: "The same photo for an Australian visa — without the guarantor step",
-        p: "Visitor, student, work and partner visas use the same 35×45mm image on a plain white or light grey background, so one photo covers both. The important difference is that the guarantor endorsement applies to the passport only: a visa photo is simply uploaded to ImmiAccount with no signature on the back. If the application caps the file size, compress the exported photo before uploading.",
+        h: "If you are applying for a visa rather than a passport",
+        p: "Everything above is the Australian Passport Office specification. Visa applications are a separate process run by Home Affairs, and what they ask for depends on the visa: some subclasses collect your photograph and biometrics at a collection centre rather than taking an upload, and the ones that do accept a photo state their own requirements in the application. We have not found a single published specification covering visitor, student, work and partner visas alike, so we are not going to claim one. Open the requirements for your subclass in ImmiAccount and work to those; the guarantor endorsement described above belongs to the passport application and does not apply.",
       },
     ],
     faqs: [
@@ -249,11 +249,11 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "Does an Australian visa photo need a guarantor signature?",
-        a: "No. The guarantor endorsement applies only to the passport application. A visa photo is uploaded to ImmiAccount with nothing written on the back.",
+        a: "No. The guarantor endorsement is part of the passport application, not a visa application.",
       },
       {
-        q: "Is an Australian visa photo the same as a passport photo?",
-        a: "The size and background match — 35×45mm with the head 32–36mm from chin to crown, on plain white or light grey. The visa photo needs no guarantor endorsement and is uploaded rather than printed.",
+        q: "Can I use this photo for an Australian visa?",
+        a: "Check the requirements for your visa subclass first. Visas are handled by Home Affairs rather than the Passport Office: some subclasses collect your photograph and biometrics at a collection centre instead of accepting an upload, and those that do take a photo set their own requirements in the application. The 35×45mm specification on this page is the passport one, and we have not found a published rule extending it across all visa subclasses.",
       },
     ],
   },

@@ -50,9 +50,18 @@ export async function generateMetadata({
   if (!page || !spec) return {};
   const mm = effectivePrintMm(spec);
   const doc = page.kind === "visa" ? "visa" : "passport";
+  // "Exact" is only honest when the figures came from the issuing authority.
+  // 14 of the country records are sourced from aggregators rather than a
+  // government page, and claiming exactness for those is the same overclaim the
+  // exam presets had removed. Those pages describe what is recorded and tell
+  // the reader to confirm it instead.
+  const fromGovernment = spec.verified === "gov";
+  const description = fromGovernment
+    ? `Exact ${spec.label} ${doc} photo requirements: ${mm.width}×${mm.height}mm, ${spec.background.description}. Make one free in your browser — nothing uploaded.`
+    : `${spec.label} ${doc} photo, recorded at ${mm.width}×${mm.height}mm, ${spec.background.description}. Confirm the current requirements before you apply. Free, in your browser — nothing uploaded.`;
   return pageMetadata({
     title: `${spec.label} ${doc === "visa" ? "Visa" : "Passport"} Photo Size & Maker`,
-    description: `Exact ${spec.label} ${doc} photo requirements: ${mm.width}×${mm.height}mm, ${spec.background.description}. Make one free in your browser — nothing uploaded.`,
+    description,
     path: `/${maker}/`,
   });
 }
