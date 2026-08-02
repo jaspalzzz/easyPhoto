@@ -48,7 +48,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "Can I use the same photo for a UK visa (UKVI)?",
-    a: "Yes. UK Visas and Immigration follows the same 35×45mm light background specification. Use this maker, and the resulting photo works for both a passport and most UK visa applications.",
+    a: "No — take a fresh one. UK Visas and Immigration works to the same 35×45mm light-background specification, but it also states that the photo you submit must not be the one already used in your passport or identity document. Make a second photo to the same rules rather than reusing the print. The visa route is digital, so it also has to meet the upload limits shown on the application screen.",
   },
 ];
 

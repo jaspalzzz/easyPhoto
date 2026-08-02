@@ -75,7 +75,7 @@ const GOOD_TO_KNOW: Record<string, string> = {
     "Ordinary adult fresh/reissue applicants in India are photographed at the PSK/POPSK and do not upload or carry a photo. The 35×45mm white-background print is for a child below four; overseas missions, OCI and Indian e-Visa use separate workflows.",
   us: "The US wants a plain white or off-white background and no glasses. Use a photo from the last six months, and leave a little space above your head so there's room to crop.",
   canada:
-    "This covers Canada's 35×45mm photo for visas, study and work permits, PR/Express Entry and online passport renewal. The printed passport booklet photo is different: it needs a commercial photographer's certification and a guarantor signature, which a self-serve tool can't provide.",
+    "This covers Canada's 35×45mm temporary-resident photo — visitor visas, study permits and work permits. Permanent residence and Express Entry are a separate process with their own pixel-based upload requirements, and the printed passport booklet is different again: 50×70mm, needing a commercial photographer's certification and a guarantor signature that a self-serve tool cannot provide. Check what your own application asks for rather than assuming the visitor figure carries across.",
   uk: "The UK rejects plain white backgrounds. It wants light grey or cream, which this tool applies for you. Take your glasses off unless you need them for medical reasons.",
   australia:
     "Australia accepts a plain white or light grey background. For a new passport, your guarantor signs the back of one printed photo to confirm it's a true likeness, so add that by hand after you print.",

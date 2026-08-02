@@ -13,14 +13,14 @@ const spec = COUNTRY_SPECS["canada"]!;
 export const metadata = pageMetadata({
   title: "Canada Passport Photo Requirements 2026 — Free Maker (Visa, PR, Renewal)",
   description:
-    "Canada visa, PR, Express Entry and online passport renewal photo: prepare the listed 35×45mm dimensions and background free in your browser. Confirm the current IRCC instructions.",
+    "Canada temporary-resident photo — visitor, study and work: prepare the recorded 35×45mm dimensions and background free in your browser. Permanent residence and the printed passport booklet have separate requirements, covered below. Confirm the current IRCC instructions.",
   path: "/canada-passport-photo/",
 });
 
 const FAQ_ITEMS: FaqItem[] = [
   {
     q: "What size is a Canadian passport photo?",
-    a: "For the printed passport booklet: 50×70mm (unique to Canada). For visas, PR, Express Entry, study/work permits and online passport renewal: 35×45mm on a white background. The 35×45mm is the digital-application standard.",
+    a: "It depends which application you mean. The printed passport booklet is 50×70mm, unique to Canada. Temporary-resident applications — visitor visas, study permits and work permits — use 35×45mm on a white background. Permanent residence and Express Entry are a separate process with their own pixel-based upload requirements rather than a millimetre size, so check what your application asks for.",
   },
   {
     q: "What is the background colour for a Canada passport photo?",
@@ -28,15 +28,15 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "Can I use this maker for the Canadian passport booklet?",
-    a: "No. The printed Canadian passport booklet requires a certified commercial photographer and a guarantor signature on the back — which a self-serve tool cannot provide. This maker is for Canada visas, PR/Express Entry, study permits, work permits and the online passport renewal portal (all 35×45mm).",
+    a: "No. The printed Canadian passport booklet requires a certified commercial photographer and a guarantor signature on the back, which a self-serve tool cannot provide. This maker is for the 35×45mm temporary-resident photo used by visitor visas, study permits and work permits.",
   },
   {
     q: "What photo do I need for Express Entry or PR?",
-    a: "A 35×45mm photo on a plain white or light background, with the head measuring 31–36mm from chin to crown. This maker prepares the selected size and white background; confirm the current IRCC instructions before use.",
+    a: "Not the 35×45mm print on this page. Permanent residence and Express Entry use a digital photograph specified in pixels rather than millimetres, and IRCC asks for a professionally taken photo. Open the photo requirements inside your own PR application and work to those figures.",
   },
   {
     q: "Can I upload a digital photo for Canada's online passport renewal?",
-    a: "Yes. The IRCC online passport renewal portal accepts a digital photo upload (JPEG, 240 KB – 5 MB). Make the photo here, and compress it with the resize-to-KB tool if the portal has a stricter cap.",
+    a: "Passport renewal is run by the passport programme rather than the temporary-resident stream this page covers, and its photo rules are set by that application. Read the requirements shown in the renewal service before preparing anything, rather than assuming the 35×45mm visitor figure applies.",
   },
   {
     q: "Are glasses allowed in a Canadian passport photo?",
@@ -86,9 +86,11 @@ export default function Page() {
           Canada Passport Photo Requirements 2026
         </h1>
         <p className="text-base leading-relaxed text-muted-foreground max-w-2xl">
-          Canada uses a <strong>35×45mm photo on a plain white background</strong> for visas, PR,
-          Express Entry, study/work permits and the online passport renewal portal. The physical
-          passport booklet uses a unique 50×70mm format requiring a certified photographer.
+          Canada uses a <strong>35×45mm photo on a plain white background</strong> for its
+          temporary-resident applications — visitor visas, study permits and work permits.
+          Permanent residence and Express Entry are a separate process specified in pixels rather
+          than millimetres, and the printed passport booklet is different again: a unique 50×70mm
+          format requiring a certified photographer.
         </p>
       </header>
 
@@ -97,8 +99,9 @@ export default function Page() {
         <AlertCircle className="h-4 w-4 shrink-0 text-amber-600 mt-0.5" />
         <p className="text-sm text-amber-800">
           <strong>Printed passport booklet:</strong> requires a commercial photographer and a guarantor
-          signature — not a self-serve tool. This maker covers Canada visas, PR/Express Entry,
-          study &amp; work permits, and online passport renewal (all 35×45mm).
+          signature — not a self-serve tool. This maker covers the 35×45mm temporary-resident photo:
+          visitor visas, study permits and work permits. Permanent residence, Express Entry and
+          passport renewal each set their own requirements.
         </p>
       </div>
 
