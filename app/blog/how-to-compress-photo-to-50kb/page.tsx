@@ -244,15 +244,15 @@ export default function Page() {
       <p>
         For portal-specific workflows where you need to hit both a pixel dimension and
         a KB target in one step, the{" "}
-        <Link href="/pan-card-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/pan/" className="text-brand underline">
           PAN card resizer
         </Link>
         ,{" "}
-        <Link href="/voter-id-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/voter-id/" className="text-brand underline">
           Voter ID resizer
         </Link>
         , and{" "}
-        <Link href="/driving-licence-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/driving-licence/" className="text-brand underline">
           Driving Licence resizer
         </Link>{" "}
         handle both measurable targets — you upload the photo and get an output

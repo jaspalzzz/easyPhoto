@@ -50,9 +50,9 @@ export default function Page() {
           Pick your exam — the tool applies the selected KB target and published pixel dimensions where available. Confirm the current notification. No sign-up, nothing uploaded.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <Link href="/ssc-photo-resizer/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">SSC</Link>
-          <Link href="/ibps-photo-resizer/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">IBPS / SBI</Link>
-          <Link href="/upsc-photo-resizer/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">UPSC</Link>
+          <Link href="/exam-requirements/ssc/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">SSC</Link>
+          <Link href="/exam-requirements/ibps/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">IBPS / SBI</Link>
+          <Link href="/exam-requirements/upsc/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">UPSC</Link>
           <Link href="/tools/exam-package/" className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white">All exams →</Link>
         </div>
       </div>
@@ -211,7 +211,7 @@ export default function Page() {
       </p>
       <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
         <strong>Prepare your SSC signature:</strong>{" "}
-        <Link href="/ssc-photo-resizer/" className="text-brand underline font-medium">SSC live-photo guide &amp; signature resizer →</Link>
+        <Link href="/exam-requirements/ssc/" className="text-brand underline font-medium">SSC live-photo guide &amp; signature resizer →</Link>
       </p>
 
       <h2>Banking exams: IBPS PO, IBPS Clerk, SBI PO, SBI Clerk</h2>
@@ -249,7 +249,7 @@ export default function Page() {
       </p>
       <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
         <strong>Resize for IBPS / SBI:</strong>{" "}
-        <Link href="/ibps-photo-resizer/" className="text-brand underline font-medium">IBPS &amp; SBI photo resizer →</Link>
+        <Link href="/exam-requirements/ibps/" className="text-brand underline font-medium">IBPS &amp; SBI photo resizer →</Link>
         {" "}or{" "}
         <Link href="/tools/exam-package/" className="text-brand underline font-medium">all-exam package →</Link>
       </p>
@@ -281,7 +281,7 @@ export default function Page() {
       </p>
       <p className="my-3 rounded-lg bg-brand-soft/10 px-4 py-2.5 text-sm">
         <strong>Prepare your UPSC photo:</strong>{" "}
-        <Link href="/upsc-photo-resizer/" className="text-brand underline font-medium">UPSC photo resizer →</Link>
+        <Link href="/exam-requirements/upsc/" className="text-brand underline font-medium">UPSC photo resizer →</Link>
       </p>
 
       <h2>Railway exams: RRB NTPC, ALP, Group D</h2>
@@ -510,9 +510,9 @@ export default function Page() {
         </li>
         <li>
           <strong>Per-exam resizers:</strong> dedicated tools for{" "}
-          <Link href="/ssc-photo-resizer/">SSC</Link>,{" "}
-          <Link href="/upsc-photo-resizer/">UPSC</Link>, and{" "}
-          <Link href="/ibps-photo-resizer/">IBPS</Link>{" "}
+          <Link href="/exam-requirements/ssc/">SSC</Link>,{" "}
+          <Link href="/exam-requirements/upsc/">UPSC</Link>, and{" "}
+          <Link href="/exam-requirements/ibps/">IBPS</Link>{" "}
           apply the selected KB target and any published pixel dimensions recorded
           for that board. Confirm the current notification before submitting.
         </li>

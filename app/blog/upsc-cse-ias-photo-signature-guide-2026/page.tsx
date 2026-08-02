@@ -17,7 +17,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} ctaHref="/upsc-photo-resizer/" ctaLabel="Resize your UPSC photo">
+    <BlogPostLayout slug={post.slug} ctaHref="/exam-requirements/upsc/" ctaLabel="Resize your UPSC photo">
       <p>
         UPSC CSE, NDA and CDS all upload through the same UPSC OTR (One-Time
         Registration) portal, so they share one set of file rules. The part that
@@ -210,7 +210,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Upload the single image</strong> through the{" "}
-          <Link href="/upsc-signature-resizer/">UPSC signature resizer</Link>.
+          <Link href="/exam-requirements/upsc/">UPSC signature resizer</Link>.
           It cleans the paper background and outputs a JPG inside the
           20–100&nbsp;KB band.
         </li>
@@ -376,7 +376,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Resize for UPSC.</strong> Run the image through the{" "}
-          <Link href="/upsc-photo-resizer/">UPSC photo resizer</Link>. It
+          <Link href="/exam-requirements/upsc/">UPSC photo resizer</Link>. It
           outputs a JPG inside the 20–200&nbsp;KB band on a clean white
           background.
         </li>
@@ -400,7 +400,7 @@ export default function Page() {
         <li>
           <strong>
             Run through the{" "}
-            <Link href="/upsc-signature-resizer/">
+            <Link href="/exam-requirements/upsc/">
               UPSC signature resizer
             </Link>
           </strong>

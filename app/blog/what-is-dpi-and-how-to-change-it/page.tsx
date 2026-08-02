@@ -291,7 +291,7 @@ export default function Page() {
           resize by KB tool
         </Link>{" "}
         handles file-size targets for exam portals, while the{" "}
-        <Link href="/pan-card-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/pan/" className="text-brand underline">
           PAN card resizer
         </Link>{" "}
         handles the full NSDL/UTIITSL spec including DPI, dimensions, and file size

@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} ctaHref="/upsc-photo-resizer/" ctaLabel="Resize your NDA/CDS photo">
+    <BlogPostLayout slug={post.slug} ctaHref="/exam-requirements/upsc/" ctaLabel="Resize your NDA/CDS photo">
       <p>
         NDA and CDS upload through the same UPSC OTR portal, so their photo and
         signature rules are identical to each other and to UPSC CSE. UPSC keeps
@@ -309,7 +309,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Resize and clean:</strong> run the image through the{" "}
-          <Link href="/upsc-signature-resizer/">UPSC signature resizer</Link>.
+          <Link href="/exam-requirements/upsc/">UPSC signature resizer</Link>.
           It removes the paper background, trims whitespace, and outputs a
           clean JPG inside the 20–100&nbsp;KB band. Nothing leaves your
           browser.
@@ -339,7 +339,7 @@ export default function Page() {
             <td className="py-2 pr-3">
               Recrop so the face covers about 75% of the frame, then resize with
               the{" "}
-              <Link href="/upsc-photo-resizer/">UPSC photo resizer</Link>
+              <Link href="/exam-requirements/upsc/">UPSC photo resizer</Link>
             </td>
           </tr>
           <tr className="border-b border-hairline/60">
@@ -407,7 +407,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Resize for UPSC.</strong> Run the image through the{" "}
-          <Link href="/upsc-photo-resizer/">UPSC photo resizer</Link>. It
+          <Link href="/exam-requirements/upsc/">UPSC photo resizer</Link>. It
           outputs a JPG on a clean white background inside the 20–200&nbsp;KB
           band.
         </li>
@@ -431,7 +431,7 @@ export default function Page() {
         <li>
           <strong>
             Run through the{" "}
-            <Link href="/upsc-signature-resizer/">UPSC signature resizer</Link>
+            <Link href="/exam-requirements/upsc/">UPSC signature resizer</Link>
           </strong>
           . It cleans the background and outputs a JPG in the 20–100&nbsp;KB
           band.

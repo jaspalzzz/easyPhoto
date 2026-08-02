@@ -29,7 +29,7 @@ export function ToolPage({
   blurb: string;
   /** Catalog slug — enables related cross-links + structured data. */
   slug?: string;
-  /** Canonical route path, e.g. "/ssc-photo-resizer/". If provided, schemas are generated. */
+  /** Canonical route path, e.g. "/exam-requirements/ssc/". If provided, schemas are generated. */
   path?: string;
   children: React.ReactNode;
   footnote?: string;

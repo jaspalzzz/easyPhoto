@@ -300,11 +300,11 @@ export default function Page() {
           background remover
         </Link>{" "}
         + the{" "}
-        <Link href="/voter-id-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/voter-id/" className="text-brand underline">
           voter ID resizer
         </Link>{" "}
         or{" "}
-        <Link href="/driving-licence-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/driving-licence/" className="text-brand underline">
           driving licence resizer
         </Link>{" "}
         covers the end-to-end workflow.

@@ -35,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} ctaHref="/ibps-photo-resizer/" ctaLabel="Resize your IBPS photo" faqItems={FAQ_ITEMS}>
+    <BlogPostLayout slug={post.slug} ctaHref="/exam-requirements/ibps/" ctaLabel="Resize your IBPS photo" faqItems={FAQ_ITEMS}>
       <p>
         Per the official IBPS calendar, the <strong>IBPS PO 2026 prelims are on
         22–23 August</strong>, with registration opening on the notification a
@@ -110,7 +110,7 @@ export default function Page() {
         </li>
         <li>
           <strong>2. Size the photo.</strong> Run it through the{" "}
-          <Link href="/exam-resizer/ibps-po/">IBPS PO resizer</Link> — it lands
+          <Link href="/exam-requirements/ibps/">IBPS PO resizer</Link> — it lands
           the file in the 20–50&nbsp;KB band at the right dimensions and outputs
           JPG, all in your browser.
         </li>
@@ -120,7 +120,7 @@ export default function Page() {
         </li>
         <li>
           <strong>4. Clean and size the signature.</strong> The same{" "}
-          <Link href="/exam-resizer/ibps-po/">resizer</Link> has a signature tab
+          <Link href="/exam-requirements/ibps/">resizer</Link> has a signature tab
           that removes the paper background, trims the edges, and compresses it
           to 10–20&nbsp;KB.
         </li>

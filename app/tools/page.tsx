@@ -127,14 +127,14 @@ export default function ToolsHubPage() {
         </h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4">
           <Link
-            href="/ssc-photo-resizer/"
+            href="/exam-requirements/ssc/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">SSC Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
           </Link>
           <Link
-            href="/ssc-signature-resizer/"
+            href="/exam-requirements/ssc/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">SSC Signature Resizer</span>
@@ -148,91 +148,91 @@ export default function ToolsHubPage() {
             <span className="text-muted-foreground leading-normal">Add DOP strip + resize</span>
           </Link>
           <Link
-            href="/upsc-photo-resizer/"
+            href="/exam-requirements/upsc/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">UPSC Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">Compress photo to 20–200 KB</span>
           </Link>
           <Link
-            href="/upsc-signature-resizer/"
+            href="/exam-requirements/upsc/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">UPSC Signature Resizer</span>
             <span className="text-muted-foreground leading-normal">Compress to under 100 KB</span>
           </Link>
           <Link
-            href="/railway-photo-resizer/"
+            href="/exam-requirements/rrb/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">Railway Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">RRB live-photo and signature guidance</span>
           </Link>
           <Link
-            href="/ibps-photo-resizer/"
+            href="/exam-requirements/ibps/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">IBPS Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
           </Link>
           <Link
-            href="/sbi-po-photo-resizer/"
+            href="/exam-requirements/sbi/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">SBI PO Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
           </Link>
           <Link
-            href="/nda-photo-resizer/"
+            href="/exam-requirements/nda/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">NDA Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">50–100 KB for upsconline</span>
           </Link>
           <Link
-            href="/ctet-photo-resizer/"
+            href="/exam-requirements/ctet/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">CTET Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">10–100 KB for ctet.nic.in</span>
           </Link>
           <Link
-            href="/nta-photo-resizer/"
+            href="/exam-requirements/nta/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">NEET / JEE Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">10–200 KB for NTA portal</span>
           </Link>
           <Link
-            href="/gate-photo-resizer/"
+            href="/exam-requirements/gate/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">GATE Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">5–600 KB for GATE 2026</span>
           </Link>
           <Link
-            href="/rbi-photo-resizer/"
+            href="/exam-requirements/rbi/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">RBI Grade B Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">20–50 KB, 200×230px</span>
           </Link>
           <Link
-            href="/lic-photo-resizer/"
+            href="/exam-requirements/lic/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">LIC AAO Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">20–50 KB for LIC portal</span>
           </Link>
           <Link
-            href="/nabard-photo-resizer/"
+            href="/exam-requirements/nabard/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">NABARD Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">20–50 KB, 200×230px</span>
           </Link>
           <Link
-            href="/tnpsc-photo-resizer/"
+            href="/exam-requirements/tnpsc/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">TNPSC Photo Resizer</span>

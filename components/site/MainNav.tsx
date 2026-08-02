@@ -54,7 +54,7 @@ const CATEGORY_CARDS = [
 /* ── Trending strip ──────────────────────────────────────────────────── */
 const TRENDING = [
   { title: "Passport Photo Maker", href: "/passport-photo/" },
-  { title: "SSC Photo Tool",        href: "/tools/form-resizer/ssc/" },
+  { title: "SSC Photo Tool",        href: "/exam-requirements/ssc/" },
   { title: "Compress PDF",          href: "/tools/pdf-compress/" },
   { title: "Background Remover",    href: "/tools/background-removal/" },
   { title: "Signature Resize",      href: "/tools/signature-resize/" },

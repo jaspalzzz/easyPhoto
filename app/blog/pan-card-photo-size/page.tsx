@@ -42,7 +42,7 @@ export default function Page() {
     <BlogPostLayout
       slug={post.slug}
       faqItems={FAQ_ITEMS}
-      ctaHref="/pan-card-photo-resizer/"
+      ctaHref="/exam-requirements/pan/"
       ctaLabel="Resize PAN card photo & signature free"
     >
       <p>
@@ -125,7 +125,7 @@ export default function Page() {
         upload a portrait JPEG to UTIITSL without squaring it first, the portal
         either rejects the file or crops your face off-centre. Use a tool that
         handles both outputs — the{" "}
-        <Link href="/pan-card-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/pan/" className="text-brand underline">
           PAN card photo and signature resizer
         </Link>{" "}
         on easyPhoto auto-selects the right dimensions for the portal you pick.
@@ -271,7 +271,7 @@ export default function Page() {
         the counter for both portals, but you need two different digital exports for
         online applications — a portrait JPEG for NSDL and a square-cropped JPEG for
         UTIITSL. Most third-party resizer tools only handle one format. The{" "}
-        <Link href="/pan-card-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/pan/" className="text-brand underline">
           easyPhoto PAN card resizer
         </Link>{" "}
         lets you switch between portals and outputs the correct dimensions automatically.
@@ -323,7 +323,7 @@ export default function Page() {
 
       <p>
         You don&apos;t need Photoshop or a scanner shop. The free{" "}
-        <Link href="/pan-card-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/pan/" className="text-brand underline">
           PAN card photo and signature resizer
         </Link>{" "}
         handles both uploads entirely in your browser — nothing is uploaded to a server.

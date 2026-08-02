@@ -69,13 +69,16 @@ export default function ExamCalendarPage() {
           calendars — so your photo and signature are ready{" "}
           <em>before</em> the form opens, not scrambled together on deadline day.
         </p>
-        <Link
+        {/* Plain anchor, not next/link: `trailingSlash: true` rewrites Link
+            hrefs, and /exam-calendar/ics/ 404s because the route handler emits
+            the calendar at /exam-calendar/ics with no trailing slash. */}
+        <a
           href="/exam-calendar/ics"
           className="inline-flex items-center gap-1.5 rounded-lg bg-cta px-4 py-2.5 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
         >
           <CalendarPlus className="h-4 w-4" strokeWidth={2} />
           Add to my calendar (.ics)
-        </Link>
+        </a>
         <p className="text-xs text-muted-foreground">
           Your phone&apos;s own calendar does the reminding — nothing is tracked by us.
         </p>

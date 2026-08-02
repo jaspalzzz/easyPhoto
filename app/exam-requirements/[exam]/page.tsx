@@ -14,7 +14,7 @@ import {
   PORTAL_CATEGORY_LABEL,
 } from "@/lib/specRegistry";
 import { portalFaqItems, portalRejectionReasons } from "@/lib/faqs";
-import { SUB_EXAM_RESIZERS, RESIZER_YEAR } from "@/lib/subExamResizers";
+import { RESIZER_YEAR } from "@/lib/subExamResizers";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, faqSchema, webPageSchema, softwareApplicationSchema } from "@/lib/schema";
@@ -431,29 +431,19 @@ export default async function Page({
             {spec.name.split(" (")[0]} uses one common photo &amp; signature specification
             across its exams, so the same sizes apply to:
           </p>
+          {/* Plain labels, not links. The per-sub-exam resizer pages were
+              retired into this page, so linking them sent the reader through a
+              redirect back to the page they were already on. The resizer for
+              every exam listed here is the one above. */}
           <div className="flex flex-wrap gap-1.5">
-            {SUB_EXAMS[exam].map((e) => {
-              // If a dedicated sub-exam resizer page exists, link to it.
-              const sub = SUB_EXAM_RESIZERS.find(
-                (s) => s.parentId === exam && e.startsWith(s.name)
-              );
-              return sub ? (
-                <Link
-                  key={e}
-                  href={`/exam-resizer/${sub.slug}/`}
-                  className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand-soft/40"
-                >
-                  {e} resizer
-                </Link>
-              ) : (
-                <span
-                  key={e}
-                  className="rounded-md border border-hairline bg-card px-3 py-1.5 text-[13px] font-medium text-foreground"
-                >
-                  {e}
-                </span>
-              );
-            })}
+            {SUB_EXAMS[exam].map((e) => (
+              <span
+                key={e}
+                className="rounded-md border border-hairline bg-card px-3 py-1.5 text-[13px] font-medium text-foreground"
+              >
+                {e}
+              </span>
+            ))}
           </div>
         </section>
       )}

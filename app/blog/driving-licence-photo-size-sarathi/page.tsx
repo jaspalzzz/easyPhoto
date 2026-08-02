@@ -42,7 +42,7 @@ export default function Page() {
     <BlogPostLayout
       slug={post.slug}
       faqItems={FAQ_ITEMS}
-      ctaHref="/driving-licence-photo-resizer/"
+      ctaHref="/exam-requirements/driving-licence/"
       ctaLabel="Resize driving licence photo free"
     >
       <p>
@@ -126,7 +126,7 @@ export default function Page() {
 
       <p>
         The{" "}
-        <Link href="/driving-licence-photo-resizer/" className="text-brand underline">
+        <Link href="/exam-requirements/driving-licence/" className="text-brand underline">
           driving licence photo resizer
         </Link>{" "}
         prepares the photo and signature inside the 10–20&nbsp;KB band and applies
@@ -203,7 +203,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Resize and compress:</strong> Use the{" "}
-          <Link href="/driving-licence-photo-resizer/" className="text-brand underline">
+          <Link href="/exam-requirements/driving-licence/" className="text-brand underline">
             driving licence photo resizer
           </Link>{" "}
           to output the photo and signature inside the 10–20&nbsp;KB band, both as

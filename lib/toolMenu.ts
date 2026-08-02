@@ -63,10 +63,10 @@ export const MENU_COLUMNS: MenuColumn[] = [
     tileBg: "bg-blue-100 dark:bg-blue-900/30", tileText: "text-blue-700 dark:text-blue-400", barCls: "bg-blue-500",
     tools: [
       { title: "Exam Application Kit",  tag: "All exam presets",     href: "/tools/exam-package/",        Icon: Package      },
-      { title: "SSC Photo Tool",        tag: "SSC MTS, CGL, CHSL",  href: "/tools/form-resizer/ssc/",    Icon: GraduationCap},
-      { title: "UPSC Photo Tool",       tag: "Civil Services Exam",  href: "/tools/form-resizer/upsc/",   Icon: Award        },
-      { title: "Railway Photo Tool",    tag: "RRB, NTPC, Group D",  href: "/tools/form-resizer/rrb/",    Icon: Train        },
-      { title: "Banking Photo Tool",    tag: "IBPS, SBI, RBI, PO",  href: "/tools/form-resizer/ibps/",   Icon: Landmark     },
+      { title: "SSC Photo Tool",        tag: "SSC MTS, CGL, CHSL",  href: "/exam-requirements/ssc/",    Icon: GraduationCap},
+      { title: "UPSC Photo Tool",       tag: "Civil Services Exam",  href: "/exam-requirements/upsc/",   Icon: Award        },
+      { title: "Railway Photo Tool",    tag: "RRB, NTPC, Group D",  href: "/exam-requirements/rrb/",    Icon: Train        },
+      { title: "Banking Photo Tool",    tag: "IBPS, SBI, RBI, PO",  href: "/exam-requirements/ibps/",   Icon: Landmark     },
     ],
   },
   {

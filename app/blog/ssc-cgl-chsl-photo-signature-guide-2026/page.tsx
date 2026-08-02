@@ -40,7 +40,7 @@ export default function Page() {
   return (
     <BlogPostLayout
       slug={post.slug}
-      ctaHref="/ssc-signature-resizer/"
+      ctaHref="/exam-requirements/ssc/"
       ctaLabel="Prepare the separate SSC signature"
       faqItems={FAQ_ITEMS}
     >
@@ -115,7 +115,7 @@ export default function Page() {
         <li>Read the current exam notice and follow its signature-writing instructions.</li>
         <li>Use a clear scan or evenly lit photograph with the entire signature visible.</li>
         <li>
-          Use the <Link href="/ssc-signature-resizer/">SSC signature resizer</Link>{" "}
+          Use the <Link href="/exam-requirements/ssc/">SSC signature resizer</Link>{" "}
           to clean the paper, export JPG and reach the stored {spec.sigMinKb}–{spec.sigLimitKb}&nbsp;KB band.
         </li>
         <li>Check the downloaded file size and open the JPG once before uploading it.</li>

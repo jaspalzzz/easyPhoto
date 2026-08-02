@@ -19,7 +19,7 @@ export const metadata = pageMetadata({
 const POPULAR_SEARCHES = [
   { label: "Indian Passport Photo Size",   href: "/blog/indian-passport-photo-requirements/" },
   { label: "US Passport & Visa Photo",     href: passportPath("us")                            },
-  { label: "SSC Photo Size & Dimensions",  href: "/ssc-photo-resizer/"                     },
+  { label: "SSC Photo Size & Dimensions",  href: "/exam-requirements/ssc/"                     },
   { label: "Compress a Photo to 50 KB",    href: "/tools/resize-kb/"                       },
   { label: "Transparent Signature PNG",    href: "/tools/transparent-signature/"           },
   { label: "Passport Size by Country",     href: "/blog/passport-photo-size-by-country/"    },

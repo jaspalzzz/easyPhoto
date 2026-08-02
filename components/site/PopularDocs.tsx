@@ -42,21 +42,21 @@ const MORE_COUNTRIES = LAUNCH_ORDER.filter(
 // Row 2 — Identity documents (icon tiles)
 const ID_DOCS = [
   { label: "Aadhaar Card",    sub: "UIDAI",              href: "/aadhaar-photo/"                       },
-  { label: "PAN Card",        sub: "Income Tax India",   href: "/tools/form-resizer/pan/"              },
-  { label: "OCI Card",        sub: "Ministry of Home",   href: "/tools/form-resizer/oci/"              },
-  { label: "Driving License", sub: "All States",         href: "/tools/form-resizer/driving-licence/"  },
+  { label: "PAN Card",        sub: "Income Tax India",   href: "/exam-requirements/pan/"              },
+  { label: "OCI Card",        sub: "Ministry of Home",   href: "/exam-requirements/oci/"              },
+  { label: "Driving License", sub: "All States",         href: "/exam-requirements/driving-licence/"  },
   { label: "Voter ID Card",   sub: "Election Commission",href: "/exam-requirements/voter-id/"          },
 ];
 
 const POPULAR_EXAMS = [
-  { label: "SSC",           sub: "CGL, CHSL, MTS",      href: "/ssc-photo-resizer/"              },
-  { label: "UPSC",          sub: "Civil Services IAS",   href: "/upsc-photo-resizer/"             },
-  { label: "Railway RRB",   sub: "NTPC, Group D",        href: "/railway-photo-resizer/"          },
-  { label: "IBPS Banking",  sub: "PO, Clerk, SO",        href: "/ibps-photo-resizer/"             },
-  { label: "SBI PO",        sub: "Probationary Officer", href: "/sbi-po-photo-resizer/"           },
-  { label: "NEET / JEE",    sub: "NTA Exams",            href: "/tools/form-resizer/nta/"         },
-  { label: "NDA / CDS",     sub: "Defence Exams",        href: "/tools/form-resizer/nda/"         },
-  { label: "CTET",          sub: "Teacher Eligibility",  href: "/tools/form-resizer/ctet/"        },
+  { label: "SSC",           sub: "CGL, CHSL, MTS",      href: "/exam-requirements/ssc/"              },
+  { label: "UPSC",          sub: "Civil Services IAS",   href: "/exam-requirements/upsc/"             },
+  { label: "Railway RRB",   sub: "NTPC, Group D",        href: "/exam-requirements/rrb/"          },
+  { label: "IBPS Banking",  sub: "PO, Clerk, SO",        href: "/exam-requirements/ibps/"             },
+  { label: "SBI PO",        sub: "Probationary Officer", href: "/exam-requirements/sbi/"           },
+  { label: "NEET / JEE",    sub: "NTA Exams",            href: "/exam-requirements/nta/"         },
+  { label: "NDA / CDS",     sub: "Defence Exams",        href: "/exam-requirements/nda/"         },
+  { label: "CTET",          sub: "Teacher Eligibility",  href: "/exam-requirements/ctet/"        },
 ];
 
 const STATS = [
