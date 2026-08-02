@@ -79,6 +79,10 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
         h: "Common reasons US passport photos are rejected",
         p: "Most rejections come from shadows on the face or background, the head being too large or too small in the frame, wearing glasses, or a non-neutral expression. Sizing the head automatically and replacing the background removes the two biggest causes.",
       },
+      {
+        h: "The same photo for a US visa (DS-160)",
+        p: "A US visa photo uses the identical 2×2 inch square composition, so one image serves both applications. What differs is delivery: the DS-160 is uploaded rather than printed, and the upload adds its own limits — a square JPEG between 600×600 and 1200×1200 pixels, under 240 KB. Make the photo here, then compress it to land under that cap. The Diversity Visa Lottery uses the same photo and enforces those figures strictly.",
+      },
     ],
     faqs: [
       {
@@ -97,87 +101,31 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
         q: "How recent does my US passport photo have to be?",
         a: "It must be taken within the last six months and reflect your current appearance.",
       },
-    ],
-  },
-
-  "us-visa-photo-maker": {
-    intro:
-      "US visa applications (the DS-160) use the same 2×2 inch composition as a passport, but the digital upload has its own rules. You need a square image at least 600×600 pixels, in JPEG, under 240 KB. This maker prepares the recorded square composition; confirm the current DS-160 instructions before upload.",
-    sections: [
       {
-        h: "DS-160 digital photo requirements",
-        p: "For the online DS-160 form the photo must be square, between 600×600 and 1200×1200 pixels, saved as JPEG, and under 240 KB. The composition matches a US passport photo: 2×2 inch proportions, white background, neutral expression, no glasses. It's usually the file specifications that trip people up.",
-      },
-      {
-        h: "Is a US visa photo the same as a passport photo?",
-        p: "Visually, yes. Both use the 2×2 inch / square format on a white background. The difference is delivery. A passport photo is usually printed, while the DS-160 visa photo is uploaded as a pixel-perfect JPEG under 240 KB. Make the photo here, then resize it to fit.",
-      },
-      {
-        h: "DV Lottery (Green Card) photos are stricter",
-        p: "The Diversity Visa Lottery uses the same square photo but strictly enforces 600×600 pixels minimum, under 240 KB, and recent photos only. The same maker plus the resize-to-KB tool will get you within those limits.",
-      },
-    ],
-    faqs: [
-      {
-        q: "What are the DS-160 photo requirements?",
-        a: "A square colour photo, 600×600 to 1200×1200 pixels, JPEG, under 240 KB, on a plain white background with a neutral expression and no glasses.",
+        q: "What are the DS-160 US visa photo requirements?",
+        a: "A square colour photo between 600×600 and 1200×1200 pixels, saved as JPEG and under 240 KB, on a plain white background with a neutral expression. The composition is the same 2×2 inch framing as the passport photo — the difference is that the visa photo is uploaded rather than printed.",
       },
       {
         q: "Is a US visa photo the same size as a passport photo?",
-        a: "The composition is identical (2×2 inch / square, white background). The visa photo is uploaded digitally, so it also has to meet the 600×600-pixel, under-240 KB JPEG rule.",
+        a: "Visually yes: both use the square 2×2 inch format on a white background. The DS-160 visa photo additionally has to satisfy the 600×600-pixel minimum and the 240 KB file-size cap because it is submitted digitally.",
       },
       {
-        q: "What file size does the US visa photo upload need?",
-        a: "Under 240 KB as a JPEG. Make the photo, then compress it with the resize-to-KB tool to land under the limit while staying sharp.",
-      },
-      {
-        q: "Can I use this photo for the DV Lottery / Green Card?",
-        a: "Yes. It produces the square, white-background photo the DV Lottery needs. Use the resize tool to meet the 600×600-pixel, under-240 KB requirement.",
+        q: "Can I use this photo for the DV Lottery or a Green Card application?",
+        a: "It produces the square white-background photo those applications use. The Diversity Visa Lottery enforces the 600×600-pixel minimum and the under-240 KB limit strictly, so check the exported file against the current instructions before submitting.",
       },
     ],
   },
 
-  "canada-passport-photo-maker": {
-    intro:
-      "This maker produces the 35×45mm photo Canada accepts for visas, study and work permits, PR and Express Entry, and online passport renewal. One thing to note: the printed passport booklet photo (50×70mm) has to come from a commercial photographer. So this tool covers the digital and renewal uses, not the certified booklet print.",
-    sections: [
-      {
-        h: "What this Canada photo works for",
-        p: "A 35×45mm photo on a plain white or light background covers Canadian visitor, study and work visa applications, PR card and Express Entry, citizenship, and the online passport-renewal upload. The maker sets that size and background, then checks the head proportion automatically.",
-      },
-      {
-        h: "The printed passport booklet caveat",
-        p: "For the physical Canadian passport, IRCC requires a 50×70mm print produced by a commercial photographer, who certifies the photo while a guarantor signs the back. A self-serve tool can't provide that certification, so for the booklet passport you'll need a registered photographer. This maker is for the digital and renewal uses above.",
-      },
-      {
-        h: "Background and expression",
-        p: "Canada wants a plain white or light-coloured uniform background with no shadows, a neutral expression and your full face visible. Glasses are allowed only if there's no glare and your eyes are clearly visible, though removing them is safest.",
-      },
-    ],
-    faqs: [
-      {
-        q: "Can I use this for a Canadian passport (booklet) photo?",
-        a: "Not for the printed booklet. That one requires a commercial photographer's certification and a guarantor signature on the back. Use this for Canada visas, PR/Express Entry, citizenship and online passport renewal (35×45mm).",
-      },
-      {
-        q: "What size is a Canada PR or Express Entry photo?",
-        a: "35×45mm on a plain white or light background, with the head 31–36mm from chin to crown. The maker applies this automatically.",
-      },
-      {
-        q: "Why does Canada's printed passport need a certified photographer?",
-        a: "IRCC requires the photographer to certify and date the photo and a guarantor to sign the back, checks a DIY tool can't perform. That applies to the booklet passport, not to visa, PR or online-renewal photos.",
-      },
-      {
-        q: "Can I use this Canada photo for citizenship?",
-        a: "Yes. The 35×45mm white-background photo suits citizenship applications and the other digital uses. Just confirm the current file requirements on the IRCC page before submitting.",
-      },
-    ],
-  },
+
 
   "canada-visa-photo-maker": {
     intro:
-      "Canadian visitor, study and work visa photos are 35×45mm on a plain white or light background, following IRCC's requirements. This maker sizes the head, sets the background and checks compliance, all in your browser.",
+      "Canadian visitor, study and work visa photos are 35×45mm on a plain white or light background, following IRCC's requirements. This maker sizes the head, sets the background and checks compliance, all in your browser. The same 35×45mm image is what PR and Express Entry ask for; the printed passport booklet is the one exception, and it is covered below.",
     sections: [
+      {
+        h: "The printed passport booklet is the exception",
+        p: "Everything on this page applies to the 35×45mm digital photo used for visitor, study and work visas, PR and Express Entry, and online passport renewal. The printed photo for a new Canadian passport booklet is different: it is 50×70mm and canada.ca requires a commercial photographer to certify it and write the studio details on the back. No browser tool can produce that certification, so for the booklet you need a photographer — this maker will not pretend otherwise.",
+      },
       {
         h: "Canada visa photo specification",
         p: "IRCC asks for a 35×45mm photo with the face (chin to crown) measuring 31–36mm, on a plain white or light-coloured background with even lighting and no shadows. You'll need a neutral expression with the mouth closed, and the photo has to be recent.",
@@ -227,6 +175,10 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
         h: "Online photo code vs. printed photo",
         p: "When you apply online you can either upload a digital photo or use a code from a photo booth. This maker creates a digital photo you can upload directly. For a printed photo, download the 6×4 sheet and print it on photo paper.",
       },
+      {
+        h: "The same photo for a UK visa (UKVI)",
+        p: "UK Visas and Immigration works to the same 35×45mm frame, plain light background, neutral expression and mouth-closed rules, so one photo serves the passport and the visa application alike. The visa route is digital rather than printed, so the only extra step is meeting whatever pixel and file-size limit the application screen states — make the photo here, then compress it to fit.",
+      },
     ],
     faqs: [
       {
@@ -245,45 +197,17 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
         q: "Are glasses allowed in a UK passport photo?",
         a: "Generally no. Glasses should be removed unless you have to wear them for medical reasons, and there must be no glare.",
       },
-    ],
-  },
-
-  "uk-visa-photo-maker": {
-    intro:
-      "UK visa (UKVI) photos use a recorded 45×35mm frame with a plain light background and a neutral expression. This maker prepares those selected properties; confirm the current UKVI workflow before upload.",
-    sections: [
       {
-        h: "UK visa photo requirements",
-        p: "UK Visas and Immigration expects a recent colour photo with a plain light-coloured background, a neutral expression, mouth closed and eyes open, and nothing covering the face. For digital uploads the photo should be clear, in focus and meet the portal's pixel and file-size requirements.",
-      },
-      {
-        h: "Background colour matters here too",
-        p: "As with UK passports, this preset uses a plain light grey or cream background. Avoid patterns and shadows. The maker applies the selected light background automatically; inspect it and confirm the current UKVI instructions before upload.",
-      },
-      {
-        h: "Uploading your UK visa photo",
-        p: "Online UK visa applications and the biometric process accept a digital photo within set size limits. Make the photo here, then use the resize-to-KB tool to bring it under the file-size cap while keeping it sharp.",
-      },
-    ],
-    faqs: [
-      {
-        q: "What size is a UK visa photo?",
-        a: "A 45×35mm digital standard with a plain light background and a neutral expression. Online uploads also have to meet the portal's pixel and file-size limits.",
+        q: "Is a UK visa photo the same as a UK passport photo?",
+        a: "They share the 35×45mm frame, the plain light background and the neutral-expression rules, so the same photo works for both. The visa photo is uploaded rather than printed, so it also has to meet the file-size limit shown on the application screen.",
       },
       {
         q: "What background does a UK visa photo need?",
-        a: "A plain light-coloured background. This preset uses light grey or cream; avoid patterns and shadows, then confirm the current application instructions before upload.",
-      },
-      {
-        q: "Is a UK visa photo the same as a UK passport photo?",
-        a: "They share the 35/45mm light-background format and neutral-expression rules. The visa photo is uploaded digitally, so it also has to meet the file-size limit.",
-      },
-      {
-        q: "How do I reduce my UK visa photo file size?",
-        a: "Use the resize-to-KB tool after making the photo to compress it under the upload limit without visible quality loss.",
+        a: "A plain light-coloured background, the same as the passport photo. This preset applies light grey or cream; avoid patterns and shadows, then confirm the current UKVI instructions before uploading.",
       },
     ],
   },
+
 
   "australia-passport-photo-maker": {
     intro:
@@ -300,6 +224,10 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       {
         h: "Printing your Australian photo",
         p: "Download the 35×45mm photo and the 6×4 print sheet, then print on photo paper at a pharmacy or photo lab. Make sure the printed size is exact, since the passport office measures the head height against the 32–36mm band.",
+      },
+      {
+        h: "The same photo for an Australian visa — without the guarantor step",
+        p: "Visitor, student, work and partner visas use the same 35×45mm image on a plain white or light grey background, so one photo covers both. The important difference is that the guarantor endorsement applies to the passport only: a visa photo is simply uploaded to ImmiAccount with no signature on the back. If the application caps the file size, compress the exported photo before uploading.",
       },
     ],
     faqs: [
@@ -319,45 +247,17 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
         q: "Can I take an Australian passport photo at home?",
         a: "Yes. Take a front-facing photo in even light against a plain wall, size it here, print it, and have your guarantor endorse the back.",
       },
-    ],
-  },
-
-  "australia-visa-photo-maker": {
-    intro:
-      "Australian visa photos (visitor, student, work and partner visas) are a passport-sized 35×45mm image on a plain white or light grey background. Unlike the passport, a visa photo needs no guarantor endorsement. This maker sizes and backgrounds it, ready to upload to ImmiAccount.",
-    sections: [
-      {
-        h: "Australia visa photo specification",
-        p: "Use a recent colour photo, 35×45mm, with the head 32–36mm from chin to crown on a plain white or light grey background with even lighting and no shadows. You'll need a neutral expression with the mouth closed and both eyes open, and glasses should be removed unless medically necessary.",
-      },
-      {
-        h: "No guarantor needed for a visa photo",
-        p: "The back-of-photo guarantor declaration applies to the Australian passport, not to visa applications. For an online visa, prepare the digital photo for ImmiAccount, check it against the current application instructions, and upload only after reviewing the result.",
-      },
-      {
-        h: "Uploading to ImmiAccount",
-        p: "Online Australian visa applications accept a clear, recent digital photo. Make the photo here, then if the portal caps the file size, compress it with the resize-to-KB tool so it uploads without losing sharpness.",
-      },
-    ],
-    faqs: [
-      {
-        q: "What size is an Australian visa photo?",
-        a: "A passport-sized 35×45mm photo with the head 32–36mm from chin to crown, on a plain white or light grey background.",
-      },
       {
         q: "Does an Australian visa photo need a guarantor signature?",
-        a: "No. The guarantor endorsement on the back applies only to the Australian passport. A visa photo is simply uploaded to ImmiAccount, with no signature required.",
-      },
-      {
-        q: "Can I upload this photo to ImmiAccount?",
-        a: "It prepares the selected digital dimensions and background. If the application limits the file size, use the resize-to-KB tool, then inspect the result and confirm the current instructions.",
+        a: "No. The guarantor endorsement applies only to the passport application. A visa photo is uploaded to ImmiAccount with nothing written on the back.",
       },
       {
         q: "Is an Australian visa photo the same as a passport photo?",
-        a: "The size and background are the same (35×45mm, white or light grey), but the visa photo needs no guarantor endorsement and is uploaded digitally rather than printed.",
+        a: "The size and background match — 35×45mm with the head 32–36mm from chin to crown, on plain white or light grey. The visa photo needs no guarantor endorsement and is uploaded rather than printed.",
       },
     ],
   },
+
 
   "india-visa-photo-maker": {
     intro:

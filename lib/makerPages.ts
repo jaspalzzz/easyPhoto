@@ -25,23 +25,41 @@ export interface MakerPage {
   kind: MakerKind;
 }
 
-/** Countries that get a passport-photo maker page (ordered by demand). */
+/**
+ * Countries that get a passport-photo maker page (ordered by demand).
+ *
+ * `canada` is absent: the printed Canadian passport photo is 50×70 mm and
+ * canada.ca requires a commercial photographer's certification on the back,
+ * which this tool cannot produce — the registry note says as much. The page
+ * therefore produced the 35×45 mm visa image and told the reader to visit a
+ * photographer, making it the visa page under a passport title. The visa page
+ * survives (it earned five times the impressions) and carries the booklet
+ * caveat.
+ */
 export const PASSPORT_COUNTRIES = [
   "india",
   "us",
-  "canada",
   "uk",
   "australia",
   "pakistan",
   "nepal",
 ] as const;
 
-/** Countries that get a visa-photo maker page (ordered by demand). */
+/**
+ * Countries that get a visa-photo maker page (ordered by demand).
+ *
+ * `us`, `uk` and `australia` are absent on purpose. Each publishes ONE photo
+ * size that serves the passport and the visa application alike, so the visa
+ * page was the passport page again under a different word. The passport page
+ * survives in each case — it is the one the rest of the site links to — and
+ * the visa URL 301s into it.
+ *
+ * `canada` stays: its passport booklet photo is 50×70 mm while its visa photo
+ * is 35×45 mm, so those two pages carry genuinely different specifications and
+ * merging them would make one of them wrong.
+ */
 export const VISA_COUNTRIES = [
-  "us",
   "canada",
-  "uk",
-  "australia",
   "schengen",
   "uae",
   "bahrain",

@@ -33,7 +33,7 @@ export const metadata = pageMetadata({
 const OTHER_COUNTRIES: { label: string; href: string }[] = [
   { label: "United States", href: "/us-passport-photo-maker/" },
   { label: "United Kingdom", href: "/uk-passport-photo-maker/" },
-  { label: "Canada", href: "/canada-passport-photo-maker/" },
+  { label: "Canada", href: "/canada-visa-photo-maker/" },
   { label: "Australia", href: "/australia-passport-photo-maker/" },
 ];
 

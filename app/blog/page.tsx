@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
 import { BLOG_POSTS, clusterOf } from "@/lib/blog";
 import { BlogExplorer } from "@/components/blog/BlogExplorer";
-import { visaPath } from "@/lib/makerPages";
+import { passportPath } from "@/lib/makerPages";
 
 export const metadata = pageMetadata({
   title: "Blog — Passport, Visa & Photo Guides",
@@ -18,7 +18,7 @@ export const metadata = pageMetadata({
 /* Sidebar "popular searches" — real internal links (discovery + link-equity). */
 const POPULAR_SEARCHES = [
   { label: "Indian Passport Photo Size",   href: "/blog/indian-passport-photo-requirements/" },
-  { label: "US Visa Photo Requirements",   href: visaPath("us")                            },
+  { label: "US Passport & Visa Photo",     href: passportPath("us")                            },
   { label: "SSC Photo Size & Dimensions",  href: "/ssc-photo-resizer/"                     },
   { label: "Compress a Photo to 50 KB",    href: "/tools/resize-kb/"                       },
   { label: "Transparent Signature PNG",    href: "/tools/transparent-signature/"           },

@@ -112,7 +112,7 @@ export default function Page() {
           </p>
         </div>
         <Link
-          href="/canada-passport-photo-maker/"
+          href="/canada-visa-photo-maker/"
           className="inline-flex items-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand/90 transition-colors shrink-0"
         >
           Open maker <ArrowRight className="h-4 w-4" />
@@ -178,7 +178,7 @@ export default function Page() {
             mission or service-provider instructions; the umbrella overseas ICAO
             guidance specifies a 630×810 px white-background photograph with
             80–85% face coverage, but the local submission method may differ. Use the{" "}
-            <Link href="/canada-passport-photo-maker/" className="text-brand hover:underline">Canada maker</Link>{" "}
+            <Link href="/canada-visa-photo-maker/" className="text-brand hover:underline">Canada maker</Link>{" "}
             for IRCC documents and consult the{" "}
             <Link href="/india-passport-photo-maker/" className="text-brand hover:underline">India maker</Link>{" "}
             only after confirming the Indian mission&apos;s requested format.
@@ -208,14 +208,14 @@ export default function Page() {
           </p>
         </div>
         <Link
-          href="/canada-passport-photo-maker/"
+          href="/canada-visa-photo-maker/"
           className="inline-flex items-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand/90 transition-colors shrink-0"
         >
           Open maker <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
       <StickyCtaBar
-        href="/canada-passport-photo-maker/"
+        href="/canada-visa-photo-maker/"
         label="Make your Canada visa photo free"
         sublabel="100% on-device · never uploaded"
       />

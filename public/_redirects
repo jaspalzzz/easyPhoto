@@ -144,3 +144,17 @@
 /exam-resizer/cuet/ /exam-requirements/cuet/ 301
 /tools/form-resizer/ /exam-requirements/ 301
 /exam-resizer/ /exam-requirements/ 301
+
+# Country maker pairs that were the same page twice. US/UK/Australia each
+# publish ONE photo size that serves both the passport and the visa
+# application, so the pair differed only in the word in the URL. The passport
+# page survives in each case because it is the one the rest of the site links
+# to (9, 8 and 4 inbound links versus 1, 0 and 0). Canada is deliberately NOT
+# here as a pair: its printed booklet photo is 50x70mm and needs a commercial
+# photographer's certification, so the passport page could only ever produce
+# the 35x45mm visa image under a passport title. The visa page survives and
+# carries the booklet caveat.
+/us-visa-photo-maker/ /us-passport-photo-maker/ 301
+/uk-visa-photo-maker/ /uk-passport-photo-maker/ 301
+/australia-visa-photo-maker/ /australia-passport-photo-maker/ 301
+/canada-passport-photo-maker/ /canada-visa-photo-maker/ 301

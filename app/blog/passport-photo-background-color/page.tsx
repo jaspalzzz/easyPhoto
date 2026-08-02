@@ -83,7 +83,7 @@ export default function Page() {
             ["United States", "Plain white or off-white", "/us-passport-photo-maker/"],
             ["India (under-four print / overseas)", "Plain white", "/india-passport-photo-maker/"],
             ["United Kingdom", "Light grey or cream (pure white rejected)", "/uk-passport-photo-maker/"],
-            ["Canada", "Plain white", "/canada-passport-photo-maker/"],
+            ["Canada", "Plain white", "/canada-visa-photo-maker/"],
             ["Australia", "Plain white or light grey", "/australia-passport-photo-maker/"],
             ["Schengen (EU)", "Light grey safest (varies by country)", "/schengen-visa-photo-maker/"],
           ].map(([c, bg, href]) => (

@@ -32,7 +32,7 @@ export const metadata = pageMetadata({
 const POPULAR_CHIPS = [
   { label: "Indian Passport",       href: "/passport-photo/"                  },
   { label: "Voter ID",              href: "/exam-requirements/voter-id/"      },
-  { label: "USA Visa",              href: visaPath("us")                      },
+  { label: "USA Photo",             href: passportPath("us")                      },
   { label: "SSC Photo",             href: "/ssc-photo-resizer/"               },
   { label: "UPSC Photo",            href: "/upsc-photo-resizer/"              },
   { label: "Sign Image",            href: "/tools/sign-image/"                },
@@ -41,7 +41,7 @@ const POPULAR_CHIPS = [
 
 /* Popular search terms — bottom SEO + discovery strip */
 const POPULAR_SEARCHES = [
-  { label: "USA Visa Photo",        href: visaPath("us")                      },
+  { label: "USA Passport & Visa Photo", href: passportPath("us")                  },
   { label: "Indian Passport Photo", href: "/passport-photo/"                  },
   { label: "Voter ID Photo Resizer",href: "/exam-requirements/voter-id/"      },
   { label: "Sign on Image",         href: "/tools/sign-image/"                },
