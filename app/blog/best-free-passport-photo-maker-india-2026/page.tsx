@@ -249,8 +249,9 @@ export default function Page() {
       <h2>Visafoto — the paid option with an accuracy guarantee</h2>
 
       <p>
-        Visafoto charges a localised one-time fee and includes a human review and
-        refund terms. Its{" "}
+        Visafoto charges a localised one-time fee — ₹600 per photo for India — and
+        publishes a 99.7% pass rate with replacement, correction or refund terms
+        if officials reject the photo. Its{" "}
         <a
           href="https://visafoto.com/visafoto-prices"
           target="_blank"

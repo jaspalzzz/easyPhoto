@@ -9,7 +9,7 @@ const post = getPost("visafoto-alternative-india-free")!;
 const FAQ_ITEMS = [
   {
     q: "Is Visafoto safe to use?",
-    a: "Visafoto has been operating since 2009 and is a well-established service. \"Safe\" in the security sense is reasonable — they process photos for millions of users. The concern is not security but privacy: you are sending a biometric photo to a third-party server. That is a different risk assessment from using a tool that never receives your image.",
+    a: "Visafoto's own site dates the service to 2013, and it is well established. \"Safe\" in the security sense is reasonable — they process photos for millions of users. The concern is not security but privacy: you are sending a biometric photo to a third-party server. That is a different risk assessment from using a tool that never receives your image.",
   },
   {
     q: "Does easyPhoto produce photos that are accepted by Indian passport offices?",
@@ -32,9 +32,9 @@ export default function Page() {
   return (
     <BlogPostLayout slug="visafoto-alternative-india-free" faqItems={FAQ_ITEMS}>
       <p>
-        Visafoto supports a 35×45 mm India preset and adds a human
-        expert review. It is a paid, server-processed service and uploads your
-        biometric photo for processing. Its{" "}
+        Visafoto supports a 35×45 mm India preset and backs its output with a
+        money-back guarantee. It is a paid, server-processed service and uploads
+        your biometric photo for processing. Its{" "}
         <a
           href="https://visafoto.com/visafoto-prices"
           target="_blank"
@@ -59,10 +59,20 @@ export default function Page() {
       <h2>What Visafoto gets right</h2>
 
       <p>
-        Visafoto&apos;s human expert review layer is a real differentiator. A trained reviewer
-        checks your photo against the named authority&apos;s published requirements before you download it. For a Schengen or US
-        visa where another review is useful, that paid service may be worth
-        considering. Its India{" "}
+        Visafoto&apos;s guarantee is a real differentiator, and it is something a
+        free browser tool structurally cannot offer. Its{" "}
+        <a
+          href="https://visafoto.com/visafoto-prices"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          pricing page
+        </a>{" "}
+        claims a 99.7% pass rate and offers a free replacement, a correction, or
+        a refund if officials do not accept the photo. If you are filing a
+        Schengen or US visa and want someone on the hook for a rejection, that
+        paid backstop may be worth the fee. Its India{" "}
         <Link href="/blog/indian-passport-photo-requirements/" className="text-brand underline">35×45 mm crop</Link>{" "}
         can be used for the below-four printed-photo exception. The tool is polished and the
         output quality is high.
@@ -84,7 +94,7 @@ export default function Page() {
               <th className="px-4 py-3 text-left font-semibold text-ink">Cost</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">On-device</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">India under-four print</th>
-              <th className="px-4 py-3 text-left font-semibold text-ink">Expert review</th>
+              <th className="px-4 py-3 text-left font-semibold text-ink">Rejection guarantee</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-hairline">
@@ -93,14 +103,14 @@ export default function Page() {
               <td className="px-4 py-3 text-muted-foreground">Paid · local price shown at checkout</td>
               <td className="px-4 py-3 font-medium text-amber-700">No</td>
               <td className="px-4 py-3 text-muted-foreground">✓</td>
-              <td className="px-4 py-3 font-medium text-emerald-700">✓ Included</td>
+              <td className="px-4 py-3 font-medium text-emerald-700">✓ Refund or replacement</td>
             </tr>
             <tr className="bg-brand-soft/10">
               <td className="px-4 py-3 font-medium text-ink">easyPhoto</td>
               <td className="px-4 py-3 text-muted-foreground">Free</td>
               <td className="px-4 py-3 font-medium text-emerald-700">Yes</td>
               <td className="px-4 py-3 text-muted-foreground">✓ Seva spec</td>
-              <td className="px-4 py-3 text-muted-foreground">Auto-check</td>
+              <td className="px-4 py-3 text-muted-foreground">None — free tool</td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">PassportSizePhoto.in</td>
@@ -121,12 +131,12 @@ export default function Page() {
               <td className="px-4 py-3 text-muted-foreground">Paid · check current price</td>
               <td className="px-4 py-3 font-medium text-amber-700">No</td>
               <td className="px-4 py-3 text-muted-foreground">✓ India listed</td>
-              <td className="px-4 py-3 font-medium text-emerald-700">✓ Included</td>
+              <td className="px-4 py-3 text-muted-foreground">Check their terms</td>
             </tr>
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
-          Pricing models checked 19 July 2026. Exact local amounts can change;
+          Pricing and guarantee terms checked 2 August 2026 against each provider&apos;s own site. Exact local amounts can change;
           confirm each provider&apos;s current checkout before paying.
         </p>
       </div>

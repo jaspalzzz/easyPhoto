@@ -945,8 +945,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     id: "japan",
     label: "Japan",
     documents: ["Japan visa (MOFA)"],
-    // Square; consulates also accept 35x45 and 2x2in, but 45x45 is the
-    // most-cited MOFA size. The square print + the pixels are the binding rule.
+    // ⚠ Japan has no single visa photo size. MOFA states that requirements
+    // vary by the mission you apply at, and missions genuinely differ:
+    // 45x45 square at some, 35x45 or 2x2in at others (e.g. Denver). 45x45 is
+    // the default here because it is the size MOFA's own pages cite, but it
+    // is a default, not a universal rule — hence `aggregator` + the advisory.
     printMm: { width: 45, height: 45 },
     headHeightMm: { min: 34, max: 36 },
     headPercentOfFrame: { min: 70, max: 80 },
@@ -968,7 +971,14 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "Japan visa photo (MOFA): 45x45mm square on plain white, taken within 6 " +
       "months, two prints required for paper applications. Some consulates also " +
       "accept 35x45mm or 2x2 inch — check yours. Digital uploads are JPEG, " +
-      "typically 120 KB or less.",
+      "typically 120 KB or less. MOFA itself says the requirements vary by the " +
+      "mission handling your application, so the size on your consulate's page " +
+      "overrides the default used here.",
+    advisory:
+      "Japan does not publish one visa photo size. MOFA says the rules depend " +
+      "on the mission you apply at — some ask for 45×45mm, others for 35×45mm " +
+      "or 2×2 inch. Check your embassy or consulate's own photograph page and " +
+      "switch the size if it differs before you print.",
     source: "https://www.mofa.go.jp",
     verified: "aggregator",
   },

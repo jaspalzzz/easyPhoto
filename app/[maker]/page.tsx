@@ -243,8 +243,21 @@ export default async function MakerPage({
         </p>
       </header>
 
-      {/* On visa pages, drop the passport-only advisory (e.g. AU guarantor). */}
-      <PhotoTool spec={kind === "visa" ? { ...spec, advisory: undefined } : spec} />
+      {/*
+        Advisories on records that also cover a passport are written about the
+        passport (the AU guarantor rule, the Indian PSK capture), so they are
+        dropped on a visa page. Records that only ever describe a visa have
+        visa-scoped advisories — Canada's temporary-residence limit, Japan's
+        per-mission size — and dropping those hid the warning on the one page
+        the applicant actually lands on.
+      */}
+      <PhotoTool
+        spec={
+          kind === "visa" && spec.documents.some((d) => /passport/i.test(d))
+            ? { ...spec, advisory: undefined }
+            : spec
+        }
+      />
 
       {/* Spec-aware do/don't — self-check against the real rules before submitting. */}
       <AcceptanceTips spec={spec} />
