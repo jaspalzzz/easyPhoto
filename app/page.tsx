@@ -18,6 +18,7 @@ import { softwareApplicationSchema, faqSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { ToolSearch } from "@/components/site/ToolSearch";
 import { RecentTools } from "@/components/site/RecentTools";
+import { LatestGuides } from "@/components/site/LatestGuides";
 
 export const metadata = pageMetadata({
   title: "easyPhoto — Document Photo & Form-Resize Tools for India",
@@ -148,6 +149,10 @@ export default function HomePage() {
 
       {/* ── ALL TOOLS — tabbed ────────────────────────────────────────── */}
       <ToolsTabs />
+
+      {/* ── LATEST GUIDES — the site's written work, previously unreachable
+             from the homepage ────────────────────────────────────────── */}
+      <LatestGuides />
 
       {/* ── DARK TRUST STRIP ─────────────────────────────────────────── */}
       <DarkTrustStrip />
