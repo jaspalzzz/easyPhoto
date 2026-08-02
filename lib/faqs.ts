@@ -4,7 +4,11 @@
  * One set per page; never mix sets across URLs (schema must match the page).
  */
 import type { FaqItem } from "@/components/site/Faq";
-import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
+import {
+  acceptsDigitalUpload,
+  effectivePrintMm,
+  type CountrySpec,
+} from "@/lib/countrySpecs";
 import type { PortalSpec } from "@/lib/portalPresets";
 import { photoDimsPx, sigDimsPx } from "@/lib/specRegistry";
 
@@ -452,7 +456,7 @@ export function countryFaqItems(
   // photographs and nothing else — an Irish visa wants two prints with details
   // written on the back — and generating "what file size does the online upload
   // need?" for those contradicted the rest of the page.
-  if (spec.digital.fileSizeKb || spec.digital.pxMin) {
+  if (acceptsDigitalUpload(spec)) {
     items.splice(4, 0, {
       q: `What file size does the ${spec.label} online ${doc} upload need?`,
       a: fileSize,

@@ -28,6 +28,31 @@ export type Verified = "gov" | "aggregator" | "conditional";
 /** Date attached to country records marked `gov` in this registry review. */
 export const COUNTRY_SPECS_VERIFIED_ON = "2026-06-04";
 
+/**
+ * Whether the application accepts a digital photograph at all.
+ *
+ * Most records carry `fileSizeKb: null` because the authority publishes pixel
+ * dimensions but no KB band — that is a missing figure, not a missing upload,
+ * and those pages should still answer "what file size do I need?" (with "the
+ * limit varies by portal, check your form"). Only a genuinely print-only
+ * application has no pixel figures at all: an Irish visa takes two printed
+ * photographs with details written on the back and nothing is uploaded.
+ *
+ * Checking `fileSizeKb` alone conflates the two and silently strips the upload
+ * question from 17 countries that do have one.
+ */
+export function acceptsDigitalUpload(spec: CountrySpec): boolean {
+  const d = spec.digital;
+  return Boolean(
+    d.fileSizeKb ||
+      d.px ||
+      d.pxMin ||
+      d.pxMax ||
+      d.pxApprox300dpi ||
+      d.pxApprox600dpi,
+  );
+}
+
 export interface Dimensions {
   width: number;
   height: number;
@@ -895,18 +920,21 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     },
     digital: {
       px: { width: 400, height: 514 },
-      fileSizeKb: null, // online: JPEG, ≤60 KB (see notes)
-      formats: ["jpg"],
+      // ICA states an 8 MB ceiling on its photo-guidelines page. The old
+      // "60 KB or less" here matched no ICA figure.
+      fileSizeKb: { min: 10, max: 8192 },
+      formats: ["jpg", "jpeg", "png", "heic", "heif"],
     },
     dpiMin: 300,
     glasses: "remove unless medically required",
     smileAllowed: "neutral, mouth closed",
     notes:
       "Singapore visa photo (ICA): 35x45mm on plain white, taken within 3 " +
-      "months. Online upload is 400x514 px JPEG, 60 KB or less. No head " +
-      "coverings except for religious reasons. Confirm on the ICA portal.",
-    source: "https://www.ica.gov.sg",
-    verified: "aggregator",
+      "months. ICA's photo guidelines specify 400x514 px for e-Service " +
+      "uploads, accept jpg, jpeg, png, heic and heif, and cap the file at " +
+      "8 MB. No head coverings except for religious reasons.",
+    source: "https://www.ica.gov.sg/photo-guidelines",
+    verified: "gov",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -925,7 +953,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     digital: {
       pxMin: { width: 900, height: 1200 },
       pxMax: { width: 2250, height: 3000 },
-      fileSizeKb: null,
+      // ⚠ INZ sets a MINIMUM as well as a maximum (512 KB - 3.14 MB). A photo
+      // compressed below 512 KB is rejected, which is the opposite of the usual
+      // "get under the cap" advice, so this band must not be dropped.
+      fileSizeKb: { min: 512, max: 3140 },
       formats: ["jpg"],
     },
     dpiMin: 300,
@@ -933,11 +964,15 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     smileAllowed: "neutral, eyes open, looking at camera",
     notes:
       "New Zealand visa / NZeTA photo: 35x45mm print, plain light/neutral " +
-      "background (light grey, off-white or cream). Online: JPEG, 900x1200 to " +
-      "2250x3000 px, max 6 months old. Immigration NZ does not accept photos " +
-      "altered by AI editing tools. Confirm on immigration.govt.nz.",
-    source: "https://www.immigration.govt.nz",
-    verified: "aggregator",
+      "background (light grey, off-white or cream). Online: JPEG in portrait " +
+      "3:4, 900x1200 to 2250x3000 px, and the file must be between 512 KB and " +
+      "3.14 MB - Immigration NZ rejects a photo that is too small as well as " +
+      "one that is too large. Face must cover 70-80% of the frame, taken " +
+      "within the last 6 months. Immigration NZ does not accept photos " +
+      "altered by AI editing tools.",
+    source:
+      "https://www.immigration.govt.nz/process-to-apply/applying-for-a-visa/applying-online/uploading-documents-and-photos/visa-and-nzeta-photos/",
+    verified: "gov",
   },
 
   // ─────────────────────────────────────────────────────────────
