@@ -484,6 +484,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-06-10",
     context:
       "GATE (Graduate Aptitude Test in Engineering) is conducted by a different IIT or IISc each year; the photo file-size cap is set by that year's conducting institute (600 KB for GATE 2026, run by IIT Guwahati) and can change between editions.",
+    applicationNotes: [
+      "GATE constrains the PROPORTIONS of both files, which almost nothing else here does. The photograph must fall between an aspect ratio of 0.66 and 0.89 with the face covering 60-70% of the frame after cropping, and the signature must be roughly 1:2.75 to 1:3.75 in height to width with the writing filling 70-80% of its image. A file inside the size limit but outside those ratios is still wrong.",
+      "The photograph is 3.5 cm wide by 4.5 cm high on a white background with nothing and nobody else in the frame. The instruction is specific that a signature on a dark background is not accepted, so scan on plain white paper rather than photographing a page in poor light.",
+    ]
   },
   "ugc-net": {
     id: "ugc-net",
@@ -508,6 +512,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-06-10",
     context:
       "UGC-NET (National Eligibility Test) is conducted by NTA for eligibility as Assistant Professor and for Junior Research Fellowship; NTA specifies photo and signature file size and format but no fixed pixel dimensions.",
+    applicationNotes: [
+      "The bulletin states two different signature limits. In its application-procedure section the signature is 4 KB to 30 KB; later in the same document it is 10 KB to 50 KB. This tool targets 10-30 KB, the overlap, so a file it produces satisfies either reading. Take the binding figure from the live application screen.",
+      "A photograph found to be fabricated — de-shaped, or appearing hand-made or computer-made — is treated as unfair means rather than as a formatting error, with consequences beyond the form being returned. Resize and compress a real photograph; do not reconstruct one.",
+      "The photograph is uploaded against a white background and is also the image used at the centre, so print a copy of the same file rather than using a different sitting.",
+    ]
   },
   "csir-net": {
     id: "csir-net",
@@ -557,6 +566,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     signatureInk: "Black ink on plain white paper",
     context:
       "NDA is conducted by UPSC through the upsconline.nic.in portal, and the portal's photo and signature instructions apply to every UPSC examination rather than giving NDA its own band. A live photograph is also captured during the application and matched against the uploaded photo. The signature upload must show the candidate's signature three times vertically on one plain-white image.",
+    applicationNotes: [
+      "A live photograph capture is mandatory before the application can be submitted, taken through the device camera or by scanning a QR code with a phone. The prepared photograph you upload does not replace it.",
+      "UPSC checks face coverage rather than only file size: the photograph must show about 75% face coverage, and the instruction sheet prints rejected samples whose only fault is that the face is too small in the frame. The file is jpg, saved as photo, on a plain white background, with the head centred and both ears visible.",
+      "The don'ts are explicit: no uniform in the photograph, no dark or coloured glasses, no shadow on the face or the background, no hair across the eyes, and the photograph is not to be signed.",
+    ]
   },
   cds: {
     id: "cds",
@@ -887,6 +901,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-01",
     context:
       "CAT (Common Admission Test) is run by a different IIM each year for MBA admission to the IIMs and other participating institutes; the registration guide requires a recent (within 6 months) colour photo and explicitly disallows selfies.",
+    applicationNotes: [
+      "CAT wants a square 1200 x 1200 pixel photograph and a signature at 80mm x 35mm, each as JPG or JPEG and each no larger than 80 KB, at a minimum of 150 pixels per inch. The square photograph is the unusual part: a standard 35x45mm passport crop is the wrong shape for this form.",
+      "The photograph must be no more than six months old and on a white background. It is also affixed to your admit card on test day, and the instructions tell candidates to keep sufficient printed copies of the same image — so print spares of exactly what you upload.",
+    ]
   },
   clat: {
     id: "clat",
@@ -1277,6 +1295,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     requiresSlateNameDate: true,
     context:
       "Indian Navy Agniveer applications require both the prepared slate photograph upload and an additional webcam live photograph. This hybrid workflow is not the replacement live-capture flow represented by isLiveCapture. The slate is physical, not a digital name/date strip; the notice lists no fixed pixels or separate signature upload.",
+    applicationNotes: [
+      "The photograph must be recent in a specific sense: the notice names a month before which the photograph must not have been taken, so an image from an earlier application cycle is not reusable even if it still looks like you. Check the date named in the notification you are applying under.",
+      "The recorded upload target here is unusually small at around 10 KB, which is well below the 100-200 KB most Indian applications allow. Compress carefully and check the face is still legible at that size rather than compressing to the number and submitting unseen.",
+    ]
   },
 
   // ---------------------------------------------------------------------------
