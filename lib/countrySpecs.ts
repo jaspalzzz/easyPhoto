@@ -329,8 +329,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     headPercentOfFrame: { min: 65, max: 75 }, // head + top of shoulders
     background: {
       description: "Any plain light colour — light grey, cream, ivory or white",
-      hex: "#EFEAD9", // light cream
-      acceptableHex: ["#EFEAD9", "#DCDCDC"], // cream or light grey
+      hex: "#EFEAD9", // light cream — also suits Schengen consulates wanting grey
+      // White belongs here: HMPO names "different shades of white (cream, ivory
+      // or vanilla) and light grey". Omitting it made the data contradict the
+      // description, which is the contradiction a phrasing guard cannot see.
+      acceptableHex: ["#EFEAD9", "#DCDCDC", "#FFFFFF", "#FAFAFA"]
     },
     digital: {
       // gov.uk online application ("digital photo code")
@@ -339,7 +342,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       formats: ["jpg"],
     },
     dpiMin: 300,
-    glasses: "remove if possible",
+    // HMPO allows frames over the eye socket provided both eyes stay visible;
+    // "not permitted / medical exemption" is the US rule, not the UK's.
+    glasses: "allowed if both eyes stay clearly visible and free of glare",
     smileAllowed: "neutral only (biometric)",
     notes:
       "⚠ CORRECTION: this record previously said white was rejected. HM Passport " +

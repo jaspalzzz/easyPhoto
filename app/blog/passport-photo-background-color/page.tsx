@@ -15,7 +15,7 @@ const midpoint = (id: "india" | "uk") => {
 const BACKGROUND_CASES: PhotoComplianceCase[] = [
   { status: "pass", title: "India: white", reason: "White applies to the under-four print and overseas ICAO guidance.", variant: "correct-baseline", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("india") },
   { status: "pass", title: "UK: light cream", reason: "Light cream matches the recorded UK options.", variant: "correct-baseline", background: COUNTRY_SPECS.uk.background.hex, headPercent: midpoint("uk") },
-  { status: "fail", title: "UK on white", reason: "Differs from the light-grey preset recorded here; the UK itself accepts white.", variant: "background-wrong-colour", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("uk") },
+  { status: "pass", title: "UK on white", reason: "Acceptable — HM Passport Office names shades of white among its light-background examples.", variant: "background-wrong-colour", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("uk") },
   { status: "fail", title: "Patterned wall", reason: "Patterns prevent a plain, uniform background.", variant: "background-busy" },
   { status: "fail", title: "Background shadow", reason: "A shadow makes the background uneven.", variant: "shadow-behind", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("india") },
   { status: "fail", title: "Uneven lighting", reason: "A gradient across the face is not even lighting.", variant: "uneven-lighting", background: COUNTRY_SPECS.uk.background.hex, headPercent: midpoint("uk") },

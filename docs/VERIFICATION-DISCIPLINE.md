@@ -63,8 +63,10 @@ regressions you did *not* have in mind.
 > A third read a fixed three-line window of `_headers`, so deleting one route's
 > rule let it borrow the next route's and pass.
 
-**Check:** `cp file /tmp/bak`, break it, run the test, confirm red, restore.
-Do it for the obvious regression and for the sideways one.
+**Check:** mutate, run, confirm red, revert. Use `git stash` or a disposable
+`git worktree add /tmp/probe HEAD` — **not** `cp file /tmp/bak && … && cp back`,
+which silently destroys any uncommitted work in the file if anything goes wrong
+between the two copies. This document originally recommended the unsafe form.
 
 ## 4. Any sentence of the form "all X now Y" is a claim. Count it.
 
@@ -110,7 +112,10 @@ standard of quality, and reporting a green build as readiness is misleading.
 > does not mean otherwise." Both statements are true simultaneously and both
 > belong in any status report.
 
-## 8. Verify against the deployed artefact, not the build output.
+## 8. Climb the whole ladder: committed source → build → preview → live.
+
+Each rung can pass while the next fails, and checking only the top or only the
+bottom proves nothing about the middle.
 
 > A page's `noindex` was confirmed in `out/` and would still not have reached
 > Google, because delivery depended on edge path matching that did not match.
@@ -123,9 +128,62 @@ standard of quality, and reporting a green build as readiness is misleading.
 Incomplete work reported as complete is the failure this file is about. Name the
 untouched surface explicitly, with its number.
 
-> Seventy-eight template-generated pages remain: 53 exam pages at a median of
-> 134 unshared words and 25 country makers at 105. Nothing in eleven rounds of
-> remediation has touched them.
+> **76** template-generated pages remain. Membership, stated so the number can
+> be reproduced: exam detail pages matching `/exam-requirements/<slug>/` (52,
+> excluding the hub) and country makers matching `/<slug>-photo-maker/` (24,
+> after three were deindexed). Medians of unshared words at the default settings:
+> **134.5** and **115**.
+>
+> An earlier version of this line said 78, 53 and 25, at medians 134 and 105.
+> Every one of those was wrong. The membership filter tested `"photo-maker" in
+> path`, which swept in a blog post called
+> `best-free-passport-photo-maker-india-2026`; the medians move whenever shared
+> copy changes and were quoted from a stale run. Reviewers reproduced the
+> correct figures and we could not, which is the whole argument for stating
+> membership and re-running rather than quoting.
+
+## 10. Verify from a clean committed checkout, not the working tree.
+
+A green run against your own directory says nothing about what you are shipping.
+
+> This file was committed in the same round as a `verify` run that passed only
+> because it read an **uncommitted** `public/_headers`. The three edge rules for
+> the newly deindexed pages existed on disk and not in any commit; a clean
+> checkout would have failed the deindex test. The `git add` listed directories
+> and `public/` was not among them.
+
+**Check:** `git status --short` must be clean of anything the run depends on, or
+`git worktree add /tmp/probe HEAD` and run there.
+
+## 11. Prefer a data invariant to a phrasing guard.
+
+A regex over copy encodes the sentences you thought of. An invariant over data
+holds however the sentence is written.
+
+> A regex guard against "the UK rejects white" was defeated by "white is the
+> wrong choice", "a pure white background will fail", and a visual example
+> labelled `status: "fail", title: "UK on white"` — which contains none of the
+> banned words. Meanwhile the registry itself was self-contradictory: the UK
+> description said white was acceptable while `acceptableHex` omitted
+> `#FFFFFF`. No phrasing guard can see that; a data assertion sees it
+> immediately.
+>
+> The first attempt at the data test then tried to infer the claim by parsing
+> the description, and mis-read "rejects white" as an acceptance. Write the
+> expectation down against its source instead of deducing it from prose.
+
+## 12. Mutation-test the gate itself, including its configuration.
+
+A gate you can tell to pass is not a gate.
+
+> `audit:adsense-readiness` read its target from the environment rather than
+> from its own baseline file, so `TARGET_UNIQUE_WORDS=1 npm run
+> audit:adsense-readiness` exited 0 with nothing about the site changed. It now
+> forces the target from the baseline and rejects a run whose reported target or
+> corpus size does not match what the baseline records.
+
+**Check:** try to make the gate pass without fixing anything — override its
+config, hand it a malformed baseline, point it at a different corpus.
 
 ---
 

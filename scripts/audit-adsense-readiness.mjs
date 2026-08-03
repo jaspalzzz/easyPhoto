@@ -21,18 +21,56 @@ const baselineFile = path.join(
 );
 const baseline = JSON.parse(fs.readFileSync(baselineFile, "utf8"));
 
+// The target is FORCED from the baseline, not inherited. Passing
+// TARGET_UNIQUE_WORDS=1 in the environment previously lowered the bar the child
+// measured against and the gate exited 0 with the site unchanged — a gate that
+// can be told to pass is not a gate.
 const output = execFileSync("node", ["scripts/audit-thin-content.mjs"], {
   encoding: "utf8",
-  env: { ...process.env, MIN_UNIQUE_WORDS: "0" },
+  env: {
+    ...process.env,
+    MIN_UNIQUE_WORDS: "0",
+    TARGET_UNIQUE_WORDS: String(baseline.targetUnsharedWords),
+  },
 });
 const match = output.match(/Below the (\d+)-unshared target[^:]*: (\d+) of (\d+)/);
 if (!match) {
   console.error("Could not read the below-target count from the thin-content audit.");
   process.exit(1);
 }
-const [, target, countRaw, totalRaw] = match;
+const [, targetRaw, countRaw, totalRaw] = match;
+const target = Number(targetRaw);
 const count = Number(countRaw);
 const total = Number(totalRaw);
+
+// Validate what came back rather than trusting it. A malformed baseline, or a
+// child that measured against a different target or a different corpus, must
+// fail loudly instead of reporting a number nobody can interpret.
+for (const [label, value] of [
+  ["targetUnsharedWords", baseline.targetUnsharedWords],
+  ["pagesBelowTarget", baseline.pagesBelowTarget],
+  ["indexedPages", baseline.indexedPages],
+]) {
+  if (!Number.isInteger(value) || value < 0) {
+    console.error(`Baseline field ${label} is not a non-negative integer: ${value}`);
+    process.exit(1);
+  }
+}
+if (target !== baseline.targetUnsharedWords) {
+  console.error(
+    `Audit measured against ${target} unshared words, baseline records ` +
+      `${baseline.targetUnsharedWords}. Refusing to compare different targets.`,
+  );
+  process.exit(1);
+}
+if (total !== baseline.indexedPages) {
+  console.error(
+    `Indexed page count changed: ${total} now, ${baseline.indexedPages} at baseline. ` +
+      `The below-target count is not comparable across a different corpus — ` +
+      `re-record the baseline deliberately.`,
+  );
+  process.exit(1);
+}
 
 console.log(
   `AdSense readiness: ${count} of ${total} indexed pages hold fewer than ${target} ` +

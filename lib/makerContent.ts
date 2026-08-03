@@ -164,16 +164,16 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       "A UK passport photo is 35×45mm on a plain light-coloured background. HM Passport Office names shades of white, cream, ivory and light grey as acceptable examples, so a white background is fine, despite how often the opposite is asserted elsewhere. This maker applies a light background and sizes your head to the required band.",
     sections: [
       {
-        h: "Why a UK passport photo isn't white",
-        p: "HM Passport Office lists a plain light grey or cream background with no shadows or patterns. This maker defaults to that recorded light background; inspect the result and confirm the current guidance before submitting.",
+        h: "What background a UK passport photo needs",
+        p: "HM Passport Office accepts a plain background in any light colour, naming shades of white, cream, ivory and light grey among its examples. What fails is a background that is dark, coloured, patterned, textured, or carries a shadow behind your head. This maker defaults to a light grey because it also suits Schengen consulates that do ask for grey, and because it keeps your outline visible against a pale top; change it if you prefer. Confirm the current guidance before submitting.",
       },
       {
         h: "UK passport photo specification",
-        p: "The photo is 35×45mm with the head (chin to crown) between 29 and 34mm. You'll need a neutral expression with your mouth closed, both eyes open and visible, nothing covering the face, and no glasses unless you have to wear them for medical reasons.",
+        p: "The photo is 35×45mm with the head (chin to crown) between 29 and 34mm. You'll need a neutral expression with your mouth closed, both eyes open and visible, and nothing covering the face. Glasses are allowed provided both eyes stay clearly visible — frames may sit over the eye socket but must not hide the white or pupil, and if glare stops the checks locating your eyes you must take them off.",
       },
       {
         h: "Online photo code vs. printed photo",
-        p: "When you apply online you can either upload a digital photo or use a code from a photo booth. This maker creates a digital photo you can upload directly. For a printed photo, download the 6×4 sheet and print it on photo paper.",
+        p: "When you apply online you can either upload a digital photo or use a code from a photo booth. One nuance is worth knowing before using any editor: the customer-facing online rules say the photo must be unedited, while HMPO's examiner standard permits a digitally edited background where the edit does not affect the image of you. Neither automatic acceptance nor automatic rejection follows, so an unedited capture against a suitable wall is the safer route for the online code. For a printed photo, download the 6×4 sheet and print it on photo paper.",
       },
       {
         h: "A UK visa photo: same rules, but it must be a different photo",
@@ -182,7 +182,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
     ],
     faqs: [
       {
-        q: "Why can't a UK passport photo have a white background?",
+        q: "What background colour does a UK passport photo need?",
         a: "HM Passport Office asks for a plain light-coloured background and gives shades of white, cream, ivory and light grey as examples, so white is acceptable. The tool applies a light background for you. One nuance worth knowing: the gov.uk digital service tells customers the photo must be unedited, while HMPO's examiner standard allows a digitally edited background where the edit does not affect your own image. An unedited capture is the safer route for the online photo code.",
       },
       {
@@ -195,7 +195,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "Are glasses allowed in a UK passport photo?",
-        a: "Generally no. Glasses should be removed unless you have to wear them for medical reasons, and there must be no glare.",
+        a: "Yes, provided both eyes stay clearly visible. Frames may sit over the eye socket or eyelids but must not hide the white or pupil of the eye, and glare or reflection that stops the checks finding your eyes means you have to remove them. The blanket no-glasses rule belongs to the US, not the UK — though taking them off is still the simplest way to avoid a glare problem.",
       },
       {
         q: "Can I reuse my UK passport photo for a UK visa application?",
