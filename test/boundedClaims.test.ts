@@ -55,8 +55,21 @@ const BANNED: Array<{ label: string; pattern: RegExp }> = [
     // Written as a pattern rather than a fixed string because it was phrased a
     // different way almost every time.
     label: "false claim that the UK rejects a white background",
-    pattern:
-      /(?:uk|hm passport office|passport office)[^.]{0,80}(?:not white|rejects?\s+(?:pure\s+)?white|no\s+white|never\s+white)|(?:not white|rejects?\s+(?:pure\s+)?white)[^.]{0,60}(?:uk|hm passport office)/i,
+    // The first version of this pattern only knew the phrasings we happened to
+    // have fixed. It passed "white is the wrong choice", "white is a common
+    // reason photos get rejected", "a pure white background will fail" and
+    // "pure white rejected" — eight more live instances. The verb set is now
+    // explicit and the window works in both directions.
+    pattern: new RegExp(
+      String.raw`(?:uk|hmpo|hm passport office|passport office|united kingdom)[^.]{0,100}` +
+        String.raw`(?:not\s+(?:pure\s+)?white|no\s+(?:pure\s+)?white|never\s+white|` +
+        String.raw`(?:pure\s+)?white[^.]{0,40}(?:reject|fail|wrong|avoid|not\s+accept|isn't\s+accept))` +
+        String.raw`|(?:pure\s+)?white[^.]{0,60}(?:reject|fail|wrong choice|not\s+accept)[^.]{0,60}` +
+        String.raw`(?:uk|hmpo|hm passport office|united kingdom)` +
+        String.raw`|(?:uk|hmpo|hm passport office)[^.]{0,60}(?:requires?|wants?|needs?|asks? for)\s+` +
+        String.raw`(?:a\s+)?(?:plain\s+)?(?:light\s+)?(?:grey|gray|cream)[^.]{0,40}(?:not|rather than|instead of)\s+(?:pure\s+)?white`,
+      "i",
+    ),
   },
   {
     label: "exact size/dimensions/KB bundle",

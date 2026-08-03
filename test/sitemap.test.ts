@@ -70,9 +70,19 @@ describe("Sitemap Integrity & SEO Compliance", () => {
   });
 
   it("confirms all country maker pages are registered in the sitemap", () => {
+    // Same rule as the tools check: listed OR deliberately deindexed. Three
+    // Schengen-family makers left the index because they were almost entirely
+    // shared template (37-42 unshared words) and earned no clicks.
     const sitemapPaths = generatedSitemap.map((item) => item.url.replace(SITE_URL, ""));
     MAKER_PAGES.forEach((m) => {
-      expect(sitemapPaths).toContain(`/${m.slug}/`);
+      const route = `/${m.slug}/`;
+      const listed = sitemapPaths.includes(route);
+      expect(
+        listed !== isDeindexed(route),
+        listed
+          ? `${route} is deindexed but still in the sitemap`
+          : `${route} vanished from the sitemap without being deindexed`,
+      ).toBe(true);
     });
   });
 

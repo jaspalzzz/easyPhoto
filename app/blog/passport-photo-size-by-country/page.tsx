@@ -174,7 +174,7 @@ export default function Page() {
       <h2>Troubleshooting country-size mismatches</h2>
       <table className="my-5 w-full border-collapse text-[14px]"><thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead><tbody className="text-ink-soft">{[
         ["Correct outer size, wrong head scale", "Re-crop using the country's chin-to-crown band; do not resize the whole photo alone."],
-        ["White background rejected", "Use the selected authority's published colour; UK requires light grey or cream."],
+        ["Background colour refused", "Use the selected authority's published colour — some Schengen consulates ask for light grey specifically."],
         ["Canadian printed passport submission refused", "Use a commercial photographer and obtain the required certification and guarantor signature."],
         ["Portal rejects a visually correct image", "Check that portal's current pixel, format and file-size fields in addition to print dimensions."],
       ].map(([failure, fix]) => <tr key={failure} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{failure}</td><td className="py-2">{fix}</td></tr>)}</tbody></table>

@@ -50,6 +50,10 @@ const specs = blocks.map((b) => {
   };
 });
 
+/** A source you can open, a label for it, and copy telling the user to confirm. */
+const isDocumented = (s) =>
+  /^https?:\/\//.test(s.url ?? "") && !!s.sourceLabel && s.hasCurrentDisclosure;
+
 const documentedReviews = specs.filter(
   (s) =>
     s.verification === "needs-review" &&
@@ -91,6 +95,13 @@ const blocking = specs.filter((s) => {
   }
   if (s.verification === "needs-review") {
     return !documentedReviews.includes(s);
+  }
+  if (s.verification === "disputed") {
+    // The published source contradicts itself. Held to the same bar as
+    // needs-review — a readable source, a label, and a visible instruction to
+    // confirm the current figure — because the reader is being told the number
+    // is uncertain either way. It must never carry a "Verified" badge.
+    return !documentedReviews.includes(s) && !isDocumented(s);
   }
   return true;
 });

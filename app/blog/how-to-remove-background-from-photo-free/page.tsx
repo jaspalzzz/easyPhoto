@@ -187,8 +187,8 @@ export default function Page() {
       </table>
 
       <p>
-        For Schengen and UK visas, the background requirement is grey or cream — not
-        white. The{" "}
+        For Schengen visas some consulates ask for grey or cream specifically.
+        The UK accepts any plain light colour. The{" "}
         <Link href="/blog/passport-photo-background-color/" className="text-brand underline">
           passport photo background colour guide
         </Link>{" "}

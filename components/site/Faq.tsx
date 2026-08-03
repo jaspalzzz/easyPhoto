@@ -19,8 +19,8 @@ export const HOME_FAQ: FaqItem[] = [
     a: "The tool can size the head, apply the selected background and review measurable image properties before download. It cannot predict acceptance. Check the linked source and the current application instructions before submitting.",
   },
   {
-    q: "Why isn't the background pure white for the UK and Schengen?",
-    a: "Because pure white is a common rejection reason there. UK guidance asks for a light grey or cream background, and a light grey is the safest universal choice for Schengen visas. We default to the correct colour for each country automatically.",
+    q: "Why is the background light grey rather than white for the UK and Schengen?",
+    a: "For Schengen, because some consulates — Switzerland in particular — do ask for grey. For the UK it is a preference, not a rule: HM Passport Office accepts any plain light colour and names shades of white among its examples. Light grey is used as one setting that suits both, and you can change it.",
   },
   {
     q: "What photo should I use?",

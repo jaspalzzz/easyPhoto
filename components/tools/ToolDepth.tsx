@@ -206,7 +206,7 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
       "This workflow layers your signature over a local image and lets you position it visually. Use it for documents that explicitly allow an inserted signature image; it does not replace a digital certificate, e-sign service or witnessed signature when those are required.",
       "Keep the mark readable without covering printed text, dates or seals. Review the final image at full resolution, because a placement that looks clear in the small editor can overlap content after download.",
       "A signature saved with a transparent background sits on the document without a white box around it, which matters when you are placing it over a form that already has printed lines or shading. Save as PNG when transparency is needed; JPEG has no transparency and will always paint a solid rectangle. If the receiving form only accepts JPEG, place the signature over a matching white area rather than over ruled or coloured content.",
-      "Everything here happens in your browser, so the signature file is never uploaded. That is worth keeping in mind for the opposite reason too: because nothing is transmitted, nothing is timestamped, logged or witnessed. Where a process needs proof of who signed and when \u2014 a contract, an affidavit, anything with legal consequence \u2014 an inserted image is not evidence, and the issuing body will say which e-signature method it accepts.",
+      "Everything here happens in your browser, so the signature file is never uploaded. That is worth keeping in mind for the opposite reason too: because nothing is transmitted, nothing is timestamped, logged or witnessed. Where a process needs proof of who signed and when \u2014 a contract, an affidavit, anything with legal consequence \u2014 an inserted image carries none of that context, and the body receiving it will state which e-signature method it accepts.",
     ],
     checklist: ["Confirm image signatures are allowed.", "Leave surrounding text readable.", "Save the unsigned original separately."],
   },
@@ -231,7 +231,7 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
     ],
     checklist: [
       "Check the required shade on your own application before choosing white.",
-      "Some services ask for an unedited photo — the UK online one does — so a replaced background may suit a print, not an upload.",
+      "Check whether the service wants an unedited capture — the UK online one says so, though its examiner standard is more permissive about backgrounds.",
       "Inspect the hair edge at 100% zoom, not in the small preview.",
       "Avoid wearing a top that matches the background you are replacing.",
     ],
@@ -251,7 +251,7 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
   "dpi-converter": {
     heading: "DPI is a label; pixels are the photograph",
     paragraphs: [
-      "DPI is a number stored in the file that says how large the image should print. Changing it alone does not add detail, sharpen anything, or make a small photo acceptable \u2014 a 300 by 300 pixel image tagged at 300 DPI simply says print me one inch wide. When a form asks for 300 DPI it is almost always asking for enough pixels to print at the stated size, so the figure that matters is the pixel dimensions.",
+      "DPI is a number stored in the file that says how large the image should print. Changing it alone does not add detail, sharpen anything, or make a small photo acceptable \u2014 a 300 by 300 pixel image tagged at 300 DPI simply says print me one inch wide. When a form asks for 300 DPI alongside a print size, what it needs in practice is enough pixels to print at that size. Some portals do read the DPI field itself, so check whether yours states a pixel requirement as well.",
       "The relationship is arithmetic: millimetres divided by 25.4, multiplied by DPI, gives pixels. A 35 by 45mm photo at 300 DPI is about 413 by 531 pixels. If your source is smaller than that, raising the DPI tag will satisfy a checker that only reads metadata but will still print soft, because the detail was never captured. Re-tagging is useful when a portal validates the DPI field; it is not a substitute for photographing at a higher resolution.",
     ],
     checklist: [

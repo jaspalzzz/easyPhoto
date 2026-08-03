@@ -348,9 +348,12 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "and light grey' as examples. White is acceptable. Light grey is used as " +
       "the default here because it also satisfies Schengen states that do reject " +
       "white, not because the UK requires it. Separately, the gov.uk digital " +
-      "service requires the photo to be 'unedited' — a digitally replaced " +
-      "background does not meet that, so this preset is for preparing a print " +
-      "or checking framing, not for claiming the online code will accept it. " +
+      "service tells customers the photo must be 'unedited', while HMPO's " +
+      "examiner standard allows a digitally edited background provided the edit " +
+      "does not affect the image of the customer. The two are not identical, so " +
+      "do not claim either automatic acceptance or automatic rejection for a " +
+      "replaced background: an unedited capture against a suitable wall is the " +
+      "safer route for the online code. " +
       "Online flow issues a 'digital photo code' the user enters on gov.uk.",
     source: "https://www.gov.uk/photos-for-passports",
     // Verified 2026-06 vs gov.uk/photos-for-passports/photo-requirements: 45x35mm,

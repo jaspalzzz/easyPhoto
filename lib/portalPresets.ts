@@ -20,8 +20,13 @@ export interface SpecSource {
 /**
  * "official"     = numbers confirmed against `source` on `verifiedOn`.
  * "needs-review" = carried from earlier code; not yet re-confirmed live.
+ * "disputed"     = the published source contradicts ITSELF on a figure. The
+ *                  stored value is the safe intersection of the conflicting
+ *                  bands, never the more permissive one, because generating a
+ *                  file the stricter section forbids is the failure that costs
+ *                  the applicant. UGC-NET is the current case.
  */
-export type VerificationStatus = "official" | "needs-review";
+export type VerificationStatus = "official" | "needs-review" | "disputed";
 
 export interface PortalSpec {
   id: string;
@@ -444,16 +449,21 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "UGC-NET (NTA)",
     photoLimitKb: 200,
     photoMinKb: 10,
-    sigLimitKb: 50,
+    // ⚠ DISPUTED. The June 2026 bulletin caps the signature at 30 KB in its
+    // application-procedure section and at 50 KB elsewhere. 30 is stored
+    // because a 31-50 KB file is rejected under the stricter reading, while a
+    // file under 30 KB satisfies both. Restore 50 only against a live
+    // validator, not against the bulletin.
+    sigLimitKb: 30,
     sigMinKb: 10,
     photoFormat: "JPG / JPEG",
     sigFormat: "JPG / JPEG",
-    description: "UGC-NET decides eligibility for Assistant Professor and Junior Research Fellowship across the humanities, social sciences, commerce, languages and education \u2014 every subject except the five science streams CSIR handles separately. \u26a0 The signature limit is disputed: the June 2026 information bulletin gives 4-30 KB in its application-procedure section and 10-50 KB elsewhere in the same document. We record 10-50 KB but you should take the figure from the live application screen, which is the only version that governs your upload. The photograph is 10-200 KB, JPG or JPEG, with no fixed pixel dimensions published. That bulletin also introduces a live-photograph capture step, so read the current cycle's notice rather than working from an earlier one.",
+    description: "UGC-NET decides eligibility for Assistant Professor and Junior Research Fellowship across the humanities, social sciences, commerce, languages and education. The five science streams are examined separately through Joint CSIR-UGC NET; check the current subject list rather than assuming which body covers yours. \u26a0 The signature limit is disputed: the June 2026 information bulletin gives 4-30 KB in its application-procedure section and 10-50 KB elsewhere in the same document. We record 10-50 KB but you should take the figure from the live application screen, which is the only version that governs your upload. The photograph is 10-200 KB, JPG or JPEG, with no fixed pixel dimensions published. That bulletin also introduces a live-photograph capture step, so read the current cycle's notice rather than working from an earlier one.",
     source: {
       url: "https://cdnbbsr.s3waas.gov.in/s301eee509ee2f68dc6014898c309e86bf/uploads/2026/04/202604301078678748.pdf",
       label: "UGC-NET June 2026 — Information Bulletin",
     },
-    verification: "official",
+    verification: "disputed",
     verifiedOn: "2026-06-10",
     context:
       "UGC-NET (National Eligibility Test) is conducted by NTA for eligibility as Assistant Professor and for Junior Research Fellowship; NTA specifies photo and signature file size and format but no fixed pixel dimensions.",
@@ -467,7 +477,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigMinKb: 10,
     photoFormat: "JPG / JPEG",
     sigFormat: "JPG / JPEG",
-    description: "Joint CSIR-UGC NET covers the five science streams \u2014 Chemical, Earth Atmospheric Ocean and Planetary, Life, Mathematical and Physical Sciences \u2014 for Junior Research Fellowship and Lectureship. It is a different examination from UGC-NET with its own subject list, but NTA administers both, which is why the upload figures are identical: photo 10-200 KB, signature 10-50 KB, JPG or JPEG only, no fixed pixel dimensions. The bulletin also spells the signature out more fully than the UGC-NET one does: running hand on white paper in blue or black ink, not block capitals.",
+    description: "Joint CSIR-UGC NET covers the five science streams \u2014 Chemical, Earth Atmospheric Ocean and Planetary, Life, Mathematical and Physical Sciences \u2014 for Junior Research Fellowship and Lectureship. It is a different examination from UGC-NET with its own subject list, though NTA administers both. This bulletin gives photo 10-200 KB and signature 10-50 KB, JPG or JPEG, with no fixed pixel dimensions. The UGC-NET bulletin is not consistent with itself on the signature figure, so do not assume the two examinations share one number. The bulletin also spells the signature out more fully than the UGC-NET one does: running hand on white paper in blue or black ink, not block capitals.",
     source: {
       url: "https://cdnbbsr.s3waas.gov.in/s3efdf562ce2fb0ad460fd8e9d33e57f57/uploads/2025/09/202510072139225285.pdf",
       label: "Joint CSIR-UGC NET — Information Bulletin (NTA)",

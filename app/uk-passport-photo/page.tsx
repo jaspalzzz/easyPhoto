@@ -40,7 +40,7 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "Are glasses allowed in a UK passport photo?",
-    a: "Generally no. Glasses must be removed unless you have a medical exemption. There must be no glare, and your eyes must be fully visible and open.",
+    a: "Yes, if both eyes stay clearly visible. HM Passport Office allows frames over the eye socket or eyelids as long as they do not hide the white or pupil of the eye, and glare or reflection that stops the checks locating your eyes means you must take them off. The blanket \"no glasses\" rule belongs to the US, not the UK — but removing them is still the simplest way to avoid a glare problem.",
   },
   {
     q: "Does a UK passport photo need to be recent?",
@@ -89,7 +89,7 @@ export default function Page() {
           HM Passport Office requires a <strong>35×45mm photo on a plain light-coloured background</strong>.
           Its published standard names &ldquo;different shades of white (cream, ivory or vanilla) and light
           grey&rdquo; as acceptable, so white is fine — despite how often the opposite is repeated. The head must
-          measure 29–34mm chin to crown, with a neutral expression and no glasses.
+          measure 29–34mm chin to crown, with a neutral expression.
         </p>
       </header>
 
@@ -120,7 +120,7 @@ export default function Page() {
             ["Head fill", "65–75% of the photo frame"],
             ["Background", "Any plain light colour (white, cream, ivory, light grey)"],
             ["Expression", "Neutral, mouth closed, eyes open"],
-            ["Glasses", "Not permitted (remove unless medically necessary)"],
+            ["Glasses", "Allowed if both eyes stay clearly visible, no glare"],
             ["Digital size (online)", "Min 600 × 750 px, 50 KB – 10 MB, JPEG"],
             ["Recency", "Taken within the last month"],
             ["Min DPI (print)", "300 DPI"],
@@ -154,12 +154,15 @@ export default function Page() {
             you, and you can pick the shade.
           </p>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            One caveat worth knowing before you use any editing tool for a UK application: the gov.uk
-            digital photo service asks for a photo that is{" "}
-            <strong>unedited</strong> — in its words, you cannot &ldquo;correct&rdquo; your passport
-            photo. A digitally replaced background is an edit. Use this to prepare a printed photo or
-            to check your framing and head size; for the online photo code, photograph yourself
-            against a suitable wall instead.
+            One nuance worth knowing before using any editing tool for a UK application: the two
+            published rules do not read alike. The gov.uk digital photo service tells customers the
+            photo must be <strong>unedited</strong> — in its words, you cannot &ldquo;correct&rdquo;
+            your passport photo. HM Passport Office&apos;s examiner standard is more permissive, and
+            allows a digitally edited background provided the edit does not affect the image of the
+            customer. So a replaced background is neither automatically fine nor automatically
+            refused. If you can photograph yourself against a suitable plain wall, that avoids the
+            question entirely for the online photo code; this maker is still useful for preparing a
+            print, or for checking your framing and head size before you shoot again.
           </p>
         </div>
 
@@ -169,7 +172,8 @@ export default function Page() {
             Use a plain light-coloured wall in good, even indoor lighting. Natural daylight from a
             window to one side works well — avoid direct flash which creates shadows behind your
             head. Stand about 50 cm from the wall so your shadow does not fall on the background.
-            Take the photo straight on at eye level. Remove glasses. Use this maker to apply the
+            Take the photo straight on at eye level. Glasses are allowed if both eyes stay clearly
+            visible without glare, though removing them is the easy way to avoid that. Use this maker to apply the
             correct background, crop to 35×45mm, and size the head to the 29–34mm band.
           </p>
         </div>

@@ -33,7 +33,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can I use a plain white background for every country?",
-    a: "No. The UK rejects plain white and requires light grey or cream, and Switzerland (for Schengen visas) requires grey. Light grey is the safest universal choice; set the background per country rather than assuming white.",
+    a: "No. Switzerland (for Schengen visas) asks for grey, and the US and India want white. The UK accepts any plain light colour, white included. Light grey is a reasonable single setting because it suits the widest range; set the background per country rather than assuming one answer.",
   },
   {
     q: "Can I wear glasses or smile in a passport photo?",
@@ -72,7 +72,7 @@ export default function Page() {
         </p>
         <ul className="!mt-2 text-[15px]">
           <li>Wrong <strong>size / head proportion</strong> — match the country&apos;s exact mm and head band.</li>
-          <li>Wrong <strong>background</strong> — white isn&apos;t universal (UK wants light grey/cream).</li>
+          <li>Wrong <strong>background</strong> — white isn&apos;t universal (some Schengen consulates want light grey).</li>
           <li><strong>Glasses or a non-neutral expression</strong> — remove glasses, mouth closed.</li>
           <li><strong>Shadows / uneven lighting</strong> on face or wall.</li>
           <li><strong>File too large</strong> for the upload limit (many Indian forms want 20–50 KB).</li>
@@ -185,8 +185,9 @@ export default function Page() {
 
       <h2>Wrong background colour</h2>
       <p>
-        White is <em>not</em> universal. The UK rejects plain white and wants a
-        light grey or cream background (
+        White is <em>not</em> universal — but the UK is not the reason. HM
+        Passport Office accepts a plain background in any light colour and gives
+        shades of white among its examples (
         <a href="https://www.gov.uk/photos-for-passports" target="_blank" rel="noopener noreferrer">GOV.UK</a>
         ). For Schengen visas, Switzerland requires a grey
         background and rejects white, so light grey is the safe choice everywhere.

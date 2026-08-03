@@ -16,6 +16,14 @@
  * public/_headers by test/deindexed.test.ts.
  */
 export const DEINDEXED_PATHS: readonly string[] = [
+  // Country makers whose pages are almost entirely shared template. At a
+  // two-page sharing threshold these hold 37, 39 and 42 unshared words inside
+  // ~500 visible ones, and they earn 0, 0 and 2 clicks in 90 days. Spain and
+  // Portugal restate the same EU Visa Code figures as the Schengen page;
+  // Kuwait's own figures are recorded as disputed. The tools stay live.
+  "/spain-visa-photo-maker/",
+  "/portugal-visa-photo-maker/",
+  "/kuwait-visa-photo-maker/",
   // Not a tool page: a 372-word guide with zero clicks and zero impressions in
   // 90 days, whose schema pointed at the deindexed /tools/unlock-pdf/.
   "/unlock-aadhaar-pdf/",

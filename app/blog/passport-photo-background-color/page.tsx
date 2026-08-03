@@ -15,7 +15,7 @@ const midpoint = (id: "india" | "uk") => {
 const BACKGROUND_CASES: PhotoComplianceCase[] = [
   { status: "pass", title: "India: white", reason: "White applies to the under-four print and overseas ICAO guidance.", variant: "correct-baseline", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("india") },
   { status: "pass", title: "UK: light cream", reason: "Light cream matches the recorded UK options.", variant: "correct-baseline", background: COUNTRY_SPECS.uk.background.hex, headPercent: midpoint("uk") },
-  { status: "fail", title: "UK on white", reason: "White is the wrong choice for the recorded UK preset.", variant: "background-wrong-colour", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("uk") },
+  { status: "fail", title: "UK on white", reason: "Differs from the light-grey preset recorded here; the UK itself accepts white.", variant: "background-wrong-colour", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("uk") },
   { status: "fail", title: "Patterned wall", reason: "Patterns prevent a plain, uniform background.", variant: "background-busy" },
   { status: "fail", title: "Background shadow", reason: "A shadow makes the background uneven.", variant: "shadow-behind", background: COUNTRY_SPECS.india.background.hex, headPercent: midpoint("india") },
   { status: "fail", title: "Uneven lighting", reason: "A gradient across the face is not even lighting.", variant: "uneven-lighting", background: COUNTRY_SPECS.uk.background.hex, headPercent: midpoint("uk") },
@@ -47,7 +47,7 @@ export default function Page() {
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li><strong>White / off-white:</strong> US, Canada and Australia; India&apos;s under-four print and overseas ICAO guidance use white.</li>
-          <li><strong>Any plain light colour:</strong> the UK — HM Passport Office names shades of white, cream, ivory and light grey as acceptable, so <strong>white is not rejected</strong>.</li>
+          <li><strong>Any plain light colour:</strong> the UK — HM Passport Office names shades of white, cream, ivory and light grey among its <strong>acceptable</strong> examples.</li>
           <li><strong>Light grey:</strong> safest for Schengen (Switzerland rejects white).</li>
           <li>Whatever the colour, it must be a <strong>single even tone with no shadows</strong>.</li>
         </ul>
@@ -82,7 +82,7 @@ export default function Page() {
           {[
             ["United States", "Plain white or off-white", "/us-passport-photo-maker/"],
             ["India (under-four print / overseas)", "Plain white", "/india-passport-photo-maker/"],
-            ["United Kingdom", "Light grey or cream (pure white rejected)", "/uk-passport-photo-maker/"],
+            ["United Kingdom", "Any plain light colour, white included", "/uk-passport-photo-maker/"],
             ["Canada", "Plain white", "/canada-visa-photo-maker/"],
             ["Australia", "Plain white or light grey", "/australia-passport-photo-maker/"],
             ["Schengen (EU)", "Light grey safest (varies by country)", "/schengen-visa-photo-maker/"],

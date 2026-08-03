@@ -20,9 +20,10 @@ const minimumWords = Number(process.env.MIN_BODY_WORDS || 300);
 // clears it.
 //
 // `targetUniqueWords` does NOT block; it is reported every run. On the current
-// site 66 of 159 indexed pages fall below it: 46 exam pages and 19 country
-// makers. /spain-visa-photo-maker/ shows 501 visible words of which 56 are
-// unshared. That gap is the honest state of the content and the work still to
+// site 72 of 156 indexed pages fall below it, concentrated in the exam family
+// and the remaining country makers. The exact count is recorded in
+// scripts/adsense-readiness-baseline.json rather than restated here, so the
+// comment cannot drift out of date against the gate. That gap is the honest state of the content and the work still to
 // do, and it is printed rather than hidden behind a passing gate. Raise the
 // blocking floor as the number comes down; do not lower the target to match it.
 const minimumUniqueWords = Number(process.env.MIN_UNIQUE_WORDS || 50);
@@ -42,8 +43,16 @@ const DISCLOSURE_PAGES = new Set([
   "/how-photo-checking-works/",
   "/authors/jaspal-kumar/",
 ]);
-/** A normalised shingle appearing on at least this many pages is furniture. */
-const sharedPageThreshold = Number(process.env.SHARED_SENTENCE_PAGES || 3);
+/**
+ * A normalised shingle appearing on at least this many pages is furniture.
+ *
+ * Two, not three. A threshold of three exempts pairwise duplication, which is
+ * precisely the failure this project keeps hitting — Spain/Portugal,
+ * Canada passport/visa, NDA/CDS, UGC-NET/CSIR-NET were all pairs. At three,
+ * every page cleared the floor; at two, Spain, Portugal and Kuwait drop to
+ * 37, 39 and 42 unshared words.
+ */
+const sharedPageThreshold = Number(process.env.SHARED_SENTENCE_PAGES || 2);
 
 if (!fs.existsSync(sitemapFile)) {
   console.error(`Missing ${sitemapFile}; run npm run build first.`);
@@ -90,17 +99,33 @@ function wordCount(text) {
  * collapse to a placeholder, so "SSC is conducted by..." and "IBPS is conducted
  * by..." normalise to the same string.
  */
-function normalise(text, route) {
-  const slugWords = route
-    .split("/")
-    .filter(Boolean)
-    .flatMap((segment) => segment.split("-"))
-    .filter((word) => word.length > 2);
-  let out = text.toLowerCase().replace(/[\p{N}]+/gu, "#");
-  for (const word of new Set(slugWords)) {
-    out = out.split(word.toLowerCase()).join("@");
-  }
-  return out;
+// Words that appear in almost every slug in a family. Replacing them would
+// blank out ordinary prose ("visa photo requirements") rather than the
+// distinguishing token, and they already match across templates on their own.
+const GENERIC_SLUG_WORDS = new Set([
+  "exam", "requirements", "photo", "photos", "visa", "maker", "passport",
+  "tools", "blog", "size", "online", "free", "india", "indian",
+]);
+
+/**
+ * Normalise tokens that vary between otherwise identical template output.
+ *
+ * Operates on TOKENS, not substrings. Replacing substrings meant a slug word
+ * like "net" also rewrote the middle of "internet", corrupting unrelated prose
+ * and inflating the shared count in a way nobody could trace.
+ */
+function normaliseTokens(text, route) {
+  const slugWords = new Set(
+    route
+      .split("/")
+      .filter(Boolean)
+      .flatMap((segment) => segment.split("-"))
+      .map((word) => word.toLowerCase())
+      .filter((word) => word.length > 2 && !GENERIC_SLUG_WORDS.has(word)),
+  );
+  return (text.toLowerCase().match(/[\p{L}\p{N}]+/gu) || []).map((token) =>
+    slugWords.has(token) ? "@" : /^[\p{N}]+$/u.test(token) ? "#" : token,
+  );
 }
 
 /**
@@ -110,6 +135,9 @@ function normalise(text, route) {
  * sentence in two made both halves look new. Shingles slide across the whole
  * page, so shared prose is detected wherever it sits.
  */
+// 8 tested against 6 and 10: the below-target count moves 77 / 72 / 70 and the
+// same families stay weakest (exam pages and Schengen-family makers), so the
+// conclusion is not an artefact of the window size. 8 sits in the middle.
 const SHINGLE = 8;
 
 function shingles(words) {
@@ -128,9 +156,7 @@ const pages = routes.map((route) => {
 
 const tokenised = pages.map((page) => ({
   ...page,
-  tokens: page.missing
-    ? []
-    : (normalise(page.text, page.route).match(/[\p{L}\p{N}@#]+/gu) || []),
+  tokens: page.missing ? [] : normaliseTokens(page.text, page.route),
 }));
 
 // How many pages each normalised shingle appears on.

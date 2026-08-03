@@ -24,7 +24,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Does the background have to be white?",
-    a: "Not for all countries. The UK requires light grey or cream — a pure white background will fail. The US and India require white. Upload your photo to the passport photo maker and select your country; it applies the correct background regardless of what was behind you.",
+    a: "Not for all countries. The US and India require white; the UK accepts any plain light colour including white; some Schengen consulates ask for light grey specifically. Upload your photo to the passport photo maker and select your country; it applies a suitable background regardless of what was behind you.",
   },
   {
     q: "Why do passport photos get rejected for shadows?",
