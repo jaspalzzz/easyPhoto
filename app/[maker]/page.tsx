@@ -246,6 +246,22 @@ export default async function MakerPage({
       {/* Advisory scoping lives in specForDocumentKind so it can be tested. */}
       <PhotoTool spec={specForDocumentKind(spec, kind)} />
 
+      {spec.applicationNotes && spec.applicationNotes.length > 0 && (
+        <section className="mt-10 space-y-3 border-t border-hairline pt-8">
+          <h2 className="text-lg font-semibold">
+            What the {spec.label} application actually asks for
+          </h2>
+          <ul className="max-w-2xl space-y-3 text-sm leading-relaxed text-muted-foreground">
+            {spec.applicationNotes.map((note) => (
+              <li key={note.slice(0, 40)} className="flex gap-2.5">
+                <span aria-hidden className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand" />
+                <span>{note}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {/* Spec-aware do/don't — self-check against the real rules before submitting. */}
       <AcceptanceTips spec={spec} />
 

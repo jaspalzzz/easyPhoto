@@ -687,6 +687,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-18",
     context:
       "KPSC's current UDYOGA applicant manual documents separate photograph and signature file uploads during personal-information registration. The first-party manual supports the JPEG file-size bands but gives no pixel geometry; the former square photo and signature targets came only from a vendor-hosted registration page and have been removed.",
+    applicationNotes: [
+      "KPSC's bands are higher at both ends than most: the photograph is 50 KB to 200 KB and the signature 50 KB to 70 KB, both JPEG. A signature scan compressed to the 10-20 KB that other commissions want is too small here, which is the opposite of the usual problem.",
+      "The 50 KB to 70 KB signature window is narrow — only 20 KB wide — so compress deliberately rather than aiming for the smallest possible file.",
+    ]
   },
   appsc: {
     id: "appsc",
@@ -823,6 +827,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-18",
     context:
       "LIC's 2025 AAO Specialist notice documents a prepared photograph upload and a separate live-photo capture. The source does not establish that the same values apply to every LIC role or future recruitment cycle.",
+    applicationNotes: [
+      "LIC asks for four scanned images: photograph at 4.5cm x 3.5cm, signature in black ink, a left thumb impression on white paper in black or blue ink, and a HAND-WRITTEN DECLARATION whose text the notice supplies for you to copy out. The declaration must be written by hand on white paper in black or blue ink — typing it is not the same thing.",
+      "Your photograph and IRIS are captured at the examination venue and the captured photo is matched against what you submitted, so the uploaded image needs to be a current likeness rather than the best one you own.",
+      "A live photograph is taken through a webcam or phone during registration as well. Preparing a file does not remove that step.",
+    ]
   },
   niacl: {
     id: "niacl",
@@ -851,6 +860,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-18",
     context:
       "NIACL's 2025 Administrative Officer advertisement links to the NIACL application on ibpsonline.ibps.in and documents both a prepared photograph upload and a separate live-photo capture. The source does not establish the same values for every NIACL role.",
+    applicationNotes: [
+      "Four scans, not two: photograph at 4.5cm x 3.5cm, signature in black ink, and a LEFT THUMB IMPRESSION on white paper in black or blue ink. The notice covers the case where a candidate has no left thumb — the right thumb, or a finger of the left hand starting from the forefinger, is used instead — and it asks specifically that the impression is not smudged.",
+      "A signature written in CAPITAL LETTERS will not be accepted. This sits separately from the file-size rule, so a signature comfortably inside the band can still be refused for how it was written.",
+      "Caps, hats and dark glasses are not acceptable in the photograph. Religious headwear is allowed provided it does not cover the face. A live photograph is also captured during the process, in addition to the file you upload.",
+    ]
   },
   irdai: {
     id: "irdai",

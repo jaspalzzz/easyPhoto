@@ -146,6 +146,16 @@ export interface CountrySpec {
    * a country when the tool can still produce a useful, honest result.
    */
   advisory?: string;
+  /**
+   * Practical points about THIS application, from the source in `source` or
+   * from the research recorded in `notes`.
+   *
+   * The country maker pages were a shared frame around a different set of
+   * numbers — a median of about 100 words of their own inside 500 visible.
+   * These are what a reader of that specific application needs and cannot get
+   * from the figures alone. Never generalise one authority's rule onto another.
+   */
+  applicationNotes?: readonly string[];
 }
 
 export const COUNTRY_SPECS: Record<string, CountrySpec> = {
@@ -601,6 +611,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "external service provider, a digital photo is taken at the appointment.",
     source: "https://www.netherlandsworldwide.nl/passport-id-card/photo-requirements",
     verified: "gov",
+    applicationNotes: [
+      "The Netherlands applies its OWN national photo criteria to a Schengen visa submitted to it, which is unusual: its visa checklist tells applicants to bring a photo meeting Dutch requirements rather than a generic Schengen one. That means a smaller head than our German or French pages show — 26 to 30 mm chin to crown for ages 11 and over.",
+      "Background may be light grey, light blue or white, and prints want a minimum of 400 DPI. If you apply through an external service provider, a digital photo is taken at your appointment and you do not need to bring one.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -637,6 +651,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "figure applies to it.",
     source: "https://www.irishimmigration.ie/photograph-rules-for-visa-applications/",
     verified: "gov",
+    applicationNotes: [
+      "An Irish visa application takes TWO IDENTICAL PRINTED photographs, not an upload. There is no pixel size or file-size limit to meet because nothing is submitted digitally on this route.",
+      "Your name and the visa transaction number must be written in block letters on the BACK of each photograph. That step is part of the requirement, not an optional extra, and it is done by hand after printing.",
+      "Immigration Service Delivery describes prints on photographic paper between 35 x 45 mm and 38 x 50 mm. Prepare and print at that size rather than preparing a file to a KB target.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -686,6 +705,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "channel (ICP, GDRFA, typing centre), so check the one you are using.",
     source: "https://icp.gov.ae/wp-content/uploads/2021/11/icao_english.pdf",
     verified: "aggregator",
+    applicationNotes: [
+      "43 x 55 mm is the UAE VISA size used across visit, employment and residence channels. It is not the Emirates ID size: an ICP Smart Services application follows a different specification, and reusing this crop for one is a common mistake.",
+      "The ICP guide linked here is the ICAO standard document. It supports the framing, background and quality rules — face covering 70-80%, no tint or glare on glasses, head covering for religious reasons only with the full face visible — but it does not itself state the 43 x 55 mm print size, which is the channel convention.",
+      "File limits differ by channel (ICP, GDRFA, or a typing centre), so check the one you are actually submitting through.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -722,6 +746,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "print — this page targets the eVisa upload.",
     source: "https://visa.visitsaudi.com/Home/PhotoSpecifications",
     verified: "gov",
+    applicationNotes: [
+      "The Saudi eVisa photograph is SQUARE — 200 x 200 pixels, between 5 KB and 100 KB — so a 35 x 45 mm passport crop is the wrong shape for it entirely.",
+      "The portal asks for the face to fill roughly 70-80% of the frame, which it expresses as about 1.4 by 1.6 inches from chin to crown, on a plain white background with no pattern and no shadow, and no more than six months old.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -898,6 +926,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source: "https://onlinemrp.dgip.gov.pk/photo-requirements/",
     // DGIP's own online-renewal portal states the 45x35mm size and the 5 MB cap.
     verified: "gov",
+    applicationNotes: [
+      "The DGIP online renewal portal states the photograph as 45 mm high by 35 mm wide, professionally taken, and accepts an upload of up to 5 MB — a far larger allowance than most applications here, so there is no need to compress aggressively.",
+      "This route serves online renewals. A first-time application inside Pakistan captures biometrics and the photograph at the office instead, so a prepared file is not what that process needs.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -1039,6 +1071,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source:
       "https://www.visaforchina.cn/SYD3_EN/qianzhengyewu/jichuzhishi/changjianwenti/355135188537315328.html",
     verified: "aggregator",
+    applicationNotes: [
+      "China publishes two RANGES rather than one size: 354 to 420 pixels wide and 472 to 560 pixels high. Reading them as a single pair gives 354 x 420, which is 52 pixels short of the minimum accepted height — a mistake worth avoiding because the file looks correct until it is refused.",
+      "The print is a distinctive 33 x 48 mm rather than the usual 35 x 45, and the digital upload is 3:4 rather than the print's proportion, so the two are genuinely different shapes.",
+      "The Visa Application Service Centre states the printed size and asks for glossy photo paper; the pixel ranges and the 40-120 KB band come from published guides rather than that page, so confirm them on the consulate or COVA portal.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -1077,6 +1114,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source:
       "https://www.ica.gov.sg/docs/default-source/ica/files/save-non-pub-ava_sp-user-guide-for-family-visa-application.pdf",
     verified: "gov",
+    applicationNotes: [
+      "ICA's visa guide is stricter than its general photo page and the difference matters: a visa upload is exactly 400 x 514 pixels and under 60 KB, where the general guidance for passports and ID cards allows 8 MB. Preparing to the 8 MB figure produces a file a visa application refuses.",
+      "That 60 KB ceiling is tight for a 400 x 514 image, so compress deliberately and check the face is still clear rather than compressing blindly to the number.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -1115,6 +1156,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source:
       "https://www.immigration.govt.nz/process-to-apply/applying-for-a-visa/applying-online/uploading-documents-and-photos/visa-and-nzeta-photos/",
     verified: "gov",
+    applicationNotes: [
+      "Immigration New Zealand rejects a photo for being too SMALL as well as too large. The accepted band is 512 KB to 3.14 MB, so the usual instinct — compress it down — produces a file INZ will not take. This is the reverse of nearly every other application on this site.",
+      "The upload is JPEG in portrait 3:4 between 900 x 1200 and 2250 x 3000 pixels, with the face covering 70-80% of the frame and taken within the last six months. INZ also states it does not accept photos altered by AI editing tools.",
+      "For a paper application the print is the familiar 35 x 45 mm; the pixel and file-size rules above apply to the online route only.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -1161,6 +1207,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "photograph page and switch the size if it differs before you print.",
     source: "https://www.mofa.go.jp/files/000124525.pdf",
     verified: "aggregator",
+    applicationNotes: [
+      "There is no single Japanese visa photo size. MOFA states the requirement depends on the mission handling your application, and missions genuinely differ — 45 x 45 mm square appears at some, 35 x 45 mm or 2 x 2 inch at others.",
+      "35 x 45 mm is used here because it is the size printed on MOFA's own visa application form. Check your embassy or consulate's photograph page before printing and switch if it differs.",
+      "Paper applications generally take two identical prints, and the photograph should be no more than six months old.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -1195,6 +1246,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "check the limit shown on the eVisa form before submitting.",
     source: "https://malaysiavisa.imi.gov.my",
     verified: "aggregator",
+    applicationNotes: [
+      "Malaysia's 35 x 50 mm is unusual — taller than the 35 x 45 mm used almost everywhere else — so a standard passport crop is the wrong proportion and stretching it to fit distorts the face.",
+      "Published guides agree the eVisa upload must be JPEG between roughly 10 and 120 KB, which is a tight band. No Immigration Department page states it, so check the limit shown on the eVisa form itself before submitting.",
+    ]
   },
 };
 
