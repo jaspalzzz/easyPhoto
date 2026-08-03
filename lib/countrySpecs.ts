@@ -511,6 +511,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "Germany is the Schengen state that genuinely refuses a white background. Its published sample sheet asks for a single-colour LIGHT GREY backdrop, so a photograph prepared to the Indian or American white standard is the wrong colour here even though the 35x45mm frame is identical. This is the opposite of the UK, which accepts shades of white — do not carry one rule across to the other.",
       "The frame and head band follow the EU Visa Code that every Schengen state shares: 35x45mm with the head 32-36mm chin to crown, roughly 70-80% of the image. What distinguishes a German application is the background colour and the insistence that it be a single flat tone with no gradient from a shadow behind you.",
       "The same sheet covers the national (D) visa and residence permit routes as well as the Schengen visa, so one correctly prepared photograph serves all three. Confirm against the mission handling your application before printing.",
+      "If your appointment is at a visa application centre rather than the mission itself, the centre may photograph you on site. Bringing a prepared print is still worth doing as a fallback, but ask when you book — paying for prints you do not need is avoidable.",
+      "German missions and their visa centres publish sample photographs alongside the written rule, and comparing your result against the sample is quicker than re-reading the specification. If your photograph looks unlike the sample in head size or background tone, it will read that way to an examiner too.",
     ]
   },
 
@@ -586,6 +588,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The figures here come from the outsourced visa application centre operator rather than an Italian government host, which is why this record is not marked government-confirmed. Italy is a Schengen state, so the binding rule is the EU Visa Code and the ICAO framing it points to, and the centre's sheet is a restatement of that rather than a separate Italian standard.",
       "That sheet gives 30x40mm or 35x45mm and this tool uses 35x45mm, which is the size accepted across Schengen. Face 70-80% of the frame, white background, no borders or frames, taken within the last six months.",
       "Because a private operator publishes the figures, re-confirm against the consulate handling your application before printing — particularly if your appointment is not booked through that centre.",
+      "If you are applying for a Schengen visa through Italy but travelling to several member states, the same photograph serves the whole application — the visa is issued by the state you spend most time in, not by each one separately.",
     ]
   },
 
@@ -629,6 +632,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     applicationNotes: [
       "The Netherlands applies its OWN national photo criteria to a Schengen visa submitted to it, which is unusual: its visa checklist tells applicants to bring a photo meeting Dutch requirements rather than a generic Schengen one. That means a smaller head than our German or French pages show — 26 to 30 mm chin to crown for ages 11 and over.",
       "Background may be light grey, light blue or white, and prints want a minimum of 400 DPI. If you apply through an external service provider, a digital photo is taken at your appointment and you do not need to bring one.",
+      "The Dutch national criteria that govern here also cover the driving licence and identity card, so a photograph prepared for one of those is already correct for this application. That is unusual: in most countries the visa and the national document specifications differ.",
     ]
   },
 
@@ -764,6 +768,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     applicationNotes: [
       "The Saudi eVisa photograph is SQUARE — 200 x 200 pixels, between 5 KB and 100 KB — so a 35 x 45 mm passport crop is the wrong shape for it entirely.",
       "The portal asks for the face to fill roughly 70-80% of the frame, which it expresses as about 1.4 by 1.6 inches from chin to crown, on a plain white background with no pattern and no shadow, and no more than six months old.",
+      "The eVisa is issued electronically and the photograph is uploaded rather than printed, so there is no print size to match — the pixel figures are the whole requirement. Prepare from the original image rather than scanning a printed copy, which loses detail the 200x200 frame cannot spare.",
+      "The eVisa is approved electronically and often quickly, so an upload refused for the photograph is the main thing that stalls it. Because the frame is only 200x200, check the face is legible at that size on screen before submitting rather than judging it at full resolution.",
     ]
   },
 
@@ -913,6 +919,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "Published figures for Oman disagree with each other. 35x45mm is what the Royal Oman Police eVisa route is generally described as taking and it is the default used here, while widely circulated guides give 40x60mm for counter and consular applications. No ROP page we could open states either figure.",
       "Take the size from the application in front of you rather than from any guide, including this one. If you are applying through an agent or a typing centre, ask them which of the two they submit at — the difference is large enough that a print made to the wrong one is unusable.",
       "Plain white background, neutral expression, and a photograph taken within the last six months are consistent across every source we found, so those parts are safe to prepare to.",
+      "Oman issues several visa types through the ROP portal and through sponsors, and the route you use decides which figure applies. If a sponsor or employer submits on your behalf, send them the original photograph rather than a crop you prepared, so they can size it to whatever their channel asks for.",
     ]
   },
 
@@ -958,6 +965,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     applicationNotes: [
       "\u26a0 The published figures for the online route do not agree with each other. A reading of the current DGI&P e-services instructions gives 350 x 467 pixels, JPEG or JPG, with a 3 MB ceiling. Other DGI&P pages give 45 mm by 35 mm and a 5 MB ceiling, and a further document mentions 60 KB. We could not open any of them from our network to settle which governs today, so treat the figure on the screen in front of you as binding and keep the file under 3 MB, which satisfies every version.",
       "This route serves online renewals. A first-time application inside Pakistan captures the photograph and biometrics at the office instead, so a prepared file is not what that process needs at all.",
+      "A first-time passport applicant inside Pakistan is photographed at the office, so this preset serves the online renewal route and overseas missions. If you are renewing from abroad, ask the mission which of the conflicting figures its portal enforces before you prepare anything.",
     ]
   },
 
@@ -999,6 +1007,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The exception is a child under five. The Department states that a photograph IS required for children too young to sit still for the live capture, so that is the one case where preparing a print is the right thing to do.",
       "Because the photograph is normally taken for you, what matters at the centre is your appearance rather than a file: the enrollment photo is the one that goes in the passport. A tool like this is useful for the under-five exception, for an overseas mission that still asks for a print, or for checking framing before you go.",
       "The 35x45mm figures recorded here come from published guides rather than a Department page stating them, and are marked as needing confirmation. Confirm against the enrollment centre or mission handling your application.",
+      "If you are applying through a Nepali mission abroad rather than at a district office in Nepal, ask that mission directly: several still work to the older machine-readable process and do request a print, which is the opposite of what the domestic ePassport route now does.",
     ],
   },
 
@@ -1114,6 +1123,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "China publishes two RANGES rather than one size: 354 to 420 pixels wide and 472 to 560 pixels high. Reading them as a single pair gives 354 x 420, which is 52 pixels short of the minimum accepted height — a mistake worth avoiding because the file looks correct until it is refused.",
       "The print is a distinctive 33 x 48 mm rather than the usual 35 x 45, and the digital upload is 3:4 rather than the print's proportion, so the two are genuinely different shapes.",
       "The Visa Application Service Centre states the printed size and asks for glossy photo paper; the pixel ranges and the 40-120 KB band come from published guides rather than that page, so confirm them on the consulate or COVA portal.",
+      "Chinese visa applications are usually lodged through a Visa Application Service Centre rather than the embassy directly, and the centre checks the photograph at the counter. Taking a spare print and the digital file to the appointment saves a second trip if the first is refused.",
+      "The photograph is checked against the one in your passport and against you at the counter, so a recent image matters. Chinese visa centres are known for returning photographs at the desk rather than after submission, which is inconvenient but at least immediate.",
     ]
   },
 
@@ -1199,6 +1210,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "Immigration New Zealand rejects a photo for being too SMALL as well as too large. The accepted band is 512 KB to 3.14 MB, so the usual instinct — compress it down — produces a file INZ will not take. This is the reverse of nearly every other application on this site.",
       "The upload is JPEG in portrait 3:4 between 900 x 1200 and 2250 x 3000 pixels, with the face covering 70-80% of the frame and taken within the last six months. INZ also states it does not accept photos altered by AI editing tools.",
       "For a paper application the print is the familiar 35 x 45 mm; the pixel and file-size rules above apply to the online route only.",
+      "The 3:4 portrait ratio is worth setting deliberately rather than trusting a crop by eye. A photograph a little wider than 3:4 will still meet the pixel minimums and the file-size band while failing the shape check, which is the fault most likely to survive your own inspection.",
     ]
   },
 
@@ -1250,6 +1262,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "There is no single Japanese visa photo size. MOFA states the requirement depends on the mission handling your application, and missions genuinely differ — 45 x 45 mm square appears at some, 35 x 45 mm or 2 x 2 inch at others.",
       "35 x 45 mm is used here because it is the size printed on MOFA's own visa application form. Check your embassy or consulate's photograph page before printing and switch if it differs.",
       "One photograph is the general requirement; two identical prints are asked of applicants from Russia, the CIS states and Georgia. The photograph should be no more than six months old.",
+      "Because the size varies by mission, check before you print rather than after. The consulate page for the city you are applying in is the authority, and printing to the wrong one of the three sizes in circulation wastes the whole set.",
+      "Japanese missions frequently require the photograph to be affixed to a printed application form rather than uploaded, so prints matter more here than a file. Print at least one spare at whichever size your mission specifies.",
     ]
   },
 
