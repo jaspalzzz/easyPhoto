@@ -260,7 +260,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The signature is the part you do prepare, and its constraints are specific: 30 to 49 KB, at least 140 by 60 pixels, around 100 DPI. That is a narrow band — only 19 KB wide — so compress deliberately rather than aiming for the smallest file you can make.",
       "Sign on plain unlined paper, scan or photograph the signature area alone rather than the whole sheet, and check the strokes survive compression to under 49 KB before you upload.",
       "Because the photograph is captured live and only the signature is uploaded, the usual advice to prepare both files in advance does not apply here. Spend the preparation time on the signature — it is the only file you control and the only one that can be rejected for a size fault.",
-      "Railway recruitment runs in large centralised cycles with a single application serving many posts, so the signature you upload is reused across the whole cycle rather than per post. Prepare it once, carefully, and keep the original scan in case a later stage asks for it again.",
     ]
   },
   ibps: {
@@ -469,7 +468,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The photograph is 3.5 cm by 4.5 cm in formal dress, full face directly to camera, with no shadows and no red-eye, as .jpg or .jpeg up to 50 KB. It must carry nothing else: no watermark, no stamp, and no name of the mobile app used to scan it, which rules out most free scanner apps that brand their output.",
       "The file name itself is limited to ten characters. That is easy to miss and easy to fix before you upload.",
       "The signature is signed in black ink on blank white unlined paper.",
-      "Because the background must be a solid colour rather than white, a plain wall is rarely enough — most walls carry a gradient once photographed. A single-coloured sheet or a digitally replaced flat colour is the more reliable route, provided the result has no shadow across it.",
+      "Because the background must be a solid colour rather than white, a plain wall is rarely enough — most walls carry a gradient once photographed. Photographing against a single-coloured sheet or board is the straightforward route. The notice asks that the scan carry no additional content, so prefer a physical backdrop to an edited one.",
     ]
   },
 
@@ -503,7 +502,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     applicationNotes: [
       "GATE constrains the PROPORTIONS of both files, which almost nothing else here does. The photograph must fall between an aspect ratio of 0.66 and 0.89 with the face covering 60-70% of the frame after cropping, and the signature must be roughly 1:2.75 to 1:3.75 in height to width with the writing filling 70-80% of its image. A file inside the size limit but outside those ratios is still wrong.",
       "The photograph is 3.5 cm wide by 4.5 cm high on a white background with nothing and nobody else in the frame. The instruction is specific that a signature on a dark background is not accepted, so scan on plain white paper rather than photographing a page in poor light.",
-      "GATE reuses one application across a wide subject list, so the photograph and signature you prepare serve whichever paper you register for. What changes between papers is the syllabus, not the upload, so there is no need to re-prepare if you change your mind about the subject.",
       "The aspect-ratio rules are checked mechanically at upload, so a photograph that looks correct can still be refused for sitting a few percent outside the band. If the form objects without saying why, the ratio is the first thing to re-measure rather than the file size.",
     ]
   },
@@ -630,20 +628,20 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigMinKb: 80,
     photoFormat: "JPG / JPEG",
     sigFormat: "JPG / JPEG",
-    description: "Air Force Common Admission Test. Passport-size colour photo, signature and thumb impression each 10-50 KB, JPG/JPEG. AFCAT specifies file size and format but no fixed pixel dimensions.",
+    description: "Air Force Common Admission Test. Three uploads with DIFFERENT bands: photograph 100-200 KB, signature 80-150 KB, thumb impression 50-100 KB, all JPG/JPEG. AFCAT specifies file sizes and formats but no fixed pixel dimensions. Confirm the current notification before submitting.",
     source: {
       url: "https://afcat.edcil.co.in/assets/images/news/AFCAT_02_2025/Notification_AFCAT_01-2026.pdf",
-      label: "AFCAT 01/2025 — Notification (IAF / C-DAC)",
+      label: "AFCAT 01/2026 — Notification (IAF)",
     },
     verification: "official",
     verifiedOn: "2026-08-03",
     context:
-      "AFCAT (Air Force Common Admission Test) recruits for the Indian Air Force's Flying and Ground Duty branches; the notification requires the photo, signature and thumb impression each scanned as a 10-50 KB JPG/JPEG, with no fixed pixel dimensions.",
+      "AFCAT (Air Force Common Admission Test) recruits for the Indian Air Force's Flying and Ground Duty branches. The 01/2026 notification sets a different band for each of the three uploads — photograph 100-200 KB, signature 80-150 KB, thumb impression 50-100 KB — with no fixed pixel dimensions.",
     applicationNotes: [
       "Three files, each with its own band and its own literal file name: Passport Photograph.jpg at 100-200 KB, Signature.jpg at 80-150 KB, and Thumb Impression.jpg at 50-100 KB. These are unusually LARGE minimums — most Indian applications cap the signature around 20-50 KB — so a file compressed to the habitual size is below AFCAT's floor.",
       "The thumb differs by candidate: male candidates upload the LEFT thumb and female candidates the RIGHT, pressed on an ink stamp pad and then onto plain blank paper.",
       "The signature is signed on white paper with a black ink pen, by the applicant and nobody else, and the notice asks you to scan the signature area only rather than the whole page.",
-      "The three literal file names — Passport Photograph.jpg, Signature.jpg and Thumb Impression.jpg — are part of the requirement, not a suggestion. Rename before uploading; a correctly sized file under the wrong name is a needless rejection at the last step.",
+      "The notification states what each file name should be — Passport Photograph.jpg, Signature.jpg and Thumb Impression.jpg. It does not say what happens if you use a different name, so treat renaming as cheap insurance rather than as a stated rejection ground.",
       "The thumb impression is accepted as JPG, JPEG or PDF, which the photograph and signature are not — those are image formats only. Check the format as well as the size before uploading each of the three, because the rules differ file by file.",
     ],
   },
@@ -901,7 +899,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     context:
       "NIACL's 2025 Administrative Officer advertisement links to the NIACL application on ibpsonline.ibps.in and documents both a prepared photograph upload and a separate live-photo capture. The source does not establish the same values for every NIACL role.",
     applicationNotes: [
-      "More than the usual two files: photograph at 4.5cm x 3.5cm, signature in black ink, and a LEFT THUMB IMPRESSION on white paper in black or blue ink. The notice covers the case where a candidate has no left thumb — the right thumb, or a finger of the left hand starting from the forefinger, is used instead — and it asks specifically that the impression is not smudged.",
+      "Four uploads, not two: photograph at 4.5cm x 3.5cm, signature in black ink, a LEFT THUMB IMPRESSION on white paper in black or blue ink, and a HAND-WRITTEN DECLARATION. The notice supplies the declaration text to copy out and requires it in your own handwriting, in English, and not in capitals. The notice covers the case where a candidate has no left thumb — the right thumb, or a finger of the left hand starting from the forefinger, is used instead — and it asks specifically that the impression is not smudged.",
       "A signature written in CAPITAL LETTERS will not be accepted. This sits separately from the file-size rule, so a signature comfortably inside the band can still be refused for how it was written.",
       "Caps, hats and dark glasses are not acceptable in the photograph. Religious headwear is allowed provided it does not cover the face. A live photograph is also captured during the process, in addition to the file you upload.",
     ]
@@ -959,7 +957,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "CAT wants a square 1200 x 1200 pixel photograph and a signature at 80mm x 35mm, each as JPG or JPEG and each no larger than 80 KB, at a minimum of 150 pixels per inch. The square photograph is the unusual part: a standard 35x45mm passport crop is the wrong shape for this form.",
       "The photograph must be no more than six months old and on a white background. It is also affixed to your admit card on test day, and the instructions tell candidates to keep sufficient printed copies of the same image — so print spares of exactly what you upload.",
       "The square 1200x1200 requirement means you cannot start from a 35x45mm passport crop — the proportions are wrong and trimming one to a square leaves the head oversized in the frame. Crop square from your original photograph instead, then check the result is still at least 150 pixels per inch at the size CAT asks for.",
-      "Registration and the photograph upload happen well before the test window, and the admit card carries the image you submitted months earlier. Keep the file and its printed copies together from the day you apply, because sourcing a matching print in the week of the test is the avoidable scramble.",
     ]
   },
   clat: {
@@ -983,7 +980,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The Consortium's instructions describe what the photograph must SHOW — recent, front-facing, plain background, with a separate signature — but do not publish numeric file-size or pixel limits the way most Indian applications do. Any site quoting you an exact KB figure for CLAT is supplying one the Consortium has not.",
       "Because no published limit governs, prepare a clean, correctly framed photograph and take the binding constraint from whatever the upload screen enforces at the time you apply. The figures stored here exist so the tool has a sensible default, not because the Consortium states them.",
       "Because the Consortium publishes no numeric limits, the practical test is whether the upload screen accepts your file. Prepare a clean, well-lit, front-facing photograph at a sensible size and keep the original to hand, so you can re-export at a different size if the form objects.",
-      "CLAT registration opens months before the test and the same photograph follows you through counselling and admission at the national law universities. It is worth preparing something you are content to see on an identity document for the next five years.",
+      "The Consortium's instructions cover the photograph and signature upload and nothing beyond it, so treat anything you read elsewhere about where that image is reused later as unverified. Prepare a clean current photograph and keep the original file.",
     ]
   },
   "army-agniveer": {
@@ -1080,7 +1077,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "PAN specifies a scan resolution rather than a pixel canvas: the photograph, signature and supporting documents are all to be scanned at 200 DPI. That is a property of how you digitise the original, so scan at that setting rather than upscaling a smaller file afterwards.",
       "Online submission through this route depends on holding a valid Digital Signature Certificate issued by an authorised Certifying Authority in India. Without one, the application follows a different path, and no photo preparation changes that.",
       "A PAN application submitted on paper takes printed photographs affixed to the form rather than an upload, and the two routes are not interchangeable. Decide which you are using before preparing anything: a file scanned at 200 DPI for the online route is not the same artefact as a print you paste on a form.",
-      "Name spelling on the form and on any supporting document has to agree exactly, and a mismatch is a more common cause of return than anything about the photograph. Check the two against each other before you spend time on image preparation.",
     ]
   },
   "driving-licence": {
@@ -1306,7 +1302,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The DATE the photograph was taken must be printed on the photograph itself, and the notice states plainly that applications without that date printed on the photograph are rejected. This is a formatting requirement that no amount of correct sizing compensates for.",
       "The photograph must be no more than three months old, about 35 mm wide by 45 mm high, as JPG or JPEG between 50 and 100 KB. The lower bound matters: a heavily compressed file below 50 KB falls outside the accepted band.",
       "The date printed on the photograph has to be legible after compression, which is the part candidates get wrong: a date rendered in small grey text disappears once the file is squeezed into the 50 to 100 KB band. Print it dark and large enough to survive.",
-      "Paramilitary recruitment involves physical and medical stages after the written test, and the photograph on your admit card is checked against you at each. A recent image is a practical convenience rather than only a formality here.",
     ]
   },
 
@@ -1433,7 +1428,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "Block capitals are rejected outright as a signature. FCI states this apart from any file rule, so an image meeting every size and format requirement still fails when the name is printed rather than signed. Use the running hand you would use on a bank form.",
       "Alongside the photograph at 4.5 cm by 3.5 cm and the signature, a thumb impression is scanned and uploaded. Your photograph and biometric data are also captured at the examination centre and matched against what you submitted, so the uploaded image needs to be a current likeness.",
       "The thumb impression is taken with an ink stamp pad on plain paper rather than captured digitally, so it is worth doing before you sit down to fill the form. A smudged impression is the one element you cannot fix by editing, and re-doing it means finding an ink pad again.",
-      "FCI recruitment is conducted in phases with document verification later in the process, and the photograph you upload is the one checked against you at that stage. A photograph that already differs from your current appearance will be queried months after you applied.",
     ]
   },
 };
