@@ -1,7 +1,7 @@
 {
   "recordedOn": "2026-08-03",
   "targetUnsharedWords": 300,
-  "pagesBelowTarget": 29,
+  "pagesBelowTarget": 35,
   "indexedPages": 149,
-  "note": "Ratchet: must fall, never rise, EXCEPT when a review finds unsupported content and it is deleted. It rose 33 -> 42 in Aug 2026 for exactly that reason and that was correct. Not a passing score; only actionable content pages are counted."
+  "note": "Ratchet: must fall, never rise, EXCEPT when a review finds unsupported or repetitive content and removes it. It rose 29 -> 35 on 2026-08-03 after the Round 15 review corrected stale public claims, bad arithmetic, unsupported scope and duplicated padding. This remains a NOT READY score; only actionable content pages are counted."
 }

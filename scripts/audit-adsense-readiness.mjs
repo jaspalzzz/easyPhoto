@@ -8,8 +8,9 @@
  * target RISES above the recorded baseline.
  *
  * A ratchet rather than an absolute bar, because an absolute bar at the target
- * would fail 72 of 156 pages today and simply be bypassed. Lower the baseline
- * as pages are fixed; never raise it to make a build pass.
+ * would be bypassed while remediation is still in progress. Lower the baseline
+ * as pages improve. Raising it is allowed only when a documented review removes
+ * unsupported or repetitive copy; never raise it merely to make a build pass.
  */
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
