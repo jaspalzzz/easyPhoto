@@ -254,6 +254,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     isLiveCapture: true,
     context:
       "Current Railway Recruitment Board notices use webcam or mobile-camera live photo capture during the application. Only the signature is prepared as an image file; confirm the current CEN because recruitment-cycle instructions can change.",
+    applicationNotes: [
+      "RRB captures your photograph inside the application rather than accepting a prepared file, so the photo figures recorded here are a compatibility target and not something you upload. Follow the capture screen's own instructions for lighting and framing; nothing prepared in advance substitutes for that step.",
+      "The signature is the part you do prepare, and its constraints are specific: 30 to 49 KB, at least 140 by 60 pixels, around 100 DPI. That is a narrow band — only 19 KB wide — so compress deliberately rather than aiming for the smallest file you can make.",
+      "Sign on plain unlined paper, scan or photograph the signature area alone rather than the whole sheet, and check the strokes survive compression to under 49 KB before you upload.",
+    ]
   },
   ibps: {
     id: "ibps",
@@ -961,6 +966,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "CLAT is run by the Consortium of National Law Universities. Its public 2026 instructions identify the photo and signature uploads but do not expose their digital validation limits, so confirm the current application screen before preparing either file.",
+    applicationNotes: [
+      "The Consortium's instructions describe what the photograph must SHOW — recent, front-facing, plain background, with a separate signature — but do not publish numeric file-size or pixel limits the way most Indian applications do. Any site quoting you an exact KB figure for CLAT is supplying one the Consortium has not.",
+      "Because no published limit governs, prepare a clean, correctly framed photograph and take the binding constraint from whatever the upload screen enforces at the time you apply. The figures stored here exist so the tool has a sensible default, not because the Consortium states them.",
+    ]
   },
   "army-agniveer": {
     id: "army-agniveer",

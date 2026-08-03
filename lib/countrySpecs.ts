@@ -507,6 +507,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source:
       "https://www.germany.info/resource/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf",
     verified: "gov",
+    applicationNotes: [
+      "Germany is the Schengen state that genuinely refuses a white background. Its published sample sheet asks for a single-colour LIGHT GREY backdrop, so a photograph prepared to the Indian or American white standard is the wrong colour here even though the 35x45mm frame is identical. This is the opposite of the UK, which accepts shades of white — do not carry one rule across to the other.",
+      "The frame and head band follow the EU Visa Code that every Schengen state shares: 35x45mm with the head 32-36mm chin to crown, roughly 70-80% of the image. What distinguishes a German application is the background colour and the insistence that it be a single flat tone with no gradient from a shadow behind you.",
+      "The same sheet covers the national (D) visa and residence permit routes as well as the Schengen visa, so one correctly prepared photograph serves all three. Confirm against the mission handling your application before printing.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -538,6 +543,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source:
       "https://france-visas.gouv.fr/documents/d/france-visas/iso_iec_fv_visa_photograph_requirements_en",
     verified: "gov",
+    applicationNotes: [
+      "France's own guidance points at the ISO/IEC photograph standard rather than publishing a separate French rule, so the framing is the common Schengen one: 35x45mm, head 32-36mm chin to crown, neutral expression, no glasses glare.",
+      "On background, France is more permissive than Germany and less than the UK: a plain light colour is accepted and white is not formally banned, but light grey is the safer choice in practice because it survives inspection at any Schengen consulate, including the ones that do refuse white. If you are applying to several Schengen states, prepare grey once rather than white and re-do it.",
+      "A long-stay VLS-TS application uses the same photograph specification as the short-stay Schengen visa, so the two do not need different images.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -572,6 +582,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     // The operator publishes the figures, but it is a contractor, not the
     // issuing authority. `gov` would overstate what this source proves.
     verified: "aggregator",
+    applicationNotes: [
+      "The figures here come from the outsourced visa application centre operator rather than an Italian government host, which is why this record is not marked government-confirmed. Italy is a Schengen state, so the binding rule is the EU Visa Code and the ICAO framing it points to, and the centre's sheet is a restatement of that rather than a separate Italian standard.",
+      "That sheet gives 30x40mm or 35x45mm and this tool uses 35x45mm, which is the size accepted across Schengen. Face 70-80% of the frame, white background, no borders or frames, taken within the last six months.",
+      "Because a private operator publishes the figures, re-confirm against the consulate handling your application before printing — particularly if your appointment is not booked through that centre.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -894,6 +909,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "uploading — we could not confirm either against a Royal Oman Police page.",
     source: "https://evisa.rop.gov.om/",
     verified: "aggregator",
+    applicationNotes: [
+      "Published figures for Oman disagree with each other. 35x45mm is what the Royal Oman Police eVisa route is generally described as taking and it is the default used here, while widely circulated guides give 40x60mm for counter and consular applications. No ROP page we could open states either figure.",
+      "Take the size from the application in front of you rather than from any guide, including this one. If you are applying through an agent or a typing centre, ask them which of the two they submit at — the difference is large enough that a print made to the wrong one is unusable.",
+      "Plain white background, neutral expression, and a photograph taken within the last six months are consistent across every source we found, so those parts are safe to prepare to.",
+    ]
   },
 
   // ─────────────────────────────────────────────────────────────
