@@ -706,7 +706,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source: "https://icp.gov.ae/wp-content/uploads/2021/11/icao_english.pdf",
     verified: "aggregator",
     applicationNotes: [
-      "43 x 55 mm is the UAE VISA size used across visit, employment and residence channels. It is not the Emirates ID size: an ICP Smart Services application follows a different specification, and reusing this crop for one is a common mistake.",
+      "43 x 55 mm is the size commonly used for UAE visa applications through typing centres and GDRFA channels. We have not found an ICP page establishing it across every visit, employment and residence route, and ICP's own services state other dimensions in places, so confirm against the channel you are applying through. It is not the Emirates ID size.",
       "The ICP guide linked here is the ICAO standard document. It supports the framing, background and quality rules — face covering 70-80%, no tint or glare on glasses, head covering for religious reasons only with the full face visible — but it does not itself state the 43 x 55 mm print size, which is the channel convention.",
       "File limits differ by channel (ICP, GDRFA, or a typing centre), so check the one you are actually submitting through.",
     ]
@@ -911,10 +911,19 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     },
     digital: {
       pxApprox300dpi: { width: 413, height: 531 },
-      fileSizeKb: null, // DGIP online portal accepts up to 5 MB
+      // ⚠ Published figures conflict. A reviewer reading the current DGI&P
+      // e-services instructions reports 350x467 px, JPEG/JPG and a 3 MB cap for
+      // the online route; the pages we could previously reach gave 45x35mm and
+      // "up to 5 MB", and a further DGI&P document mentions 60 KB. We cannot
+      // reach any of them from this network to settle it, so the cap is the
+      // most conservative — a file under 3 MB satisfies every reading — and the
+      // record is no longer flagged government-confirmed.
+      pxMin: { width: 350, height: 467 },
+      fileSizeKb: { max: 3072 },
       formats: ["jpg"],
     },
-    dpiMin: 600,
+    // 600 DPI was scan guidance, not a stated upload requirement.
+    dpiMin: 300,
     glasses: "not allowed",
     smileAllowed: "neutral, mouth closed",
     notes:
@@ -925,10 +934,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "live at the office; the upload path serves online renewals (onlinemrp)." ,
     source: "https://onlinemrp.dgip.gov.pk/photo-requirements/",
     // DGIP's own online-renewal portal states the 45x35mm size and the 5 MB cap.
-    verified: "gov",
+    verified: "aggregator",
     applicationNotes: [
-      "The DGIP online renewal portal states the photograph as 45 mm high by 35 mm wide, professionally taken, and accepts an upload of up to 5 MB — a far larger allowance than most applications here, so there is no need to compress aggressively.",
-      "This route serves online renewals. A first-time application inside Pakistan captures biometrics and the photograph at the office instead, so a prepared file is not what that process needs.",
+      "\u26a0 The published figures for the online route do not agree with each other. A reading of the current DGI&P e-services instructions gives 350 x 467 pixels, JPEG or JPG, with a 3 MB ceiling. Other DGI&P pages give 45 mm by 35 mm and a 5 MB ceiling, and a further document mentions 60 KB. We could not open any of them from our network to settle which governs today, so treat the figure on the screen in front of you as binding and keep the file under 3 MB, which satisfies every version.",
+      "This route serves online renewals. A first-time application inside Pakistan captures the photograph and biometrics at the office instead, so a prepared file is not what that process needs at all.",
     ]
   },
 
@@ -954,18 +963,22 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     glasses: "remove unless medically required",
     smileAllowed: "neutral, mouth closed",
     notes:
-      "Nepali MRP/passport-size photo: 35x45mm on plain white, neutral " +
-      "expression, taken within 6 months — the standard photo Nepali passport " +
-      "pre-enrolment and government forms expect. Numbers are consistent across " +
-      "reputable guides but not yet confirmed against a single official spec " +
-      "page — re-check your application's notice before submitting.",
-    source: "https://nepalpassport.gov.np",
+      "⚠ SCOPE: the Nepali ePassport does NOT take a supplied photograph. The " +
+      "Department of Passports states that staff capture it during live " +
+      "enrollment and the applicant need not bring one; a photograph is " +
+      "required only for a child under five who cannot sit still for the " +
+      "capture. This record therefore serves that exception, overseas missions " +
+      "that still ask for a print, and framing checks — not the ordinary " +
+      "ePassport route. 35x45mm on plain white, neutral expression, taken " +
+      "within 6 months: consistent across reputable guides but NOT confirmed " +
+      "against a Department page stating those figures.",
+    source: "https://nepalpassport.gov.np/process/process-47",
     verified: "aggregator",
     applicationNotes: [
-      "A Nepali passport application is normally submitted in person with PRINTED photographs, at a District Administration Office, the Department of Passports, or a Nepali mission abroad. Published guidance commonly says to bring two copies unless your own form states otherwise, so what you need here is a correctly sized print rather than a file compressed to a KB limit.",
-      "The machine-readable and e-passport routes both work to ICAO framing: 35 x 45 mm with the head 31 to 36 mm chin to crown, which is roughly 70 to 80% of the frame. A crop that leaves the head noticeably smaller than that band is the usual reason a photograph is sent back, and it is the part a print shop is least likely to check for you.",
-      "A selfie is not accepted. Published guidance is specific that the photograph must be evenly lit with no shadow across the face or behind the head and no glare, on a plain white background, taken within the last six months — conditions a phone held at arm's length rarely meets.",
-      "The figures recorded here come from published guides rather than a Department of Passports page we could open and read, so treat them as a starting point and confirm against the form you are handed. Nepal is one of the records on this site we have marked as needing that confirmation.",
+      "⚠ For a Nepali ePassport you do NOT bring a photograph. The Department of Passports answers this directly: staff photograph you during live enrollment at the enrollment centre, so an applicant does not need to carry one. Any guide telling you to bring two prints is describing the older machine-readable workflow, not the current ePassport process.",
+      "The exception is a child under five. The Department states that a photograph IS required for children too young to sit still for the live capture, so that is the one case where preparing a print is the right thing to do.",
+      "Because the photograph is normally taken for you, what matters at the centre is your appearance rather than a file: the enrollment photo is the one that goes in the passport. A tool like this is useful for the under-five exception, for an overseas mission that still asks for a print, or for checking framing before you go.",
+      "The 35x45mm figures recorded here come from published guides rather than a Department page stating them, and are marked as needing confirmation. Confirm against the enrollment centre or mission handling your application.",
     ],
   },
 
@@ -1216,7 +1229,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     applicationNotes: [
       "There is no single Japanese visa photo size. MOFA states the requirement depends on the mission handling your application, and missions genuinely differ — 45 x 45 mm square appears at some, 35 x 45 mm or 2 x 2 inch at others.",
       "35 x 45 mm is used here because it is the size printed on MOFA's own visa application form. Check your embassy or consulate's photograph page before printing and switch if it differs.",
-      "Paper applications generally take two identical prints, and the photograph should be no more than six months old.",
+      "One photograph is the general requirement; two identical prints are asked of applicants from Russia, the CIS states and Georgia. The photograph should be no more than six months old.",
     ]
   },
 

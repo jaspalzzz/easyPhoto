@@ -130,7 +130,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The current SSC application module captures a live photograph from the candidate's computer or mobile camera. A pre-existing photograph is not uploaded. The signature remains a separate JPEG/JPG upload; confirm the current notice for the specific SSC examination before preparing files.",
     applicationNotes: [
       "SSC does not take a prepared photograph. The notice states plainly that a candidate is not required to have a pre-existing photograph, because the application module captures one while you fill the form. Anything you prepare in advance is for reference only.",
-      "Photographing an existing photograph is an explicit rejection ground. The notice says that in no case should a candidate capture a photograph of a pre-existing photograph, and describes such applications as liable to rejection. Holding up a printed photo to the camera is the specific failure it describes.",
+      "Photographing an existing photograph is called out separately. The notice says that in no case should a candidate capture a photograph of a pre-existing photograph and describes such applications as liable to rejection — but it also states an exception: applications submitted through Aadhaar-based authentication are not rejected on those grounds. Do not rely on the exception if you are not using that route. Holding up a printed photo to the camera is the specific failure it describes.",
       "During capture: even light, plain background, camera at eye level, face fully inside the outline the module draws and neither too close nor too far, and no cap, mask or spectacles. Your appearance at the examination is expected to match what was captured.",
       "The signature is the part you do prepare. It uploads as a JPEG of 10 to 20 KB at roughly 6.0cm wide by 2.0cm high, and the notice warns that blurred or miniature signatures are rejected summarily.",
     ]
@@ -216,7 +216,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     context:
       "OCI registration uses separate photograph and signature uploads. The official photograph guide specifies a square 51x51 mm colour photograph on a plain light-coloured background, while the online FAQ publishes a 200x200 to 900x900 px square range and a 200 KB maximum. The FAQ confirms a signature upload but publishes no signature geometry, so no fixed signature pixels are applied.",
     applicationNotes: [
-      "The OCI photograph is SQUARE and its background must be plain light colour but NOT white — the opposite of most Indian document photographs, and the single most common reason an OCI upload is refused. It is at least 51x51 mm with about 80% face coverage, no border, head and shoulders centred.",
+      "The OCI photograph is SQUARE and its background must be plain light colour but NOT white, which is unlike most Indian document photographs and easy to get wrong if you reuse one. It is at least 51x51 mm with about 80% face coverage, no border, head and shoulders centred.",
       "Height and width must be equal, between 200x200 and 900x900 pixels, in JPEG or JPG up to 200 KB. A 35x45 mm passport crop cannot simply be reused: it is the wrong shape and, if it is on white, the wrong background.",
     ]
   },
@@ -316,9 +316,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     context:
       "SBI's 2026 Probationary Officer application requires the scanned photograph and signature files recorded here and a separate live photograph captured by webcam or mobile phone. These values are scoped to advertisement CRPD/PO/2026-27/09; confirm the current SBI notice for another recruitment.",
     applicationNotes: [
-      "SBI asks for four scanned images, not two: photograph, signature, LEFT-HAND THUMB IMPRESSION and a hand-written declaration. The thumb impression and the declaration catch candidates out because no other banking application in this list asks for them, and each has its own scanning guidance in the advertisement.",
+      "SBI asks for four scanned images, not two: photograph, signature, LEFT-HAND THUMB IMPRESSION and a hand-written declaration, each with its own scanning guidance in the advertisement. Several other banking and insurance recruiters here ask for the same four, so prepare all of them once and reuse the set.",
       "A live photograph is captured through your webcam or phone during registration, in addition to the photograph you upload. Preparing a file does not remove that step.",
-      "The advertisement says candidature may be rejected if the face in any of the four images is unclear, and — usefully — that you can edit the application and re-upload any of them before final submission. If a scan looks marginal, replace it rather than hoping it passes.",
+      "The advertisement warns that an unclear image among the four may cost the candidature, and — usefully — that you can edit the application and re-upload any of them before final submission. If a scan looks marginal, replace it rather than hoping it passes.",
     ]
   },
   nta: {
@@ -456,7 +456,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     context:
       "Maharashtra Public Service Commission's official instructions specify photo and signature size in centimetres with a 50 KB cap for both, and require a solid-colour photo background — no pixel dimensions or minimum file size are stated.",
     applicationNotes: [
-      "MPSC asks for a SOLID COLOUR background and names blue, green or red as preferred — the opposite of the plain white almost every other application on this site wants. Do not reuse a white-background passport photograph here without checking your own advertisement.",
+      "MPSC asks for a SOLID COLOUR background and names blue, green or red as preferred, which is unlike the plain white almost every other application here asks for. The notice states a preference rather than prohibiting white outright, but a white-background photograph prepared for another exam should not be reused without checking your own advertisement.",
       "The photograph is 3.5 cm by 4.5 cm in formal dress, full face directly to camera, with no shadows and no red-eye, as .jpg or .jpeg up to 50 KB. It must carry nothing else: no watermark, no stamp, and no name of the mobile app used to scan it, which rules out most free scanner apps that brand their output.",
       "The file name itself is limited to ten characters. That is easy to miss and easy to fix before you upload.",
       "The signature is signed in black ink on blank white unlined paper.",
@@ -607,21 +607,29 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   afcat: {
     id: "afcat",
     name: "AFCAT (Air Force)",
-    photoLimitKb: 50,
-    photoMinKb: 10,
-    sigLimitKb: 50,
-    sigMinKb: 10,
+    // ⚠ CORRECTED. Was 10-50 KB for photo, signature and thumb alike, which
+    // generated files far below every published minimum. AFCAT 01/2026 states
+    // photograph 100-200 KB, signature 80-150 KB, thumb impression 50-100 KB.
+    photoLimitKb: 200,
+    photoMinKb: 100,
+    sigLimitKb: 150,
+    sigMinKb: 80,
     photoFormat: "JPG / JPEG",
     sigFormat: "JPG / JPEG",
     description: "Air Force Common Admission Test. Passport-size colour photo, signature and thumb impression each 10-50 KB, JPG/JPEG. AFCAT specifies file size and format but no fixed pixel dimensions.",
     source: {
-      url: "https://afcat.cdac.in/AFCAT/assets/images/news/AFCAT_01_2025/English_Notification_AFCAT_01-2025.pdf",
+      url: "https://afcat.edcil.co.in/assets/images/news/AFCAT_02_2025/Notification_AFCAT_01-2026.pdf",
       label: "AFCAT 01/2025 — Notification (IAF / C-DAC)",
     },
     verification: "official",
-    verifiedOn: "2026-07-17",
+    verifiedOn: "2026-08-03",
     context:
       "AFCAT (Air Force Common Admission Test) recruits for the Indian Air Force's Flying and Ground Duty branches; the notification requires the photo, signature and thumb impression each scanned as a 10-50 KB JPG/JPEG, with no fixed pixel dimensions.",
+    applicationNotes: [
+      "Three files, each with its own band and its own literal file name: Passport Photograph.jpg at 100-200 KB, Signature.jpg at 80-150 KB, and Thumb Impression.jpg at 50-100 KB. These are unusually LARGE minimums — most Indian applications cap the signature around 20-50 KB — so a file compressed to the habitual size is below AFCAT's floor.",
+      "The thumb differs by candidate: male candidates upload the LEFT thumb and female candidates the RIGHT, pressed on an ink stamp pad and then onto plain blank paper.",
+      "The signature is signed on white paper with a black ink pen, by the applicant and nobody else, and the notice asks you to scan the signature area only rather than the whole page.",
+    ],
   },
 
   // ---------------------------------------------------------------------------
@@ -877,7 +885,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     context:
       "NIACL's 2025 Administrative Officer advertisement links to the NIACL application on ibpsonline.ibps.in and documents both a prepared photograph upload and a separate live-photo capture. The source does not establish the same values for every NIACL role.",
     applicationNotes: [
-      "Four scans, not two: photograph at 4.5cm x 3.5cm, signature in black ink, and a LEFT THUMB IMPRESSION on white paper in black or blue ink. The notice covers the case where a candidate has no left thumb — the right thumb, or a finger of the left hand starting from the forefinger, is used instead — and it asks specifically that the impression is not smudged.",
+      "More than the usual two files: photograph at 4.5cm x 3.5cm, signature in black ink, and a LEFT THUMB IMPRESSION on white paper in black or blue ink. The notice covers the case where a candidate has no left thumb — the right thumb, or a finger of the left hand starting from the forefinger, is used instead — and it asks specifically that the impression is not smudged.",
       "A signature written in CAPITAL LETTERS will not be accepted. This sits separately from the file-size rule, so a signature comfortably inside the band can still be refused for how it was written.",
       "Caps, hats and dark glasses are not acceptable in the photograph. Religious headwear is allowed provided it does not cover the face. A live photograph is also captured during the process, in addition to the file you upload.",
     ]
@@ -1004,13 +1012,16 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPEG / JPG / JPE",
     signatureInk: "Black ink on white paper",
     description:
-      "Uttar Pradesh Police Recruitment & Promotion Board (UPPBPB) online registration — constable, SI and other posts. Photo 35×45 mm JPEG/JPG/JPE, 20-50 KB; signature 35×15 mm, 5-20 KB, black ink. Limits can change per recruitment notification — the portal validates at upload.",
+      "Uttar Pradesh Police Recruitment & Promotion Board (UPPBPB) online registration — constable, SI and other posts. The figures recorded here are photo 35×45 mm JPEG/JPG/JPE at 20-50 KB and signature 35×15 mm at 5-20 KB in black ink, but the linked notice is an image-only Hindi scan whose upload section we have not been able to read, so these are unconfirmed. Confirm the current limits on your own notification and at the upload screen, which validates the file.",
     source: {
       url: "https://uppbpb.gov.in/FilesUploaded/Notice/CONSTABLE-VIGYAPTIc7be0cc8-3365-471e-9237-447c528d341a.pdf",
       label: "UPPBPB Constable recruitment notification (uppbpb.gov.in)",
     },
-    verification: "official",
-    verifiedOn: "2026-07-01",
+    // ⚠ The linked notice is an image-only Hindi scan. Nobody has OCR'd or
+    // manually read its upload section, so an "official · Verified" badge over
+    // precise KB figures claims a reading that was never done. Downgraded until
+    // the exact section is extracted.
+    verification: "needs-review",
     context:
       "UP Police (UPPBPB) recruits Constables, Sub-Inspectors and other posts under the Uttar Pradesh Police Recruitment & Promotion Board; limits are set per recruitment notification and the portal validates the file at upload, so re-check the current notification's numbers before applying.",
   },

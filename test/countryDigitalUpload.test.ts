@@ -24,8 +24,15 @@ describe("digital upload detection", () => {
     const noBandButPixels = Object.values(COUNTRY_SPECS).filter(
       (s) => !s.digital.fileSizeKb && acceptsDigitalUpload(s),
     );
-    // These are the ones the bad predicate silently dropped.
-    expect(noBandButPixels.length).toBeGreaterThanOrEqual(15);
+    // These are the ones the bad predicate silently dropped. Asserted as a
+    // property with a floor well below the current count, not pinned to it:
+    // recording a real KB band for a country legitimately moves the number, and
+    // a test that fails on correct data teaches people to edit the test.
+    expect(noBandButPixels.length).toBeGreaterThan(5);
+    for (const spec of noBandButPixels) {
+      expect(spec.digital.fileSizeKb).toBeFalsy();
+      expect(acceptsDigitalUpload(spec)).toBe(true);
+    }
   });
 
   it("treats a print-only application as having no upload", () => {
