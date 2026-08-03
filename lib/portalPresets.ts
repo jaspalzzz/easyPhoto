@@ -455,6 +455,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-06-10",
     context:
       "Maharashtra Public Service Commission's official instructions specify photo and signature size in centimetres with a 50 KB cap for both, and require a solid-colour photo background — no pixel dimensions or minimum file size are stated.",
+    applicationNotes: [
+      "MPSC asks for a SOLID COLOUR background and names blue, green or red as preferred — the opposite of the plain white almost every other application on this site wants. Do not reuse a white-background passport photograph here without checking your own advertisement.",
+      "The photograph is 3.5 cm by 4.5 cm in formal dress, full face directly to camera, with no shadows and no red-eye, as .jpg or .jpeg up to 50 KB. It must carry nothing else: no watermark, no stamp, and no name of the mobile app used to scan it, which rules out most free scanner apps that brand their output.",
+      "The file name itself is limited to ten characters. That is easy to miss and easy to fix before you upload.",
+      "The signature is signed in black ink on blank white unlined paper.",
+    ]
   },
 
   // ---------------------------------------------------------------------------
@@ -592,6 +598,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     signatureInk: "Black ink on plain white paper",
     context:
       "CDS is conducted by UPSC through the upsconline.nic.in portal, and the portal's photo and signature instructions apply to every UPSC examination rather than giving CDS its own band. A live photograph is also captured during the application and matched against the uploaded photo. The signature upload must show the candidate's signature three times vertically on one plain-white image.",
+    applicationNotes: [
+      "A live photograph capture is mandatory before the application can be submitted, taken through the device camera or by scanning a QR code with a phone. Preparing an upload beforehand is still worth doing, but it fills a different field on the form.",
+      "UPSC checks face coverage, not only file size: the photograph must show about 75% face coverage, and the instruction sheet prints rejected samples whose only fault is a face too small in the frame. The file is jpg, saved as photo, on a plain white background, head centred with both ears visible.",
+      "Explicitly refused: a photograph in uniform, dark or coloured glasses, shadows on the face or behind it, hair across the eyes, and a photograph that has been signed.",
+    ]
   },
   afcat: {
     id: "afcat",
@@ -668,6 +679,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-17",
     context:
       "TNPSC One-Time Registration stores a photograph and signature, but the current application instructions also require a colour photograph taken on or after the notification date to be uploaded for each application. This is a file-upload workflow, not live capture. The notice publishes fixed pixel dimensions, KB bands, 200 DPI and the name/date strip.",
+    applicationNotes: [
+      "TNPSC divides the photograph into two parts with exact measurements: the whole image is 4.5 cm high (170 pixels) by 3.5 cm wide (130 pixels), of which YOUR IMAGE occupies 3.0 cm (115 pixels) and a strip carrying your name and the date of photography occupies the remaining 1.5 cm (55 pixels) at the bottom. It is not a caption added over the picture — it is a defined band beneath it.",
+      "The date printed on that strip must be on or after the date of the notification you are applying under. A photograph taken before the notification was published does not qualify however recent it looks, and the photograph itself must be within the last three months.",
+      "The files are named literally: Photograph.jpg at 20 to 50 KB and Signature.jpg at 10 to 20 KB. Both bands are tighter than most, and your name and the date must remain clearly legible after compression.",
+    ]
   },
   kpsc: {
     id: "kpsc",
@@ -1249,6 +1265,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-01",
     context:
       "CRPF (Central Reserve Police Force) conducts Constable GD, SI (GD/Steno) and ASI (Steno/Clerk) recruitments. Applications go through CRPF's own portal or SSC CAPFs.",
+    applicationNotes: [
+      "The DATE the photograph was taken must be printed on the photograph itself, and the notice states plainly that applications without that date printed on the photograph are rejected. This is a formatting requirement that no amount of correct sizing compensates for.",
+      "The photograph must be no more than three months old, about 35 mm wide by 45 mm high, as JPG or JPEG between 50 and 100 KB. The lower bound matters: a heavily compressed file below 50 KB falls outside the accepted band.",
+    ]
   },
 
   cisf: {
@@ -1337,6 +1357,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "EPFO's 2023 SSA recruitment was conducted by NTA and its published image rules remain available in the archived advertisement. Recruitment workflows vary by post and cycle, so confirm the current EPFO or conducting-body notice before preparing files.",
+    applicationNotes: [
+      "The signature band is much tighter than the photograph's — 4 to 30 KB against 10 to 200 KB. A clean scan of a signature on white paper compresses into that range; a phone photograph of the page usually will not without losing the strokes.",
+      "Both files upload as JPG or JPEG. Prepare the signature first, because it is the one that fails, and check it is still legible at the size you compressed it to.",
+    ]
   },
 
   fci: {
@@ -1365,6 +1389,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     signatureInk: "Black ink",
     context:
       "FCI's upload rules are recruitment-cycle specific. Advertisement 01/2022 supports the stored photo and signature values for Category III recruitment, but no newer direct-recruitment notice is currently listed; confirm the current FCI notice before preparing files.",
+    applicationNotes: [
+      "Block capitals are rejected outright as a signature. FCI states this apart from any file rule, so an image meeting every size and format requirement still fails when the name is printed rather than signed. Use the running hand you would use on a bank form.",
+      "Alongside the photograph at 4.5 cm by 3.5 cm and the signature, a thumb impression is scanned and uploaded. Your photograph and biometric data are also captured at the examination centre and matched against what you submitted, so the uploaded image needs to be a current likeness.",
+    ]
   },
 };
 
