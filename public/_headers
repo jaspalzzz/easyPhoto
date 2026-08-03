@@ -89,6 +89,12 @@
 # together they were a third of the indexed inventory behind two "low value
 # content" rejections. `follow` so internal links still pass. The list is
 # lib/deindexed.ts; test/deindexed.test.ts fails if these drift apart.
+/spain-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/portugal-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/kuwait-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
 /unlock-aadhaar-pdf/
   X-Robots-Tag: noindex, follow
 /tools/auto-crop/
