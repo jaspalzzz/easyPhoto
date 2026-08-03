@@ -87,6 +87,17 @@ export interface PortalSpec {
    */
   signatureInk?: string;
   /**
+   * Practical points taken from THIS exam's own notification that change what a
+   * candidate should do — not restatements of the KB figures above.
+   *
+   * Added because the exam pages were a shared frame around a different set of
+   * numbers, and generating prose from the numbers only produced a longer
+   * shared frame. These are read out of the source PDF per exam, so they differ
+   * because the notifications differ. Quote or paraphrase closely; never
+   * generalise one board's rule onto another.
+   */
+  applicationNotes?: readonly string[];
+  /**
    * 1–2 sentences of ACCURATE, exam-specific context (conducting body, exams
    * covered, where/how the photo is uploaded, exam-specific rules). Surfaced as
    * unique on-page prose to differentiate the otherwise-templated per-exam
@@ -117,6 +128,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     isLiveCapture: true,
     context:
       "The current SSC application module captures a live photograph from the candidate's computer or mobile camera. A pre-existing photograph is not uploaded. The signature remains a separate JPEG/JPG upload; confirm the current notice for the specific SSC examination before preparing files.",
+    applicationNotes: [
+      "SSC does not take a prepared photograph. The notice states plainly that a candidate is not required to have a pre-existing photograph, because the application module captures one while you fill the form. Anything you prepare in advance is for reference only.",
+      "Photographing an existing photograph is an explicit rejection ground. The notice says that in no case should a candidate capture a photograph of a pre-existing photograph, and describes such applications as liable to rejection. Holding up a printed photo to the camera is the specific failure it describes.",
+      "During capture: even light, plain background, camera at eye level, face fully inside the outline the module draws and neither too close nor too far, and no cap, mask or spectacles. Your appearance at the examination is expected to match what was captured.",
+      "The signature is the part you do prepare. It uploads as a JPEG of 10 to 20 KB at roughly 6.0cm wide by 2.0cm high, and the notice warns that blurred or miniature signatures are rejected summarily.",
+    ]
   },
   upsc: {
     id: "upsc",
@@ -139,6 +156,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     signatureInk: "Black ink on plain white paper",
     context:
       "UPSC's current portal requires both an uploaded passport-size photograph and a live photograph captured during the application. The live image is matched with the uploaded photo. The signature upload must show the candidate's signature three times vertically on one plain-white image.",
+    applicationNotes: [
+      "UPSC checks face coverage, not just file size: the photograph must show at least 75% face coverage, and the instruction sheet prints sample photographs marked rejected purely for falling below that. A correctly compressed 20-200 KB file with the face too small in the frame is still refused.",
+      "The uploaded file has to be named photo, in jpg, on a plain white background, with the head centred and both ears visible. The don'ts are as specific as the dos: no uniform, no dark or coloured glasses, no shadow on the face or behind it, no hair over the eyes, and the photograph is not to be signed.",
+      "A live photograph capture is now mandatory for any examination on the portal, taken through the device webcam or by scanning a QR code with a phone. The uploaded photograph does not replace that step, so prepare the file and still expect to be photographed during the application.",
+    ]
   },
   ds160: {
     id: "ds160",
@@ -193,6 +215,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-18",
     context:
       "OCI registration uses separate photograph and signature uploads. The official photograph guide specifies a square 51x51 mm colour photograph on a plain light-coloured background, while the online FAQ publishes a 200x200 to 900x900 px square range and a 200 KB maximum. The FAQ confirms a signature upload but publishes no signature geometry, so no fixed signature pixels are applied.",
+    applicationNotes: [
+      "The OCI photograph is SQUARE and its background must be plain light colour but NOT white — the opposite of most Indian document photographs, and the single most common reason an OCI upload is refused. It is at least 51x51 mm with about 80% face coverage, no border, head and shoulders centred.",
+      "Height and width must be equal, between 200x200 and 900x900 pixels, in JPEG or JPG up to 200 KB. A 35x45 mm passport crop cannot simply be reused: it is the wrong shape and, if it is on white, the wrong background.",
+    ]
   },
   rrb: {
     id: "rrb",
@@ -256,6 +282,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-16",
     context:
       "IBPS CRP registration uploads a passport-style photograph and signature and also captures a separate live photograph by webcam or mobile phone. The pixel dimensions in the current notice are preferred dimensions; confirm the current CRP notice for the recruitment cycle being used.",
+    applicationNotes: [
+      "The photograph you upload is not only checked at upload. IBPS captures your photograph and biometric data at stages of the selection process and matches the captured photo against the one in your application, and the notification tells candidates not to change their appearance from that photo. A picture taken years earlier, or one that no longer looks like you, becomes a problem at the centre rather than at the form.",
+      "Your uploaded photograph is printed on the call letter, and you are asked to bring one additional photograph identical to it. The notification is explicit that candidates arriving without the photograph pasted on the call letter, or without that spare copy, will not be allowed to sit the examination. Print at least two copies of the same image you upload rather than a different sitting.",
+      "A signature written in capital letters will not be accepted. This is stated separately from the file-size rule, so a signature file that is technically within the band can still be refused for how it is written. Sign in your ordinary running hand.",
+    ],
   },
   sbi: {
     id: "sbi",
@@ -284,6 +315,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-16",
     context:
       "SBI's 2026 Probationary Officer application requires the scanned photograph and signature files recorded here and a separate live photograph captured by webcam or mobile phone. These values are scoped to advertisement CRPD/PO/2026-27/09; confirm the current SBI notice for another recruitment.",
+    applicationNotes: [
+      "SBI asks for four scanned images, not two: photograph, signature, LEFT-HAND THUMB IMPRESSION and a hand-written declaration. The thumb impression and the declaration catch candidates out because no other banking application in this list asks for them, and each has its own scanning guidance in the advertisement.",
+      "A live photograph is captured through your webcam or phone during registration, in addition to the photograph you upload. Preparing a file does not remove that step.",
+      "The advertisement says candidature may be rejected if the face in any of the four images is unclear, and — usefully — that you can edit the application and re-upload any of them before final submission. If a scan looks marginal, replace it rather than hoping it passes.",
+    ]
   },
   nta: {
     id: "nta",
@@ -361,6 +397,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-06-08",
     context:
       "CTET (Central Teacher Eligibility Test) is CBSE's national teacher-eligibility exam; the online application at ctet.nic.in validates photo and signature dimensions automatically at upload, so a mismatch is rejected immediately rather than at verification.",
+    applicationNotes: [
+      "CTET publishes physical dimensions as well as file sizes, which most of the applications here do not. The photograph is 3.5 cm wide by 4.5 cm high and the signature 3.5 cm by 1.5 cm, so the shape matters and not only the KB figure.",
+      "The signature band is unusually tight at 3 to 30 KB against 10 to 100 KB for the photograph. A clean high-contrast scan of a signature on plain paper compresses to that comfortably; a phone photograph of a page usually does not.",
+      "The notice states the uploaded photograph is matched against the candidate who appears at the centre, so a current likeness matters more than a flattering one.",
+    ]
   },
   uppsc: {
     id: "uppsc",
@@ -486,6 +527,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-17",
     context:
       "The joint CSIR-UGC NET is conducted by NTA for eligibility in science and research fields; like UGC-NET, NTA specifies file size and format but no fixed pixel dimensions for the photo or signature.",
+    applicationNotes: [
+      "The bulletin treats a manipulated photograph as unfair means, not as a formatting error. Its wording is that if the photograph uploaded is found to be fabricated — de-shaped, or appearing hand-made or computer-made — the form is rejected and the candidate is dealt with under the unfair-means provisions. Resize and compress a real photograph; do not reconstruct one.",
+      "The photograph you upload is also the one you paste on the attendance sheet at the centre, so print a copy of the same image rather than using a different sitting. The bulletin adds that the photograph need not be attested, which saves a step candidates often assume is required.",
+      "Both files are JPG or JPEG: the photograph between 10 and 200 KB, the signature in running hand between 10 and 50 KB. Unclear photographs are listed as a rejection ground in their own right, separately from the size limits.",
+    ]
   },
 
   // ---------------------------------------------------------------------------
@@ -947,6 +993,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     dpi: 200, // officially mandated scan resolution
     context:
       "A PAN card application (Form 49A or 49AA) can be filed through Protean (formerly NSDL e-Gov) or UTIITSL. This preset records the linked Protean instructions; confirm the current photo and signature fields on the application route you use.",
+    applicationNotes: [
+      "PAN specifies a scan resolution rather than a pixel canvas: the photograph, signature and supporting documents are all to be scanned at 200 DPI. That is a property of how you digitise the original, so scan at that setting rather than upscaling a smaller file afterwards.",
+      "Online submission through this route depends on holding a valid Digital Signature Certificate issued by an authorised Certifying Authority in India. Without one, the application follows a different path, and no photo preparation changes that.",
+    ]
   },
   "driving-licence": {
     id: "driving-licence",
@@ -989,6 +1039,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "Form 6 supports new-elector registration. Its public ECI guidance confirms the photograph's physical size and composition but not the online upload cap; there is no separate signature image in this preset. Confirm the current portal instructions before upload.",
+    applicationNotes: [
+      "Form 6 asks for the photograph to be PASTED in the space provided, not uploaded. It specifies a passport-size colour photograph of 4.5cm x 3.5cm on a white background, so what you need from a tool here is a correctly sized print rather than a file that meets a KB limit.",
+      "The form asks for an UNSIGNED photograph. Several Indian applications want your name or signature across the image; this one specifically does not, and signing it is a reason for the form to come back.",
+      "It states that both edges of the face must be clearly visible and the eyes open. A three-quarter angle, hair across the cheek, or a crop that clips an ear are the framing faults this wording is aimed at.",
+    ]
   },
   cuet: {
     id: "cuet",
@@ -1010,6 +1065,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-01",
     context:
       "CUET (Common University Entrance Test) is conducted by the National Testing Agency (NTA) for undergraduate admission to central and other participating universities; the photo and signature are uploaded during the online application, and a live photo is also captured.",
+    applicationNotes: [
+      "The photograph you upload is also pasted on the attendance sheet at the centre, so the file you submit needs a printed twin. Preparing one image and printing that same image is the point; a different photograph taken later will not match.",
+      "Both files are JPG or JPEG and the bands differ: the photograph between 10 and 200 KB, the signature between 10 and 50 KB, and both must be clearly legible rather than merely inside the limit.",
+    ]
   },
 
   // ---------------------------------------------------------------------------

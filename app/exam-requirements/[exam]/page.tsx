@@ -267,6 +267,22 @@ export default async function Page({
         </div>
       </section>
 
+      {spec.applicationNotes && spec.applicationNotes.length > 0 && (
+        <section className="space-y-3 border-t border-hairline pt-8">
+          <h2 className="text-lg font-semibold">
+            What {spec.name.split(" (")[0]} does with the photo after you upload it
+          </h2>
+          <ul className="max-w-2xl space-y-3 text-sm leading-relaxed text-muted-foreground">
+            {spec.applicationNotes.map((note) => (
+              <li key={note.slice(0, 40)} className="flex gap-2.5">
+                <span aria-hidden className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand" />
+                <span>{note}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {spec.context && (
         <section className="space-y-2">
           <h2 className="eyebrow">About this exam</h2>

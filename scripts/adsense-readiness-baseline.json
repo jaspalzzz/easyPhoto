@@ -1,7 +1,7 @@
 {
   "recordedOn": "2026-08-03",
   "targetUnsharedWords": 300,
-  "pagesBelowTarget": 72,
+  "pagesBelowTarget": 67,
   "indexedPages": 156,
-  "note": "Ratchet. This number must fall, never rise. It is not a passing score: 72 of 156 indexed pages carry fewer than 300 words that are not shared template. `npm run verify` passing does NOT mean the site is ready for an AdSense review \u2014 that is what audit:adsense-readiness is for."
+  "note": "Ratchet. This number must fall, never rise. It is not a passing score. Lowered from 72 as per-exam applicationNotes were written from each exam's own notification. Raising it to make a build pass defeats the point."
 }
