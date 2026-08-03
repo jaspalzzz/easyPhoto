@@ -512,6 +512,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The frame and head band follow the EU Visa Code that every Schengen state shares: 35x45mm with the head 32-36mm chin to crown, which the sheet gives as 70-80% of the photo. What it is strict about is that the background be a single flat tone: shadows on the background are listed as not acceptable, alongside a busy background and insufficient contrast.",
       "The same sheet covers the national (D) visa and residence permit routes as well as the Schengen visa, so one correctly prepared photograph serves all three. Confirm against the mission handling your application before printing.",
       "German missions and their visa centres publish sample photographs alongside the written rule, and comparing your result against the sample is quicker than re-reading the specification. If your photograph looks unlike the sample in head size or background tone, it will read that way to an examiner too.",
+      "Because the rule is about contrast rather than a fixed colour, the tool cannot decide the right shade for you — it depends on your hair. Pick a background that visibly separates from your hair in the preview rather than accepting whichever default is applied.",
     ]
   },
 
@@ -588,6 +589,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "That sheet gives 30x40mm or 35x45mm and this tool uses 35x45mm, which is the size accepted across Schengen. Face 70-80% of the frame, white background, no borders or frames, taken within the last six months.",
       "Because a private operator publishes the figures, re-confirm against the consulate handling your application before printing — particularly if your appointment is not booked through that centre.",
       "If you are applying for a Schengen visa through Italy but travelling to several member states, the same photograph serves the whole application — the visa is issued by the state you spend most time in, not by each one separately.",
+      "The sheet allows 30 x 40 mm as well as 35 x 45 mm, and this tool uses 35 x 45 mm because it is the size accepted across Schengen. If a centre asks specifically for 30 x 40 mm, re-crop rather than trimming the larger print.",
     ]
   },
 
@@ -632,6 +634,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The Netherlands applies its OWN national photo criteria to a Schengen visa submitted to it, which is unusual: its visa checklist tells applicants to bring a photo meeting Dutch requirements rather than a generic Schengen one. That means a smaller head than our German or French pages show — 26 to 30 mm chin to crown for ages 11 and over.",
       "Background may be light grey, light blue or white, and prints want a minimum of 400 DPI. If you apply through an external service provider, a digital photo is taken at your appointment and you do not need to bring one.",
       "The Dutch national criteria that govern here also cover the driving licence and identity card, so a photograph prepared for one of those is already correct for this application. That is unusual: in most countries the visa and the national document specifications differ.",
+      "The 26 to 30 mm head band on a 45 mm frame works out to roughly 58 to 67 percent of the image, which is visibly smaller than the 70 to 80 percent most other countries here ask for. If your photograph looks correctly framed by the standards of another application, it is probably too tight for this one.",
     ]
   },
 
@@ -774,6 +777,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The Saudi eVisa photograph is SQUARE — 200 x 200 pixels, between 5 KB and 100 KB — so a 35 x 45 mm passport crop is the wrong shape for it entirely.",
       "The portal asks for the face to fill roughly 70-80% of the frame, which it expresses as about 1.4 by 1.6 inches from chin to crown, on a plain white background with no pattern and no shadow, and no more than six months old.",
       "The eVisa is issued electronically and the photograph is uploaded rather than printed, so there is no print size to match — the pixel figures are the whole requirement. Prepare from the original image rather than scanning a printed copy, which loses detail the 200x200 frame cannot spare.",
+      "A 200 x 200 pixel frame is small: at a normal viewing size that is about two centimetres square. Crop from the largest original you have rather than from an already-resized copy, because there is no detail to spare once the file is reduced to that canvas.",
     ]
   },
 
@@ -973,6 +977,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The DGI&P e-services page for the online application gives 350 x 467 pixels, JPEG or JPG, with a maximum of 3 MB, and those are the figures used here. Other DGI&P material states 45 mm by 35 mm, a 5 MB ceiling or 600 DPI scan guidance; those describe different routes or older processes rather than competing versions of this one, so prepare to the e-services figures and confirm on the screen you are actually uploading through.",
       "This route serves online renewals. A first-time application inside Pakistan captures the photograph and biometrics at the office instead, so a prepared file is not what that process needs at all.",
       "A first-time passport applicant inside Pakistan is photographed at the office, so this preset serves the online renewal route and overseas missions. If you are renewing from abroad, ask the mission which of the conflicting figures its portal enforces before you prepare anything.",
+      "350 x 467 pixels is close to the 3:4 proportion rather than the 35:45 of a standard passport print, so a passport crop needs re-framing rather than resizing. Crop to the stated pixel shape from your original.",
     ]
   },
 
@@ -1014,6 +1019,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The exception is a child under five. The Department states that a photograph IS required for children too young to sit still for the live capture, so that is the one case where preparing a print is the right thing to do.",
       "Because the photograph is normally taken for you, what matters at the centre is your appearance rather than a file: the enrollment photo is the one that goes in the passport. A tool like this is useful for the under-five exception, for an overseas mission that still asks for a print, or for checking framing before you go.",
       "The 35x45mm figures recorded here come from published guides rather than a Department page stating them, and are marked as needing confirmation. Confirm against the enrollment centre or mission handling your application.",
+      "The 35 x 45 mm figure recorded here is the ordinary passport-photo proportion, so a print prepared for an Indian or Schengen application is already the right shape for the under-five exception. What differs is the background requirement, which is plain white.",
     ],
   },
 
@@ -1130,6 +1136,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The print is a distinctive 33 x 48 mm rather than the usual 35 x 45, and the digital upload is 3:4 rather than the print's proportion, so the two are genuinely different shapes.",
       "The Visa Application Service Centre states the printed size and asks for glossy photo paper; the pixel ranges and the 40-120 KB band come from published guides rather than that page, so confirm them on the consulate or COVA portal.",
       "Chinese visa applications are usually lodged through a Visa Application Service Centre rather than the embassy directly, and the centre checks the photograph at the counter. Taking a spare print and the digital file to the appointment saves a second trip if the first is refused.",
+      "The digital ranges are 3:4 while the print is 33 x 48 mm, which is a different proportion. That means the file you upload and the photograph you print are genuinely different crops of the same original, not one image used twice.",
     ]
   },
 

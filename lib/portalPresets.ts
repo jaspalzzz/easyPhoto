@@ -260,6 +260,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The signature is the part you do prepare, and its constraints are specific: 30 to 49 KB, at least 140 by 60 pixels, around 100 DPI. That is a narrow band — only 19 KB wide — so compress deliberately rather than aiming for the smallest file you can make.",
       "Sign on plain unlined paper, scan or photograph the signature area alone rather than the whole sheet, and check the strokes survive compression to under 49 KB before you upload.",
       "Because the photograph is captured live and only the signature is uploaded, the usual advice to prepare both files in advance does not apply here. Spend the preparation time on the signature — it is the only file you control and the only one that can be rejected for a size fault.",
+      "The signature canvas of 140 x 60 pixels is close to 7:3, which is wider than most signature boxes ask for. Sign with the strokes spread along the line rather than compactly, or the crop leaves large empty margins on either side.",
     ]
   },
   ibps: {
@@ -503,6 +504,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "GATE constrains the PROPORTIONS of both files, which almost nothing else here does. The photograph must fall between an aspect ratio of 0.66 and 0.89 with the face covering 60-70% of the frame after cropping, and the signature must be roughly 1:2.75 to 1:3.75 in height to width with the writing filling 70-80% of its image. A file inside the size limit but outside those ratios is still wrong.",
       "The photograph is 3.5 cm wide by 4.5 cm high on a white background with nothing and nobody else in the frame. The instruction is specific that a signature on a dark background is not accepted, so scan on plain white paper rather than photographing a page in poor light.",
       "The aspect-ratio rules are checked mechanically at upload, so a photograph that looks correct can still be refused for sitting a few percent outside the band. If the form objects without saying why, the ratio is the first thing to re-measure rather than the file size.",
+      "The published aspect band of 0.66 to 0.89 is wide enough to include 3.5 x 4.5 cm (0.78) comfortably, so the standard passport proportion satisfies it. The failures come from ad-hoc crops rather than from using a normal passport shape.",
     ]
   },
   "ugc-net": {
@@ -728,6 +730,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     applicationNotes: [
       "KPSC's bands are higher at both ends than most: the photograph is 50 KB to 200 KB and the signature 50 KB to 70 KB, both JPEG. A signature scan compressed to the 10-20 KB that other commissions want is too small here, which is the opposite of the usual problem.",
       "The 50 KB to 70 KB signature window is narrow — only 20 KB wide — so compress deliberately rather than aiming for the smallest possible file.",
+      "The 50 to 70 KB signature window is 20 KB wide, which is narrow enough that a single export setting rarely lands inside it first time. Export once, check the size, then adjust quality rather than dimensions — changing the pixel size to hit a KB figure distorts the strokes.",
     ]
   },
   appsc: {
@@ -957,6 +960,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "CAT wants a square 1200 x 1200 pixel photograph and a signature at 80mm x 35mm, each as JPG or JPEG and each no larger than 80 KB, at a minimum of 150 pixels per inch. The square photograph is the unusual part: a standard 35x45mm passport crop is the wrong shape for this form.",
       "The photograph must be no more than six months old and on a white background. It is also affixed to your admit card on test day, and the instructions tell candidates to keep sufficient printed copies of the same image — so print spares of exactly what you upload.",
       "The square 1200x1200 requirement means you cannot start from a 35x45mm passport crop — the proportions are wrong and trimming one to a square leaves the head oversized in the frame. Crop square from your original photograph instead, then check the result is still at least 150 pixels per inch at the size CAT asks for.",
+      "At 1200 x 1200 pixels and a 150 pixel-per-inch floor, the largest print CAT's own numbers support is 8 inches square. That is far above what the photograph is used at, so there is headroom to crop square from a high-resolution original rather than upscaling a small one to reach the pixel count.",
     ]
   },
   clat: {
@@ -1077,6 +1081,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "PAN specifies a scan resolution rather than a pixel canvas: the photograph, signature and supporting documents are all to be scanned at 200 DPI. That is a property of how you digitise the original, so scan at that setting rather than upscaling a smaller file afterwards.",
       "Online submission through this route depends on holding a valid Digital Signature Certificate issued by an authorised Certifying Authority in India. Without one, the application follows a different path, and no photo preparation changes that.",
       "A PAN application submitted on paper takes printed photographs affixed to the form rather than an upload, and the two routes are not interchangeable. Decide which you are using before preparing anything: a file scanned at 200 DPI for the online route is not the same artefact as a print you paste on a form.",
+      "200 DPI is a scanning setting rather than a property you can add afterwards. Scanning a 35 x 45 mm photograph at 200 DPI produces roughly 276 x 354 pixels; re-tagging a smaller file to 200 DPI leaves it the same file with a different label.",
     ]
   },
   "driving-licence": {
@@ -1149,6 +1154,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     applicationNotes: [
       "The photograph you upload is also pasted on the attendance sheet at the centre, so the file you submit needs a printed twin. Preparing one image and printing that same image is the point; a different photograph taken later will not match.",
       "Both files are JPG or JPEG and the bands differ: the photograph between 10 and 200 KB, the signature between 10 and 50 KB, and both must be clearly legible rather than merely inside the limit.",
+      "Both files are checked for legibility as well as size. A photograph at the 200 KB ceiling has ample detail; a signature at the 10 KB floor often does not, so it is worth exporting the signature nearer the top of its band than the bottom.",
     ]
   },
 
@@ -1302,6 +1308,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The DATE the photograph was taken must be printed on the photograph itself, and the notice states plainly that applications without that date printed on the photograph are rejected. This is a formatting requirement that no amount of correct sizing compensates for.",
       "The photograph must be no more than three months old, about 35 mm wide by 45 mm high, as JPG or JPEG between 50 and 100 KB. The lower bound matters: a heavily compressed file below 50 KB falls outside the accepted band.",
       "The date printed on the photograph has to be legible after compression, which is the part candidates get wrong: a date rendered in small grey text disappears once the file is squeezed into the 50 to 100 KB band. Print it dark and large enough to survive.",
+      "Between 50 and 100 KB at 35 x 45 mm leaves enough data for the printed date to stay legible, but not much. Add the date before compressing, then check it at full size in the exported file rather than in the editor preview.",
     ]
   },
 
@@ -1395,6 +1402,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     applicationNotes: [
       "The signature band is much tighter than the photograph's — 4 to 30 KB against 10 to 200 KB. A clean scan of a signature on white paper compresses into that range; a phone photograph of the page usually will not without losing the strokes.",
       "Both files upload as JPG or JPEG. Prepare the signature first, because it is the one that fails, and check it is still legible at the size you compressed it to.",
+      "The signature band of 4 to 30 KB is roughly a seventh of the photograph's. That gap is the reason the signature is the file that fails: the same export settings that produce a good photograph produce a signature far above its ceiling.",
     ]
   },
 
@@ -1428,6 +1436,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "Block capitals are rejected outright as a signature. FCI states this apart from any file rule, so an image meeting every size and format requirement still fails when the name is printed rather than signed. Use the running hand you would use on a bank form.",
       "Alongside the photograph at 4.5 cm by 3.5 cm and the signature, a thumb impression is scanned and uploaded. Your photograph and biometric data are also captured at the examination centre and matched against what you submitted, so the uploaded image needs to be a current likeness.",
       "The thumb impression is taken with an ink stamp pad on plain paper rather than captured digitally, so it is worth doing before you sit down to fill the form. A smudged impression is the one element you cannot fix by editing, and re-doing it means finding an ink pad again.",
+      "The photograph is stated as 4.5 cm by 3.5 cm, which is the standard 35 x 45 mm passport proportion written height-first. It is the same shape as most other applications here, so a correctly framed passport photograph is the right starting point.",
     ]
   },
 };
