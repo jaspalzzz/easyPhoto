@@ -210,6 +210,19 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
     ],
     checklist: ["Confirm image signatures are allowed.", "Leave surrounding text readable.", "Save the unsigned original separately."],
   },
+  "exam-package": {
+    heading: "Why an exam application is two uploads, not one",
+    paragraphs: [
+      "Almost every Indian recruitment portal takes the photograph and the signature as separate files with separate limits, and the signature limit is usually the tighter of the two \u2014 commonly a 10 to 50 KB band against 10 to 200 KB or more for the photo. Preparing them together helps because the two are judged against the same application, but they are still two files, and a package that merges them is wrong unless the portal explicitly asks for one image.",
+      "Order matters more than most candidates expect. Sign on plain white paper in the ink the notice specifies, photograph or scan it square-on, and crop before resizing \u2014 resizing first locks in whatever margin you had. Do the photo separately against a plain background at the head size the exam publishes. Only then check both files against the KB limits, because cropping and adding any name or date strip both change the file size after the fact.",
+      "One thing no tool can do for you is confirm the figures. Boards revise their notices between cycles, some publish pixel dimensions and some only a KB range, and a few state nothing beyond \"recent passport-size photograph\". Each exam page here records the figure we found and names the source it came from, so you can open that source and check it. Where a source is marked as needing review, treat the numbers as a starting point and take the binding version from your own notification.",
+    ],
+    checklist: [
+      "Prepare photo and signature as separate files unless told otherwise.",
+      "Crop first, resize second, then check the KB limit last.",
+      "Open the cited source for your exam rather than trusting a stored figure.",
+    ],
+  },
   "white-background": {
     heading: "Why a replaced background is not the same as a plain wall",
     paragraphs: [
