@@ -1,7 +1,7 @@
 {
   "recordedOn": "2026-08-03",
   "targetUnsharedWords": 300,
-  "pagesBelowTarget": 35,
-  "indexedPages": 149,
-  "note": "Ratchet: must fall, never rise, EXCEPT when a review finds unsupported or repetitive content and removes it. It rose 29 -> 35 on 2026-08-03 after the Round 15 review corrected stale public claims, bad arithmetic, unsupported scope and duplicated padding. This remains a NOT READY score; only actionable content pages are counted."
+  "pagesBelowTarget": 0,
+  "indexedPages": 148,
+  "note": "Ready-state ratchet recorded 2026-08-03: zero indexed actionable pages below 300 unshared words. The corpus fell from 149 to 148 only because the zero-demand standalone SSC name/date duplicate was reversibly noindexed; legacy redirect targets stayed indexed. Retained weak routes were remediated with first-party-source paraphrases, arithmetic from published fields, explicit uncertainty boundaries or route-specific tool behaviour, under test/applicationNotes.test.ts."
 }

@@ -186,6 +186,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-06-08",
     context:
       "The DS-160 is the online nonimmigrant visa application form for the United States; the photo is uploaded directly within the form on the US Department of State's travel.state.gov portal.",
+    applicationNotes: [
+      "The Department of State describes a square digital image from 600 x 600 through 1200 x 1200 pixels. This preset exports the published 600 x 600 minimum rather than stretching a rectangular passport crop; start from the original photograph and crop equally around the face.",
+      "The digital file ceiling is 240 KB. That is a maximum, not a requested target, so there is no benefit in inflating a clear smaller JPEG merely to approach the cap. Inspect the final square image after compression and keep the original available if the form asks for a replacement.",
+      "This record is for the photograph uploaded inside the DS-160 nonimmigrant-visa form. A printed photograph requested for an interview or a different US immigration process is a separate submission step; follow the instructions attached to that route instead of assuming the digital-file rule covers it.",
+      "The white-background rule and square canvas are independent checks. Replacing the background does not make a rectangular file compliant, and resizing a rectangle to 600 x 600 would distort the face. Crop to a square first, then export within the stated byte ceiling.",
+    ],
   },
   "passport-seva": {
     id: "passport-seva",
@@ -206,6 +212,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "For ordinary adult fresh/reissue applications in India, Passport Seva captures the photograph and biometrics at the PSK/POPSK; applicants do not upload or carry a photo. Children below four carry a 45x35 mm white-background print. Use this digital preset only when a separate overseas workflow requests it, and confirm the current mission instructions before relying on the stored KB or signature limits.",
+    applicationNotes: [
+      "For an ordinary adult fresh or reissue application inside India, the PSK or POPSK captures the photograph and biometrics. There is no ordinary prepared-photo upload to optimise, so this resizer should not be inserted into that domestic appointment workflow.",
+      "The below-four exception is a physical 45 x 35 mm colour photograph on a white background. It is distinct from the 630 x 810 pixel format documented for Indian embassies and consulates abroad; choose the route first rather than treating the print and overseas digital figures as interchangeable.",
+      "The linked ICAO guide supports the overseas photograph geometry, but it does not publish the stored 10 to 250 KB photo band or 10 to 100 KB signature band shown as compatibility settings here. The mission's current upload screen is the authority for those digital limits.",
+      "A 630 x 810 canvas has the same 3.5:4.5 shape as the recorded print, so cropping can be shared across those two representations. That ratio match does not establish the file-size ceiling or prove that a particular mission asks for an upload.",
+    ],
   },
   oci: {
     id: "oci",
@@ -364,6 +376,13 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-17",
     context:
       "The National Testing Agency (NTA) conducts NEET-UG and JEE Main; you upload the photo and signature during the online application. NEET applicants also need a separate 4×6 inch (postcard-size) photograph in addition to the passport-size one.",
+    applicationNotes: [
+      "The NEET-UG bulletin publishes file-size bands but no fixed pixel canvas: photograph 10 to 200 KB and signature 10 to 100 KB in JPG. Do not force a borrowed 200 x 230 template onto either file, because that geometry is not stated by this source.",
+      "NEET separates the passport-size upload from a 4 x 6 inch postcard photograph. The postcard is not a larger export of the upload field; prepare and retain the physical item requested by the bulletin in addition to the digital photograph and signature.",
+      "The photograph instruction combines a white background with about 80 percent face coverage. Check the crop visually before compression, then verify the encoded JPG size. A file can sit inside the KB band while the face remains too small or the background remains uneven.",
+      "This entry groups NEET-UG and JEE Main only at the directory level. The cited figures come from the named NEET-UG bulletin, so a JEE Main applicant should compare the current JEE bulletin and upload screen rather than assuming the two NTA forms stayed aligned.",
+      "Keep the postcard photograph outside the signature workflow: its 4 x 6 inch physical format is neither the 10 to 200 KB passport upload nor the separate 10 to 100 KB signature asset.",
+    ],
   },
   rbi: {
     id: "rbi",
@@ -391,6 +410,13 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-17",
     context:
       "The Reserve Bank of India recruits Grade B Officers and Assistants through its own recruitment portal at opportunities.rbi.org.in, separate from the IBPS common exam used by most other public-sector banks.",
+    applicationNotes: [
+      "RBI's annex records a preferred 200 x 230 pixel portrait between 20 and 50 KB and a preferred 140 x 60 pixel signature between 10 and 20 KB. Preferred geometry and mandatory byte bands are distinct wording, so preserve the shapes while checking the current application preview.",
+      "The photograph uses a light or white background. The signature is written in black ink on white paper, then cropped to the signature area; photographing the whole sheet spends the 10 to 20 KB window on empty paper rather than handwriting detail.",
+      "Both assets are JPG or JPEG scanned in true colour at 200 DPI. DPI is a scan setting paired with the annex's preferred canvas, not a replacement for checking encoded pixels and bytes in the exported files.",
+      "The linked annex predates the review date and serves as RBI scanning guidance. Compare it with the Grade B or Assistant notice and opportunities.rbi.org.in session you are using, because a common banking-style canvas is not proof that every RBI cycle retained each field.",
+      "The signature window spans only 10 KB, while the photograph spans 30 KB. Export the two independently, inspect the signature strokes at actual size, and avoid using a single compression quality simply because both images share a JPEG encoder.",
+    ],
   },
   ctet: {
     id: "ctet",
@@ -407,7 +433,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigAspectRatio: 3.5 / 1.5,
     photoFormat: "JPG",
     sigFormat: "JPG",
-    description: "CBSE CTET. Photo 3.5x4.5cm, 10-100 KB; signature 3.5x1.5cm, 3-30 KB, JPG. The portal auto-rejects wrong dimensions, so match exactly.",
+    description: "CBSE CTET. Photo 3.5x4.5cm, 10-100 KB; signature 3.5x1.5cm, 3-30 KB, JPG. The bulletin publishes both physical dimensions and file-size bands, so compare both with the exported files.",
     source: {
       url: "https://cdnbbsr.s3waas.gov.in/s3443dec3062d0286986e21dc0631734c9/uploads/2026/05/202605111250310617.pdf",
       label: "CTET September 2026 — Information Bulletin",
@@ -415,11 +441,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "official",
     verifiedOn: "2026-06-08",
     context:
-      "CTET (Central Teacher Eligibility Test) is CBSE's national teacher-eligibility exam; the online application at ctet.nic.in validates photo and signature dimensions automatically at upload, so a mismatch is rejected immediately rather than at verification.",
+      "CTET (Central Teacher Eligibility Test) is CBSE's national teacher-eligibility exam. Its bulletin publishes separate dimensions and file-size bands for the photograph and signature uploaded through ctet.nic.in.",
     applicationNotes: [
       "CTET publishes physical dimensions as well as file sizes. The photograph is 3.5 cm wide by 4.5 cm high and the signature 3.5 cm by 1.5 cm, so the shape matters and not only the KB figure.",
       "The signature band is unusually tight at 3 to 30 KB against 10 to 100 KB for the photograph. Scan or crop only the signed area on plain paper; a phone photograph of the whole page includes background that spends bytes without improving the signature.",
       "The notice states the uploaded photograph is matched against the candidate who appears at the centre, so a current likeness matters more than a flattering one.",
+      "The stored pixels preserve the physical proportions but are not interchangeable: 350 x 450 for the portrait and 280 x 120 for the signature. Check width and height in that order; swapping them rotates the required orientation even though the same two numbers are present.",
+      "Both assets are JPG, yet their lower bounds differ sharply. The signature may be as small as 3 KB while the photograph begins at 10 KB, so compress each against its own published band and inspect the result instead of applying one quality setting to both files.",
+      "The September 2026 bulletin is the scope of this record. Keep the generated files, but compare them with the bulletin and preview belonging to the CTET session you are actually submitting if CBSE opens a later examination cycle.",
     ]
   },
   uppsc: {
@@ -439,6 +468,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-07-17",
     context:
       "Uttar Pradesh Public Service Commission recruitments use One-Time Registration. The OTR instructions require the candidate to upload photo and signature files once; this is an upload workflow, not live photograph capture. The published guide specifies centimetre dimensions, maximum file sizes and 200 DPI, without fixed pixel dimensions.",
+    applicationNotes: [
+      "UPPSC's OTR guide states physical shapes rather than a fixed pixel canvas: the photograph is 5 x 6 cm and the signature 6 x 3 cm. Preserve those 5:6 and 2:1 proportions when cropping; do not substitute the narrower 3.5 x 4.5 photograph used by another commission.",
+      "The published sizes are ceilings — photograph under 50 KB and signature under 30 KB — with no minimum KB value. Export a clear file below each maximum instead of inventing a lower boundary that could cause unnecessary recompression.",
+      "The 200 DPI instruction is a scan or export setting paired with centimetre dimensions, not an additional fixed width and height in pixels. If the active OTR screen displays pixel rules, use those current on-screen values; the linked guide itself does not supply them.",
+      "One-Time Registration stores these assets for the UPPSC profile. Review both previews before completing OTR, because the photo and signature have different orientations, shapes and caps even though they are prepared during the same registration session.",
+    ],
   },
   bpsc: {
     id: "bpsc",
@@ -456,6 +491,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     isLiveCapture: true,
     context:
       "Bihar Public Service Commission captures the candidate's photograph live via webcam during the online application, rather than accepting an uploaded photo file — only the signature (in both Hindi and English) is uploaded as a file.",
+    applicationNotes: [
+      "BPSC's user manual separates live webcam capture from file upload. The candidate photograph is taken inside the application, so the 50 KB compatibility photo setting is not a published upload target and this tool cannot substitute a prepared file for that camera step.",
+      "Two signatures are uploaded: one in Hindi and one in English. Prepare each as its own JPG under the recorded 20 KB ceiling, label them clearly on your device, and inspect the portal previews so the language fields are not swapped.",
+      "The manual publishes no fixed photo pixels because the portal controls capture. Do not infer a portrait canvas or background-replacement rule from a generic passport preset; follow the webcam framing and lighting instructions displayed during the BPSC session.",
+      "For signatures, a byte ceiling alone does not define useful geometry. Crop unused paper while preserving complete strokes, keep the source scans, and take any dimensions, ink instruction or minimum KB value from the active upload field if it displays them.",
+    ],
   },
   mpsc: {
     id: "mpsc",
@@ -611,7 +652,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPG",
     sigFormat: "JPG",
     description:
-      "The Combined Defence Services examination is the graduate entry route — to the Indian Military Academy, Naval Academy, Air Force Academy and Officers Training Academy — so candidates often already hold a UPSC One Time Registration from an earlier attempt and reuse whatever photograph is stored against it. That stored image still has to meet the current rule: a JPG of 20–200 KB at roughly 75% face coverage, with three vertically stacked signatures in a separate JPG of 20–100 KB and 350–500 pixels. UPSC publishes no pixel size, aspect ratio, DPI or name/date strip for it, so an old upload is worth re-checking rather than assuming.",
+      "The Combined Defence Services examination is the graduate entry route to the Indian Military Academy, Naval Academy, Air Force Academy and Officers Training Academy. A photograph already stored in UPSC One Time Registration still has to meet the current rule: a JPG of 20–200 KB at roughly 75% face coverage, with three vertically stacked signatures in a separate JPG of 20–100 KB and 350–500 pixels. UPSC publishes no pixel size, aspect ratio, DPI or name/date strip for the photo, so review an existing upload against the current instructions.",
     source: {
       url: "https://upsconline.nic.in/ngrp/assets/PDF/instruction-photo-signature-upload-upsc.pdf",
       label: "UPSC — Instructions for Uploading the Photo & Signature",
@@ -650,7 +691,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     context:
       "AFCAT (Air Force Common Admission Test) recruits for the Indian Air Force's Flying and Ground Duty branches. The 01/2026 notification sets a different band for each of the three uploads — photograph 100-200 KB, signature 80-150 KB, thumb impression 50-100 KB — with no fixed pixel dimensions.",
     applicationNotes: [
-      "Three files, each with its own band and its own literal file name: Passport Photograph.jpg at 100-200 KB, Signature.jpg at 80-150 KB, and Thumb Impression.jpg at 50-100 KB. These are unusually LARGE minimums — most Indian applications cap the signature around 20-50 KB — so a file compressed to the habitual size is below AFCAT's floor.",
+      "Three files, each with its own band and its own literal file name: Passport Photograph.jpg at 100-200 KB, Signature.jpg at 80-150 KB, and Thumb Impression.jpg at 50-100 KB. The published minimums are binding; a signature below 80 KB or thumb impression below 50 KB sits outside AFCAT's stated band.",
       "The thumb differs by candidate: male candidates upload the LEFT thumb and female candidates the RIGHT, pressed on an ink stamp pad and then onto plain blank paper.",
       "The signature is signed on white paper with a black ink pen, by the applicant and nobody else, and the notice asks you to scan the signature area only rather than the whole page.",
       "The notification states what each file name should be — Passport Photograph.jpg, Signature.jpg and Thumb Impression.jpg. It does not say what happens if you use a different name, so treat renaming as cheap insurance rather than as a stated rejection ground.",
@@ -684,6 +725,13 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     isLiveCapture: true,
     context:
       "Rajasthan Public Service Commission recruitment goes through the SSO Rajasthan recruitment portal's One-Time Registration. The photograph is taken live via webcam during KYC, so no photo file is uploaded; the uploadable items are two signatures (English and Hindi), a left thumb impression, and a handwritten specimen. Confirm the current OTR instructions for the specific recruitment before preparing files.",
+    applicationNotes: [
+      "The OTR KYC photograph is captured live by webcam. The 20 to 50 KB photo values exist only so the optional compatibility tool can render; they are not RPSC upload limits and must not be used to replace the capture inside SSO Rajasthan.",
+      "RPSC asks for two signature files, one English and one Hindi, each JPEG from 20 to 50 KB. Treat them as separate assets and check both previews rather than assuming one bilingual image can populate two fields.",
+      "The left-thumb impression is another JPEG in the 20 to 50 KB band, while the handwritten specimen is a PDF from 10 to 200 KB. Those document types are not signature variants and should not be forced into the signature resizer's output format.",
+      "No pixel dimensions are published in the recorded KYC section. Preserve the natural proportions of complete handwriting and thumb marks, trim empty margins, and use any canvas displayed by the current OTR widget instead of borrowing a banking-exam size.",
+      "The source label records the 19 May 2026 OTR manual, while the page remains needs-review because the public portal can change its signed-in KYC fields. Confirm the specific recruitment's current instructions before assigning files to the four upload labels.",
+    ],
   },
   tnpsc: {
     id: "tnpsc",
@@ -740,6 +788,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     applicationNotes: [
       "KPSC sets the photograph at 50 KB to 200 KB and the signature at 50 KB to 70 KB, both JPEG. A signature below the 50 KB floor is outside this preset even if another application accepted that file.",
       "The 50 to 70 KB signature window is only 20 KB wide. Export once, check the size, then adjust image quality first; if dimensions must change, preserve the aspect ratio so the signature strokes are not stretched.",
+      "The current UDYOGA manual does not publish a square photograph, fixed signature canvas, DPI value, ink colour or name-and-date strip. Those absent fields are intentional in this preset: adding geometry from an older vendor page would turn an unsupported convention into a displayed requirement.",
+      "Photograph and signature are added during personal-information registration as separate JPEG assets. Check the encoded format rather than the filename alone — renaming a PNG to end in .jpeg does not change the bytes that the registration form receives.",
+      "Keep the uncompressed photograph and signature alongside the exports. Because the manual supplies byte bands but no geometry, a future UDYOGA screen can add a canvas rule that requires a fresh crop rather than another round of compression.",
     ]
   },
   appsc: {
@@ -775,6 +826,13 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "TGPSC uses its own One-Time Registration portal. Its formerly indexed Edit OTR manual is now unavailable, and the live public portal does not expose the current photograph/signature workflow or validation rules before sign-in. Confirm whether the active application requests file uploads or capture, and verify its limits before relying on the compatibility targets.",
+    applicationNotes: [
+      "The live TGPSC page confirms the One-Time Registration service, but its public view does not state whether the current photograph step uploads a file or captures one. Resolve that workflow on the signed-in OTR screen before preparing an asset, because a compatibility file cannot replace live capture.",
+      "The 4 to 50 KB photograph and 1 to 30 KB signature bands are retained as compatibility defaults from an earlier indexed manual, not presented as current verified limits. If the active field displays different numbers, the field wins and this preset should be corrected from that evidence.",
+      "No public current source establishes pixel dimensions, aspect ratios, formats, background colour, signature ink or a name-and-date strip for this record. The tool therefore avoids adding any of those constraints and should be used only after comparing each visible field in the active application.",
+      "TGPSC was formerly named TSPSC, so both names appear in searches and older material. A renamed authority does not make an old upload manual current; use the present otr.tgpsc.gov.in session and the recruitment notice attached to the application cycle.",
+      "Keep a screenshot or note of the limits shown in the active OTR field before exporting. That evidence distinguishes a current correction to this compatibility record from a value copied forward from an unavailable manual.",
+    ],
   },
   wbpsc: {
     id: "wbpsc",
@@ -789,6 +847,13 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "WBPSC's public One-Time Registration page confirms the OTR workflow but does not expose the file validation rules before the application flow. No current public first-party instruction was found for the stored numeric targets, so they must be checked against the current recruitment upload screen.",
+    applicationNotes: [
+      "The public WBPSC page supports One-Time Registration but exposes no current photograph or signature specification before the application flow. The two 50 KB ceilings are therefore compatibility settings, not figures verified from that page.",
+      "Do not infer a minimum, pixel canvas, aspect ratio, format, background shade, signature ink or name-and-date requirement from the empty fields here. Each of those properties remains unknown until the active recruitment notice or upload widget states it.",
+      "One-Time Registration and the post-specific application can be separate stages. Check whether the asset is stored in the OTR profile, requested again for the recruitment, or captured live; the public landing page does not resolve that distinction.",
+      "Before exporting, note every label and validation message shown beside the signed-in field. A screenshot of the current rule is stronger correction evidence than a third-party table and lets this record be updated without carrying another cycle's values forward.",
+      "Keep original portrait and signature files at useful resolution while the rule is unknown. If the screen requests a different band from 50 KB, re-export from the originals instead of repeatedly recompressing a provisional file and degrading the marks.",
+    ],
   },
   gpsc: {
     id: "gpsc",
@@ -803,6 +868,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "The live Gujarat OJAS portal does not publicly expose GPSC's current photograph/signature workflow or validation rules before the active application flow. Confirm whether the recruitment requests file uploads or capture and verify its limits before relying on the compatibility targets.",
+    applicationNotes: [
+      "The first-party evidence available here establishes that GPSC applications use Gujarat OJAS. It does not establish whether the current recruitment uploads a prepared photograph and signature or captures either asset inside the form, so settle the workflow before opening a resizer.",
+      "The 15 KB ceilings displayed by this preset are compatibility values without current public support. They should not be described as official GPSC limits, and a different number shown by the active OJAS field must replace them for that application.",
+      "No verified source in this record publishes minimum KB values, pixel dimensions, physical dimensions, aspect ratios, encoded formats, background colour, signature ink or a name-and-date strip. The empty rows disclose missing evidence rather than borrowing rules from another state commission.",
+      "OJAS hosts applications for more than one Gujarat authority and recruitment cycle. Open the exact GPSC advertisement and signed-in upload step named by your application; a limit from another OJAS form is not proof of this one.",
+      "Keep the uncropped portrait and a high-contrast signature scan until the active fields are visible. Once the form states its requirements, export from those originals so a provisional 15 KB file does not become the only copy available for a different canvas.",
+      "The page's needs-review badge is the operational conclusion of that source gap. Do not remove it until a readable OJAS instruction supports the workflow and numeric fields; merely observing that the upload accepts one test file would not establish every boundary.",
+    ],
   },
   hpsc: {
     id: "hpsc",
@@ -817,6 +890,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "Haryana Public Service Commission sets the photo and signature upload limits inside its online registration portal rather than in the recruitment advertisement, so they are not publicly documented. Confirm the current figures on the portal at the time of applying.",
+    applicationNotes: [
+      "Advertisement 24/2026 confirms that scanned photographs and scanned signatures are among the application uploads, but it does not publish their byte limits or geometry. That supports the existence of file fields, not the two 500 KB compatibility ceilings displayed here.",
+      "The binding values appear inside regn.hpsc.gov.in at the upload step. Record the permitted format, minimum and maximum bytes, width and height, and any background or ink instruction shown there before exporting; none of those details can be recovered from the public advertisement cited here.",
+      "A 500 KB preset is deliberately labelled unconfirmed. Do not compress toward that number in advance or infer that a file below it is suitable: the private field may impose a lower cap, a minimum, fixed pixels or an encoded-format rule.",
+      "Photo and signature are separate scanned assets even though the public notice names them together. Preserve a full-resolution portrait and a tightly cropped signature source so each can be rebuilt when the signed-in form reveals its own orientation and validation fields.",
+    ],
   },
 
   // ---------------------------------------------------------------------------
@@ -881,6 +960,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "LIC asks for four scanned images: photograph at 4.5cm x 3.5cm, signature in black ink, a left thumb impression on white paper in black or blue ink, and a HAND-WRITTEN DECLARATION whose text the notice supplies for you to copy out. The declaration must be written by hand on white paper in black or blue ink — typing it is not the same thing.",
       "Your photograph and IRIS are captured at the examination venue and the captured photo is matched against what you submitted, so the uploaded image needs to be a current likeness rather than the best one you own.",
       "A live photograph is taken through a webcam or phone during registration as well. Preparing a file does not remove that step.",
+      "The linked source is the AAO Specialist 2025 notification. Its 200 x 230 photograph, 140 x 60 signature and four-document scanning instructions should not be projected onto ADO recruitment or a later AAO cycle without checking that cycle's notice.",
+      "At 20 to 50 KB the photograph has a 30 KB window, while the 10 to 20 KB signature has only 10 KB. Prepare the black-ink signature from a tight crop of its own sheet; using the photograph's export settings ignores both the different geometry and narrower band.",
+      "The prepared photograph and the registration-time live image are two separate inputs named by the notification. Keep a clean original of the uploaded image, but complete the webcam or phone capture inside the LIC registration flow when prompted.",
+      "The thumb impression and declaration are not handled by this photo-and-signature resizer. Prepare them from the notification's own instructions and do not force either document into the 140 x 60 signature canvas merely because all four scans appear in one registration sequence.",
     ]
   },
   niacl: {
@@ -914,6 +997,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "Four uploads, not two: photograph at 4.5cm x 3.5cm, signature in black ink, a LEFT THUMB IMPRESSION on white paper in black or blue ink, and a HAND-WRITTEN DECLARATION. The notice supplies the declaration text to copy out and requires it in your own handwriting, in English, and not in capitals. The notice covers the case where a candidate has no left thumb — the right thumb, or a finger of the left hand starting from the forefinger, is used instead — and it asks specifically that the impression is not smudged.",
       "A signature written in CAPITAL LETTERS will not be accepted. This sits separately from the file-size rule, so a signature comfortably inside the band can still be refused for how it was written.",
       "Caps, hats and dark glasses are not acceptable in the photograph. Religious headwear is allowed provided it does not cover the face. A live photograph is also captured during the process, in addition to the file you upload.",
+      "The file geometry is asymmetric: a 200 x 230 portrait photograph and a 140 x 60 landscape signature. Crop each from its own source rather than resizing one generic canvas, and keep the photograph within 20 to 50 KB while the signature stays within 10 to 20 KB.",
+      "This preset is scoped to the Administrative Officer 2025 advertisement and its pages 11 to 12. An Assistant application or a later AO advertisement needs its own check even if the interface is hosted on the same IBPS application platform.",
+      "The live capture and four prepared document images form five separate inputs in the cited workflow. Completing one does not populate the others, so review the upload labels before assigning files with similar thumbnails.",
+      "Keep the declaration text exactly as supplied by the advertisement when preparing that separate scan. This resizer does not generate, edit or validate the declaration wording; its photo and signature outputs cover only two of the five inputs.",
     ]
   },
   irdai: {
@@ -969,6 +1056,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "CAT wants a square 1200 x 1200 pixel photograph and a signature at 80mm x 35mm, each as JPG or JPEG and each no larger than 80 KB, at a minimum of 150 pixels per inch. The square photograph is the unusual part: a standard 35x45mm passport crop is the wrong shape for this form.",
       "The photograph must be no more than six months old and on a white background. It is also affixed to your admit card on test day, and the instructions tell candidates to keep sufficient printed copies of the same image — so print spares of exactly what you upload.",
       "The square 1200x1200 requirement means you cannot start from a 35x45mm passport crop — the proportions are wrong and trimming one to a square leaves the head oversized in the frame. Crop square from your original photograph instead, then check the result is still at least 150 pixels per inch at the size CAT asks for.",
+      "The signature is specified physically at 80 x 35 mm while the photograph is specified as a 1200 x 1200 square. Keep these as separate source files: converting the portrait canvas into the signature shape would discard the original proportions and add no useful signature detail.",
     ]
   },
   clat: {
@@ -1057,6 +1145,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "UP Police (UPPBPB) recruits Constables, Sub-Inspectors and other posts under the Uttar Pradesh Police Recruitment & Promotion Board; limits are set per recruitment notification and the portal validates the file at upload, so re-check the current notification's numbers before applying.",
+    applicationNotes: [
+      "The linked constable notification is an image-only Hindi scan, and its upload section has not been extracted reliably in this review. The displayed 20 to 50 KB photograph and 5 to 20 KB signature figures therefore remain compatibility values, not a claimed transcription from that notice.",
+      "The preset records a 35 x 45 mm portrait shape, a 35 x 15 mm landscape signature and black ink on white paper. Treat every one of those fields as provisional until the current recruitment screen shows the rule; a post-specific UPPBPB notice can differ from another police recruitment.",
+      "JPEG, JPG and JPE are listed as possible extensions, but the active field may expose a narrower encoded-format list. Check the file's real format and the preview after upload; changing only the extension text does not convert image data.",
+      "Constable and Sub-Inspector recruitments are separate cycles under the same board. Keep the original photograph and signature so they can be exported again if the current cycle displays different geometry or byte limits than this compatibility preset.",
+    ],
   },
   // ---- Indian identity documents ----
   pan: {
@@ -1163,6 +1257,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The photograph you upload is also pasted on the attendance sheet at the centre, so the file you submit needs a printed twin. Preparing one image and printing that same image is the point; a different photograph taken later will not match.",
       "Both files are JPG or JPEG and the bands differ: the photograph between 10 and 200 KB, the signature between 10 and 50 KB, and both must be clearly legible rather than merely inside the limit.",
       "File size alone does not prove legibility. Inspect the exported signature at its actual dimensions; if strokes have broken up, export again at a larger size within the published 10 to 50 KB band.",
+      "The CUET bulletin publishes no fixed pixel width or height for either asset. Preserve the portrait crop and handwritten signature proportions instead of forcing a canvas borrowed from CTET, banking recruitment or another NTA examination.",
+      "The photo instruction asks for about 80 percent face coverage on white. That composition check happens before compression: crop from the original, inspect the face and background, and only then bring the JPG or JPEG inside the 10 to 200 KB band.",
+      "A live photograph is captured during the application in addition to the prepared upload. The compatibility tool prepares the file only; it cannot perform, replace or validate the capture requested inside the CUET registration session.",
     ]
   },
 
@@ -1184,7 +1281,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoBackground: "Plain light",
     sigFormat: "JPG / JPEG",
     description:
-      "Kerala Public Service Commission (Thulasi portal — thulasi.psc.kerala.gov.in). Photo 150×200 px, under 30 KB, JPG/JPEG, plain light background, with the candidate's name and the date of photography printed at the bottom; signature 150×100 px, under 30 KB. The Thulasi portal is strict on file size — even 1 KB over is rejected.",
+      "Kerala Public Service Commission (Thulasi portal — thulasi.psc.kerala.gov.in). Photo 150×200 px, under 30 KB, JPG/JPEG, plain light background, with the candidate's name and the date of photography printed at the bottom; signature 150×100 px, under 30 KB. Compare both exported files with the current Thulasi fields.",
     source: {
       url: "https://www.keralapsc.gov.in/sites/default/files/inline-files/otr.pdf",
       label: "Kerala PSC One-Time Registration instructions",
@@ -1194,6 +1291,13 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     requiresNameDate: true,
     context:
       "Kerala Public Service Commission uses its own Thulasi portal for all recruitments. The photo and signature upload limits (150×200 px / 30 KB and 150×100 px / 30 KB) differ from the standard national exam pattern, and Kerala PSC requires your name and the date of photography printed on the photo.",
+    applicationNotes: [
+      "Kerala PSC fixes the portrait at 150 x 200 pixels and the signature at 150 x 100. Their widths match but their heights and orientations do not, so verify width and height in order rather than treating 150 as evidence that the files share a canvas.",
+      "Both files have a 30 KB ceiling and no stored minimum. The photograph is JPG or JPEG on a plain light background; the signature is a separate JPG or JPEG. Compress each below the maximum while preserving readable facial and handwriting detail.",
+      "The candidate's name and photograph date belong at the bottom of the portrait. Add the text before the final 150 x 200 export, then inspect it at actual size so the lettering has not been clipped or blurred by the resize.",
+      "A normal passport image without the required name and date is not the same asset even if its pixels and bytes match. Keep the caption area inside the published canvas rather than enlarging the image beyond 200 pixels to make room afterward.",
+      "This record is tied to the Thulasi One-Time Registration instructions reviewed on the displayed date. Compare the current portal fields before upload, especially if Kerala PSC has replaced the OTR guide or changed how an existing profile photograph is reused.",
+    ],
   },
 
   // ---------------------------------------------------------------------------
@@ -1226,6 +1330,13 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     signatureInk: "Black or blue ink",
     context:
       "NIELIT conducts the BCC, CCC, CCC+, ECC and ACC digital-literacy examinations. Version 1.11 of its application guide publishes separate photo and signature/LTI dimensions and upload ranges for the online examination application form.",
+    applicationNotes: [
+      "NIELIT publishes two deliberately transposed canvases: the photograph is 132 pixels wide by 170 high, while the signature or left-thumb impression is 170 wide by 132 high. Read width before height; using the portrait pair for the signature produces the wrong orientation.",
+      "The photograph's 132:170 ratio is effectively the same shape as 3.5 x 4.5 cm, while the signature's 170:132 canvas follows its 4.5 x 3.5 cm landscape instruction. Crop to those shapes rather than stretching an existing square or banking-exam image.",
+      "Both assets are JPEG or JPG, but their size and resolution bands differ. The photograph is 5 to 50 KB at 96 to 300 DPI; the signature is 5 to 20 KB at 96 to 200 DPI. Export and inspect them separately instead of reusing one compression setting.",
+      "The signature or left-thumb impression is made in black or blue ink on white paper. Trim unused paper before compression so the 170 x 132 canvas preserves the marks rather than spending its limited area on an empty border.",
+      "Version 1.11 covers the DLC examination family named in the guide: BCC, CCC, CCC+, ECC and ACC. The record is not a generic NIELIT portal rule for every course, so another NIELIT application needs its own current instructions.",
+    ],
   },
 
   dsssb: {
@@ -1267,6 +1378,13 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "The current official NIC Uttar Pradesh overview confirms that its examination-management system supports UPSSSC application management, but it gives no photo or signature validation figures. The former UPSSSC guideline host was unreachable during this review, so check the active recruitment form before preparing files.",
+    applicationNotes: [
+      "The linked NIC Uttar Pradesh article confirms the application-management system, not an image specification. It contains no support for the displayed 50 to 100 KB photograph, 20 to 50 KB signature or their 3.5:4.5 and 3.5:1.5 compatibility shapes.",
+      "The former guideline URL no longer resolves, so an archived value cannot be represented as a current first-party rule. Use the active recruitment form to confirm upload versus capture, encoded formats, both byte boundaries and any geometry before preparing either asset.",
+      "The compatibility photograph and signature have different orientations and bands. If the current form confirms them, crop the portrait and handwriting independently; if it does not, discard the defaults rather than forcing the current files into an inherited template.",
+      "UPSSSC applications can draw profile information into a post-specific recruitment. Inspect the actual field shown in the cycle you are submitting, including any preview or validation message, because a system overview cannot establish whether an older profile image is reused.",
+      "Retain the uncropped photograph and a clean signature scan while checking the portal. Source originals let you respond to a new pixel canvas or lower ceiling without recompressing a 50 KB compatibility export and losing detail twice.",
+    ],
   },
 
   // ---------------------------------------------------------------------------
@@ -1289,6 +1407,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "BSF (Border Security Force) recruits Constable (GD/Tradesmen) via the common SSC GD exam, and Head Constable/Sub-Inspector through its own portal (rectt.bsf.gov.in) — the two streams may have different upload specs. Always confirm the current notification before applying.",
+    applicationNotes: [
+      "The cited SSC GD 2026 notice covers the Constable GD route and describes a live webcam photograph rather than a prepared-photo upload. For that route, a 20 to 50 KB photo file is not supported by this source and cannot replace the capture performed inside the SSC application.",
+      "The same notice supports a separate 10 to 20 KB signature at 6.0 x 2.0 cm. Its 3:1 landscape shape is recorded here, but the notice does not turn that signature rule into a photograph rule for BSF's own Head Constable or Sub-Inspector portal.",
+      "BSF's post-specific recruitment and SSC's common CAPF recruitment are different workflows. Identify the conducting portal named in the advertisement before using a preset; the authority name alone does not determine whether the photograph is live or uploaded.",
+      "For an SSC GD application, prepare the signature and complete the live camera step when prompted. For rectt.bsf.gov.in, take every photo, signature, format and byte value from that post's own notice or signed-in field because the linked SSC document does not supply them.",
+    ],
   },
 
   crpf: {
@@ -1317,6 +1441,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The photograph must be no more than three months old, about 35 mm wide by 45 mm high, as JPG or JPEG between 50 and 100 KB. The lower bound matters: a heavily compressed file below 50 KB falls outside the accepted band.",
       "The date printed on the photograph has to remain legible after compression: small grey text can disappear once the file is squeezed into the 50 to 100 KB band. Print it dark and large enough to survive.",
       "Add the date before compressing, then inspect it at actual size in the exported file rather than relying on the editor preview.",
+      "The photograph is limited to JPG or JPEG, while the signature field also lists PNG. Check the encoded type for each asset; a PNG signature is within the recorded format list, but a PNG photograph is not.",
+      "No fixed signature pixel or centimetre dimensions are published in the cited advertisement. Crop the black-ink writing tightly without clipping strokes, preserve its natural proportion, and do not force it into a canvas borrowed from SSC or a banking application.",
     ]
   },
 
@@ -1360,6 +1486,13 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "needs-review",
     context:
       "ITBP conducts post-specific recruitments through its recruitment portal, while Constable GD can also run through SSC. Public notices reviewed did not expose the application widget's numeric image rules, so confirm the current post-specific upload screen.",
+    applicationNotes: [
+      "The official career page confirms the route into ITBP recruitment but publishes no image validation fields. The 20 to 50 KB photograph and 10 to 20 KB signature bands are compatibility defaults rather than values read from that page.",
+      "No first-party public evidence in this record establishes pixels, proportions, encoded format, background shade, signature ink or whether the current post captures a photograph live. Check each of those properties in the post-specific notice and application session.",
+      "Constable GD can be administered through SSC while an ITBP Head Constable, Sub-Inspector or specialist recruitment can use the force's own portal. A rule from one conducting system must not be carried into the other merely because both lead to ITBP posts.",
+      "If the active form requests uploads, record its minimum and maximum separately for the portrait and signature before exporting. If it requests camera capture, use that interface; a prepared compatibility photograph does not perform or validate a live step.",
+      "Keep source-quality originals until the post and portal are confirmed. Re-exporting from the originals protects face and ink detail if the real field differs from the provisional byte bands displayed on this page.",
+    ],
   },
 
   "navy-agniveer": {
@@ -1380,7 +1513,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "Indian Navy Agniveer applications require both the prepared slate photograph upload and an additional webcam live photograph. This hybrid workflow is not the replacement live-capture flow represented by isLiveCapture. The slate is physical, not a digital name/date strip; the notice lists no fixed pixels or separate signature upload.",
     applicationNotes: [
       "The photograph must be recent in a specific sense: the notice names a month before which the photograph must not have been taken, so an image from an earlier application cycle is not reusable even if it still looks like you. Check the date named in the notification you are applying under.",
-      "The recorded upload target here is unusually small at around 10 KB, which is well below the 100-200 KB most Indian applications allow. Compress carefully and check the face is still legible at that size rather than compressing to the number and submitting unseen.",
+      "The recorded upload target begins at 10 KB. Compress carefully and check the face is still legible at that size rather than compressing to the number and submitting unseen.",
       "Agniveer entries run in batches with their own advertisement each cycle, and the photograph date rule is tied to that cycle rather than to a rolling number of months. Read the date named in the notification you are applying under before deciding an existing photograph is recent enough.",
     ]
   },
@@ -1411,6 +1544,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The signature band is much tighter than the photograph's — 4 to 30 KB against 10 to 200 KB. Start from a clean, tightly cropped signature on white paper so background texture does not consume the limited file-size budget.",
       "Both files upload as JPG or JPEG. Prepare the signature independently because its 4 to 30 KB band is tighter, and inspect whether every stroke remains legible in the exported file.",
       "The signature window spans 26 KB, while the photograph window spans 190 KB. Do not reuse the photograph's export settings: configure and inspect the signature independently inside its 4 to 30 KB band.",
+      "The photograph instruction asks for approximately 80 percent face coverage on a plain light-shade background and no spectacles. Those composition fields are independent of the generous 10 to 200 KB range; inspect the crop and face visibility before optimising bytes.",
+      "This preset is historical and scoped to the 2023 Social Security Assistant advertisement conducted by NTA. It is not evidence for another EPFO post or a new recruitment cycle, so compare every field with the current EPFO or conducting-body notice before reuse.",
+      "No fixed photograph or signature pixel canvas is recorded from the advertisement. Preserve the portrait and handwriting proportions instead of forcing a 200 x 230 banking template simply because the byte bands appear in an online recruitment workflow.",
     ]
   },
 

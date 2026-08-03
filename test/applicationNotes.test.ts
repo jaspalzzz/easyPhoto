@@ -27,7 +27,7 @@ const BANNED: Array<{ label: string; pattern: RegExp }> = [
   {
     label: "prevalence claim (a frequency nobody measured)",
     pattern:
-      /\b(?:the\s+)?(?:most|more|less)\s+common(?:est)?\b|\bthe main (?:thing|reason|cause)\b|\bmost candidates\b|\b(?:often|usually|rarely|commonly|typically|probably)\b|\bthe failures? (?:come|comes) from\b|\bthe (?:file|part|thing) that (?:fails|candidates get wrong)\b/i,
+      /\b(?:the\s+)?(?:most|more|less)\s+common(?:est)?\b|\bthe main (?:thing|reason|cause)\b|\bmost (?:candidates|applications|portals|consulates|countries|authorities|forms)\b|\b(?:often|usually|rarely|commonly|typically|probably)\b|\bthe failures? (?:come|comes) from\b|\bthe (?:file|part|thing) that (?:fails|candidates get wrong)\b/i,
   },
   {
     label: "guaranteed outcome from an authority",

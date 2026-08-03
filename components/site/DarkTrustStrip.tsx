@@ -55,9 +55,9 @@ export function DarkTrustStrip() {
             Why your photos stay <span className="text-cta">private</span>
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-white/60">
-            Most photo tools upload your documents to their servers. easyPhoto runs
-            entirely inside your browser — so your most sensitive photos and IDs
-            never leave your device.
+            A server-based editor sends documents away from your device. easyPhoto
+            instead runs the editing steps inside your browser, so the selected
+            photos and IDs are not uploaded to an easyPhoto server.
           </p>
         </div>
 

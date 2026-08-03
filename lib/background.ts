@@ -1,7 +1,7 @@
 /**
  * Background compositing.
  * -----------------------
- * GOLDEN RULE (top rejection cause): the background colour is PER-COUNTRY.
+ * Background colour comes from the selected country or application source.
  * Never hardcode white. Always pass spec.background.hex.
  *
  * Phase 1: there is no cutout yet, so we render the crop straight to the

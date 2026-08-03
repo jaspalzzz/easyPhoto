@@ -156,6 +156,14 @@ const BANNED: Array<{ label: string; pattern: RegExp }> = [
     label: "cross-portal pass promise",
     pattern: /\bwill\s+pass\b[^.\n]{0,100}\b(?:portal|exam|application)s?\b/i,
   },
+  {
+    label: "universal Schengen background claim",
+    pattern: /\b(?:safest|safe)\s+universal\s+(?:background\s+)?choice\b|\blight\s+grey\s+satisfies\s+all\b/i,
+  },
+  {
+    label: "unsupported all-official-source claim",
+    pattern: /\beach\s+linked\s+to\s+its\s+official\s+source\b/i,
+  },
 ];
 
 describe("public copy keeps authority and acceptance claims bounded", () => {

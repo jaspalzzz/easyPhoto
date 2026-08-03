@@ -300,10 +300,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     headPercentOfFrame: { min: 70, max: 80 },
     background: {
       description:
-        "Light, uniform. Light grey is the safest universal choice; white is " +
-        "officially accepted by some states (e.g. France) but NOT by Switzerland, " +
-        "which requires a grey background.",
-      hex: "#DCDCDC", // ~RGB 220 light grey — safest
+        "Plain and light-coloured. This generic preset uses light grey, but the " +
+        "accepted shade is set by the member-state mission handling the application.",
+      hex: "#DCDCDC", // tool default, not an EU-wide mandated shade
       acceptableHex: ["#DCDCDC", "#C8C8C8", "#FFFFFF"],
     },
     digital: {
@@ -318,9 +317,10 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     smileAllowed: "neutral only",
     notes:
       "ICAO Doc 9303 standard (per EU Visa Code Reg. 810/2009 Art.13(4)). " +
-      "Background colour is the main per-state variation: France officially " +
-      "accepts white; Switzerland requires grey and rejects white; light grey " +
-      "satisfies all. Default to light grey. 29 Schengen states as of 2026 " +
+      "Member-state missions publish their own background examples, so this " +
+      "generic tool uses light grey without claiming that one shade satisfies " +
+      "every mission. Confirm the destination consulate's current sheet. " +
+      "29 Schengen states as of 2026 " +
       "(Bulgaria & Romania joined 2025-01-01). Same 35x45mm applies to most EU " +
       "national passports too.",
     source:
@@ -513,6 +513,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The frame and head band follow the EU Visa Code that every Schengen state shares: 35x45mm with the head 32-36mm chin to crown, which the sheet gives as 70-80% of the photo. What it is strict about is that the background be a single flat tone: shadows on the background are listed as not acceptable, alongside a busy background and insufficient contrast.",
       "The same sheet covers the national (D) visa and residence permit routes as well as the Schengen visa, so one correctly prepared photograph serves all three. Confirm against the mission handling your application before printing.",
       "Because the rule is about contrast rather than a fixed colour, the tool cannot decide the right shade for you — it depends on your hair. Pick a background that visibly separates from your hair in the preview rather than accepting whichever default is applied.",
+      "The 413 x 531 pixel value shown by the tool is only the 35 x 45 mm print shape converted at a 300 DPI reference. Germany's sample sheet does not publish a visa-upload pixel canvas or KB limit, so do not treat that calculated pair as a mission portal requirement.",
     ]
   },
 
@@ -541,14 +542,18 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     notes:
       "ICAO biometric photo per France-Visas: 35x45mm (official width given as " +
       "35-40mm), face 32-36mm (70-80% of height), max 6 months old, plain " +
-      "light-coloured background. Light grey is the safe choice.",
+      "light-coloured background. This preset uses light grey; confirm the " +
+      "current France-Visas or mission instruction before submitting.",
     source:
       "https://france-visas.gouv.fr/documents/d/france-visas/iso_iec_fv_visa_photograph_requirements_en",
     verified: "gov",
     applicationNotes: [
       "France's own guidance points at the ISO/IEC photograph standard rather than publishing a separate French rule, so the framing is the common Schengen one: 35x45mm, head 32-36mm chin to crown, neutral expression, no glasses glare.",
-      "On background, France is more permissive than Germany and less than the UK: a plain light colour is accepted and white is not formally banned, but light grey is the safer choice in practice because it survives inspection at any Schengen consulate, including the ones that do refuse white. If you are applying to several Schengen states, prepare grey once rather than white and re-do it.",
+      "France describes a plain light-coloured background rather than prescribing the neutral-grey contrast examples in Germany's sheet. This preset uses light grey as its recorded default, but that tool choice is not evidence that the same shade is required by every Schengen mission.",
       "A long-stay VLS-TS application uses the same photograph specification as the short-stay Schengen visa, so the two do not need different images.",
+      "The 32 to 36 mm head band occupies about 71 to 80 percent of a 45 mm frame. Measure chin to crown, not chin to the top edge of styled hair, and keep clear space above the crown inside the finished 35 x 45 mm crop.",
+      "The source specifies print geometry but no universal digital KB ceiling for France visa portals. The 413 x 531 display is a 300 DPI reference generated from millimetres; if an application screen asks for pixels or bytes, its current figures govern the upload.",
+      "A plain background still needs even illumination. Replacing a busy scene with the recorded light-grey tone does not correct shadows across the face, glare on lenses or a crop outside the published head-height band; inspect those properties separately.",
     ]
   },
 
@@ -633,8 +638,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     applicationNotes: [
       "The Netherlands applies its OWN national photo criteria to a Schengen visa submitted to it, which is unusual: its visa checklist tells applicants to bring a photo meeting Dutch requirements rather than a generic Schengen one. That means a smaller head than our German or French pages show — 26 to 30 mm chin to crown for ages 11 and over.",
       "Background may be light grey, light blue or white, and prints want a minimum of 400 DPI. If you apply through an external service provider, a digital photo is taken at your appointment and you do not need to bring one.",
-      "The Dutch national criteria that govern here also cover the driving licence and identity card, so a photograph prepared for one of those is already correct for this application. That is unusual: in most countries the visa and the national document specifications differ.",
+      "The Dutch national criteria that govern here also cover the driving licence and identity card, so the same recorded geometry applies across those named Dutch documents. Do not generalise that cross-document rule to another destination without checking its own sources.",
       "The 26 to 30 mm head band on a 45 mm frame works out to roughly 58 to 67 percent of the image. That is visibly smaller than the 70 to 80 percent framing recorded on the Germany and France pages here, so a crop prepared to either of those ranges would be too tight for this application.",
+      "The 413 x 531 pixels shown by the tool are a print conversion reference, not a published Dutch visa-upload canvas. At an external service-provider appointment, follow the cited live digital-photo process instead of treating the reference JPEG as a required upload.",
     ]
   },
 
@@ -917,7 +923,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "read directly, so treat this as a starting size and take the figure from " +
       "the application you are actually filling in.",
     advisory:
-      "Sources disagree on Oman's visa photo size: 35×45 mm is commonly cited " +
+      "Sources disagree on Oman's visa photo size: this preset records 35×45 mm " +
       "for the ROP eVisa, while 40×60 mm is cited for consular applications. " +
       "Check the size on your own application form before printing or " +
       "uploading — we could not confirm either against a Royal Oman Police page.",
@@ -973,6 +979,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The DGI&P e-services page for the online application gives 350 x 467 pixels, JPEG or JPG, with a maximum of 3 MB, and those are the figures used here. Other DGI&P material states 45 mm by 35 mm, a 5 MB ceiling or 600 DPI scan guidance; those describe different routes or older processes rather than competing versions of this one, so prepare to the e-services figures and confirm on the screen you are actually uploading through.",
       "This route serves online renewals. A first-time application inside Pakistan captures the photograph and biometrics at the office instead, so a prepared file is not what that process needs at all.",
       "350 x 467 pixels is close to the 3:4 proportion rather than the 35:45 of a standard passport print, so a passport crop needs re-framing rather than resizing. Crop to the stated pixel shape from your original.",
+      "Three megabytes is a ceiling, not a target quality level. Keep a clear JPEG below it; adding metadata or reducing compression merely to approach the maximum does not improve the 350 x 467 canvas that the online route records.",
+      "The online-renewal source and the in-country live-capture process answer different questions. Confirm that you are eligible for the e-services route before preparing the file, and do not present its pixel rule as a first-time office application requirement.",
     ]
   },
 
@@ -1014,6 +1022,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "The exception is a child under five. The Department states that a photograph IS required for children too young to sit still for the live capture, so that is the one case where preparing a print is the right thing to do.",
       "Because the photograph is normally taken for you, what matters at the centre is your appearance rather than a file: the enrollment photo is the one that goes in the passport. A tool like this is useful for the under-five exception or for checking framing before you go.",
       "The 35x45mm figures recorded here come from published guides rather than a Department page stating them, and are marked as needing confirmation. Confirm against the enrollment centre or mission handling your application.",
+      "No digital KB or pixel limit is displayed because the ordinary ePassport route captures the image at enrollment. Inventing an upload cap for a process with no applicant upload would turn a compatibility tool into a false application step.",
+      "For the under-five exception, ask the enrollment centre or mission whether it wants a print and what current dimensions apply before producing copies. The Department source confirms the exception but does not establish every numeric field recorded from secondary guides here.",
     ],
   },
 
@@ -1126,9 +1136,12 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "https://www.visaforchina.cn/SYD3_EN/qianzhengyewu/jichuzhishi/changjianwenti/355135188537315328.html",
     verified: "aggregator",
     applicationNotes: [
-      "China publishes two RANGES rather than one size: 354 to 420 pixels wide and 472 to 560 pixels high. Reading them as a single pair gives 354 x 420, which is 52 pixels short of the minimum accepted height — a mistake worth avoiding because the file looks correct until it is refused.",
+      "China publishes two RANGES rather than one size: 354 to 420 pixels wide and 472 to 560 pixels high. Reading them as a single pair gives 354 x 420, which is 52 pixels short of the recorded minimum height and outside the range.",
       "The print is a distinctive 33 x 48 mm rather than the usual 35 x 45, and the digital upload is 3:4 rather than the print's proportion, so the two are genuinely different shapes.",
       "The Visa Application Service Centre states the printed size and asks for glossy photo paper; the pixel ranges and the 40-120 KB band come from published guides rather than that page, so confirm them on the consulate or COVA portal.",
+      "Both ends of the digital range preserve 3:4 exactly: 354 divided by 472 and 420 divided by 560 each equal 0.75. The 33 x 48 mm print is narrower at 0.6875, so one crop cannot satisfy both by changing resolution alone.",
+      "Converting the 33 x 48 mm print directly at 300 DPI gives about 390 x 567 pixels. Its height exceeds the recorded 560-pixel digital maximum even though its width sits inside the width range, which is why the tool keeps print and upload geometry separate.",
+      "The recorded JPEG band spans 40 to 120 KB. Check all three properties after export — encoded format, dimensions and bytes — because meeting the pixel range does not establish that the file also sits inside the separate size band.",
     ]
   },
 
@@ -1169,8 +1182,12 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "https://www.ica.gov.sg/docs/default-source/ica/files/save-non-pub-ava_sp-user-guide-for-family-visa-application.pdf",
     verified: "gov",
     applicationNotes: [
-      "ICA's visa guide is stricter than its general photo page and the difference matters: a visa upload is exactly 400 x 514 pixels and under 60 KB, where the general guidance for passports and ID cards allows 8 MB. Preparing to the 8 MB figure produces a file a visa application refuses.",
+      "ICA's visa guide and its general photo page cover different workflows: a visa upload is exactly 400 x 514 pixels and under 60 KB, while the general guidance for passports and identity cards allows a much larger file. Use the visa guide for this preset rather than transferring the 8 MB figure across services.",
       "That 60 KB ceiling is tight for a 400 x 514 image, so compress deliberately and check the face is still clear rather than compressing blindly to the number.",
+      "The 400:514 canvas is almost the same proportion as a 35:45 print, so the reference crop needs little geometric change. It still needs an exact pixel export; assigning a DPI label to a 35 x 45 file does not create the required width and height.",
+      "ICA states a maximum of less than 60 KB and publishes no minimum. A clear file below the ceiling is within the recorded size rule; do not enlarge a smaller image merely to approach 60 KB or treat 60 KB as the requested final weight.",
+      "The visa photograph is scoped to a three-month recency window in the linked SAVE guide. That is shorter than the six-month language used by several other destinations, so check the capture date rather than reusing an older Schengen or passport photograph automatically.",
+      "The plain white background, exact canvas, JPEG encoding and byte ceiling are separate properties. Check them individually in the downloaded file, then compare the result with the current SAVE screen because the generic ICA identity-document page is not the governing upload instruction here.",
     ]
   },
 
@@ -1307,6 +1324,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     applicationNotes: [
       "Malaysia's 35 x 50 mm is unusual — taller than the 35 x 45 mm used almost everywhere else — so a standard passport crop is the wrong proportion and stretching it to fit distorts the face.",
       "Published guides agree the eVisa upload must be JPEG between roughly 10 and 120 KB, which is a tight band. No Immigration Department page states it, so check the limit shown on the eVisa form itself before submitting.",
+      "The recorded head-height band is 30 to 35 mm inside a 50 mm frame, which works out to 60 to 70 percent. That is a looser crop than the 70 to 80 percent framing recorded for the Schengen presets, so begin again from the original portrait rather than trimming an existing visa crop.",
+      "At a 300 DPI print reference, 35 x 50 mm converts to about 413 x 591 pixels. That calculated pair is useful for printing but is not a published Malaysia eVisa canvas; take any binding pixel requirement from the active malaysiavisa.imi.gov.my field.",
+      "White is the preset background. The record notes that light grey or cream appears in published guides, but no readable Immigration Department page was found to confirm those alternatives. Use the active form and its sample image to settle the shade for the route you are filing.",
+      "The 10 to 120 KB JPEG band also comes from published guides rather than the linked government landing page. The needs-review status is therefore substantive: it tells the reader which figures require an on-screen check instead of presenting every displayed value as first-party verified.",
+      "A 35 x 45 file has a width-to-height ratio of about 0.78; Malaysia's 35 x 50 is 0.70. Resizing one directly to the taller canvas would narrow the face. Crop with added vertical room from the original image and inspect the result without stretching.",
     ]
   },
 };

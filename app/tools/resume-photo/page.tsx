@@ -21,7 +21,7 @@ export const metadata = pageMetadata({
 const FAQ: FaqItem[] = [
   {
     q: "What size photo should I use on a resume?",
-    a: `Most Indian resumes, CVs and bio-data use a standard passport-size photo — ${mm.width}×${mm.height}mm (3.5×4.5cm). This tool crops to exactly that size with a clean background, so it is ready to print or paste.`,
+    a: `Use the dimensions requested by the employer or application. This preset produces a ${mm.width}×${mm.height}mm (3.5×4.5cm) portrait for a CV or bio-data that asks for a passport-style photograph; it is not a universal resume rule.`,
   },
   {
     q: "Should I smile in a resume photo?",
@@ -33,7 +33,7 @@ const FAQ: FaqItem[] = [
   },
   {
     q: "Do resumes in the US, UK or Canada need a photo?",
-    a: "No. In the US, UK, Canada and Australia, a photo is usually left off a resume to avoid bias, and many employers prefer it that way. Photos are common and often expected on resumes/CVs in India, much of Europe, the Middle East and parts of Asia.",
+    a: "Follow the employer's instructions and the hiring convention for the role and location. If no photograph is requested, do not add one merely because this tool is available; prepare a file only when the application or CV format calls for it.",
   },
   {
     q: "Is the resume photo maker free and private?",
@@ -98,6 +98,27 @@ export default function Page() {
           </Link>
         </div>
       </div>
+
+      <section className="mt-6 space-y-3 rounded-lg border border-hairline bg-paper p-5 sm:p-6">
+        <h2 className="text-base font-semibold tracking-tight">
+          Decide the destination before choosing the crop
+        </h2>
+        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          This page uses the India passport-style 35×45 mm canvas as a practical
+          CV and bio-data preset; no recruitment authority or employer is cited as
+          making that size universal. If a job portal publishes pixels, a square
+          profile image, an aspect ratio or a KB ceiling, use those fields instead.
+          Keep your original headshot so you can make each required crop without
+          stretching an already-exported file.
+        </p>
+        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          Check the downloaded image itself before attaching it: confirm the face
+          is not distorted, the background replacement has clean edges, and the
+          encoded dimensions match the application. The tool prepares the file in
+          your browser; it does not decide whether a photograph belongs on a
+          particular resume or whether an employer will accept one.
+        </p>
+      </section>
     </ToolPage>
   );
 }

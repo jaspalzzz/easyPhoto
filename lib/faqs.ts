@@ -43,15 +43,25 @@ export function portalRejectionReasons(spec: PortalSpec, hasSignature: boolean):
       ? "File size falls outside the published band."
       : "File size does not match the current application's displayed range.",
   ];
-  if (photoDimsPx(spec) || spec.photoAspectRatio) {
-    reasons.push("Photo does not match the published pixel canvas or aspect ratio.");
+  const photoDimensions = photoDimsPx(spec);
+  if (photoDimensions && spec.photoAspectRatio) {
+    reasons.push("Photo does not match the stored pixel canvas or aspect ratio.");
+  } else if (photoDimensions) {
+    reasons.push("Photo does not match the stored pixel canvas.");
+  } else if (spec.photoAspectRatio) {
+    reasons.push("Photo does not match the stored aspect ratio.");
   }
   if (spec.photoFormat || (hasSignature && spec.sigFormat)) {
     reasons.push("File format differs from the current application's accepted formats.");
   }
   if (hasSignature) {
-    if (sigDimsPx(spec) || spec.sigAspectRatio) {
-      reasons.push("Signature does not match the published canvas or aspect ratio.");
+    const signatureDimensions = sigDimsPx(spec);
+    if (signatureDimensions && spec.sigAspectRatio) {
+      reasons.push("Signature does not match the stored pixel canvas or aspect ratio.");
+    } else if (signatureDimensions) {
+      reasons.push("Signature does not match the stored pixel canvas.");
+    } else if (spec.sigAspectRatio) {
+      reasons.push("Signature does not match the stored aspect ratio.");
     }
     reasons.push("Signature is unclear or includes excess paper around the writing.");
   }
@@ -114,10 +124,10 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
         : `Upload your photo and the tool compresses it to the stored ${spec.name} target ${hasGeometry ? "and applies the recorded dimensions" : "without stretching or distorting it"}. Everything runs in your browser.`,
     },
     {
-      q: `Why do ${spec.name} photos${sigKb ? " and signatures" : ""} get rejected?`,
+      q: `What should I check before submitting ${spec.name} files?`,
       a: spec.isLiveCapture
-        ? `For a live photograph, follow the capture screen's lighting, framing and background instructions.${sigKb ? ` A separate signature can still fail when it falls outside ${sigKb}${spec.sigFormat ? ", uses an unsupported format" : ""}, is faint, or includes the paper edge.` : ""} This tool cannot validate the authority's live-photo step.`
-        : `Common upload problems include a file outside the ${photoKb}${sigKb ? ` photo / ${sigKb} signature` : ""} range${hasGeometry ? ", dimensions that do not match the recorded frame" : ""}${spec.photoFormat || (sigKb && spec.sigFormat) ? ", an unsupported format" : ""}${backgroundIssue}, or a blurry scan.${sigKb ? " A signature can also fail when it is faint or includes the paper edge." : ""} The tool checks measurable output properties; it cannot guarantee acceptance.`,
+        ? `For a live photograph, follow the capture screen's lighting, framing and background instructions.${sigKb ? ` Compare the separate signature with the stored ${sigKb} band${spec.sigFormat ? ` and ${spec.sigFormat} format` : ""}, then inspect whether it is clear and tightly cropped.` : ""} This tool cannot validate the authority's live-photo step.`
+        : `Compare the exported photo with the stored ${photoKb}${sigKb ? ` photo and ${sigKb} signature` : ""} bands${hasGeometry ? ", recorded geometry" : ""}${spec.photoFormat || (sigKb && spec.sigFormat) ? ", recorded formats" : ""}${backgroundIssue}, then inspect the image for blur and low contrast.${sigKb ? " Inspect the signature separately for faint strokes and excess paper." : ""} Confirm every stored value against the active form; the tool cannot predict acceptance.`,
     },
     {
       q: `Is this ${spec.name} resizer free and private?`,
@@ -154,22 +164,22 @@ export const PASSPORT_FAQ: FaqItem[] = [
 ];
 
 export const VISA_FAQ: FaqItem[] = [
-  { q: "What size is a visa photo?", a: "Most visa photos are 35×45mm, and US visas use 2×2 inches. Pick your destination and we apply the right size." },
+  { q: "What size is a visa photo?", a: "The size depends on the destination and application route. Pick the destination to load its recorded dimensions, then compare them with the current embassy, consulate or application-centre instructions." },
   { q: "What size is a US visa photo for DS-160?", a: "2×2 inches (51×51mm), square, on a white background. It's the same spec as the US passport photo." },
   { q: "What size is a Schengen visa photo?", a: "35×45mm, with the head taking up roughly 70–80% of the frame." },
-  { q: "What background should a Schengen visa photo have?", a: "Light grey is the safe universal choice. Some states accept white (France, for example), but Switzerland requires grey and won't accept white, so we default to light grey." },
-  { q: "What are the UK visa photo requirements?", a: "35×45mm, a plain light-grey or cream background, a neutral expression, and no glasses." },
+  { q: "What background should a Schengen visa photo have?", a: "There is no single safe shade for every member-state workflow. The generic preset uses light grey, but destination instructions differ; compare the result with the mission handling your application." },
+  { q: "What are the UK visa photo requirements?", a: "The requirement depends on the UK application route. For a route requesting a 35×45mm printed photo, use the linked UK guidance for its current background, expression and glasses rules rather than assuming another country's preset applies." },
   { q: "What size is a Canada visa photo?", a: "35×45mm for visitor visas and study or work permits. Permanent residence and Express Entry are a separate process specified in pixels rather than millimetres, and the printed Canadian passport booklet is different again at 50×70mm." },
   { q: "What size is an Australia visa photo?", a: "35–40mm wide by 45–50mm high on a plain light background. We use 35×45mm." },
   { q: "Can I use the same photo for my passport and visa?", a: "Check the visa's own rules before assuming so. Matching size and background is not always enough — the UK, for one, states the photo you submit must not be the one already in your passport or identity document. Where that applies, take a second photo to the same specification rather than reusing the print." },
-  { q: "Can I smile or wear glasses in a visa photo?", a: "Keep a neutral expression and take your glasses off, since most consulates require it." },
-  { q: "How do I upload a visa photo to VFS Global online?", a: "Use the digital file we generate. It's sized correctly and compressed under typical portal limits. Confirm the exact limit on your VFS page." },
+  { q: "Can I smile or wear glasses in a visa photo?", a: "Expression and glasses rules vary by destination. A neutral, unobstructed face is a conservative starting point, but follow the current instruction for the application you are making." },
+  { q: "How do I upload a visa photo to VFS Global online?", a: "Generate the destination preset, then compare its encoded format, pixel dimensions and KB size with the exact values shown on your current VFS upload screen. Resize only the fields that screen actually specifies." },
   { q: "Do I need a printed or digital visa photo?", a: "It depends on the consulate, so you get both a print-ready and an upload-ready file." },
   { q: "Is the visa photo maker free?", a: "Yes, completely free with no watermark." },
   { q: "Is my photo uploaded when I make a visa photo?", a: "No, it's processed entirely on your device." },
-  { q: "How recent does a visa photo need to be?", a: "Most countries require it to be taken within the last six months and to match how you currently look." },
-  { q: "What file format and size do online visa portals want?", a: "Usually a JPG under a set KB limit. Use the resize tool if your portal caps the file size." },
-  { q: "Why was my visa photo rejected?", a: "Common reasons include the wrong size, wrong background, glasses, smiling, shadows, or an old photo. Automated photo checks can flag measurable sizing and background issues but cannot assess every visual rule." },
+  { q: "How recent does a visa photo need to be?", a: "Recency windows vary. Check the destination's current instruction and use a photo that still represents your appearance." },
+  { q: "What file format and size do online visa portals want?", a: "Use the encoded format and KB or pixel limits displayed by the active portal. If it publishes a cap, the resize tools can target that value without inventing an unstated limit." },
+  { q: "Why was my visa photo rejected?", a: "Compare the actual file with the portal's stated dimensions, encoded format, KB band, background, expression and recency rules. Automated checks can inspect measurable properties but cannot predict an authority's decision." },
 ];
 
 export const PHOTO_RESIZE_FAQ: FaqItem[] = [
@@ -442,13 +452,13 @@ export function countryFaqItems(
     },
     schengen: {
       q: "Is the background the same for every Schengen country?",
-      a: "Light grey is the safest universal choice. Some states accept white (e.g. France) but Switzerland requires grey, so we default to light grey.",
+      a: "No. This generic preset uses light grey, but member-state missions publish their own accepted background examples. Check the current photo sheet for the consulate handling your application before submitting.",
     },
   };
 
   const items: FaqItem[] = [
     { q: `What size is a ${doc} photo for ${spec.label}?`, a: `A ${doc} photo for ${spec.label} is ${size}. EasyPhoto sets this size automatically.` },
-    { q: `What background colour does a ${doc} photo for ${spec.label} need?`, a: `${spec.background.description}. The tool applies the correct colour for you.` },
+    { q: `What background colour does a ${doc} photo for ${spec.label} need?`, a: `${spec.background.description}. The tool applies the recorded default; compare it with the linked current instructions before submitting.` },
     { q: `What is the head size in a ${doc} photo for ${spec.label}?`, a: `Your head should measure ${spec.headHeightMm.min}–${spec.headHeightMm.max}mm from chin to crown. We size it to that band and flag it if it's off.` },
     { q: `Can I wear glasses or smile in a ${doc} photo for ${spec.label}?`, a: `${glasses} Expression: ${spec.smileAllowed}.` },
     { q: `Is the ${spec.label} ${doc} photo maker free and private?`, a: "Yes. It's free, with no watermark, and processed entirely in your browser. Your photo is never uploaded." },

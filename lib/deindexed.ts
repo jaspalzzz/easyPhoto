@@ -30,6 +30,11 @@ export const DEINDEXED_PATHS: readonly string[] = [
   "/exam-requirements/irdai/",
   "/exam-requirements/appsc/",
   "/exam-requirements/dsssb/",
+  // The standalone SSC name/date route had zero clicks and one impression in
+  // the three-month GSC export to 2026-08-01. The more complete SSC page and
+  // general name/date tool remain indexed, so this duplicate route stays live
+  // and linked but is removed from the sitemap.
+  "/ssc-photo-with-name-date/",
   "/qatar-visa-photo-maker/",
   "/bahrain-visa-photo-maker/",
   // Country makers whose pages are almost entirely shared template. At a

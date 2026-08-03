@@ -13,15 +13,15 @@ const FAQ_ITEMS = [
   },
   {
     q: "What background colour does a Schengen visa photo need?",
-    a: "It varies by country: Germany requires neutral/light grey, Italy specifies white, France wants a plain light colour, and the Netherlands accepts grey, light blue or white. Light grey is the safe universal choice.",
+    a: "It varies by destination. Germany's sample sheet asks for a one-colour bright background, ideally neutral grey, with contrast against the face and hair. France asks for a plain light-coloured background, while the Netherlands lists light grey, light blue or white. Check the mission handling your application rather than treating one shade as universal.",
   },
   {
-    q: "Why does Germany reject white backgrounds?",
-    a: "German missions require a single, neutral light-grey background so the face separates cleanly for biometric checks; a pure-white photo is a common rejection. Use grey for any German (and most Schengen) application.",
+    q: "What does Germany's photo sheet say about the background?",
+    a: "It asks for a one-colour bright background, ideally neutral grey, with enough contrast against the face and hair. The cited sheet does not state a blanket ban on white, so use its contrast test and check the mission's current instructions.",
   },
   {
     q: "Is the Schengen photo the same for every country?",
-    a: "The size (35 × 45 mm) and face proportions are the same across the Schengen area, but the background-colour rule differs by country — that's the part most applicants get wrong.",
+    a: "The shared template is 35 × 45 mm with a 70–80% face band, but member-state instructions can differ on background colour and submission details. Confirm the destination mission's current page before submitting.",
   },
 ];
 
@@ -39,17 +39,17 @@ export default function Page() {
       <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
       <p>
         If you&apos;re applying for a Schengen visa or a European student/work
-        visa, the photo is one of the easiest things to get wrong — and one of the
-        most common reasons applications get held up. The good news: the size is
-        standardised across the Schengen area. The catch: the <strong>background
-        colour rule differs by country</strong>, and that&apos;s where people slip.
+        visa, start with the shared 35 × 45 mm format, then check the mission that
+        will handle the application. The <strong>background colour instruction can
+        differ by country</strong>, so the destination source matters just as much
+        as the common dimensions.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>Size is standard across Schengen: <strong>35 × 45 mm</strong>, face 70–80% of the frame, neutral expression, last 6 months.</li>
-          <li>The <strong>background colour varies by country</strong> — Germany wants grey and rejects white; Italy wants white.</li>
+          <li>The <strong>background instruction varies by country</strong> — Germany publishes a contrast-based rule and says neutral grey is ideal; other destinations publish different allowed shades.</li>
           <li><strong>Do not assume one background works everywhere.</strong> Follow the current embassy, consulate or application-centre instruction for your destination.</li>
         </ul>
       </div>
@@ -73,10 +73,11 @@ export default function Page() {
         <li><strong>Glasses:</strong> best avoided; no glare, no tint, frames clear of the eyes.</li>
       </ul>
 
-      <h2>The part that trips people up: background colour</h2>
+      <h2>Compare the destination&apos;s background instruction</h2>
       <p>
         All Schengen states follow ICAO, but they interpret the background
-        differently. Using the wrong shade is a top rejection cause:
+        differently. The table below records what each linked instruction says;
+        it is not a substitute for the mission&apos;s current application page:
       </p>
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
@@ -88,7 +89,7 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["Germany", "Neutral / light grey (not pure white)", "/germany-visa-photo-maker/", "https://www.germany.info/resource/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf"],
+            ["Germany", "One-colour bright; neutral grey ideal; contrast required", "/germany-visa-photo-maker/", "https://www.germany.info/resource/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf"],
             ["France", "Plain light-coloured", "/france-visa-photo-maker/", "https://france-visas.gouv.fr/documents/d/france-visas/iso_iec_fv_visa_photograph_requirements_en"],
             ["Italy", "White", "/italy-visa-photo-maker/", "https://italyvms.com/photo-requirements/"],
             ["Netherlands", "Light grey, light blue or white", "/netherlands-visa-photo-maker/", "https://www.netherlandsworldwide.nl/passport-id-card/photo-requirements"],
@@ -118,7 +119,7 @@ export default function Page() {
           {[
             ["Portal rejects the file before preview", "Check the portal's current JPG and KB rules; there is no EU-wide upload cap."],
             ["Head is cropped or too small", "Return to the 35×45 mm preset and keep chin-to-crown height within the registry's 32–36 mm band."],
-            ["White background rejected", "Use the destination country's published colour; Germany requires neutral/light grey while Italy specifies white."],
+            ["Background does not match the instruction", "Use the destination country's published colour and contrast rule; Germany calls neutral grey ideal but frames the rule around brightness and contrast."],
             ["Face looks stretched", "Crop to the 35:45 aspect ratio; do not force independent width and height scaling."],
           ].map(([failure, fix]) => <tr key={failure} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{failure}</td><td className="py-2">{fix}</td></tr>)}
         </tbody>
@@ -134,8 +135,8 @@ export default function Page() {
         uploaded.
       </p>
       <p>
-        Need to hit a specific upload size too? Most consulate/VFS portals cap the
-        file at a few hundred KB — use the{" "}
+        Need to hit a specific upload size too? If the current consulate or VFS
+        page publishes a KB cap, use the{" "}
         <Link href="/tools/resize-kb/">compress-to-KB tool</Link> on the finished
         photo. Always confirm the exact requirement on your consulate or VFS portal
         before submitting. For photo dimensions across all passport and visa types,

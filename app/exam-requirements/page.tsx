@@ -14,7 +14,7 @@ export const metadata = pageMetadata({
   title: "Exam Photo & Signature Size Requirements 2026 — India",
   titleAbsolute: true,
   description:
-    "Photo and signature size, dimensions and file-size limits for 30+ Indian exam & recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA (NEET/JEE), RBI, NABARD, LIC, and State PSCs (RPSC, TNPSC, KPSC, UPPSC, BPSC and more). Each linked to its official source. Resize free in your browser.",
+    "Photo and signature size, dimensions and file-size limits for 30+ Indian exam and recruitment forms. See each named source and its verification status, then confirm the active form before resizing.",
   path: "/exam-requirements/",
 });
 
@@ -51,7 +51,7 @@ export default function Page() {
           collectionPageSchema({
             name: "Exam Photo & Signature Size Requirements 2026",
             description:
-              "Photo and signature size, dimensions and file-size limits for 30+ Indian exam & recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA and State PSCs. Each linked to its official source.",
+              "Photo and signature size, dimensions and file-size limits for 30+ Indian exam and recruitment forms, with a named source and verification status for each entry.",
             url: "/exam-requirements/",
           }),
         ]}
@@ -86,6 +86,42 @@ export default function Page() {
           </Link>
         </p>
       </header>
+
+      <section className="rounded-lg border border-hairline bg-paper p-5 sm:p-6">
+        <h2 className="text-base font-semibold tracking-tight">
+          How to read this requirements directory
+        </h2>
+        <div className="mt-3 max-w-3xl space-y-3 text-sm leading-relaxed text-muted-foreground">
+          <p>
+            A page marked verified means the displayed fields were checked against
+            the named first-party document on the recorded review date. It does not
+            promise acceptance or make the numbers permanent: recruitment notices
+            are cycle-specific, and an authority can replace its upload rules.
+          </p>
+          <p>
+            A needs-review page is deliberately narrower. It identifies which
+            workflow the public source confirms and which stored values remain
+            compatibility defaults because the current limits appear only after
+            sign-in, inside an image-only notice, or on an unavailable document.
+            Read that warning before opening the resizer; the active form wins when
+            it disagrees with a compatibility value.
+          </p>
+          <p>
+            Treat KB, pixels, physical dimensions and encoded format as separate
+            checks. A file can be below a byte ceiling while using the wrong canvas,
+            and renaming an extension does not convert its encoded data. Pages omit
+            a field when the cited source does not publish it instead of borrowing
+            a familiar value from another exam.
+          </p>
+          <p>
+            The embedded tools prepare measurable file properties in your browser.
+            They cannot complete a live-camera step, read a private application
+            screen or predict an authority&apos;s decision. Keep the original photo and
+            signature so you can re-export them if the current portal displays a
+            different band during your application.
+          </p>
+        </div>
+      </section>
 
       {grouped.map((group) => (
         <section key={group.cat} className="space-y-3">

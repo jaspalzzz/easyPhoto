@@ -42,13 +42,13 @@ const ROWS: CompRow[] = [
   {
     Icon: IndianRupee,
     label: "Cost",
-    studio: { sub: "You pay for each visit",            primary: "Varies",       secondary: "by provider",    kind: "bad"   },
+    studio: { sub: "Pricing depends on the provider",   primary: "Varies",       secondary: "by provider",    kind: "bad"   },
     easy:   { sub: "100% free to use",                  primary: "FREE",         secondary: "Always",         kind: "good"  },
   },
   {
     Icon: Clock,
     label: "Turnaround Time",
-    studio: { sub: "You wait in queue",                 primary: "30 – 60",      secondary: "minutes",        kind: "bad"   },
+    studio: { sub: "Timing depends on the provider",    primary: "Varies",       secondary: "by provider",    kind: "bad"   },
     easy:   { sub: "Runs in your browser",             primary: "On device",     secondary: "Time varies",     kind: "good"  },
   },
   {
@@ -60,31 +60,31 @@ const ROWS: CompRow[] = [
   {
     Icon: RotateCcw,
     label: "Re-take / Retry",
-    studio: { sub: "Extra charge for mistakes",         primary: "Yes",          secondary: "Pay again",      kind: "bad"   },
+    studio: { sub: "Retake policy depends on provider", primary: "Ask",          secondary: "before booking", kind: "bad"   },
     easy:   { sub: "Unlimited re-takes",                primary: "Unlimited",    secondary: "Always free",    kind: "good"  },
   },
   {
     Icon: ShieldCheck,
     label: "Pre-submission photo check",
-    studio: { sub: "No spec check before printing",     primary: "✗",            kind: "cross" },
+    studio: { sub: "Ask which checks are included",     primary: "Ask",          kind: "bad" },
     easy:   { sub: "Checks run before you download",    primary: "✓",            kind: "check" },
   },
   {
     Icon: Layers,
     label: "Background Removal",
-    studio: { sub: "May not be available",              primary: "✗",            kind: "cross" },
+    studio: { sub: "Ask whether this is included",      primary: "Ask",          kind: "bad" },
     easy:   { sub: "Automated background removal",       primary: "✓",            kind: "check" },
   },
   {
     Icon: Globe,
     label: "Country / Exam Specs",
-    studio: { sub: "Limited or unknown",                primary: "Few",          secondary: "Limited",        kind: "bad"   },
-    easy:   { sub: "26+ countries & all major exams",   primary: "26+",          secondary: "Countries",      kind: "gold"  },
+    studio: { sub: "Ask which specifications are used", primary: "Ask",          secondary: "the provider",   kind: "bad"   },
+    easy:   { sub: "Named country and exam records",    primary: "Linked",       secondary: "Sources",        kind: "gold"  },
   },
   {
     Icon: Lock,
     label: "Photo Privacy",
-    studio: { sub: "Stored by studio",                  primary: "At Risk",      secondary: "Stored offline", kind: "bad"   },
+    studio: { sub: "Ask how files are handled",         primary: "Ask",          secondary: "the provider",   kind: "bad"   },
     easy:   { sub: "Never uploaded. 100% private",      primary: "✓",            kind: "check" },
   },
 ];

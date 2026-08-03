@@ -298,15 +298,15 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
 
   "schengen-visa-photo-maker": {
     intro:
-      "A Schengen visa photo is 35×45mm and follows the ICAO biometric standard used across all 29 Schengen countries. Light grey is the safe background. Some states accept white, but Switzerland requires grey, and your face should fill about 70–80% of the frame. This maker sets all of it automatically.",
+      "A Schengen visa photo uses the 35×45mm frame recorded here, with the face at about 70–80% of the image. This generic maker defaults to light grey, but member-state missions can publish different background examples, so confirm the destination consulate's current sheet.",
     sections: [
       {
         h: "Schengen / ICAO photo specification",
         p: "Schengen visa photos are 35×45mm, taken recently, with the face filling roughly 70–80% of the frame and measuring 32–36mm chin to crown. The ICAO biometric standard requires a neutral expression, mouth closed, both eyes open and visible, and no glasses. Even lighting with no shadows is essential.",
       },
       {
-        h: "Background: light grey, not white",
-        p: "Some states officially accept white (France, for example), but others are stricter. Switzerland requires a grey background and rejects pure white. A plain light grey is the safest universal choice across the Schengen area, and this maker defaults to it so one photo works for any member state.",
+        h: "Background: check the handling mission",
+        p: "This maker uses a plain light-grey background as its generic default. That is a tool choice, not a claim that every Schengen mission mandates or accepts the same shade. Compare the preview with the current photo guidance published by the consulate or visa centre handling your application.",
       },
       {
         h: "One photo for any Schengen country",

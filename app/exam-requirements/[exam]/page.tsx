@@ -270,7 +270,7 @@ export default async function Page({
       {spec.applicationNotes && spec.applicationNotes.length > 0 && (
         <section className="space-y-3 border-t border-hairline pt-8">
           <h2 className="text-lg font-semibold">
-            What {spec.name.split(" (")[0]} does with the photo after you upload it
+            Application-specific notes for {spec.name.split(" (")[0]}
           </h2>
           <ul className="max-w-2xl space-y-3 text-sm leading-relaxed text-muted-foreground">
             {spec.applicationNotes.map((note) => (
@@ -829,9 +829,9 @@ export default async function Page({
         </section>
       )}
 
-      {/* Common rejection reasons — unique, useful, links the requirement to the fix */}
+      {/* Stored-field checks generated only from fields this record carries. */}
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Why {spec.name.split(" (")[0]} uploads get rejected</h2>
+        <h2 className="text-lg font-semibold">What to check before submitting {spec.name.split(" (")[0]} files</h2>
         <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
           {portalRejectionReasons(spec, !!sig).map((r) => (
             <li key={r} className="flex items-start gap-2">
