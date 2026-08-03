@@ -47,6 +47,18 @@ function normalise(text: string): string {
 
 const BANNED: Array<{ label: string; pattern: RegExp }> = [
   {
+    // HM Passport Office's photographic standard accepts a photo taken against
+    // ANY plain light background, and names "different shades of white (cream,
+    // ivory or vanilla) and light grey" as examples. The claim that the UK
+    // rejects white appeared in eleven places across this site and was wrong in
+    // every one; a reader could have discarded a valid photo because of it.
+    // Written as a pattern rather than a fixed string because it was phrased a
+    // different way almost every time.
+    label: "false claim that the UK rejects a white background",
+    pattern:
+      /(?:uk|hm passport office|passport office)[^.]{0,80}(?:not white|rejects?\s+(?:pure\s+)?white|no\s+white|never\s+white)|(?:not white|rejects?\s+(?:pure\s+)?white)[^.]{0,60}(?:uk|hm passport office)/i,
+  },
+  {
     label: "exact size/dimensions/KB bundle",
     pattern: /exact\s+size\s*(?:,|and|&)\s*dimensions(?:\s*(?:,|and|&)\s*(?:kb|file[- ]?size))?/i,
   },

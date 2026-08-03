@@ -305,7 +305,7 @@ export default function ToolsHubPage() {
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">🇬🇧 UK Passport Photo</span>
-            <span className="text-muted-foreground leading-normal">35×45mm, light grey (not white)</span>
+            <span className="text-muted-foreground leading-normal">35×45mm, any plain light background</span>
           </Link>
           <Link
             href="/canada-passport-photo/"

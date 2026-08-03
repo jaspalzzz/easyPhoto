@@ -161,7 +161,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
 
   "uk-passport-photo-maker": {
     intro:
-      "A UK passport photo is 35×45mm, and here's the part people miss: the background has to be light grey or cream, not white. This maker applies the correct background for HM Passport Office and sizes your head to the required band automatically.",
+      "A UK passport photo is 35×45mm on a plain light-coloured background. HM Passport Office names shades of white, cream, ivory and light grey as acceptable examples, so a white background is fine, despite how often the opposite is asserted elsewhere. This maker applies a light background and sizes your head to the required band.",
     sections: [
       {
         h: "Why a UK passport photo isn't white",
@@ -183,7 +183,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
     faqs: [
       {
         q: "Why can't a UK passport photo have a white background?",
-        a: "HM Passport Office requires a plain light grey or cream background, and pure white is a frequent rejection reason. The tool applies the correct light background for you.",
+        a: "HM Passport Office asks for a plain light-coloured background and gives shades of white, cream, ivory and light grey as examples, so white is acceptable. The tool applies a light background for you. Note that the gov.uk digital service also asks for an unedited photo, so a replaced background suits a printed application rather than the online photo code.",
       },
       {
         q: "What size is a UK passport photo?",

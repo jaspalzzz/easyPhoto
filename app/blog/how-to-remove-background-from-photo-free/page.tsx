@@ -176,7 +176,7 @@ export default function Page() {
             ["Aadhaar update (in-person)", "Captured live at centre — white background used on-site"],
             ["UPSC / IBPS prepared-photo forms", "Use the background stated in the current notice"],
             ["SSC current forms", "Photo captured live — prepare the setting, not a background-edited file"],
-            ["Schengen / UK visa", "Grey or cream (not white) — see country guide"],
+            ["Schengen visa", "Grey or cream — some consulates reject white"],
           ].map(([doc, bg]) => (
             <tr key={doc} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{doc}</td>
@@ -317,7 +317,7 @@ export default function Page() {
         <Link href="/blog/passport-photo-background-color/" className="text-brand underline">
           passport photo background colour guide
         </Link>{" "}
-        — some countries (UK, Schengen) require grey or cream, not white.
+        — some Schengen consulates require grey or cream rather than white. The UK accepts any plain light colour.
       </p>
 
       <div className="mt-12">

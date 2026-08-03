@@ -328,7 +328,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     headHeightMm: { min: 29, max: 34 }, // chin to crown
     headPercentOfFrame: { min: 65, max: 75 }, // head + top of shoulders
     background: {
-      description: "Plain light grey or cream — NOT white (top UK rejection cause)",
+      description: "Any plain light colour — light grey, cream, ivory or white",
       hex: "#EFEAD9", // light cream
       acceptableHex: ["#EFEAD9", "#DCDCDC"], // cream or light grey
     },
@@ -342,7 +342,15 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     glasses: "remove if possible",
     smileAllowed: "neutral only (biometric)",
     notes:
-      "Do NOT default UK to a white background — light grey/cream only. " +
+      "⚠ CORRECTION: this record previously said white was rejected. HM Passport " +
+      "Office's published standard accepts a photo taken against ANY plain light " +
+      "background, giving 'different shades of white (cream, ivory or vanilla) " +
+      "and light grey' as examples. White is acceptable. Light grey is used as " +
+      "the default here because it also satisfies Schengen states that do reject " +
+      "white, not because the UK requires it. Separately, the gov.uk digital " +
+      "service requires the photo to be 'unedited' — a digitally replaced " +
+      "background does not meet that, so this preset is for preparing a print " +
+      "or checking framing, not for claiming the online code will accept it. " +
       "Online flow issues a 'digital photo code' the user enters on gov.uk.",
     source: "https://www.gov.uk/photos-for-passports",
     // Verified 2026-06 vs gov.uk/photos-for-passports/photo-requirements: 45x35mm,

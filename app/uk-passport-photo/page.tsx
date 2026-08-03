@@ -24,11 +24,11 @@ const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "What background colour does a UK passport photo need?",
-    a: "A plain light grey or cream background — NOT white. Pure white is one of the most common reasons UK passport photos are rejected by HM Passport Office.",
+    a: "Any plain light colour. HM Passport Office's published standard gives \"different shades of white (cream, ivory or vanilla) and light grey\" as examples, so a white background is acceptable. Many photo sites state the opposite; the published standard does not support them. What matters is that the background is plain, light and free of texture or pattern."
   },
   {
-    q: "Why does a UK passport photo need a grey background?",
-    a: "HM Passport Office requires a plain, pale grey or cream background for biometric photo processing. White backgrounds can wash out against fair skin and cause automated checks to fail.",
+    q: "Does a UK passport photo have to be grey rather than white?",
+    a: "No. HM Passport Office accepts any plain light-coloured background and names shades of white alongside light grey. A mid or dark grey would fail, and so would a patterned or textured wall, but choosing white is not itself a reason for rejection. A slightly off-white or light grey wall can still be the easier choice in practice, because it keeps your outline visible if you are wearing a pale top.",
   },
   {
     q: "Can I take a UK passport photo at home?",
@@ -86,9 +86,10 @@ export default function Page() {
           UK Passport Photo Requirements 2026
         </h1>
         <p className="text-base leading-relaxed text-muted-foreground max-w-2xl">
-          HM Passport Office requires a <strong>35×45mm photo on a light grey or cream background</strong> —
-          not white. The head must measure 29–34mm chin to crown, with a neutral expression and no
-          glasses. This is the most frequently misunderstood requirement, and it is the top rejection reason.
+          HM Passport Office requires a <strong>35×45mm photo on a plain light-coloured background</strong>.
+          Its published standard names &ldquo;different shades of white (cream, ivory or vanilla) and light
+          grey&rdquo; as acceptable, so white is fine — despite how often the opposite is repeated. The head must
+          measure 29–34mm chin to crown, with a neutral expression and no glasses.
         </p>
       </header>
 
@@ -117,7 +118,7 @@ export default function Page() {
             ["Size", "35 × 45 mm"],
             ["Head height", "29–34 mm chin to crown"],
             ["Head fill", "65–75% of the photo frame"],
-            ["Background", "Plain light grey or cream — NOT white"],
+            ["Background", "Any plain light colour (white, cream, ivory, light grey)"],
             ["Expression", "Neutral, mouth closed, eyes open"],
             ["Glasses", "Not permitted (remove unless medically necessary)"],
             ["Digital size (online)", "Min 600 × 750 px, 50 KB – 10 MB, JPEG"],
@@ -136,14 +137,29 @@ export default function Page() {
       {/* Sections */}
       <section className="space-y-8">
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold">The grey background rule — the most common rejection</h2>
+          <h2 className="text-lg font-semibold">The background rule, and a myth about it</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Many people assume passport photos need a white background — that is the US and Indian
-            standard — but UK HM Passport Office specifically requires{" "}
-            <strong>plain light grey or cream</strong>. Pure white is explicitly listed as a reason
-            photos are rejected. A light grey background also works better with biometric face
-            detection, particularly for lighter skin tones where white backgrounds reduce contrast.
-            This maker applies the correct light cream/grey background for you automatically.
+            A great many photo sites — including, until recently, this one — tell you the UK will
+            turn down a white background and insists on grey. The published photographic standard
+            says the opposite: a photo may be taken{" "}
+            <strong>against any plain background that is any light colour</strong>, and the examples
+            it gives are &ldquo;different shades of white (cream, ivory or vanilla) and light grey&rdquo;.
+            White is acceptable. What fails is a background that is dark, coloured, patterned or
+            textured, or one where a shadow falls behind your head.
+          </p>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            There is still a practical case for a light grey or cream wall: it keeps your outline
+            visible if you are wearing a white or very pale top, which a pure white background does
+            not. That is a reason to prefer it, not a rule. This maker applies a light background for
+            you, and you can pick the shade.
+          </p>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            One caveat worth knowing before you use any editing tool for a UK application: the gov.uk
+            digital photo service asks for a photo that is{" "}
+            <strong>unedited</strong> — in its words, you cannot &ldquo;correct&rdquo; your passport
+            photo. A digitally replaced background is an edit. Use this to prepare a printed photo or
+            to check your framing and head size; for the online photo code, photograph yourself
+            against a suitable wall instead.
           </p>
         </div>
 

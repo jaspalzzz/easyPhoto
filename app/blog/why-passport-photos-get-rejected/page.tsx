@@ -169,7 +169,7 @@ export default function Page() {
           {[
             ["India", "35 × 45 mm", "Plain white"],
             ["United States", "2 × 2 in (51 × 51 mm)", "White / off-white"],
-            ["United Kingdom", "35 × 45 mm", "Light grey or cream (not white)"],
+            ["United Kingdom", "35 × 45 mm", "Any plain light colour, white included"],
             ["Canada", "35 × 45 mm", "Plain white / light"],
             ["Australia", "35 × 45 mm", "White or light grey"],
             ["Schengen", "35 × 45 mm", "Light grey (safe default)"],

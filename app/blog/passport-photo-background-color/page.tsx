@@ -47,7 +47,7 @@ export default function Page() {
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li><strong>White / off-white:</strong> US, Canada and Australia; India&apos;s under-four print and overseas ICAO guidance use white.</li>
-          <li><strong>Light grey or cream:</strong> the UK — <strong>pure white is rejected</strong>.</li>
+          <li><strong>Any plain light colour:</strong> the UK — HM Passport Office names shades of white, cream, ivory and light grey as acceptable, so <strong>white is not rejected</strong>.</li>
           <li><strong>Light grey:</strong> safest for Schengen (Switzerland rejects white).</li>
           <li>Whatever the colour, it must be a <strong>single even tone with no shadows</strong>.</li>
         </ul>
@@ -185,8 +185,8 @@ export default function Page() {
               a: "The US uses plain white or off-white. India's under-four print and overseas ICAO guidance use plain white; ordinary adult domestic applicants are photographed at the PSK/POPSK.",
             },
             {
-              q: "Why does the UK reject white passport-photo backgrounds?",
-              a: "UK rules require a plain light grey or cream background — pure white is one of the most common UK rejection reasons. Use grey or cream for any UK passport or visa photo.",
+              q: "Does a UK passport photo background have to be grey?",
+              a: "HM Passport Office asks for a plain background in any light colour and gives shades of white, cream, ivory and light grey as its own examples, so white is acceptable. Light grey is still a sensible default because it keeps your outline visible against a pale top, but it is not a requirement."
             },
             {
               q: "How do I remove a shadow behind my head?",

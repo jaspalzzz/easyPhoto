@@ -49,7 +49,7 @@ export default function Page() {
         <ul className="!mt-2 text-[15px]">
           <li>Most countries use <strong>35×45&nbsp;mm</strong>. The US uses <strong>2×2&nbsp;in (51×51&nbsp;mm)</strong>. Canada uses <strong>50×70&nbsp;mm</strong>.</li>
           <li>Head height (chin to crown) is a separate biometric requirement — not just how big the photo is.</li>
-          <li>Background colour varies: the UK requires light grey or cream, not white.</li>
+          <li>Background colour varies: the UK accepts any plain light colour, white included, while some Schengen consulates do want grey.</li>
         </ul>
       </div>
 

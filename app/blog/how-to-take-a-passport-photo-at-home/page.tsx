@@ -61,7 +61,7 @@ export default function Page() {
         <ul className="!mt-2 text-[15px]">
           <li>Stand half a metre from a plain wall; face a window for soft, even light — no flash.</li>
           <li>Neutral expression, mouth closed, both ears visible, no glasses.</li>
-          <li>Background colour depends on your country — the UK requires light grey, not white.</li>
+          <li>Background colour depends on your country — the UK accepts any plain light colour; some Schengen consulates want grey specifically.</li>
           <li>Upload to the <Link href="/passport-photo/" className="text-brand underline">passport photo maker</Link>, pick your country, and it crops and sets the background automatically.</li>
         </ul>
       </div>
@@ -97,7 +97,7 @@ export default function Page() {
           {[
             ["United States", "Plain white or off-white"],
             ["India", "Plain white"],
-            ["United Kingdom", "Light grey or cream (not white)"],
+            ["United Kingdom", "Any plain light colour (white, cream, light grey)"],
             ["Canada", "White"],
             ["Australia", "White or plain light grey"],
             ["Schengen (EU visa)", "Light grey preferred"],
