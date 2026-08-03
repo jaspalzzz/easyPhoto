@@ -193,8 +193,17 @@ const failures = results
   )
   .sort((a, b) => a.unique - b.unique);
 
+// Disclosure pages are exempt here for the same reason they are exempt from the
+// blocking floor: their job is to state a policy plainly and padding them would
+// make them worse. Counting them made the headline number 64 when only 60 pages
+// were actually actionable, and no amount of work would ever have cleared it.
 const belowTarget = results
-  .filter((r) => !r.missing && r.unique < targetUniqueWords)
+  .filter(
+    (r) =>
+      !r.missing &&
+      r.unique < targetUniqueWords &&
+      !DISCLOSURE_PAGES.has(r.route),
+  )
   .sort((a, b) => a.unique - b.unique);
 
 console.log(

@@ -39,7 +39,7 @@
 /gate-photo-resizer/ /exam-requirements/gate/ 301
 /ibps-photo-resizer/ /exam-requirements/ibps/ 301
 /lic-photo-resizer/ /exam-requirements/lic/ 301
-/nabard-photo-resizer/ /exam-requirements/nabard/ 301
+/nabard-photo-resizer/ /exam-requirements/ 301
 /nda-photo-resizer/ /exam-requirements/nda/ 301
 /nta-photo-resizer/ /exam-requirements/nta/ 301
 /pan-card-photo-resizer/ /exam-requirements/pan/ 301
@@ -60,7 +60,7 @@
 # dedicated */-photo-resizer/ pages above were retired successfully. The
 # counterpart pages embed the same resizer, so nothing is lost for the visitor.
 /tools/form-resizer/ccc-nielit/ /exam-requirements/ccc-nielit/ 301
-/tools/form-resizer/cisf/ /exam-requirements/cisf/ 301
+/tools/form-resizer/cisf/ /exam-requirements/ 301
 
 # Duplicate of /blog/indian-passport-photo-requirements/ (same PSK-capture vs
 # under-four-print split, 566 words, zero impressions). The surviving post
@@ -98,15 +98,15 @@
 /tools/form-resizer/rpsc/ /exam-requirements/rpsc/ 301
 /tools/form-resizer/tnpsc/ /exam-requirements/tnpsc/ 301
 /tools/form-resizer/kpsc/ /exam-requirements/kpsc/ 301
-/tools/form-resizer/appsc/ /exam-requirements/appsc/ 301
+/tools/form-resizer/appsc/ /exam-requirements/ 301
 /tools/form-resizer/tgpsc/ /exam-requirements/tgpsc/ 301
 /tools/form-resizer/wbpsc/ /exam-requirements/wbpsc/ 301
 /tools/form-resizer/gpsc/ /exam-requirements/gpsc/ 301
 /tools/form-resizer/hpsc/ /exam-requirements/hpsc/ 301
-/tools/form-resizer/nabard/ /exam-requirements/nabard/ 301
 /tools/form-resizer/lic/ /exam-requirements/lic/ 301
+/tools/form-resizer/nabard/ /exam-requirements/ 301
 /tools/form-resizer/niacl/ /exam-requirements/niacl/ 301
-/tools/form-resizer/irdai/ /exam-requirements/irdai/ 301
+/tools/form-resizer/irdai/ /exam-requirements/ 301
 /tools/form-resizer/cat/ /exam-requirements/cat/ 301
 /tools/form-resizer/clat/ /exam-requirements/clat/ 301
 /tools/form-resizer/army-agniveer/ /exam-requirements/army-agniveer/ 301
@@ -117,7 +117,7 @@
 /tools/form-resizer/voter-id/ /exam-requirements/voter-id/ 301
 /tools/form-resizer/cuet/ /exam-requirements/cuet/ 301
 /tools/form-resizer/kerala-psc/ /exam-requirements/kerala-psc/ 301
-/tools/form-resizer/dsssb/ /exam-requirements/dsssb/ 301
+/tools/form-resizer/dsssb/ /exam-requirements/ 301
 /tools/form-resizer/upsssc/ /exam-requirements/upsssc/ 301
 /tools/form-resizer/bsf/ /exam-requirements/bsf/ 301
 /tools/form-resizer/crpf/ /exam-requirements/crpf/ 301

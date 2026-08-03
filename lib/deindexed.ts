@@ -16,6 +16,22 @@
  * public/_headers by test/deindexed.test.ts.
  */
 export const DEINDEXED_PATHS: readonly string[] = [
+  // Zero impressions in the 55 days of Search Console history this property
+  // holds, and among the least differentiated pages on the site (70-99 words of
+  // their own inside 530-755 visible). Deindexed rather than padded, per the
+  // review guidance that filler on a cookie-cutter page makes it worse.
+  //
+  // REVERSIBLE AND EXPECTED TO BE REVERSED for the exam pages: recruitment
+  // traffic is seasonal and 55 days cannot show a notification cycle. When one
+  // of these boards publishes and demand appears, write its notice-sourced
+  // applicationNotes and take it back out of this list.
+  "/exam-requirements/nabard/",
+  "/exam-requirements/cisf/",
+  "/exam-requirements/irdai/",
+  "/exam-requirements/appsc/",
+  "/exam-requirements/dsssb/",
+  "/qatar-visa-photo-maker/",
+  "/bahrain-visa-photo-maker/",
   // Country makers whose pages are almost entirely shared template. At a
   // two-page sharing threshold these hold 37, 39 and 42 unshared words inside
   // ~500 visible ones, and they earn 0, 0 and 2 clicks in 90 days. Spain and

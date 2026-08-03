@@ -961,6 +961,12 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "page — re-check your application's notice before submitting.",
     source: "https://nepalpassport.gov.np",
     verified: "aggregator",
+    applicationNotes: [
+      "A Nepali passport application is normally submitted in person with PRINTED photographs, at a District Administration Office, the Department of Passports, or a Nepali mission abroad. Published guidance commonly says to bring two copies unless your own form states otherwise, so what you need here is a correctly sized print rather than a file compressed to a KB limit.",
+      "The machine-readable and e-passport routes both work to ICAO framing: 35 x 45 mm with the head 31 to 36 mm chin to crown, which is roughly 70 to 80% of the frame. A crop that leaves the head noticeably smaller than that band is the usual reason a photograph is sent back, and it is the part a print shop is least likely to check for you.",
+      "A selfie is not accepted. Published guidance is specific that the photograph must be evenly lit with no shadow across the face or behind the head and no glare, on a plain white background, taken within the last six months — conditions a phone held at arm's length rarely meets.",
+      "The figures recorded here come from published guides rather than a Department of Passports page we could open and read, so treat them as a starting point and confirm against the form you are handed. Nepal is one of the records on this site we have marked as needing that confirmation.",
+    ],
   },
 
   // ─────────────────────────────────────────────────────────────

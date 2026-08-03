@@ -89,6 +89,20 @@
 # together they were a third of the indexed inventory behind two "low value
 # content" rejections. `follow` so internal links still pass. The list is
 # lib/deindexed.ts; test/deindexed.test.ts fails if these drift apart.
+/exam-requirements/nabard/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/cisf/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/irdai/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/appsc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/dsssb/
+  X-Robots-Tag: noindex, follow
+/qatar-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/bahrain-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
 /spain-visa-photo-maker/
   X-Robots-Tag: noindex, follow
 /portugal-visa-photo-maker/

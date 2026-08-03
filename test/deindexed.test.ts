@@ -116,6 +116,30 @@ describe("deindexed pages", () => {
     }
   });
 
+  it("keeps every redirect line well-formed", () => {
+    // The deindexed-target check silently skips a line it cannot parse, so a
+    // corrupted rule passed it. A scripted edit once spliced two rules into
+    // "/tools//tools/form-resizer/nabard/ /exam-requirements/ 301/form-resizer/
+    // lic/ ..." and the suite stayed green. Malformed lines are dead rules.
+    const redirects = fs.readFileSync(
+      path.join(process.cwd(), "public", "_redirects"),
+      "utf8",
+    );
+    const malformed: string[] = [];
+    redirects.split("\n").forEach((line, index) => {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) return;
+      const parts = trimmed.split(/\s+/);
+      const ok =
+        parts.length === 3 &&
+        parts[0]!.startsWith("/") &&
+        (parts[1]!.startsWith("/") || parts[1]!.startsWith("http")) &&
+        ["200", "301", "302", "308"].includes(parts[2]!);
+      if (!ok) malformed.push(`line ${index + 1}: ${trimmed.slice(0, 90)}`);
+    });
+    expect(malformed, "malformed redirect rules").toEqual([]);
+  });
+
   it("never redirects to a deindexed page", () => {
     // A 301 is a canonicalisation signal. Aiming one at a noindexed page asks
     // Google to consolidate onto a URL it may not show — four retired
