@@ -218,6 +218,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     applicationNotes: [
       "The OCI photograph is SQUARE and its background must be plain light colour but NOT white, which is unlike most Indian document photographs and easy to get wrong if you reuse one. It is at least 51x51 mm with about 80% face coverage, no border, head and shoulders centred.",
       "Height and width must be equal, between 200x200 and 900x900 pixels, in JPEG or JPG up to 200 KB. A 35x45 mm passport crop cannot simply be reused: it is the wrong shape and, if it is on white, the wrong background.",
+      "An OCI photograph is uploaded rather than pasted, and the square shape means a standard passport print cannot be trimmed to fit — the head sits proportionally too large once you crop a 35x45mm image into a square. Start from the original photograph and crop square from it instead.",
     ]
   },
   rrb: {
@@ -291,6 +292,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The photograph you upload is not only checked at upload. IBPS captures your photograph and biometric data at stages of the selection process and matches the captured photo against the one in your application, and the notification tells candidates not to change their appearance from that photo. A picture taken years earlier, or one that no longer looks like you, becomes a problem at the centre rather than at the form.",
       "Your uploaded photograph is printed on the call letter, and you are asked to bring one additional photograph identical to it. The notification is explicit that candidates arriving without the photograph pasted on the call letter, or without that spare copy, will not be allowed to sit the examination. Print at least two copies of the same image you upload rather than a different sitting.",
       "A signature written in capital letters will not be accepted. This is stated separately from the file-size rule, so a signature file that is technically within the band can still be refused for how it is written. Sign in your ordinary running hand.",
+      "IBPS runs the common recruitment process for several participating banks at once, so one correctly prepared photograph and signature normally serve every bank inside that cycle. What changes between banks is the eligibility and the post, not the upload specification.",
     ],
   },
   sbi: {
@@ -465,6 +467,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "The photograph is 3.5 cm by 4.5 cm in formal dress, full face directly to camera, with no shadows and no red-eye, as .jpg or .jpeg up to 50 KB. It must carry nothing else: no watermark, no stamp, and no name of the mobile app used to scan it, which rules out most free scanner apps that brand their output.",
       "The file name itself is limited to ten characters. That is easy to miss and easy to fix before you upload.",
       "The signature is signed in black ink on blank white unlined paper.",
+      "Because the background must be a solid colour rather than white, a plain wall is rarely enough — most walls carry a gradient once photographed. A single-coloured sheet or a digitally replaced flat colour is the more reliable route, provided the result has no shadow across it.",
     ]
   },
 
@@ -581,6 +584,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "A live photograph capture is mandatory before the application can be submitted, taken through the device camera or by scanning a QR code with a phone. The prepared photograph you upload does not replace it.",
       "UPSC checks face coverage rather than only file size: the photograph must show about 75% face coverage, and the instruction sheet prints rejected samples whose only fault is that the face is too small in the frame. The file is jpg, saved as photo, on a plain white background, with the head centred and both ears visible.",
       "The don'ts are explicit: no uniform in the photograph, no dark or coloured glasses, no shadow on the face or the background, no hair across the eyes, and the photograph is not to be signed.",
+      "The photograph and the live capture are separate fields on the form and both must be completed. Candidates who prepare a careful upload and then rush the live capture end up with two images that do not resemble each other, which is the mismatch the examiner is looking for at the centre.",
     ]
   },
   cds: {
@@ -607,6 +611,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "A live photograph capture is mandatory before the application can be submitted, taken through the device camera or by scanning a QR code with a phone. Preparing an upload beforehand is still worth doing, but it fills a different field on the form.",
       "UPSC checks face coverage, not only file size: the photograph must show about 75% face coverage, and the instruction sheet prints rejected samples whose only fault is a face too small in the frame. The file is jpg, saved as photo, on a plain white background, head centred with both ears visible.",
       "Explicitly refused: a photograph in uniform, dark or coloured glasses, shadows on the face or behind it, hair across the eyes, and a photograph that has been signed.",
+      "A separate signature file accompanies the photograph and is subject to its own limit. Sign in your ordinary running hand on plain unlined paper and scan the signature area alone; a photograph of the whole sheet carries paper texture that survives compression badly and reads as a smudge at small sizes.",
     ]
   },
   afcat: {
@@ -1352,6 +1357,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     applicationNotes: [
       "The photograph must be recent in a specific sense: the notice names a month before which the photograph must not have been taken, so an image from an earlier application cycle is not reusable even if it still looks like you. Check the date named in the notification you are applying under.",
       "The recorded upload target here is unusually small at around 10 KB, which is well below the 100-200 KB most Indian applications allow. Compress carefully and check the face is still legible at that size rather than compressing to the number and submitting unseen.",
+      "Agniveer entries run in batches with their own advertisement each cycle, and the photograph date rule is tied to that cycle rather than to a rolling number of months. Read the date named in the notification you are applying under before deciding an existing photograph is recent enough.",
     ]
   },
 
