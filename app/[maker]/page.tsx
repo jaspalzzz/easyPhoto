@@ -11,6 +11,7 @@ import {
   MAKER_PAGES,
   getMakerPage,
   makerSpec,
+  labelWithDoc,
   type MakerKind,
 } from "@/lib/makerPages";
 import { getMakerContent } from "@/lib/makerContent";
@@ -59,10 +60,10 @@ export async function generateMetadata({
   // the reader to confirm it instead.
   const fromGovernment = spec.verified === "gov";
   const description = fromGovernment
-    ? `Exact ${spec.label} ${doc} photo requirements: ${mm.width}×${mm.height}mm, ${spec.background.description}. Make one free in your browser — nothing uploaded.`
-    : `${spec.label} ${doc} photo, recorded at ${mm.width}×${mm.height}mm, ${spec.background.description}. Confirm the current requirements before you apply. Free, in your browser — nothing uploaded.`;
+    ? `Exact ${labelWithDoc(spec.label, doc)} photo requirements: ${mm.width}×${mm.height}mm, ${spec.background.description}. Make one free in your browser — nothing uploaded.`
+    : `${labelWithDoc(spec.label, doc)} photo, recorded at ${mm.width}×${mm.height}mm, ${spec.background.description}. Confirm the current requirements before you apply. Free, in your browser — nothing uploaded.`;
   return pageMetadata({
-    title: `${spec.label} ${doc === "visa" ? "Visa" : "Passport"} Photo Size & Maker`,
+    title: `${labelWithDoc(spec.label, doc, doc === "visa" ? "Visa" : "Passport")} Photo Size & Maker`,
     description,
     path: `/${maker}/`,
   });
@@ -190,11 +191,11 @@ export default async function MakerPage({
           breadcrumbSchema([
             { name: "Home", path: "/" },
             { name: hub.name, path: hub.path },
-            { name: `${spec.label} ${doc} photo`, path: `/${maker}/` },
+            { name: `${labelWithDoc(spec.label, doc)} photo`, path: `/${maker}/` },
           ]),
           softwareApplicationSchema({
-            name: `${spec.label} ${Doc} Photo Maker`,
-            description: `Prepare a ${spec.label} ${doc} photo at the selected size and background in your browser, then confirm the current authority instructions.`,
+            name: `${labelWithDoc(spec.label, doc, Doc)} Photo Maker`,
+            description: `Prepare a ${labelWithDoc(spec.label, doc)} photo at the selected size and background in your browser, then confirm the current authority instructions.`,
             url: `/${maker}/`,
           }),
           faqSchema(faqItems),
@@ -215,11 +216,11 @@ export default async function MakerPage({
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">{Doc} photo bureau</span>
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
-          {spec.label} {Doc} Photo Maker
+          {labelWithDoc(spec.label, doc, Doc)} Photo Maker
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           {content?.intro ??
-            `Prepare a ${spec.label} ${doc} photo at ${mm.width}×${mm.height}mm with the selected background. Confirm the current authority instructions before submitting.`}
+            `Prepare a ${labelWithDoc(spec.label, doc)} photo at ${mm.width}×${mm.height}mm with the selected background. Confirm the current authority instructions before submitting.`}
         </p>
         <div className="spec flex flex-wrap items-center gap-x-3 gap-y-1 pt-0.5">
           <span>
@@ -281,7 +282,7 @@ export default async function MakerPage({
       <section className="grid gap-8 md:grid-cols-2">
         <div className="space-y-3">
           <h2 className="eyebrow">
-            {spec.label} {doc} photo specification
+            {labelWithDoc(spec.label, doc)} photo specification
           </h2>
           <SpecSheet spec={spec} />
         </div>

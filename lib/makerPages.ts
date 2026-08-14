@@ -107,6 +107,30 @@ export const primaryMakerPath = (id: string): string => {
   return visaPath(id); // fallback: no registered page (not expected for launch countries)
 };
 
+/**
+ * A country label joined to its document word, without repeating it.
+ *
+ * Most labels are a country ("United States") and the page appends the kind, so
+ * "United States Passport Photo Maker" reads correctly. A few labels already
+ * name the document — `COUNTRY_SPECS.schengen.label` is "Schengen Visa" —
+ * and appending blindly published "Schengen Visa Visa Photo Size & Maker" as
+ * the title, the h1 and the SoftwareApplication schema name on a live page.
+ *
+ * Compared on the final word, so any future label ending in "Visa" or
+ * "Passport" (e.g. an "India e-Visa" record) is handled by the same rule rather
+ * than by remembering to special-case it. `cased` carries the caller's
+ * capitalisation, because the same phrase appears in headings ("Visa") and in
+ * running prose ("visa").
+ */
+export function labelWithDoc(
+  label: string,
+  kind: MakerKind,
+  cased: string = kind,
+): string {
+  const lastWord = label.trim().split(/\s+/).pop()?.toLowerCase();
+  return lastWord === kind ? label : `${label} ${cased}`;
+}
+
 export const MAKER_PAGES: MakerPage[] = [
   ...PASSPORT_COUNTRIES.map((id) => ({
     slug: passportSlug(id),
