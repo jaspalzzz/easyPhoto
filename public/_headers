@@ -181,3 +181,64 @@
   X-Robots-Tag: noindex, follow
 /tools/watermark-pdf/
   X-Robots-Tag: noindex, follow
+
+# ── 2026-08-14: template pages with no measurable demand ───────────────────
+# 0 clicks and under 20 impressions in the 90 days to 2026-08-11. Not chosen
+# on length: each holds 301-481 unshared words and clears the 300 target.
+# Live and linked; `follow` so internal links still pass. Reversible — the
+# recruitment boards come back out when a notification window opens. The list
+# is lib/deindexed.ts; test/deindexed.test.ts fails if these drift apart.
+/exam-requirements/bpsc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/bsf/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/ccc-nielit/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/cds/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/crpf/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/ds160/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/epfo/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/fci/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/gate/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/gpsc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/hpsc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/itbp/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/kerala-psc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/kpsc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/lic/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/mpsc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/nda/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/nta/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/rbi/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/rpsc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/tnpsc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/ugc-net/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/upsssc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/wbpsc/
+  X-Robots-Tag: noindex, follow
+/india-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/japan-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/singapore-visa-photo-maker/
+  X-Robots-Tag: noindex, follow

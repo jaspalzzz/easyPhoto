@@ -82,6 +82,60 @@ export const DEINDEXED_PATHS: readonly string[] = [
   "/tools/transparent-signature/",
   "/tools/unlock-pdf/",
   "/tools/watermark-pdf/",
+  // ── 2026-08-14: the template family, cut on earnings rather than length ──
+  //
+  // Measured over the 90 days to 2026-08-11 (GSC) against the unshared-word
+  // audit: 69 template pages (47 exam detail + 22 country makers) drew 311
+  // clicks between them. The top ten took 291 of those — 94% — and 42 pages
+  // drew none at all.
+  //
+  // Length is not the discriminator and was not used. Every one of the 69
+  // clears the 300-unshared-word target; the pages below hold 301-481 unshared
+  // words each. They are removed because nothing finds them, which is the
+  // "site overall" judgement Google's core-update guidance asks for, not
+  // because they are thin.
+  //
+  // Threshold: zero clicks AND fewer than 20 impressions in 90 days. Together
+  // these 27 pages account for 0 clicks and ~110 impressions.
+  //
+  // REVERSIBLE, AND EXPECTED TO BE REVERSED for the recruitment boards. 90 days
+  // is one quarter and cannot show a notification cycle: a board that publishes
+  // in October reads as zero here. When one of these opens an application
+  // window, write its notice-sourced applicationNotes and take it back out of
+  // this list. The tools and specifications stay live and linked throughout.
+  //
+  // Each of these was the target of a 301 from the retired /exam-resizer/ and
+  // /tools/form-resizer/ routes. Those redirects are repointed to the
+  // /exam-requirements/ hub in the same commit, because a 301 aimed at a
+  // noindexed page asks Google to consolidate onto a URL it will not show.
+  "/exam-requirements/bpsc/",
+  "/exam-requirements/bsf/",
+  "/exam-requirements/ccc-nielit/",
+  "/exam-requirements/cds/",
+  "/exam-requirements/crpf/",
+  "/exam-requirements/ds160/",
+  "/exam-requirements/epfo/",
+  "/exam-requirements/fci/",
+  "/exam-requirements/gate/",
+  "/exam-requirements/gpsc/",
+  "/exam-requirements/hpsc/",
+  "/exam-requirements/itbp/",
+  "/exam-requirements/kerala-psc/",
+  "/exam-requirements/kpsc/",
+  "/exam-requirements/lic/",
+  "/exam-requirements/mpsc/",
+  "/exam-requirements/nda/",
+  "/exam-requirements/nta/",
+  "/exam-requirements/rbi/",
+  "/exam-requirements/rpsc/",
+  "/exam-requirements/tnpsc/",
+  "/exam-requirements/ugc-net/",
+  "/exam-requirements/upsssc/",
+  "/exam-requirements/wbpsc/",
+  // Country makers on the same rule: 0 clicks, 0-14 impressions in 90 days.
+  "/india-visa-photo-maker/",
+  "/japan-visa-photo-maker/",
+  "/singapore-visa-photo-maker/",
 ] as const;
 
 const DEINDEXED = new Set(DEINDEXED_PATHS);

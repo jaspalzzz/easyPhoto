@@ -36,19 +36,19 @@
 # so it's the correct target to inherit the legacy URLs' equity.
 /ctet-photo-resizer/ /exam-requirements/ctet/ 301
 /driving-licence-photo-resizer/ /exam-requirements/driving-licence/ 301
-/gate-photo-resizer/ /exam-requirements/gate/ 301
+/gate-photo-resizer/ /exam-requirements/ 301
 /ibps-photo-resizer/ /exam-requirements/ibps/ 301
-/lic-photo-resizer/ /exam-requirements/lic/ 301
+/lic-photo-resizer/ /exam-requirements/ 301
 /nabard-photo-resizer/ /exam-requirements/ 301
-/nda-photo-resizer/ /exam-requirements/nda/ 301
-/nta-photo-resizer/ /exam-requirements/nta/ 301
+/nda-photo-resizer/ /exam-requirements/ 301
+/nta-photo-resizer/ /exam-requirements/ 301
 /pan-card-photo-resizer/ /exam-requirements/pan/ 301
 /railway-photo-resizer/ /exam-requirements/rrb/ 301
-/rbi-photo-resizer/ /exam-requirements/rbi/ 301
+/rbi-photo-resizer/ /exam-requirements/ 301
 /sbi-po-photo-resizer/ /exam-requirements/sbi/ 301
 /ssc-photo-resizer/ /exam-requirements/ssc/ 301
 /ssc-signature-resizer/ /exam-requirements/ssc/ 301
-/tnpsc-photo-resizer/ /exam-requirements/tnpsc/ 301
+/tnpsc-photo-resizer/ /exam-requirements/ 301
 /upsc-photo-resizer/ /exam-requirements/upsc/ 301
 /upsc-signature-resizer/ /exam-requirements/upsc/ 301
 /voter-id-photo-resizer/ /exam-requirements/voter-id/ 301
@@ -59,7 +59,7 @@
 # A noindex discards the ranking signal; a 301 transfers it — which is how the
 # dedicated */-photo-resizer/ pages above were retired successfully. The
 # counterpart pages embed the same resizer, so nothing is lost for the visitor.
-/tools/form-resizer/ccc-nielit/ /exam-requirements/ccc-nielit/ 301
+/tools/form-resizer/ccc-nielit/ /exam-requirements/ 301
 /tools/form-resizer/cisf/ /exam-requirements/ 301
 
 # Duplicate of /blog/indian-passport-photo-requirements/ (same PSK-capture vs
@@ -77,33 +77,33 @@
 # resizer, so nothing is lost for the visitor.
 /tools/form-resizer/ssc/ /exam-requirements/ssc/ 301
 /tools/form-resizer/upsc/ /exam-requirements/upsc/ 301
-/tools/form-resizer/ds160/ /exam-requirements/ds160/ 301
+/tools/form-resizer/ds160/ /exam-requirements/ 301
 /tools/form-resizer/passport-seva/ /exam-requirements/passport-seva/ 301
 /tools/form-resizer/oci/ /exam-requirements/oci/ 301
 /tools/form-resizer/rrb/ /exam-requirements/rrb/ 301
 /tools/form-resizer/ibps/ /exam-requirements/ibps/ 301
 /tools/form-resizer/sbi/ /exam-requirements/sbi/ 301
-/tools/form-resizer/nta/ /exam-requirements/nta/ 301
-/tools/form-resizer/rbi/ /exam-requirements/rbi/ 301
+/tools/form-resizer/nta/ /exam-requirements/ 301
+/tools/form-resizer/rbi/ /exam-requirements/ 301
 /tools/form-resizer/ctet/ /exam-requirements/ctet/ 301
 /tools/form-resizer/uppsc/ /exam-requirements/uppsc/ 301
-/tools/form-resizer/bpsc/ /exam-requirements/bpsc/ 301
-/tools/form-resizer/mpsc/ /exam-requirements/mpsc/ 301
-/tools/form-resizer/gate/ /exam-requirements/gate/ 301
-/tools/form-resizer/ugc-net/ /exam-requirements/ugc-net/ 301
+/tools/form-resizer/bpsc/ /exam-requirements/ 301
+/tools/form-resizer/mpsc/ /exam-requirements/ 301
+/tools/form-resizer/gate/ /exam-requirements/ 301
+/tools/form-resizer/ugc-net/ /exam-requirements/ 301
 /tools/form-resizer/csir-net/ /exam-requirements/csir-net/ 301
-/tools/form-resizer/nda/ /exam-requirements/nda/ 301
-/tools/form-resizer/cds/ /exam-requirements/cds/ 301
+/tools/form-resizer/nda/ /exam-requirements/ 301
+/tools/form-resizer/cds/ /exam-requirements/ 301
 /tools/form-resizer/afcat/ /exam-requirements/afcat/ 301
-/tools/form-resizer/rpsc/ /exam-requirements/rpsc/ 301
-/tools/form-resizer/tnpsc/ /exam-requirements/tnpsc/ 301
-/tools/form-resizer/kpsc/ /exam-requirements/kpsc/ 301
+/tools/form-resizer/rpsc/ /exam-requirements/ 301
+/tools/form-resizer/tnpsc/ /exam-requirements/ 301
+/tools/form-resizer/kpsc/ /exam-requirements/ 301
 /tools/form-resizer/appsc/ /exam-requirements/ 301
 /tools/form-resizer/tgpsc/ /exam-requirements/tgpsc/ 301
-/tools/form-resizer/wbpsc/ /exam-requirements/wbpsc/ 301
-/tools/form-resizer/gpsc/ /exam-requirements/gpsc/ 301
-/tools/form-resizer/hpsc/ /exam-requirements/hpsc/ 301
-/tools/form-resizer/lic/ /exam-requirements/lic/ 301
+/tools/form-resizer/wbpsc/ /exam-requirements/ 301
+/tools/form-resizer/gpsc/ /exam-requirements/ 301
+/tools/form-resizer/hpsc/ /exam-requirements/ 301
+/tools/form-resizer/lic/ /exam-requirements/ 301
 /tools/form-resizer/nabard/ /exam-requirements/ 301
 /tools/form-resizer/niacl/ /exam-requirements/niacl/ 301
 /tools/form-resizer/irdai/ /exam-requirements/ 301
@@ -116,15 +116,15 @@
 /tools/form-resizer/driving-licence/ /exam-requirements/driving-licence/ 301
 /tools/form-resizer/voter-id/ /exam-requirements/voter-id/ 301
 /tools/form-resizer/cuet/ /exam-requirements/cuet/ 301
-/tools/form-resizer/kerala-psc/ /exam-requirements/kerala-psc/ 301
+/tools/form-resizer/kerala-psc/ /exam-requirements/ 301
 /tools/form-resizer/dsssb/ /exam-requirements/ 301
-/tools/form-resizer/upsssc/ /exam-requirements/upsssc/ 301
-/tools/form-resizer/bsf/ /exam-requirements/bsf/ 301
-/tools/form-resizer/crpf/ /exam-requirements/crpf/ 301
-/tools/form-resizer/itbp/ /exam-requirements/itbp/ 301
+/tools/form-resizer/upsssc/ /exam-requirements/ 301
+/tools/form-resizer/bsf/ /exam-requirements/ 301
+/tools/form-resizer/crpf/ /exam-requirements/ 301
+/tools/form-resizer/itbp/ /exam-requirements/ 301
 /tools/form-resizer/navy-agniveer/ /exam-requirements/navy-agniveer/ 301
-/tools/form-resizer/epfo/ /exam-requirements/epfo/ 301
-/tools/form-resizer/fci/ /exam-requirements/fci/ 301
+/tools/form-resizer/epfo/ /exam-requirements/ 301
+/tools/form-resizer/fci/ /exam-requirements/ 301
 /exam-resizer/ssc-cgl/ /exam-requirements/ssc/ 301
 /exam-resizer/ssc-chsl/ /exam-requirements/ssc/ 301
 /exam-resizer/ssc-gd/ /exam-requirements/ssc/ 301
@@ -144,8 +144,8 @@
 /exam-resizer/upsc-cse/ /exam-requirements/upsc/ 301
 /exam-resizer/upsc-nda/ /exam-requirements/upsc/ 301
 /exam-resizer/upsc-cds/ /exam-requirements/upsc/ 301
-/exam-resizer/neet/ /exam-requirements/nta/ 301
-/exam-resizer/jee-main/ /exam-requirements/nta/ 301
+/exam-resizer/neet/ /exam-requirements/ 301
+/exam-resizer/jee-main/ /exam-requirements/ 301
 /exam-resizer/cuet/ /exam-requirements/cuet/ 301
 /tools/form-resizer/ /exam-requirements/ 301
 /exam-resizer/ /exam-requirements/ 301
