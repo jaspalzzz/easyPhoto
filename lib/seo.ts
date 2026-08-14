@@ -17,6 +17,52 @@ export function absoluteUrl(path = "/"): string {
   return `${SITE_URL}${p}`;
 }
 
+/**
+ * Longest meta description Google will show before truncating the snippet.
+ *
+ * Not a ranking factor, but a description cut mid-clause reads as careless in
+ * the one place a searcher decides whether to click.
+ */
+export const META_DESCRIPTION_LIMIT = 160;
+
+/**
+ * First sentence of a spec field, without its trailing full stop.
+ *
+ * Registry prose is written for the page body, where length is free, so it
+ * ranges from "White or off-white" to a whole paragraph — Schengen's background
+ * description runs 150 characters on its own. Templates that inlined it whole
+ * produced a 246-character snippet, and a doubled full stop ("…handling the
+ * application.. Make one free…") because the field already ends in one and the
+ * template appended another.
+ */
+export function firstSentence(text: string): string {
+  const first = text.trim().split(/(?<=\.)\s+/)[0] ?? text;
+  return first.trim().replace(/\.+$/, "");
+}
+
+/**
+ * Trim to the snippet limit on a word boundary.
+ *
+ * A safety net, not the primary mechanism: templates should compose copy that
+ * already fits. This exists so a future registry entry with unusually long
+ * prose cannot silently push a description past the limit again.
+ */
+export function clampDescription(
+  text: string,
+  max = META_DESCRIPTION_LIMIT,
+): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  // Reserve one character for the ellipsis so the result is never over `max`.
+  const cut = clean.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  const body = (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).replace(
+    /[\s,;:—–-]+$/,
+    "",
+  );
+  return `${body}…`;
+}
+
 export interface PageMetaInput {
   /** Page title. By default the layout template appends "— easyPhoto". */
   title: string;

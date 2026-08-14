@@ -24,7 +24,7 @@ import {
   faqSchema,
   softwareApplicationSchema,
 } from "@/lib/schema";
-import { pageMetadata } from "@/lib/seo";
+import { clampDescription, firstSentence, pageMetadata } from "@/lib/seo";
 import { kbPath } from "@/lib/kbTargets";
 import { Faq } from "@/components/site/Faq";
 import { countryFaqItems } from "@/lib/faqs";
@@ -59,9 +59,16 @@ export async function generateMetadata({
   // exam presets had removed. Those pages describe what is recorded and tell
   // the reader to confirm it instead.
   const fromGovernment = spec.verified === "gov";
-  const description = fromGovernment
-    ? `Exact ${labelWithDoc(spec.label, doc)} photo requirements: ${mm.width}×${mm.height}mm, ${spec.background.description}. Make one free in your browser — nothing uploaded.`
-    : `${labelWithDoc(spec.label, doc)} photo, recorded at ${mm.width}×${mm.height}mm, ${spec.background.description}. Confirm the current requirements before you apply. Free, in your browser — nothing uploaded.`;
+  // Only the first sentence of the background prose, with its full stop
+  // removed: the registry field is written for the page body and runs to a
+  // paragraph on some records, which pushed 13 of these descriptions past the
+  // snippet limit and doubled the full stop before "Make one free".
+  const background = firstSentence(spec.background.description);
+  const description = clampDescription(
+    fromGovernment
+      ? `Exact ${labelWithDoc(spec.label, doc)} photo requirements: ${mm.width}×${mm.height}mm, ${background}. Free in your browser — nothing uploaded.`
+      : `${labelWithDoc(spec.label, doc)} photo, recorded at ${mm.width}×${mm.height}mm, ${background}. Confirm current requirements before applying. Free, in your browser.`,
+  );
   return pageMetadata({
     title: `${labelWithDoc(spec.label, doc, doc === "visa" ? "Visa" : "Passport")} Photo Size & Maker`,
     description,
