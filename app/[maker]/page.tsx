@@ -66,8 +66,8 @@ export async function generateMetadata({
   const background = firstSentence(spec.background.description);
   const description = clampDescription(
     fromGovernment
-      ? `Exact ${labelWithDoc(spec.label, doc)} photo requirements: ${mm.width}×${mm.height}mm, ${background}. Free in your browser — nothing uploaded.`
-      : `${labelWithDoc(spec.label, doc)} photo, recorded at ${mm.width}×${mm.height}mm, ${background}. Confirm current requirements before applying. Free, in your browser.`,
+      ? `Exact ${labelWithDoc(spec.label, doc)} photo requirements: ${mm.width}×${mm.height}mm, ${background}. Free, nothing uploaded.`
+      : `${labelWithDoc(spec.label, doc)} photo, recorded at ${mm.width}×${mm.height}mm, ${background}. Confirm current requirements. Free, nothing uploaded.`,
   );
   return pageMetadata({
     title: `${labelWithDoc(spec.label, doc, doc === "visa" ? "Visa" : "Passport")} Photo Size & Maker`,

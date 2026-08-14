@@ -53,6 +53,21 @@ describe("maker page meta descriptions", () => {
     expect(bad, "doubled full stops").toEqual([]);
   });
 
+  it("composes copy that fits without the clamp having to truncate it", async () => {
+    // The clamp is a safety net, and a net that is always catching hides the
+    // problem it was meant to backstop: with the full background prose inlined,
+    // every description still came in under the limit, but four of them ended
+    // mid-phrase on an ellipsis, and the doubled full stop was simply truncated
+    // away before anyone could see it. Asserting the net is never reached is
+    // what makes the length guard meaningful.
+    const truncated: string[] = [];
+    for (const page of MAKER_PAGES) {
+      const d = await descriptionFor(page.slug);
+      if (d.endsWith("…")) truncated.push(`/${page.slug}/ (${d.length} chars)`);
+    }
+    expect(truncated, "descriptions cut mid-phrase by the clamp").toEqual([]);
+  });
+
   it("still says something specific on every maker page", async () => {
     // A length guard is trivially satisfiable by emitting nothing useful.
     for (const page of MAKER_PAGES) {
