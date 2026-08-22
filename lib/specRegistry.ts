@@ -14,6 +14,7 @@ import {
   PORTAL_KEYS,
   type PortalSpec,
 } from "./portalPresets";
+import { isDeindexed } from "./deindexed";
 
 export type { PortalSpec, SpecSource, VerificationStatus } from "./portalPresets";
 
@@ -83,10 +84,22 @@ export function portalCategory(id: string): PortalCategory {
  * Related portals for cross-linking: same-category siblings first, then a few
  * from other categories to fill — so every exam page links to a topically
  * relevant cluster instead of the same fixed list.
+ *
+ * Excludes deindexed portals from the candidate pool before either half is
+ * built (not just filtered out of the final slice), so a category the cut
+ * hit hard still fills up to `limit` from elsewhere rather than falling
+ * short. This mattered in practice: after the 14 August cut, every one of
+ * the 23 still-indexed exam pages emitted at least one related link to a
+ * noindexed page, and state-PSC pages emitted six of six — the entire
+ * category had only 2 of 12 members left indexed, so filtering only the
+ * same-category pool and leaving `rest` unfiltered would still have handed
+ * uppsc and tgpsc a related list built mostly of dead PSC siblings.
  */
 export function relatedPortals(id: string, limit = 6): PortalSpec[] {
   const cat = portalCategory(id);
-  const all = allPortalSpecs().filter((s) => s.id !== id);
+  const all = allPortalSpecs().filter(
+    (s) => s.id !== id && !isDeindexed(`/exam-requirements/${s.id}/`),
+  );
   const same = all.filter((s) => portalCategory(s.id) === cat);
   const rest = all.filter((s) => portalCategory(s.id) !== cat);
   return [...same, ...rest].slice(0, limit);
