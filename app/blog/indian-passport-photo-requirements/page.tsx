@@ -139,7 +139,9 @@ export default function Page() {
         years: carry a recent passport-size colour photograph measuring{" "}
         <strong>4.5 × 3.5 cm (45 × 35 mm)</strong> with a{" "}
         <strong>white background</strong>. This confirmed printed dimension remains
-        valid and should not be presented as a requirement for every applicant.
+        valid and should not be presented as a requirement for every applicant. The{" "}
+        <Link href="/india-passport-photo-maker/">India passport photo maker</Link>{" "}
+        crops to this exact print size on-device.
       </p>
 
       <p>

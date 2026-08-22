@@ -148,9 +148,13 @@ export default function Page() {
       </p>
 
       <p>
-        easyPhoto prepares the 35×45 mm white-background print required for an
+        easyPhoto prepares the{" "}
+        <Link href="/india-passport-photo-maker/" className="text-brand underline">35×45 mm white-background print</Link>{" "}
+        required for an
         applicant below four. Ordinary adults are photographed at the PSK/POPSK,
-        so they do not submit this output. It&apos;s free with no account.
+        so they do not submit this output. For a foreign visa, the same{" "}
+        <Link href="/visa-photo/" className="text-brand underline">visa photo maker</Link>{" "}
+        covers 20+ countries. It&apos;s free with no account.
         Everything runs in your browser — the full-resolution image is never sent to a server. You
         can verify this yourself: open the browser&apos;s network tab and watch zero image uploads
         while the tool works.
@@ -158,8 +162,8 @@ export default function Page() {
 
       <p>
         The other reason to use easyPhoto over Visafoto for Indian applicants: it also handles
-        exam workflows. If you&apos;re applying for SSC CGL, IBPS PO, UPSC CSE, SBI PO, or another
-        listed exam, the tool distinguishes live capture from prepared files and applies stored KB targets
+        exam workflows. If you&apos;re applying for SSC CGL, IBPS PO, UPSC CSE, SBI PO, or another{" "}
+        <Link href="/exam-requirements/" className="text-brand underline">listed exam</Link>, the tool distinguishes live capture from prepared files and applies stored KB targets
         and published pixel dimensions where available. Confirm the current board notification before submitting. Visafoto has no exam
         portal presets at all.
       </p>

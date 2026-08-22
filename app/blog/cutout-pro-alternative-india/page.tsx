@@ -176,10 +176,13 @@ export default function Page() {
 
       <p>
         easyPhoto makes{" "}
-        <Link href="/blog/indian-passport-photo-requirements/" className="text-brand underline">the 35×45 mm under-four passport print</Link>{" "}
+        <Link href="/india-passport-photo-maker/" className="text-brand underline">the 35×45 mm under-four passport print</Link>{" "}
         on a white background for free, with no account and no server upload. Ordinary adult applicants are photographed at the PSK/POPSK. Every operation runs in
         your browser — you can verify this yourself by watching the network tab while the tool
-        processes your photo. No image upload request is sent.
+        processes your photo. No image upload request is sent. For the specific job Cutout.pro
+        does — swapping the backdrop on a photo you already have — the{" "}
+        <Link href="/tools/white-background/" className="text-brand underline">white background generator</Link>{" "}
+        runs the same replacement on-device.
       </p>
 
       <p>
@@ -187,7 +190,10 @@ export default function Page() {
         applications capture the photograph live, IBPS PO publishes a 20–50 KB,
         200×230 px prepared photo, and UPSC publishes 20–200 KB with no fixed photo pixels.
         The tool follows the stored workflow and applies published dimensions where available for{" "}
-        <Link href="/blog/exam-photo-signature-size-guide/" className="text-brand underline">the exam requirement guide</Link>.
+        <Link href="/exam-requirements/" className="text-brand underline">40+ Indian exam portals</Link>{" "}
+        — see the{" "}
+        <Link href="/blog/exam-photo-signature-size-guide/" className="text-brand underline">exam requirement guide</Link>{" "}
+        for the full list.
       </p>
 
       <h2>PassportSizePhoto.in — the strongest free passport-only alternative</h2>

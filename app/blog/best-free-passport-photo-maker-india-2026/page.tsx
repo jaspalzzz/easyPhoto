@@ -187,9 +187,10 @@ export default function Page() {
       </p>
 
       <p>
-        easyPhoto prepares the India 35×45 mm under-four print and passport photos for the US, UK, Canada, Schengen and 20+
-        other countries), resizes exam photos to selected KB targets and published pixel dimensions where available for 40+ Indian exam
-        portals (SSC, IBPS, UPSC, SBI, RRB, NTA and more), and handles PDF compression, signature
+        easyPhoto prepares the <Link href="/india-passport-photo-maker/">India 35×45 mm under-four print</Link> and passport photos for the US, UK, Canada, Schengen and 20+
+        other countries), resizes exam photos to selected KB targets and published pixel dimensions where available for the{" "}
+        <Link href="/exam-requirements/">40+ Indian exam
+        portals</Link> (SSC, IBPS, UPSC, SBI, RRB, NTA and more), and handles PDF compression, signature
         resize, and format conversion. Nothing is uploaded: every operation runs in your browser
         using WebAssembly. Each preset shows its named source and verification status; confirm
         the current portal instructions before submitting.
@@ -340,12 +341,12 @@ export default function Page() {
 
       <ul>
         <li>
-          <strong>Under-four passport print:</strong> easyPhoto or
+          <strong>Under-four passport print:</strong> <Link href="/india-passport-photo-maker/">easyPhoto</Link> or
           PassportSizePhoto.in can prepare a 35×45 mm crop without uploading your
           source image. Use a dedicated square preset for OCI.
         </li>
         <li>
-          <strong>SSC, IBPS, UPSC, SBI, RRB, NTA exam form:</strong> easyPhoto, the only tool
+          <strong>SSC, IBPS, UPSC, SBI, RRB, NTA exam form:</strong> <Link href="/exam-requirements/">easyPhoto</Link>, the only tool
           with verified KB and pixel targets per portal.
         </li>
         <li>

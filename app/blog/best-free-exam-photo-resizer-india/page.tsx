@@ -291,14 +291,16 @@ export default function Page() {
       </p>
 
       <p>
-        easyPhoto covers 40+ exam portals: less than ExamMint&apos;s 104+, more than
+        easyPhoto covers{" "}
+        <Link href="/exam-requirements/" className="text-brand underline">40+ exam portals</Link>: less than ExamMint&apos;s 104+, more than
         myexamphoto.in&apos;s ~13. Specification pages show a linked source where available,
         plus either a verification date or a needs-review notice.
       </p>
 
       <p>
-        Where easyPhoto covers different ground entirely: the 35×45 mm
-        under-four India passport print, separate overseas guidance, and passport
+        Where easyPhoto covers different ground entirely: the{" "}
+        <Link href="/india-passport-photo-maker/" className="text-brand underline">35×45 mm
+        under-four India passport print</Link>, separate overseas guidance, and passport
         photos for the US, UK, Canada, Schengen, and 20+ other countries. PDF
         compression for marksheets and certificates. Aadhaar masking. Format conversion (HEIC
         to JPG, WebP to JPG). If your application process involves a passport photo for ID
@@ -360,7 +362,7 @@ export default function Page() {
         </li>
         <li>
           <strong>You need exam photos AND passport photos AND PDFs from one place:</strong>{" "}
-          easyPhoto — the only tool in this set that covers all three.
+          <Link href="/tools/exam-package/" className="text-brand underline">easyPhoto</Link> — the only tool in this set that covers all three.
         </li>
         <li>
           <strong>You are applying for a Punjab or regional state PSC exam:</strong>{" "}
