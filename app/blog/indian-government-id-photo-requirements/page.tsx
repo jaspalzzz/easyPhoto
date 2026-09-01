@@ -335,7 +335,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Check before you upload:</strong> Run it through the{" "}
-          <Link href="/tools/photo-validator/" className="text-brand underline">
+          <Link href="/tools/compliance-checker/" className="text-brand underline">
             photo validator
           </Link>{" "}
           to confirm size, format and dimensions before the portal does.

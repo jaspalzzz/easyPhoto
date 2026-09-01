@@ -51,7 +51,7 @@ export const MENU_COLUMNS: MenuColumn[] = [
       { title: "LinkedIn Photo Maker",  tag: "Professional photos",  href: "/tools/linkedin-photo/",      Icon: UserCircle   },
       { title: "Resume / CV Photo",     tag: "Job applications",     href: "/tools/resume-photo/",        Icon: FileText     },
       { title: "Photo Print Sheet",     tag: "4×6 inch, A4, more",  href: "/tools/print-sheet/",         Icon: Printer      },
-      { title: "Photo Validator",       tag: "Check before submit",  href: "/tools/photo-validator/",     Icon: ScanLine     },
+      { title: "Pre-submission Check",  tag: "Check before submit",  href: "/tools/compliance-checker/", Icon: ScanLine     },
     ],
   },
   {

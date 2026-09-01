@@ -230,7 +230,7 @@ export default function Page() {
         Addressing these six issues reduces common measurable mismatches, but it
         cannot guarantee an authority&apos;s decision. Before you print or upload,
         run your photo through the free{" "}
-        <Link href="/tools/photo-rejection-check/">passport photo rejection checker</Link>
+        <Link href="/tools/compliance-checker/">pre-submission photo check</Link>
         {" "}— it tests face centering, background, tilt, and 6 other ICAO criteria
         on your device without uploading anything.
       </p>

@@ -178,3 +178,10 @@
 /convert/jpg-to-webp/ /convert/ 301
 /convert/png-to-webp/ /convert/ 301
 /convert/heic-to-webp/ /convert/ 301
+
+# The three pre-submission checkers were one tool split three ways:
+# photo-validator did file properties, photo-rejection-check did image
+# content, and compliance-checker already did both plus the exam preset
+# and the shareable result card. Consolidated onto the superset.
+/tools/photo-validator/ /tools/compliance-checker/ 301
+/tools/photo-rejection-check/ /tools/compliance-checker/ 301

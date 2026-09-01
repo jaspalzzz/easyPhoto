@@ -128,7 +128,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "photo-validator",
         title: "Photo Validator",
         blurb: "Check if your photo meets exam or portal limits — instant KB, pixel, format and aspect-ratio report.",
-        ready: true,
+        ready: false,
         icon: "BadgeCheck",
       },
       {
@@ -187,7 +187,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "photo-rejection-check",
         title: "Photo Issue Checker",
         blurb: "Review measurable passport-photo properties before submitting — face position, framing, tilt, background and lighting.",
-        ready: true,
+        ready: false,
         popular: true,
         icon: "ShieldAlert",
       },

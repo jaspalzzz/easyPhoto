@@ -26,7 +26,7 @@ const TABS: Tab[] = [
       { title: "LinkedIn Photo Maker",  desc: "Professional headshots",                href: "/tools/linkedin-photo/",         Icon: UserCircle    },
       { title: "Resume / CV Photo",     desc: "Job applications & CVs",                href: "/tools/resume-photo/",           Icon: FileText      },
       { title: "Photo Print Sheet",     desc: "4×6 inch, A4 & more sizes",            href: "/tools/print-sheet/",            Icon: Printer       },
-      { title: "Photo Validator",       desc: "Check before you submit",               href: "/tools/photo-validator/",        Icon: ScanLine      },
+      { title: "Pre-submission Check",  desc: "Check photo + signature before you submit", href: "/tools/compliance-checker/", Icon: ScanLine      },
       { title: "Camera Capture",        desc: "Take photo directly in browser",        href: "/tools/camera-capture/",         Icon: Camera        },
     ],
   },

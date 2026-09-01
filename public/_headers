@@ -117,8 +117,6 @@
   X-Robots-Tag: noindex, follow
 /tools/camera-capture/
   X-Robots-Tag: noindex, follow
-/tools/compliance-checker/
-  X-Robots-Tag: noindex, follow
 /tools/compress-document/
   X-Robots-Tag: noindex, follow
 /tools/document/

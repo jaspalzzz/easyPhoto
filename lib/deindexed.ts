@@ -50,7 +50,6 @@ export const DEINDEXED_PATHS: readonly string[] = [
   "/unlock-aadhaar-pdf/",
   "/tools/auto-crop/",
   "/tools/camera-capture/",
-  "/tools/compliance-checker/",
   "/tools/compress-document/",
   "/tools/document/",
   "/tools/extract-pages/",
