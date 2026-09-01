@@ -110,16 +110,19 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
       "Share a masked copy where the full number is not strictly needed.",
     ],
   },
-  "photo-rejection-check": {
-    heading: "What this pre-check can and cannot tell you",
+  "compliance-checker": {
+    heading: "What each check measures, and where the number comes from",
     paragraphs: [
-      "The checker measures visible image properties such as face position, approximate head framing, tilt, background uniformity and lighting distribution. Those signals can identify common preparation issues, but they cannot assess identity, document eligibility, recency or every exception in an authority's manual review.",
-      "Treat each warning as a reason to inspect the photo, not as a prediction of rejection. A result with no measurable issue still needs to match the current size, format and workflow instructions for the specific application. When a warning is caused by a poor crop, return to the original camera image rather than enlarging a small copy.",
+      "The check runs in two halves. The first compares the file itself against the selected exam's stored record \u2014 file size against the published KB band, pixel dimensions and aspect ratio against published figures, and the file format against the list the portal accepts. Where a portal publishes no figure, that row is left out rather than filled with a plausible default, so an absent check means the authority published nothing, not that your file passed.",
+      "The second half measures the photograph itself from facial landmarks, and the thresholds are fixed rather than judged. Head height is the chin-to-crown distance as a share of the frame, and passes between 45 and 92 percent \u2014 below that the head is usually too small to crop to a passport frame, above it the crop has already cut into the margin. Head tilt passes within 5 degrees of level, warns between 5 and 10, and fails beyond 10, because a tilted eye line is one of the few rejection causes that is unambiguous to measure. Horizontal centring allows the face to sit within 12 percent of the frame's midpoint, and the eye line is expected in the upper-middle band, between 30 and 55 percent of the height from the top.",
+      "Background and lighting are deliberately weaker signals and can only ever warn, never fail. The background reading samples a strip across the top of the image and reports whether it is plain and light; the lighting reading compares the left and right thirds of that same strip and flags a difference wide enough to suggest a shadow. Both are averages over a small region, so a dark hairline or a patterned wall can move them. They are there to prompt a second look, not to decide anything.",
+      "One measurement deserves a caveat rather than a footnote. The crown of the head is not directly visible to landmark detection \u2014 landmarks stop at the hairline and cannot see through hair \u2014 so crown position is extrapolated. Head-height percentage is therefore a close estimate, not a measured value, and a tall or voluminous hairstyle is where it drifts furthest. Treat a borderline head-size result as a reason to compare against the printed frame rather than as a verdict.",
+      "What none of it can judge: whether the photograph is recent, whether it is of the applicant, whether the expression and eye visibility satisfy an examiner, whether glasses glare obscures the eyes, or whether the portal will accept the file on the day. Those are human and policy decisions. A result with no measurable issues means the file matches what the stored record says and the geometry falls inside the bands above \u2014 it is a preparation check, not an acceptance prediction, and the portal's own instructions remain the authority.",
     ],
     checklist: [
-      "Retake blur, glare and strong facial shadows instead of editing them heavily.",
-      "Use the authority's required background, not a generic default.",
-      "Confirm the current application instructions before submission.",
+      "Retake blur, glare and strong facial shadows rather than editing them out.",
+      "Use the background your authority publishes, not a generic white default.",
+      "Re-read the current notice \u2014 stored figures can lag a new notification.",
     ],
   },
   "auto-crop": {
