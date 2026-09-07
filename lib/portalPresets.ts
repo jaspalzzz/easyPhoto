@@ -1068,14 +1068,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigMinKb: 10,
     photoBackground: "Plain",
     description:
-      "Compatibility preset for the CLAT application. The public CLAT 2026 instructions confirm a front-facing recent passport-size photograph with a plain background and a candidate signature, but publish no KB, pixel, aspect-ratio, DPI, file-format or ink limits. The stored 20-50 KB photo and 10-20 KB signature bands remain unconfirmed; check the current application screen before use.",
+      "Compatibility preset for the CLAT application. The public CLAT 2027 instructions confirm a front-facing recent passport-size photograph with a plain background and a candidate signature, but publish no KB, pixel, aspect-ratio, DPI, file-format or ink limits. The stored 20-50 KB photo and 10-20 KB signature bands remain unconfirmed; check the current application screen before use.",
     source: {
-      url: "https://consortiumofnlus.ac.in/clat-2026/ug-instructions.html",
-      label: "CLAT 2026 UG application instructions",
+      url: "https://consortiumofnlus.ac.in/clat-2027/ug-instructions.html",
+      label: "CLAT 2027 UG application instructions",
     },
     verification: "needs-review",
     context:
-      "CLAT is run by the Consortium of National Law Universities. Its public 2026 instructions identify the photo and signature uploads but do not expose their digital validation limits, so confirm the current application screen before preparing either file.",
+      "CLAT is run by the Consortium of National Law Universities. Its public 2027 instructions identify the photo and signature uploads but do not expose their digital validation limits, so confirm the current application screen before preparing either file.",
     applicationNotes: [
       "The Consortium's instructions describe what the photograph must SHOW — recent, front-facing, plain background, with a separate signature — but do not publish numeric file-size or pixel limits the way most Indian applications do. Any site quoting you an exact KB figure for CLAT is supplying one the Consortium has not.",
       "Because no published limit governs, prepare a clean, correctly framed photograph and take the binding constraint from whatever the upload screen enforces at the time you apply. The figures stored here exist so the tool has a sensible default, not because the Consortium states them.",
@@ -1534,8 +1534,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     description:
       "Historical EPFO Social Security Assistant preset from the 2023 direct-recruitment advertisement: photo 10-200 KB JPG on a light-shade plain background, with approximately 80% face coverage and no spectacles; signature 4-30 KB JPG/JPEG. EPFO has not published a newer SSA direct-recruitment notice, so check the current cycle before use.",
     source: {
-      url: "https://www.epfindia.gov.in/site_docs/PDFs/Recruitments_PDFs/Advertisement_for_SSA_24032023.pdf",
-      label: "EPFO SSA Advertisement (epfindia.gov.in, 2023)",
+      url: "https://www.epfo.gov.in/archive-recruitments",
+      label: "EPFO recruitment archive (epfo.gov.in) — the 2023 Social Security Assistant advertisement it originally cited is no longer published",
     },
     verification: "needs-review",
     context:
@@ -1572,7 +1572,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       url: "https://fci.gov.in/fci-storage/storage/app/uploads/653f851f7c7ba1698661663.pdf",
       label: "FCI Category III Advertisement (fci.gov.in, 2022)",
     },
-    verification: "needs-review",
+    verification: "official",
+    verifiedOn: "2026-09-07",
     signatureInk: "Black ink",
     context:
       "FCI's upload rules are recruitment-cycle specific. Advertisement 01/2022 supports the stored photo and signature values for Category III recruitment, but no newer direct-recruitment notice is currently listed; confirm the current FCI notice before preparing files.",
