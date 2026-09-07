@@ -322,6 +322,15 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       "Compress, convert, and redact government documents — Aadhaar, marksheets, certificates — ready for online portals.",
     tools: [
       {
+        slug: "document-scanner",
+        title: "Document Scanner",
+        blurb:
+          "Photograph a page and get a flat, evenly-lit PDF. Straightens the perspective and removes shadows, entirely on your device.",
+        ready: true,
+        popular: true,
+        icon: "ScanLine",
+      },
+      {
         slug: "compress-document",
         title: "Compress Document to KB",
         blurb:
