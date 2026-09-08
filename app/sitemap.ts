@@ -21,7 +21,7 @@ const LAST_UPDATED = "2026-08-02";
 /** Country/visa maker pages — moves when countrySpecs or maker copy changes. */
 const MAKERS_UPDATED = "2026-08-02";
 /** Tool pages and their category hubs — moves when a tool or its copy changes. */
-const TOOLS_UPDATED = "2026-08-02";
+const TOOLS_UPDATED = "2026-09-08";
 const TRUST_PAGES_UPDATED = "2026-07-13";
 
 /**
