@@ -26,7 +26,7 @@ async function decode(page: Page, bytes: Buffer): Promise<[number, number]> {
 /** Sets the KB target, compresses, waits for the receipt, downloads. Returns
  * the downloaded bytes. */
 async function compressAndDownload(page: Page, target: number): Promise<Buffer> {
-  await page.locator('input[type="number"]').first().fill(String(target));
+  await page.getByLabel("Target size in KB").first().fill(String(target));
   await page.getByRole("button", { name: /compress to size/i }).click();
   await expect(page.getByText(new RegExp(`needs ≤ ${target} KB`, "i"))).toBeVisible({
     timeout: 30_000,
@@ -95,8 +95,10 @@ test("tnpsc-photo-resizer: exports the published 130x170 frame instead of treati
 }) => {
   await page.goto("/tnpsc-photo-resizer/");
   await page.setInputFiles('input[type="file"]', FACE_PHOTO);
-  await page.locator('input[type="number"]').fill("10");
-  await expect(page.locator('input[type="number"]')).toHaveValue("20");
+  const kb = page.getByLabel("Target size in KB").first();
+  await kb.fill("10");
+  await kb.blur(); // below the 20 KB floor clamps on blur, not on every keystroke
+  await expect(kb).toHaveValue("20");
   await page.getByRole("button", { name: /compress to size/i }).click();
   await expect(page.getByText(/needs 130×170/i)).toBeVisible({ timeout: 30_000 });
   const [download] = await Promise.all([

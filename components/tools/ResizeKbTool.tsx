@@ -52,6 +52,12 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [source]);
   const [targetKb, setTargetKb] = React.useState(defaultKb);
+  // The input keeps its own raw string. Clamping to the minimum on every
+  // keystroke made any target whose first digit is below the minimum impossible
+  // to type: with min 5, typing "100" turned the leading "1" into "5", so
+  // "100"/"200" could never be entered while "500"/"54"/"52" worked. We now
+  // clamp on blur and at compression, never mid-keystroke.
+  const [kbText, setKbText] = React.useState(String(defaultKb));
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<{
@@ -75,6 +81,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
   // Fix 3: re-apply defaultKb when SPA navigation reuses this component instance
   React.useEffect(() => {
     setTargetKb(defaultKb);
+    setKbText(String(defaultKb));
   }, [defaultKb]);
 
   // Revoke the result's object URL when it's replaced or the tool unmounts,
@@ -90,6 +97,16 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
     setBusy(true);
     setError(null);
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
+    // Clamp once here so a half-typed or below-minimum value (tapping the button
+    // before the input blurs, common on mobile) still compresses to a sane
+    // target, and reflect the clamped value back into the field.
+    const minTarget = minKb ?? 5;
+    const effectiveKb =
+      Number.isFinite(targetKb) && targetKb >= minTarget
+        ? Math.floor(targetKb)
+        : minTarget;
+    if (String(effectiveKb) !== kbText) setKbText(String(effectiveKb));
+    if (effectiveKb !== targetKb) setTargetKb(effectiveKb);
     try {
       const hasRequiredDimensions = !!(requiredWidth && requiredHeight);
       const hasRequiredAspect =
@@ -118,7 +135,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
       const minDimensions = hasRequiredDimensions
         ? { width: requiredWidth!, height: requiredHeight! }
         : undefined;
-      const res = await compressToCap(canvas, targetKb, {
+      const res = await compressToCap(canvas, effectiveKb, {
         minScale: hasRequiredDimensions ? 1 : 0.1,
         minDimensions,
         minKb,
@@ -140,7 +157,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         scale: res.scale,
         underCap: res.underCap,
         blob: res.blob,
-        target: targetKb,
+        target: effectiveKb,
       });
 
       const duration = typeof performance !== "undefined" ? performance.now() - t0 : 0;
@@ -222,11 +239,29 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         <label className="text-sm">
           <span className="eyebrow mb-1 block">Target size (KB)</span>
           <input
-            type="number"
+            type="text"
             inputMode="numeric"
-            min={minKb ?? 5}
-            value={targetKb}
-            onChange={(e) => setTargetKb(Math.max(minKb ?? 5, Number(e.target.value) || 0))}
+            pattern="[0-9]*"
+            aria-label="Target size in KB"
+            value={kbText}
+            onChange={(e) => {
+              // Digits only, up to 5. Keep the raw string as-is while typing;
+              // don't clamp here or a leading digit below the minimum gets
+              // rewritten and the intended number can never be entered.
+              const raw = e.target.value.replace(/\D/g, "").slice(0, 5);
+              setKbText(raw);
+              const n = Number(raw);
+              if (raw !== "" && n > 0) setTargetKb(n);
+            }}
+            onBlur={(e) => {
+              // Read the live DOM value, not the kbText closure, so the clamp
+              // is correct regardless of React re-render timing.
+              const min = minKb ?? 5;
+              const n = Number(e.currentTarget.value);
+              const fixed = !Number.isFinite(n) || n < min ? min : Math.floor(n);
+              setTargetKb(fixed);
+              setKbText(String(fixed));
+            }}
             className="h-10 w-32 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
           />
         </label>
