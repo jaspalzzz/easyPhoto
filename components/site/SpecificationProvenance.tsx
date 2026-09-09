@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AlertTriangle, ExternalLink, ShieldCheck } from "lucide-react";
+import { AlertTriangle, ExternalLink, ShieldCheck, BadgeInfo } from "lucide-react";
 import {
   COUNTRY_SPECS_VERIFIED_ON,
   type CountrySpec,
@@ -34,11 +34,19 @@ export function SpecificationProvenance({
   sourceUrl?: string;
   sourceLabel?: string;
 }) {
-  const Icon = verified && verifiedOn ? ShieldCheck : AlertTriangle;
+  // Three states, deliberately not two. A confirmed spec is reassuring; an
+  // unconfirmed spec that still cites an official source is advice, not an
+  // alarm ("Source needs review" above the fold read as "this page is broken"
+  // and depressed clicks on pages that were otherwise correct). Only a spec
+  // with no source at all still warrants the caution icon.
+  const hasSource = Boolean(sourceUrl);
+  const Icon = verified && verifiedOn ? ShieldCheck : hasSource ? BadgeInfo : AlertTriangle;
   const status =
     verified && verifiedOn
       ? `Verified ${formatIsoDate(verifiedOn)}`
-      : "Source needs review";
+      : hasSource
+        ? "Confirm on the official source before you submit"
+        : "Source needs review";
 
   return (
     <div className="flex flex-col gap-1.5 text-xs text-ink-soft sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3">

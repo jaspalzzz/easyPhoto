@@ -267,6 +267,95 @@ export default async function Page({
         </div>
       </section>
 
+      {/* Transactional tool — embedded, not linked out. AI Overviews answer
+          "what size"; hosting the resizer on this indexed URL lets the page win
+          "do it" queries ("<exam> photo resizer") too. Previously this section
+          linked to /tools/form-resizer/{exam}/, which is noindexed — so the
+          transactional ranking had no indexable page to migrate to. The H1
+          stays "Photo … Size" (protects the informational rankings); this H2
+          carries the "resize" intent. */}
+      <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
+        <div>
+          <h2 className="text-base font-semibold tracking-tight">
+            Prepare your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null} to the selected stored target
+          </h2>
+          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Verify the current form before use. Processing is free and stays in your browser.
+          </p>
+        </div>
+
+        <PortalResizer portalId={exam} hideDescription />
+
+        {/* Read-next guides. This used to be hardcoded for voter-id alone,
+            which left 48 exam pages with no route to the longer explanation.
+            The map only offers a guide that genuinely covers the portal. */}
+        {guideLinks.length > 0 && (
+          <div className="rounded-lg border border-hairline bg-card p-4">
+            <h3 className="text-sm font-semibold text-ink">
+              Before you upload
+            </h3>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              Read the{" "}
+              {guideLinks.map((guide, i) => (
+                <Fragment key={guide.slug}>
+                  {i > 0 && (i === guideLinks.length - 1 ? " and " : ", ")}
+                  <Link
+                    href={`/blog/${guide.slug}/`}
+                    className="font-medium text-brand hover:underline"
+                  >
+                    {guide.label}
+                  </Link>
+                </Fragment>
+              ))}
+              .
+            </p>
+          </div>
+        )}
+
+        {(spec.requiresNameDate || spec.requiresSlateNameDate) && (
+          <div className="rounded-lg border border-amber-300 bg-amber-50/70 p-4 dark:border-amber-800 dark:bg-amber-950/30">
+            <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+              {spec.requiresSlateNameDate
+                ? "This photo needs a name-and-date slate"
+                : "This form needs your name & date on the photo"}
+            </h3>
+            <p className="mt-1 text-sm leading-relaxed text-amber-800 dark:text-amber-300">
+              {spec.requiresSlateNameDate ? (
+                <>
+                  The current notice requires the candidate to be photographed holding
+                  a black slate with their name and the photography date written in
+                  white chalk. This must be present when the photo is taken, not added
+                  digitally afterward.
+                </>
+              ) : (
+                <>
+                  {spec.name.split(" (")[0]} requires the candidate&apos;s name and the
+                  date of photography printed on the photo itself. After sizing it here,
+                  add the strip with the{" "}
+                  <Link
+                    href="/tools/photo-with-name-date/"
+                    className="font-medium underline underline-offset-2"
+                  >
+                    Photo with Name &amp; Date tool
+                  </Link>
+                  .
+                </>
+              )}
+            </p>
+          </div>
+        )}
+
+        {sig && (
+          <p className="text-sm text-muted-foreground">
+            Prefer a guided flow?{" "}
+            <Link href="/tools/exam-package/" className="font-medium text-brand hover:underline">
+              The photo + signature kit
+            </Link>{" "}
+            walks both documents through in one place.
+          </p>
+        )}
+      </section>
+
       {spec.applicationNotes && spec.applicationNotes.length > 0 && (
         <section className="space-y-3 border-t border-hairline pt-8">
           <h2 className="text-lg font-semibold">
@@ -463,95 +552,6 @@ export default async function Page({
           </div>
         </section>
       )}
-
-      {/* Transactional tool — embedded, not linked out. AI Overviews answer
-          "what size"; hosting the resizer on this indexed URL lets the page win
-          "do it" queries ("<exam> photo resizer") too. Previously this section
-          linked to /tools/form-resizer/{exam}/, which is noindexed — so the
-          transactional ranking had no indexable page to migrate to. The H1
-          stays "Photo … Size" (protects the informational rankings); this H2
-          carries the "resize" intent. */}
-      <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
-        <div>
-          <h2 className="text-base font-semibold tracking-tight">
-            Prepare your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null} to the selected stored target
-          </h2>
-          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Verify the current form before use. Processing is free and stays in your browser.
-          </p>
-        </div>
-
-        <PortalResizer portalId={exam} hideDescription />
-
-        {/* Read-next guides. This used to be hardcoded for voter-id alone,
-            which left 48 exam pages with no route to the longer explanation.
-            The map only offers a guide that genuinely covers the portal. */}
-        {guideLinks.length > 0 && (
-          <div className="rounded-lg border border-hairline bg-card p-4">
-            <h3 className="text-sm font-semibold text-ink">
-              Before you upload
-            </h3>
-            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-              Read the{" "}
-              {guideLinks.map((guide, i) => (
-                <Fragment key={guide.slug}>
-                  {i > 0 && (i === guideLinks.length - 1 ? " and " : ", ")}
-                  <Link
-                    href={`/blog/${guide.slug}/`}
-                    className="font-medium text-brand hover:underline"
-                  >
-                    {guide.label}
-                  </Link>
-                </Fragment>
-              ))}
-              .
-            </p>
-          </div>
-        )}
-
-        {(spec.requiresNameDate || spec.requiresSlateNameDate) && (
-          <div className="rounded-lg border border-amber-300 bg-amber-50/70 p-4 dark:border-amber-800 dark:bg-amber-950/30">
-            <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
-              {spec.requiresSlateNameDate
-                ? "This photo needs a name-and-date slate"
-                : "This form needs your name & date on the photo"}
-            </h3>
-            <p className="mt-1 text-sm leading-relaxed text-amber-800 dark:text-amber-300">
-              {spec.requiresSlateNameDate ? (
-                <>
-                  The current notice requires the candidate to be photographed holding
-                  a black slate with their name and the photography date written in
-                  white chalk. This must be present when the photo is taken, not added
-                  digitally afterward.
-                </>
-              ) : (
-                <>
-                  {spec.name.split(" (")[0]} requires the candidate&apos;s name and the
-                  date of photography printed on the photo itself. After sizing it here,
-                  add the strip with the{" "}
-                  <Link
-                    href="/tools/photo-with-name-date/"
-                    className="font-medium underline underline-offset-2"
-                  >
-                    Photo with Name &amp; Date tool
-                  </Link>
-                  .
-                </>
-              )}
-            </p>
-          </div>
-        )}
-
-        {sig && (
-          <p className="text-sm text-muted-foreground">
-            Prefer a guided flow?{" "}
-            <Link href="/tools/exam-package/" className="font-medium text-brand hover:underline">
-              The photo + signature kit
-            </Link>{" "}
-            walks both documents through in one place.
-          </p>
-        )}
-      </section>
 
       {exam === "ssc" && (
         <section className="space-y-6 border-t border-hairline pt-8">

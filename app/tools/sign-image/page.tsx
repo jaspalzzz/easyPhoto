@@ -100,6 +100,58 @@ export default function Page() {
       </figure>
 
       <SignImageTool />
+
+      {/* Distinct job sections. This page already ranks for several separate
+          phrasings ("overlap signature on photo", "add signature to photo",
+          "photo to signature converter") that are genuinely different tasks;
+          giving each its own heading and answer on the same URL serves those
+          queries without splitting into thin new pages. The converter is a
+          different tool, so that section cross-links rather than pretending
+          this page does it. */}
+      <section className="mt-10 space-y-8 border-t border-hairline pt-8">
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-ink">
+            Overlap a signature on a photo
+          </h2>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Drop your photo into the tool above, then draw your signature or add
+            a signature image on top of it. Drag it to position, resize it, and
+            download the combined image — the signature sits over the photo, not
+            beside it.
+          </p>
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-ink">
+            Add a signature to an exam or application photo
+          </h2>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Some forms ask for your signature written across the photograph. Add
+            it here, then size the result to your form&apos;s KB limit with the{" "}
+            <Link href="/tools/resize-kb/" className="font-medium text-brand hover:underline">
+              resize-to-KB tool
+            </Link>
+            . If the form wants your name and date on the photo instead, use the{" "}
+            <Link href="/tools/photo-with-name-date/" className="font-medium text-brand hover:underline">
+              name &amp; date tool
+            </Link>
+            .
+          </p>
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-ink">
+            Turn a photo of your signature into a clean signature
+          </h2>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            If you have a photo or scan of your signature on paper and want it
+            cleaned up on a transparent or white background, that is a different
+            job — use the{" "}
+            <Link href="/tools/signature-cleaner/" className="font-medium text-brand hover:underline">
+              photo-to-signature converter
+            </Link>
+            , then bring the result back here to place it on your photo.
+          </p>
+        </div>
+      </section>
     </ToolPage>
   );
 }
