@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ChevronDown, ArrowRight, Lock, Zap, Globe, GraduationCap,
-  PenLine, FileText, Search, Flame, ShieldCheck, BadgeCheck,
+  PenLine, Search, Flame, ShieldCheck, BadgeCheck, Minimize2,
 } from "lucide-react";
 import { READY_TOOLS } from "@/lib/toolsCatalog";
 import { MENU_COLUMNS } from "@/lib/toolMenu";
@@ -41,10 +41,13 @@ const CATEGORY_CARDS = [
     iconText: "text-emerald-700 dark:text-emerald-400",
   },
   {
-    title: "PDF Tools",
-    desc: "Convert, compress & manage PDF files.",
-    href: "/tools/pdf/",
-    Icon: FileText,
+    // The most-searched job in the niche ("photo resize 20kb") gets a top-level
+    // shortcut. PDF stays reachable from its own mega-menu column and /tools/pdf/;
+    // it just no longer takes one of four scarce hero cards.
+    title: "Resize to a KB Size",
+    desc: "Compress a photo to an exact 20 / 50 / 100 KB target.",
+    href: "/tools/resize-kb/",
+    Icon: Minimize2,
     badge: null,
     iconBg:   "bg-violet-100 dark:bg-violet-900/30",
     iconText: "text-violet-700 dark:text-violet-400",
@@ -55,7 +58,7 @@ const CATEGORY_CARDS = [
 const TRENDING = [
   { title: "Passport Photo Maker", href: "/passport-photo/" },
   { title: "SSC Photo Tool",        href: "/exam-requirements/ssc/" },
-  { title: "Compress PDF",          href: "/tools/pdf-compress/" },
+  { title: "Sign on a Photo",       href: "/tools/sign-image/" },
   { title: "Background Remover",    href: "/tools/background-removal/" },
   { title: "Signature Resize",      href: "/tools/signature-resize/" },
 ];

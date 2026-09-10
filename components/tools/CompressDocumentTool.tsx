@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useNumericField } from "@/components/tool/useNumericField";
 import { Download, FileUp, ShieldCheck, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { compressToCap } from "@/lib/compress";
@@ -52,6 +53,7 @@ export function CompressDocumentTool() {
   const [file, setFile] = React.useState<File | null>(null);
   const [docType, setDocType] = React.useState<DocType>(null);
   const [targetKb, setTargetKb] = React.useState(100);
+  const kbField = useNumericField(targetKb, setTargetKb, { min: 1, max: 9999 });
   const [busy, setBusy] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -194,11 +196,8 @@ export function CompressDocumentTool() {
           ))}
           <div className="flex items-center gap-1.5">
             <input
-              type="number"
-              min={1}
-              max={9999}
-              value={targetKb}
-              onChange={(e) => setTargetKb(Math.max(1, Number(e.target.value) || 1))}
+              type="text"
+              {...kbField}
               className="w-20 rounded-md border border-hairline bg-background px-2 py-1.5 text-xs font-mono font-semibold focus:outline-none focus:ring-1 focus:ring-brand"
               aria-label="Custom KB target"
             />

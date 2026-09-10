@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { passportPath, visaPath } from "@/lib/makerPages";
 import { TrustPills } from "@/components/site/TrustStrip";
-import { HeroVisual } from "@/components/site/HeroVisual";
+import { HomeStarter } from "@/components/site/HomeStarter";
 import { StatsBand } from "@/components/site/StatsBand";
 import { ChoosePath } from "@/components/site/ChoosePath";
 import { FeaturedTools } from "@/components/site/FeaturedTools";
@@ -28,17 +27,6 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-/* Quick-access chips shown below the hero search bar */
-const POPULAR_CHIPS = [
-  { label: "Indian Passport",       href: "/passport-photo/"                  },
-  { label: "Voter ID",              href: "/exam-requirements/voter-id/"      },
-  { label: "USA Photo",             href: passportPath("us")                      },
-  { label: "SSC Photo",             href: "/exam-requirements/ssc/"               },
-  { label: "UPSC Photo",            href: "/exam-requirements/upsc/"              },
-  { label: "Sign Image",            href: "/tools/sign-image/"                },
-  { label: "Transparent Signature", href: "/tools/transparent-signature/"     },
-];
-
 /* Popular search terms — bottom SEO + discovery strip */
 const POPULAR_SEARCHES = [
   { label: "USA Passport & Visa Photo", href: passportPath("us")                  },
@@ -53,7 +41,8 @@ const POPULAR_SEARCHES = [
   { label: "Banking Exam Photo",    href: "/exam-requirements/ibps/"              },
   { label: "Signature Resize",      href: "/tools/signature-resize/"          },
   { label: "Background Remover",    href: "/tools/background-removal/"        },
-  { label: "Compress PDF",          href: "/tools/pdf-compress/"              },
+  { label: "Photo Resize 20 KB",    href: "/tools/resize-kb/?target=20"       },
+  { label: "Add Signature to Photo",href: "/tools/sign-image/"                },
   { label: "Passport Size Photo",   href: "/passport-photo/"                  },
 ];
 
@@ -82,8 +71,11 @@ export default function HomePage() {
         <div className="container pb-12 pt-6 sm:pb-16 sm:pt-8 lg:pb-20 lg:pt-10">
           <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-10">
 
-            {/* Left — value proposition */}
-            <div className="hero-enter max-w-xl">
+            {/* Left — value proposition. On mobile it follows the upload card
+                (order-last) so the first thing a phone visitor sees is the drop
+                zone, not prose or a search box — the whole point of the
+                upload-first hero. */}
+            <div className="hero-enter order-last max-w-xl lg:order-first">
               <span className="eyebrow">
                 Passport · Visa · ID Card · Exam — prepared to selected dimensions
               </span>
@@ -93,34 +85,21 @@ export default function HomePage() {
               </h1>
               <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
                 100% free tools. No uploads. No data stored.
-                Choose your country or exam — we crop, check and deliver.
+                Drop a photo to resize it to an exact size, or pick your exam.
               </p>
 
-              {/* Search + popular chips */}
+              {/* Search moved below the value prop — discovery, not the primary
+                  action. The drop zone is the primary action now. */}
               <div className="mt-6 max-w-md">
                 <ToolSearch />
-                <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                  <span className="text-xs font-semibold text-muted-foreground">
-                    Popular:
-                  </span>
-                  {POPULAR_CHIPS.map((c) => (
-                    <Link
-                      key={c.href}
-                      href={c.href}
-                      className="rounded-full border border-hairline bg-card px-2.5 py-1 text-[11.5px] font-medium text-ink transition-colors hover:bg-accent"
-                    >
-                      {c.label}
-                    </Link>
-                  ))}
-                </div>
               </div>
 
               <TrustPills className="mt-6 justify-start" />
             </div>
 
-            {/* Right — animated before/after visual */}
-            <div className="lg:pl-2">
-              <HeroVisual />
+            {/* Upload-first card — the primary action. order-first on mobile. */}
+            <div className="order-first lg:order-last lg:pl-2">
+              <HomeStarter />
             </div>
           </div>
 

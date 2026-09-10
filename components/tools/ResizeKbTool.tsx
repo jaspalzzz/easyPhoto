@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useNumericField } from "@/components/tool/useNumericField";
 import { WORKFLOW_GENERIC_IMAGE_KINDS } from "@/lib/workflowHandoff";
 import { Loader2, Download, Share2, Crop, FileStack, ScanSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -52,6 +53,10 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [source]);
   const [targetKb, setTargetKb] = React.useState(defaultKb);
+  // Shared numeric-field behaviour: the field holds what you type (including an
+  // empty string) and only clamps on blur, so a target whose first digit is
+  // below the floor stays typeable. See components/tool/useNumericField.
+  const kbField = useNumericField(targetKb, setTargetKb, { min: minKb ?? 5 });
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<{
@@ -90,6 +95,15 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
     setBusy(true);
     setError(null);
     const t0 = typeof performance !== "undefined" ? performance.now() : 0;
+    // Clamp once here so a half-typed or below-minimum value (tapping the button
+    // before the input blurs, common on mobile) still compresses to a sane
+    // target, and reflect the clamped value back into the field.
+    const minTarget = minKb ?? 5;
+    const effectiveKb =
+      Number.isFinite(targetKb) && targetKb >= minTarget
+        ? Math.floor(targetKb)
+        : minTarget;
+    if (effectiveKb !== targetKb) setTargetKb(effectiveKb);
     try {
       const hasRequiredDimensions = !!(requiredWidth && requiredHeight);
       const hasRequiredAspect =
@@ -118,7 +132,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
       const minDimensions = hasRequiredDimensions
         ? { width: requiredWidth!, height: requiredHeight! }
         : undefined;
-      const res = await compressToCap(canvas, targetKb, {
+      const res = await compressToCap(canvas, effectiveKb, {
         minScale: hasRequiredDimensions ? 1 : 0.1,
         minDimensions,
         minKb,
@@ -140,7 +154,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         scale: res.scale,
         underCap: res.underCap,
         blob: res.blob,
-        target: targetKb,
+        target: effectiveKb,
       });
 
       const duration = typeof performance !== "undefined" ? performance.now() - t0 : 0;
@@ -222,11 +236,9 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         <label className="text-sm">
           <span className="eyebrow mb-1 block">Target size (KB)</span>
           <input
-            type="number"
-            inputMode="numeric"
-            min={minKb ?? 5}
-            value={targetKb}
-            onChange={(e) => setTargetKb(Math.max(minKb ?? 5, Number(e.target.value) || 0))}
+            type="text"
+            aria-label="Target size in KB"
+            {...kbField}
             className="h-10 w-32 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
           />
         </label>

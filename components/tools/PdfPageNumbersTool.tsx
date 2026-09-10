@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useNumericField } from "@/components/tool/useNumericField";
 import { Download, FileUp, ShieldCheck } from "lucide-react";
 import { consumeWorkflowPayload, WORKFLOW_PDF_KINDS } from "@/lib/workflowHandoff";
 import { ProcessingState } from "@/components/site/ProcessingState";
@@ -39,6 +40,7 @@ export function PdfPageNumbersTool() {
   const [position, setPosition] = React.useState<PageNumberPosition>("bottom-center");
   const [format, setFormat] = React.useState<PageNumberFormat>("n");
   const [startAt, setStartAt] = React.useState(1);
+  const startAtField = useNumericField(startAt, setStartAt, { min: 0 });
   const [busy, setBusy] = React.useState(false);
   const [checking, setChecking] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -214,11 +216,8 @@ export function PdfPageNumbersTool() {
               <label className="text-sm">
                 <span className="mb-2 block font-semibold">Start numbering at</span>
                 <input
-                  type="number"
-            inputMode="numeric"
-                  min={0}
-                  value={startAt}
-                  onChange={(e) => setStartAt(Number(e.target.value) || 0)}
+                  type="text"
+                  {...startAtField}
                   className="h-10 w-24 rounded-md border border-hairline-strong bg-background px-3 font-mono text-sm"
                 />
                 <span className="mt-1.5 block text-xs text-muted-foreground">

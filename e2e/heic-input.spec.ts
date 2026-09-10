@@ -22,7 +22,7 @@ test("HEIC input: an iPhone HEIC decodes and processes on a non-Safari browser",
   await page.goto("/tools/resize-kb/");
   await page.setInputFiles('input[type="file"]', FACE_HEIC);
 
-  await page.locator('input[type="number"]').first().fill("30");
+  await page.getByLabel("Target size in KB").first().fill("30");
   await page.getByRole("button", { name: /compress to size/i }).click();
 
   // The result receipt only appears if the HEIC was decoded and compressed —
