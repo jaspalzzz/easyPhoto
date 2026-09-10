@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useNumericField } from "@/components/tool/useNumericField";
 import { WORKFLOW_SIGNATURE_KINDS } from "@/lib/workflowHandoff";
 import { Download, ShieldCheck, Eraser, Crop, Maximize2, Info, FileStack } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
@@ -513,6 +514,15 @@ function Body({
     }
   };
 
+  // Declared after their handlers so both are in scope. No early return sits
+  // between the state above and here, so the hook order stays stable.
+  const widthField = useNumericField(width || (out ? out.w : 0), handleWidthChange, {
+    min: 1,
+  });
+  const heightField = useNumericField(height || (out ? out.h : 0), handleHeightChange, {
+    min: 1,
+  });
+
   const handleDownload = () => {
     if (!out) return;
     const ext = bgFormat === "jpeg" ? "jpg" : "png";
@@ -962,10 +972,8 @@ function Body({
                         <span className="eyebrow mb-1 block">Width (px)</span>
                         <input
                           id="sig-resize-width"
-                          type="number"
-            inputMode="numeric"
-                          value={width || (out ? out.w : 0)}
-                          onChange={(e) => handleWidthChange(Math.max(1, Number(e.target.value) || 0))}
+                          type="text"
+                          {...widthField}
                           className="w-full h-9 rounded-md border border-hairline bg-background px-3 font-mono text-xs focus:border-brand"
                         />
                       </label>
@@ -973,10 +981,8 @@ function Body({
                         <span className="eyebrow mb-1 block">Height (px)</span>
                         <input
                           id="sig-resize-height"
-                          type="number"
-            inputMode="numeric"
-                          value={height || (out ? out.h : 0)}
-                          onChange={(e) => handleHeightChange(Math.max(1, Number(e.target.value) || 0))}
+                          type="text"
+                          {...heightField}
                           className="w-full h-9 rounded-md border border-hairline bg-background px-3 font-mono text-xs focus:border-brand"
                         />
                       </label>

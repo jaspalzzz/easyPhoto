@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useNumericField } from "@/components/tool/useNumericField";
 import Link from "next/link";
 import { Download, Printer, Globe, LayoutGrid, Loader2, Share2, Minimize2, ScanSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
   // Calculate dynamic capacity based on custom margins and size
   const maxCapacity = maxCopiesPerSheet(photoMm, { paperSize, marginMm, gapMm });
   const [copies, setCopies] = React.useState(() => maxCapacity);
+  const copiesField = useNumericField(copies, setCopies, { min: 1, max: maxCapacity });
 
   // Keep copies count locked to maximum capacity when layout size changes
   React.useEffect(() => {
@@ -333,12 +335,8 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
               <span className="text-muted-foreground block mb-0.5 text-xs">Copies ({copies})</span>
               <input
                 id="print-sheet-copies-input"
-                type="number"
-                inputMode="numeric"
-                min={1}
-                max={maxCapacity}
-                value={copies}
-                onChange={(e) => setCopies(Math.max(1, Math.min(maxCapacity, Number(e.target.value) || 1)))}
+                type="text"
+                {...copiesField}
                 className="w-full rounded border border-hairline bg-background p-1 text-xs font-semibold font-mono focus:outline-none focus:ring-1 focus:ring-brand"
               />
             </label>

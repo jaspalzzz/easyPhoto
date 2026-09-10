@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useNumericField } from "@/components/tool/useNumericField";
 import Link from "next/link";
 import { Download, RefreshCcw, Gauge, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -38,6 +39,7 @@ function describeCurrent(d: JpegDensity | null): string {
 export function DpiConverterTool() {
   const [loaded, setLoaded] = React.useState<Loaded | null>(null);
   const [targetDpi, setTargetDpi] = React.useState(200);
+  const dpiField = useNumericField(targetDpi, setTargetDpi, { min: 1, max: 65535 });
   const [dragging, setDragging] = React.useState(false);
   const [done, setDone] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -216,16 +218,8 @@ export function DpiConverterTool() {
               <label className="flex items-center gap-2 rounded-md border border-hairline-strong bg-background px-3 py-2 text-sm">
                 <span className="text-muted-foreground">Custom</span>
                 <input
-                  type="number"
-                  inputMode="numeric"
-                  min={1}
-                  max={65535}
-                  value={targetDpi}
-                  onChange={(e) =>
-                    setTargetDpi(
-                      Math.min(65535, Math.max(1, Number(e.target.value) || 0))
-                    )
-                  }
+                  type="text"
+                  {...dpiField}
                   className="h-7 w-20 rounded border border-hairline bg-background px-2 font-mono text-[13px]"
                 />
               </label>
