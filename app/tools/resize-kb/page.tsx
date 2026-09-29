@@ -24,7 +24,7 @@ export default function Page() {
       blurb={tool.blurb}
       faqItems={PHOTO_RESIZE_FAQ}
     >
-      <ResizeKbTool />
+      <ResizeKbTool targetFromUrl />
 
       <section className="mt-8">
         <h2 className="eyebrow mb-3">Resize to a specific size</h2>

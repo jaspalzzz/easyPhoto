@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useNumericField } from "@/components/tool/useNumericField";
+import { useUrlKbTarget } from "@/components/tool/useUrlKbTarget";
 import { WORKFLOW_GENERIC_IMAGE_KINDS } from "@/lib/workflowHandoff";
 import { Loader2, Download, Share2, Crop, FileStack, ScanSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,9 @@ import {
   examPhotoNextAction,
   type ExamPhotoWorkflowFlags,
 } from "@/lib/examWorkflow";
+
+/** Upper bound for a `?target=` preset — anything larger is not a real form limit. */
+const MAX_URL_TARGET_KB = 10_000;
 
 interface BodyProps {
   source: ToolSource;
@@ -370,7 +374,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
                 })()
               : [
                   {
-                    slug: "photo-rejection-check",
+                    slug: "compliance-checker",
                     label: "Run a photo pre-check",
                     hint: "Check measurable image issues before using the file",
                     icon: <ScanSearch className="h-4 w-4" strokeWidth={1.75} />,
@@ -400,8 +404,11 @@ export function ResizeKbTool({
   requirementLabel,
   examWorkflow,
   onSourceChange,
+  targetFromUrl = false,
 }: {
   defaultKb?: number;
+  /** Honour a `?target=<kb>` URL preset (the standalone /tools/resize-kb/ page). */
+  targetFromUrl?: boolean;
   toolName?: string;
   requiredWidth?: number;
   requiredHeight?: number;
@@ -420,13 +427,16 @@ export function ResizeKbTool({
   React.useEffect(() => {
     track({ name: "tool_view", tool: toolName });
   }, [toolName]);
+  // Body mounts only after a file is loaded, by which point this has resolved,
+  // so the URL preset seeds its target field.
+  const urlKb = useUrlKbTarget(targetFromUrl, minKb ?? 5, MAX_URL_TARGET_KB);
 
   return (
     <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}>
       {(source) => (
         <Body
           source={source}
-          defaultKb={defaultKb}
+          defaultKb={urlKb ?? defaultKb}
           toolName={toolName}
           requiredWidth={requiredWidth}
           requiredHeight={requiredHeight}

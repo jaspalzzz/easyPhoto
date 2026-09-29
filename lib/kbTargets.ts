@@ -14,6 +14,18 @@ export const SIGNATURE_KB_TARGETS = [10, 20, 50, 100] as const;
 export type SignatureKbTarget = (typeof SIGNATURE_KB_TARGETS)[number];
 export const sigKbPath = (kb: number) => `/tools/signature-resize/?target=${kb}`;
 
+/**
+ * Parse a `?target=<kb>` query value. Accepts a whole number within
+ * [min, max] only — anything else (missing, fractional, out of range, junk) is
+ * null so the tool keeps its own default rather than a nonsense target.
+ */
+export function parseKbTarget(search: string, min: number, max: number): number | null {
+  const raw = new URLSearchParams(search).get("target");
+  if (raw === null || !/^\d{1,6}$/.test(raw.trim())) return null;
+  const kb = Number(raw.trim());
+  return kb >= min && kb <= max ? kb : null;
+}
+
 /** Supported target values for the consolidated PDF compressor. */
 export const PDF_KB_TARGETS = [50, 100, 200, 500] as const;
 export type PdfKbTarget = (typeof PDF_KB_TARGETS)[number];
