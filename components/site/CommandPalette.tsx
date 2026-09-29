@@ -3,81 +3,8 @@
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
-import { COUNTRY_SPECS } from "@/lib/countrySpecs";
-import { MAKER_PAGES } from "@/lib/makerPages";
-import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
-import { PORTAL_PRESETS } from "@/lib/portalPresets";
 import { track, type SearchSurface } from "@/lib/analytics";
-
-interface CmdItem {
-  title: string;
-  category: string;
-  path: string;
-  keywords: string[];
-}
-
-/** Mirror of ToolSearch's index — same 4 data sources, same logic. */
-function buildIndex(): CmdItem[] {
-  const items: CmdItem[] = [];
-
-  MAKER_PAGES.forEach((maker) => {
-    const spec = COUNTRY_SPECS[maker.countryId];
-    if (!spec) return;
-    const docType = maker.kind === "visa" ? "Visa" : "Passport";
-    items.push({
-      title: `${spec.label} ${docType} Photo Maker`,
-      category: "Passport & Visa",
-      path: `/${maker.slug}/`,
-      keywords: [spec.label.toLowerCase(), maker.kind, "photo", "spec", maker.countryId],
-    });
-  });
-
-  TOOLS_CATALOG.forEach((group) => {
-    group.tools.forEach((tool) => {
-      if (!tool.ready) return;
-      items.push({
-        title: tool.title,
-        category: group.group,
-        path: `/tools/${tool.slug}/`,
-        keywords: [
-          tool.title.toLowerCase(),
-          (tool.blurb ?? "").toLowerCase(),
-          group.group.toLowerCase(),
-          tool.slug,
-        ],
-      });
-    });
-  });
-
-  Object.entries(PORTAL_PRESETS).forEach(([key, spec]) => {
-    items.push({
-      title: `${spec.name} Form Resizer`,
-      category: "Government Portals",
-      path: `/tools/form-resizer/${key}/`,
-      keywords: [spec.name.toLowerCase(), key, "form", "portal", "resizer"],
-    });
-  });
-
-  [10, 20, 30, 50, 100, 200].forEach((kb) => {
-    items.push({
-      title: `Resize Image to ${kb} KB`,
-      category: "Image Tools",
-      path: `/photo-resize-to-${kb}kb/`,
-      keywords: ["photo", "image", "resize", "compress", `${kb}kb`, `${kb} kb`, "size", "limit"],
-    });
-  });
-
-  [10, 20, 50, 100].forEach((kb) => {
-    items.push({
-      title: `Resize Signature to ${kb} KB`,
-      category: "Signature Tools",
-      path: `/signature-resize-to-${kb}kb/`,
-      keywords: ["signature", "sign", "resize", "compress", `${kb}kb`, `${kb} kb`],
-    });
-  });
-
-  return items;
-}
+import { buildSearchIndex, searchTools } from "@/lib/toolSearch";
 
 const MAX_RESULTS = 8;
 
@@ -98,20 +25,12 @@ export function CommandPalette() {
   const listRef = React.useRef<HTMLUListElement>(null);
   const noResultReportedRef = React.useRef(false);
 
-  const index = React.useMemo(buildIndex, []);
+  const index = React.useMemo(buildSearchIndex, []);
 
-  const results = React.useMemo(() => {
-    if (!query.trim()) return [];
-    const q = query.toLowerCase();
-    return index
-      .filter(
-        (item) =>
-          item.title.toLowerCase().includes(q) ||
-          item.keywords.some((kw) => kw.includes(q)) ||
-          item.category.toLowerCase().includes(q)
-      )
-      .slice(0, MAX_RESULTS);
-  }, [query, index]);
+  const results = React.useMemo(
+    () => searchTools(index, query, MAX_RESULTS).results,
+    [query, index],
+  );
 
   /* ── Reset selection when results change ── */
   React.useEffect(() => {

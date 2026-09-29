@@ -19,6 +19,7 @@ import "cropperjs/dist/cropper.css";
 import { track, deviceClass } from "@/lib/analytics";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
 import { getExamWorkflowDraft } from "@/lib/workflowHandoff";
+import { layoutStripText, STRIP_LINE_HEIGHT } from "@/lib/nameDateLayout";
 
 // Returns today as YYYY-MM-DD (value format for type='date' inputs).
 function getTodayIsoString() {
@@ -61,7 +62,7 @@ interface RenderOptions {
 function drawNameDateStrip(
   imgCanvas: HTMLCanvasElement,
   options: RenderOptions
-): HTMLCanvasElement {
+): { canvas: HTMLCanvasElement; legible: boolean } {
   const w = imgCanvas.width;
   const h = imgCanvas.height;
   
@@ -99,59 +100,36 @@ function drawNameDateStrip(
   ctx.lineTo(w, imageHeight);
   ctx.stroke();
 
-  // Draw text
+  // Draw text — every line at one font size, wrapping a long name rather than
+  // clipping it (see lib/nameDateLayout).
   ctx.fillStyle = "#000000";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  
-  const textLines: string[] = [];
-  if (options.name.trim()) textLines.push(options.name.trim().toUpperCase());
-  if (options.date.trim()) textLines.push(options.date.trim().toUpperCase());
-  
-  // Autoscale font size
-  const fontSize = Math.round(s * 0.3);
-  
-  if (textLines.length === 1) {
-    const textY = imageHeight + s / 2;
-    let currentFontSize = fontSize;
-    ctx.font = `bold ${currentFontSize}px sans-serif`;
-    let measured = ctx.measureText(textLines[0]);
-    while (measured.width > w * 0.95 && currentFontSize > 8) {
-      currentFontSize -= 1;
-      ctx.font = `bold ${currentFontSize}px sans-serif`;
-      measured = ctx.measureText(textLines[0]);
-    }
-    ctx.fillText(textLines[0], w / 2, textY);
-  } else if (textLines.length === 2) {
-    const pad = s * 0.1;
-    const lineH = (s - 2 * pad) / 2;
-    const y1 = imageHeight + pad + lineH * 0.5;
-    const y2 = imageHeight + pad + lineH * 1.5;
-    
-    // Line 1
-    let currentFontSize1 = fontSize;
-    ctx.font = `bold ${currentFontSize1}px sans-serif`;
-    let measured1 = ctx.measureText(textLines[0]);
-    while (measured1.width > w * 0.95 && currentFontSize1 > 8) {
-      currentFontSize1 -= 1;
-      ctx.font = `bold ${currentFontSize1}px sans-serif`;
-      measured1 = ctx.measureText(textLines[0]);
-    }
-    ctx.fillText(textLines[0], w / 2, y1);
-    
-    // Line 2
-    let currentFontSize2 = fontSize;
-    ctx.font = `bold ${currentFontSize2}px sans-serif`;
-    let measured2 = ctx.measureText(textLines[1]);
-    while (measured2.width > w * 0.95 && currentFontSize2 > 8) {
-      currentFontSize2 -= 1;
-      ctx.font = `bold ${currentFontSize2}px sans-serif`;
-      measured2 = ctx.measureText(textLines[1]);
-    }
-    ctx.fillText(textLines[1], w / 2, y2);
+
+  const measure = (text: string, px: number) => {
+    ctx.font = `bold ${px}px sans-serif`;
+    return ctx.measureText(text).width;
+  };
+  const layout = layoutStripText(
+    options.name.toUpperCase(),
+    options.date.toUpperCase(),
+    measure,
+    w * 0.95,
+    s * 0.8,
+    Math.round(s * 0.3),
+  );
+  // Lines may differ in size (the date never shrinks with a long name), so
+  // stack them by their own line heights, centred in the strip.
+  const total = layout.lines.reduce((sum, l) => sum + l.fontPx * STRIP_LINE_HEIGHT, 0);
+  let y = imageHeight + (s - total) / 2;
+  for (const line of layout.lines) {
+    const lineH = line.fontPx * STRIP_LINE_HEIGHT;
+    ctx.font = `bold ${line.fontPx}px sans-serif`;
+    ctx.fillText(line.text, w / 2, y + lineH / 2);
+    y += lineH;
   }
-  
-  return out;
+
+  return { canvas: out, legible: layout.legible };
 }
 
 function Body({
@@ -182,6 +160,8 @@ function Body({
   const [busy, setBusy] = React.useState(false);
   const [exportError, setExportError] = React.useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
+  // The name/date only fits this preset's width below a readable font size.
+  const [textTooSmall, setTextTooSmall] = React.useState(false);
   const [result, setResult] = React.useState<{
     url: string;
     bytes: number;
@@ -259,13 +239,14 @@ function Body({
     if (!croppedCanvas) return;
 
     try {
-      const annotCanvas = drawNameDateStrip(croppedCanvas, {
+      const { canvas: annotCanvas, legible } = drawNameDateStrip(croppedCanvas, {
         name: dName,
         date: isoToDmy(dDate),
         stripHeightPercent: dStripHeight,
         totalHeight: activePreset.height ?? undefined,
         stripHeightPx: previewStripPx,
       });
+      setTextTooSmall(!legible);
 
       // Object URL, not a base64 data URI: each data URI held a ~1.37× copy
       // of the JPEG as a JS string, re-created on every debounced keystroke.
@@ -341,7 +322,7 @@ function Body({
       if (!croppedCanvas) throw new Error("Could not acquire cropped canvas");
 
       // Draw Name/Date strip at full resolution
-      const annotCanvas = drawNameDateStrip(croppedCanvas, {
+      const { canvas: annotCanvas } = drawNameDateStrip(croppedCanvas, {
         name,
         date: isoToDmy(date),
         stripHeightPercent: stripHeight,
@@ -514,6 +495,12 @@ function Body({
             <span className="text-xs text-muted-foreground mt-1 block">
               Printed at the bottom in bold black letters.
             </span>
+            {textTooSmall && (
+              <span role="alert" className="mt-1 block text-xs font-medium text-amber-700 dark:text-amber-400">
+                This name is too long to print clearly at this photo&apos;s width. Shorten
+                middle names to initials (e.g. &ldquo;RAVI K SHARMA&rdquo;) if the form allows it.
+              </span>
+            )}
           </div>
 
           {/* Date Input */}

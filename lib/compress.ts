@@ -42,7 +42,23 @@ export interface SearchOptions {
   minScale?: number;
   /** Geometric step between successive scales (0 < x < 1). */
   scaleStep?: number;
+  /**
+   * Opt-in last resort: when nothing fits at `minQuality` even at the smallest
+   * allowed scale, retry at that scale with quality down to this floor before
+   * giving up. Fixed-pixel portals (Driving Licence 420×525 ≤ 20 KB, CAT)
+   * can't shrink, so a photo a few percent over the cap at 0.4 was a dead end.
+   */
+  lastResortMinQuality?: number;
 }
+
+/** Normal JPEG quality floor for the cap search. */
+export const DEFAULT_MIN_QUALITY = 0.4;
+
+/**
+ * Quality floor for the last-resort pass. Low enough to close the few-percent
+ * gap fixed-size portals hit at 0.4; high enough that a face stays reviewable.
+ */
+export const LAST_RESORT_MIN_QUALITY = 0.2;
 
 export interface SearchResult<T> {
   payload: T;
@@ -78,7 +94,7 @@ export async function searchUnderCap<T>(
   opts: SearchOptions
 ): Promise<SearchResult<T>> {
   const maxBytes = opts.maxBytes;
-  const minQ = opts.minQuality ?? 0.4;
+  const minQ = opts.minQuality ?? DEFAULT_MIN_QUALITY;
   const maxQ = opts.maxQuality ?? 0.95;
   const steps = opts.qualitySteps ?? 7;
   const minScale = Math.min(1, Math.max(0.01, opts.minScale ?? 1));
@@ -130,6 +146,35 @@ export async function searchUnderCap<T>(
     };
   }
 
+  // Last resort (opt-in): lower the quality floor at the smallest scale.
+  const floorQ = opts.lastResortMinQuality;
+  if (floorQ != null && floorQ < minQ) {
+    const scale = scales[scales.length - 1];
+    const lo = await encode(scale, floorQ);
+    if (lo.bytes <= maxBytes) {
+      let bestFit: Measured<T> & { quality: number } = { ...lo, quality: floorQ };
+      let lq = floorQ;
+      let hq = minQ;
+      for (let i = 0; i < steps; i++) {
+        const mq = (lq + hq) / 2;
+        const m = await encode(scale, mq);
+        if (m.bytes <= maxBytes) {
+          bestFit = { ...m, quality: mq };
+          lq = mq;
+        } else {
+          hq = mq;
+        }
+      }
+      return {
+        payload: bestFit.payload,
+        quality: bestFit.quality,
+        scale,
+        bytes: bestFit.bytes,
+        underCap: true,
+      };
+    }
+  }
+
   // Nothing fit, even at the smallest allowed scale + lowest quality.
   return {
     payload: smallest!.payload,
@@ -150,6 +195,12 @@ export interface CompressResult {
   width: number;
   height: number;
   underCap: boolean;
+  /**
+   * True when the cap was only reached by the low-quality fallback (quality
+   * below the normal floor). Callers should tell the user to check the result
+   * is still clear — a portal can reject a blurry photo.
+   */
+  qualityReduced: boolean;
 }
 
 function toBlob(
@@ -219,6 +270,14 @@ export async function compressToCap(
      * could read. Applied before any min-KB padding.
      */
     densityDpi?: number;
+    /**
+     * Allow the last-resort quality floor (LAST_RESORT_MIN_QUALITY) when the
+     * cap can't be met at the normal floor. Only for fixed-pixel photos (e.g.
+     * Driving Licence 420×525 ≤ 20 KB, CAT) that can't shrink to fit; everyone
+     * else keeps the normal floor and reports underCap:false, so the tool shows
+     * "could not fit" instead of silently returning a blurry file.
+     */
+    allowLowQualityFallback?: boolean;
   } = {}
 ): Promise<CompressResult> {
   // Scale floor: the most restrictive of an explicit minScale and the pixel
@@ -247,6 +306,7 @@ export async function compressToCap(
   const res = await searchUnderCap(encode, {
     maxBytes: maxKb * 1024,
     minQuality: opts.minQuality,
+    lastResortMinQuality: opts.allowLowQualityFallback ? LAST_RESORT_MIN_QUALITY : undefined,
     maxQuality: opts.maxQuality,
     qualitySteps: opts.iterations,
     minScale,
@@ -273,6 +333,7 @@ export async function compressToCap(
     // selected ceiling. Re-evaluate the final blob instead of reporting the
     // pre-padding encoder verdict.
     underCap: res.underCap && blob.size <= maxKb * 1024,
+    qualityReduced: res.underCap && res.quality < (opts.minQuality ?? DEFAULT_MIN_QUALITY),
   };
 }
 

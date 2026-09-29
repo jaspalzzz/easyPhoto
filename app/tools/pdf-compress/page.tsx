@@ -24,7 +24,7 @@ export default function Page() {
       faqItems={PDF_COMPRESS_FAQ}
       footnote="Compression runs entirely on your device. Your PDF is never uploaded to any server."
     >
-      <PdfCompressTool />
+      <PdfCompressTool targetFromUrl />
     </ToolPage>
   );
 }

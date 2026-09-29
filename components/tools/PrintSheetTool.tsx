@@ -10,6 +10,8 @@ import { ImageToolShell } from "./ImageToolShell";
 import { downloadBlob, shareFile } from "@/lib/download";
 import { track, deviceClass } from "@/lib/analytics";
 import type { CropRect } from "@/lib/headPositioning";
+import { PAPER_DIMENSIONS, sheetPlacements } from "@/lib/printSheet";
+import { setBlobDensityDpi } from "@/lib/jpegDensity";
 
 /** Per-photo refinements applied before tiling: an optional crop sub-rect (in
  *  source pixels) plus brightness/contrast as percentages (100 = unchanged). */
@@ -22,31 +24,50 @@ interface SheetAdjust {
 const NO_ADJUST: SheetAdjust = { cropRect: null, brightness: 100, contrast: 100 };
 
 type PaperSize = "a4" | "a5" | "4x6" | "5x6" | "4x4";
-type Count = 4 | 6 | 8;
+type Count = 4 | 6 | 8 | "fill";
+type PhotoSize = "35x45" | "51x51" | "fit";
 
-// All dimensions in pixels at 300 DPI (print-shop standard).
-const PAPER: Record<PaperSize, { label: string; widthPx: number; heightPx: number }> = {
-  a4:  { label: "A4 (210×297 mm)", widthPx: 2480, heightPx: 3508 },
-  a5:  { label: "A5 (148×210 mm)", widthPx: 1748, heightPx: 2480 },
-  "4x6": { label: "4×6 inch",      widthPx: 1200, heightPx: 1800 },
-  "5x6": { label: "5×6 inch",      widthPx: 1500, heightPx: 1800 },
-  "4x4": { label: "4×4 inch",      widthPx: 1200, heightPx: 1200 },
+const PAPER: Record<PaperSize, { label: string }> = {
+  a4:  { label: "A4 (210×297 mm)" },
+  a5:  { label: "A5 (148×210 mm)" },
+  "4x6": { label: "4×6 inch" },
+  "5x6": { label: "5×6 inch" },
+  "4x4": { label: "4×4 inch" },
 };
 
 const PAPER_SIZES = Object.keys(PAPER) as PaperSize[];
 
-const COUNTS: Count[] = [4, 6, 8];
+/**
+ * Physical photo size printed on the sheet. The tool used to shrink each photo
+ * to fill (paper ÷ count), so "6 on A4" printed 73×94 mm photos — nowhere near
+ * passport size. Fixed sizes print at the exact millimetres; "fit" keeps the
+ * old fill-the-grid behaviour for anyone who wants larger prints.
+ */
+const PHOTO_SIZES: Record<PhotoSize, { label: string; hint: string; mm: { width: number; height: number } | null }> = {
+  "35x45": { label: "35 × 45 mm", hint: "Indian passport, exam & most visa forms", mm: { width: 35, height: 45 } },
+  "51x51": { label: "2 × 2 inch", hint: "US passport & visa (50.8 × 50.8 mm)", mm: { width: 50.8, height: 50.8 } },
+  fit:     { label: "Fill the grid", hint: "No fixed size — photos fill the paper", mm: null },
+};
 
-// Gap between photos in pixels (at 300 DPI, 2 mm = ~24 px)
-const GAP = 24;
-// Margin around the sheet in pixels (~5 mm = 59 px)
-const MARGIN = 59;
+const PHOTO_SIZE_KEYS = Object.keys(PHOTO_SIZES) as PhotoSize[];
+
+const COUNTS: Count[] = [4, 6, 8, "fill"];
+
+const DPI = 300;
+const PX_PER_MM = DPI / 25.4;
+// Sheet margin and gap between photos, in mm.
+const MARGIN_MM = 5;
+const GAP_MM = 2;
+
+// Legacy fill-the-grid mode, in pixels at 300 DPI.
+const GAP = Math.round(GAP_MM * PX_PER_MM);
+const MARGIN = Math.round(MARGIN_MM * PX_PER_MM);
 
 // Both grid orientations per count (e.g. 8 as 2×4 or 4×2) — which one wastes
 // less paper depends on how the resulting cell shape matches the source
 // photo's aspect ratio, so gridLayout picks between them per-photo rather
 // than always taking the first entry.
-const ORIENTATIONS: Record<Count, Array<{ cols: number; rows: number }>> = {
+const ORIENTATIONS: Record<4 | 6 | 8, Array<{ cols: number; rows: number }>> = {
   4: [{ cols: 2, rows: 2 }],
   6: [
     { cols: 2, rows: 3 },
@@ -57,6 +78,11 @@ const ORIENTATIONS: Record<Count, Array<{ cols: number; rows: number }>> = {
     { cols: 4, rows: 2 },
   ],
 };
+
+/** Sheet size in whole pixels at 300 DPI for a sheet in mm. */
+function sheetPx(sheetMm: { w: number; h: number }) {
+  return { w: Math.round(sheetMm.w * PX_PER_MM), h: Math.round(sheetMm.h * PX_PER_MM) };
+}
 
 /** Fraction of a cell's area the photo actually covers once contain-fit — the
  *  rest is the white padding a print shop pays paper for and cuts away. */
@@ -69,7 +95,7 @@ function cellUtilization(cellW: number, cellH: number, photoAspect: number): num
 }
 
 function gridLayout(
-  count: Count,
+  count: 4 | 6 | 8,
   paperW: number,
   paperH: number,
   photoAspect: number
@@ -86,6 +112,79 @@ function gridLayout(
   return { cols, rows, cellW, cellH };
 }
 
+/** Source rectangle to draw, after the user's crop and (for a fixed print
+ *  size) a centred cover-crop to that size's aspect ratio. */
+function sourceRect(
+  source: import("./ImageToolShell").ToolSource,
+  adjust: SheetAdjust,
+  targetAspect: number | null
+): { sx: number; sy: number; sw: number; sh: number; trimmed: boolean } {
+  const cr = adjust.cropRect;
+  let sx = cr ? cr.sx : 0;
+  let sy = cr ? cr.sy : 0;
+  let sw = cr ? cr.sw : source.size.width;
+  let sh = cr ? cr.sh : source.size.height;
+  if (!targetAspect) return { sx, sy, sw, sh, trimmed: false };
+  const aspect = sw / sh;
+  const trimmed = Math.abs(aspect - targetAspect) / targetAspect > 0.02;
+  if (aspect > targetAspect) {
+    const nw = sh * targetAspect;
+    sx += (sw - nw) / 2;
+    sw = nw;
+  } else if (aspect < targetAspect) {
+    const nh = sw / targetAspect;
+    sy += (sh - nh) / 2;
+    sh = nh;
+  }
+  return { sx, sy, sw, sh, trimmed };
+}
+
+interface SheetPlan {
+  /** Sheet size in px at 300 DPI. */
+  sheet: { w: number; h: number };
+  /** Photo boxes in px at 300 DPI. */
+  boxes: { x: number; y: number; w: number; h: number }[];
+  /** Copies that fit on the paper (fixed sizes); count otherwise. */
+  capacity: number;
+  cols: number;
+  rows: number;
+  /** Contain-fit into each box (fill mode) vs exact cover-fit (fixed sizes). */
+  contain: boolean;
+}
+
+function planSheet(paper: PaperSize, size: PhotoSize, count: Count, photoAspect: number): SheetPlan {
+  const photoMm = PHOTO_SIZES[size].mm;
+  if (photoMm) {
+    const { layout, placements } = sheetPlacements(photoMm, {
+      paperSize: paper,
+      marginMm: MARGIN_MM,
+      gapMm: GAP_MM,
+      copies: count === "fill" ? undefined : count,
+    });
+    const w = photoMm.width * PX_PER_MM;
+    const h = photoMm.height * PX_PER_MM;
+    return {
+      sheet: sheetPx(layout.sheet),
+      boxes: placements.map((p) => ({ x: p.x * PX_PER_MM, y: p.y * PX_PER_MM, w, h })),
+      capacity: layout.capacity,
+      cols: layout.cols,
+      rows: layout.rows,
+      contain: false,
+    };
+  }
+  // Fill-the-grid: the photo shrinks to fit paper ÷ count.
+  const n: 4 | 6 | 8 = count === "fill" ? 8 : count;
+  const sheet = sheetPx(PAPER_DIMENSIONS[paper]);
+  const { cols, rows, cellW, cellH } = gridLayout(n, sheet.w, sheet.h, photoAspect);
+  const boxes = Array.from({ length: n }, (_, i) => ({
+    x: MARGIN + (i % cols) * (cellW + GAP),
+    y: MARGIN + Math.floor(i / cols) * (cellH + GAP),
+    w: cellW,
+    h: cellH,
+  }));
+  return { sheet, boxes, capacity: n, cols, rows, contain: true };
+}
+
 /**
  * Compose the print sheet onto a canvas. `scale` lets the same layout math drive
  * both a cheap live preview (scale < 1, fast) and the full-resolution export
@@ -94,72 +193,54 @@ function gridLayout(
 function composeSheet(
   source: import("./ImageToolShell").ToolSource,
   paper: PaperSize,
+  size: PhotoSize,
   count: Count,
   scale: number,
   adjust: SheetAdjust = NO_ADJUST
 ): HTMLCanvasElement {
-  const p = PAPER[paper];
-
-  // Crop sub-rect (source px) drives both the cover-fit math and the draw
-  // source rectangle, so every tile shows exactly the cropped framing.
-  const cr = adjust.cropRect;
-  const sx0 = cr ? cr.sx : 0;
-  const sy0 = cr ? cr.sy : 0;
-  const srcW = cr ? cr.sw : source.size.width;
-  const srcH = cr ? cr.sh : source.size.height;
-
-  const { cols, cellW, cellH } = gridLayout(count, p.widthPx, p.heightPx, srcW / srcH);
+  const photoMm = PHOTO_SIZES[size].mm;
+  const src = sourceRect(source, adjust, photoMm ? photoMm.width / photoMm.height : null);
+  const plan = planSheet(paper, size, count, src.sw / src.sh);
 
   const canvas = document.createElement("canvas");
-  canvas.width = Math.max(1, Math.round(p.widthPx * scale));
-  canvas.height = Math.max(1, Math.round(p.heightPx * scale));
+  canvas.width = Math.max(1, Math.round(plan.sheet.w * scale));
+  canvas.height = Math.max(1, Math.round(plan.sheet.h * scale));
   const ctx = canvas.getContext("2d")!;
   // Draw in full-resolution coordinates; the scale transform maps them down.
   ctx.scale(scale, scale);
 
   ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, p.widthPx, p.heightPx);
+  ctx.fillRect(0, 0, plan.sheet.w, plan.sheet.h);
 
   const filterStr =
     adjust.brightness !== 100 || adjust.contrast !== 100
       ? `brightness(${adjust.brightness}%) contrast(${adjust.contrast}%)`
       : "none";
 
-  for (let i = 0; i < count; i++) {
-    const col = i % cols;
-    const row = Math.floor(i / cols);
-    const x = MARGIN + col * (cellW + GAP);
-    const y = MARGIN + row * (cellH + GAP);
-
-    // Contain-fit the (cropped) source image into the cell — the whole photo
-    // must stay visible. Cells aren't always the photo's aspect ratio (e.g. a
-    // square paper split into a 2x3 grid gives wide, non-square cells), and a
-    // cover-fit there would crop off the top/bottom of the face to fill the
-    // cell. Contain-fit only ever adds white padding, never trims the photo.
-    const fit = Math.min(cellW / srcW, cellH / srcH);
-    const drawW = srcW * fit;
-    const drawH = srcH * fit;
-    const ox = (cellW - drawW) / 2;
-    const oy = (cellH - drawH) / 2;
+  for (const box of plan.boxes) {
+    // Fixed sizes: the (aspect-matched) source fills the exact mm box. Fill
+    // mode: contain-fit so the whole photo stays visible — cells aren't always
+    // the photo's shape, and a cover-fit there would crop off the face.
+    const fit = plan.contain ? Math.min(box.w / src.sw, box.h / src.sh) : 1;
+    const drawW = plan.contain ? src.sw * fit : box.w;
+    const drawH = plan.contain ? src.sh * fit : box.h;
+    const ox = (box.w - drawW) / 2;
+    const oy = (box.h - drawH) / 2;
 
     ctx.save();
     ctx.beginPath();
-    ctx.rect(x, y, cellW, cellH);
+    ctx.rect(box.x, box.y, box.w, box.h);
     ctx.clip();
     // Brightness/contrast live in the saved state so the cut-guide stroke
     // below (after restore) is never tinted.
     ctx.filter = filterStr;
-    ctx.drawImage(
-      source.image,
-      sx0, sy0, srcW, srcH,
-      x + ox, y + oy, drawW, drawH
-    );
+    ctx.drawImage(source.image, src.sx, src.sy, src.sw, src.sh, box.x + ox, box.y + oy, drawW, drawH);
     ctx.restore();
 
-    // Thin cut-guide around each cell.
+    // Thin cut-guide around each photo.
     ctx.strokeStyle = "#cccccc";
     ctx.lineWidth = Math.max(1, 1 / scale);
-    ctx.strokeRect(x, y, cellW, cellH);
+    ctx.strokeRect(box.x, box.y, box.w, box.h);
   }
 
   return canvas;
@@ -173,6 +254,7 @@ function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
 
 function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource; reset: () => void }) {
   const [paper, setPaper] = React.useState<PaperSize>("a4");
+  const [size, setSize] = React.useState<PhotoSize>("35x45");
   const [count, setCount] = React.useState<Count>(6);
   const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
   const [pdfBusy, setPdfBusy] = React.useState(false);
@@ -196,8 +278,22 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
   }, []);
 
   const p = PAPER[paper];
-  const photoAspect = cropRect ? cropRect.sw / cropRect.sh : source.size.width / source.size.height;
-  const layout = gridLayout(count, p.widthPx, p.heightPx, photoAspect);
+  const photoMm = PHOTO_SIZES[size].mm;
+  const src = sourceRect(source, adjust, photoMm ? photoMm.width / photoMm.height : null);
+  const plan = planSheet(paper, size, count, src.sw / src.sh);
+  // Copies that fit this paper at the chosen size ("Fill sheet" = all of them).
+  const capacity = photoMm ? planSheet(paper, size, "fill", 1).capacity : 8;
+  const placed = plan.boxes.length;
+  const countFits = (n: Count) => n === "fill" || !photoMm || n <= capacity;
+
+  // Keep the selected count valid when paper/size changes shrink capacity.
+  React.useEffect(() => {
+    if (!photoMm && count === "fill") setCount(6); // "Fill sheet" only exists for fixed sizes
+    else if (!countFits(count)) setCount("fill");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paper, size]);
+
+  const fileBase = `photo-sheet-${photoMm ? `${photoMm.width}x${photoMm.height}mm-` : ""}${placed}up-${paper}`;
 
   const applyCrop = () => {
     const cropper = cropperRef.current?.cropper;
@@ -225,8 +321,8 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
     let cancelled = false;
     const t = setTimeout(() => {
       try {
-        const previewScale = 640 / PAPER[paper].widthPx;
-        const canvas = composeSheet(source, paper, count, previewScale, adjust);
+        const previewScale = 640 / planSheet(paper, size, count, 1).sheet.w;
+        const canvas = composeSheet(source, paper, size, count, previewScale, adjust);
         if (!cancelled) setPreviewUrl(canvas.toDataURL("image/jpeg", 0.85));
       } catch (e) {
         console.error(e);
@@ -236,14 +332,15 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
       cancelled = true;
       clearTimeout(t);
     };
-  }, [source, paper, count, adjust]);
+  }, [source, paper, size, count, adjust]);
 
   const handleDownload = async () => {
     setJpgBusy(true);
     try {
-      const canvas = composeSheet(source, paper, count, 1, adjust); // full 300 DPI
-      const blob = await canvasToBlob(canvas);
-      downloadBlob(blob, `photo-sheet-${count}up-${paper}.jpg`);
+      const canvas = composeSheet(source, paper, size, count, 1, adjust); // full 300 DPI
+      // Tag 300 DPI so "print at actual size" reproduces the true mm sizes.
+      const blob = await setBlobDensityDpi(await canvasToBlob(canvas), DPI);
+      downloadBlob(blob, `${fileBase}.jpg`);
       track({ name: "download", tool: "print-sheet", format: "jpg" });
     } catch (e) {
       console.error(e);
@@ -256,15 +353,15 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
   const handleDownloadPdf = async () => {
     setPdfBusy(true);
     try {
-      const canvas = composeSheet(source, paper, count, 1, adjust); // full 300 DPI
+      const canvas = composeSheet(source, paper, size, count, 1, adjust); // full 300 DPI
       const dataUrl = canvas.toDataURL("image/jpeg", 0.94);
       const { jsPDF } = await import("jspdf");
       // px @ 300 DPI → mm, so the page is the true physical paper size.
-      const wMm = (p.widthPx / 300) * 25.4;
-      const hMm = (p.heightPx / 300) * 25.4;
-      const doc = new jsPDF({ unit: "mm", format: [wMm, hMm], orientation: "portrait" });
+      const wMm = canvas.width / PX_PER_MM;
+      const hMm = canvas.height / PX_PER_MM;
+      const doc = new jsPDF({ unit: "mm", format: [wMm, hMm], orientation: wMm > hMm ? "landscape" : "portrait" });
       doc.addImage(dataUrl, "JPEG", 0, 0, wMm, hMm);
-      downloadBlob(doc.output("blob"), `photo-sheet-${count}up-${paper}.pdf`);
+      downloadBlob(doc.output("blob"), `${fileBase}.pdf`);
       track({ name: "download", tool: "print-sheet", format: "pdf" });
     } catch (e) {
       console.error(e);
@@ -276,9 +373,9 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
 
   const handleShare = async () => {
     try {
-      const canvas = composeSheet(source, paper, count, 1, adjust);
-      const blob = await canvasToBlob(canvas);
-      await shareFile(blob, `photo-sheet-${count}up.jpg`, "Photo print sheet");
+      const canvas = composeSheet(source, paper, size, count, 1, adjust);
+      const blob = await setBlobDensityDpi(await canvasToBlob(canvas), DPI);
+      await shareFile(blob, `${fileBase}.jpg`, "Photo print sheet");
     } catch (e) {
       console.error(e);
     }
@@ -291,7 +388,8 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
         <div className="flex items-center justify-between gap-2">
           <span className="eyebrow text-xs">Preview</span>
           <span className="text-xs tabular-nums text-muted-foreground">
-            {p.label} · {count} photos · {layout.cols}×{layout.rows}
+            {p.label} · {placed} photos
+            {photoMm ? ` · each ${photoMm.width}×${photoMm.height} mm` : ` · ${plan.cols}×${plan.rows}`}
           </span>
         </div>
         {cropping ? (
@@ -305,6 +403,8 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
               style={{ height: "min(440px, 56vh)", width: "100%" }}
               viewMode={1}
               dragMode="move"
+              // Lock the crop to the printed photo's shape so nothing is trimmed.
+              aspectRatio={photoMm ? photoMm.width / photoMm.height : NaN}
               autoCropArea={1}
               background={false}
               responsive
@@ -349,8 +449,15 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
               )}
             </div>
             <p className="text-xs text-muted-foreground">
-              300 DPI · print-ready · grey guide lines mark the cut edges
+              300 DPI · print at &ldquo;actual size&rdquo; (100%, not &ldquo;fit to page&rdquo;) · grey guide
+              lines mark the cut edges
             </p>
+            {src.trimmed && (
+              <p role="status" className="text-xs text-amber-700 dark:text-amber-400">
+                Your photo isn&apos;t {PHOTO_SIZES[size].label} in shape, so its edges are trimmed to fit.
+                Use &ldquo;Crop photo&rdquo; to choose the framing.
+              </p>
+            )}
           </>
         )}
       </div>
@@ -378,23 +485,54 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
         </fieldset>
 
         <fieldset>
+          <legend className="eyebrow mb-2 block text-xs">Photo size</legend>
+          <div className="flex flex-col gap-2">
+            {PHOTO_SIZE_KEYS.map((k) => (
+              <button
+                key={k}
+                type="button"
+                onClick={() => setSize(k)}
+                aria-pressed={size === k}
+                className={`rounded-md border px-3 py-2 text-left text-sm transition-colors ${
+                  size === k
+                    ? "border-brand bg-brand text-white"
+                    : "border-hairline-strong bg-background text-foreground hover:bg-accent/40"
+                }`}
+              >
+                <span className="block font-medium">{PHOTO_SIZES[k].label}</span>
+                <span className={`block text-xs ${size === k ? "text-white/85" : "text-muted-foreground"}`}>
+                  {PHOTO_SIZES[k].hint}
+                </span>
+              </button>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset>
           <legend className="eyebrow mb-2 block text-xs">Number of photos</legend>
           <div className="flex flex-wrap gap-2">
-            {COUNTS.map((n) => (
+            {COUNTS.filter((n) => n !== "fill" || photoMm).map((n) => (
               <button
                 key={n}
+                type="button"
                 onClick={() => setCount(n)}
+                disabled={!countFits(n)}
                 aria-pressed={count === n}
-                className={`rounded-md border px-3 py-2 text-sm font-medium transition-colors ${
+                className={`rounded-md border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
                   count === n
                     ? "border-brand bg-brand text-white"
                     : "border-hairline-strong bg-background text-foreground hover:bg-accent/40"
                 }`}
               >
-                {n} photos
+                {n === "fill" ? `Fill sheet (${capacity})` : `${n} photos`}
               </button>
             ))}
           </div>
+          {photoMm && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              Up to {capacity} fit on {p.label} at {PHOTO_SIZES[size].label}.
+            </p>
+          )}
         </fieldset>
 
         <fieldset className="border-t border-hairline pt-4">

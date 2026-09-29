@@ -18,13 +18,14 @@ import { computeCrop, renderToCanvas } from "@/lib/headPositioning";
 import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { downloadBlob } from "@/lib/download";
 
-const SPEC_OPTIONS = [
+/** Ids must be COUNTRY_SPECS keys — "eu"/"au" silently matched nothing. */
+export const SPEC_OPTIONS = [
   { id: "india", label: "India — child below 4 (35×45 mm)" },
   { id: "us", label: "USA Passport (51×51 mm)" },
   { id: "uk", label: "UK Passport (35×45 mm)" },
-  { id: "eu", label: "EU / Schengen (35×45 mm)" },
-  { id: "au", label: "Australia Passport (35×45 mm)" },
-];
+  { id: "schengen", label: "EU / Schengen (35×45 mm)" },
+  { id: "australia", label: "Australia Passport (35×45 mm)" },
+] as const;
 
 export function AutoCropTool() {
   const [dragging, setDragging] = React.useState(false);
@@ -51,6 +52,11 @@ export function AutoCropTool() {
   }, [resultCanvas]);
 
   const run = async (file: File, sid: string) => {
+    // Clear the previous result BEFORE any early return, so a failed run can
+    // never leave the last country's crop on screen to download under the
+    // newly selected country's name.
+    setResultCanvas(null);
+    setWarnings([]);
     if (!file.type.startsWith("image/")) {
       setError("Please upload a JPG or PNG image.");
       return;
@@ -63,8 +69,6 @@ export function AutoCropTool() {
 
     setBusy(true);
     setError(null);
-    setResultCanvas(null);
-    setWarnings([]);
 
     const url = URL.createObjectURL(file);
     const img = await new Promise<HTMLImageElement>((res, rej) => {

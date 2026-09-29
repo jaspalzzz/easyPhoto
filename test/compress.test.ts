@@ -1,6 +1,9 @@
 import { describe, it, expect } from "vitest";
 import {
   buildScales,
+  compressToCap,
+  DEFAULT_MIN_QUALITY,
+  LAST_RESORT_MIN_QUALITY,
   searchUnderCap,
   type Encoder,
 } from "@/lib/compress";
@@ -75,5 +78,69 @@ describe("searchUnderCap", () => {
     expect(res.underCap).toBe(true);
     expect(res.scale).toBeLessThan(1);
     expect(res.bytes).toBeLessThanOrEqual(100);
+  });
+});
+
+describe("searchUnderCap — last-resort quality floor", () => {
+  it("closes a small gap at fixed pixels by going below minQuality (Driving Licence 420×525 ≤ 20 KB)", async () => {
+    // bytes(1, 0.4) = 520 > 500: impossible at the normal floor, fits at ~0.35.
+    const res = await searchUnderCap(model(1000), { maxBytes: 500, minScale: 1, lastResortMinQuality: 0.2 });
+    expect(res.underCap).toBe(true);
+    expect(res.scale).toBe(1);
+    expect(res.bytes).toBeLessThanOrEqual(500);
+    expect(res.quality).toBeLessThan(0.4);
+    expect(res.quality).toBeGreaterThanOrEqual(0.2);
+  });
+
+  it("still reports underCap:false (the normal-floor encoding) when even the floor can't fit", async () => {
+    const res = await searchUnderCap(model(1000), { maxBytes: 100, minScale: 1, lastResortMinQuality: 0.2 });
+    expect(res.underCap).toBe(false);
+    expect(res.quality).toBe(0.4);
+  });
+
+  it("is never used when a normal encoding fits", async () => {
+    const res = await searchUnderCap(model(1000), { maxBytes: 700, lastResortMinQuality: 0.2 });
+    expect(res.quality).toBeGreaterThan(0.4);
+  });
+});
+
+
+describe("compressToCap — low-quality fallback is opt-in", () => {
+  /**
+   * A canvas whose JPEG size grows with quality: 1000 × (0.3 + q) bytes, so a
+   * 600-byte cap is impossible at the normal 0.4 floor (700 B) and reachable
+   * only below it. minScale 1 keeps compressToCap at this exact canvas, the
+   * fixed-pixel case (Driving Licence 420×525) the fallback exists for.
+   */
+  function sizedCanvas(): HTMLCanvasElement {
+    const canvas = document.createElement("canvas");
+    canvas.width = 420;
+    canvas.height = 525;
+    canvas.toBlob = (cb: BlobCallback, type?: string, quality = 0.92) =>
+      cb(new Blob([new Uint8Array(Math.round(1000 * (0.3 + quality)))], { type }));
+    return canvas;
+  }
+  const capKb = 600 / 1024;
+
+  it("keeps the normal floor by default and reports that the cap wasn't met", async () => {
+    const res = await compressToCap(sizedCanvas(), capKb, { minScale: 1 });
+    expect(res.underCap).toBe(false);
+    expect(res.qualityReduced).toBe(false);
+    expect(res.quality).toBe(DEFAULT_MIN_QUALITY);
+  });
+
+  it("drops below the floor only when the caller opts in, and flags it", async () => {
+    const res = await compressToCap(sizedCanvas(), capKb, { minScale: 1, allowLowQualityFallback: true });
+    expect(res.underCap).toBe(true);
+    expect(res.qualityReduced).toBe(true);
+    expect(res.bytes).toBeLessThanOrEqual(600);
+    expect(res.quality).toBeLessThan(DEFAULT_MIN_QUALITY);
+    expect(res.quality).toBeGreaterThanOrEqual(LAST_RESORT_MIN_QUALITY);
+  });
+
+  it("doesn't flag a result that fit at normal quality", async () => {
+    const res = await compressToCap(sizedCanvas(), 1000 / 1024, { minScale: 1, allowLowQualityFallback: true });
+    expect(res.underCap).toBe(true);
+    expect(res.qualityReduced).toBe(false);
   });
 });

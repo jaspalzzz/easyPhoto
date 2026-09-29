@@ -5,57 +5,9 @@ import { FileUp, Download, ShieldCheck, Loader2, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { downloadBlob } from "@/lib/download";
-import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
+import { fillAndExport, loadPdfFormFields, type FormField } from "@/lib/formFill";
+import { PdfEncryptedError } from "@/lib/pdfToImages";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
-
-interface FormField {
-  name: string;
-  type: string;
-  value: string;
-}
-
-async function loadPdfFormFields(file: File): Promise<FormField[]> {
-  await assertPdfDecryptable(file);
-  const { PDFDocument } = await import("pdf-lib");
-  const bytes = await file.arrayBuffer();
-  const pdf = await PDFDocument.load(bytes, { ignoreEncryption: true });
-  const form = pdf.getForm();
-  return form.getFields().map((f) => ({
-    name: f.getName(),
-    type: f.constructor.name.replace("PDF", "").replace("Field", ""),
-    value: "",
-  }));
-}
-
-async function fillAndExport(file: File, fields: FormField[]): Promise<Blob> {
-  await assertPdfDecryptable(file);
-  const { PDFDocument } = await import("pdf-lib");
-  const bytes = await file.arrayBuffer();
-  const pdf = await PDFDocument.load(bytes, { ignoreEncryption: true });
-  const form = pdf.getForm();
-
-  for (const field of fields) {
-    if (!field.value) continue;
-    try {
-      const f = form.getField(field.name);
-      if (f.constructor.name === "PDFTextField") {
-        (f as import("pdf-lib").PDFTextField).setText(field.value);
-      } else if (f.constructor.name === "PDFCheckBox") {
-        if (field.value.toLowerCase() === "true" || field.value === "1") {
-          (f as import("pdf-lib").PDFCheckBox).check();
-        } else {
-          (f as import("pdf-lib").PDFCheckBox).uncheck();
-        }
-      }
-    } catch {
-      // Skip unrecognised field types
-    }
-  }
-
-  form.flatten();
-  const out = await pdf.save();
-  return new Blob([out.buffer as ArrayBuffer], { type: "application/pdf" });
-}
 
 export function FormFillTool() {
   const [file, setFile] = React.useState<File | null>(null);
@@ -121,8 +73,13 @@ export function FormFillTool() {
     if (!file || !fields) return;
     setFilling(true);
     try {
-      const blob = await fillAndExport(file, fields);
+      const { blob, failed } = await fillAndExport(file, fields);
       downloadBlob(blob, file.name.replace(/\.pdf$/i, "-filled.pdf"));
+      setError(
+        failed.length
+          ? `Downloaded, but ${failed.length} field${failed.length === 1 ? "" : "s"} could not be filled: ${failed.join(", ")}. Check the value fits the field.`
+          : null
+      );
     } catch (err) {
       if (err instanceof PdfEncryptedError) {
         setError("encrypted");
@@ -195,7 +152,20 @@ export function FormFillTool() {
                   {field.name}
                   <span className="ml-2 text-xs font-normal text-muted-foreground">({field.type})</span>
                 </label>
-                {field.type === "CheckBox" ? (
+                {field.options ? (
+                  <select
+                    className="rounded-lg border border-hairline bg-background px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
+                    value={field.value}
+                    onChange={(e) => updateField(i, e.target.value)}
+                  >
+                    <option value="">— unset —</option>
+                    {field.options.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
+                  </select>
+                ) : field.type === "CheckBox" ? (
                   <select
                     className="rounded-lg border border-hairline bg-background px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
                     value={field.value}

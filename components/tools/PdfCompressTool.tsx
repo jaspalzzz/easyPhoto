@@ -13,10 +13,18 @@ import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
+import { useUrlKbTarget } from "@/components/tool/useUrlKbTarget";
 
 const TARGETS = [50, 100, 200, 500] as const;
 
-export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}) {
+export function PdfCompressTool({
+  defaultKb = 100,
+  targetFromUrl = false,
+}: {
+  defaultKb?: number;
+  /** Honour a `?target=<kb>` preset (the /blog/how-to-compress-pdf/ links use it). */
+  targetFromUrl?: boolean;
+} = {}) {
   const [file, setFile] = React.useState<File | null>(null);
   const [targetKb, setTargetKb] = React.useState<number>(defaultKb);
   const [busy, setBusy] = React.useState(false);
@@ -31,6 +39,21 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
   React.useEffect(() => {
     track({ name: "tool_view", tool: "pdf-compress" });
   }, []);
+
+  // Only the offered presets are valid targets here.
+  const urlKb = useUrlKbTarget(targetFromUrl, TARGETS[0], TARGETS[TARGETS.length - 1]);
+  React.useEffect(() => {
+    if (urlKb !== null && (TARGETS as readonly number[]).includes(urlKb)) setTargetKb(urlKb);
+  }, [urlKb]);
+
+  // A result belongs to the target it was made for. Changing the target clears
+  // it, so the status can never claim "Under 50 KB" over a 145 KB file.
+  const chooseTarget = (t: number) => {
+    if (t === targetKb) return;
+    setTargetKb(t);
+    setResult(null);
+    setResultBlob(null);
+  };
 
   React.useEffect(() => {
     const payload = consumeWorkflowPayload(WORKFLOW_PDF_KINDS);
@@ -170,7 +193,8 @@ export function PdfCompressTool({ defaultKb = 100 }: { defaultKb?: number } = {}
                   <button
                     key={t}
                     type="button"
-                    onClick={() => setTargetKb(t)}
+                    onClick={() => chooseTarget(t)}
+                    aria-pressed={targetKb === t}
                     className={`rounded-md border px-3 py-1.5 text-sm font-semibold transition-colors ${
                       targetKb === t ? "border-brand bg-brand-soft/40 text-brand" : "border-hairline-strong hover:bg-accent/40"
                     }`}
