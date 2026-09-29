@@ -41,6 +41,17 @@ function aspectRatio(a: Aspect): number | null {
   return null;
 }
 
+/**
+ * The largest box with width/height exactly `ratio` that is no wider than
+ * `wantW` and fits inside maxW×maxH. Ratio-locked crops must shrink BOTH sides
+ * together — clamping the height alone (the old behaviour) turned a 9:16 crop of
+ * a square photo into 4:5.
+ */
+export function fitAspect(wantW: number, ratio: number, maxW: number, maxH: number): { w: number; h: number } {
+  const w = Math.max(0, Math.min(wantW, maxW, maxH * ratio));
+  return { w, h: w / ratio };
+}
+
 function clamp(r: Rect, imgW: number, imgH: number): Rect {
   const w = Math.min(Math.max(0, r.w), imgW);
   const h = Math.min(Math.max(0, r.h), imgH);
@@ -178,9 +189,22 @@ function Body({ source }: { source: ToolSource }) {
     const ratio = aspectRatio(aspect);
 
     if (g.kind === "draw") {
-      const nw = Math.abs(x - g.startX);
-      const nh = ratio ? nw / ratio : Math.abs(y - g.startY);
-      setCrop(clamp({ x: Math.min(g.startX, x), y: Math.min(g.startY, y), w: nw, h: nh }, canvas.width, canvas.height));
+      if (ratio) {
+        // Grow away from the anchor in the drag direction, within the image.
+        const right = x >= g.startX;
+        const down = y >= g.startY;
+        const { w, h } = fitAspect(
+          Math.abs(x - g.startX),
+          ratio,
+          right ? canvas.width - g.startX : g.startX,
+          down ? canvas.height - g.startY : g.startY,
+        );
+        setCrop({ x: right ? g.startX : g.startX - w, y: down ? g.startY : g.startY - h, w, h });
+      } else {
+        const nw = Math.abs(x - g.startX);
+        const nh = Math.abs(y - g.startY);
+        setCrop(clamp({ x: Math.min(g.startX, x), y: Math.min(g.startY, y), w: nw, h: nh }, canvas.width, canvas.height));
+      }
     } else if (g.kind === "move") {
       const nx = Math.max(0, Math.min(canvas.width  - g.rect.w, g.rect.x + (x - g.startX)));
       const ny = Math.max(0, Math.min(canvas.height - g.rect.h, g.rect.y + (y - g.startY)));
@@ -190,12 +214,21 @@ function Body({ source }: { source: ToolSource }) {
       const r  = g.rect;
       const fx = g.corner === "tl" || g.corner === "bl" ? r.x + r.w : r.x;
       const fy = g.corner === "tl" || g.corner === "tr" ? r.y + r.h : r.y;
-      const nw = Math.max(MIN_CROP, Math.abs(fx - x));
-      const nh = ratio ? nw / ratio : Math.max(MIN_CROP, Math.abs(fy - y));
-      const nx = Math.min(fx, x);
-      const fixedYIsTop = g.corner === "bl" || g.corner === "br";
-      const ny = ratio ? (fixedYIsTop ? fy : fy - nh) : Math.min(fy, y);
-      setCrop(clamp({ x: Math.max(0, nx), y: Math.max(0, ny), w: nw, h: nh }, canvas.width, canvas.height));
+      if (ratio) {
+        const right = x >= fx;
+        const down = g.corner === "bl" || g.corner === "br";
+        const { w, h } = fitAspect(
+          Math.max(MIN_CROP, Math.abs(fx - x)),
+          ratio,
+          right ? canvas.width - fx : fx,
+          down ? canvas.height - fy : fy,
+        );
+        setCrop({ x: right ? fx : fx - w, y: down ? fy : fy - h, w, h });
+      } else {
+        const nw = Math.max(MIN_CROP, Math.abs(fx - x));
+        const nh = Math.max(MIN_CROP, Math.abs(fy - y));
+        setCrop(clamp({ x: Math.max(0, Math.min(fx, x)), y: Math.max(0, Math.min(fy, y)), w: nw, h: nh }, canvas.width, canvas.height));
+      }
     }
   };
 
@@ -213,20 +246,20 @@ function Body({ source }: { source: ToolSource }) {
     if (!ratio) return;
     const cx = crop.x + crop.w / 2;
     const cy = crop.y + crop.h / 2;
-    const nw = crop.w;
-    const nh = nw / ratio;
-    setCrop(clamp({ x: cx - nw / 2, y: cy - nh / 2, w: nw, h: nh }, base.width, base.height));
+    const { w, h } = fitAspect(crop.w, ratio, base.width, base.height);
+    setCrop(clamp({ x: cx - w / 2, y: cy - h / 2, w, h }, base.width, base.height));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aspect]);
 
   const resetBox = () => {
     const base = baseCanvasRef.current;
     if (!base) return;
-    const pad = 0.1;
-    const nw  = Math.round(base.width * (1 - pad * 2));
+    const inner = 0.8; // leave a 10% margin on every side
+    const maxW = Math.round(base.width * inner);
+    const maxH = Math.round(base.height * inner);
     const ratio = aspectRatio(aspect);
-    const nh  = ratio ? nw / ratio : Math.round(base.height * (1 - pad * 2));
-    setCrop(clamp({ x: Math.round(base.width * pad), y: Math.round(base.height * pad), w: nw, h: nh }, base.width, base.height));
+    const { w, h } = ratio ? fitAspect(maxW, ratio, maxW, maxH) : { w: maxW, h: maxH };
+    setCrop({ x: (base.width - w) / 2, y: (base.height - h) / 2, w, h });
   };
 
   const cropCanvas = React.useCallback((white: boolean): HTMLCanvasElement | null => {
