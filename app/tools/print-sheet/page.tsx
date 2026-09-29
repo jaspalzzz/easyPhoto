@@ -24,8 +24,8 @@ export default function Page() {
           a: "A4 (210×297 mm) is the standard paper at most Indian print shops, and A5 is half of it. Choose 4×6, 5×6 or 4×4 inch if you are printing at a photo kiosk (common in the US and UK) or if your studio asks for that size. All sheets are generated at 300 DPI.",
         },
         {
-          q: "How many photos should I tile?",
-          a: "For most Indian exam and government forms, a strip of 6 photos on A4 gives a comfortable size (roughly 3.5×4.5 cm each) and leaves space for the studio to cut. Choose 4 if you only need a few or if the individual photos are smaller.",
+          q: "What photo size will be printed?",
+          a: "Pick the size first: 35×45 mm is the Indian passport size used by most exam and visa forms, and 2×2 inch (51×51 mm) is the US size. Every copy prints at exactly that size when you print at 100% (\"actual size\", not \"fit to page\"). Then choose how many copies you need — the tool shows how many fit on the paper, and \"Fill sheet\" uses all of them. \"Fill the grid\" is only for larger prints with no fixed size.",
         },
         {
           q: "What do the grey lines on the sheet mean?",
