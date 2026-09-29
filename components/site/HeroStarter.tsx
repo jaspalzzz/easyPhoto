@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Uploader } from "@/components/tool/Uploader";
+import { Button } from "@/components/ui/button";
 import { Flag } from "@/components/site/Flag";
 import { useToolStore } from "@/store/useToolStore";
 import { hubCountries } from "@/lib/makerPages";
@@ -31,6 +32,11 @@ export function HeroStarter({
 }) {
   const router = useRouter();
   const setPendingFile = useToolStore((s) => s.setPendingFile);
+  // A photo handed over by another tool (e.g. camera-capture's "Make a
+  // passport photo") arrives before the country is known. Keep it and let the
+  // user pick the country, instead of showing an empty drop zone that loses it.
+  // Only ever set after a client-side navigation, so SSR output is unaffected.
+  const pendingFile = useToolStore((s) => s.pendingFile);
 
   // Single source of truth (lib/makerPages hubCountries) so this picker and the
   // "size by country" grid can never drift apart. "primary" (homepage) behaves
@@ -102,7 +108,24 @@ export function HeroStarter({
           <span className="text-ink-faint">02</span> Add your photo
         </span>
         <div className="mt-3">
-          <Uploader onFile={start} allowCamera className="min-h-[230px] gap-4 py-12" />
+          {pendingFile ? (
+            <div className="rounded-lg border border-brand/40 bg-brand-soft/20 p-4 text-sm">
+              <p className="font-medium text-ink">Your photo is ready.</p>
+              <p className="mt-1 text-muted-foreground">
+                Choose your country above, then continue — no need to add it again.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button type="button" onClick={() => router.push(sel)}>
+                  Continue with this photo
+                </Button>
+                <Button type="button" variant="outline" onClick={() => setPendingFile(null)}>
+                  Use a different photo
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <Uploader onFile={start} allowCamera className="min-h-[230px] gap-4 py-12" />
+          )}
         </div>
       </div>
     </div>
