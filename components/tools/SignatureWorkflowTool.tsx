@@ -12,7 +12,7 @@ import { fitToExactFrame, imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import {
   SIGNATURE_CLEAN_DEFAULTS,
   signatureKbFloor,
-  signatureTrimMinRun,
+  signatureTrimAttach,
   whiteToTransparent,
   trimToContent,
 } from "@/lib/signature";
@@ -318,14 +318,14 @@ function Body({
         let finalCanvas = finalCleaned;
         let cropOk = true;
         if (autoCrop) {
-          // Ignore sparse margin noise (specks, scanner dust, a faint page-edge
-          // rim) so the box snaps to the real ink instead of barely moving.
-          // Floor scales with size: ~0.5% of the smaller side, min 2 px.
-          const minRun = signatureTrimMinRun(finalCleaned.width, finalCleaned.height);
+          // Ignore sparse margin noise (specks, scanner dust, faint texture) so
+          // the box snaps to the real ink, but keep every thin stroke attached
+          // to the signature — the density floor alone cut ascenders and
+          // lead-in strokes off phone photos. All thresholds scale with size.
           const { canvas: trimmed, bbox } = trimToContent(finalCleaned, {
             mode: "alpha",
             padding: dPadding,
-            minRun,
+            ...signatureTrimAttach(finalCleaned.width, finalCleaned.height),
           });
           if (bbox) {
             finalCanvas = trimmed;
