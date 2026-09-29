@@ -42,7 +42,20 @@ export interface SearchOptions {
   minScale?: number;
   /** Geometric step between successive scales (0 < x < 1). */
   scaleStep?: number;
+  /**
+   * Opt-in last resort: when nothing fits at `minQuality` even at the smallest
+   * allowed scale, retry at that scale with quality down to this floor before
+   * giving up. Fixed-pixel portals (Driving Licence 420×525 ≤ 20 KB, CAT)
+   * can't shrink, so a photo a few percent over the cap at 0.4 was a dead end.
+   */
+  lastResortMinQuality?: number;
 }
+
+/**
+ * Quality floor for the last-resort pass. Low enough to close the few-percent
+ * gap fixed-size portals hit at 0.4; high enough that a face stays reviewable.
+ */
+export const LAST_RESORT_MIN_QUALITY = 0.2;
 
 export interface SearchResult<T> {
   payload: T;
@@ -128,6 +141,35 @@ export async function searchUnderCap<T>(
       bytes: bestFit.bytes,
       underCap: true,
     };
+  }
+
+  // Last resort (opt-in): lower the quality floor at the smallest scale.
+  const floorQ = opts.lastResortMinQuality;
+  if (floorQ != null && floorQ < minQ) {
+    const scale = scales[scales.length - 1];
+    const lo = await encode(scale, floorQ);
+    if (lo.bytes <= maxBytes) {
+      let bestFit: Measured<T> & { quality: number } = { ...lo, quality: floorQ };
+      let lq = floorQ;
+      let hq = minQ;
+      for (let i = 0; i < steps; i++) {
+        const mq = (lq + hq) / 2;
+        const m = await encode(scale, mq);
+        if (m.bytes <= maxBytes) {
+          bestFit = { ...m, quality: mq };
+          lq = mq;
+        } else {
+          hq = mq;
+        }
+      }
+      return {
+        payload: bestFit.payload,
+        quality: bestFit.quality,
+        scale,
+        bytes: bestFit.bytes,
+        underCap: true,
+      };
+    }
   }
 
   // Nothing fit, even at the smallest allowed scale + lowest quality.
@@ -247,6 +289,7 @@ export async function compressToCap(
   const res = await searchUnderCap(encode, {
     maxBytes: maxKb * 1024,
     minQuality: opts.minQuality,
+    lastResortMinQuality: LAST_RESORT_MIN_QUALITY,
     maxQuality: opts.maxQuality,
     qualitySteps: opts.iterations,
     minScale,

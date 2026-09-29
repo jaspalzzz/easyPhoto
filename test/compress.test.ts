@@ -77,3 +77,27 @@ describe("searchUnderCap", () => {
     expect(res.bytes).toBeLessThanOrEqual(100);
   });
 });
+
+describe("searchUnderCap — last-resort quality floor", () => {
+  it("closes a small gap at fixed pixels by going below minQuality (Driving Licence 420×525 ≤ 20 KB)", async () => {
+    // bytes(1, 0.4) = 520 > 500: impossible at the normal floor, fits at ~0.35.
+    const res = await searchUnderCap(model(1000), { maxBytes: 500, minScale: 1, lastResortMinQuality: 0.2 });
+    expect(res.underCap).toBe(true);
+    expect(res.scale).toBe(1);
+    expect(res.bytes).toBeLessThanOrEqual(500);
+    expect(res.quality).toBeLessThan(0.4);
+    expect(res.quality).toBeGreaterThanOrEqual(0.2);
+  });
+
+  it("still reports underCap:false (the normal-floor encoding) when even the floor can't fit", async () => {
+    const res = await searchUnderCap(model(1000), { maxBytes: 100, minScale: 1, lastResortMinQuality: 0.2 });
+    expect(res.underCap).toBe(false);
+    expect(res.quality).toBe(0.4);
+  });
+
+  it("is never used when a normal encoding fits", async () => {
+    const res = await searchUnderCap(model(1000), { maxBytes: 700, lastResortMinQuality: 0.2 });
+    expect(res.quality).toBeGreaterThan(0.4);
+  });
+});
+
