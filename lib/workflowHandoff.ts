@@ -100,6 +100,15 @@ export function consumeWorkflowPayload<
   return p as WorkflowPayload & { kind: AcceptedKinds[number] };
 }
 
+/**
+ * The kind of the pending payload, WITHOUT consuming it. Lets a container that
+ * hosts several receivers (e.g. PortalResizer's photo and signature tabs) mount
+ * the one that can accept it, instead of letting the wrong one discard it.
+ */
+export function peekWorkflowPayloadKind(): WorkflowAssetKind | null {
+  return pending?.kind ?? null;
+}
+
 /** Clear a pending one-shot payload without offering it to a receiver. */
 export function discardWorkflowPayload(): void {
   pending = null;

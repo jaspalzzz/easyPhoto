@@ -9,6 +9,7 @@ import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { allPortalSpecs, getPortalSpec } from "@/lib/specRegistry";
 import {
   checkCompliance,
+  overallVerdict,
   type ComplianceReport,
   type DocKind,
   type FileFacts,
@@ -17,8 +18,11 @@ import { buildComplianceCard } from "@/lib/complianceCard";
 import { checkPhotoQuality, type PhotoCheck } from "@/lib/photoCheck";
 import { downloadBlob } from "@/lib/download";
 import { track, deviceClass } from "@/lib/analytics";
+import { consumeWorkflowPayload, WORKFLOW_GENERIC_IMAGE_KINDS } from "@/lib/workflowHandoff";
 
 const SPECS = allPortalSpecs();
+
+type Verdict = ComplianceReport["verdict"];
 
 /** Heuristic: do at least 3 of the 4 corners look plain white/light? */
 function cornersLookWhite(bmp: ImageBitmap): boolean {
@@ -82,7 +86,9 @@ export function ComplianceCheckerTool() {
   const spec = getPortalSpec(examId);
   const noSig = kind === "signature" && spec && spec.sigLimitKb == null;
 
-  const onFile = async (file: File) => {
+  // Exam and document kind are explicit parameters (not read from state) so a
+  // handed-over file can be checked in the same tick its exam/kind are set.
+  const runCheck = async (file: File, spec: ReturnType<typeof getPortalSpec>, kind: DocKind) => {
     if (!spec) return;
     setBusy(true);
     setError(null);
@@ -132,12 +138,31 @@ export function ComplianceCheckerTool() {
     }
   };
 
+  const onFile = (file: File) => runCheck(file, spec, kind);
+
+  // Check a photo handed over by another tool's "Run a photo pre-check" step,
+  // so the user never has to re-upload the file they just made.
+  React.useEffect(() => {
+    const payload = consumeWorkflowPayload(WORKFLOW_GENERIC_IMAGE_KINDS);
+    if (!payload) return;
+    const incomingKind: DocKind = payload.kind === "signature" ? "signature" : "photo";
+    const incomingSpec = (payload.examId && getPortalSpec(payload.examId)) || getPortalSpec(examId);
+    if (incomingSpec) setExamId(incomingSpec.id);
+    setKind(incomingKind);
+    const file = new File([payload.blob], payload.filename, { type: payload.blob.type });
+    void runCheck(file, incomingSpec, incomingKind);
+    // Mount-only: consume-once handoff.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const verdict: Verdict | null = report ? overallVerdict(report.verdict, photoChecks) : null;
+
   const shareResult = async () => {
-    if (!report || !spec) return;
+    if (!report || !spec || !verdict) return;
     setSharing(true);
     try {
       const examName = spec.name.split(" (")[0];
-      const blob = await buildComplianceCard({ examName, kind, report });
+      const blob = await buildComplianceCard({ examName, kind, report: { ...report, verdict } });
       const file = new File([blob], `easyphoto-${spec.id}-${kind}-check.png`, {
         type: "image/png",
       });
@@ -182,6 +207,9 @@ export function ComplianceCheckerTool() {
             onChange={(e) => {
               setExamId(e.target.value);
               setReport(null);
+              // Re-check the loaded file against the new exam — a handed-over
+              // photo must not need re-uploading just to change the exam.
+              if (sourceFile) void runCheck(sourceFile, getPortalSpec(e.target.value), kind);
             }}
             className="h-10 rounded-md border border-hairline-strong bg-background px-3 text-sm"
           >
@@ -202,6 +230,8 @@ export function ComplianceCheckerTool() {
                 onClick={() => {
                   setKind(k);
                   setReport(null);
+                  const noSigField = k === "signature" && spec?.sigLimitKb == null;
+                  if (sourceFile && !noSigField) void runCheck(sourceFile, spec, k);
                 }}
                 className={`rounded-md border px-3 py-2 text-sm font-medium capitalize transition-colors ${
                   kind === k
@@ -233,7 +263,7 @@ export function ComplianceCheckerTool() {
         <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300">{error}</p>
       )}
 
-      {report && (() => {
+      {report && verdict && (() => {
         // Readiness score — derived transparently from the checks shown below
         // (pass = 1, warn = 0.5, fail = 0). Not a magic number: it provably
         // maps to the checklist, so it reassures without faking precision.
@@ -250,7 +280,7 @@ export function ComplianceCheckerTool() {
           : 0;
         return (
         <div className="space-y-4">
-          <div className={`flex items-center gap-4 rounded-lg border p-4 ${VERDICT[report.verdict].cls}`}>
+          <div className={`flex items-center gap-4 rounded-lg border p-4 ${VERDICT[verdict].cls}`}>
             <div className="shrink-0 text-center">
               <div className="text-3xl font-bold leading-none">
                 {score}
@@ -261,7 +291,7 @@ export function ComplianceCheckerTool() {
               </div>
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-semibold">{VERDICT[report.verdict].text}</p>
+              <p className="text-sm font-semibold">{VERDICT[verdict].text}</p>
               <p className="mt-0.5 text-xs opacity-80">
                 Based on the {all.length} checks below — fix any ✗ or ⚠ before you upload.
               </p>
@@ -318,20 +348,23 @@ export function ComplianceCheckerTool() {
           )}
           <div className="flex flex-wrap gap-1.5 pt-1">
             {report.verdict !== "pass" && spec && (
-              // Photo fixes carry the file into the form resizer (which auto-loads
-              // it into its photo slot). Signature stays a plain link to avoid
-              // landing in the wrong slot.
+              // Resizing fixes file-fact failures (size/dimensions/format), so
+              // this keys off the file verdict, not the face checks. Photo fixes
+              // carry the file into the exam page's embedded resizer (which
+              // auto-loads it into its photo tab). Signature stays a plain link
+              // to avoid landing in the wrong slot. /tools/form-resizer/ is a
+              // retired, host-redirected route — link the live exam page.
               kind === "photo" && sourceFile ? (
                 <button
                   type="button"
-                  onClick={() => handoff(sourceFile, sourceFile.name, `/tools/form-resizer/${spec.id}/`)}
+                  onClick={() => handoff(sourceFile, sourceFile.name, `/exam-requirements/${spec.id}/#resizer`)}
                   className="inline-flex items-center gap-1 rounded-md bg-cta px-3.5 py-2 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
                 >
                   Fix it — resize for {spec.name.split(" (")[0]} <ArrowRight className="h-4 w-4" />
                 </button>
               ) : (
                 <Link
-                  href={`/tools/form-resizer/${spec.id}/`}
+                  href={`/exam-requirements/${spec.id}/#resizer`}
                   className="inline-flex items-center gap-1 rounded-md bg-cta px-3.5 py-2 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
                 >
                   Fix it — resize for {spec.name.split(" (")[0]} <ArrowRight className="h-4 w-4" />

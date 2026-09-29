@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { checkCompliance, type FileFacts } from "@/lib/compliance";
+import { checkCompliance, overallVerdict, type FileFacts } from "@/lib/compliance";
 import { getPortalSpec } from "@/lib/specRegistry";
 
 const ibps = getPortalSpec("ibps")!;
@@ -84,5 +84,17 @@ describe("checkCompliance — signature", () => {
       "signature"
     );
     expect(r.verdict).toBe("fail");
+  });
+});
+
+describe("overallVerdict", () => {
+  it("a failed face check turns a clean file report red (no false 'No issues')", () => {
+    expect(overallVerdict("pass", [{ status: "pass" }, { status: "fail" }])).toBe("fail");
+  });
+  it("takes the worst status across both lists", () => {
+    expect(overallVerdict("pass", [{ status: "warn" }])).toBe("warn");
+    expect(overallVerdict("fail", [{ status: "pass" }])).toBe("fail");
+    expect(overallVerdict("warn", null)).toBe("warn");
+    expect(overallVerdict("pass", [])).toBe("pass");
   });
 });
