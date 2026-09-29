@@ -93,6 +93,8 @@ interface AssetResult {
   compliant: boolean;
   kind: "photo" | "signature";
   format: "jpg" | "png";
+  /** The cap was only met by lowering quality below the normal floor. */
+  qualityReduced?: boolean;
 }
 
 /** Decode a File (incl. HEIC) into a canvas at its natural size. */
@@ -216,6 +218,9 @@ export function ExamPackageTool() {
         // Portals reject files below the band's floor too — pad up to it.
         minKb: spec.photoMinKb,
         densityDpi: spec.dpi,
+        // A fixed pixel frame can't shrink to reach the cap (e.g. Driving
+        // Licence 420×525 ≤ 20 KB), so only there may quality drop further.
+        allowLowQualityFallback: hasRequiredDimensions,
       });
       if (photo?.url) URL.revokeObjectURL(photo.url);
       const photoCompliant =
@@ -234,6 +239,7 @@ export function ExamPackageTool() {
         compliant: photoCompliant,
         kind: "photo",
         format: "jpg",
+        qualityReduced: res.qualityReduced,
       });
       return true;
     } catch (e) {
@@ -764,6 +770,14 @@ export function ExamPackageTool() {
                       },
                     ]}
                   />
+                )}
+
+                {photo.qualityReduced && (
+                  <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
+                    Photo quality was reduced to fit {spec?.photoLimitKb} KB at the required size.
+                    Zoom in and check your face is still sharp — if it looks blurry, crop closer or
+                    retake the photo in brighter light.
+                  </p>
                 )}
 
                 <div className="grid gap-4 sm:grid-cols-2">

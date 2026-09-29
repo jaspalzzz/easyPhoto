@@ -51,6 +51,9 @@ export interface SearchOptions {
   lastResortMinQuality?: number;
 }
 
+/** Normal JPEG quality floor for the cap search. */
+export const DEFAULT_MIN_QUALITY = 0.4;
+
 /**
  * Quality floor for the last-resort pass. Low enough to close the few-percent
  * gap fixed-size portals hit at 0.4; high enough that a face stays reviewable.
@@ -91,7 +94,7 @@ export async function searchUnderCap<T>(
   opts: SearchOptions
 ): Promise<SearchResult<T>> {
   const maxBytes = opts.maxBytes;
-  const minQ = opts.minQuality ?? 0.4;
+  const minQ = opts.minQuality ?? DEFAULT_MIN_QUALITY;
   const maxQ = opts.maxQuality ?? 0.95;
   const steps = opts.qualitySteps ?? 7;
   const minScale = Math.min(1, Math.max(0.01, opts.minScale ?? 1));
@@ -192,6 +195,12 @@ export interface CompressResult {
   width: number;
   height: number;
   underCap: boolean;
+  /**
+   * True when the cap was only reached by the low-quality fallback (quality
+   * below the normal floor). Callers should tell the user to check the result
+   * is still clear — a portal can reject a blurry photo.
+   */
+  qualityReduced: boolean;
 }
 
 function toBlob(
@@ -261,6 +270,14 @@ export async function compressToCap(
      * could read. Applied before any min-KB padding.
      */
     densityDpi?: number;
+    /**
+     * Allow the last-resort quality floor (LAST_RESORT_MIN_QUALITY) when the
+     * cap can't be met at the normal floor. Only for fixed-pixel photos (e.g.
+     * Driving Licence 420×525 ≤ 20 KB, CAT) that can't shrink to fit; everyone
+     * else keeps the normal floor and reports underCap:false, so the tool shows
+     * "could not fit" instead of silently returning a blurry file.
+     */
+    allowLowQualityFallback?: boolean;
   } = {}
 ): Promise<CompressResult> {
   // Scale floor: the most restrictive of an explicit minScale and the pixel
@@ -289,7 +306,7 @@ export async function compressToCap(
   const res = await searchUnderCap(encode, {
     maxBytes: maxKb * 1024,
     minQuality: opts.minQuality,
-    lastResortMinQuality: LAST_RESORT_MIN_QUALITY,
+    lastResortMinQuality: opts.allowLowQualityFallback ? LAST_RESORT_MIN_QUALITY : undefined,
     maxQuality: opts.maxQuality,
     qualitySteps: opts.iterations,
     minScale,
@@ -316,6 +333,7 @@ export async function compressToCap(
     // selected ceiling. Re-evaluate the final blob instead of reporting the
     // pre-padding encoder verdict.
     underCap: res.underCap && blob.size <= maxKb * 1024,
+    qualityReduced: res.underCap && res.quality < (opts.minQuality ?? DEFAULT_MIN_QUALITY),
   };
 }
 
