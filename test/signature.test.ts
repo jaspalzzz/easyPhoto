@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { resolveSignatureInkRgb, signatureStrokeOffsets } from "@/lib/signature";
+import { resolveSignatureInkRgb, signatureKbFloor, signatureStrokeOffsets } from "@/lib/signature";
+import { padBlobToMin, padJpegBytesToMin } from "@/lib/padBytes";
+import { PORTAL_PRESETS } from "@/lib/portalPresets";
 
 describe("signature ink controls", () => {
   it("resolves the built-in ink colour presets", () => {
@@ -34,5 +36,60 @@ describe("signature ink controls", () => {
 
     expect(signatureStrokeOffsets(99)).toEqual(signatureStrokeOffsets(6));
     expect(signatureStrokeOffsets(-5)).toEqual([{ x: 0, y: 0 }]);
+  });
+});
+
+// jsdom's Blob lacks arrayBuffer(); real browsers have it. padBlobToMin needs it.
+if (typeof Blob !== "undefined" && !Blob.prototype.arrayBuffer) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (Blob.prototype as any).arrayBuffer = function (this: Blob) {
+    return new Promise<ArrayBuffer>((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result as ArrayBuffer);
+      fr.onerror = () => reject(fr.error);
+      fr.readAsArrayBuffer(this);
+    });
+  };
+}
+
+describe("signature KB floor", () => {
+  // What the standalone tool exported for IBPS/RRB before the floor followed the preset.
+  const REGRESSION_OUTPUT_KB = 7.8;
+  const { ibps, rrb } = PORTAL_PRESETS;
+
+  it("IBPS and RRB publish a floor above the old 7.8 KB output", () => {
+    // Guards the spec data the fix depends on: without a floor there is nothing to enforce.
+    expect(ibps?.sigMinKb).toBeGreaterThan(REGRESSION_OUTPUT_KB);
+    expect(rrb?.sigMinKb).toBeGreaterThan(REGRESSION_OUTPUT_KB);
+  });
+
+  it("applies the selected preset's floor on the standalone tool, which has no page floor", () => {
+    expect(signatureKbFloor(ibps, undefined)).toBe(ibps?.sigMinKb);
+    expect(signatureKbFloor(rrb, undefined)).toBe(rrb?.sigMinKb);
+  });
+
+  it("switching an IBPS page to the RRB preset uses RRB's floor, not the page's", () => {
+    expect(signatureKbFloor(rrb, ibps?.sigMinKb)).toBe(rrb?.sigMinKb);
+  });
+
+  it("falls back to the page's floor only when no preset is selected", () => {
+    expect(signatureKbFloor(undefined, 10)).toBe(10);
+    expect(signatureKbFloor(undefined, undefined)).toBeUndefined();
+    // A selected preset with no published floor must not inherit the page's.
+    expect(signatureKbFloor({}, 10)).toBeUndefined();
+  });
+
+  it.each([
+    ["IBPS", ibps],
+    ["RRB", rrb],
+  ])("pads a %s signature from 7.8 KB up to its floor without breaking its cap", async (_label, preset) => {
+    const floorKb = signatureKbFloor(preset, undefined)!;
+    const minimalJpeg = new Uint8Array([0xff, 0xd8, 0xff, 0xfe, 0x00, 0x04, 0x41, 0x42, 0xff, 0xd9]);
+    const tooSmall = new Blob([padJpegBytesToMin(minimalJpeg, REGRESSION_OUTPUT_KB * 1024) as BlobPart], { type: "image/jpeg" });
+
+    const out = await padBlobToMin(tooSmall, floorKb * 1024);
+
+    expect(out.size).toBeGreaterThanOrEqual(floorKb * 1024);
+    expect(out.size).toBeLessThanOrEqual(preset!.sigLimitKb! * 1024);
   });
 });

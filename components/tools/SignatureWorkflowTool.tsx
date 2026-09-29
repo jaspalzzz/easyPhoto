@@ -11,6 +11,7 @@ import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell"
 import { fitToExactFrame, imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import {
   SIGNATURE_CLEAN_DEFAULTS,
+  signatureKbFloor,
   signatureTrimMinRun,
   whiteToTransparent,
   trimToContent,
@@ -131,12 +132,8 @@ function Body({
 
   // Resize Settings
   const [presetKey, setPresetKey] = React.useState<string>(defaultPresetKey ?? "");
-  // The KB floor follows the SELECTED preset, falling back to the page's own
-  // band only when no preset is chosen. Using the page prop alone let the
-  // standalone tool's IBPS/RRB presets export 7.8 KB against a 10/30 KB floor,
-  // and kept IBPS's floor after switching an IBPS page to the RRB preset.
   const selectedPreset = presetKey ? PORTAL_PRESETS[presetKey] : undefined;
-  const minKb = selectedPreset ? selectedPreset.sigMinKb : pageMinKb;
+  const minKb = signatureKbFloor(selectedPreset, pageMinKb);
   const [resizeMode, setResizeMode] = React.useState<"kb" | "pixels">(
     initialPreset?.sigWidthPx && initialPreset.sigHeightPx ? "pixels" : "kb"
   );

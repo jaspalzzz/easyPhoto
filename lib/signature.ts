@@ -126,6 +126,20 @@ export function signatureTrimMinRun(width: number, height: number): number {
 }
 
 /**
+ * The minimum KB a signature export must reach. It follows the preset the user
+ * has SELECTED, falling back to the page's own band only when none is chosen.
+ * Using the page's band alone let the standalone tool's IBPS/RRB presets export
+ * 7.8 KB against their 10/30 KB floors, and kept IBPS's floor after switching an
+ * IBPS page to the RRB preset.
+ */
+export function signatureKbFloor(
+  selectedPreset: { sigMinKb?: number } | undefined,
+  pageMinKb: number | undefined,
+): number | undefined {
+  return selectedPreset ? selectedPreset.sigMinKb : pageMinKb;
+}
+
+/**
  * Turn light paper into transparency, keeping the dark ink. Returns a NEW RGBA
  * canvas; the source is untouched.
  */
