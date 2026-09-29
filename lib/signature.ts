@@ -109,6 +109,23 @@ function expandInkStrokes(source: HTMLCanvasElement, radius: number): HTMLCanvas
 }
 
 /**
+ * Default paper-removal settings for an uploaded signature photo. Shared by
+ * the signature workflow tools and the sign-image pad so a phone photo of a
+ * signature cleans identically everywhere: the pad's older 210/35 left shadowed
+ * paper (luma ~211) semi-opaque, baking a grey panel into the signed image.
+ */
+export const SIGNATURE_CLEAN_DEFAULTS = { threshold: 200, softness: 40 } as const;
+
+/**
+ * Density floor for trimming a cleaned signature: ignore sparse margin noise
+ * (specks, scanner dust, a faint page-edge rim) so the box snaps to the real
+ * ink. ~0.5% of the smaller side, min 2 px.
+ */
+export function signatureTrimMinRun(width: number, height: number): number {
+  return Math.max(2, Math.round(Math.min(width, height) * 0.005));
+}
+
+/**
  * Turn light paper into transparency, keeping the dark ink. Returns a NEW RGBA
  * canvas; the source is untouched.
  */

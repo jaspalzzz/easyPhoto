@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useNumericField } from "@/components/tool/useNumericField";
+import { useUrlKbTarget } from "@/components/tool/useUrlKbTarget";
 import { WORKFLOW_SIGNATURE_KINDS } from "@/lib/workflowHandoff";
 import { Download, ShieldCheck, Eraser, Crop, Maximize2, Info, FileStack } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
@@ -9,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { fitToExactFrame, imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import {
+  SIGNATURE_CLEAN_DEFAULTS,
+  signatureTrimMinRun,
   whiteToTransparent,
   trimToContent,
 } from "@/lib/signature";
@@ -27,9 +30,14 @@ import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 
 type Tab = "clean" | "crop" | "resize";
 
+/** Largest KB target the size slider offers. */
+const SIGNATURE_MAX_KB = 150;
+
 interface SignatureWorkflowProps {
   defaultTab?: Tab;
   defaultKb?: number;
+  /** Honour a `?target=<kb>` URL preset (the standalone /tools/signature-resize/ page). */
+  targetFromUrl?: boolean;
   autoCropDefault?: boolean;
   toolName?: string;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
@@ -79,7 +87,7 @@ function Body({
   defaultKb = 20,
   autoCropDefault = true,
   toolName = "signature-workflow",
-  minKb,
+  minKb: pageMinKb,
   defaultPresetKey,
   defaultFormat,
   onSourceChange,
@@ -113,8 +121,8 @@ function Body({
   );
 
   // Clean Settings
-  const [threshold, setThreshold] = React.useState(200);
-  const [softness, setSoftness] = React.useState(40);
+  const [threshold, setThreshold] = React.useState<number>(SIGNATURE_CLEAN_DEFAULTS.threshold);
+  const [softness, setSoftness] = React.useState<number>(SIGNATURE_CLEAN_DEFAULTS.softness);
   const inkControls = useSignatureInkControls();
 
   // Crop Settings
@@ -123,6 +131,12 @@ function Body({
 
   // Resize Settings
   const [presetKey, setPresetKey] = React.useState<string>(defaultPresetKey ?? "");
+  // The KB floor follows the SELECTED preset, falling back to the page's own
+  // band only when no preset is chosen. Using the page prop alone let the
+  // standalone tool's IBPS/RRB presets export 7.8 KB against a 10/30 KB floor,
+  // and kept IBPS's floor after switching an IBPS page to the RRB preset.
+  const selectedPreset = presetKey ? PORTAL_PRESETS[presetKey] : undefined;
+  const minKb = selectedPreset ? selectedPreset.sigMinKb : pageMinKb;
   const [resizeMode, setResizeMode] = React.useState<"kb" | "pixels">(
     initialPreset?.sigWidthPx && initialPreset.sigHeightPx ? "pixels" : "kb"
   );
@@ -310,10 +324,7 @@ function Body({
           // Ignore sparse margin noise (specks, scanner dust, a faint page-edge
           // rim) so the box snaps to the real ink instead of barely moving.
           // Floor scales with size: ~0.5% of the smaller side, min 2 px.
-          const minRun = Math.max(
-            2,
-            Math.round(Math.min(finalCleaned.width, finalCleaned.height) * 0.005)
-          );
+          const minRun = signatureTrimMinRun(finalCleaned.width, finalCleaned.height);
           const { canvas: trimmed, bbox } = trimToContent(finalCleaned, {
             mode: "alpha",
             padding: dPadding,
@@ -611,9 +622,11 @@ function Body({
               <span>Dimensions: <strong className="text-foreground text-sm">{out.w}×{out.h}px</strong></span>
             </div>
             
-            {!out.underCap && resizeMode === "kb" && (
+            {!out.underCap && (
               <p className="border-l-2 border-amber-500 bg-amber-50/60 p-2 text-xs text-amber-900 leading-normal dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
-                Could not fit under {targetKb} KB without losing detail. Try a higher target limit or crop closer.
+                {resizeMode === "kb"
+                  ? `Could not fit under ${targetKb} KB without losing detail. Try a higher target limit or crop closer.`
+                  : `Could not fit under ${targetKb} KB at ${out.w}×${out.h}px. Try the JPG format or a higher limit.`}
               </p>
             )}
 
@@ -959,7 +972,7 @@ function Body({
                       id="sig-resize-target-kb"
                       type="range"
                       min={minKb ?? 5}
-                      max={150}
+                      max={SIGNATURE_MAX_KB}
                       value={targetKb}
                       onChange={(e) => setTargetKb(Math.max(minKb ?? 5, Number(e.target.value)))}
                       className="w-full cursor-pointer accent-brand"
@@ -1018,10 +1031,13 @@ export function SignatureWorkflowTool({
   defaultPresetKey,
   defaultFormat,
   onSourceChange,
+  targetFromUrl = false,
 }: SignatureWorkflowProps) {
   React.useEffect(() => {
     track({ name: "tool_view", tool: toolName });
   }, [toolName]);
+  // Body mounts only after a file is loaded, by which point this has resolved.
+  const urlKb = useUrlKbTarget(targetFromUrl, minKb ?? 5, SIGNATURE_MAX_KB);
 
   return (
     <ImageToolShell acceptedWorkflowKinds={WORKFLOW_SIGNATURE_KINDS}>
@@ -1029,7 +1045,7 @@ export function SignatureWorkflowTool({
         <Body
           source={source}
           defaultTab={defaultTab}
-          defaultKb={defaultKb}
+          defaultKb={urlKb ?? defaultKb}
           autoCropDefault={autoCropDefault}
           toolName={toolName}
           minKb={minKb}

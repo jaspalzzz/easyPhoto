@@ -27,6 +27,7 @@ export default function Page() {
       <SignatureWorkflowTool
         defaultTab="resize"
         autoCropDefault={true}
+        targetFromUrl
       />
     </ToolPage>
   );
