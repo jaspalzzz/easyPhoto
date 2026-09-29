@@ -47,6 +47,9 @@ interface Result {
   bytes: number;
   underCap: boolean;
   ext: string;
+  /** The target this result was made for — the field may have changed since,
+   *  and the label/filename must describe the file, not the current input. */
+  targetKb: number;
 }
 
 export function CompressDocumentTool() {
@@ -102,6 +105,7 @@ export function CompressDocumentTool() {
           bytes: res.bytes,
           underCap: res.underTarget,
           ext: "pdf",
+          targetKb,
         });
       } else {
         const canvas = await fileToCanvas(file);
@@ -111,6 +115,7 @@ export function CompressDocumentTool() {
           bytes: res.bytes,
           underCap: res.underCap,
           ext: "jpg",
+          targetKb,
         });
       }
     } catch (err: unknown) {
@@ -123,7 +128,7 @@ export function CompressDocumentTool() {
   const save = () => {
     if (!result || !file) return;
     const base = file.name.replace(/\.[^.]+$/, "");
-    downloadBlob(result.blob, `${base}-${targetKb}kb.${result.ext}`);
+    downloadBlob(result.blob, `${base}-${result.targetKb}kb.${result.ext}`);
   };
 
   return (
@@ -233,11 +238,11 @@ export function CompressDocumentTool() {
                 {formatKb(result.bytes)}
                 {result.underCap ? (
                   <span className="ml-2 text-xs font-normal text-green-700">
-                    ✓ under {targetKb} KB
+                    ✓ under {result.targetKb} KB
                   </span>
                 ) : (
                   <span className="ml-2 text-xs font-normal text-amber-700">
-                    Couldn&apos;t reach {targetKb} KB
+                    Couldn&apos;t reach {result.targetKb} KB
                   </span>
                 )}
               </p>
