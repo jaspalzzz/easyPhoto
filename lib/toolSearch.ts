@@ -109,6 +109,10 @@ const SYNONYMS: Readonly<Record<string, string>> = {
   jpeg: "jpg",
   shrink: "compress",
   reduce: "compress",
+  compressor: "compress",
+  resizer: "resize",
+  resizing: "resize",
+  resized: "resize",
   license: "licence",
 };
 
@@ -119,7 +123,7 @@ const SYNONYMS: Readonly<Record<string, string>> = {
  */
 const STOPWORDS = new Set([
   "a", "an", "the", "to", "for", "of", "in", "on", "and", "my", "me", "i",
-  "how", "do", "online", "free", "maker", "tool", "tools", "size",
+  "how", "do", "online", "free", "maker", "tool", "tools", "size", "add",
   "ka", "ki", "ke", "se", "kaise", "kare", "karein", "kam",
 ]);
 
@@ -133,9 +137,14 @@ function tokenize(text: string): string[] {
     .map((t) => SYNONYMS[t] ?? t);
 }
 
-/** Query → meaningful, canonicalised tokens. Exported for tests. */
+/**
+ * Query → meaningful, canonicalised tokens. Exported for tests. A query made
+ * only of filler words ("size") keeps them rather than becoming empty.
+ */
 export function queryTokens(query: string): string[] {
-  return tokenize(query).filter((t) => !STOPWORDS.has(t));
+  const all = tokenize(query);
+  const meaningful = all.filter((t) => !STOPWORDS.has(t));
+  return meaningful.length ? meaningful : all;
 }
 
 interface PreparedItem {
@@ -173,9 +182,17 @@ function tokenMatches(token: string, words: readonly string[]): boolean {
   return words.some((w) => w.startsWith(token) || (token.length >= 4 && w.includes(token)));
 }
 
+/** Title relevance of one token: a whole-word hit (2) outranks a partial one (1). */
+function titleScore(token: string, titleWords: readonly string[]): number {
+  if (titleWords.includes(token)) return 2;
+  return tokenMatches(token, titleWords) ? 1 : 0;
+}
+
 /**
  * Every query token must match somewhere in the item (AND semantics), so an
- * extra word narrows the list instead of emptying it. Title hits rank first.
+ * extra word narrows the list instead of emptying it. Title hits rank first —
+ * whole words above partial ones ("sign" is the tool "Sign Image", only part
+ * of "Signature Check") — then catalog order.
  */
 export function searchTools(index: readonly SearchItem[], query: string, limit: number): SearchResult {
   const tokens = queryTokens(query);
@@ -184,7 +201,7 @@ export function searchTools(index: readonly SearchItem[], query: string, limit: 
   const scored: { item: SearchItem; score: number; order: number }[] = [];
   prepare(index).forEach(({ item, titleWords, allWords }, order) => {
     if (!tokens.every((t) => tokenMatches(t, allWords))) return;
-    const score = tokens.filter((t) => tokenMatches(t, titleWords)).length;
+    const score = tokens.reduce((sum, t) => sum + titleScore(t, titleWords), 0);
     scored.push({ item, score, order });
   });
 
