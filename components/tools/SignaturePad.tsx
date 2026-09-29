@@ -3,7 +3,12 @@
 import * as React from "react";
 import { Loader2, Trash2, Check, FileUp, PenTool } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { whiteToTransparent, trimToContent } from "@/lib/signature";
+import {
+  SIGNATURE_CLEAN_DEFAULTS,
+  signatureTrimMinRun,
+  trimToContent,
+  whiteToTransparent,
+} from "@/lib/signature";
 import { imageToCanvas } from "@/lib/imaging";
 import { ensureDecodable } from "@/lib/heic";
 
@@ -225,14 +230,14 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
       
       const base = imageToCanvas(img, img.width, img.height);
       const cleaned = whiteToTransparent(base, {
-        threshold: 210, // clean lighter gray values
-        softness: 35,
+        ...SIGNATURE_CLEAN_DEFAULTS,
         inkColor: "original",
       });
-      
+
       const { canvas: trimmed, bbox } = trimToContent(cleaned, {
         mode: "alpha",
         padding: 8,
+        minRun: signatureTrimMinRun(cleaned.width, cleaned.height),
       });
       
       if (!bbox) {
