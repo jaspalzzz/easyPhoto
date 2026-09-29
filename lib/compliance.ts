@@ -145,3 +145,21 @@ export function checkCompliance(
     checks,
   };
 }
+
+const STATUS_RANK: Record<CheckStatus, number> = { pass: 0, warn: 1, fail: 2 };
+
+/**
+ * The headline verdict across the file-fact report AND any extra checks shown
+ * with it (e.g. the automated face/lighting checks). The banner must reflect
+ * every check on screen: keying it off the file facts alone showed a green
+ * "No measurable issues detected" for an image with no face in it.
+ */
+export function overallVerdict(
+  fileVerdict: CheckStatus,
+  extraChecks: readonly { status: CheckStatus }[] | null,
+): CheckStatus {
+  return (extraChecks ?? []).reduce<CheckStatus>(
+    (worst, c) => (STATUS_RANK[c.status] > STATUS_RANK[worst] ? c.status : worst),
+    fileVerdict,
+  );
+}

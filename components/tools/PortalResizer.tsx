@@ -6,7 +6,7 @@ import { photoDimsPx, sigDimsPx, specProvenance } from "@/lib/specRegistry";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
 import type { ToolSource } from "@/components/tools/ImageToolShell";
-import { setWorkflowPayload } from "@/lib/workflowHandoff";
+import { peekWorkflowPayloadKind, setWorkflowPayload } from "@/lib/workflowHandoff";
 import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { AlertCircle, AlertTriangle, Camera, ExternalLink, PenLine, ShieldCheck } from "lucide-react";
 
@@ -28,7 +28,14 @@ export function PortalResizer({
   const spec = PORTAL_PRESETS[portalId];
   const shownName = displayName ?? spec?.name.split(" (")[0];
   const defaultSubTool = spec?.isLiveCapture && spec.sigLimitKb !== undefined ? "signature" : "photo";
-  const [activeSubTool, setActiveSubTool] = React.useState<"photo" | "signature">(defaultSubTool);
+  // A photo handed over from another tool (e.g. the compliance checker's "Fix
+  // it") must land on the photo tab even for live-capture exams, or the
+  // signature tab consumes and drops it. The pending payload only exists after
+  // a client-side navigation, so this can't diverge from the static HTML.
+  const [activeSubTool, setActiveSubTool] = React.useState<"photo" | "signature">(() => {
+    const incoming = peekWorkflowPayloadKind();
+    return incoming === "photo" || incoming === "image" ? "photo" : defaultSubTool;
+  });
 
   // Keep the two inputs separate. A face photo must never be auto-loaded into
   // the signature workspace; each tab only restores its own previous source.
@@ -53,7 +60,13 @@ export function PortalResizer({
     setActiveSubTool(tool);
   };
 
+  // Reset only when the portal actually changes. Running this on mount too
+  // switched the tab right after the photo tab had consumed a handed-over
+  // photo, unmounting it and losing the file.
+  const mountedPortalRef = React.useRef(portalId);
   React.useEffect(() => {
+    if (mountedPortalRef.current === portalId) return;
+    mountedPortalRef.current = portalId;
     setActiveSubTool(defaultSubTool);
     sourceByToolRef.current = { photo: null, signature: null };
   }, [defaultSubTool, portalId]);
