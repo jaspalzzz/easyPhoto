@@ -4,20 +4,18 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
-import { COUNTRY_SPECS } from "@/lib/countrySpecs";
-import { MAKER_PAGES } from "@/lib/makerPages";
-import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
-import { PORTAL_PRESETS } from "@/lib/portalPresets";
 import { track, type SearchSurface } from "@/lib/analytics";
-
-interface SearchItem {
-  title: string;
-  category: string;
-  path: string;
-  keywords: string[];
-}
+import { buildSearchIndex, searchTools, type SearchItem } from "@/lib/toolSearch";
 
 const RESULT_LIMIT = 8;
+
+/** Shown when a query matches nothing, so the box never fails silently. */
+const NO_RESULT_SUGGESTIONS: { label: string; href: string }[] = [
+  { label: "Resize photo to KB", href: "/tools/resize-kb/" },
+  { label: "Passport photo", href: "/passport-photo/" },
+  { label: "Exam photo sizes", href: "/exam-requirements/" },
+  { label: "All tools", href: "/tools/" },
+];
 
 export function ToolSearch() {
   const pathname = usePathname();
@@ -49,82 +47,13 @@ export function ToolSearch() {
   }, []);
 
   // Index search items once
-  const searchIndex = React.useMemo(() => {
-    const items: SearchItem[] = [];
-
-    // 1. Country Maker Pages
-    MAKER_PAGES.forEach((maker) => {
-      const spec = COUNTRY_SPECS[maker.countryId];
-      if (!spec) return;
-      const docType = maker.kind === "visa" ? "Visa" : "Passport";
-      items.push({
-        title: `${spec.label} ${docType} Photo Maker`,
-        category: "Passport & Visa Specs",
-        path: `/${maker.slug}/`,
-        keywords: [spec.label.toLowerCase(), maker.kind, "photo", "spec", maker.countryId],
-      });
-    });
-
-    // 2. Standalone Catalog Tools
-    TOOLS_CATALOG.forEach((group) => {
-      group.tools.forEach((tool) => {
-        if (!tool.ready) return;
-        items.push({
-          title: tool.title,
-          category: group.group,
-          path: `/tools/${tool.slug}/`,
-          keywords: [tool.title.toLowerCase(), tool.blurb.toLowerCase(), group.group.toLowerCase(), tool.slug],
-        });
-      });
-    });
-
-    // 3. Portal Resizers
-    Object.entries(PORTAL_PRESETS).forEach(([key, spec]) => {
-      items.push({
-        title: `${spec.name} Form Resizer`,
-        category: "Government Portals",
-        path: `/tools/form-resizer/${key}/`,
-        keywords: [spec.name.toLowerCase(), key, "form", "portal", "resizer"],
-      });
-    });
-
-    // 4. Exact Size Presets
-    [10, 20, 30, 50, 100, 200].forEach((kb) => {
-      items.push({
-        title: `Resize Image to ${kb} KB`,
-        category: "Image Compressors",
-        path: `/photo-resize-to-${kb}kb/`,
-        keywords: ["photo", "image", "resize", "compress", `${kb}kb`, `${kb} kb`, "size", "limit"],
-      });
-    });
-
-    [10, 20, 50, 100].forEach((kb) => {
-      items.push({
-        title: `Resize Signature to ${kb} KB`,
-        category: "Signature Tools",
-        path: `/signature-resize-to-${kb}kb/`,
-        keywords: ["signature", "sign", "resize", "compress", `${kb}kb`, `${kb} kb`, "size", "limit", "transparent"],
-      });
-    });
-
-    return items;
-  }, []);
+  const searchIndex = React.useMemo(buildSearchIndex, []);
 
   // Filter search results
   React.useEffect(() => {
-    if (!query.trim()) {
-      setResults([]);
-      setTotalMatches(0);
-      return;
-    }
-    const q = query.toLowerCase();
-    const filtered = searchIndex.filter((item) =>
-      item.title.toLowerCase().includes(q) ||
-      item.keywords.some((kw) => kw.includes(q)) ||
-      item.category.toLowerCase().includes(q)
-    );
-    setTotalMatches(filtered.length);
-    setResults(filtered.slice(0, RESULT_LIMIT));
+    const { results: matched, total } = searchTools(searchIndex, query, RESULT_LIMIT);
+    setTotalMatches(total);
+    setResults(matched);
   }, [query, searchIndex]);
 
   // Keyboard navigation handler
@@ -155,6 +84,7 @@ export function ToolSearch() {
   }, [query, results, surface]);
 
   const showResults = isOpen && results.length > 0;
+  const showNoResults = isOpen && results.length === 0 && query.trim().length > 0;
 
   return (
     <div ref={wrapperRef} className="relative z-50 w-full max-w-md mx-auto">
@@ -228,6 +158,32 @@ export function ToolSearch() {
               Showing {RESULT_LIMIT} of {totalMatches} — add another word to narrow it down
             </p>
           )}
+        </div>
+      )}
+
+      {showNoResults && (
+        <div
+          role="status"
+          className="absolute left-0 right-0 z-50 mt-2 rounded-xl border border-hairline bg-card px-4 py-3 text-sm shadow-pop"
+        >
+          <p className="text-ink">
+            No tools match &ldquo;{query.trim()}&rdquo;. Try one of these:
+          </p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {NO_RESULT_SUGGESTIONS.map((s) => (
+              <Link
+                key={s.href}
+                href={s.href}
+                onClick={() => {
+                  setQuery("");
+                  setIsOpen(false);
+                }}
+                className="rounded-md border border-hairline bg-paper px-2.5 py-1 text-xs font-medium text-ink transition-colors hover:border-ink-soft"
+              >
+                {s.label}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </div>
