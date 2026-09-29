@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
 import sitemap from "@/app/sitemap";
 import { SITE_URL } from "@/lib/site";
 import { SUB_EXAM_SLUGS } from "@/lib/subExamResizers";
@@ -102,5 +104,24 @@ describe("Sitemap Integrity & SEO Compliance", () => {
           : `${route} vanished from the sitemap without being deindexed`,
       ).toBe(true);
     });
+  });
+});
+
+describe("Sitemap freeze (CLAUDE.md: the index is frozen)", () => {
+  const baseline = fs
+    .readFileSync(path.join(process.cwd(), "test", "fixtures", "sitemap-baseline.txt"), "utf8")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith("#"));
+  const current = sitemap().map((e) => e.url.replace(SITE_URL, ""));
+
+  it("adds no URL beyond the frozen baseline", () => {
+    const added = current.filter((u) => !baseline.includes(u));
+    expect(added, "New indexable URLs need the owner's approval (CLAUDE.md §1)").toEqual([]);
+  });
+
+  it("drops no URL from the frozen baseline", () => {
+    const removed = baseline.filter((u) => !current.includes(u));
+    expect(removed, "Removing indexed URLs needs the owner's approval (CLAUDE.md §1)").toEqual([]);
   });
 });
