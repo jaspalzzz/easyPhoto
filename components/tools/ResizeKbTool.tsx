@@ -71,6 +71,8 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
     quality: number;
     scale: number;
     underCap: boolean;
+    /** The cap was only met by lowering quality below the normal floor. */
+    qualityReduced: boolean;
     blob: Blob;
     /** The KB target this result was produced for (so the receipt/notes don't
      *  go stale if the user edits the field without re-running). */
@@ -141,6 +143,10 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         minDimensions,
         minKb,
         densityDpi,
+        // A fixed pixel frame can't shrink to reach the cap, so let quality
+        // drop further there (e.g. Driving Licence 420×525 ≤ 20 KB). Resizable
+        // photos keep the normal floor and report "could not fit" instead.
+        allowLowQualityFallback: hasRequiredDimensions,
         // "Resize TO a size" tool: let the target actually bind. The default
         // 0.95 ceiling means an already-small image lands byte-identical for
         // every target above its q0.95/full-res size (e.g. 50 KB and 500 KB
@@ -157,6 +163,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         quality: res.quality,
         scale: res.scale,
         underCap: res.underCap,
+        qualityReduced: res.qualityReduced,
         blob: res.blob,
         target: effectiveKb,
       });
@@ -311,6 +318,13 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
               { label: "Format", value: "JPG", ok: true },
             ]}
           />
+          {result.qualityReduced && (
+            <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
+              Quality was reduced to fit {result.target} KB at the required size.
+              Zoom in and check your face is still sharp — if it looks blurry,
+              crop closer or retake the photo in brighter light.
+            </p>
+          )}
           {!result.underCap && (
             <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
               {formatKb(result.bytes)} is the smallest this image can go without

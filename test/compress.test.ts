@@ -1,6 +1,9 @@
 import { describe, it, expect } from "vitest";
 import {
   buildScales,
+  compressToCap,
+  DEFAULT_MIN_QUALITY,
+  LAST_RESORT_MIN_QUALITY,
   searchUnderCap,
   type Encoder,
 } from "@/lib/compress";
@@ -101,3 +104,43 @@ describe("searchUnderCap — last-resort quality floor", () => {
   });
 });
 
+
+describe("compressToCap — low-quality fallback is opt-in", () => {
+  /**
+   * A canvas whose JPEG size grows with quality: 1000 × (0.3 + q) bytes, so a
+   * 600-byte cap is impossible at the normal 0.4 floor (700 B) and reachable
+   * only below it. minScale 1 keeps compressToCap at this exact canvas, the
+   * fixed-pixel case (Driving Licence 420×525) the fallback exists for.
+   */
+  function sizedCanvas(): HTMLCanvasElement {
+    const canvas = document.createElement("canvas");
+    canvas.width = 420;
+    canvas.height = 525;
+    canvas.toBlob = (cb: BlobCallback, type?: string, quality = 0.92) =>
+      cb(new Blob([new Uint8Array(Math.round(1000 * (0.3 + quality)))], { type }));
+    return canvas;
+  }
+  const capKb = 600 / 1024;
+
+  it("keeps the normal floor by default and reports that the cap wasn't met", async () => {
+    const res = await compressToCap(sizedCanvas(), capKb, { minScale: 1 });
+    expect(res.underCap).toBe(false);
+    expect(res.qualityReduced).toBe(false);
+    expect(res.quality).toBe(DEFAULT_MIN_QUALITY);
+  });
+
+  it("drops below the floor only when the caller opts in, and flags it", async () => {
+    const res = await compressToCap(sizedCanvas(), capKb, { minScale: 1, allowLowQualityFallback: true });
+    expect(res.underCap).toBe(true);
+    expect(res.qualityReduced).toBe(true);
+    expect(res.bytes).toBeLessThanOrEqual(600);
+    expect(res.quality).toBeLessThan(DEFAULT_MIN_QUALITY);
+    expect(res.quality).toBeGreaterThanOrEqual(LAST_RESORT_MIN_QUALITY);
+  });
+
+  it("doesn't flag a result that fit at normal quality", async () => {
+    const res = await compressToCap(sizedCanvas(), 1000 / 1024, { minScale: 1, allowLowQualityFallback: true });
+    expect(res.underCap).toBe(true);
+    expect(res.qualityReduced).toBe(false);
+  });
+});
