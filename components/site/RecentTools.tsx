@@ -20,13 +20,17 @@ function resolve(name: string): RecentEntry | null {
     const id = name.slice("form-resizer-".length);
     const spec = PORTAL_PRESETS[id];
     if (!spec) return null;
+    // The exam page embeds the same resizer; /tools/form-resizer/ is a
+    // retired, host-redirected route (several to the generic hub).
     return {
-      href: `/tools/form-resizer/${id}/`,
+      href: `/exam-requirements/${id}/#resizer`,
       label: `${spec.name.split(" (")[0]} resizer`,
     };
   }
   const tool = getTool(name);
-  if (!tool) return null;
+  // Retired tools (ready: false) only survive as redirects; don't send a
+  // returning user back into their stale in-app page.
+  if (!tool || !tool.ready) return null;
   return { href: `/tools/${tool.slug}/`, label: tool.title };
 }
 

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useNumericField } from "@/components/tool/useNumericField";
 import Link from "next/link";
-import { Download, Printer, Globe, LayoutGrid, Loader2, Share2, Minimize2, ScanSearch } from "lucide-react";
+import { Download, Printer, Globe, LayoutGrid, Loader2, Share2, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { effectivePrintMm, type CountrySpec } from "@/lib/countrySpecs";
@@ -225,13 +225,11 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
           getBlob={async () => digitalBlob}
           filename={`${base}-passport-digital.jpg`}
           assetKind="photo"
+          // No compliance pre-check step here: that checker measures files
+          // against EXAM specs, so a correct passport photo handed to it was
+          // judged against SSC's 50 KB limit and flagged red. The maker's own
+          // CompliancePanel already checks this photo against its country spec.
           steps={[
-            {
-              slug: "photo-rejection-check",
-              label: "Run a photo pre-check",
-              hint: "Review measurable image issues before using the file",
-              icon: <ScanSearch className="h-4 w-4" strokeWidth={1.75} />,
-            },
             {
               slug: "resize-kb",
               label: "Adjust the file size",
