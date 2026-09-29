@@ -5,7 +5,6 @@ import { Loader2, Trash2, Check, FileUp, PenTool } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   SIGNATURE_CLEAN_DEFAULTS,
-  signatureTrimMinRun,
   trimToContent,
   whiteToTransparent,
 } from "@/lib/signature";
@@ -234,10 +233,13 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
         inkColor: "original",
       });
 
+      // No density floor (minRun) here: this canvas is the full-resolution
+      // upload, where the floor is ~15 px on a 12 MP photo — thicker than a
+      // ballpoint line — so a thin ascender or lead-in stroke was treated as
+      // noise and cut off the signature. Every ink pixel counts, as before.
       const { canvas: trimmed, bbox } = trimToContent(cleaned, {
         mode: "alpha",
         padding: 8,
-        minRun: signatureTrimMinRun(cleaned.width, cleaned.height),
       });
       
       if (!bbox) {
