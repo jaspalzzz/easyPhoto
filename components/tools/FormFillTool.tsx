@@ -5,56 +5,85 @@ import { FileUp, Download, ShieldCheck, Loader2, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { downloadBlob } from "@/lib/download";
-import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
+import { assertPdfDecryptable, loadPdfForEditing, PdfEncryptedError } from "@/lib/pdfToImages";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
+
+type FieldKind = "Text" | "CheckBox" | "Dropdown" | "RadioGroup" | "Other";
 
 interface FormField {
   name: string;
-  type: string;
+  type: FieldKind;
   value: string;
+  /** Choices for dropdown / radio fields. */
+  options?: string[];
+}
+
+/**
+ * Field kind via `instanceof` against pdf-lib's own classes. Never compare
+ * `constructor.name`: the production build minifies class names (they become
+ * "e"), so name checks matched nothing and every export came back empty.
+ */
+async function fieldKind(f: import("pdf-lib").PDFField): Promise<FieldKind> {
+  const lib = await import("pdf-lib");
+  if (f instanceof lib.PDFTextField) return "Text";
+  if (f instanceof lib.PDFCheckBox) return "CheckBox";
+  if (f instanceof lib.PDFDropdown) return "Dropdown";
+  if (f instanceof lib.PDFRadioGroup) return "RadioGroup";
+  return "Other";
 }
 
 async function loadPdfFormFields(file: File): Promise<FormField[]> {
   await assertPdfDecryptable(file);
-  const { PDFDocument } = await import("pdf-lib");
-  const bytes = await file.arrayBuffer();
-  const pdf = await PDFDocument.load(bytes, { ignoreEncryption: true });
-  const form = pdf.getForm();
-  return form.getFields().map((f) => ({
-    name: f.getName(),
-    type: f.constructor.name.replace("PDF", "").replace("Field", ""),
-    value: "",
-  }));
+  const pdf = await loadPdfForEditing(file);
+  const lib = await import("pdf-lib");
+  const fields: FormField[] = [];
+  for (const f of pdf.getForm().getFields()) {
+    const type = await fieldKind(f);
+    if (type === "Other") continue; // buttons / signature fields can't be typed into
+    const options =
+      f instanceof lib.PDFDropdown || f instanceof lib.PDFRadioGroup ? f.getOptions() : undefined;
+    fields.push({ name: f.getName(), type, value: "", ...(options ? { options } : {}) });
+  }
+  return fields;
 }
 
-async function fillAndExport(file: File, fields: FormField[]): Promise<Blob> {
+/** Fill the form; returns the PDF plus the names of any fields that failed. */
+async function fillAndExport(file: File, fields: FormField[]): Promise<{ blob: Blob; failed: string[] }> {
   await assertPdfDecryptable(file);
-  const { PDFDocument } = await import("pdf-lib");
-  const bytes = await file.arrayBuffer();
-  const pdf = await PDFDocument.load(bytes, { ignoreEncryption: true });
+  const pdf = await loadPdfForEditing(file);
+  const lib = await import("pdf-lib");
   const form = pdf.getForm();
 
+  const failed: string[] = [];
+  let filled = 0;
   for (const field of fields) {
     if (!field.value) continue;
     try {
       const f = form.getField(field.name);
-      if (f.constructor.name === "PDFTextField") {
-        (f as import("pdf-lib").PDFTextField).setText(field.value);
-      } else if (f.constructor.name === "PDFCheckBox") {
-        if (field.value.toLowerCase() === "true" || field.value === "1") {
-          (f as import("pdf-lib").PDFCheckBox).check();
-        } else {
-          (f as import("pdf-lib").PDFCheckBox).uncheck();
-        }
+      if (f instanceof lib.PDFTextField) {
+        f.setText(field.value);
+      } else if (f instanceof lib.PDFCheckBox) {
+        if (field.value === "true") f.check();
+        else f.uncheck();
+      } else if (f instanceof lib.PDFDropdown) {
+        f.select(field.value);
+      } else if (f instanceof lib.PDFRadioGroup) {
+        f.select(field.value);
+      } else {
+        failed.push(field.name);
+        continue;
       }
+      filled++;
     } catch {
-      // Skip unrecognised field types
+      // e.g. text longer than a comb field's max length
+      failed.push(field.name);
     }
   }
+  if (filled === 0) throw new Error("No fields could be filled.");
 
   form.flatten();
   const out = await pdf.save();
-  return new Blob([out.buffer as ArrayBuffer], { type: "application/pdf" });
+  return { blob: new Blob([out.buffer as ArrayBuffer], { type: "application/pdf" }), failed };
 }
 
 export function FormFillTool() {
@@ -121,8 +150,13 @@ export function FormFillTool() {
     if (!file || !fields) return;
     setFilling(true);
     try {
-      const blob = await fillAndExport(file, fields);
+      const { blob, failed } = await fillAndExport(file, fields);
       downloadBlob(blob, file.name.replace(/\.pdf$/i, "-filled.pdf"));
+      setError(
+        failed.length
+          ? `Downloaded, but ${failed.length} field${failed.length === 1 ? "" : "s"} could not be filled: ${failed.join(", ")}. Check the value fits the field.`
+          : null
+      );
     } catch (err) {
       if (err instanceof PdfEncryptedError) {
         setError("encrypted");
@@ -195,7 +229,20 @@ export function FormFillTool() {
                   {field.name}
                   <span className="ml-2 text-xs font-normal text-muted-foreground">({field.type})</span>
                 </label>
-                {field.type === "CheckBox" ? (
+                {field.options ? (
+                  <select
+                    className="rounded-lg border border-hairline bg-background px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
+                    value={field.value}
+                    onChange={(e) => updateField(i, e.target.value)}
+                  >
+                    <option value="">— unset —</option>
+                    {field.options.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
+                  </select>
+                ) : field.type === "CheckBox" ? (
                   <select
                     className="rounded-lg border border-hairline bg-background px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
                     value={field.value}
