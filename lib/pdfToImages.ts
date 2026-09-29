@@ -31,7 +31,7 @@ export class PdfTooLargeError extends Error {
 export class PdfEncryptedError extends Error {
   constructor() {
     super(
-      "This PDF is password-protected. Use the Unlock PDF tool first."
+      "This PDF is password-protected or restricted. Use the Unlock PDF tool first."
     );
     this.name = "PdfEncryptedError";
   }
@@ -45,14 +45,13 @@ export class PdfEncryptedError extends Error {
  * a locked PDF it can't decrypt and emits a broken/blank/encrypted file.
  * Owner-only encrypted PDFs (no user password) do NOT throw — pdfjs reads them.
  *
- * Deliberately does NOT also probe with pdf-lib's own PDFDocument.load(). pdf-lib
- * flags a PDF as "encrypted" purely from the presence of a trailer /Encrypt
- * dictionary (see PDFDocument.js: `isEncrypted = !!context.lookup(Encrypt)`) —
- * it has no concept of owner-only vs user-password encryption, so a second
- * ignoreEncryption:false check there would reject every owner-only-encrypted
- * PDF too (common for government/bank forms: print/copy-restricted but openable
- * with no password), even though pdfjs opens it fine and pdf-lib's own
- * ignoreEncryption:true load handles it correctly. Keep this pdfjs-only.
+ * This check alone is NOT enough for the lossless pdf-lib tools: owner-only
+ * encrypted PDFs (print/copy-restricted, common for government/bank forms) open
+ * here without a password, but pdf-lib cannot decrypt their streams — an
+ * ignoreEncryption:true load copies them still encrypted, giving blank pages or
+ * an unopenable file. Those tools must load through loadPdfForEditing(), which
+ * rejects them too. Keep THIS check pdfjs-only: renderers (compress, pdf-to-jpg,
+ * unlock) read owner-only PDFs correctly and must keep accepting them.
  */
 export async function assertPdfDecryptable(file: File): Promise<void> {
   const pdfjs = await import("pdfjs-dist");
@@ -72,6 +71,25 @@ export async function assertPdfDecryptable(file: File): Promise<void> {
     throw err;
   }
   await pdf.destroy();
+}
+
+/**
+ * Load a PDF with pdf-lib for a LOSSLESS edit (merge, split, reorder, sign,
+ * watermark, page numbers, form fill). pdf-lib cannot decrypt, and it marks a
+ * document encrypted whenever it carries an /Encrypt dictionary — so any such
+ * file, password or owner-only restrictions alike, is rejected with
+ * PdfEncryptedError and the UI routes the user to Unlock PDF (which re-renders
+ * it through pdfjs) instead of emitting a broken output.
+ */
+export async function loadPdfForEditing(
+  file: File
+): Promise<import("pdf-lib").PDFDocument> {
+  const { PDFDocument } = await import("pdf-lib");
+  const doc = await PDFDocument.load(await file.arrayBuffer(), {
+    ignoreEncryption: true,
+  });
+  if (doc.isEncrypted) throw new PdfEncryptedError();
+  return doc;
 }
 
 export async function pdfToCanvases(
