@@ -99,9 +99,13 @@ describe("searchTools", () => {
     expect(searchTools(index, "merge pdf", 5).results[0]!.path).toBe("/tools/pdf-merge/");
   });
 
-  it("returns nothing for a blank or filler-only query", () => {
+  it("returns nothing for a blank query", () => {
     expect(searchTools(index, "   ", 8)).toEqual({ results: [], total: 0 });
-    expect(searchTools(index, "free online tool", 8)).toEqual({ results: [], total: 0 });
+  });
+
+  it("a filler-only query searches its own words instead of coming back empty", () => {
+    expect(queryTokens("size")).toEqual(["size"]);
+    expect(searchTools(index, "size", 8).total).toBeGreaterThan(0);
   });
 
   it("respects the limit but reports the full total", () => {
@@ -109,4 +113,30 @@ describe("searchTools", () => {
     expect(r.results).toHaveLength(3);
     expect(r.total).toBeGreaterThan(3);
   });
+});
+
+describe("searchTools — the queries this site earns traffic for", () => {
+  it.each(["photo resizer in kb", "image resizer in kb", "resize image in kb", "photo resize in kb"])(
+    "'%s' (top Bing query) finds the KB resizer",
+    (q) => {
+      expect(paths(q)[0]).toBe("/tools/resize-kb/");
+    },
+  );
+
+  it("'add signature to photo' offers the signature-on-photo tools", () => {
+    expect(paths("add signature to photo", 3)).toEqual(
+      expect.arrayContaining(["/tools/sign-image/", "/tools/photo-signature-merge/"]),
+    );
+  });
+
+  it("'sign on photo' ranks Sign Image first (whole-word title match beats 'signature')", () => {
+    expect(paths("sign on photo")[0]).toBe("/tools/sign-image/");
+  });
+
+  it.each(["passport size photo", "photo size", "passport"])(
+    "'%s' still leads with the India passport maker",
+    (q) => {
+      expect(paths(q)[0]).toBe("/india-passport-photo-maker/");
+    },
+  );
 });
