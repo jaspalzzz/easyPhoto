@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { mergePdfs, splitPdf } from "@/lib/pdfMergeSplit";
-import { reorderPdf, signPdf } from "@/lib/pdfEdit";
+import { placementToPdfRect, reorderPdf, signPdf } from "@/lib/pdfEdit";
 import { addPageNumbers, watermarkPdf } from "@/lib/pdfAnnotate";
 import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
 import { getDocument } from "pdfjs-dist";
@@ -199,5 +199,83 @@ describe("PDF tools — lossless via pdf-lib", () => {
     expect(await isPdf(out)).toBe(true);
     expect(await pageCount(out)).toBe(2); // page count unchanged
     expect(out.size).toBeLessThan(50_000); // still vector
+  });
+});
+
+/**
+ * An owner-only encrypted PDF (print/copy restricted, opens without a password)
+ * passes the pdfjs check, but pdf-lib can't decrypt its streams — edits used to
+ * produce blank pages or an unopenable file. Simulated with a trailer /Encrypt
+ * dictionary, which is exactly what pdf-lib keys `isEncrypted` off.
+ */
+async function makeRestrictedPdfFile(): Promise<File> {
+  const doc = await PDFDocument.create();
+  doc.addPage([300, 400]);
+  doc.context.trailerInfo.Encrypt = doc.context.obj({ Filter: "Standard", V: 2, R: 3, P: -3904 });
+  const bytes = await doc.save({ useObjectStreams: false });
+  return new File([bytes as BlobPart], "restricted.pdf", { type: "application/pdf" });
+}
+
+describe("owner-only encrypted (restricted) PDFs", () => {
+  it.each([
+    ["mergePdfs", async (f: File) => mergePdfs([f])],
+    ["splitPdf", async (f: File) => splitPdf(f, [0])],
+    ["reorderPdf", async (f: File) => reorderPdf(f, [{ originalIndex: 0 }])],
+    ["signPdf", async (f: File) => signPdf(f, {})],
+    ["watermarkPdf", async (f: File) => watermarkPdf(f, { text: "COPY" })],
+    ["addPageNumbers", async (f: File) => addPageNumbers(f)],
+  ])("%s routes them to Unlock PDF instead of emitting a broken file", async (_name, run) => {
+    await expect(run(await makeRestrictedPdfFile())).rejects.toBeInstanceOf(PdfEncryptedError);
+  });
+});
+
+/**
+ * Where a placed image ends up ON SCREEN: take the drawn image's corners in
+ * PDF user space (pdf-lib rotates ccw about the anchor), then apply the
+ * viewer's /Rotate (clockwise) to get top-left-origin display coordinates.
+ */
+function displayedBox(rect: ReturnType<typeof placementToPdfRect>, W: number, H: number, r: number) {
+  const rad = (rect.rotate * Math.PI) / 180;
+  const cos = Math.round(Math.cos(rad));
+  const sin = Math.round(Math.sin(rad));
+  const local = [[0, 0], [rect.width, 0], [0, rect.height], [rect.width, rect.height]];
+  const toDisplay = (x: number, y: number) =>
+    r === 90 ? [y, x] : r === 180 ? [W - x, y] : r === 270 ? [H - y, W - x] : [x, H - y];
+  const pts = local.map(([lx, ly]) => {
+    const x = rect.x + lx * cos - ly * sin;
+    const y = rect.y + lx * sin + ly * cos;
+    return toDisplay(x, y);
+  });
+  const us = pts.map((p) => p[0]!);
+  const vs = pts.map((p) => p[1]!);
+  // The image's top edge (local y = height) must be the top on screen.
+  const topMid = toDisplay(
+    rect.x + (rect.width / 2) * cos - rect.height * sin,
+    rect.y + (rect.width / 2) * sin + rect.height * cos,
+  );
+  return { u: Math.min(...us), v: Math.min(...vs), w: Math.max(...us) - Math.min(...us), h: Math.max(...vs) - Math.min(...vs), topV: topMid[1]! };
+}
+
+describe("placementToPdfRect", () => {
+  const W = 300; // unrotated page size
+  const H = 400;
+  const placement = { x: 70, y: 80, width: 20, height: 10 }; // % of the displayed page
+
+  it.each([0, 90, 180, 270])("lands exactly where it was placed on a page rotated %i°", (r) => {
+    const rect = placementToPdfRect(placement, W, H, r);
+    const quarter = r === 90 || r === 270;
+    const dispW = quarter ? H : W;
+    const dispH = quarter ? W : H;
+    const box = displayedBox(rect, W, H, r);
+    expect(box.u).toBeCloseTo(0.7 * dispW, 6);
+    expect(box.v).toBeCloseTo(0.8 * dispH, 6);
+    expect(box.w).toBeCloseTo(0.2 * dispW, 6);
+    expect(box.h).toBeCloseTo(0.1 * dispH, 6);
+    expect(box.topV).toBeCloseTo(box.v, 6); // upright, not sideways/upside-down
+  });
+
+  it("normalises negative and >360 rotations", () => {
+    expect(placementToPdfRect(placement, W, H, -90)).toEqual(placementToPdfRect(placement, W, H, 270));
+    expect(placementToPdfRect(placement, W, H, 450)).toEqual(placementToPdfRect(placement, W, H, 90));
   });
 });

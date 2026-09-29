@@ -5,7 +5,7 @@
  * document — never rasterize. Output stays small and selectable. Nothing is
  * uploaded; everything runs in the browser.
  */
-import { assertPdfDecryptable } from "./pdfToImages";
+import { assertPdfDecryptable, loadPdfForEditing } from "./pdfToImages";
 
 /** Merge multiple PDFs into one, preserving every page's content and order. */
 export async function mergePdfs(
@@ -22,9 +22,7 @@ export async function mergePdfs(
     // Reject any password-protected input — pdf-lib's ignoreEncryption would
     // copy undecryptable pages and produce a broken merged file.
     await assertPdfDecryptable(file);
-    const src = await PDFDocument.load(await file.arrayBuffer(), {
-      ignoreEncryption: true,
-    });
+    const src = await loadPdfForEditing(file);
     const pages = await out.copyPages(src, src.getPageIndices());
     pages.forEach((p) => out.addPage(p));
     i++;
@@ -46,9 +44,7 @@ export async function splitPdf(
   const { PDFDocument } = await import("pdf-lib");
 
   onProgress?.("Extracting selected pages…");
-  const src = await PDFDocument.load(await file.arrayBuffer(), {
-    ignoreEncryption: true,
-  });
+  const src = await loadPdfForEditing(file);
   const total = src.getPageCount();
   const valid = selectedPages.filter((i) => i >= 0 && i < total);
   if (valid.length === 0) throw new Error("Selected pages are out of range.");

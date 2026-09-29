@@ -3,7 +3,7 @@
  * pdf-lib. Original page content (text, vectors, fonts) is preserved; nothing
  * is rasterized and nothing is uploaded.
  */
-import { assertPdfDecryptable } from "./pdfToImages";
+import { assertPdfDecryptable, loadPdfForEditing } from "./pdfToImages";
 
 export interface WatermarkOptions {
   text: string;
@@ -21,10 +21,8 @@ export async function watermarkPdf(
   // Reject password-protected PDFs up front — pdf-lib's ignoreEncryption would
   // otherwise "succeed" on a file it can't decrypt and emit a broken output.
   await assertPdfDecryptable(file);
-  const { PDFDocument, StandardFonts, rgb, degrees } = await import("pdf-lib");
-  const doc = await PDFDocument.load(await file.arrayBuffer(), {
-    ignoreEncryption: true,
-  });
+  const { StandardFonts, rgb, degrees } = await import("pdf-lib");
+  const doc = await loadPdfForEditing(file);
   const font = await doc.embedFont(StandardFonts.HelveticaBold);
   const text = (opts.text || "").trim() || "CONFIDENTIAL";
   const opacity = Math.min(1, Math.max(0.04, opts.opacity ?? 0.22));
@@ -95,10 +93,8 @@ export async function addPageNumbers(
   opts: PageNumberOptions = {}
 ): Promise<Blob> {
   await assertPdfDecryptable(file);
-  const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
-  const doc = await PDFDocument.load(await file.arrayBuffer(), {
-    ignoreEncryption: true,
-  });
+  const { StandardFonts, rgb } = await import("pdf-lib");
+  const doc = await loadPdfForEditing(file);
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const pages = doc.getPages();
   const total = pages.length;
