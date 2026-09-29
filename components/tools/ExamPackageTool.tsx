@@ -49,8 +49,10 @@ import {
   clearExamWorkflowDraft,
   discardWorkflowPayload,
   getExamWorkflowDraft,
+  setWorkflowPayload,
   type WorkflowPayload,
 } from "@/lib/workflowHandoff";
+import { useRouter } from "next/navigation";
 
 type Step = "exam" | "photo" | "signature" | "done";
 
@@ -124,6 +126,22 @@ export function ExamPackageTool() {
   const spec = examId ? PORTAL_PRESETS[examId] : undefined;
   const needsSignature = !!spec?.sigLimitKb;
   const livePhoto = !!spec && usesLivePhotoCapture(spec);
+  // TNPSC, Kerala PSC, APPSC…: the photo must carry the candidate's name and
+  // the photo date. A physical slate is photographed in-shot, so it's excluded.
+  const needsNameDate = !!spec?.requiresNameDate && !spec.requiresSlateNameDate;
+  const router = useRouter();
+
+  // Round-trip through the Name & Date tool: it reads the exam draft, stamps
+  // the photo, and its "Continue in the Exam Kit" step brings the result back.
+  const addNameDate = () => {
+    if (!photo || !examId) return;
+    setWorkflowPayload(photo.blob, `${examId}-photo.jpg`, {
+      kind: "photo",
+      examId,
+      rememberForExamKit: true,
+    });
+    router.push("/tools/photo-with-name-date/");
+  };
   const prov = spec ? specProvenance(spec) : undefined;
 
   React.useEffect(() => {
@@ -407,6 +425,9 @@ export function ExamPackageTool() {
         livePhoto
           ? `IMPORTANT: the stored current workflow captures the photograph live. Do not upload this compatibility photo unless the active form explicitly provides a photo-file field.`
           : null,
+        needsNameDate
+          ? `IMPORTANT: this exam requires your name and the date the photo was taken printed below the photo. Check the photo shows both before you upload it.`
+          : null,
       ]
         .filter((l) => l !== null)
         .join("\n");
@@ -611,6 +632,19 @@ export function ExamPackageTool() {
                 The stored current workflow captures the photograph live. This optional file is for compatibility or preparation only; do not upload it unless the active form provides a photo-file field.
               </p>
             )}
+            {needsNameDate && (
+              <div className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
+                <p>
+                  {spec.name.split(" (")[0]} requires your <strong>name and the date the photo was taken</strong> printed
+                  below the photo. If your photo doesn&apos;t already show them, add them before you finish.
+                </p>
+                {photo && (
+                  <Button type="button" size="sm" variant="outline" className="mt-2" onClick={addNameDate}>
+                    Add name &amp; date to this photo
+                  </Button>
+                )}
+              </div>
+            )}
             <StepUpload
               kind="photo"
               label={livePhoto ? "Add an optional compatibility photo" : "Upload your passport-style photo"}
@@ -772,6 +806,9 @@ export function ExamPackageTool() {
                       <li>Complete the portal&apos;s live photograph step. Upload only the separate files the active form requests{signature ? ", such as the signature" : ""}.</li>
                     ) : (
                       <li>Upload these files where the form asks for photo{signature ? " and signature" : ""}.</li>
+                    )}
+                    {needsNameDate && (
+                      <li>Check the photo shows your name and the photo date below it — this exam requires both.</li>
                     )}
                     <li>
                       Double-check the live form&apos;s stated limits match{" "}
