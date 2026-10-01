@@ -67,7 +67,8 @@ export function TrustPills({ className }: { className?: string }) {
     { icon: ShieldCheck, label: "100% Private" },
     { icon: Gift,        label: "Free to use"  },
     { icon: ImageOff,    label: "No watermark" },
-    { icon: BadgeCheck,  label: "No measurable issues detected" },
+    // Not "No measurable issues detected": shown before anything is uploaded,
+    // it read like a check result the user never got.
   ];
   return (
     <div className={cn("flex flex-wrap items-center justify-center gap-2", className)}>
