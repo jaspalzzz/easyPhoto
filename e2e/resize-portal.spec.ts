@@ -90,10 +90,11 @@ test("voter-id-photo-resizer: surfaces the ECI spec and binds output to a set ta
   ).toBeCloseTo(35 / 45, 2);
 });
 
-test("tnpsc-photo-resizer: exports the published 130x170 frame instead of treating it as a minimum", async ({
+// /tnpsc-photo-resizer/ is a retired route (host redirect); the resizer lives on the exam page.
+test("tnpsc exam page: exports the published 130x170 frame instead of treating it as a minimum", async ({
   page,
 }) => {
-  await page.goto("/tnpsc-photo-resizer/");
+  await page.goto("/exam-requirements/tnpsc/");
   await page.setInputFiles('input[type="file"]', FACE_PHOTO);
   const kb = page.getByLabel("Target size in KB").first();
   await kb.fill("10");

@@ -201,6 +201,12 @@ export function PortalResizer({
             <div className="px-1">
               <h4 className="text-sm font-semibold mb-1">Signature Workspace</h4>
               <p className="text-xs text-muted-foreground">Upload a scan/photo of your signature to remove the background paper, auto-crop, and apply the selected {spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}{spec.sigLimitKb} KB target.</p>
+              {spec.sigCopies && spec.sigCopies > 1 && (
+                <p className="mt-2 border-l-2 border-amber-500 bg-amber-50/60 p-2 text-xs font-medium text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
+                  {shownName} needs your signature {spec.sigCopies} times, one below another, on one image. Sign {spec.sigCopies} times
+                  in black ink on plain white paper, leave clear space between them, then photograph or scan the whole sheet.
+                </p>
+              )}
             </div>
             <SignatureWorkflowTool
               defaultTab="resize"

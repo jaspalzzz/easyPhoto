@@ -213,6 +213,47 @@ export function signatureTrimAttach(width: number, height: number): { minRun: nu
   };
 }
 
+/**
+ * How many signatures are stacked one below another in a cleaned signature
+ * image: runs of ink rows separated by at least `minGap` rows without ink.
+ * A row counts as ink only above `minInk` pixels, so specks don't add bands,
+ * and a band shorter than `minGap` rows (an i-dot, a stray mark) doesn't count.
+ * Pure, for testing; see {@link signatureStackParams} for the thresholds.
+ */
+export function countStackedSignatures(
+  rowHits: ArrayLike<number>,
+  opts: { minInk: number; minGap: number },
+): number {
+  // Runs of ink rows; a gap shorter than minGap stays inside the same run.
+  const runs: { start: number; end: number }[] = [];
+  for (let y = 0; y < rowHits.length; y++) {
+    if (rowHits[y] <= opts.minInk) continue;
+    const last = runs[runs.length - 1];
+    if (last && y - last.end - 1 < opts.minGap) last.end = y;
+    else runs.push({ start: y, end: y });
+  }
+  return runs.filter((r) => r.end - r.start + 1 >= opts.minGap).length;
+}
+
+/** Thresholds for {@link countStackedSignatures}, scaled to the image. */
+export function signatureStackParams(width: number, height: number): { minInk: number; minGap: number } {
+  return { minInk: signatureTrimMinRun(width, height), minGap: Math.max(4, Math.round(height * 0.02)) };
+}
+
+/** Per-row count of pixels whose alpha exceeds `threshold` (use after whiteToTransparent). */
+export function alphaRowHits(source: HTMLCanvasElement, threshold = 16): Int32Array {
+  const ctx = source.getContext("2d");
+  const rows = new Int32Array(source.height);
+  if (!ctx) return rows;
+  const { data, width, height } = ctx.getImageData(0, 0, source.width, source.height);
+  for (let y = 0; y < height; y++) {
+    let n = 0;
+    for (let x = 0, i = y * width * 4 + 3; x < width; x++, i += 4) if (data[i] > threshold) n++;
+    rows[y] = n;
+  }
+  return rows;
+}
+
 /** Rows/columns whose hit count exceeds `minRun` bound the box (legacy density-floor rule). */
 function bboxFromHits(rowHits: Int32Array, colHits: Int32Array, minRun: number): BBox | null {
   const firstAbove = (arr: Int32Array) => {

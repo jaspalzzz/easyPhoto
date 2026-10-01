@@ -87,6 +87,13 @@ export interface PortalSpec {
    */
   signatureInk?: string;
   /**
+   * How many times the candidate must sign, one below another, on the single
+   * signature image (UPSC: three). Unset = one signature. The signature tool
+   * tells the user before upload and warns when it finds fewer stacked
+   * signatures than this.
+   */
+  sigCopies?: number;
+  /**
    * Practical points taken from THIS exam's own notification that change what a
    * candidate should do — not restatements of the KB figures above.
    *
@@ -164,6 +171,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "official",
     verifiedOn: "2026-07-16",
     signatureInk: "Black ink on plain white paper",
+    sigCopies: 3,
     context:
       "UPSC's current portal requires both an uploaded passport-size photograph and a live photograph captured during the application. The live image is matched with the uploaded photo. The signature upload must show the candidate's signature three times vertically on one plain-white image.",
     applicationNotes: [
