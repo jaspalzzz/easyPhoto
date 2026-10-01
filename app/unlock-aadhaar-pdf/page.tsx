@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { KeyRound, ShieldCheck } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, softwareApplicationSchema, faqSchema } from "@/lib/schema";
+import { breadcrumbSchema, softwareApplicationSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { UnlockPdfTool } from "@/components/tools/UnlockPdfTool";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "Aadhaar PDF Password — Open & Unlock Your e-Aadhaar (Free)",
@@ -44,15 +44,17 @@ const FAQS: FaqItem[] = [
 ];
 
 export default function Page() {
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Unlock PDF", path: "/tools/unlock-pdf/" },
+    { name: "e-Aadhaar PDF", path: "/unlock-aadhaar-pdf/" },
+  ];
+
   return (
     <div className="container max-w-3xl space-y-8 py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Unlock PDF", path: "/tools/unlock-pdf/" },
-            { name: "e-Aadhaar PDF", path: "/unlock-aadhaar-pdf/" },
-          ]),
+          breadcrumbSchema(crumbs),
           softwareApplicationSchema({
             name: "Open & Unlock e-Aadhaar PDF",
             description:
@@ -63,13 +65,7 @@ export default function Page() {
         ]}
       />
 
-      <nav className="flex flex-wrap items-center gap-1.5 text-[13px] text-ink-soft">
-        <Link href="/" className="hover:text-foreground">Home</Link>
-        <span aria-hidden className="text-ink-faint">/</span>
-        <Link href="/tools/unlock-pdf/" className="hover:text-foreground">Unlock PDF</Link>
-        <span aria-hidden className="text-ink-faint">/</span>
-        <span className="text-foreground">e-Aadhaar</span>
-      </nav>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">

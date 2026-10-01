@@ -8,7 +8,8 @@ import {
 } from "@/lib/specRegistry";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
+import { breadcrumbSchema, collectionPageSchema, type Crumb } from "@/lib/schema";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "Exam Photo & Signature Size Requirements 2026 — India",
@@ -40,14 +41,16 @@ export default function Page() {
     items: specs.filter((s) => portalCategory(s.id) === cat),
   })).filter((g) => g.items.length > 0);
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Exam Requirements", path: "/exam-requirements/" },
+  ];
+
   return (
     <div className="container max-w-5xl space-y-8 py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Exam Requirements", path: "/exam-requirements/" },
-          ]),
+          breadcrumbSchema(crumbs),
           collectionPageSchema({
             name: "Exam Photo & Signature Size Requirements 2026",
             description:
@@ -56,6 +59,7 @@ export default function Page() {
           }),
         ]}
       />
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">Indian exams &amp; recruitment</span>

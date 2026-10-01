@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  ArrowLeft,
   ArrowRight,
   ShieldCheck,
   Lock,
@@ -10,11 +9,12 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, ORG_ID } from "@/lib/schema";
+import { breadcrumbSchema, ORG_ID, type Crumb } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { PORTAL_KEYS } from "@/lib/portalPresets";
 import { READY_TOOLS } from "@/lib/toolsCatalog";
 import { ExploreTools } from "@/components/site/ExploreTools";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "About",
@@ -63,14 +63,16 @@ const VALUES = [
 ];
 
 export default function AboutPage() {
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about/" },
+  ];
+
   return (
     <div className="container max-w-4xl py-12">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "About", path: "/about/" },
-          ]),
+          breadcrumbSchema(crumbs),
           {
             "@type": "AboutPage",
             url: `${SITE_URL}/about/`,
@@ -80,12 +82,7 @@ export default function AboutPage() {
         ]}
       />
 
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> Home
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       {/* Hero */}
       <header className="mt-5 space-y-4 border-b border-hairline pb-9">

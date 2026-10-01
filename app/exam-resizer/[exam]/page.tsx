@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ShieldCheck, ExternalLink } from "lucide-react";
+import { ArrowRight, ShieldCheck, ExternalLink } from "lucide-react";
 import {
   SUB_EXAM_RESIZERS,
   SUB_EXAM_SLUGS,
@@ -21,8 +21,10 @@ import {
   breadcrumbSchema,
   faqSchema,
   softwareApplicationSchema,
+  type Crumb,
 } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export function generateStaticParams() {
   return SUB_EXAM_SLUGS.map((exam) => ({ exam }));
@@ -83,15 +85,17 @@ export default async function Page({
     (s) => s.parentId === e.parentId && s.slug !== e.slug
   );
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Exam Requirements", path: "/exam-requirements/" },
+    { name: `${e.name} Resizer`, path },
+  ];
+
   return (
     <div className="container max-w-3xl space-y-8 py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Exam Requirements", path: "/exam-requirements/" },
-            { name: `${e.name} Resizer`, path },
-          ]),
+          breadcrumbSchema(crumbs),
           softwareApplicationSchema({
             name: `${e.name} Photo & Signature Resizer`,
             description: `Prepare a ${e.name} photo and signature to the selected stored size and KB target in your browser; verify the current form before use.`,
@@ -102,12 +106,7 @@ export default async function Page({
         ]}
       />
 
-      <Link
-        href="/exam-requirements/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All exam requirements
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3">
         <span className="eyebrow block text-brand">

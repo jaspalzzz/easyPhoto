@@ -1,8 +1,9 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { webPageSchema, breadcrumbSchema } from "@/lib/schema";
+import { webPageSchema, breadcrumbSchema, type Crumb } from "@/lib/schema";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "Privacy Policy",
@@ -13,14 +14,16 @@ export const metadata = pageMetadata({
 });
 
 export default function PrivacyPage() {
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Privacy Policy", path: "/privacy/" },
+  ];
+
   return (
     <div className="container max-w-3xl py-12">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Privacy Policy", path: "/privacy/" },
-          ]),
+          breadcrumbSchema(crumbs),
           webPageSchema({
             name: "Privacy Policy — easyPhoto",
             description:
@@ -30,12 +33,7 @@ export default function PrivacyPage() {
           }),
         ]}
       />
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> Home
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="mt-5 space-y-2.5">
         <span className="eyebrow block text-brand">Privacy</span>

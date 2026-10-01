@@ -1,9 +1,10 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import { ArrowLeft, AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, ORG_ID } from "@/lib/schema";
+import { breadcrumbSchema, ORG_ID, type Crumb } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "Disclaimer",
@@ -24,14 +25,16 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default function DisclaimerPage() {
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Disclaimer", path: "/disclaimer/" },
+  ];
+
   return (
     <div className="container max-w-3xl py-12">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Disclaimer", path: "/disclaimer/" },
-          ]),
+          breadcrumbSchema(crumbs),
           {
             "@type": "WebPage",
             url: `${SITE_URL}/disclaimer/`,
@@ -41,12 +44,7 @@ export default function DisclaimerPage() {
         ]}
       />
 
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> Home
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="mt-5 space-y-2.5">
         <span className="eyebrow block text-brand">Legal</span>
