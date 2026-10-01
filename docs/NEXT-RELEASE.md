@@ -1,7 +1,24 @@
 # Next release — plan
 
-Status: **planned** (written 29 Sep 2026). Follows `CLAUDE.md`; every item goes
-feature branch → PR into `dev` → verified → one release PR `dev → master`.
+Status: **planned** (written 29 Sep 2026, dated 1 Oct 2026). Follows
+`CLAUDE.md`; every item goes feature branch → PR into `dev` → verified → one
+release PR `dev → master`.
+
+## Schedule
+
+| Date | Release | Contents | SEO-visible |
+|---|---|---|---|
+| any day | **Hotfix** | Wrong output, wrong spec or a crash: branch from `master`, test that fails on the old code, §6 gate, PR into `master` the same day, verify on easyphoto.in, back-merge into `dev`. | only if the fix itself is |
+| Thu 15 Oct | GSC review + release | Morning: 14-day review of release #57 (Google + Bing). Then item 4 (JavaScript-only follow-ups). | none |
+| Thu 29 Oct | Content release | Items 1, 2, 3 (first ≤ 3 pages) and 6. | ~6 pages |
+| Thu 12 Nov | Content release | Item 3, next ≤ 3 pages — only if the first batch held for 14 days. | ≤ 3 pages |
+
+**29 Oct holds only if** Google marks the September 2026 spam update complete by
+15 Oct (CLAUDE.md §2: 14 days after it ends) **and** the 15 Oct review of #57
+shows no damage. Otherwise it moves to the update's end date + 14 days.
+
+Release #57 (1 Oct) shipped SEO-visible changes during the rollout by the
+owner's explicit override — recorded in `docs/weekly-log.md`.
 
 **Earliest production date:** 14 days after Google marks the *September 2026 spam
 update* complete (started 24 Sep; still rolling out on 29 Sep —
@@ -66,6 +83,26 @@ Timed to the windows in item 2: a reel per exam (IBPS Clerk, IBPS RRB, SSC GD)
 using `reels/`, and share cards for Telegram/WhatsApp exam groups, each linking
 to the exam page.
 
+## 6. `/tools/resize-kb/` title/description experiment (one page)
+
+Evidence (Bing Webmaster + GSC, 1 Oct): on Bing the page earned 637 clicks from
+28,938 impressions since 14 Sep at position ~8 — "photo resizer in kb" alone
+11,811 impressions, plus "image resizer in kb" 1,715 and "resize image in kb"
+2,067. On Google the whole page had 150 impressions and 5 clicks in the week
+from 25 Sep, and "photo resizer in kb" does not appear at all. It is the largest
+gap between the engines and the largest single demand we serve.
+
+- First, diagnose: compare our title, H1, first screen and internal links with
+  the pages Google ranks for "photo resizer in kb" / "resize image in kb".
+  Write up the finding before changing anything.
+- Then **one variable**: the `<title>` and meta description of
+  `/tools/resize-kb/` only. No H1, body or URL change in the same release.
+  Copy reviewed by the owner (CLAUDE.md §3).
+- Baseline to beat (record again on 28 Oct): Google — page impressions/week,
+  position for the three queries above; Bing — CTR at position ~9 on
+  "photo resizer in kb" (0.5%).
+- Judge after 14 days on both engines; revert if clicks fall on either.
+
 ## Not doing
 
 - **A new blog post per exam.** Breaks CLAUDE.md §1 (index frozen) and risks
@@ -77,6 +114,6 @@ to the exam page.
 ## Release checklist
 
 The CLAUDE.md §6 gate on every PR; on the release PR: SEO diff vs production
-lists exactly the pages from items 1–3, side-by-side on top traffic pages, smoke
+lists exactly the pages from items 1–3 and 6, side-by-side on top traffic pages, smoke
 test on easyphoto.in after deploy, a row in the Releases table of
 `docs/weekly-log.md` with its GSC check date.
