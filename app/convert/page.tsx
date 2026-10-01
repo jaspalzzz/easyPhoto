@@ -2,9 +2,10 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { TrustPills } from "@/components/site/TrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, faqSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { pageMetadata } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "Image Format Converter — HEIC, WebP, PNG & JPG Explained",
@@ -88,18 +89,21 @@ const CONVERT_FAQ: FaqItem[] = [
 ];
 
 export default function ConvertHubPage() {
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Tools", path: "/tools/" },
+    { name: "Image Format Converter", path: "/convert/" },
+  ];
+
   return (
     <div className="container max-w-3xl py-12">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Tools", path: "/tools/" },
-            { name: "Image Format Converter", path: "/convert/" },
-          ]),
+          breadcrumbSchema(crumbs),
           faqSchema(CONVERT_FAQ),
         ]}
       />
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-4">
         <span className="eyebrow block text-brand">Image tools</span>

@@ -6,7 +6,14 @@
  * lead-in stroke were treated as noise and cut off the cleaned signature.
  */
 import { describe, expect, it } from "vitest";
-import { attachedInkBBox, signatureTrimAttach, type BBox } from "@/lib/signature";
+import {
+  attachedInkBBox,
+  countStackedSignatures,
+  signatureStackParams,
+  signatureTrimAttach,
+  type BBox,
+} from "@/lib/signature";
+import { PORTAL_PRESETS } from "@/lib/portalPresets";
 
 const W = 2000;
 const H = 1500;
@@ -115,5 +122,42 @@ describe("signatureTrimAttach", () => {
       minRun: 15,
       keepAttached: { attachGap: 60, minSpeckArea: 56 },
     });
+  });
+});
+
+describe("stacked-signature count (UPSC asks for three, one below another)", () => {
+  /** Row histogram of a W-wide image: each band is [startRow, rows, inkPerRow]. */
+  const rows = (height: number, bands: [number, number, number][]) => {
+    const r = new Array(height).fill(0);
+    for (const [start, n, ink] of bands) for (let y = start; y < start + n; y++) r[y] = ink;
+    return r;
+  };
+  const H = 600;
+  const params = signatureStackParams(500, H); // minGap 12 rows, minInk 3
+
+  it("counts one, two and three signatures stacked with clear space between them", () => {
+    expect(countStackedSignatures(rows(H, [[40, 120, 60]]), params)).toBe(1);
+    expect(countStackedSignatures(rows(H, [[40, 120, 60], [220, 120, 60]]), params)).toBe(2);
+    expect(countStackedSignatures(rows(H, [[40, 120, 60], [220, 120, 60], [420, 120, 60]]), params)).toBe(3);
+  });
+
+  it("doesn't split one signature at a small gap (an i-dot, a lifted pen)", () => {
+    // dot 8 rows, then a 6-row gap (< minGap), then the signature body
+    expect(countStackedSignatures(rows(H, [[40, 8, 10], [54, 110, 60]]), params)).toBe(1);
+  });
+
+  it("ignores specks and stray marks too short to be a signature", () => {
+    const r = rows(H, [[200, 120, 60], [560, 4, 20]]); // a 4-row mark near the bottom
+    r[20] = 2; // a speck row below the ink floor
+    expect(countStackedSignatures(r, params)).toBe(1);
+  });
+
+  it("finds nothing in an empty image", () => {
+    expect(countStackedSignatures(new Array(H).fill(0), params)).toBe(0);
+  });
+
+  it("UPSC's spec asks for three copies; exams without the rule default to one", () => {
+    expect(PORTAL_PRESETS.upsc?.sigCopies).toBe(3);
+    expect(PORTAL_PRESETS.ssc?.sigCopies).toBeUndefined();
   });
 });

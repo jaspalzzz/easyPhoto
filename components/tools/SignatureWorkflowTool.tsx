@@ -12,7 +12,10 @@ import { fitToExactFrame, imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import {
   SIGNATURE_CLEAN_DEFAULTS,
   signatureKbFloor,
+  signatureStackParams,
   signatureTrimAttach,
+  alphaRowHits,
+  countStackedSignatures,
   whiteToTransparent,
   trimToContent,
 } from "@/lib/signature";
@@ -134,6 +137,9 @@ function Body({
   const [presetKey, setPresetKey] = React.useState<string>(defaultPresetKey ?? "");
   const selectedPreset = presetKey ? PORTAL_PRESETS[presetKey] : undefined;
   const minKb = signatureKbFloor(selectedPreset, pageMinKb);
+  // Some exams want the signature several times on one image (UPSC: three,
+  // one below another). Checked after cleaning; see countStackedSignatures.
+  const requiredCopies = selectedPreset?.sigCopies ?? 1;
   const [resizeMode, setResizeMode] = React.useState<"kb" | "pixels">(
     initialPreset?.sigWidthPx && initialPreset.sigHeightPx ? "pixels" : "kb"
   );
@@ -168,6 +174,8 @@ function Body({
     w: number;
     h: number;
     underCap: boolean;
+    /** Signatures found stacked in the image; set only when the exam needs more than one. */
+    stacked?: number;
   } | null>(null);
 
   React.useEffect(() => {
@@ -335,6 +343,13 @@ function Body({
           }
         }
 
+        // Count stacked signatures on the cleaned (transparent) image, before
+        // any flattening, so the white paper can't read as ink.
+        const stacked =
+          requiredCopies > 1
+            ? countStackedSignatures(alphaRowHits(finalCanvas), signatureStackParams(finalCanvas.width, finalCanvas.height))
+            : undefined;
+
         // Apply white background flattening if JPEG is requested
         let renderCanvas = finalCanvas;
         if (bgFormat === "jpeg") {
@@ -430,6 +445,7 @@ function Body({
           w: resultCanvas.width,
           h: resultCanvas.height,
           underCap: isUnderCap,
+          stacked,
         });
 
         const duration = typeof performance !== "undefined" ? performance.now() - t0 : 0;
@@ -479,6 +495,7 @@ function Body({
     bgFormat,
     toolName,
     minKb,
+    requiredCopies,
   ]);
 
   // Handle preset selections
@@ -619,6 +636,15 @@ function Body({
               <span>Dimensions: <strong className="text-foreground text-sm">{out.w}×{out.h}px</strong></span>
             </div>
             
+            {out.stacked !== undefined && out.stacked < requiredCopies && (
+              <p role="alert" className="border-l-2 border-amber-500 bg-amber-50/60 p-2 text-xs text-amber-900 leading-normal dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
+                {out.stacked === 0 ? "No signature found" : `Only ${out.stacked} signature${out.stacked === 1 ? "" : "s"} found`} —
+                {" "}{selectedPreset?.name.split(" (")[0] ?? "this form"} needs your signature {requiredCopies} times, one below
+                another, on one image. Sign {requiredCopies} times on plain white paper with clear space between them, then upload
+                a new photo of the sheet.
+              </p>
+            )}
+
             {!out.underCap && (
               <p className="border-l-2 border-amber-500 bg-amber-50/60 p-2 text-xs text-amber-900 leading-normal dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
                 {resizeMode === "kb"

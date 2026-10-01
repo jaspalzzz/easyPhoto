@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { PdfCompressTool } from "@/components/tools/PdfCompressTool";
 import { ToolIconTile } from "@/components/site/ToolIcon";
 import { ExploreTools } from "@/components/site/ExploreTools";
@@ -10,8 +10,10 @@ import {
   faqSchema,
   softwareApplicationSchema,
   howToSchema,
+  type Crumb,
 } from "@/lib/schema";
 import { PDF_KB_TARGETS, pdfKbPath, PDF_KB_USECASES } from "@/lib/kbTargets";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 /** Landing page for "Compress PDF to N KB", preset to the target. */
 export function PdfKbLanding({ kb }: { kb: number }) {
@@ -40,16 +42,18 @@ export function PdfKbLanding({ kb }: { kb: number }) {
     },
   ];
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Tools", path: "/tools/" },
+    { name: "PDF Tools", path: "/tools/pdf/" },
+    { name: `Compress PDF to ${kb} KB`, path },
+  ];
+
   return (
     <div className="container max-w-3xl py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Tools", path: "/tools/" },
-            { name: "PDF Tools", path: "/tools/pdf/" },
-            { name: `Compress PDF to ${kb} KB`, path },
-          ]),
+          breadcrumbSchema(crumbs),
           softwareApplicationSchema({
             name: `Compress PDF to ${kb} KB`,
             description: `Free online tool to compress a PDF to under ${kb} KB, in your browser.`,
@@ -68,12 +72,7 @@ export function PdfKbLanding({ kb }: { kb: number }) {
         ]}
       />
 
-      <Link
-        href="/tools/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All tools
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="mt-4 flex items-start gap-4">
         <ToolIconTile name="FileDown" category="pdf" className="hidden shrink-0 sm:flex" />

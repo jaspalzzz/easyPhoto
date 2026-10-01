@@ -138,13 +138,13 @@ export function AiShowcase() {
             </div>
 
             {/* Selfie with HUD scan-line overlay */}
-            <div className="mb-5 flex items-center justify-center rounded-xl border border-hairline bg-paper py-5">
-              <div className="relative h-[150px] w-[110px] sm:h-[190px] sm:w-[140px]">
+            <div className="mb-5 flex flex-1 items-center justify-center rounded-xl border border-hairline bg-paper py-5">
+              <div className="relative h-[150px] w-[110px] sm:h-[190px] sm:w-[140px] lg:h-[240px] lg:w-[178px]">
                 <Image
                   src="/images/sample2_before_280.webp"
                   alt="Example selfie before automated photo preparation"
                   fill
-                  sizes="140px"
+                  sizes="(min-width: 1024px) 178px, 140px"
                   className="rounded-xl object-cover object-top"
                 />
                 {/* Dotted red scan lines + numbered circles */}
@@ -167,16 +167,16 @@ export function AiShowcase() {
             </div>
 
             {/* Issues list — space-between rows */}
-            <ul className="mt-auto flex flex-col gap-3">
+            <ul className="flex flex-col gap-3">
               {BEFORE_ISSUES.map(({ n, title, desc }) => (
-                <li key={n} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-xs font-bold text-red-700 dark:text-red-300">
-                      {n}
-                    </span>
-                    <span className="text-[12.5px] font-bold text-red-700 dark:text-red-300">{title}</span>
+                <li key={n} className="flex items-start gap-2.5">
+                  <span className="mt-px flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-xs font-bold text-red-700 dark:text-red-300">
+                    {n}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[12.5px] font-bold leading-5 text-red-700 dark:text-red-300">{title}</p>
+                    <p className="text-[11.5px] leading-snug text-muted-foreground">{desc}</p>
                   </div>
-                  <span className="text-[11.5px] text-muted-foreground">{desc}</span>
                 </li>
               ))}
             </ul>
@@ -198,105 +198,110 @@ export function AiShowcase() {
                 </span>
                 <h3 className="text-[15px] font-bold text-ink">Automated photo checks</h3>
               </div>
-              <span className="rounded-full border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-300">
-                Analyzing…
+              <span className="shrink-0 whitespace-nowrap rounded-full border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-300">
+                Checks complete
               </span>
             </div>
 
-            {/* Circular gauge + checks (side by side) */}
-            <div className="mb-4 flex flex-col items-center gap-4 min-[360px]:flex-row">
+            {/* Body — gauge/table, banner and stepper share the card height
+                evenly instead of bunching at the top. */}
+            <div className="flex flex-1 flex-col justify-between gap-5">
 
-              {/* Circular SVG gauge */}
-              <div className="relative shrink-0" style={{ width: 128, height: 128 }}>
-                <svg width="128" height="128" viewBox="0 0 150 150" aria-hidden="true">
-                  {/* Track */}
-                  <circle cx="75" cy="75" r="62" fill="none" stroke="#f1f5f9" strokeWidth="6" />
-                  {/* Inner dashed ring */}
-                  <circle cx="75" cy="75" r="54" fill="none" stroke="#e2e8f0"
-                    strokeWidth="1" strokeDasharray="4,3" />
-                  {/* Progress arc — amber, full ring: all 7 itemized checks pass */}
-                  <circle cx="75" cy="75" r="62" fill="none"
-                    stroke="#f59e0b" strokeWidth="6"
-                    strokeDasharray="390" strokeDashoffset="0"
-                    strokeLinecap="round" transform="rotate(-90 75 75)" />
-                </svg>
-                {/* Centered text overlay */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-[1.5rem] font-black leading-none text-emerald-700 dark:text-emerald-300">7/7</span>
-                  <span className="mt-0.5 text-center text-xs font-semibold leading-tight text-muted-foreground">
-                    Checks<br />Passed
-                  </span>
-                  <span className="mt-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
-                    All Pass
-                  </span>
-                </div>
-              </div>
+              {/* Circular gauge + checks (side by side) */}
+              <div className="flex flex-1 flex-col items-center justify-center gap-5 min-[360px]:flex-row lg:flex-col">
 
-              {/* Checks table */}
-              <div className="min-w-0 flex-1">
-                <div className="mb-1.5 flex justify-between border-b border-hairline pb-1">
-                  <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Check</span>
-                  <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Status</span>
-                </div>
-                <ul className="flex flex-col gap-[5px]">
-                  {AI_CHECKS.map(({ label, tileBg, tileText, Icon }) => (
-                    <li key={label} className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${tileBg}`}>
-                          <Icon className={`h-2.5 w-2.5 ${tileText}`} strokeWidth={2.5} />
-                        </span>
-                        <span className="text-xs font-semibold text-ink">{label}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300">Pass</span>
-                        <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 text-[7px] font-bold text-white">
-                          ✓
-                        </span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Check-results banner */}
-            <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-2.5">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" strokeWidth={2} />
-              <div>
-                <p className="text-[12px] font-bold text-ink">No measurable issues detected</p>
-                <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
-                  Measured against the published specs for passport, visa, ID &amp; more.
-                </p>
-              </div>
-            </div>
-
-            {/* Mini stepper: Scanning → Analyzing → Validating → Optimizing */}
-            <div className="mt-auto hidden sm:flex items-start">
-              {MINI_STEPS.map((label, i) => (
-                <div key={label} className="relative flex flex-1 flex-col items-center">
-                  {/* Connector — left half (not for first item) */}
-                  {i > 0 && (
-                    <div
-                      className="absolute border-t-2 border-amber-400"
-                      style={{ top: 10, left: 0, right: "50%" }}
-                    />
-                  )}
-                  {/* Connector — right half (not for last item) */}
-                  {i < MINI_STEPS.length - 1 && (
-                    <div
-                      className="absolute border-t-2 border-amber-400"
-                      style={{ top: 10, left: "50%", right: 0 }}
-                    />
-                  )}
-                  {/* Circle */}
-                  <div className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-[8px] font-bold text-white">
-                    ✓
+                {/* Circular SVG gauge */}
+                <div className="relative h-32 w-32 shrink-0 lg:h-36 lg:w-36">
+                  <svg className="h-full w-full" viewBox="0 0 150 150" aria-hidden="true">
+                    {/* Track */}
+                    <circle cx="75" cy="75" r="62" fill="none" stroke="#f1f5f9" strokeWidth="6" />
+                    {/* Inner dashed ring */}
+                    <circle cx="75" cy="75" r="54" fill="none" stroke="#e2e8f0"
+                      strokeWidth="1" strokeDasharray="4,3" />
+                    {/* Progress arc — amber, full ring: all 7 itemized checks pass */}
+                    <circle cx="75" cy="75" r="62" fill="none"
+                      stroke="#f59e0b" strokeWidth="6"
+                      strokeDasharray="390" strokeDashoffset="0"
+                      strokeLinecap="round" transform="rotate(-90 75 75)" />
+                  </svg>
+                  {/* Centered text overlay */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-[1.5rem] font-black leading-none text-emerald-700 dark:text-emerald-300">7/7</span>
+                    <span className="mt-0.5 text-center text-xs font-semibold leading-tight text-muted-foreground">
+                      Checks<br />Passed
+                    </span>
+                    <span className="mt-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
+                      All Pass
+                    </span>
                   </div>
-                  <span className="mt-1 whitespace-nowrap text-xs font-bold text-ink">
-                    {label}
-                  </span>
                 </div>
-              ))}
+
+                {/* Checks table */}
+                <div className="min-w-0 flex-1 lg:w-full lg:flex-none">
+                  <div className="mb-1.5 flex justify-between border-b border-hairline pb-1">
+                    <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Check</span>
+                    <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Status</span>
+                  </div>
+                  <ul className="flex flex-col gap-[5px] lg:gap-2">
+                    {AI_CHECKS.map(({ label, tileBg, tileText, Icon }) => (
+                      <li key={label} className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${tileBg}`}>
+                            <Icon className={`h-2.5 w-2.5 ${tileText}`} strokeWidth={2.5} />
+                          </span>
+                          <span className="text-xs lg:whitespace-nowrap font-semibold text-ink">{label}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300">Pass</span>
+                          <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 text-[7px] font-bold text-white">
+                            ✓
+                          </span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Check-results banner */}
+              <div className="flex items-start gap-2.5 rounded-xl border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-2.5">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" strokeWidth={2} />
+                <div>
+                  <p className="text-[12px] font-bold text-ink">Sample result: all 7 checks passed</p>
+                  <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
+                    Measured against the published specs for passport, visa, ID &amp; more.
+                  </p>
+                </div>
+              </div>
+
+              {/* Mini stepper: Scanning → Analyzing → Validating → Optimizing */}
+              <div className="hidden sm:flex items-start">
+                {MINI_STEPS.map((label, i) => (
+                  <div key={label} className="relative flex flex-1 flex-col items-center">
+                    {/* Connector — left half (not for first item) */}
+                    {i > 0 && (
+                      <div
+                        className="absolute border-t-2 border-amber-400"
+                        style={{ top: 10, left: 0, right: "50%" }}
+                      />
+                    )}
+                    {/* Connector — right half (not for last item) */}
+                    {i < MINI_STEPS.length - 1 && (
+                      <div
+                        className="absolute border-t-2 border-amber-400"
+                        style={{ top: 10, left: "50%", right: 0 }}
+                      />
+                    )}
+                    {/* Circle */}
+                    <div className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-[8px] font-bold text-white">
+                      ✓
+                    </div>
+                    <span className="mt-1 whitespace-nowrap text-xs font-bold text-ink">
+                      {label}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -317,15 +322,15 @@ export function AiShowcase() {
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </span>
-                <h3 className="text-[15px] font-bold text-ink">Checked for measurable requirements</h3>
+                <h3 className="text-[15px] font-bold text-ink">Prepared photo</h3>
               </div>
               <span className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-300">
-                No Detectable Issues
+                35 × 45 mm
               </span>
             </div>
 
             {/* Checked photo with dimension indicators */}
-            <div className="mb-4 flex items-center justify-center rounded-xl border border-hairline bg-paper py-6">
+            <div className="mb-4 flex flex-1 items-center justify-center rounded-xl border border-hairline bg-paper py-6">
               {/*
                 Outer wrapper provides space for the dimension indicators:
                   paddingRight  = space for the vertical "45 mm" ruler

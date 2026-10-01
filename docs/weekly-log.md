@@ -24,3 +24,13 @@ traffic-collapse notes). This is the log the December decision gate reads.
 |---|---|---|---|---|---|---|---|
 | 2026-08-31 | ~71 | 0 | ~218 (28d) | 122 | — | — | Phase-1 baseline. Pre-change. |
 | 2026-09-21 | 67.5 → **6.6** (25–26 Sep) | 36 | 2,397 | 119 / 123 | — | — | **Demotion lifted 25 Sep**, the day after Google's September spam update began (24 Sep); every non-brand click this week came on 25–26 Sep. Site 21–26 Sep: 110 clicks / 5,729 impr, avg pos 7.6; 26 Sep alone: 91 / 4,890. Top pages: voter-id 25, sign-image 17, photo-with-name-date 13, signature-cleaner 8. Not indexed: 2 blog posts crawled-not-indexed, 1 discovered-not-indexed, and `/tools/compliance-checker/` still marked noindex from Google's 14 Aug crawl (indexable again since 1 Sep — request indexing in GSC). 27 Sep not yet in GSC. On `dev` 29 Sep, not in production: #47 QA fixes, #48 operating rules (CLAUDE.md). |
+
+## Releases
+
+One row per production release, so a change in Search Console can be tied to it
+(CLAUDE.md §5). Review GSC on the "check" date: 14 days after the release.
+
+| Released (IST) | PR · commit | What shipped | SEO-visible | Check GSC |
+|---|---|---|---|---|
+| 2026-09-29 16:08 | #50 · `72391cd` | Bug-fix release: site search (404s, top queries), form fill in production, Driving Licence/CAT size caps, IBPS/RRB signature minimums, thin-stroke signature trimming (sign-image, signature-cleaner, all signature tools), no green verdict for a no-face photo, crop ratios, name/date wrapping, Exam Kit name/date prompt, restricted PDFs, compressor stale results. **Held:** print-sheet fix (changes page text; waits until 14 days after the Sept 2026 spam update ends). Verified live after deploy. | none (0 of 300 pages) | 2026-10-13 |
+| 2026-10-01 | #PR · pending | UPSC three-signature check and warning (#53). One breadcrumb trail on every page template (#54). Homepage: misleading "No measurable issues detected" lines removed or reworded, showcase cards rebalanced (#54–#56). **Held:** print-sheet fix. **Owner override of CLAUDE.md §2:** shipped during the Sept 2026 spam update rollout and as a many-page change, by the owner's explicit decision on 2026-10-01. | ~100 indexed pages: breadcrumb text and links; `/`: 5 short labels. No title/meta/H1/H2/JSON-LD/sitemap change | 2026-10-15 |

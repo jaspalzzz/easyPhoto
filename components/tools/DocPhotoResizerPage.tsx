@@ -1,12 +1,13 @@
 import Link from "next/link";
-import { ArrowLeft, BookOpen, ShieldCheck, ExternalLink } from "lucide-react";
+import { BookOpen, ShieldCheck, ExternalLink } from "lucide-react";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import { portalFaqItems } from "@/lib/faqs";
 import { PortalResizer } from "@/components/tools/PortalResizer";
 import { ExploreTools } from "@/components/site/ExploreTools";
 import { Faq } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, faqSchema, softwareApplicationSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 /**
  * Shared landing page for an Indian identity-document photo/signature resizer
@@ -37,14 +38,16 @@ export function DocPhotoResizerPage({
   const prov = specProvenance(spec);
   const path = `/${slug}/`;
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: displayName, path },
+  ];
+
   return (
     <div className="container max-w-3xl space-y-8 py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: displayName, path },
-          ]),
+          breadcrumbSchema(crumbs),
           softwareApplicationSchema({
             name: `${displayName} Photo & Signature Resizer`,
             description: `Prepare a ${displayName} photo and signature to the selected stored size and KB target in your browser; verify the current application before use.`,
@@ -54,12 +57,7 @@ export function DocPhotoResizerPage({
         ]}
       />
 
-      <Link
-        href="/exam-requirements/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All document requirements
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3">
         <span className="eyebrow block text-brand">Government document photo</span>
