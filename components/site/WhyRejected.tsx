@@ -38,7 +38,7 @@ const RESULTS = [
 
 interface TrustItem { Icon: LucideIcon; title: string; sub: string; }
 const TRUST_ITEMS: TrustItem[] = [
-  { Icon: ShieldCheck, title: "Checked for measurable requirements", sub: "No measurable issues detected" },
+  { Icon: ShieldCheck, title: "Checked for measurable requirements", sub: "Size, background & framing measured" },
   { Icon: Lock,        title: "100% Private",      sub: "Your photos never leave your device"   },
   { Icon: Zap,         title: "On-device results", sub: "Review measurable photo properties"    },
   { Icon: Users,       title: "No Account Needed", sub: "Free to use — no signup, no watermark" },
