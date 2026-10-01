@@ -198,8 +198,8 @@ export function AiShowcase() {
                 </span>
                 <h3 className="text-[15px] font-bold text-ink">Automated photo checks</h3>
               </div>
-              <span className="rounded-full border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-300">
-                Analyzing…
+              <span className="shrink-0 whitespace-nowrap rounded-full border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-300">
+                Checks complete
               </span>
             </div>
 
@@ -267,7 +267,7 @@ export function AiShowcase() {
               <div className="flex items-start gap-2.5 rounded-xl border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-2.5">
                 <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" strokeWidth={2} />
                 <div>
-                  <p className="text-[12px] font-bold text-ink">No measurable issues detected</p>
+                  <p className="text-[12px] font-bold text-ink">Sample result: all 7 checks passed</p>
                   <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
                     Measured against the published specs for passport, visa, ID &amp; more.
                   </p>
@@ -322,15 +322,15 @@ export function AiShowcase() {
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </span>
-                <h3 className="text-[15px] font-bold text-ink">Checked for measurable requirements</h3>
+                <h3 className="text-[15px] font-bold text-ink">Prepared photo</h3>
               </div>
               <span className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-300">
-                No Detectable Issues
+                35 × 45 mm
               </span>
             </div>
 
             {/* Checked photo with dimension indicators */}
-            <div className="mb-4 flex items-center justify-center rounded-xl border border-hairline bg-paper py-6">
+            <div className="mb-4 flex flex-1 items-center justify-center rounded-xl border border-hairline bg-paper py-6">
               {/*
                 Outer wrapper provides space for the dimension indicators:
                   paddingRight  = space for the vertical "45 mm" ruler
