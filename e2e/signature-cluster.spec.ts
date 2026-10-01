@@ -46,6 +46,28 @@ async function makeScannedSignature(page: Page, detail = false): Promise<Buffer>
   return Buffer.from(dataUrl.split(",")[1], "base64");
 }
 
+/** `copies` filled signature blobs stacked one below another, with clear space between them. */
+async function makeStackedSignatures(page: Page, copies: number): Promise<Buffer> {
+  const dataUrl = await page.evaluate((n) => {
+    const w = 600;
+    const band = 200;
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = band * n;
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, canvas.height);
+    ctx.fillStyle = "#111111";
+    for (let i = 0; i < n; i++) {
+      ctx.beginPath();
+      ctx.ellipse(w / 2, band * i + band / 2, 180, 55, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    return canvas.toDataURL("image/png");
+  }, copies);
+  return Buffer.from(dataUrl.split(",")[1], "base64");
+}
+
 /** Reads a downloaded image's pixel at (xFrac, yFrac) of its natural size. */
 async function samplePixel(
   page: Page,
@@ -163,15 +185,19 @@ test("signature-resize: output is genuinely bound to the KB target", async ({ pa
   expect(bytes / 1024, `downloaded ${(bytes / 1024).toFixed(1)} KB`).toBeLessThanOrEqual(target + 0.5);
 });
 
-test("upsc-signature-resizer: exports a JPG inside the stored 20–100 KB band", async ({ page }) => {
-  await page.goto("/upsc-signature-resizer/");
+// /upsc-signature-resizer/ is a retired route (host redirect to the UPSC exam
+// page, which opens on the photo tab), so the test opens the signature tab itself.
+test("upsc exam page: signature exports a JPG inside the stored 20–100 KB band", async ({ page }) => {
+  await page.goto("/exam-requirements/upsc/");
+  await page.getByRole("button", { name: /clean & compress signature/i }).click();
   await page.setInputFiles('input[type="file"]', {
     name: "sig.png",
     mimeType: "image/png",
-    buffer: await makeScannedSignature(page, true),
+    buffer: await makeStackedSignatures(page, 3),
   });
-  const download = page.getByRole("button", { name: /download jpg/i });
+  const download = page.getByRole("button", { name: /download .*jpg/i });
   await expect(download).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText(/needs your signature 3 times/i)).toHaveCount(1); // the pre-upload instruction only
   const [dl] = await Promise.all([page.waitForEvent("download"), download.click()]);
   const b64 = await readDownloadBase64(dl);
   const bytes = Buffer.from(b64, "base64");
@@ -179,6 +205,18 @@ test("upsc-signature-resizer: exports a JPG inside the stored 20–100 KB band",
   expect(bytes[1]).toBe(0xd8);
   expect(bytes.length).toBeGreaterThanOrEqual(20 * 1024);
   expect(bytes.length).toBeLessThanOrEqual(100 * 1024);
+});
+
+test("upsc exam page: warns when the signature image has fewer than three signatures", async ({ page }) => {
+  await page.goto("/exam-requirements/upsc/");
+  await page.getByRole("button", { name: /clean & compress signature/i }).click();
+  await page.setInputFiles('input[type="file"]', {
+    name: "sig.png",
+    mimeType: "image/png",
+    buffer: await makeStackedSignatures(page, 1),
+  });
+  await expect(page.getByRole("button", { name: /download .*jpg/i })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole("alert").filter({ hasText: /only 1 signature found/i })).toBeVisible();
 });
 
 test("signature-crop: auto-detect crops the output tighter than the input", async ({ page }) => {
