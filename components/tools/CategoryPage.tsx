@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getCategory, TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { ToolCard } from "@/components/site/ToolCard";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
+import { breadcrumbSchema, collectionPageSchema, type Crumb } from "@/lib/schema";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 const CATEGORY_DEPTH: Record<
   string,
@@ -55,15 +56,17 @@ export function CategoryPage({ slug }: { slug: string }) {
   const tools = cat.tools.filter((t) => t.ready);
   const others = TOOLS_CATALOG.filter((g) => g.slug !== slug);
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Tools", path: "/tools/" },
+    { name: cat.group, path: `/tools/${cat.slug}/` },
+  ];
+
   return (
     <div className="container max-w-5xl py-12">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Tools", path: "/tools/" },
-            { name: cat.group, path: `/tools/${cat.slug}/` },
-          ]),
+          breadcrumbSchema(crumbs),
           collectionPageSchema({
             name: `Free ${cat.group}`,
             description: cat.tagline,
@@ -71,12 +74,7 @@ export function CategoryPage({ slug }: { slug: string }) {
           }),
         ]}
       />
-      <Link
-        href="/tools/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All tools
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="mt-5 max-w-2xl space-y-2.5 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">{tools.length} free tools · nothing uploaded</span>

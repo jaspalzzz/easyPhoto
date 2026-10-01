@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  ArrowLeft,
   ArrowRight,
   Building2,
   Clock3,
@@ -11,9 +10,10 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, ORG_ID } from "@/lib/schema";
+import { breadcrumbSchema, ORG_ID, type Crumb } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { ExploreTools } from "@/components/site/ExploreTools";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 // Live inbox — routed via Cloudflare Email Routing to the team mailbox.
 const EMAIL = "hello@easyphoto.in";
@@ -27,14 +27,16 @@ export const metadata = pageMetadata({
 });
 
 export default function ContactPage() {
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Contact", path: "/contact/" },
+  ];
+
   return (
     <div className="container max-w-3xl py-12">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Contact", path: "/contact/" },
-          ]),
+          breadcrumbSchema(crumbs),
           {
             "@type": "ContactPage",
             url: `${SITE_URL}/contact/`,
@@ -44,12 +46,7 @@ export default function ContactPage() {
         ]}
       />
 
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> Home
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       <article className="mt-5 space-y-8">
         <header className="space-y-3 border-b border-hairline pb-7">

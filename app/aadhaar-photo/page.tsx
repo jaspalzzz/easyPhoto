@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, AlertTriangle, ShieldCheck, EyeOff, LockOpen } from "lucide-react";
+import { ArrowRight, AlertTriangle, ShieldCheck, EyeOff, LockOpen } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, ORG_ID, faqSchema } from "@/lib/schema";
+import { breadcrumbSchema, ORG_ID, faqSchema, type Crumb } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { Faq, type FaqItem } from "@/components/site/Faq";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "Aadhaar Photo: How to Change It (You Can't Upload One Online)",
@@ -34,14 +35,16 @@ const FAQS: FaqItem[] = [
 ];
 
 export default function AadhaarPhotoPage() {
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Aadhaar Photo", path: "/aadhaar-photo/" },
+  ];
+
   return (
     <div className="container max-w-3xl space-y-8 py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Aadhaar Photo", path: "/aadhaar-photo/" },
-          ]),
+          breadcrumbSchema(crumbs),
           {
             "@type": "WebPage",
             url: `${SITE_URL}/aadhaar-photo/`,
@@ -52,12 +55,7 @@ export default function AadhaarPhotoPage() {
         ]}
       />
 
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> Home
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">Aadhaar</span>

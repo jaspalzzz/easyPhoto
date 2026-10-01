@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getPost, relatedPosts } from "@/lib/blog";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { ReadingProgress } from "@/components/blog/ReadingProgress";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, faqSchema, ORG_ID, AUTHOR_ID } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, ORG_ID, AUTHOR_ID, type Crumb } from "@/lib/schema";
 import type { FaqItem } from "@/components/site/Faq";
 import { absoluteUrl } from "@/lib/seo";
 import { AUTHOR } from "@/lib/author";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 /** Shared chrome + Article schema for a blog post. */
 export function BlogPostLayout({
@@ -32,17 +33,19 @@ export function BlogPostLayout({
   // Same-topic posts first (falls back to array order to fill the 2 slots).
   const more = relatedPosts(slug, 2);
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog/" },
+    { name: post.title, path: url },
+  ];
+
   return (
     <>
       <ReadingProgress />
       <div className="container max-w-2xl py-12">
         <JsonLd
           schema={[
-            breadcrumbSchema([
-              { name: "Home", path: "/" },
-              { name: "Blog", path: "/blog/" },
-              { name: post.title, path: url },
-            ]),
+            breadcrumbSchema(crumbs),
             {
               "@type": "BlogPosting",
               headline: post.title,
@@ -77,12 +80,7 @@ export function BlogPostLayout({
           ]}
         />
 
-        <Link
-          href="/blog/"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-        >
-          <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All articles
-        </Link>
+        <Breadcrumbs crumbs={crumbs} />
 
         <header className="mt-6 space-y-5 border-b border-hairline pb-7">
           <p className="eyebrow text-brand">

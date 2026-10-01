@@ -11,8 +11,9 @@ import {
 import { calendarSorted } from "@/lib/examCalendar";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, faqSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "Exam Calendar 2026-27 — Upcoming Notification & Exam Dates",
@@ -46,18 +47,21 @@ const FAQS: FaqItem[] = [
 export default function ExamCalendarPage() {
   const entries = calendarSorted();
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Exam Requirements", path: "/exam-requirements/" },
+    { name: "Exam Calendar", path: "/exam-calendar/" },
+  ];
+
   return (
     <div className="container max-w-4xl space-y-8 py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Exam Requirements", path: "/exam-requirements/" },
-            { name: "Exam Calendar", path: "/exam-calendar/" },
-          ]),
+          breadcrumbSchema(crumbs),
           faqSchema(FAQS),
         ]}
       />
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">Official calendars, sourced &amp; dated</span>

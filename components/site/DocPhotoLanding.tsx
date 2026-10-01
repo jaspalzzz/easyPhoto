@@ -14,7 +14,9 @@ import {
   faqSchema,
   softwareApplicationSchema,
   howToSchema,
+  type Crumb,
 } from "@/lib/schema";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 const HERO_TRUST = [
   { Icon: ShieldCheck, text: "Country-specific requirements with linked sources" },
@@ -50,6 +52,11 @@ export function DocPhotoLanding({
     mm: effectivePrintMm(c.spec),
   }));
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: h1, path },
+  ];
+
   return (
     <div className="container max-w-6xl py-10">
       {/* Preload the above-fold hero image so it is the LCP candidate, not a
@@ -62,10 +69,7 @@ export function DocPhotoLanding({
       />
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: h1, path },
-          ]),
+          breadcrumbSchema(crumbs),
           softwareApplicationSchema({
             name: h1,
             description: intro,
@@ -84,6 +88,7 @@ export function DocPhotoLanding({
           }),
         ]}
       />
+      <Breadcrumbs crumbs={crumbs} />
 
       {/* ── Tool-handy hero: maker top-right, transformer visual left ────
           DOM order is heading → tool → visual so on mobile the tool sits right

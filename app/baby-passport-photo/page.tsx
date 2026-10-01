@@ -3,10 +3,11 @@ import { ExternalLink } from "lucide-react";
 import { COUNTRY_SPECS, effectivePrintMm } from "@/lib/countrySpecs";
 import { PhotoTool } from "@/components/tool/PhotoTool";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, softwareApplicationSchema, faqSchema } from "@/lib/schema";
+import { breadcrumbSchema, softwareApplicationSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { kbPath } from "@/lib/kbTargets";
 import { Faq, type FaqItem } from "@/components/site/Faq";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 /**
  * Baby / infant passport photo landing page.
@@ -80,15 +81,17 @@ const BABY_FAQS: FaqItem[] = [
 ];
 
 export default function BabyPassportPhotoPage() {
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Passport Photo Maker", path: "/passport-photo/" },
+    { name: "Baby & infant passport photo", path: "/baby-passport-photo/" },
+  ];
+
   return (
     <div className="container max-w-4xl space-y-8 py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Passport Photo Maker", path: "/passport-photo/" },
-            { name: "Baby & infant passport photo", path: "/baby-passport-photo/" },
-          ]),
+          breadcrumbSchema(crumbs),
           softwareApplicationSchema({
             name: "Baby & Infant Passport Photo Maker",
             description:
@@ -99,17 +102,7 @@ export default function BabyPassportPhotoPage() {
         ]}
       />
 
-      <nav className="flex flex-wrap items-center gap-1.5 text-[13px] text-ink-soft">
-        <Link href="/" className="hover:text-foreground">
-          Home
-        </Link>
-        <span aria-hidden className="text-ink-faint">/</span>
-        <Link href="/passport-photo/" className="hover:text-foreground">
-          Passport Photo Maker
-        </Link>
-        <span aria-hidden className="text-ink-faint">/</span>
-        <span className="text-foreground">Baby &amp; infant</span>
-      </nav>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
