@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { ToolIconTile } from "@/components/site/ToolIcon";
 import { ExploreTools } from "@/components/site/ExploreTools";
@@ -10,9 +10,11 @@ import {
   faqSchema,
   softwareApplicationSchema,
   howToSchema,
+  type Crumb,
 } from "@/lib/schema";
 import { KB_TARGETS, kbPath, PHOTO_KB_USECASES } from "@/lib/kbTargets";
 import { KbExamLinks } from "@/components/tools/KbExamLinks";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 /** Landing page for "Resize image to N KB", preset to the target. */
 export function KbResizeLanding({ kb }: { kb: number }) {
@@ -41,16 +43,18 @@ export function KbResizeLanding({ kb }: { kb: number }) {
     },
   ];
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Tools", path: "/tools/" },
+    { name: "Photo Tools", path: "/tools/photo/" },
+    { name: `Resize to ${kb} KB`, path },
+  ];
+
   return (
     <div className="container max-w-3xl py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Tools", path: "/tools/" },
-            { name: "Photo Tools", path: "/tools/photo/" },
-            { name: `Resize to ${kb} KB`, path },
-          ]),
+          breadcrumbSchema(crumbs),
           softwareApplicationSchema({
             name: `Resize Image to ${kb} KB`,
             description: `Free online tool to compress a photo to under ${kb} KB, in your browser.`,
@@ -69,12 +73,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
         ]}
       />
 
-      <Link
-        href="/tools/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> All tools
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="mt-4 flex items-start gap-4">
         <ToolIconTile name="Scaling" category="photo" className="hidden shrink-0 sm:flex" />

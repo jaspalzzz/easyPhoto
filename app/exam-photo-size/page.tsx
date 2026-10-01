@@ -11,8 +11,9 @@ import {
 } from "@/lib/specRegistry";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, faqSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "Exam Photo & Signature Size 2026 — Full List for Indian Exams",
@@ -67,18 +68,21 @@ export default function Page() {
     items: specs.filter((s) => portalCategory(s.id) === cat),
   })).filter((g) => g.items.length > 0);
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Exam Requirements", path: "/exam-requirements/" },
+    { name: "Photo & Signature Size List", path: "/exam-photo-size/" },
+  ];
+
   return (
     <div className="container max-w-5xl space-y-8 py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Exam Requirements", path: "/exam-requirements/" },
-            { name: "Photo & Signature Size List", path: "/exam-photo-size/" },
-          ]),
+          breadcrumbSchema(crumbs),
           faqSchema(FAQS),
         ]}
       />
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">

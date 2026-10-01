@@ -23,12 +23,14 @@ import {
   breadcrumbSchema,
   faqSchema,
   softwareApplicationSchema,
+  type Crumb,
 } from "@/lib/schema";
 import { clampDescription, firstSentence, pageMetadata } from "@/lib/seo";
 import { kbPath } from "@/lib/kbTargets";
 import { Faq } from "@/components/site/Faq";
 import { countryFaqItems } from "@/lib/faqs";
 import { CountrySpecificationProvenance } from "@/components/site/SpecificationProvenance";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 // Static export: one page per maker slug (passport + visa).
 export function generateStaticParams() {
@@ -191,15 +193,17 @@ export default async function MakerPage({
     ...countryFaqItems(spec, kind),
   ];
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: hub.name, path: hub.path },
+    { name: `${labelWithDoc(spec.label, doc)} photo`, path: `/${maker}/` },
+  ];
+
   return (
     <div className="container max-w-4xl space-y-8 py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: hub.name, path: hub.path },
-            { name: `${labelWithDoc(spec.label, doc)} photo`, path: `/${maker}/` },
-          ]),
+          breadcrumbSchema(crumbs),
           softwareApplicationSchema({
             name: `${labelWithDoc(spec.label, doc, Doc)} Photo Maker`,
             description: `Prepare a ${labelWithDoc(spec.label, doc)} photo at the selected size and background in your browser, then confirm the current authority instructions.`,
@@ -208,17 +212,7 @@ export default async function MakerPage({
           faqSchema(faqItems),
         ]}
       />
-      <nav className="flex flex-wrap items-center gap-1.5 text-[13px] text-ink-soft">
-        <Link href="/" className="hover:text-foreground">
-          Home
-        </Link>
-        <span aria-hidden className="text-ink-faint">/</span>
-        <Link href={hub.path} className="hover:text-foreground">
-          {hub.name}
-        </Link>
-        <span aria-hidden className="text-ink-faint">/</span>
-        <span className="text-foreground">{spec.label}</span>
-      </nav>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">{Doc} photo bureau</span>

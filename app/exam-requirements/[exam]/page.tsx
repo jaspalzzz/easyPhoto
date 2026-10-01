@@ -17,7 +17,7 @@ import { portalFaqItems, portalRejectionReasons } from "@/lib/faqs";
 import { RESIZER_YEAR } from "@/lib/subExamResizers";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, faqSchema, webPageSchema, softwareApplicationSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqSchema, webPageSchema, softwareApplicationSchema, type Crumb } from "@/lib/schema";
 import { Faq } from "@/components/site/Faq";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { AUTHOR } from "@/lib/author";
@@ -26,6 +26,7 @@ import { AffiliateCta } from "@/components/site/AffiliateCta";
 import { SpecificationProvenance } from "@/components/site/SpecificationProvenance";
 import { buttonVariants } from "@/components/ui/button";
 import { examGuideLinks } from "@/lib/examGuides";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 // One static page per exam (the cited Spec Database).
 export function generateStaticParams() {
@@ -153,15 +154,17 @@ export default async function Page({
   const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(exam)];
   const guideLinks = examGuideLinks(exam);
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Exam Requirements", path: "/exam-requirements/" },
+    { name: spec.name, path },
+  ];
+
   return (
     <div className="container max-w-4xl space-y-8 py-10">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Exam Requirements", path: "/exam-requirements/" },
-            { name: spec.name, path },
-          ]),
+          breadcrumbSchema(crumbs),
           webPageSchema({
             name: `${spec.name} Photo${sig ? " & Signature" : ""} Size`,
             description: spec.description,
@@ -182,13 +185,7 @@ export default async function Page({
         ]}
       />
 
-      <nav className="flex flex-wrap items-center gap-1.5 text-[13px] text-ink-soft">
-        <Link href="/" className="hover:text-foreground">Home</Link>
-        <span aria-hidden className="text-ink-faint">/</span>
-        <Link href="/exam-requirements/" className="hover:text-foreground">Exam Requirements</Link>
-        <span aria-hidden className="text-ink-faint">/</span>
-        <span className="text-foreground">{spec.name}</span>
-      </nav>
+      <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">

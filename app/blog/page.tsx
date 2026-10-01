@@ -1,11 +1,10 @@
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
+import { breadcrumbSchema, collectionPageSchema, type Crumb } from "@/lib/schema";
 import { BLOG_POSTS, clusterOf } from "@/lib/blog";
 import { BlogExplorer } from "@/components/blog/BlogExplorer";
 import { passportPath } from "@/lib/makerPages";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "Blog — Passport, Visa & Photo Guides",
@@ -48,14 +47,16 @@ export default function BlogIndex() {
     readMins: featured.readMins,
   };
 
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Blog", path: "/blog/" },
+  ];
+
   return (
     <div className="container max-w-6xl py-10 sm:py-12">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Blog", path: "/blog/" },
-          ]),
+          breadcrumbSchema(crumbs),
           collectionPageSchema({
             name: "Blog — Passport, Visa & Photo Guides",
             description:
@@ -65,12 +66,7 @@ export default function BlogIndex() {
         ]}
       />
 
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} /> Home
-      </Link>
+      <Breadcrumbs crumbs={crumbs} />
 
       <BlogExplorer
         posts={posts}

@@ -6,9 +6,10 @@ import { ToolIcon } from "@/components/site/ToolIcon";
 import { ToolCard } from "@/components/site/ToolCard";
 import { TrustPills } from "@/components/site/TrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbSchema, collectionPageSchema } from "@/lib/schema";
+import { breadcrumbSchema, collectionPageSchema, type Crumb } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 import { ToolSearch } from "@/components/site/ToolSearch";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "Free Image, PDF & Signature Tools",
@@ -19,14 +20,16 @@ export const metadata = pageMetadata({
 });
 
 export default function ToolsHubPage() {
+  const crumbs: Crumb[] = [
+    { name: "Home", path: "/" },
+    { name: "Tools", path: "/tools/" },
+  ];
+
   return (
     <div className="container max-w-5xl py-12">
       <JsonLd
         schema={[
-          breadcrumbSchema([
-            { name: "Home", path: "/" },
-            { name: "Tools", path: "/tools/" },
-          ]),
+          breadcrumbSchema(crumbs),
           collectionPageSchema({
             name: "Free Image, PDF & Signature Tools",
             description:
@@ -35,6 +38,7 @@ export default function ToolsHubPage() {
           }),
         ]}
       />
+      <Breadcrumbs crumbs={crumbs} />
       <header className="space-y-4 text-center">
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
           Free, private tools
