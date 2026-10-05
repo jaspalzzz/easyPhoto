@@ -9,8 +9,10 @@ import { describe, expect, it } from "vitest";
 import {
   attachedInkBBox,
   countStackedSignatures,
+  getContentBBox,
   signatureStackParams,
   signatureTrimAttach,
+  signatureUploadTrim,
   type BBox,
 } from "@/lib/signature";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
@@ -113,6 +115,56 @@ describe("signature trim still ignores what isn't signature", () => {
 
   it("returns null when there's no ink", () => {
     expect(attachedInkBBox(mask(() => {}), minRun, keepAttached)).toBeNull();
+  });
+});
+
+/** The mask as a cleaned (transparent-background) canvas: ink opaque, paper clear. */
+function asCanvas(m: ReturnType<typeof mask>): HTMLCanvasElement {
+  const data = new Uint8ClampedArray(m.width * m.height * 4);
+  for (let p = 0; p < m.ink.length; p++) if (m.ink[p]) data[p * 4 + 3] = 255;
+  const ctx = { getImageData: () => ({ data, width: m.width, height: m.height }) };
+  return { width: m.width, height: m.height, getContext: () => ctx } as unknown as HTMLCanvasElement;
+}
+
+describe("sign-image upload trim (signatureUploadTrim)", () => {
+  const uploadBox = (m: ReturnType<typeof mask>) => getContentBBox(asCanvas(m), signatureUploadTrim(W, H));
+  /** What sign-image did before: every ink pixel counts. */
+  const anyPixelBox = (m: ReturnType<typeof mask>) => getContentBBox(asCanvas(m), { mode: "alpha" });
+
+  it("a dust speck or stray mark far from the signature doesn't stretch the crop", () => {
+    const m = mask((f) => {
+      signature(f);
+      f(40, 40, 3, 3); // scanner dust in the corner
+      f(1800, 100, 6, 6); // a stray pen mark, ink-sized but far away
+    });
+    expect(anyPixelBox(m)).toEqual({ x: 40, y: 40, width: 1806 - 40, height: 1005 - 40 }); // the old crop
+    expect(uploadBox(m)).toEqual(FULL);
+  });
+
+  it("keeps thin strokes, an i-dot and a separate initial close to the name", () => {
+    const m = mask((f) => {
+      signature(f);
+      f(1000, 786, 6, 6); // i-dot, 8 px above the ascender: the topmost ink
+      f(1420, 980, 14, 3); // a small separate initial 20 px past the name…
+      f(1430, 975, 3, 5); // …with a short tick: the rightmost ink
+    });
+    const all: BBox = { x: 450, y: 786, width: 1434 - 450, height: 1005 - 786 };
+    // Too sparse for the density floor alone, so only the attached-strokes rule keeps them.
+    const core = coreOnly(m)!;
+    expect(core.y).toBeGreaterThan(all.y);
+    expect(core.x + core.width).toBeLessThan(all.x + all.width);
+    expect(uploadBox(m)).toEqual(all);
+    expect(uploadBox(m)).toEqual(anyPixelBox(m)); // a clean signature crops exactly as before
+  });
+
+  it("crops a clean thin-pen signature exactly as before", () => {
+    const m = mask((f) => signature(f));
+    expect(uploadBox(m)).toEqual(FULL);
+    expect(anyPixelBox(m)).toEqual(FULL);
+  });
+
+  it("keeps sign-image's 8 px breathing room around the crop", () => {
+    expect(signatureUploadTrim(W, H)).toEqual({ mode: "alpha", padding: 8, ...signatureTrimAttach(W, H) });
   });
 });
 
