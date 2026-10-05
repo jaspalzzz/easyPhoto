@@ -8,7 +8,7 @@ import {
   ExternalLink,
   ShieldCheck,
 } from "lucide-react";
-import { calendarSorted } from "@/lib/examCalendar";
+import { calendarUpcoming } from "@/lib/examCalendar";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, faqSchema, type Crumb } from "@/lib/schema";
@@ -45,7 +45,8 @@ const FAQS: FaqItem[] = [
 ];
 
 export default function ExamCalendarPage() {
-  const entries = calendarSorted();
+  // Windows that have closed by the build date are left out (see calendarUpcoming).
+  const entries = calendarUpcoming();
 
   const crumbs: Crumb[] = [
     { name: "Home", path: "/" },
