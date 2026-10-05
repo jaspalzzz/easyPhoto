@@ -82,15 +82,6 @@ export default function Page() {
         copy. Where they diverge is the digital upload spec.
       </p>
 
-      <img
-        src="https://images.unsplash.com/photo-1603796846097-bee99e4a601f?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Two people reviewing and signing identity documents at a desk — PAN card application process"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
-
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
           <tr className="border-b border-hairline text-left">
@@ -138,15 +129,6 @@ export default function Page() {
         You sign on plain white A4 paper with a black pen, photograph or scan the
         signature, crop tightly, and resize to the portal&apos;s spec.
       </p>
-
-      <img
-        src="https://images.unsplash.com/photo-1521791055366-0d553872125f?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Hand signing on the signature line of an official document — PAN card signature requirement"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
 
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
@@ -278,15 +260,6 @@ export default function Page() {
       </p>
 
       <h2>Why do PAN card photos and signatures get rejected?</h2>
-
-      <img
-        src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Person signing on white paper with a pen — correct technique for PAN card signature upload"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
 
       <p>
         Portal validation is automated — a few bytes over the limit triggers an

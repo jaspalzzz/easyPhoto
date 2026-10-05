@@ -91,15 +91,6 @@ export default function Page() {
         wide (3000 ÷ 72 = 41.7). The pixels themselves are unchanged.
       </p>
 
-      <img
-        src="https://images.unsplash.com/photo-1612599316791-451087c7fe15?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Close-up of printed photo — DPI dots per inch determines print sharpness and size"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
-
       <p>
         Web browsers and most software portals do not read the DPI tag when displaying
         an image on screen. They render it pixel-for-pixel. This is why changing the DPI
@@ -192,15 +183,6 @@ export default function Page() {
         edits only the metadata, so the pixel data is untouched and the file size
         stays the same or decreases by a few bytes.
       </p>
-
-      <img
-        src="https://images.unsplash.com/photo-1526379879527-8559ecfcaec0?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Person uploading a document on a laptop — changing photo DPI for government portal upload"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
 
       <ol className="my-4 space-y-3 text-[15px]">
         <li>
