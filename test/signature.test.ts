@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { resolveSignatureInkRgb, signatureKbFloor, signatureStrokeOffsets } from "@/lib/signature";
 import { padBlobToMin, padJpegBytesToMin } from "@/lib/padBytes";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
+import { kbCapBytes, kbFloorBytes } from "@/lib/utils";
 
 describe("signature ink controls", () => {
   it("resolves the built-in ink colour presets", () => {
@@ -87,9 +88,9 @@ describe("signature KB floor", () => {
     const minimalJpeg = new Uint8Array([0xff, 0xd8, 0xff, 0xfe, 0x00, 0x04, 0x41, 0x42, 0xff, 0xd9]);
     const tooSmall = new Blob([padJpegBytesToMin(minimalJpeg, REGRESSION_OUTPUT_KB * 1024) as BlobPart], { type: "image/jpeg" });
 
-    const out = await padBlobToMin(tooSmall, floorKb * 1024);
+    const out = await padBlobToMin(tooSmall, kbFloorBytes(floorKb));
 
-    expect(out.size).toBeGreaterThanOrEqual(floorKb * 1024);
-    expect(out.size).toBeLessThanOrEqual(preset!.sigLimitKb! * 1024);
+    expect(out.size).toBeGreaterThanOrEqual(kbFloorBytes(floorKb));
+    expect(out.size).toBeLessThanOrEqual(kbCapBytes(preset!.sigLimitKb!));
   });
 });

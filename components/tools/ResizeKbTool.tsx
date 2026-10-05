@@ -17,7 +17,7 @@ import {
 import { compressToCap } from "@/lib/compress";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
 import { downloadBlob, shareFile } from "@/lib/download";
-import { formatKb } from "@/lib/utils";
+import { formatKb, kbCapBytes, kbFloorBytes, minCapKbForFloor } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
 import {
   examPhotoNextAction,
@@ -60,7 +60,10 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
   // Shared numeric-field behaviour: the field holds what you type (including an
   // empty string) and only clamps on blur, so a target whose first digit is
   // below the floor stays typeable. See components/tool/useNumericField.
-  const kbField = useNumericField(targetKb, setTargetKb, { min: minKb ?? 5 });
+  // Lowest target: above a portal floor far enough that the padded file still
+  // fits the cap when 1 KB is counted as 1000 bytes (IBPS 20 KB floor → 21).
+  const minTarget = minKb ? minCapKbForFloor(minKb) : 5;
+  const kbField = useNumericField(targetKb, setTargetKb, { min: minTarget });
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<{
@@ -104,7 +107,6 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
     // Clamp once here so a half-typed or below-minimum value (tapping the button
     // before the input blurs, common on mobile) still compresses to a sane
     // target, and reflect the clamped value back into the field.
-    const minTarget = minKb ?? 5;
     const effectiveKb =
       Number.isFinite(targetKb) && targetKb >= minTarget
         ? Math.floor(targetKb)
@@ -210,7 +212,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
     !minKb &&
     result.scale >= 0.999 &&
     result.quality >= 0.999 &&
-    result.bytes < result.target * 1024 * 0.95;
+    result.bytes < kbCapBytes(result.target) * 0.95;
 
   return (
     <div className="space-y-4">
@@ -290,7 +292,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
                   : `${formatKb(result.bytes)} (needs ≤ ${result.target} KB)`,
                 ok:
                   result.underCap &&
-                  (!minKb || result.bytes >= minKb * 1024),
+                  (!minKb || result.bytes >= kbFloorBytes(minKb)),
               },
               ...(requiredWidth && requiredHeight
                 ? [
@@ -443,7 +445,7 @@ export function ResizeKbTool({
   }, [toolName]);
   // Body mounts only after a file is loaded, by which point this has resolved,
   // so the URL preset seeds its target field.
-  const urlKb = useUrlKbTarget(targetFromUrl, minKb ?? 5, MAX_URL_TARGET_KB);
+  const urlKb = useUrlKbTarget(targetFromUrl, minKb ? minCapKbForFloor(minKb) : 5, MAX_URL_TARGET_KB);
 
   return (
     <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}>

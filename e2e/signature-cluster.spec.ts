@@ -182,7 +182,8 @@ test("signature-resize: output is genuinely bound to the KB target", async ({ pa
   ]);
   const b64 = await readDownloadBase64(dl);
   const bytes = Buffer.from(b64, "base64").length;
-  expect(bytes / 1024, `downloaded ${(bytes / 1024).toFixed(1)} KB`).toBeLessThanOrEqual(target + 0.5);
+  // Portals count 1 KB as 1000 or 1024 bytes; the cap must hold in both.
+  expect(bytes, `downloaded ${bytes} B`).toBeLessThanOrEqual(target * 1000);
 });
 
 // /upsc-signature-resizer/ is a retired route (host redirect to the UPSC exam
@@ -204,7 +205,7 @@ test("upsc exam page: signature exports a JPG inside the stored 20–100 KB band
   expect(bytes[0]).toBe(0xff);
   expect(bytes[1]).toBe(0xd8);
   expect(bytes.length).toBeGreaterThanOrEqual(20 * 1024);
-  expect(bytes.length).toBeLessThanOrEqual(100 * 1024);
+  expect(bytes.length).toBeLessThanOrEqual(100 * 1000);
 });
 
 // PAN's official spec mandates 200 DPI scans; the photo export already carried
