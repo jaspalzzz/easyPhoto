@@ -206,7 +206,7 @@
   }
   /* A navy shadow vanishes on the dark canvas; deepen it so the lift survives. */
   .dark .panel {
-    box-shadow: 0 1px 2px hsl(0 0% 0% / 0.3), 0 12px 32px -14px hsl(0 0% 0% / 0.65);
+    @apply shadow-tool-dark;
   }
 
   /* Level 3 — supporting surfaces (notes, related-tool links): no frame, just

@@ -207,7 +207,9 @@ export function SignImageTool() {
   };
 
   return (
-    <Card>
+    // The working surface: same level-1 lift as .panel on the other tool pages
+    // (Card's own radius/border utilities would override the .panel class).
+    <Card className="rounded-3xl border-hairline-strong shadow-tool dark:shadow-tool-dark">
       <CardContent className="space-y-5 p-6">
         {/* Upload Zone */}
         {!baseFile && !busy && (
