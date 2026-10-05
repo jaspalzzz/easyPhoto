@@ -79,7 +79,9 @@ export async function assertPdfDecryptable(file: File): Promise<void> {
  * document encrypted whenever it carries an /Encrypt dictionary — so any such
  * file, password or owner-only restrictions alike, is rejected with
  * PdfEncryptedError and the UI routes the user to Unlock PDF (which re-renders
- * it through pdfjs) instead of emitting a broken output.
+ * it through pdfjs) instead of emitting a broken output. Form Fill catches the
+ * owner-restricted case and fills through pdfjs instead, because Unlock PDF's
+ * re-render drops form fields (see lib/formFill.ts).
  */
 export async function loadPdfForEditing(
   file: File
