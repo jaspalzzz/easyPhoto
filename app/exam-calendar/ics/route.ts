@@ -1,4 +1,4 @@
-import { EXAM_CALENDAR } from "@/lib/examCalendar";
+import { calendarUpcoming } from "@/lib/examCalendar";
 import { SITE_URL } from "@/lib/site";
 
 // Static export: emit /exam-calendar/ics at build time. public/_headers gives
@@ -20,7 +20,8 @@ function icsDateNext(iso: string): string {
 export function GET() {
   // Only exact official dates become events — a month-level "tentative"
   // window would create a misleading reminder.
-  const events = EXAM_CALENDAR.filter((e) => e.status === "confirmed");
+  // Past windows are dropped too: a reminder for a closed window is noise.
+  const events = calendarUpcoming().filter((e) => e.status === "confirmed");
 
   const lines: string[] = [
     "BEGIN:VCALENDAR",

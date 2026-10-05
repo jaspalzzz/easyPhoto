@@ -26,6 +26,12 @@ export interface ExamCalendarEntry {
    * entries use the 1st of the month and are EXCLUDED from the .ics feed.
    */
   startISO: string;
+  /**
+   * Last day of the window (ISO). Once it has passed, the entry is no longer
+   * "upcoming": the page and the .ics feed drop it at build time instead of
+   * listing a past exam as coming up.
+   */
+  endISO: string;
   /** Exact-date entries get an all-day ICS event; month-level ones don't. */
   status: CalendarStatus;
   /** Our spec page for this exam (photo/signature sizes + resizer). */
@@ -41,6 +47,7 @@ export const EXAM_CALENDAR: ExamCalendarEntry[] = [
     event: "Tier 1 exam window (advertisement Apr 2026, closing May 2026 — both now past; exact exam date still unfixed)",
     window: "July – September 2026",
     startISO: "2026-07-01",
+    endISO: "2026-09-30",
     status: "tentative",
     specPath: "/exam-requirements/ssc/",
     source: {
@@ -55,6 +62,7 @@ export const EXAM_CALENDAR: ExamCalendarEntry[] = [
     event: "Prelims exam (registration opens with the notification, ~July)",
     window: "22 – 23 August 2026",
     startISO: "2026-08-22",
+    endISO: "2026-08-23",
     status: "confirmed",
     specPath: "/exam-requirements/ibps/",
     source: { url: "https://www.ibps.in", label: "IBPS calendar 2026-27 (ibps.in)" },
@@ -66,6 +74,7 @@ export const EXAM_CALENDAR: ExamCalendarEntry[] = [
     event: "Written exam (applications closed 11 June)",
     window: "13 September 2026",
     startISO: "2026-09-13",
+    endISO: "2026-09-13",
     status: "confirmed",
     specPath: "/exam-requirements/nda/",
     source: { url: "https://upsc.gov.in", label: "UPSC annual calendar (upsc.gov.in)" },
@@ -77,6 +86,7 @@ export const EXAM_CALENDAR: ExamCalendarEntry[] = [
     event: "Written exam (applications closed 9 June)",
     window: "13 September 2026",
     startISO: "2026-09-13",
+    endISO: "2026-09-13",
     status: "confirmed",
     specPath: "/exam-requirements/cds/",
     source: { url: "https://upsc.gov.in", label: "UPSC annual calendar (upsc.gov.in)" },
@@ -88,6 +98,7 @@ export const EXAM_CALENDAR: ExamCalendarEntry[] = [
     event: "Notification + application window",
     window: "September 2026 (exam January – March 2027)",
     startISO: "2026-09-01",
+    endISO: "2026-09-30",
     status: "tentative",
     specPath: "/exam-requirements/ssc/",
     source: {
@@ -102,6 +113,7 @@ export const EXAM_CALENDAR: ExamCalendarEntry[] = [
     event: "Prelims exam (registration opens with the notification)",
     window: "10 – 11 October 2026",
     startISO: "2026-10-10",
+    endISO: "2026-10-11",
     status: "confirmed",
     specPath: "/exam-requirements/ibps/",
     source: { url: "https://www.ibps.in", label: "IBPS calendar 2026-27 (ibps.in)" },
@@ -113,6 +125,7 @@ export const EXAM_CALENDAR: ExamCalendarEntry[] = [
     event: "Prelims exam",
     window: "21 – 22 November 2026",
     startISO: "2026-11-21",
+    endISO: "2026-11-22",
     status: "confirmed",
     specPath: "/exam-requirements/ibps/",
     source: { url: "https://www.ibps.in", label: "IBPS calendar 2026-27 (ibps.in)" },
@@ -124,6 +137,7 @@ export const EXAM_CALENDAR: ExamCalendarEntry[] = [
     event: "Prelims exam",
     window: "6, 12 – 13 December 2026",
     startISO: "2026-12-06",
+    endISO: "2026-12-13",
     status: "confirmed",
     specPath: "/exam-requirements/ibps/",
     source: { url: "https://www.ibps.in", label: "IBPS calendar 2026-27 (ibps.in)" },
@@ -134,4 +148,14 @@ export const EXAM_CALENDAR: ExamCalendarEntry[] = [
 /** Entries sorted by start date (the page renders upcoming-first). */
 export function calendarSorted(): ExamCalendarEntry[] {
   return [...EXAM_CALENDAR].sort((a, b) => a.startISO.localeCompare(b.startISO));
+}
+
+/**
+ * Entries whose window hasn't ended on `today`, sorted by start date. The
+ * page and the .ics feed are built statically, so "today" is the build date:
+ * every release drops windows that have closed since the last one.
+ */
+export function calendarUpcoming(today: Date = new Date()): ExamCalendarEntry[] {
+  const todayISO = today.toISOString().slice(0, 10);
+  return calendarSorted().filter((e) => e.endISO >= todayISO);
 }
