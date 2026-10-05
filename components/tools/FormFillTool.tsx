@@ -17,6 +17,7 @@ export function FormFillTool() {
   const [dragging, setDragging] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const fieldIdPrefix = React.useId();
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "form-fill" });
@@ -148,12 +149,13 @@ export function FormFillTool() {
           <div className="space-y-3">
             {fields.map((field, i) => (
               <div key={field.name + i} className="space-y-1">
-                <label className="block text-sm font-medium text-ink">
+                <label htmlFor={`${fieldIdPrefix}-${i}`} className="block text-sm font-medium text-ink">
                   {field.name}
                   <span className="ml-2 text-xs font-normal text-muted-foreground">({field.type})</span>
                 </label>
                 {field.options ? (
                   <select
+                    id={`${fieldIdPrefix}-${i}`}
                     className="rounded-lg border border-hairline bg-background px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
                     value={field.value}
                     onChange={(e) => updateField(i, e.target.value)}
@@ -167,6 +169,7 @@ export function FormFillTool() {
                   </select>
                 ) : field.type === "CheckBox" ? (
                   <select
+                    id={`${fieldIdPrefix}-${i}`}
                     className="rounded-lg border border-hairline bg-background px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
                     value={field.value}
                     onChange={(e) => updateField(i, e.target.value)}
@@ -177,6 +180,7 @@ export function FormFillTool() {
                   </select>
                 ) : (
                   <input
+                    id={`${fieldIdPrefix}-${i}`}
                     type="text"
                     value={field.value}
                     onChange={(e) => updateField(i, e.target.value)}
