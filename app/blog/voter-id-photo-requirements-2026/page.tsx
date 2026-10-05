@@ -94,15 +94,6 @@ export default function Page() {
         and follow the value displayed when you apply.
       </p>
 
-      <img
-        src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Election Commission ballot box and voter registration process in India"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
-
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
           <tr className="border-b border-hairline text-left">
@@ -149,15 +140,6 @@ export default function Page() {
       </p>
 
       <h2>Why do voter ID photos get rejected?</h2>
-
-      <img
-        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Person reviewing documents on a laptop for voter registration application"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
 
       <p>
         The public Form 6 guidance supports checking the physical crop and visible photo

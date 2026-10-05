@@ -86,15 +86,6 @@ export default function Page() {
         the photo is too low resolution to be useful.
       </p>
 
-      <img
-        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Person filling out an online form on a laptop — government portal photo upload file size limit"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
-
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
           <tr className="border-b border-hairline text-left">
@@ -205,15 +196,6 @@ export default function Page() {
           count before checking file size.
         </li>
       </ol>
-
-      <img
-        src="https://images.unsplash.com/photo-1555421689-3f034debb7a6?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Mobile phone showing a government exam registration form — photo upload and compression"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
 
       <h2>Common reasons a compressed photo still gets rejected</h2>
 
