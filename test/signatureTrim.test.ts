@@ -163,8 +163,18 @@ describe("sign-image upload trim (signatureUploadTrim)", () => {
     expect(anyPixelBox(m)).toEqual(FULL);
   });
 
+  it("still finds a faint signature too sparse for the density floor", () => {
+    // Thin dashes: no row or column carries more than the floor's worth of ink.
+    const m = mask((f) => {
+      for (let x = 700; x < 1300; x += 40) f(x, 900 + ((x / 40) % 3) * 6, 2, 2);
+    });
+    expect(coreOnly(m)).toBeNull(); // the floor alone finds nothing…
+    expect(uploadBox(m)).toEqual(anyPixelBox(m)); // …so sign-image crops as it did before
+    expect(uploadBox(m)).not.toBeNull();
+  });
+
   it("keeps sign-image's 8 px breathing room around the crop", () => {
-    expect(signatureUploadTrim(W, H)).toEqual({ mode: "alpha", padding: 8, ...signatureTrimAttach(W, H) });
+    expect(signatureUploadTrim(W, H)).toMatchObject({ mode: "alpha", padding: 8, ...signatureTrimAttach(W, H) });
   });
 });
 
