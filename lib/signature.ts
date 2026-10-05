@@ -214,6 +214,17 @@ export function signatureTrimAttach(width: number, height: number): { minRun: nu
 }
 
 /**
+ * Trim settings for a signature uploaded to sign-image (the full-resolution
+ * photo or scan, after whiteToTransparent). Same attached-strokes rule as the
+ * signature tools: a lone dust speck or stray mark away from the signature no
+ * longer stretches the crop, while thin strokes, i-dots and pen lifts next to
+ * it are kept. Without keepAttached the floor would cut thin strokes off.
+ */
+export function signatureUploadTrim(width: number, height: number) {
+  return { mode: "alpha" as const, padding: 8, ...signatureTrimAttach(width, height) };
+}
+
+/**
  * How many signatures are stacked one below another in a cleaned signature
  * image: runs of ink rows separated by at least `minGap` rows without ink.
  * A row counts as ink only above `minInk` pixels, so specks don't add bands,
