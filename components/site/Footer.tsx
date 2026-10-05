@@ -91,7 +91,7 @@ const TRUST_SIGNALS = [
   { Icon: BadgeCheck,  label: "Checked for measurable requirements", sub: "Against published requirements" },
 ] as const;
 
-const linkCls = "text-sm text-white/70 transition-colors hover:text-[hsl(var(--cta))]";
+const linkCls = "text-sm text-white/80 transition-colors hover:text-[hsl(var(--cta))] sm:leading-normal";
 
 /**
  * Rich navy footer = a crawlable internal-link sitemap (every country + tool),
@@ -130,11 +130,11 @@ export function Footer() {
       </div>
 
       {/* ── Link bands (sitemap) ──────────────────────────────────────── */}
-      <div className="container space-y-9 py-12">
+      <div className="container space-y-9 py-12 sm:space-y-12 sm:py-14">
         {LINK_GROUPS.map((group) => (
           <section key={group.label}>
             {/* Accent-bar header (matches header mega-menu columns) */}
-            <div className="mb-4 flex items-center gap-2.5">
+            <div className="mb-3.5 flex items-center gap-2.5 border-b border-white/[0.08] pb-3 sm:mb-[18px]">
               <span className={cn("h-4 w-[3px] shrink-0 rounded-full", group.barCls)} />
               <group.Icon className={cn("h-4 w-4 shrink-0", group.iconCls)} strokeWidth={1.75} />
               <h3 className="eyebrow text-white">{group.label}</h3>
@@ -149,7 +149,7 @@ export function Footer() {
             </div>
 
             {/* Links flow across the width instead of stacking */}
-            <ul className="grid grid-cols-2 gap-x-6 gap-y-2.5 sm:grid-cols-3 lg:grid-cols-4">
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-2.5 sm:grid-cols-3 sm:gap-x-8 sm:gap-y-3.5 lg:grid-cols-4">
               {group.links.map((l) => (
                 <li key={l.href + l.label}>
                   <Link href={l.href} className={linkCls}>

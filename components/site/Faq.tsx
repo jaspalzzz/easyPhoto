@@ -50,12 +50,12 @@ export function Faq({
       </div>
       <div className="divide-y divide-hairline">
         {items.map((item) => (
-          <details key={item.q} className="group py-4 [&_summary]:list-none">
-            <summary className="flex cursor-pointer items-center justify-between gap-4 text-[15px] font-medium leading-snug">
+          <details key={item.q} className="group [&_summary]:list-none">
+            <summary className="flex cursor-pointer items-center justify-between gap-4 px-1 py-[18px] text-[15px] font-semibold leading-snug transition-colors hover:text-brand group-open:text-brand">
               {item.q}
-              <ChevronDown className="h-4 w-4 shrink-0 text-ink-faint transition-transform group-open:rotate-180" />
+              <ChevronDown className="h-7 w-7 shrink-0 rounded-full bg-muted p-1.5 text-ink-soft transition-transform group-open:rotate-180 group-open:bg-brand/[0.12] group-open:text-brand" />
             </summary>
-            <p className="mt-2.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            <p className="max-w-2xl pb-5 pl-1 pr-11 text-sm leading-[1.7] text-muted-foreground">
               {item.a}
             </p>
           </details>
