@@ -245,9 +245,11 @@ export const useToolStore = create<ToolState>((set, get) => ({
       //                          headroom). Far cleaner HAIR/fine-edge matting
       //                          than isnet, which leaves opaque background
       //                          islands in wispy/curly/grey hair. isnet (@imgly)
-      //                          stays as the final reliability fallback (it is on
-      //                          a different model CDN, so a single-CDN outage of
-      //                          one engine is still recoverable).
+      //                          stays as the final reliability fallback: a
+      //                          different model + runtime, so an RMBG runtime/GPU
+      //                          failure is still recoverable. (Same model host,
+      //                          models.easyphoto.in — a host outage or stall is
+      //                          covered by the RMBG fetch mirror, not by isnet.)
       //   • Android, f16 GPU   → RMBG-1.4 webgpu/fp16. Fast + premium.   [Redmi]
       //   • Android, no f16    → RMBG-1.4 wasm/q8 @ 1024px. q8 keeps FULL
       //                          resolution but is ~4× lighter+faster than fp32,
@@ -315,9 +317,12 @@ export const useToolStore = create<ToolState>((set, get) => ({
           // the passport maker, our USP tool). Try the best engine for the GPU,
           // then fall back at runtime: webgpu/fp16 → wasm/fp32 (desktop RAM has
           // headroom for full precision) → isnet (@imgly). isnet remains the
-          // final safety net because its model is on a DIFFERENT CDN, so a
-          // single-CDN stall of either engine is still recoverable. This does NOT
-          // touch the mobile branch above (the iOS/Android engine matrix).
+          // final safety net because it is a different model + runtime, so an
+          // RMBG runtime/GPU failure is still recoverable. Its weights are on the
+          // SAME host (models.easyphoto.in/seg/imgly/), so it does not cover a
+          // host outage — the RMBG fetch wrapper's mirror does (createSegFetch in
+          // lib/segmentation.ts). This does NOT touch the mobile branch above
+          // (the iOS/Android engine matrix).
           // inputSize is the inference resolution: the model emits an
           // inputSize² matte that is then upscaled to the source photo. At
           // 1024px any larger photo gets a bilinearly-stretched (soft) matte —
@@ -353,7 +358,8 @@ export const useToolStore = create<ToolState>((set, get) => ({
             }
           }
           if (!cutout) {
-            // Both RMBG engines failed — fall back to isnet (different CDN).
+            // Every RMBG engine failed — fall back to isnet (different model +
+            // runtime; same model host).
             console.warn(
               "Desktop RMBG-1.4 segmentation failed; falling back to isnet.",
               lastErr
