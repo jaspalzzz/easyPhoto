@@ -1206,6 +1206,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigWidthPx: 256,
     sigHeightPx: 64,
     sigAspectRatio: 256 / 64,
+    // "The image file should be JPG format" — both files (Sarathi PhotoSign.pdf, re-checked 2026-10-06).
+    photoFormat: "JPG",
+    sigFormat: "JPG",
     signatureInk: "Black pen on white paper",
     description:
       "Driving licence / learner's licence application on the Sarathi Parivahan portal (sarathi.parivahan.gov.in). Photo 35×45 mm (420×525 px), 10-20 KB; signature 256×64 px, 10-20 KB, black pen on white paper. This is a single national spec document, not a state-specific one.",
@@ -1214,7 +1217,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       label: "Sarathi Parivahan — Photo and Signature Scan & Upload Process",
     },
     verification: "official",
-    verifiedOn: "2026-07-01",
+    verifiedOn: "2026-10-06",
     context:
       "Driving licence and learner's licence applications nationwide go through the single Sarathi Parivahan portal (sarathi.parivahan.gov.in) — this is one national spec document, not a state-by-state one, even though the RTO issuing the licence is run by the state.",
   },
