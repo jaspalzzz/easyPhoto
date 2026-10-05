@@ -16,6 +16,25 @@ const Card = React.forwardRef<
 ));
 Card.displayName = "Card";
 
+/**
+ * The working surface of a tool — level 1 of the card hierarchy: a firmer
+ * edge, a soft lift and 14px corners, so the tool reads before content cards
+ * and supporting notes. Same treatment as the `.panel` class; tools built on
+ * Card need it as utilities because Card's own radius/border would override
+ * that class.
+ */
+const ToolCard = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <Card
+    ref={ref}
+    className={cn("rounded-3xl border-hairline-strong shadow-tool dark:shadow-tool-dark", className)}
+    {...props}
+  />
+));
+ToolCard.displayName = "ToolCard";
+
 const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -74,6 +93,7 @@ CardFooter.displayName = "CardFooter";
 
 export {
   Card,
+  ToolCard,
   CardHeader,
   CardTitle,
   CardDescription,

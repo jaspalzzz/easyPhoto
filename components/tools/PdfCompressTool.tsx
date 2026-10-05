@@ -6,7 +6,7 @@ import { ProcessingState } from "@/components/site/ProcessingState";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { consumeWorkflowPayload, WORKFLOW_PDF_KINDS } from "@/lib/workflowHandoff";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { compressPdfToTarget, type PdfCompressResult } from "@/lib/pdfCompress";
 import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
@@ -122,7 +122,7 @@ export function PdfCompressTool({
   };
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         {!file && !busy && !checking && (
           <div
@@ -322,6 +322,6 @@ export function PdfCompressTool({
 
         {busy && <ProcessingState label={progress ?? "Compressing…"} />}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

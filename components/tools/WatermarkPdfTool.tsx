@@ -4,7 +4,7 @@ import * as React from "react";
 import { Download, FileUp, ShieldCheck } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
@@ -82,7 +82,7 @@ export function WatermarkPdfTool() {
   };
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         {!file && !busy && !checking && (
           <div
@@ -228,6 +228,6 @@ export function WatermarkPdfTool() {
           </div>
         )}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

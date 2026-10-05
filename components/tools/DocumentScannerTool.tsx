@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Camera, FileText, Loader2, Plus, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { CornerAdjuster } from "@/components/tools/CornerAdjuster";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { pdfNextSteps } from "@/components/site/pdfNextSteps";
@@ -244,7 +244,7 @@ export function DocumentScannerTool() {
   };
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div
@@ -447,6 +447,6 @@ export function DocumentScannerTool() {
           />
         )}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }
