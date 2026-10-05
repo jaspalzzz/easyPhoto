@@ -65,7 +65,7 @@ export default function ExamCalendarPage() {
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">Official calendars, sourced &amp; dated</span>
-        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
+        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
           Upcoming Exam Dates &amp; Application Windows
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
@@ -114,7 +114,7 @@ export default function ExamCalendarPage() {
                     </span>
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">{e.event}</p>
-                  <p className="mt-2 inline-flex items-center gap-1.5 font-mono text-[13px] font-medium text-ink">
+                  <p className="mt-2 inline-flex items-center gap-1.5 font-mono text-[14px] font-medium text-ink">
                     <CalendarDays className="h-3.5 w-3.5 text-brand" strokeWidth={1.75} />
                     {e.window}
                   </p>

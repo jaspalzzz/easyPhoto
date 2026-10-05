@@ -140,7 +140,7 @@ function Body({ source }: { source: ToolSource }) {
           className="h-7 w-9 cursor-pointer rounded-md border border-hairline-strong bg-transparent"
           aria-label="Custom colour"
         />
-        <code className="font-mono text-[13px] text-ink-soft">{hex.toUpperCase()}</code>
+        <code className="font-mono text-[14px] text-ink-soft">{hex.toUpperCase()}</code>
       </div>
 
       <div className="flex gap-2">

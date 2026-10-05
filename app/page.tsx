@@ -79,7 +79,7 @@ export default function HomePage() {
               <span className="eyebrow">
                 Passport · Visa · ID Card · Exam — prepared to selected dimensions
               </span>
-              <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
+              <h1 className="mt-4 text-balance text-[36px] font-semibold leading-[1.04] tracking-tightest sm:text-[48px]">
                 Document photos{" "}
                 <span className="mark-gold"><span>prepared to spec</span></span>
               </h1>
@@ -139,13 +139,13 @@ export default function HomePage() {
       {/* ── POPULAR SEARCHES ──────────────────────────────────────────── */}
       <section className="border-t border-hairline bg-paper">
         <div className="container py-10">
-          <p className="mb-4 text-[13.5px] font-bold text-ink">Popular Searches</p>
+          <p className="mb-4 text-[14px] font-bold text-ink">Popular Searches</p>
           <div className="flex flex-wrap gap-2">
             {POPULAR_SEARCHES.map((s) => (
               <Link
                 key={s.href + s.label}
                 href={s.href}
-                className="rounded-full border border-hairline bg-card px-3 py-1.5 text-[12.5px] font-medium text-ink transition-colors hover:bg-accent"
+                className="rounded-full border border-hairline bg-card px-3 py-1.5 text-[12px] font-medium text-ink transition-colors hover:bg-accent"
               >
                 {s.label}
               </Link>

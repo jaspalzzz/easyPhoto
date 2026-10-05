@@ -85,7 +85,7 @@ export function ToolPage({
           {category && (
             <span className="eyebrow block text-[#7a5c06]">{category.group}</span>
           )}
-          <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
+          <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[30px]">
             {title}
           </h1>
           <p className="text-[15px] leading-relaxed text-muted-foreground">{blurb}</p>
@@ -102,7 +102,7 @@ export function ToolPage({
           </p>
           {dateModified && (
             <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-[10px] font-bold text-brand">JK</span>
+              <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-[12px] font-bold text-brand">JK</span>
               <span>Jaspal Kumar · easyPhoto developer &amp; document-spec researcher</span>
             </p>
           )}

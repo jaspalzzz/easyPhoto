@@ -105,7 +105,7 @@ export default function BabyPassportPhotoPage() {
       <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
-        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
+        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
           Baby &amp; Infant Passport Photo Maker
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
@@ -166,7 +166,7 @@ export default function BabyPassportPhotoPage() {
             <Link
               key={c.href}
               href={c.href}
-              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
+              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
             >
               {c.label}
             </Link>
@@ -188,14 +188,14 @@ export default function BabyPassportPhotoPage() {
             <Link
               key={kb}
               href={kbPath(kb)}
-              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
+              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
             >
               Resize to {kb} KB
             </Link>
           ))}
           <Link
             href="/tools/resize-kb/"
-            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
+            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
           >
             Custom size
           </Link>

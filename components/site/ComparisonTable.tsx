@@ -110,7 +110,7 @@ function StudioValue({ v }: { v: RowSide }) {
   }
   return (
     <div className="text-right">
-      <p className="text-[13px] font-bold leading-tight text-red-700 dark:text-red-300">{v.primary}</p>
+      <p className="text-[14px] font-bold leading-tight text-red-700 dark:text-red-300">{v.primary}</p>
       {v.secondary && (
         <p className="mt-0.5 text-xs leading-tight text-red-400 dark:text-red-300">{v.secondary}</p>
       )}
@@ -132,7 +132,7 @@ function EasyValue({ v }: { v: RowSide }) {
     "text-ink";
   return (
     <div className="text-right">
-      <p className={`text-[13px] font-bold leading-tight ${cls}`}>{v.primary}</p>
+      <p className={`text-[14px] font-bold leading-tight ${cls}`}>{v.primary}</p>
       {v.secondary && (
         <p className="mt-0.5 text-xs leading-tight text-muted-foreground">{v.secondary}</p>
       )}
@@ -152,12 +152,12 @@ export function ComparisonTable() {
           <p className="mb-3 text-xs font-bold uppercase tracking-widest text-cta">
             ✦ Comparison ✦
           </p>
-          <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
+          <h2 className="text-[30px] font-bold tracking-tight text-ink sm:text-[36px]">
             easyPhoto{" "}
             <span className="font-medium text-muted-foreground">vs</span>{" "}
             Photo Studio
           </h2>
-          <p className="mt-3 text-[14.5px] text-muted-foreground">
+          <p className="mt-3 text-[15px] text-muted-foreground">
             See how easyPhoto compares with a studio visit for creating
             document photos checked for measurable requirements — without leaving home.
           </p>
@@ -174,7 +174,7 @@ export function ComparisonTable() {
                 <Building2 className="h-6 w-6 text-white" strokeWidth={1.75} />
               </span>
               <div>
-                <h3 className="text-[17px] font-bold text-ink">Photo Studio</h3>
+                <h3 className="text-[18px] font-bold text-ink">Photo Studio</h3>
                 <span className="mt-0.5 inline-block rounded-full bg-red-100 dark:bg-red-900/30 px-2.5 py-0.5 text-xs font-bold text-red-700 dark:text-red-300">
                   Traditional Way
                 </span>
@@ -189,7 +189,7 @@ export function ComparisonTable() {
                     <Icon className="h-[17px] w-[17px] text-rose-400 dark:text-rose-300" strokeWidth={1.75} />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[12.5px] font-semibold leading-tight text-ink">{label}</p>
+                    <p className="text-[12px] font-semibold leading-tight text-ink">{label}</p>
                     <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{studio.sub}</p>
                   </div>
                   <div className="shrink-0">
@@ -229,7 +229,7 @@ export function ComparisonTable() {
           <div className="flex items-center gap-3 sm:hidden">
             <div className="flex-1 border-t-2 border-dashed border-slate-200 dark:border-slate-700" aria-hidden="true" />
             <div
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[13px] font-black text-white shadow-md"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[14px] font-black text-white shadow-md"
               style={NAVY}
               aria-label="versus"
             >
@@ -249,7 +249,7 @@ export function ComparisonTable() {
                 <Scan className="h-6 w-6 text-cta" strokeWidth={1.75} />
               </span>
               <div>
-                <h3 className="text-[17px] font-bold text-ink">easyPhoto</h3>
+                <h3 className="text-[18px] font-bold text-ink">easyPhoto</h3>
                 <span className="mt-0.5 inline-block rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
                   Smarter Way
                 </span>
@@ -264,7 +264,7 @@ export function ComparisonTable() {
                     <Icon className="h-[17px] w-[17px] text-emerald-400 dark:text-emerald-300" strokeWidth={1.75} />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[12.5px] font-semibold leading-tight text-ink">{label}</p>
+                    <p className="text-[12px] font-semibold leading-tight text-ink">{label}</p>
                     <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{easy.sub}</p>
                   </div>
                   <div className="shrink-0">
@@ -289,7 +289,7 @@ export function ComparisonTable() {
                 </span>
                 <div>
                   <p className="text-[12px] font-bold text-ink">{label}</p>
-                  <p className="mt-0.5 text-[10.5px] leading-snug text-muted-foreground">{desc}</p>
+                  <p className="mt-0.5 text-[12px] leading-snug text-muted-foreground">{desc}</p>
                 </div>
               </div>
             ))}
@@ -299,7 +299,7 @@ export function ComparisonTable() {
           <div className="flex shrink-0 flex-col items-center gap-1.5">
             <Link
               href="/passport-photo/"
-              className="inline-flex items-center gap-2 rounded-xl border-2 border-cta px-5 py-3 text-[13.5px] font-bold text-cta transition-colors hover:bg-amber-50 dark:hover:bg-amber-900/20"
+              className="inline-flex items-center gap-2 rounded-xl border-2 border-cta px-5 py-3 text-[14px] font-bold text-cta transition-colors hover:bg-amber-50 dark:hover:bg-amber-900/20"
             >
               <Gift className="h-4 w-4" />
               Try easyPhoto for Free

@@ -82,11 +82,11 @@ export function WhyRejected() {
           <p className="mb-3 text-xs font-bold uppercase tracking-widest text-muted-foreground">
             Common Mistakes
           </p>
-          <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
+          <h2 className="text-[30px] font-bold tracking-tight text-ink sm:text-[36px]">
             Why photos get{" "}
             <span className="text-cta-text">rejected</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-[14.5px] leading-relaxed text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
             These measurable photo problems can conflict with listed requirements.
             easyPhoto flags measurable issues and can adjust size, background and framing.
           </p>
@@ -103,7 +103,7 @@ export function WhyRejected() {
           <div className="flex h-full flex-col rounded-2xl border border-hairline bg-card p-5">
             <div className="mb-4 flex items-center gap-2">
               <AlertTriangle className="h-[15px] w-[15px] text-red-700 dark:text-red-400" strokeWidth={2} />
-              <h3 className="text-[13px] font-bold text-red-700 dark:text-red-400">Common reasons for rejection</h3>
+              <h3 className="text-[14px] font-bold text-red-700 dark:text-red-400">Common reasons for rejection</h3>
             </div>
             <div className="flex flex-1 flex-col divide-y divide-hairline">
               {REASONS.map(({ Icon, label, detail }) => (
@@ -112,8 +112,8 @@ export function WhyRejected() {
                     <Icon className="h-[18px] w-[18px] text-red-700 dark:text-red-400" strokeWidth={1.75} />
                   </span>
                   <div>
-                    <p className="text-[13px] font-semibold text-ink">{label}</p>
-                    <p className="mt-0.5 hidden text-[11.5px] leading-snug text-muted-foreground sm:block">{detail}</p>
+                    <p className="text-[14px] font-semibold text-ink">{label}</p>
+                    <p className="mt-0.5 hidden text-[12px] leading-snug text-muted-foreground sm:block">{detail}</p>
                   </div>
                 </div>
               ))}
@@ -129,7 +129,7 @@ export function WhyRejected() {
           <div className="flex h-full flex-col rounded-2xl border border-hairline bg-card p-5">
             <div className="mb-4 flex items-center gap-2">
               <Sparkles className="h-[15px] w-[15px] text-cta-text" strokeWidth={2} />
-              <h3 className="text-[13px] font-bold text-brand">Automated photo checks</h3>
+              <h3 className="text-[14px] font-bold text-brand">Automated photo checks</h3>
             </div>
 
             {/* Automated-check chip — dark navy + gold */}
@@ -141,7 +141,7 @@ export function WhyRejected() {
                 className="relative z-10 flex h-[90px] w-[90px] flex-col items-center justify-center gap-1.5 rounded-[20px] shadow-xl"
                 style={NAVY}
               >
-                <span className="text-[1.7rem] font-black leading-none tracking-tight text-cta">✓</span>
+                <span className="text-[30px] font-black leading-none tracking-tight text-cta">✓</span>
                 <div className="flex gap-1">
                   {[0, 1, 2].map((i) => (
                     <span key={i} className="h-1 w-1 rounded-full bg-white/30" />
@@ -155,8 +155,8 @@ export function WhyRejected() {
               {AUTOMATED_CHECKS.map((check) => (
                 <div key={check} className="flex items-center gap-2.5 py-1">
                   <CheckCircle2 className="h-4 w-4 shrink-0 text-cta-text" strokeWidth={2} />
-                  <span className="flex-1 text-[12.5px] text-ink">{check}</span>
-                  <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[10.5px] font-bold text-brand">
+                  <span className="flex-1 text-[12px] text-ink">{check}</span>
+                  <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[12px] font-bold text-brand">
                     Pass
                   </span>
                 </div>
@@ -176,7 +176,7 @@ export function WhyRejected() {
             <div className="rounded-2xl border border-hairline bg-card p-4">
               <div className="mb-3 flex items-center gap-1.5">
                 <CheckCircle2 className="h-[15px] w-[15px] text-cta-text" strokeWidth={2} />
-                <h3 className="text-[13px] font-semibold text-brand">
+                <h3 className="text-[14px] font-semibold text-brand">
                   Checked for measurable requirements
                   <span className="ml-1 font-medium text-muted-foreground">(No detectable issues)</span>
                 </h3>
@@ -205,8 +205,8 @@ export function WhyRejected() {
                   <ShieldCheck className="h-7 w-7 text-cta" strokeWidth={1.75} />
                 </div>
                 <div>
-                  <p className="text-[2.2rem] font-black leading-none tracking-tight text-ink">6/6</p>
-                  <p className="text-[12.5px] font-bold text-ink">Checks Passed</p>
+                  <p className="text-[36px] font-black leading-none tracking-tight text-ink">6/6</p>
+                  <p className="text-[12px] font-bold text-ink">Checks Passed</p>
                   <p className="text-xs text-muted-foreground">No detectable issues found</p>
                 </div>
               </div>
@@ -215,9 +215,9 @@ export function WhyRejected() {
                   <div key={attr} className="flex items-center justify-between gap-1">
                     <div className="flex items-center gap-1">
                       <span className="text-xs font-black text-cta-text">✓</span>
-                      <span className="text-[11.5px] text-muted-foreground">{attr}</span>
+                      <span className="text-[12px] text-muted-foreground">{attr}</span>
                     </div>
-                    <span className="text-[11.5px] font-bold text-brand">{val}</span>
+                    <span className="text-[12px] font-bold text-brand">{val}</span>
                   </div>
                 ))}
               </div>
@@ -233,7 +233,7 @@ export function WhyRejected() {
               <div key={title} className="flex items-start gap-2.5">
                 <Icon className="h-5 w-5 shrink-0 text-cta-text" strokeWidth={1.75} />
                 <div>
-                  <p className="text-[12.5px] font-bold text-ink">{title}</p>
+                  <p className="text-[12px] font-bold text-ink">{title}</p>
                   <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{sub}</p>
                 </div>
               </div>
@@ -242,7 +242,7 @@ export function WhyRejected() {
           <div className="flex shrink-0 flex-col items-center gap-1.5">
             <Link
               href="/passport-photo/"
-              className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[14.5px] font-bold transition-opacity hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold transition-opacity hover:opacity-90"
               style={{ background: "hsl(var(--cta))", color: "hsl(222 60% 8%)" }}
             >
               Try it free <ArrowRight className="h-4 w-4" />

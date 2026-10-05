@@ -92,7 +92,7 @@ export function StatsBand() {
 
   return (
     <div className="pt-8 sm:pt-10">
-      <p className="mb-5 text-[10.5px] font-bold uppercase tracking-widest text-muted-foreground">
+      <p className="mb-5 text-[12px] font-bold uppercase tracking-widest text-muted-foreground">
         Built on documented, published specifications — not opinions
       </p>
       <div
@@ -110,10 +110,10 @@ export function StatsBand() {
               <Icon className="h-4.5 w-4.5 text-cta" strokeWidth={1.75} />
             </span>
             <div role="group" aria-label={`${displayValues[i]} ${label}. ${sub}`}>
-              <span aria-hidden="true" className="block text-[1.45rem] font-black leading-none tracking-tight text-ink">
+              <span aria-hidden="true" className="block text-[24px] font-black leading-none tracking-tight text-ink">
                 {displayValues[i]}
               </span>
-              <span aria-hidden="true" className="mt-0.5 block text-[11.5px] font-bold leading-tight text-ink">{label}</span>
+              <span aria-hidden="true" className="mt-0.5 block text-[12px] font-bold leading-tight text-ink">{label}</span>
               <span aria-hidden="true" className="block text-xs leading-snug text-muted-foreground">{sub}</span>
             </div>
           </div>

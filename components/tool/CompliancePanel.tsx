@@ -49,7 +49,7 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
       <ul className="space-y-2 text-sm">
         <CheckItem ok={headInBand}>
           Head height{" "}
-          <span className="font-mono text-[13px]">
+          <span className="font-mono text-[14px]">
             {achieved.headPercentOfFrame}%
           </span>{" "}
           of frame
@@ -76,7 +76,7 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
           />
           <span>
             Background{" "}
-            <span className="font-mono text-[13px] uppercase">
+            <span className="font-mono text-[14px] uppercase">
               {spec.background.hex}
             </span>
             <span className="text-muted-foreground">

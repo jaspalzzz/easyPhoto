@@ -51,10 +51,10 @@ export default function ContactPage() {
       <article className="mt-5 space-y-8">
         <header className="space-y-3 border-b border-hairline pb-7">
           <span className="eyebrow text-brand">Contact</span>
-          <h1 className="text-[2rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2.4rem]">
+          <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
             We read every message
           </h1>
-          <p className="max-w-xl text-[17px] leading-relaxed text-muted-foreground">
+          <p className="max-w-xl text-[18px] leading-relaxed text-muted-foreground">
             A question, a bug report, or a photo specification that needs
             updating? We&apos;d like to hear from you.
           </p>

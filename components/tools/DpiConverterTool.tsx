@@ -220,7 +220,7 @@ export function DpiConverterTool() {
                 <input
                   type="text"
                   {...dpiField}
-                  className="h-7 w-20 rounded border border-hairline bg-background px-2 font-mono text-[13px]"
+                  className="h-7 w-20 rounded border border-hairline bg-background px-2 font-mono text-[14px]"
                 />
               </label>
             </div>

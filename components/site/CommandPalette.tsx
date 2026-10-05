@@ -181,7 +181,7 @@ export function CommandPalette() {
                   ].join(" ")}
                 >
                   <span className="min-w-0">
-                    <span className="block truncate text-[13.5px] font-semibold leading-snug">
+                    <span className="block truncate text-[14px] font-semibold leading-snug">
                       {item.title}
                     </span>
                     <span className="mt-0.5 block text-xs text-muted-foreground">
@@ -201,11 +201,11 @@ export function CommandPalette() {
             ))}
           </ul>
         ) : query.trim() ? (
-          <p className="px-4 py-8 text-center text-[13.5px] text-muted-foreground">
+          <p className="px-4 py-8 text-center text-[14px] text-muted-foreground">
             No tools found for <strong className="text-ink">&quot;{query}&quot;</strong>
           </p>
         ) : (
-          <p className="px-4 py-8 text-center text-[13.5px] text-muted-foreground">
+          <p className="px-4 py-8 text-center text-[14px] text-muted-foreground">
             Try <span className="text-ink">&quot;passport&quot;</span>,{" "}
             <span className="text-ink">&quot;SSC&quot;</span>,{" "}
             <span className="text-ink">&quot;20kb&quot;</span>…

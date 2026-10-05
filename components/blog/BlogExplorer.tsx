@@ -100,7 +100,7 @@ export function BlogExplorer({
       <section className="mt-5 grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
         <div className="flex flex-col">
           <span className="eyebrow text-brand">The easyPhoto blog</span>
-          <h1 className="mt-2.5 text-3xl font-semibold tracking-tight text-ink sm:text-[2.6rem] sm:leading-[1.08]">
+          <h1 className="mt-2.5 text-3xl font-semibold tracking-tight text-ink sm:text-[36px] sm:leading-[1.08]">
             Get it right the <span className="mark-gold text-ink">first time</span>
           </h1>
           <p className="mt-3.5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
@@ -133,7 +133,7 @@ export function BlogExplorer({
             <button
               type="button"
               onClick={scrollToResults}
-              className="h-11 shrink-0 bg-brand px-5 text-[13px] font-bold text-white transition-colors hover:bg-[hsl(212_64%_20%)]"
+              className="h-11 shrink-0 bg-brand px-5 text-[14px] font-bold text-white transition-colors hover:bg-[hsl(212_64%_20%)]"
             >
               Search
             </button>
@@ -147,7 +147,7 @@ export function BlogExplorer({
                 key={t}
                 type="button"
                 onClick={() => { setQ(t); scrollToResults(); }}
-                className="rounded-full border border-hairline bg-card px-2.5 py-1 text-[11.5px] font-medium text-ink transition-colors hover:bg-accent"
+                className="rounded-full border border-hairline bg-card px-2.5 py-1 text-[12px] font-medium text-ink transition-colors hover:bg-accent"
               >
                 {t}
               </button>
@@ -167,23 +167,23 @@ export function BlogExplorer({
             />
             <div className="relative">
               <span
-                className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-wide text-[hsl(38_92%_38%)]"
+                className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-bold uppercase tracking-wide text-[hsl(38_92%_38%)]"
                 style={GOLD_PANEL}
               >
                 ★ Featured guide
               </span>
-              <h2 className="mt-3 text-lg font-semibold leading-snug tracking-tight text-ink sm:text-[1.4rem]">
+              <h2 className="mt-3 text-lg font-semibold leading-snug tracking-tight text-ink sm:text-[24px]">
                 {featured.title}
               </h2>
-              <p className="mt-2 max-w-lg text-[13.5px] leading-relaxed text-muted-foreground line-clamp-3">
+              <p className="mt-2 max-w-lg text-[14px] leading-relaxed text-muted-foreground line-clamp-3">
                 {featured.excerpt}
               </p>
             </div>
             <div className="relative mt-4 flex items-center justify-between gap-3">
-              <p className="text-[11.5px] font-medium text-muted-foreground">
+              <p className="text-[12px] font-medium text-muted-foreground">
                 <time dateTime={featured.dateISO}>{featured.date}</time> · {featured.readMins} min read
               </p>
-              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-brand px-3.5 py-2 text-[12.5px] font-bold text-white">
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-brand px-3.5 py-2 text-[12px] font-bold text-white">
                 Read guide
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
               </span>
@@ -207,7 +207,7 @@ export function BlogExplorer({
               onClick={() => setCat(key)}
               aria-pressed={active}
               className={cn(
-                "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[12.5px] font-semibold transition-colors",
+                "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[12px] font-semibold transition-colors",
                 active
                   ? "border-brand bg-brand text-white"
                   : "border-hairline bg-card text-muted-foreground hover:bg-accent hover:text-ink"
@@ -234,7 +234,7 @@ export function BlogExplorer({
               <button
                 type="button"
                 onClick={() => { setQ(""); setCat("all"); }}
-                className="mt-3 text-[13px] font-semibold text-brand hover:underline"
+                className="mt-3 text-[14px] font-semibold text-brand hover:underline"
               >
                 Clear filters
               </button>
@@ -262,10 +262,10 @@ export function BlogExplorer({
                     <h3 className="text-[15px] font-semibold leading-snug tracking-tight text-ink line-clamp-2">
                       {p.title}
                     </h3>
-                    <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground line-clamp-2">
+                    <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground line-clamp-2">
                       {p.excerpt}
                     </p>
-                    <span className="mt-4 inline-flex items-center gap-1 text-[12.5px] font-semibold text-brand">
+                    <span className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-brand">
                       Read guide
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
                     </span>
@@ -285,13 +285,13 @@ export function BlogExplorer({
             <h2 className="mt-3.5 text-[15px] font-bold leading-snug text-ink">
               Need to create your photo?
             </h2>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+            <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">
               Use our free tools to create, resize and compress photos &amp;
               signatures — 100% in your browser, nothing uploaded.
             </p>
             <Link
               href="/tools/"
-              className="mt-4 inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-[13px] font-bold"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-[14px] font-bold"
               style={GOLD_SOLID}
             >
               Explore tools
@@ -306,7 +306,7 @@ export function BlogExplorer({
                 <li key={s.href + s.label}>
                   <Link
                     href={s.href}
-                    className="group flex items-center justify-between gap-2 py-2.5 text-[13px] font-medium text-ink transition-colors hover:text-brand"
+                    className="group flex items-center justify-between gap-2 py-2.5 text-[14px] font-medium text-ink transition-colors hover:text-brand"
                   >
                     {s.label}
                     <ArrowRight

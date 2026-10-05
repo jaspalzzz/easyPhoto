@@ -113,7 +113,7 @@ export default function Page() {
             </g>
           ))}
         </svg>
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
           Standard resume/CV photo in India: 35×45 mm passport size, top-right corner, plain white or light grey background.
         </figcaption>
       </figure>

@@ -51,7 +51,7 @@ export function DarkTrustStrip() {
               Privacy is the product
             </span>
           </span>
-          <h2 className="text-[2rem] font-bold tracking-tight text-white sm:text-[2.6rem]">
+          <h2 className="text-[30px] font-bold tracking-tight text-white sm:text-[36px]">
             Why your photos stay <span className="text-cta">private</span>
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-white/60">
@@ -76,7 +76,7 @@ export function DarkTrustStrip() {
               </span>
               <div>
                 <p className="text-[15px] font-bold leading-tight text-white">{title}</p>
-                <p className="mt-1.5 text-[12.5px] leading-relaxed text-white/55">{sub}</p>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-white/55">{sub}</p>
               </div>
             </div>
           ))}

@@ -101,7 +101,7 @@ function SpecRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-hairline py-2.5 text-sm last:border-0">
       <dt className="text-ink-soft">{label}</dt>
-      <dd className="text-right font-mono text-[13px] font-medium tabular-nums">
+      <dd className="text-right font-mono text-[14px] font-medium tabular-nums">
         {value}
       </dd>
     </div>
@@ -216,7 +216,7 @@ export default async function MakerPage({
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">{Doc} photo bureau</span>
-        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
+        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
           {labelWithDoc(spec.label, doc, Doc)} Photo Maker
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
@@ -327,14 +327,14 @@ export default async function MakerPage({
             <Link
               key={kb}
               href={kbPath(kb)}
-              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
+              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
             >
               Resize to {kb} KB
             </Link>
           ))}
           <Link
             href="/tools/resize-kb/"
-            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
+            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
           >
             Custom size
           </Link>

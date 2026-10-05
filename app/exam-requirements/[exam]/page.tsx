@@ -119,7 +119,7 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-hairline py-2.5 text-sm last:border-0">
       <dt className="text-ink-soft">{label}</dt>
-      <dd className="text-right font-mono text-[13px] font-medium tabular-nums">{value}</dd>
+      <dd className="text-right font-mono text-[14px] font-medium tabular-nums">{value}</dd>
     </div>
   );
 }
@@ -188,7 +188,7 @@ export default async function Page({
       <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
-        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
+        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
           {spec.name} Photo{sig ? <> &amp; Signature</> : null} Size
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
@@ -541,7 +541,7 @@ export default async function Page({
             {SUB_EXAMS[exam].map((e) => (
               <span
                 key={e}
-                className="rounded-md border border-hairline bg-card px-3 py-1.5 text-[13px] font-medium text-foreground"
+                className="rounded-md border border-hairline bg-card px-3 py-1.5 text-[14px] font-medium text-foreground"
               >
                 {e}
               </span>
@@ -850,14 +850,14 @@ export default async function Page({
             <Link
               key={s.id}
               href={`/exam-requirements/${s.id}/`}
-              className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground"
+              className="rounded-md border border-hairline px-3 py-1.5 text-[14px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground"
             >
               {s.name.split(" (")[0]}
             </Link>
           ))}
           <Link
             href="/exam-requirements/"
-            className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-accent/50"
+            className="rounded-md border border-hairline px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-accent/50"
           >
             All exams
           </Link>

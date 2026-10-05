@@ -250,7 +250,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
             type="text"
             aria-label="Target size in KB"
             {...kbField}
-            className="h-10 w-32 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
+            className="h-10 w-32 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[14px]"
           />
         </label>
         <Button variant="cta" onClick={run} disabled={busy}>

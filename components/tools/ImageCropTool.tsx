@@ -308,7 +308,7 @@ function Body({ source }: { source: ToolSource }) {
     <div className="space-y-4">
       {/* Aspect ratio selector */}
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-[11.5px] font-semibold text-muted-foreground">Aspect ratio:</span>
+        <span className="text-[12px] font-semibold text-muted-foreground">Aspect ratio:</span>
         <div className="flex flex-wrap gap-1">
           {ASPECT_OPTIONS.map((opt) => (
             <button
@@ -316,7 +316,7 @@ function Body({ source }: { source: ToolSource }) {
               type="button"
               onClick={() => setAspect(opt.value)}
               className={cn(
-                "rounded-md border px-2.5 py-1 text-[11.5px] font-semibold transition-colors",
+                "rounded-md border px-2.5 py-1 text-[12px] font-semibold transition-colors",
                 aspect === opt.value
                   ? "border-brand bg-brand text-white"
                   : "border-hairline bg-card text-muted-foreground hover:bg-accent hover:text-ink"

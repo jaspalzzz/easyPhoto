@@ -100,7 +100,7 @@ export function DocPhotoLanding({
           <span className="eyebrow text-brand">
             {kind === "passport" ? "Passport" : "Visa"} photo maker
           </span>
-          <h1 className="mt-2.5 text-3xl font-semibold tracking-tight text-ink sm:text-[2.5rem] sm:leading-[1.08]">
+          <h1 className="mt-2.5 text-3xl font-semibold tracking-tight text-ink sm:text-[36px] sm:leading-[1.08]">
             {h1}
           </h1>
           <p className="mt-3.5 text-[15px] leading-relaxed text-muted-foreground">
@@ -117,7 +117,7 @@ export function DocPhotoLanding({
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-soft">
                   <Icon className="h-3.5 w-3.5 text-brand" strokeWidth={2} />
                 </span>
-                <span className="text-[12.5px] leading-snug text-ink">{text}</span>
+                <span className="text-[12px] leading-snug text-ink">{text}</span>
               </li>
             ))}
           </ul>
@@ -146,7 +146,7 @@ export function DocPhotoLanding({
           </div>
           <Link
             href={kind === "passport" ? "/visa-photo/" : "/passport-photo/"}
-            className="hidden shrink-0 items-center gap-1 text-[12.5px] font-semibold text-brand hover:underline sm:flex"
+            className="hidden shrink-0 items-center gap-1 text-[12px] font-semibold text-brand hover:underline sm:flex"
           >
             View all countries <ArrowRight className="h-3.5 w-3.5" />
           </Link>
@@ -167,7 +167,7 @@ export function DocPhotoLanding({
                   {c.mm.width}×{c.mm.height} mm
                 </p>
               </div>
-              <span className="flex items-center gap-1 text-[11.5px] font-semibold text-brand">
+              <span className="flex items-center gap-1 text-[12px] font-semibold text-brand">
                 Make photo
                 <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" strokeWidth={2.5} />
               </span>
@@ -176,7 +176,7 @@ export function DocPhotoLanding({
         </div>
 
         {/* More countries — compact flag chips */}
-        <p className="mb-2 mt-6 text-[10.5px] font-bold uppercase tracking-widest text-muted-foreground">
+        <p className="mb-2 mt-6 text-[12px] font-bold uppercase tracking-widest text-muted-foreground">
           More countries
         </p>
         <div className="flex flex-wrap gap-2">
@@ -184,7 +184,7 @@ export function DocPhotoLanding({
             <Link
               key={c.key}
               href={c.href}
-              className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-2.5 py-1 text-[11.5px] font-medium text-ink transition-colors hover:border-hairline-strong hover:bg-white"
+              className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-2.5 py-1 text-[12px] font-medium text-ink transition-colors hover:border-hairline-strong hover:bg-white"
             >
               <Flag country={c.flag} className="h-3 w-[1.05rem] rounded-[2px]" />
               {c.label}

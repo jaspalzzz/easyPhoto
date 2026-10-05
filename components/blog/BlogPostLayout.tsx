@@ -86,7 +86,7 @@ export function BlogPostLayout({
           <p className="eyebrow text-brand">
             <time dateTime={post.dateISO}>{post.date}</time> · {post.readMins} min read
           </p>
-          <h1 className="text-[2rem] font-semibold leading-[1.12] tracking-tight text-ink sm:text-[2.4rem]">
+          <h1 className="text-[30px] font-semibold leading-[1.12] tracking-tight text-ink sm:text-[36px]">
             {post.title}
           </h1>
           {/* Byline — named author (E-E-A-T "Who"), links to their profile. */}
@@ -107,10 +107,10 @@ export function BlogPostLayout({
         {/* Prose: 17px, generous line-height, high-contrast ink, a "lead" first
             paragraph — all tuned for readability and reading completion. */}
         <article
-          className="mt-9 text-[17px] leading-[1.75] text-ink-soft
-            [&>p:first-of-type]:text-[19px] [&>p:first-of-type]:leading-relaxed [&>p:first-of-type]:text-ink-soft
+          className="mt-9 text-[18px] leading-[1.75] text-ink-soft
+            [&>p:first-of-type]:text-[20px] [&>p:first-of-type]:leading-relaxed [&>p:first-of-type]:text-ink-soft
             [&_a]:font-medium [&_a]:text-brand [&_a]:underline [&_a]:decoration-brand/30 [&_a]:underline-offset-2 [&_a:hover]:decoration-brand
-            [&_h2]:mb-2 [&_h2]:mt-11 [&_h2]:text-[1.45rem] [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-ink
+            [&_h2]:mb-2 [&_h2]:mt-11 [&_h2]:text-[24px] [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-ink
             [&_li]:ml-1 [&_p]:mt-5 [&_strong]:font-semibold [&_strong]:text-ink
             [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5
             [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto"

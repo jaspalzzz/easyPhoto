@@ -28,7 +28,7 @@ export function HowItWorks() {
         <p className="mb-2 text-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
           How it works
         </p>
-        <h2 className="mb-12 text-center text-[1.75rem] font-semibold tracking-tight text-ink">
+        <h2 className="mb-12 text-center text-[30px] font-semibold tracking-tight text-ink">
           Prepare your photo in{" "}
           <span className="mark-gold text-ink">3 simple steps</span>
         </h2>
@@ -41,11 +41,11 @@ export function HowItWorks() {
                   <s.Icon className="h-7 w-7 text-brand" strokeWidth={1.75} />
                 </div>
                 <div>
-                  <p className="text-[10.5px] font-bold uppercase tracking-widest text-muted-foreground">
+                  <p className="text-[12px] font-bold uppercase tracking-widest text-muted-foreground">
                     {s.step}
                   </p>
                   <p className="mt-1.5 text-[15px] font-semibold text-ink">{s.title}</p>
-                  <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted-foreground">
+                  <p className="mt-1.5 text-[12px] leading-relaxed text-muted-foreground">
                     {s.desc}
                   </p>
                 </div>

@@ -34,7 +34,7 @@ export function HeroVisual() {
 
         <ul className="mt-2.5 space-y-1.5 sm:mt-3.5 sm:space-y-2">
           {BEFORE_ISSUES.map((issue) => (
-            <li key={issue} className="flex min-w-0 items-center gap-1.5 text-xs font-medium text-red-700 min-[360px]:text-xs sm:gap-2 sm:text-[13px] dark:text-red-400">
+            <li key={issue} className="flex min-w-0 items-center gap-1.5 text-xs font-medium text-red-700 min-[360px]:text-xs sm:gap-2 sm:text-[14px] dark:text-red-400">
               <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-red-100 text-[8px] font-black sm:h-4 sm:w-4 sm:text-xs dark:bg-red-900/40">
                 ✕
               </span>
@@ -103,14 +103,14 @@ export function HeroVisual() {
             className="animate-scan-beam pointer-events-none absolute left-0 top-0 h-[2px] w-full"
             style={{ background: "#10b981", boxShadow: "0 0 10px #10b981", zIndex: 5 }}
           />
-          <div className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500 text-[13px] font-bold text-white shadow-[0_4px_10px_rgba(16,185,129,0.4)]">
+          <div className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500 text-[14px] font-bold text-white shadow-[0_4px_10px_rgba(16,185,129,0.4)]">
             ✓
           </div>
         </div>
 
         <ul className="mt-2.5 space-y-1.5 sm:mt-3.5 sm:space-y-2">
           {AUTOMATED_CHECKS.map((item) => (
-            <li key={item} className="flex min-w-0 items-center gap-1.5 text-xs font-medium text-emerald-700 min-[360px]:text-xs sm:gap-2 sm:text-[13px] dark:text-emerald-400">
+            <li key={item} className="flex min-w-0 items-center gap-1.5 text-xs font-medium text-emerald-700 min-[360px]:text-xs sm:gap-2 sm:text-[14px] dark:text-emerald-400">
               <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-[8px] font-black sm:h-4 sm:w-4 sm:text-xs dark:bg-emerald-900/40">
                 ✓
               </span>

@@ -80,7 +80,7 @@ export function WorkflowNextSteps({
                   : step.icon}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-[13px] font-semibold leading-snug text-ink">
+                <p className="text-[14px] font-semibold leading-snug text-ink">
                   {step.label}
                 </p>
                 <p className="mt-0.5 text-xs leading-snug text-ink-soft">

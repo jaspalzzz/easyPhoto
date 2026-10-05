@@ -100,7 +100,7 @@ export default function Page() {
           ].map(([doc, portal, kb, px, crop]) => (
             <tr key={doc} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{doc}</td>
-              <td className="py-2 pr-4 text-[13px]">{portal}</td>
+              <td className="py-2 pr-4 text-[14px]">{portal}</td>
               <td className="py-2 pr-4">{kb}</td>
               <td className="py-2 pr-4">{px}</td>
               <td className="py-2">{crop}</td>

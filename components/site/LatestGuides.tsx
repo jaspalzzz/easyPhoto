@@ -24,7 +24,7 @@ export function LatestGuides() {
       <div className="container py-14 sm:py-16">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tightest text-ink sm:text-[1.75rem]">
+            <h2 className="text-2xl font-semibold tracking-tightest text-ink sm:text-[30px]">
               Guides to the rules
             </h2>
             <p className="mt-1.5 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">

@@ -68,7 +68,7 @@ export default function Page() {
       <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
-        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
+        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
           Open &amp; Unlock Your e-Aadhaar PDF
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
@@ -86,7 +86,7 @@ export default function Page() {
           <p className="mt-1 text-muted-foreground">
             First <strong>4 letters of your name in CAPITALS</strong> + your{" "}
             <strong>year of birth</strong>. Example: name <em>Ravi Kumar</em>, born 1998 →{" "}
-            <code className="rounded bg-card px-1.5 py-0.5 font-mono text-[13px]">RAVI1998</code>
+            <code className="rounded bg-card px-1.5 py-0.5 font-mono text-[14px]">RAVI1998</code>
           </p>
         </div>
       </div>

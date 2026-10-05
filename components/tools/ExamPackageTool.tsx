@@ -547,7 +547,7 @@ export function ExamPackageTool() {
             </div>
 
             {examQuery.trim() && (
-              <p className="text-[13px] text-muted-foreground">
+              <p className="text-[14px] text-muted-foreground">
                 Showing exams matching “{examQuery.trim()}” —{" "}
                 <button
                   type="button"
@@ -567,7 +567,7 @@ export function ExamPackageTool() {
                 <button
                   type="button"
                   onClick={() => setExamQuery("")}
-                  className="mt-2 text-[13px] font-semibold text-brand hover:underline"
+                  className="mt-2 text-[14px] font-semibold text-brand hover:underline"
                 >
                   Clear search
                 </button>
@@ -834,7 +834,7 @@ export function ExamPackageTool() {
                     )}
                     <li>
                       Double-check the live form&apos;s stated limits match{" "}
-                      <span className="font-mono text-[13px]">{photoKbText(spec!)}</span> — portals
+                      <span className="font-mono text-[14px]">{photoKbText(spec!)}</span> — portals
                       occasionally change them between cycles.
                     </li>
                   </ol>
