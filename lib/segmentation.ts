@@ -323,12 +323,16 @@ export async function webgpuSupportsF16(): Promise<boolean> {
 // error can't permanently disable the path.
 
 // R2 folder for the self-hosted weights: models.easyphoto.in/<SEG_ID>/onnx/…
-// The edge + every visitor's browser cache this URL ~forever (see public/_headers
-// + the CF Cache Rule), and transformers.js does a HARD cache hit by URL with NO
-// revalidation. So to ship a NEW model you MUST cache-bust by changing this id and
-// uploading under the matching new R2 folder (e.g. "seg-v2/"). NEVER overwrite the
-// files in place — returning users would be pinned to the stale model until their
-// browser evicts it, which a Cloudflare purge cannot fix. Bump = clean rollout.
+// transformers.js stores every file it downloads in the browser Cache API
+// ("transformers-cache"), keyed by this URL — even when the bytes came from the
+// mirror — and later serves it from there with NO revalidation. So to ship a NEW
+// model you MUST cache-bust by changing this id and uploading under the matching
+// new R2 folder (e.g. "seg-v2/"). NEVER overwrite the files in place — returning
+// users would be pinned to the stale model until their browser evicts it, which a
+// Cloudflare purge cannot fix. Bump = clean rollout. (public/_headers does not
+// apply to models.easyphoto.in; checked 6 Oct 2026, the host sends no
+// Cache-Control and Cloudflare reports cf-cache-status: DYNAMIC, i.e. no edge
+// caching.)
 const SEG_ID = "seg";
 
 // RMBG-1.4's image preprocessor settings. transformers REQUIRES a
