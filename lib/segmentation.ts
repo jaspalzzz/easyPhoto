@@ -14,6 +14,8 @@
  * Lazy-loaded so the (heavy) model never blocks first paint.
  */
 
+import { withTimeout } from "./withTimeout";
+
 /**
  * Remove the background from a source image, returning an RGBA cutout canvas
  * drawn at the SOURCE dimensions (so all coordinates stay in source space,
@@ -276,9 +278,17 @@ export function decontaminateForeground(cutout: HTMLCanvasElement): void {
 // the model downloads (from Hugging Face); the image never leaves the device.
 
 /**
+ * How long the WebGPU adapter probe may take. requestAdapter() normally answers
+ * in milliseconds, but can hang on some browser/driver combinations — and every
+ * background-removal run awaits this probe before picking an engine. A probe
+ * that slow is treated as "no usable WebGPU" (→ the WASM engine).
+ */
+export const WEBGPU_PROBE_TIMEOUT_MS = 3_000;
+
+/**
  * Whether the WebGPU adapter supports the `shader-f16` feature. fp16 models
  * fail at model-load on adapters without it ("device does not support fp16"),
- * so callers fall back to a WASM path there.
+ * so callers fall back to a WASM path there. Bounded by WEBGPU_PROBE_TIMEOUT_MS.
  */
 export async function webgpuSupportsF16(): Promise<boolean> {
   const gpu =
@@ -293,7 +303,11 @@ export async function webgpuSupportsF16(): Promise<boolean> {
       : undefined;
   if (!gpu) return false;
   try {
-    const adapter = await gpu.requestAdapter();
+    const adapter = await withTimeout(
+      gpu.requestAdapter(),
+      WEBGPU_PROBE_TIMEOUT_MS,
+      "WebGPU adapter request timed out."
+    );
     return !!adapter?.features?.has("shader-f16");
   } catch {
     return false;
@@ -335,6 +349,103 @@ const RMBG_PREPROCESSOR = {
   rescale_factor: 0.00392156862745098,
   size: { width: 1024, height: 1024 },
 };
+
+/**
+ * How long the primary model host (models.easyphoto.in) may take to START
+ * answering — i.e. send response headers — before we try the mirror. Normally
+ * well under a second, even on mobile data. Only the time to first byte is
+ * bounded: once headers arrive the download streams with no limit (the fp32
+ * weights are ~170 MB, so a total cap would cut off slow connections).
+ */
+export const SEG_PRIMARY_TTFB_MS = 15_000;
+
+/**
+ * fetch() that aborts if no response (headers) arrives within `ms`. The
+ * caller's own `init.signal` is still honoured, for the whole download.
+ */
+async function fetchWithFirstByteTimeout(
+  fetchFn: typeof fetch,
+  url: string,
+  init: RequestInit | undefined,
+  ms: number
+): Promise<Response> {
+  const controller = new AbortController();
+  const callerSignal = init?.signal;
+  if (callerSignal) {
+    if (callerSignal.aborted) controller.abort(callerSignal.reason);
+    else
+      callerSignal.addEventListener("abort", () => controller.abort(callerSignal.reason), {
+        once: true,
+      });
+  }
+  const timer = setTimeout(
+    () => controller.abort(new DOMException("No response from the model host.", "TimeoutError")),
+    ms
+  );
+  try {
+    return await fetchFn(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/**
+ * The fetch transformers.js uses for the segmentation model. Requests for
+ * `<host>/<SEG_ID>/<file>` are served from our own R2 domain; if it errors,
+ * returns a 5xx/missing weight, or doesn't start answering within
+ * SEG_PRIMARY_TTFB_MS, the same file comes from the Hugging Face mirror.
+ * Every other request passes straight through to `origFetch`.
+ */
+export function createSegFetch(origFetch: typeof fetch): typeof fetch {
+  const segFile = new RegExp(`/${SEG_ID}/(.+)$`);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return async (input: any, init?: any) => {
+    const url = typeof input === "string" ? input : input?.url ?? "";
+    const m = segFile.exec(url);
+    if (m) {
+      const file = m[1]; // "onnx/model_quantized.onnx" | "config.json" | …
+      // Serve the required preprocessor config from code — never the network —
+      // so no Hugging Face request (and no model-name leak) ever fires for it.
+      if (file === "preprocessor_config.json") {
+        return new Response(JSON.stringify(RMBG_PREPROCESSOR), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        });
+      }
+      const isWeights = /\.onnx$/i.test(file);
+      try {
+        const res = await fetchWithFirstByteTimeout(
+          origFetch,
+          `https://models.easyphoto.in/${SEG_ID}/${file}`,
+          init,
+          SEG_PRIMARY_TTFB_MS
+        );
+        if (res.ok) return res;
+        // 404 on a NON-weight file (e.g. preprocessor_config.json, which we
+        // don't host because the config is supplied inline) means "absent on
+        // R2", not "R2 down". Return the 404 so transformers uses the inline
+        // config — do NOT fall through to Hugging Face, which would leak the
+        // model name in the network on every run. Only weights (and server
+        // errors) get the reliability mirror below.
+        if (res.status === 404 && !isWeights) return res;
+      } catch (e) {
+        // The caller cancelled: honour that instead of retrying elsewhere.
+        if (init?.signal?.aborted) throw e;
+        // R2 unreachable or stalled — fall through to the mirror below.
+        console.warn("Model host unavailable; using the mirror.", e);
+      }
+      // Reliability fallback: identical weights, different origin. Only fires
+      // if R2 is down (network error / 5xx), stalls before answering, or a
+      // weight file is missing; the model name is never in the primary URL.
+      // NOTE: keep this mirror in sync with whatever weights SEG_ID points at.
+      return origFetch(
+        `https://huggingface.co/briaai/RMBG-1.4/resolve/main/${file}`,
+        init
+      );
+    }
+    return origFetch(input, init);
+  };
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let rmbgModelPromise: Promise<any> | null = null;
@@ -423,49 +534,7 @@ async function getRMBG(opts: {
         env.fetch.bind(env)
       : // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (globalThis as any).fetch.bind(globalThis);
-    const segFile = new RegExp(`/${SEG_ID}/(.+)$`);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    env.fetch = async (input: any, init?: any) => {
-      const url = typeof input === "string" ? input : input?.url ?? "";
-      const m = segFile.exec(url);
-      if (m) {
-        const file = m[1]; // "onnx/model_quantized.onnx" | "config.json" | …
-        // Serve the required preprocessor config from code — never the network —
-        // so no Hugging Face request (and no model-name leak) ever fires for it.
-        if (file === "preprocessor_config.json") {
-          return new Response(JSON.stringify(RMBG_PREPROCESSOR), {
-            status: 200,
-            headers: { "content-type": "application/json" },
-          });
-        }
-        const isWeights = /\.onnx$/i.test(file);
-        try {
-          const res = await origFetch(
-            `https://models.easyphoto.in/${SEG_ID}/${file}`,
-            init
-          );
-          if (res.ok) return res;
-          // 404 on a NON-weight file (e.g. preprocessor_config.json, which we
-          // don't host because the config is supplied inline) means "absent on
-          // R2", not "R2 down". Return the 404 so transformers uses the inline
-          // config — do NOT fall through to Hugging Face, which would leak the
-          // model name in the network on every run. Only weights (and server
-          // errors) get the reliability mirror below.
-          if (res.status === 404 && !isWeights) return res;
-        } catch {
-          /* R2 unreachable — fall through to the mirror below */
-        }
-        // Silent reliability fallback: identical weights, different origin. Only
-        // fires if R2 is genuinely down (network error / 5xx) or a weight file is
-        // missing; the model name is never surfaced in the primary URL.
-        // NOTE: keep this mirror in sync with whatever weights SEG_ID points at.
-        return origFetch(
-          `https://huggingface.co/briaai/RMBG-1.4/resolve/main/${file}`,
-          init
-        );
-      }
-      return origFetch(input, init);
-    };
+    env.fetch = createSegFetch(origFetch);
   }
 
   const modelKey = `${opts.device}:${opts.dtype}:${opts.threads ?? 0}`;
