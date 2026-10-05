@@ -119,6 +119,10 @@ export function ExamPackageTool() {
   const [step, setStep] = React.useState<Step>("exam");
   const [examId, setExamId] = React.useState<string>("");
   const [photo, setPhoto] = React.useState<AssetResult | null>(null);
+  // The upload the photo was prepared from. The name/date step stamps this,
+  // not photo.blob: that JPEG is already cropped and compressed to the band,
+  // and stamping it would re-crop and re-encode an encoded file.
+  const [photoSource, setPhotoSource] = React.useState<File | null>(null);
   const [signature, setSignature] = React.useState<AssetResult | null>(null);
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -134,10 +138,11 @@ export function ExamPackageTool() {
   const router = useRouter();
 
   // Round-trip through the Name & Date tool: it reads the exam draft, stamps
-  // the photo, and its "Continue in the Exam Kit" step brings the result back.
+  // the original upload, and its "Continue in the Exam Kit" step brings back a
+  // lossless composite that processPhoto encodes to the spec exactly once.
   const addNameDate = () => {
-    if (!photo || !examId) return;
-    setWorkflowPayload(photo.blob, `${examId}-photo.jpg`, {
+    if (!photo || !photoSource || !examId) return;
+    setWorkflowPayload(photoSource, photoSource.name, {
       kind: "photo",
       examId,
       rememberForExamKit: true,
@@ -157,6 +162,7 @@ export function ExamPackageTool() {
     if (photo?.url) URL.revokeObjectURL(photo.url);
     if (signature?.url) URL.revokeObjectURL(signature.url);
     setPhoto(null);
+    setPhotoSource(null);
     setSignature(null);
     setExamId("");
     setError(null);
@@ -173,6 +179,7 @@ export function ExamPackageTool() {
       if (photo?.url) URL.revokeObjectURL(photo.url);
       if (signature?.url) URL.revokeObjectURL(signature.url);
       setPhoto(null);
+      setPhotoSource(null);
       setSignature(null);
     }
     setExamId(id);
@@ -241,6 +248,7 @@ export function ExamPackageTool() {
         format: "jpg",
         qualityReduced: res.qualityReduced,
       });
+      setPhotoSource(file);
       return true;
     } catch (e) {
       console.error(e);
