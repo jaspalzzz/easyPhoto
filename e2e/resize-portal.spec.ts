@@ -48,7 +48,9 @@ test("resize-kb: the downloaded file genuinely stays under the target and decode
 
   const bytes = await compressAndDownload(page, 25);
   // The promise the tool makes to an applicant: the FILE, not just the label.
-  expect(bytes.length / 1024, `downloaded ${(bytes.length / 1024).toFixed(1)} KB`).toBeLessThanOrEqual(25);
+  // Portals count 1 KB as 1000 or 1024 bytes: the cap must hold in the smaller
+  // unit (× 1000) and the floor in the larger one (× 1024).
+  expect(bytes.length, `downloaded ${bytes.length} B`).toBeLessThanOrEqual(25 * 1000);
 
   const [w, h] = await decode(page, bytes);
   expect(w, "output must be a valid, non-empty image").toBeGreaterThan(0);
@@ -62,11 +64,32 @@ test("resize-kb: a very tight 10 KB target still yields a valid, non-corrupt ima
   await page.setInputFiles('input[type="file"]', FACE_PHOTO);
 
   const bytes = await compressAndDownload(page, 10);
-  expect(bytes.length / 1024, `downloaded ${(bytes.length / 1024).toFixed(1)} KB`).toBeLessThanOrEqual(10);
+  expect(bytes.length, `downloaded ${bytes.length} B`).toBeLessThanOrEqual(10 * 1000);
   // Must still decode to a real image — a tiny target must not corrupt output.
   const [w, h] = await decode(page, bytes);
   expect(w, "10 KB output still decodes").toBeGreaterThan(20);
   expect(h).toBeGreaterThan(20);
+});
+
+test("resize-kb: the ?target=50 preset stays under 50 KB counted as 1000 bytes", async ({
+  page,
+}) => {
+  // Production shipped 50,928 B here: under 50 × 1024, rejected by portals
+  // that count 1 KB as 1000 bytes.
+  await page.goto("/tools/resize-kb/?target=50");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await expect(page.getByLabel("Target size in KB").first()).toHaveValue("50");
+  await page.getByRole("button", { name: /compress to size/i }).click();
+  await expect(page.getByText(/needs ≤ 50 KB/i)).toBeVisible({ timeout: 30_000 });
+  const [dl] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: /download jpg/i }).click(),
+  ]);
+  const bytes = fs.readFileSync((await dl.path())!);
+  expect(bytes.length, `downloaded ${bytes.length} B`).toBeLessThanOrEqual(50 * 1000);
+  const [w, h] = await decode(page, bytes);
+  expect(w).toBeGreaterThan(0);
+  expect(h).toBeGreaterThan(0);
 });
 
 test("voter-id-photo-resizer: surfaces the ECI spec and binds output to a set target", async ({
@@ -82,7 +105,7 @@ test("voter-id-photo-resizer: surfaces the ECI spec and binds output to a set ta
   // — the spec description itself recommends ~100-300 KB for fast upload.
   await page.setInputFiles('input[type="file"]', FACE_PHOTO);
   const bytes = await compressAndDownload(page, 100);
-  expect(bytes.length / 1024, `downloaded ${(bytes.length / 1024).toFixed(1)} KB`).toBeLessThanOrEqual(100);
+  expect(bytes.length, `downloaded ${bytes.length} B`).toBeLessThanOrEqual(100 * 1000);
   const [w, h] = await decode(page, bytes);
   expect(
     w / h,
@@ -98,8 +121,10 @@ test("tnpsc exam page: exports the published 130x170 frame instead of treating i
   await page.setInputFiles('input[type="file"]', FACE_PHOTO);
   const kb = page.getByLabel("Target size in KB").first();
   await kb.fill("10");
-  await kb.blur(); // below the 20 KB floor clamps on blur, not on every keystroke
-  await expect(kb).toHaveValue("20");
+  // Below the 20 KB floor clamps on blur, not on every keystroke — to 21, the
+  // lowest cap that still holds a 20 × 1024-byte floor in 1000-byte KB.
+  await kb.blur();
+  await expect(kb).toHaveValue("21");
   await page.getByRole("button", { name: /compress to size/i }).click();
   await expect(page.getByText(/needs 130×170/i)).toBeVisible({ timeout: 30_000 });
   const [download] = await Promise.all([
@@ -110,6 +135,8 @@ test("tnpsc exam page: exports the published 130x170 frame instead of treating i
   expect(filePath).not.toBeNull();
   const bytes = fs.readFileSync(filePath!);
   expect(await decode(page, bytes)).toEqual([130, 170]);
+  expect(bytes.length).toBeGreaterThanOrEqual(20 * 1024);
+  expect(bytes.length).toBeLessThanOrEqual(21 * 1000);
 });
 
 test("portal resizer: photo and signature tabs restore only their own source", async ({

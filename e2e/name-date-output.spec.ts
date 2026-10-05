@@ -42,7 +42,7 @@ for (const preset of [
     expect(await decodeJpeg(page, bytes)).toEqual(preset.dimensions);
     if (preset.id === "tnpsc") {
       expect(bytes.length).toBeGreaterThanOrEqual(20 * 1024);
-      expect(bytes.length).toBeLessThanOrEqual(50 * 1024);
+      expect(bytes.length).toBeLessThanOrEqual(50 * 1000); // passes 1000- and 1024-byte KB portals
     }
   });
 }
@@ -246,7 +246,7 @@ test("Exam Kit name/date step stamps the original upload and encodes the TNPSC p
   expect(photo[1]).toBe(0xd8);
   expect(await decodeJpeg(page, photo)).toEqual([130, 170]);
   expect(photo.length).toBeGreaterThanOrEqual(20 * 1024);
-  expect(photo.length).toBeLessThanOrEqual(50 * 1024);
+  expect(photo.length).toBeLessThanOrEqual(50 * 1000);
 
   // One encode from the full-quality composite keeps the photo faithful to the
   // upload. Re-encoding the already-banded JPEG (and cropping it again) did not.

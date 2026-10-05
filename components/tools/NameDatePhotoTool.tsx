@@ -9,7 +9,7 @@ import { compressToCap } from "@/lib/compress";
 import { canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
-import { formatKb } from "@/lib/utils";
+import { formatKb, minCapKbForFloor } from "@/lib/utils";
 import { getPortalSpec, specProvenance } from "@/lib/specRegistry";
 import {
   NAME_DATE_PRESETS,
@@ -157,6 +157,9 @@ function Body({
   const [date, setDate] = React.useState(getTodayIsoString());
   const [stripHeight, setStripHeight] = React.useState(15);
   const [targetKb, setTargetKb] = React.useState(initialPreset.kb);
+  // Lowest target the slider allows: above a portal floor far enough that the
+  // padded file still fits the cap when 1 KB is counted as 1000 bytes.
+  const minTargetKb = activePreset.minKb ? minCapKbForFloor(activePreset.minKb) : 15;
   
   const [busy, setBusy] = React.useState(false);
   const [exportError, setExportError] = React.useState<string | null>(null);
@@ -562,13 +565,13 @@ function Body({
             </div>
             <input
               type="range"
-              min={activePreset.minKb ?? 15}
+              min={minTargetKb}
               max={500}
               value={targetKb}
-              onChange={(e) => setTargetKb(Math.max(activePreset.minKb ?? 15, Number(e.target.value)))}
+              onChange={(e) => setTargetKb(Math.max(minTargetKb, Number(e.target.value)))}
               className="w-full h-1.5 bg-hairline rounded-lg cursor-pointer accent-brand"
               aria-label="Target File Size in KB"
-              aria-valuemin={activePreset.minKb ?? 15}
+              aria-valuemin={minTargetKb}
               aria-valuemax={500}
               aria-valuenow={targetKb}
             />
