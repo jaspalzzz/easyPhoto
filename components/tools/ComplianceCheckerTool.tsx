@@ -86,10 +86,18 @@ export function ComplianceCheckerTool() {
   const spec = getPortalSpec(examId);
   const noSig = kind === "signature" && spec && spec.sigLimitKb == null;
 
+  // Latest-request guard: a check is async (decode, then face analysis), so an
+  // earlier, slower check — e.g. before the user changed the exam or uploaded
+  // another file — can finish after a newer one. Only the latest run may set
+  // state; superseded runs drop their results.
+  const checkRunRef = React.useRef(0);
+
   // Exam and document kind are explicit parameters (not read from state) so a
   // handed-over file can be checked in the same tick its exam/kind are set.
   const runCheck = async (file: File, spec: ReturnType<typeof getPortalSpec>, kind: DocKind) => {
     if (!spec) return;
+    const runId = ++checkRunRef.current;
+    const isLatest = () => runId === checkRunRef.current;
     setBusy(true);
     setError(null);
     setReport(null);
@@ -98,6 +106,7 @@ export function ComplianceCheckerTool() {
     track({ name: "tool_start", tool: "compliance-checker", device: deviceClass() });
     const bmp = await createImageBitmap(file).catch(() => null);
     try {
+      if (!isLatest()) return;
       let width: number | null = null;
       let height: number | null = null;
       let backgroundLight: boolean | undefined;
@@ -123,18 +132,21 @@ export function ComplianceCheckerTool() {
           ac.width = cw;
           ac.height = ch;
           ac.getContext("2d")?.drawImage(bmp, 0, 0, cw, ch);
-          setPhotoChecks(await checkPhotoQuality(ac, { width: cw, height: ch }));
+          const quality = await checkPhotoQuality(ac, { width: cw, height: ch });
+          if (!isLatest()) return;
+          setPhotoChecks(quality);
         } catch {
           // Face/quality analysis is best-effort — never block the file report.
         }
       }
       track({ name: "tool_success", tool: "compliance-checker", device: deviceClass() });
     } catch {
+      if (!isLatest()) return;
       setError("Couldn't read that file. Try a JPG or PNG.");
       track({ name: "tool_failure", tool: "compliance-checker", device: deviceClass(), reason: "decode" });
     } finally {
       bmp?.close?.(); // release the bitmap's memory once all analysis is done
-      setBusy(false);
+      if (isLatest()) setBusy(false);
     }
   };
 
