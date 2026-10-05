@@ -6,6 +6,7 @@ import { Loader2, Download, AlertCircle, Calendar, User, Info, ShieldCheck, Mini
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { compressToCap } from "@/lib/compress";
+import { canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { formatKb } from "@/lib/utils";
@@ -169,6 +170,9 @@ function Body({
     height: number;
     underCap: boolean;
     blob: Blob;
+    /** Lossless strip composite. The Exam Kit encodes this to its spec once,
+     *  instead of re-encoding the JPEG above. */
+    composite: HTMLCanvasElement;
   } | null>(null);
   const [cropperReady, setCropperReady] = React.useState(false);
 
@@ -349,6 +353,7 @@ function Body({
         height: res.height,
         underCap: res.underCap,
         blob: res.blob,
+        composite: annotCanvas,
       });
 
       const duration = typeof performance !== "undefined" ? performance.now() - t0 : 0;
@@ -633,8 +638,10 @@ function Body({
 
         {result && (
           <WorkflowNextSteps
-            getBlob={async () => result.blob}
-            filename="photo-with-name-date.jpg"
+            getBlob={async () =>
+              workflowExamId ? canvasToBlob(result.composite, "image/png") : result.blob
+            }
+            filename={workflowExamId ? "photo-with-name-date.png" : "photo-with-name-date.jpg"}
             assetKind="photo"
             rememberForExamKit={!!workflowExamId}
             examId={workflowExamId}
