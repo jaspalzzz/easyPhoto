@@ -5,6 +5,7 @@ import { Loader2, Trash2, Check, FileUp, PenTool } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   SIGNATURE_CLEAN_DEFAULTS,
+  signatureUploadTrim,
   trimToContent,
   whiteToTransparent,
 } from "@/lib/signature";
@@ -233,14 +234,13 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
         inkColor: "original",
       });
 
-      // No density floor (minRun) here: this canvas is the full-resolution
-      // upload, where the floor is ~15 px on a 12 MP photo — thicker than a
-      // ballpoint line — so a thin ascender or lead-in stroke was treated as
-      // noise and cut off the signature. Every ink pixel counts, as before.
-      const { canvas: trimmed, bbox } = trimToContent(cleaned, {
-        mode: "alpha",
-        padding: 8,
-      });
+      // Crop to the signature and every stroke attached to it, ignoring dust
+      // specks and stray marks away from it (a lone speck used to stretch the
+      // crop, leaving a wide empty margin and a smaller-looking signature).
+      const { canvas: trimmed, bbox } = trimToContent(
+        cleaned,
+        signatureUploadTrim(cleaned.width, cleaned.height),
+      );
       
       if (!bbox) {
         throw new Error("No signature detected. Verify the image has dark strokes on light paper.");

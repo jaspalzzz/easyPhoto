@@ -214,6 +214,25 @@ export function signatureTrimAttach(width: number, height: number): { minRun: nu
 }
 
 /**
+ * Trim settings for a signature uploaded to sign-image (the full-resolution
+ * photo or scan, after whiteToTransparent). Same attached-strokes rule as the
+ * signature tools: a lone dust speck or stray mark away from the signature no
+ * longer stretches the crop, while thin strokes, i-dots and pen lifts next to
+ * it are kept. Without keepAttached the floor would cut thin strokes off.
+ * If nothing clears the floor it falls back to every ink pixel, as before.
+ */
+export function signatureUploadTrim(width: number, height: number) {
+  return {
+    mode: "alpha" as const,
+    padding: 8,
+    ...signatureTrimAttach(width, height),
+    // Before this trim, sign-image found any visible ink; a faint signature
+    // too sparse for the floor must still crop, not fail as "no signature".
+    fallbackToAnyInk: true,
+  };
+}
+
+/**
  * How many signatures are stacked one below another in a cleaned signature
  * image: runs of ink rows separated by at least `minGap` rows without ink.
  * A row counts as ink only above `minInk` pixels, so specks don't add bands,
@@ -398,6 +417,10 @@ export function getContentBBox(
     minRun?: number;
     /** Keep thin strokes attached to the dense core (see attachedInkBBox). */
     keepAttached?: AttachOptions;
+    /** With keepAttached: if no row/column clears the floor (a faint or tiny
+     *  signature in a large photo), fall back to every content pixel instead
+     *  of finding nothing. */
+    fallbackToAnyInk?: boolean;
   } = {}
 ): BBox | null {
   const mode = opts.mode ?? "alpha";
@@ -427,7 +450,9 @@ export function getContentBBox(
   if (opts.keepAttached) {
     const ink = new Uint8Array(width * height);
     for (let p = 0; p < ink.length; p++) if (isContent(p * 4)) ink[p] = 1;
-    return attachedInkBBox({ width, height, ink }, minRun, opts.keepAttached);
+    const attached = attachedInkBBox({ width, height, ink }, minRun, opts.keepAttached);
+    if (attached || !opts.fallbackToAnyInk) return attached;
+    return attachedInkBBox({ width, height, ink }, 0, { attachGap: 0, minSpeckArea: 0 });
   }
 
   // Per-row / per-column content histograms, so the density floor applies
