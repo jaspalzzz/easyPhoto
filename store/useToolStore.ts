@@ -231,13 +231,10 @@ export const useToolStore = create<ToolState>((set, get) => ({
       set({ sourceImage: image, sourceSize: size, sourceUrl: url });
 
       set({ status: "detecting" });
-      // Bound detection so a stalled model/inference can never strand the user
-      // on an endless spinner. Generous (covers slow first-run model downloads).
-      const measurements = await withTimeout(
-        detectFace(image, size),
-        90_000,
-        "Face detection timed out. Check your connection and try a smaller, clearer photo."
-      );
+      // detectFace bounds the model load itself (FACE_MODEL_LOAD_TIMEOUT_MS) and
+      // throws FaceModelLoadError if it stalls or fails, so a stalled model can
+      // never strand the user on an endless spinner.
+      const measurements = await detectFace(image, size);
 
       // Segmentation: real background removal + the PREFERRED crownY.
       set({ status: "segmenting" });
@@ -410,8 +407,9 @@ export const useToolStore = create<ToolState>((set, get) => ({
           : err instanceof Error
             ? err.message
             : "Something went wrong processing that photo.";
-      // NoFaceError → crop-and-retry recovery; a bare FaceDetectionError here is
-      // the detection timeout; anything else is a generic/decode failure.
+      // NoFaceError → crop-and-retry recovery; any other FaceDetectionError is
+      // the face model failing to load (FaceModelLoadError) → plain retry;
+      // anything else is a generic/decode failure.
       const errorKind: ToolErrorKind = err instanceof NoFaceError
         ? "no-face"
         : err instanceof FaceDetectionError
