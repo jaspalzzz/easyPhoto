@@ -207,6 +207,29 @@ test("upsc exam page: signature exports a JPG inside the stored 20–100 KB band
   expect(bytes.length).toBeLessThanOrEqual(100 * 1024);
 });
 
+// PAN's official spec mandates 200 DPI scans; the photo export already carried
+// it, the signature export didn't (JFIF density 1:1, units 0).
+test("pan exam page: signature JPG carries the mandated 200 DPI", async ({ page }) => {
+  await page.goto("/exam-requirements/pan/");
+  await page.getByRole("button", { name: /clean & compress signature/i }).click();
+  await page.setInputFiles('input[type="file"]', {
+    name: "sig.png",
+    mimeType: "image/png",
+    buffer: await makeStackedSignatures(page, 1),
+  });
+  const download = page.getByRole("button", { name: /download .*jpg/i });
+  await expect(download).toBeVisible({ timeout: 30_000 });
+  const [dl] = await Promise.all([page.waitForEvent("download"), download.click()]);
+  const bytes = Buffer.from(await readDownloadBase64(dl), "base64");
+  expect(bytes[0]).toBe(0xff);
+  expect(bytes[1]).toBe(0xd8);
+  // JFIF APP0: units byte 13 (1 = dots per inch), X density bytes 14-15, Y 16-17.
+  expect(bytes.subarray(6, 10).toString("latin1")).toBe("JFIF");
+  expect(bytes[13]).toBe(1);
+  expect((bytes[14] << 8) | bytes[15]).toBe(200);
+  expect((bytes[16] << 8) | bytes[17]).toBe(200);
+});
+
 test("upsc exam page: warns when the signature image has fewer than three signatures", async ({ page }) => {
   await page.goto("/exam-requirements/upsc/");
   await page.getByRole("button", { name: /clean & compress signature/i }).click();
