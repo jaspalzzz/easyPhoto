@@ -224,7 +224,7 @@ export default function Page() {
           height={760}
           className="w-full h-auto"
         />
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
           UPSC CSE signature sheet layout: three identical signatures in 6&nbsp;cm&nbsp;×&nbsp;3&nbsp;cm boxes, written in black ink on plain A4 white paper.
         </figcaption>
       </figure>

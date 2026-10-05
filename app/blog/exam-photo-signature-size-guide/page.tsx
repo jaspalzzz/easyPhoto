@@ -84,7 +84,7 @@ export default function Page() {
           height={760}
           className="w-full h-auto"
         />
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
           Prepared-file illustration only; live-capture exams use the camera workflow in the current notice instead.
         </figcaption>
       </figure>

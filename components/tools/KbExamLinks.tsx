@@ -36,7 +36,7 @@ export function KbExamLinks({ kind, kb }: { kind: "photo" | "signature"; kb: num
           <Link
             key={s.id}
             href={`/exam-requirements/${s.id}/`}
-            className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground"
+            className="rounded-md border border-hairline px-3 py-1.5 text-[14px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground"
           >
             {s.name.split(" (")[0]}
           </Link>
@@ -44,7 +44,7 @@ export function KbExamLinks({ kind, kb }: { kind: "photo" | "signature"; kb: num
         {overflow > 0 && (
           <Link
             href="/exam-requirements/"
-            className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-accent/50"
+            className="rounded-md border border-hairline px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-accent/50"
           >
             +{overflow} more exams
           </Link>

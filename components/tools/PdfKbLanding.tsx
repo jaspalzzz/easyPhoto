@@ -78,7 +78,7 @@ export function PdfKbLanding({ kb }: { kb: number }) {
         <ToolIconTile name="FileDown" category="pdf" className="hidden shrink-0 sm:flex" />
         <div className="space-y-2">
           <span className="eyebrow block text-brand">PDF Tools</span>
-          <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
+          <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[30px]">
             Compress PDF to {kb} KB
           </h1>
           <p className="text-[15px] leading-relaxed text-muted-foreground">

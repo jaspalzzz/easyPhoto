@@ -61,7 +61,7 @@ export function DocPhotoResizerPage({
 
       <header className="space-y-3">
         <span className="eyebrow block text-brand">Government document photo</span>
-        <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
+        <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[30px]">
           {displayName} Photo &amp; Signature Resizer
         </h1>
         <p className="text-[15px] leading-relaxed text-muted-foreground">{intro}</p>

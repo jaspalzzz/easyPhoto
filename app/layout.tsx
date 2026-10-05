@@ -159,7 +159,7 @@ export default function RootLayout({
               aria-label="easyPhoto home"
             >
               <LogoMark className="h-9 w-9" onDark />
-              <Wordmark className="text-[1.35rem]" tone="light" />
+              <Wordmark className="text-[20px]" tone="light" />
             </Link>
             <div className="flex items-center gap-1">
               <MainNav onDark />

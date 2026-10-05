@@ -86,7 +86,7 @@ export default function Page() {
           <circle cx="380" cy="150" r="22" fill="#F4C63F" />
           <text x="380" y="155" textAnchor="middle" fontSize="14" fontWeight="800" fill="#163A6B">VS</text>
         </svg>
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
           Paid studio vs free on-device passport photo maker — cost, privacy and India spec accuracy compared.
         </figcaption>
       </figure>

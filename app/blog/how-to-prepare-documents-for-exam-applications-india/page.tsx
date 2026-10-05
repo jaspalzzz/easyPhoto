@@ -105,7 +105,7 @@ export default function Page() {
             />
           </div>
         </div>
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
           Illustration of a source photo and a prepared white-background version. The selected portal&apos;s current instructions still control submission.
         </figcaption>
       </figure>

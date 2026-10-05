@@ -190,7 +190,7 @@ export default function Page() {
           height={1024}
           className="h-auto w-full"
         />
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
           A digital-strip example. Use it only when the current application
           instructions ask for text printed on the image.
         </figcaption>

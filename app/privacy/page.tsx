@@ -37,7 +37,7 @@ export default function PrivacyPage() {
 
       <header className="mt-5 space-y-2.5">
         <span className="eyebrow block text-brand">Privacy</span>
-        <h1 className="text-[2rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2.4rem]">
+        <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
           Privacy Policy
         </h1>
         <p className="text-sm text-muted-foreground">Last updated: July 1, 2026</p>

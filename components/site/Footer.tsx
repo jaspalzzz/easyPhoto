@@ -106,7 +106,7 @@ export function Footer() {
         <div className="space-y-4">
           <Link href="/" className="inline-flex items-center gap-2.5">
             <LogoMark className="h-9 w-9" onDark />
-            <Wordmark className="text-[1.35rem]" tone="light" />
+            <Wordmark className="text-[20px]" tone="light" />
           </Link>
           <p className="max-w-xs text-sm leading-relaxed text-white/70">
             Free, private passport &amp; visa photos and everyday image &amp; PDF
@@ -121,7 +121,7 @@ export function Footer() {
                 <Icon className="h-4 w-4 text-[hsl(var(--cta))]" strokeWidth={1.75} />
               </span>
               <span className="min-w-0">
-                <p className="text-[12.5px] font-bold leading-tight text-white">{label}</p>
+                <p className="text-[12px] font-bold leading-tight text-white">{label}</p>
                 <p className="mt-0.5 text-xs leading-snug text-white/70">{sub}</p>
               </span>
             </div>
@@ -141,7 +141,7 @@ export function Footer() {
               <span className="text-xs font-medium text-white/70">{group.links.length}</span>
               <Link
                 href={group.viewAllHref}
-                className="ml-auto inline-flex shrink-0 items-center gap-1 text-[11.5px] font-semibold text-white/70 transition-colors hover:text-[hsl(var(--cta))]"
+                className="ml-auto inline-flex shrink-0 items-center gap-1 text-[12px] font-semibold text-white/70 transition-colors hover:text-[hsl(var(--cta))]"
               >
                 {group.viewAllLabel}
                 <ArrowRight className="h-3 w-3" />

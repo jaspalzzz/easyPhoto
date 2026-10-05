@@ -85,7 +85,7 @@ export default function Page() {
       <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
-        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
+        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
           Exam Photo &amp; Signature Size — Full List
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
@@ -123,10 +123,10 @@ export default function Page() {
                         {s.name.split(" (")[0]}
                       </Link>
                     </td>
-                    <td className="px-3 py-2.5 font-mono text-[13px] text-ink-soft">{photoKb(s)}</td>
-                    <td className="px-3 py-2.5 font-mono text-[13px] text-ink-soft">{photoDimsPx(s, "") ?? "Not published"}</td>
-                    <td className="px-3 py-2.5 font-mono text-[13px] text-ink-soft">{sigKb(s)}</td>
-                    <td className="px-3 py-2.5 font-mono text-[13px] text-ink-soft">{sigDimsPx(s, "") ?? "Not published"}</td>
+                    <td className="px-3 py-2.5 font-mono text-[14px] text-ink-soft">{photoKb(s)}</td>
+                    <td className="px-3 py-2.5 font-mono text-[14px] text-ink-soft">{photoDimsPx(s, "") ?? "Not published"}</td>
+                    <td className="px-3 py-2.5 font-mono text-[14px] text-ink-soft">{sigKb(s)}</td>
+                    <td className="px-3 py-2.5 font-mono text-[14px] text-ink-soft">{sigDimsPx(s, "") ?? "Not published"}</td>
                   </tr>
                 ))}
               </tbody>

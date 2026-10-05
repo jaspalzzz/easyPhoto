@@ -48,7 +48,7 @@ export default function DisclaimerPage() {
 
       <header className="mt-5 space-y-2.5">
         <span className="eyebrow block text-brand">Legal</span>
-        <h1 className="text-[2rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2.4rem]">
+        <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
           Disclaimer
         </h1>
         <p className="text-sm text-muted-foreground">Last updated: June 13, 2026</p>

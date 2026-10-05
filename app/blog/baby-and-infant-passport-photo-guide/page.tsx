@@ -134,7 +134,7 @@ export default function Page() {
           height={1024}
           className="w-full h-auto"
         />
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
           The lay-down method: baby on a smooth white sheet, photographer directly overhead at 90°, natural side lighting — no flash, no shadows.
         </figcaption>
       </figure>

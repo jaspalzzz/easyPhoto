@@ -217,7 +217,7 @@ function Body({
       <label className="block text-sm">
         <span className="mb-1 flex items-center justify-between">
           <span className="eyebrow">Paper removal strength</span>
-          <span className="font-mono text-[13px] text-ink-soft">{threshold}</span>
+          <span className="font-mono text-[14px] text-ink-soft">{threshold}</span>
         </span>
         <input
           type="range"
@@ -235,7 +235,7 @@ function Body({
 
       {out && !busy && (
         <div className="space-y-2 rounded-md border border-hairline bg-card p-3 text-sm">
-          <p className="font-mono text-[13px]">
+          <p className="font-mono text-[14px]">
             Result: <strong className="font-semibold">{formatKb(out.bytes)}</strong> · {out.width}×
             {out.height}px · {out.format === "jpeg" ? "JPG" : "transparent PNG"}
           </p>

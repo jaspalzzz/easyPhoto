@@ -23,10 +23,10 @@ export function TrustPageLayout({
 
       <header className="mt-5 space-y-4 border-b border-hairline pb-9">
         <span className="eyebrow text-brand">{eyebrow}</span>
-        <h1 className="text-balance text-[2.1rem] font-semibold leading-[1.08] tracking-tight text-ink sm:text-[2.6rem]">
+        <h1 className="text-balance text-[36px] font-semibold leading-[1.08] tracking-tight text-ink sm:text-[36px]">
           {title}
         </h1>
-        <p className="max-w-2xl text-pretty text-[17px] leading-relaxed text-muted-foreground">
+        <p className="max-w-2xl text-pretty text-[18px] leading-relaxed text-muted-foreground">
           {intro}
         </p>
       </header>

@@ -70,7 +70,7 @@ const STATS = [
 export function PopularDocs() {
   return (
     <section className="border-t border-hairline bg-card">
-      <div className="container reveal py-14 sm:py-16">
+      <div className="container reveal py-14 sm:py-20">
         <div className="grid gap-10 lg:grid-cols-[1fr_240px] lg:gap-8">
 
           {/* LEFT: Documents + Exams stacked */}
@@ -79,10 +79,10 @@ export function PopularDocs() {
             {/* Popular Countries — 4 hero cards + long-tail flag chips */}
             <div>
               <div className="mb-5 flex items-end justify-between gap-4">
-                <h2 className="text-[17px] font-bold text-ink">Popular Countries</h2>
+                <h2 className="text-[18px] font-bold text-ink">Popular Countries</h2>
                 <Link
                   href="/visa-photo/"
-                  className="hidden shrink-0 items-center gap-1 text-[12.5px] font-semibold text-brand hover:underline sm:flex"
+                  className="hidden shrink-0 items-center gap-1 text-[12px] font-semibold text-brand hover:underline sm:flex"
                 >
                   View all countries <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
@@ -102,9 +102,9 @@ export function PopularDocs() {
                     />
                     <div>
                       <p className="text-[14px] font-bold leading-tight text-ink">{name}</p>
-                      <p className="mt-0.5 text-[10.5px] leading-snug text-muted-foreground">{sub}</p>
+                      <p className="mt-0.5 text-[12px] leading-snug text-muted-foreground">{sub}</p>
                     </div>
-                    <span className="flex items-center gap-1 text-[11.5px] font-semibold text-brand">
+                    <span className="flex items-center gap-1 text-[12px] font-semibold text-brand">
                       Make photo
                       <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                     </span>
@@ -113,7 +113,7 @@ export function PopularDocs() {
               </div>
 
               {/* Long-tail — every other country as a compact flag chip */}
-              <p className="mb-2 mt-6 text-[10.5px] font-bold uppercase tracking-widest text-muted-foreground">
+              <p className="mb-2 mt-6 text-[12px] font-bold uppercase tracking-widest text-muted-foreground">
                 More countries
               </p>
               <div className="flex flex-wrap gap-2">
@@ -121,7 +121,7 @@ export function PopularDocs() {
                   <Link
                     key={href}
                     href={href}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-2.5 py-1 text-[11.5px] font-medium text-ink transition-colors hover:border-hairline-strong hover:bg-surface"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-2.5 py-1 text-[12px] font-medium text-ink transition-colors hover:border-hairline-strong hover:bg-surface"
                   >
                     <Flag country={id} className="h-3 w-[1.05rem] rounded-[2px]" />
                     {label}
@@ -132,8 +132,8 @@ export function PopularDocs() {
 
             {/* Popular Documents — identity documents */}
             <div>
-              <h2 className="mb-5 text-[17px] font-bold text-ink">Popular Documents</h2>
-              <p className="mb-2 text-[10.5px] font-bold uppercase tracking-widest text-muted-foreground">
+              <h2 className="mb-5 text-[18px] font-bold text-ink">Popular Documents</h2>
+              <p className="mb-2 text-[12px] font-bold uppercase tracking-widest text-muted-foreground">
                 ID &amp; Other Documents
               </p>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -147,10 +147,10 @@ export function PopularDocs() {
                       <Globe className="h-4 w-4 text-brand" strokeWidth={1.75} />
                     </span>
                     <div>
-                      <p className="text-[12.5px] font-semibold leading-tight text-ink">
+                      <p className="text-[12px] font-semibold leading-tight text-ink">
                         {doc.label}
                       </p>
-                      <p className="mt-0.5 text-[10.5px] leading-snug text-muted-foreground">
+                      <p className="mt-0.5 text-[12px] leading-snug text-muted-foreground">
                         {doc.sub}
                       </p>
                     </div>
@@ -160,7 +160,7 @@ export function PopularDocs() {
 
               <Link
                 href="/passport-photo/"
-                className="mt-4 inline-flex items-center gap-1 text-[12.5px] font-semibold text-brand hover:underline"
+                className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-brand hover:underline"
               >
                 View all documents <ArrowRight className="h-3.5 w-3.5" />
               </Link>
@@ -168,7 +168,7 @@ export function PopularDocs() {
 
             {/* Popular Exams */}
             <div>
-              <h2 className="mb-5 text-[17px] font-bold text-ink">Popular Exams</h2>
+              <h2 className="mb-5 text-[18px] font-bold text-ink">Popular Exams</h2>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {POPULAR_EXAMS.map((exam) => (
                   <Link
@@ -183,10 +183,10 @@ export function PopularDocs() {
                       {exam.label.slice(0, 2).toUpperCase()}
                     </span>
                     <div>
-                      <p className="text-[12.5px] font-semibold leading-tight text-ink">
+                      <p className="text-[12px] font-semibold leading-tight text-ink">
                         {exam.label}
                       </p>
-                      <p className="mt-0.5 text-[10.5px] leading-snug text-muted-foreground">
+                      <p className="mt-0.5 text-[12px] leading-snug text-muted-foreground">
                         {exam.sub}
                       </p>
                     </div>
@@ -195,7 +195,7 @@ export function PopularDocs() {
               </div>
               <Link
                 href="/tools/exam-package/"
-                className="mt-4 inline-flex items-center gap-1 text-[12.5px] font-semibold text-brand hover:underline"
+                className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-brand hover:underline"
               >
                 View all exams <ArrowRight className="h-3.5 w-3.5" />
               </Link>
@@ -211,11 +211,11 @@ export function PopularDocs() {
                   <Icon className="h-5 w-5 text-brand" strokeWidth={1.75} />
                 </span>
                 <div>
-                  <p className="text-[1.6rem] font-black leading-none tracking-tight text-ink">
+                  <p className="text-[24px] font-black leading-none tracking-tight text-ink">
                     {value}
                   </p>
                   <p className="mt-0.5 text-[12px] font-semibold text-ink">{label}</p>
-                  <p className="mt-0.5 text-[10.5px] leading-snug text-muted-foreground">{sub}</p>
+                  <p className="mt-0.5 text-[12px] leading-snug text-muted-foreground">{sub}</p>
                 </div>
               </div>
             ))}

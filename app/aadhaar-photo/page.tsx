@@ -59,7 +59,7 @@ export default function AadhaarPhotoPage() {
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">Aadhaar</span>
-        <h1 className="text-3xl font-semibold tracking-tight text-ink sm:text-[2.25rem]">
+        <h1 className="text-3xl font-semibold tracking-tight text-ink sm:text-[36px]">
           Aadhaar Photo: How to Change It
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">

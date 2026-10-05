@@ -85,14 +85,14 @@ export default function Page() {
             <Link
               key={kb}
               href={kbPath(kb)}
-              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
+              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
             >
               Resize to {kb} KB
             </Link>
           ))}
           <Link
             href="/tools/resize-kb/"
-            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
+            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
           >
             Custom size
           </Link>

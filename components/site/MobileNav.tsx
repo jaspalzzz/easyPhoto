@@ -181,7 +181,7 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
 
               {/* ── Category quick-links — same 5 categories as the desktop
                      mega-menu (both render from lib/toolMenu MENU_COLUMNS). ── */}
-              <p className="mb-2.5 text-[10.5px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+              <p className="mb-2.5 text-[12px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                 Browse by category
               </p>
               <div className="grid grid-cols-2 gap-2">
@@ -205,7 +205,7 @@ export function MobileNav({ onDark = false }: { onDark?: boolean }) {
                   onClick={close}
                   className="col-span-2 flex items-center justify-between rounded-xl border border-brand/30 bg-brand-soft/20 px-3 py-2.5 transition-colors hover:bg-brand-soft/40"
                 >
-                  <span className="text-[12.5px] font-bold text-brand">View all tools</span>
+                  <span className="text-[12px] font-bold text-brand">View all tools</span>
                   <ArrowRight className="h-4 w-4 text-brand" />
                 </Link>
               </div>

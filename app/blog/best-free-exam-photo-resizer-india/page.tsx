@@ -70,7 +70,7 @@ export default function Page() {
           height={1024}
           className="w-full h-auto"
         />
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
           easyPhoto&apos;s exam workflow shows the selected registry target and measurable output checks; applicants should confirm the current notice.
         </figcaption>
       </figure>
