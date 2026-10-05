@@ -49,6 +49,9 @@ const sizeLine = (s: PortalSpec, kind: "photo" | "signature" = "photo") =>
 // line tells us which exam the shown result was checked against.
 const EXAM_A = SPECS[0];
 const EXAM_B = SPECS.find((s) => sizeLine(s) !== sizeLine(EXAM_A))!;
+const WITH_SIG = SPECS.find((s) => s.sigLimitKb != null)!;
+const NO_SIG = SPECS.find((s) => s.sigLimitKb == null)!;
+const NO_SIG_MESSAGE = "doesn't specify a separate signature upload";
 
 let container: HTMLDivElement;
 let root: ReturnType<typeof createRoot>;
@@ -128,5 +131,73 @@ describe("ComplianceCheckerTool — only the latest check sets the result", () =
     expect(container.textContent).toContain(sizeLine(EXAM_B));
     expect(container.textContent).not.toContain("STALE_FACE_CHECK");
     expect(container.textContent).not.toContain("Checking…");
+  });
+});
+
+describe("ComplianceCheckerTool — no signature check for an exam without a signature upload", () => {
+  const signatureButton = () =>
+    [...container.querySelectorAll("button")].find((b) => b.textContent === "signature")!;
+
+  it("changing to such an exam shows the message, runs no check and drops the old verdict", async () => {
+    createImageBitmap.mockImplementation(async () => bitmap());
+
+    await mountWithHandoff("signature", WITH_SIG.id);
+    await flush();
+    expect(container.textContent).toContain(sizeLine(WITH_SIG, "signature"));
+    expect(createImageBitmap).toHaveBeenCalledTimes(1);
+
+    await selectExam(NO_SIG.id);
+    await flush();
+
+    expect(createImageBitmap).toHaveBeenCalledTimes(1);
+    expect(container.textContent).toContain(NO_SIG_MESSAGE);
+    expect(container.textContent).not.toContain("File size");
+    expect(container.textContent).not.toContain("Readiness");
+
+    // The file is kept: picking an exam with a signature upload re-checks it.
+    await selectExam(WITH_SIG.id);
+    await flush();
+    expect(createImageBitmap).toHaveBeenCalledTimes(2);
+    expect(container.textContent).toContain(sizeLine(WITH_SIG, "signature"));
+  });
+
+  it("a signature check still in flight for the previous exam does not land", async () => {
+    const first = deferred<ImageBitmap>();
+    createImageBitmap.mockReturnValueOnce(first.promise);
+
+    await mountWithHandoff("signature", WITH_SIG.id);
+    await selectExam(NO_SIG.id);
+    first.resolve(bitmap());
+    await flush();
+
+    expect(container.textContent).toContain(NO_SIG_MESSAGE);
+    expect(container.textContent).not.toContain("File size");
+    expect(container.textContent).not.toContain("Checking…");
+  });
+
+  it("switching a photo check to signature on such an exam drops the in-flight photo result", async () => {
+    const first = deferred<ImageBitmap>();
+    createImageBitmap.mockReturnValueOnce(first.promise);
+    checkPhotoQuality.mockResolvedValue([]);
+
+    await mountWithHandoff("photo", NO_SIG.id);
+    await act(async () => signatureButton().click());
+    first.resolve(bitmap());
+    await flush();
+
+    expect(container.textContent).toContain(NO_SIG_MESSAGE);
+    expect(container.textContent).not.toContain("File size");
+    expect(container.textContent).not.toContain("Checking…");
+  });
+
+  it("a signature handed over for such an exam is not checked", async () => {
+    createImageBitmap.mockImplementation(async () => bitmap());
+
+    await mountWithHandoff("signature", NO_SIG.id);
+    await flush();
+
+    expect(createImageBitmap).not.toHaveBeenCalled();
+    expect(container.textContent).toContain(NO_SIG_MESSAGE);
+    expect(container.textContent).not.toContain("File size");
   });
 });

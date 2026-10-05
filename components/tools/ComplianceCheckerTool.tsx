@@ -98,11 +98,19 @@ export function ComplianceCheckerTool() {
     if (!spec) return;
     const runId = ++checkRunRef.current;
     const isLatest = () => runId === checkRunRef.current;
-    setBusy(true);
     setError(null);
     setReport(null);
     setPhotoChecks(null);
     setSourceFile(file);
+    // An exam with no separate signature upload has nothing to check a
+    // signature against — the UI shows that instead of a verdict. Keep the
+    // file (so another exam re-checks it); taking a run id above already
+    // discards any check still in flight.
+    if (kind === "signature" && spec.sigLimitKb == null) {
+      setBusy(false);
+      return;
+    }
+    setBusy(true);
     track({ name: "tool_start", tool: "compliance-checker", device: deviceClass() });
     const bmp = await createImageBitmap(file).catch(() => null);
     try {
@@ -242,8 +250,7 @@ export function ComplianceCheckerTool() {
                 onClick={() => {
                   setKind(k);
                   setReport(null);
-                  const noSigField = k === "signature" && spec?.sigLimitKb == null;
-                  if (sourceFile && !noSigField) void runCheck(sourceFile, spec, k);
+                  if (sourceFile) void runCheck(sourceFile, spec, k);
                 }}
                 className={`rounded-md border px-3 py-2 text-sm font-medium capitalize transition-colors ${
                   kind === k
