@@ -230,6 +230,34 @@ test("pan exam page: signature JPG carries the mandated 200 DPI", async ({ page 
   expect((bytes[16] << 8) | bytes[17]).toBe(200);
 });
 
+// Sarathi's PhotoSign.pdf: "The image file should be JPG format", signature
+// 256×64 px, 10–20 KB. The tool used to export a transparent PNG here.
+test("driving-licence exam page: signature exports a 256x64 JPG inside 10–20 KB", async ({ page }) => {
+  await page.goto("/exam-requirements/driving-licence/");
+  await page.getByRole("button", { name: /clean & compress signature/i }).click();
+  await page.setInputFiles('input[type="file"]', {
+    name: "sig.png",
+    mimeType: "image/png",
+    buffer: await makeStackedSignatures(page, 1),
+  });
+  const download = page.getByRole("button", { name: /download .*jpg/i });
+  await expect(download).toBeVisible({ timeout: 30_000 });
+  const [dl] = await Promise.all([page.waitForEvent("download"), download.click()]);
+  const b64 = await readDownloadBase64(dl);
+  const bytes = Buffer.from(b64, "base64");
+  expect(bytes[0]).toBe(0xff);
+  expect(bytes[1]).toBe(0xd8);
+  expect(bytes.length).toBeGreaterThanOrEqual(10 * 1024);
+  expect(bytes.length).toBeLessThanOrEqual(20 * 1024);
+  const dims = await page.evaluate(async (data) => {
+    const img = new Image();
+    img.src = `data:image/jpeg;base64,${data}`;
+    await img.decode();
+    return [img.naturalWidth, img.naturalHeight];
+  }, b64);
+  expect(dims).toEqual([256, 64]);
+});
+
 test("upsc exam page: warns when the signature image has fewer than three signatures", async ({ page }) => {
   await page.goto("/exam-requirements/upsc/");
   await page.getByRole("button", { name: /clean & compress signature/i }).click();
