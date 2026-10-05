@@ -11,6 +11,7 @@ import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell"
 import { fitToExactFrame, imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import {
   SIGNATURE_CLEAN_DEFAULTS,
+  signatureExportFormat,
   signatureKbFloor,
   signatureStackParams,
   signatureTrimAttach,
@@ -117,11 +118,8 @@ function Body({
 
   // Background Settings (PNG vs JPEG)
   const initialPreset = defaultPresetKey ? PORTAL_PRESETS[defaultPresetKey] : undefined;
-  const inferredFormat = /\b(?:JPG|JPEG)\b/i.test(initialPreset?.description ?? "")
-    ? "jpeg"
-    : "png";
   const [bgFormat, setBgFormat] = React.useState<"png" | "jpeg">(
-    defaultFormat ?? inferredFormat
+    defaultFormat ?? signatureExportFormat(initialPreset)
   );
 
   // Clean Settings
@@ -373,6 +371,7 @@ function Body({
             // High-quality JPEG binary search compression
             const compressed = await compressToCap(renderCanvas, dTargetKb, {
               minScale: 0.1,
+              densityDpi: selectedPreset?.dpi,
             });
             resultBlob = compressed.blob;
             resultCanvas = imageToCanvas(renderCanvas, compressed.width, compressed.height);
@@ -417,6 +416,7 @@ function Body({
               minDimensions: { width: targetWidth, height: targetHeight },
               minKb,
               maxQuality: 1,
+              densityDpi: selectedPreset?.dpi,
             });
             resultBlob = compressed.blob;
             isUnderCap = compressed.underCap;
@@ -496,6 +496,7 @@ function Body({
     toolName,
     minKb,
     requiredCopies,
+    selectedPreset?.dpi,
   ]);
 
   // Handle preset selections
@@ -509,7 +510,7 @@ function Body({
         setResizeMode("kb");
         setTargetKb(preset.sigLimitKb);
       }
-      setBgFormat(/\b(?:JPG|JPEG)\b/i.test(preset.description) ? "jpeg" : "png");
+      setBgFormat(signatureExportFormat(preset));
       
       // If portal specifies preset dimensions, we lock those dimensions
       if (preset.sigWidthPx && preset.sigHeightPx) {

@@ -140,6 +140,21 @@ export function signatureKbFloor(
 }
 
 /**
+ * File format to export a signature in for a portal preset. The preset's
+ * published `sigFormat` decides; the description is only a fallback for
+ * presets that don't state one. Matching the description alone exported a
+ * transparent PNG for the Driving Licence (Sarathi) preset, whose source
+ * requires JPG but whose description never says so.
+ */
+export function signatureExportFormat(
+  preset: { sigFormat?: string; description?: string } | undefined,
+): "jpeg" | "png" {
+  const jpg = /\b(?:JPG|JPEG)\b/i;
+  if (preset?.sigFormat) return jpg.test(preset.sigFormat) ? "jpeg" : "png";
+  return jpg.test(preset?.description ?? "") ? "jpeg" : "png";
+}
+
+/**
  * Turn light paper into transparency, keeping the dark ink. Returns a NEW RGBA
  * canvas; the source is untouched.
  */
