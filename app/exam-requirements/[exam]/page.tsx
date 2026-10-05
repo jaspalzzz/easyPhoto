@@ -287,7 +287,7 @@ export default async function Page({
             which left 48 exam pages with no route to the longer explanation.
             The map only offers a guide that genuinely covers the portal. */}
         {guideLinks.length > 0 && (
-          <div className="rounded-lg border border-hairline bg-card p-4">
+          <div className="support rounded-lg border p-4">
             <h3 className="text-sm font-semibold text-ink">
               Before you upload
             </h3>
