@@ -155,7 +155,7 @@ export default function HomePage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────── */}
-      <section className="container py-14 sm:py-16">
+      <section className="container py-14 sm:py-20">
         <Faq noSchema />
       </section>
     </>

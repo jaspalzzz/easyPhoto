@@ -70,7 +70,7 @@ const STATS = [
 export function PopularDocs() {
   return (
     <section className="border-t border-hairline bg-card">
-      <div className="container reveal py-14 sm:py-16">
+      <div className="container reveal py-14 sm:py-20">
         <div className="grid gap-10 lg:grid-cols-[1fr_240px] lg:gap-8">
 
           {/* LEFT: Documents + Exams stacked */}

@@ -95,7 +95,7 @@ function EmeraldArrow() {
 export function AiShowcase() {
   return (
     <section className="border-t border-hairline bg-card">
-      <div className="container reveal py-14 sm:py-16">
+      <div className="container reveal py-14 sm:py-20">
 
         {/* ── heading ── */}
         <div className="mb-10 text-center">

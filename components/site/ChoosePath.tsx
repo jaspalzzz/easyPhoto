@@ -169,7 +169,7 @@ function PathCard({ path }: { path: Path }) {
 export function ChoosePath() {
   return (
     <section className="border-t border-hairline bg-paper">
-      <div className="container reveal py-12 sm:py-14">
+      <div className="container reveal py-12 sm:py-20">
         {/* Broad promise — passport and exam users both belong here */}
         <div className="mx-auto mb-8 max-w-2xl text-center">
           <h2 className="text-[30px] font-bold tracking-tight text-ink sm:text-[30px]">

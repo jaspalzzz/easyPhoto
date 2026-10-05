@@ -13,7 +13,7 @@ const PAIRS = [
 export function RealTransformations() {
   return (
     <section className="border-t border-hairline bg-paper">
-      <div className="container py-14 sm:py-16">
+      <div className="container py-14 sm:py-20">
         <h2 className="mb-2 text-center text-2xl font-semibold tracking-tight text-ink">
           Real Transformations
         </h2>

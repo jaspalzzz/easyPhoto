@@ -134,7 +134,7 @@ function BottomCard({ card }: { card: Card }) {
 export function FeaturedTools() {
   return (
     <section className="border-t border-hairline bg-card">
-      <div className="container reveal py-12 sm:py-14">
+      <div className="container reveal py-12 sm:py-20">
 
         {/* heading */}
         <div className="mb-8 flex items-end justify-between gap-4">

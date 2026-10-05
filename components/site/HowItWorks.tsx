@@ -24,7 +24,7 @@ const STEPS = [
 export function HowItWorks() {
   return (
     <section className="border-t border-hairline bg-paper">
-      <div className="container py-14 sm:py-16">
+      <div className="container py-14 sm:py-20">
         <p className="mb-2 text-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
           How it works
         </p>

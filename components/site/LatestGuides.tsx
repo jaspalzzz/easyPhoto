@@ -21,7 +21,7 @@ export function LatestGuides() {
 
   return (
     <section className="border-t border-hairline bg-paper">
-      <div className="container py-14 sm:py-16">
+      <div className="container py-14 sm:py-20">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h2 className="text-2xl font-semibold tracking-tightest text-ink sm:text-[30px]">
