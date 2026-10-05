@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { assertPdfDecryptable, pdfToCanvases, PdfEncryptedError } from "@/lib/pdfToImages";
@@ -251,7 +251,7 @@ export function PdfReorderTool() {
   };
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         {pages.length === 0 && !busy && (
           <div
@@ -496,6 +496,6 @@ export function PdfReorderTool() {
 
         {busy && <ProcessingState label={progress ?? "Processing PDF…"} />}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

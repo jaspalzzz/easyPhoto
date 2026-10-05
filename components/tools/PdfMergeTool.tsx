@@ -5,7 +5,7 @@ import { Download, FileUp, ShieldCheck, ArrowUp, ArrowDown, Trash2, FileText, Ch
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
 import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
 import { mergePdfs } from "@/lib/pdfMergeSplit";
@@ -149,7 +149,7 @@ export function PdfMergeTool() {
   };
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         {/* Upload Zone */}
         <div
@@ -329,6 +329,6 @@ export function PdfMergeTool() {
         {/* Processing State */}
         {busy && <ProcessingState label={progress ?? "Processing PDFs…"} />}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

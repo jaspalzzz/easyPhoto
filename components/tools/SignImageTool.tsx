@@ -5,7 +5,7 @@ import { Download, FileUp, ShieldCheck, PenLine, Minimize2, Maximize2 } from "lu
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { canvasToBlob } from "@/lib/imaging";
 import { ensureDecodable } from "@/lib/heic";
 import { downloadBlob } from "@/lib/download";
@@ -207,9 +207,7 @@ export function SignImageTool() {
   };
 
   return (
-    // The working surface: same level-1 lift as .panel on the other tool pages
-    // (Card's own radius/border utilities would override the .panel class).
-    <Card className="rounded-3xl border-hairline-strong shadow-tool dark:shadow-tool-dark">
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         {/* Upload Zone */}
         {!baseFile && !busy && (
@@ -411,6 +409,6 @@ export function SignImageTool() {
 
         {busy && <ProcessingState label="Loading…" />}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

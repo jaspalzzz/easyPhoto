@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Loader2, Plus, X, FileText, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { imagesToPdf } from "@/lib/imagesToPdf";
@@ -80,7 +80,7 @@ export function JpgToPdfTool() {
   };
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         <div
           role="button"
@@ -196,6 +196,6 @@ export function JpgToPdfTool() {
           />
         )}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

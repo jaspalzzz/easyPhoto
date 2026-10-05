@@ -4,7 +4,7 @@ import * as React from "react";
 import { Download, FileUp, ShieldCheck } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { pdfNextSteps } from "@/components/site/pdfNextSteps";
 import { pdfToCanvases, PdfTooLargeError, PdfEncryptedError } from "@/lib/pdfToImages";
@@ -113,7 +113,7 @@ export function PdfSplitTool() {
   };
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         {/* Upload Zone */}
         {!file && !busy && (
@@ -241,6 +241,6 @@ export function PdfSplitTool() {
           </div>
         )}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

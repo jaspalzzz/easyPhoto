@@ -14,7 +14,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { ToolIconTile } from "@/components/site/ToolIcon";
 import { PORTAL_PRESETS, PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
 import {
@@ -466,7 +466,7 @@ export function ExamPackageTool() {
   const stepIndex = STEPS.findIndex((s) => s.id === step);
 
   return (
-    <Card className="min-w-0">
+    <ToolCard className="min-w-0">
       <CardContent className="min-w-0 space-y-6 p-4 sm:p-6">
         {/* Stepper — premium progress bar with connecting fill */}
         <nav aria-label="Progress">
@@ -864,7 +864,7 @@ export function ExamPackageTool() {
           </>
         )}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }
 
