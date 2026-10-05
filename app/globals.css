@@ -196,10 +196,30 @@
     .ep-card:hover { transform: none; }
   }
 
-  /* Hairline-framed working surface (the live tool / result). The ONLY place
-     we allow elevation, and even then it's a whisper. */
+  /* The working surface (the live tool / result) — level 1 of the card
+     hierarchy and the ONLY raised element on a tool page: a firmer edge and a
+     soft lift, so the tool reads before the content cards (level 2) and the
+     supporting notes (level 3, .support). */
   .panel {
-    @apply rounded-lg border bg-card shadow-panel;
+    @apply rounded-3xl border bg-card shadow-tool;
+    border-color: hsl(var(--hairline-strong));
+  }
+  /* A navy shadow vanishes on the dark canvas; deepen it so the lift survives. */
+  .dark .panel {
+    box-shadow: 0 1px 2px hsl(0 0% 0% / 0.3), 0 12px 32px -14px hsl(0 0% 0% / 0.65);
+  }
+
+  /* Level 3 — supporting surfaces (notes, related-tool links): no frame, just
+     the surface tint, so they recede behind the tool and the content cards.
+     Keep the `border` width class on the element: a related-tool link shows a
+     brand edge on hover without shifting. */
+  .support {
+    border-color: transparent;
+    background-color: hsl(var(--surface));
+  }
+  .ep-card.support:hover {
+    border-color: hsl(var(--brand) / 0.35);
+    background-color: hsl(var(--surface));
   }
 
   /* Interactive tile: border darkens + faint wash on hover. No lift, no glow. */

@@ -105,6 +105,9 @@ const config: Config = {
         // navy-tinted elevation pair for the premium surfaces — resting + lifted.
         soft: "0 1px 3px hsl(222 47% 11% / 0.06), 0 1px 2px hsl(222 47% 11% / 0.04)",
         lift: "0 18px 40px -16px hsl(222 47% 11% / 0.20), 0 6px 14px -8px hsl(222 47% 11% / 0.10)",
+        // The working tool surface (.panel): the one raised element on a page,
+        // so the tool reads first and notes/content cards read after it.
+        tool: "0 1px 2px hsl(222 47% 11% / 0.05), 0 12px 32px -14px hsl(222 47% 11% / 0.22)",
         none: "none",
       },
       letterSpacing: {

@@ -168,7 +168,7 @@ export function ToolPage({
                 key={t.slug}
                 href={`/tools/${t.slug}/`}
                 event={{ name: "related_tool_click", from: slug!, to: t.slug }}
-                className="ep-card group flex items-center gap-3 p-4"
+                className="ep-card support group flex items-center gap-3 p-4"
               >
                 <ToolIconTile name={t.icon} category={toolColorCategory(t.slug)} size="sm" />
                 <span className="text-sm font-semibold leading-tight text-ink">

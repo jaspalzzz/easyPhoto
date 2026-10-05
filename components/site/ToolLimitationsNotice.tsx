@@ -28,7 +28,7 @@ export function ToolLimitationsNotice({
   return (
     <aside
       aria-label="Photo-checking scope and limitations"
-      className="rounded-lg border border-hairline bg-paper p-4 text-sm"
+      className="support rounded-lg border p-4 text-sm"
     >
       <p className="flex items-start gap-2 leading-relaxed text-ink-soft">
         <Info className="mt-0.5 h-4 w-4 shrink-0 text-brand" strokeWidth={1.75} />
