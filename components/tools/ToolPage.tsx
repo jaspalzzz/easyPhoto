@@ -9,6 +9,7 @@ import { breadcrumbSchema, faqSchema, softwareApplicationSchema, type Crumb } fr
 import { isDeindexed } from "@/lib/deindexed";
 import { TrackedLink } from "@/components/site/TrackedLink";
 import { ToolDepth } from "@/components/tools/ToolDepth";
+import { SupportCard } from "@/components/site/SupportCard";
 
 /** Shared chrome for a tool page: breadcrumb, heading, body, related links. */
 export function ToolPage({
@@ -70,6 +71,9 @@ export function ToolPage({
     autoCrumbs.push({ name: title, path: urlPath });
   }
   const crumbs = breadcrumbsProp ?? autoCrumbs;
+  // Analytics label for the support card: the catalog slug, else the page's
+  // own path segment (e.g. a Hinglish landing with no catalog entry).
+  const supportTool = slug ?? urlPath?.split("/").filter(Boolean).pop();
 
   const headerInner = (
     <header className="flex items-start gap-4">
@@ -144,11 +148,17 @@ export function ToolPage({
 
       {aside ? (
         <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
-          <div className="min-w-0">{children}</div>
+          <div className="min-w-0">
+            {children}
+            <SupportCard tool={supportTool} className="mt-6" />
+          </div>
           <aside>{aside}</aside>
         </div>
       ) : (
-        <div className="mt-6">{children}</div>
+        <div className="mt-6">
+          {children}
+          <SupportCard tool={supportTool} className="mt-6" />
+        </div>
       )}
 
       <ToolDepth slug={slug} />

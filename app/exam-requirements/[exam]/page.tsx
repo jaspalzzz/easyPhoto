@@ -27,6 +27,7 @@ import { SpecificationProvenance } from "@/components/site/SpecificationProvenan
 import { buttonVariants } from "@/components/ui/button";
 import { examGuideLinks } from "@/lib/examGuides";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { SupportCard } from "@/components/site/SupportCard";
 
 // One static page per exam (the cited Spec Database).
 export function generateStaticParams() {
@@ -352,6 +353,9 @@ export default async function Page({
           </p>
         )}
       </section>
+
+      {/* Appears only after a file from the resizer above is saved. */}
+      <SupportCard tool={`exam-${exam}`} />
 
       {spec.applicationNotes && spec.applicationNotes.length > 0 && (
         <section className="space-y-3 border-t border-hairline pt-8">

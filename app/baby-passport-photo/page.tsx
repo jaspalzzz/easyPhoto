@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { COUNTRY_SPECS, effectivePrintMm } from "@/lib/countrySpecs";
 import { PhotoTool } from "@/components/tool/PhotoTool";
+import { SupportCard } from "@/components/site/SupportCard";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, softwareApplicationSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
@@ -126,6 +127,7 @@ export default function BabyPassportPhotoPage() {
       </header>
 
       <PhotoTool spec={spec} />
+      <SupportCard tool="baby-passport-photo" />
 
       {/* The real value: how to take a baby's photo so it passes */}
       <section className="space-y-6">

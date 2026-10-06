@@ -18,6 +18,7 @@ import { getMakerContent } from "@/lib/makerContent";
 import { AcceptanceTips } from "@/components/site/AcceptanceTips";
 import { HeadSizeGuide } from "@/components/site/HeadSizeGuide";
 import { PhotoTool } from "@/components/tool/PhotoTool";
+import { SupportCard } from "@/components/site/SupportCard";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
   breadcrumbSchema,
@@ -247,6 +248,7 @@ export default async function MakerPage({
 
       {/* Advisory scoping lives in specForDocumentKind so it can be tested. */}
       <PhotoTool spec={specForDocumentKind(spec, kind)} />
+      <SupportCard tool={maker} />
 
       {spec.applicationNotes && spec.applicationNotes.length > 0 && (
         <section className="mt-10 space-y-3 border-t border-hairline pt-8">

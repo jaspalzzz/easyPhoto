@@ -4,6 +4,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, softwareApplicationSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { UnlockPdfTool } from "@/components/tools/UnlockPdfTool";
+import { SupportCard } from "@/components/site/SupportCard";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
@@ -92,6 +93,7 @@ export default function Page() {
       </div>
 
       <UnlockPdfTool />
+      <SupportCard tool="unlock-aadhaar-pdf" />
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">How to open your e-Aadhaar PDF</h2>
