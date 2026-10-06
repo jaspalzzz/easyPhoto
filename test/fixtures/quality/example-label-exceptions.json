@@ -1,0 +1,13 @@
+{
+  "_readme": [
+    "Recorded from origin/dev on 2026-10-06 (CLAUDE.md §3: static demos are labelled 'Example'). Checked by test/exampleLabel.test.ts.",
+    "unlabelledStaticPass: component files that render a fixed pass / 'checks passed' result as JSX text with no visible 'Example' label.",
+    "components/site/WhyRejected.tsx — homepage card '6/6 Checks Passed … Lighting Good … Eyes visible Yes', flagged by the 6 Oct guideline audit; it needs a visible 'Example result' label (homepage is SEO-visible, so ship it alone).",
+    "components/site/ComplianceEngine.tsx — fixed '10/10 Checks Passed' card; not imported anywhere today. Label it before it is used, or delete it.",
+    "Entries may only be removed. Once a file is labelled, the check fails until its entry is deleted. Never add an entry to make the check pass."
+  ],
+  "unlabelledStaticPass": [
+    "components/site/ComplianceEngine.tsx",
+    "components/site/WhyRejected.tsx"
+  ]
+}

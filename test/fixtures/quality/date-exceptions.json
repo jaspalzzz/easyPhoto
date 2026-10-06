@@ -1,0 +1,119 @@
+{
+  "_readme": [
+    "Ratchet baseline recorded from origin/dev on 2026-10-06 (CLAUDE.md §2: visible dates, dateModified and sitemap lastmod agree).",
+    "blogDates (test/dateConsistency.test.ts): blog posts whose visible \"Last reviewed/updated\" date, BlogPosting dateModified and sitemap lastmod disagree, with the dates as recorded.",
+    "dateModifiedVsLastmod (scripts/quality-gate.mjs): indexed pages whose JSON-LD dateModified differs from their sitemap lastmod, with both dates.",
+    "An entry may only be deleted: a changed date is a new disagreement and fails; a resolved one fails until its entry is deleted. Fix the dates only when the content really changed (never fake freshness)."
+  ],
+  "blogDates": {
+    "schengen-europe-visa-photo-size": {
+      "visible": "2026-07-12",
+      "dateModified": "2026-06-10",
+      "lastmod": "2026-06-10"
+    },
+    "how-to-sign-on-image-online": {
+      "visible": "2026-07-12",
+      "dateModified": "2026-07-08",
+      "lastmod": "2026-07-08"
+    },
+    "how-to-compress-pdf": {
+      "visible": "2026-07-12",
+      "dateModified": "2026-06-10",
+      "lastmod": "2026-06-10"
+    },
+    "how-to-merge-pdf-free": {
+      "visible": "2026-07-12",
+      "dateModified": "2026-06-10",
+      "lastmod": "2026-06-10"
+    },
+    "how-to-take-a-passport-photo-at-home": {
+      "visible": "2026-07-12",
+      "dateModified": "2026-06-06",
+      "lastmod": "2026-06-06"
+    },
+    "how-to-reduce-passport-photo-size-for-online-forms": {
+      "visible": "2026-07-12",
+      "dateModified": "2026-06-04",
+      "lastmod": "2026-06-04"
+    },
+    "baby-and-infant-passport-photo-guide": {
+      "visible": "2026-07-12",
+      "dateModified": "2026-06-03",
+      "lastmod": "2026-06-03"
+    }
+  },
+  "dateModifiedVsLastmod": {
+    "/": {
+      "dateModified": "2026-06-21",
+      "lastmod": "2026-08-02"
+    },
+    "/privacy/": {
+      "dateModified": "2026-07-01",
+      "lastmod": "2026-08-02"
+    },
+    "/terms/": {
+      "dateModified": "2026-06-06",
+      "lastmod": "2026-08-02"
+    },
+    "/passport-photo/": {
+      "dateModified": "2026-06-11",
+      "lastmod": "2026-08-02"
+    },
+    "/visa-photo/": {
+      "dateModified": "2026-06-11",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/upsc/": {
+      "dateModified": "2026-07-16",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/oci/": {
+      "dateModified": "2026-07-18",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/ibps/": {
+      "dateModified": "2026-07-16",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/sbi/": {
+      "dateModified": "2026-07-16",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/ctet/": {
+      "dateModified": "2026-06-08",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/uppsc/": {
+      "dateModified": "2026-07-17",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/csir-net/": {
+      "dateModified": "2026-07-17",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/niacl/": {
+      "dateModified": "2026-07-18",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/cat/": {
+      "dateModified": "2026-07-01",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/airforce-agniveer/": {
+      "dateModified": "2026-07-16",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/pan/": {
+      "dateModified": "2026-06-11",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/cuet/": {
+      "dateModified": "2026-07-01",
+      "lastmod": "2026-08-02"
+    },
+    "/exam-requirements/navy-agniveer/": {
+      "dateModified": "2026-07-18",
+      "lastmod": "2026-08-02"
+    }
+  }
+}
