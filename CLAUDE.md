@@ -26,6 +26,13 @@ We build with AI. We do not publish AI slop.
   without approval. A link to a retired route gets repointed, never revived.
 - New capability goes **inside an existing tool page** (an option, a preset, a
   step, a check) — not onto a new URL.
+- **Template families have a similarity ceiling.** `/exam-requirements/*`,
+  `*-photo-maker/`, the US/UK/Canada/Schengen guides, `/tools/*` and `/blog/*`
+  are measured with name- and number-normalised 5-word shingles
+  (`npm run quality`). No pair may exceed the family's recorded maximum, no
+  page may lose words of its own, and a new page needs ≥ 250 words not shared
+  with its siblings. The baseline
+  (`test/fixtures/quality/similarity-baseline.json`) only moves down.
 
 ## 2. What Google sees changes rarely and on purpose
 
@@ -40,8 +47,16 @@ visible body text, internal links, sitemap `lastmod`.
 - No site-wide or many-page copy edits in one release.
 - `lastmod` / "updated" dates move only when content really changed
   (see the per-section constants in `app/sitemap.ts`). Never fake freshness.
+- **Visible dates, `dateModified` and sitemap `lastmod` agree.** Move them
+  together, and only when the content changed: if the SEO diff (§6.3) shows a
+  page's text changed, its date moves too, and the reverse. Today's
+  disagreements are listed in `test/fixtures/quality/date-exceptions.json`; the
+  list only shrinks.
 - No SEO-visible release while a Google core or spam update is rolling out
   (status.search.google.com), or in the 14 days after one finishes.
+- Every production PR records the latest Google update's status (name, start,
+  end or "rolling") from status.search.google.com. Owner overrides of the quiet
+  window are logged in `docs/weekly-log.md`.
 
 ## 3. No AI slop
 
@@ -49,10 +64,31 @@ visible body text, internal links, sitemap `lastmod`.
   **official source**, linked on the page with the date we checked it. If it
   isn't published, we say so and don't invent it (ECI publishes no upload KB
   cap for Form 6 → we claim none).
+- **A number we did not find in the official source is never "the size".** If
+  a preset is `needs-review` or the authority publishes no figure, the title,
+  meta description, H1, first requirement card, FAQ answers and JSON-LD say
+  what *is* published (e.g. "photo captured live", "4.5 × 3.5 cm print, no
+  upload cap published") and show our value only as "easyPhoto default — not
+  an official limit". `test/unpublishedSpecClaims.test.ts` and `npm run
+  quality` enforce this.
 - No filler, no keyword stuffing, no copy templated across pages, no text that
   exists for Google rather than the user. Every sentence helps someone finish
   their form.
+- **Write for applicants, not for us.** No internal vocabulary in user-facing
+  copy ("stored", "selected target", "preset", "registry",
+  "compatibility-only", "in this review", "extracted"). Never state the same
+  fact twice on one page. `test/internalJargon.test.ts` and `npm run quality`
+  count these; the counts only fall.
+- **No shared FAQ templates.** A FAQ question, after swapping out the
+  exam/country name and numbers, may appear on at most 3 indexed pages, and
+  every answer must answer the question asked. FAQ blocks are for readers.
+  Enforced by `test/faqTemplate.test.ts` and `npm run quality`.
+- **Static demos are labelled.** Any pass/fail, score or "checks passed"
+  visual not produced from the user's own file carries a visible "Example"
+  label (`test/exampleLabel.test.ts`).
 - The owner reviews every user-facing copy change before it ships.
+- **AI-drafted text gets a read-aloud pass** by the owner before merge,
+  including titles, meta descriptions, alt text and JSON-LD.
 - Examples, screenshots and sample outputs come from the real tool.
 - No fake reviews, counts, testimonials or authority claims.
 
@@ -91,7 +127,7 @@ A result is correct only when **all** hold:
 ## 6. The gate — every PR, no exceptions
 
 1. `npx tsc --noEmit` clean · `npx vitest run` green · ESLint: no new warnings ·
-   `npm run build` succeeds.
+   `npm run build` succeeds, then `npm run quality` passes on that build.
 2. Every commit passes type-check and tests on its own (the branch must bisect).
 3. **SEO diff:** build production (`master`) and the branch; compare title,
    meta, canonical, robots, H1/H2, JSON-LD and visible text of every page. Only
@@ -104,6 +140,24 @@ A result is correct only when **all** hold:
 7. No new dependency without the owner's approval.
 8. The PR description covers: what changes for users, how it was verified,
    SEO-visible changes, rollback.
+9. **Spam-policy checklist** — the PR description answers each question:
+   1. New or changed indexable URL?
+   2. Any text templated from another page, and did the name-swap test pass?
+   3. Any number not in the cited official source?
+   4. Any claim the tool can't back (accept, verified, compliant, AI,
+      guarantee)?
+   5. JSON-LD added or changed? Does it match visible text, with no Review or
+      AggregateRating?
+   6. Any date or `lastmod` moved, and did the content really change?
+   7. Any outbound commercial link, and is it `rel="sponsored"` and disclosed?
+   8. Any history manipulation, interstitial or new third-party script?
+   9. Is a Google update rolling out, or did one end within the last 14 days?
+
+A quality guard fails in both directions: on a new violation, and on a
+recorded allowance that is no longer used. Fix the page; delete or lower the
+entry it names. Never loosen a baseline in `test/fixtures/quality/` to make a
+check pass — that needs the owner's approval in chat and the reason in the
+commit message.
 
 ## 7. Before building a feature
 
