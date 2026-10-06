@@ -109,14 +109,17 @@ export function buildUpiLink(config: Pick<SupportConfig, "vpa" | "payee">, amoun
     ["cu", "INR"],
     ["tn", TRANSACTION_NOTE],
   ];
-  return `upi://pay?${params.map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join("&")}`;
+  // "@" in the UPI ID stays literal: it's the form UPI apps expect, and some
+  // reject a percent-encoded "%40" in `pa`. Everything else is encoded.
+  return `upi://pay?${params.map(([k, v]) => `${k}=${encodeURIComponent(v).replace(/%40/g, "@")}`).join("&")}`;
 }
 
 /**
  * What the card offers on this device. Android opens a UPI app per amount via
- * the deep link. Everywhere else (desktop, iPhone — where upi:// links are not
- * reliably handled) a static QR is the only route, and a static QR cannot
- * preset an amount, so without a configured QR there is no card at all.
+ * the deep link. On a computer a static QR is the only route (it cannot preset
+ * an amount), so without a configured QR there is no card. iPhone gets no card:
+ * upi:// links aren't reliably handled there, and a QR on the same phone can't
+ * be scanned.
  */
 export type SupportVariant = "deeplink" | "qr";
 
@@ -125,6 +128,7 @@ export function supportVariant(
   config: SupportConfig
 ): SupportVariant | null {
   if (device === "android") return "deeplink";
+  if (device === "ios") return null;
   return config.qrSrc ? "qr" : null;
 }
 

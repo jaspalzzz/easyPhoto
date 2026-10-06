@@ -92,7 +92,7 @@ describe("buildUpiLink (NPCI upi://pay deep link)", () => {
     expect(SUPPORT_AMOUNTS).toEqual(["10", "20", "50"]);
     for (const amount of SUPPORT_AMOUNTS) {
       expect(buildUpiLink(config, amount)).toBe(
-        `upi://pay?pa=easyphoto%40ybl&pn=easyPhoto&am=${amount}&cu=INR&tn=Support%20easyPhoto`
+        `upi://pay?pa=easyphoto@ybl&pn=easyPhoto&am=${amount}&cu=INR&tn=Support%20easyPhoto`
       );
     }
   });
@@ -100,7 +100,7 @@ describe("buildUpiLink (NPCI upi://pay deep link)", () => {
   it("percent-encodes every parameter so a value cannot add or change parameters", () => {
     const link = buildUpiLink({ vpa: "shop@ybl", payee: "Easy & Co=1 ₹" }, "20");
     expect(link).toBe(
-      "upi://pay?pa=shop%40ybl&pn=Easy%20%26%20Co%3D1%20%E2%82%B9&am=20&cu=INR&tn=Support%20easyPhoto"
+      "upi://pay?pa=shop@ybl&pn=Easy%20%26%20Co%3D1%20%E2%82%B9&am=20&cu=INR&tn=Support%20easyPhoto"
     );
     const params = new URLSearchParams(link.split("?")[1]);
     expect([...params.keys()]).toEqual(["pa", "pn", "am", "cu", "tn"]);
@@ -120,7 +120,7 @@ describe("supportVariant", () => {
 
   it("uses the QR on desktop and iPhone, and nothing when no QR is configured", () => {
     expect(supportVariant("desktop", withQr)).toBe("qr");
-    expect(supportVariant("ios", withQr)).toBe("qr");
+    expect(supportVariant("ios", withQr)).toBeNull(); // a QR on the same phone cannot be scanned
     expect(supportVariant("desktop", noQr)).toBeNull();
     expect(supportVariant("ios", noQr)).toBeNull();
   });

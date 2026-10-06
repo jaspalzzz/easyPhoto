@@ -117,7 +117,7 @@ describe("SupportCard", () => {
       "Support easyPhoto with ₹50 via UPI",
     ]);
     expect(links[1].getAttribute("href")).toBe(
-      "upi://pay?pa=easyphoto%40ybl&pn=easyPhoto&am=20&cu=INR&tn=Support%20easyPhoto"
+      "upi://pay?pa=easyphoto@ybl&pn=easyPhoto&am=20&cu=INR&tn=Support%20easyPhoto"
     );
     const notNow = card.querySelector("button")!;
     expect(notNow.textContent).toBe("Not now");
@@ -180,13 +180,14 @@ describe("SupportCard", () => {
     expect(analytics.track).toHaveBeenCalledWith({ name: "support_view", tool: "resize-kb", device: "desktop" });
   });
 
-  it("on iPhone uses the QR branch too", async () => {
+  it("shows no card on iPhone, even with a QR configured", async () => {
+    // upi:// links aren't reliable on iOS and a QR on the same phone can't be scanned.
     analytics.device = "ios";
     vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", "/upi-qr.png");
     await mount();
     await download();
-    expect(region()!.querySelector("img")).not.toBeNull();
-    expect(region()!.querySelectorAll("a")).toHaveLength(0);
+    expect(container.innerHTML).toBe("");
+    expect(analytics.track).not.toHaveBeenCalled();
   });
 
   it("shows no card on desktop when no QR is configured", async () => {
