@@ -1,0 +1,41 @@
+{
+  "_readme": [
+    "Ratchet baseline recorded from origin/dev on 2026-10-06 (guideline audit, CLAUDE.md §3 'No shared FAQ templates').",
+    "nameSwappedQuestions (test/faqTemplate.test.ts): a FAQ question with the page's exam/country name and numbers masked, and the number of indexed exam/maker pages asking it. Target: at most 3 pages, with no entry here.",
+    "splicedValueAnswers (test/faqTemplate.test.ts): pages whose FAQ splices a capitalised data value into a sentence ('does not match White').",
+    "siteWideDuplicateQuestions (scripts/quality-gate.mjs): a rendered FAQPage question (numbers masked) asked on more than one indexed page, and on how many.",
+    "Counts may only fall. When a page is fixed the check fails until its entry is lowered or deleted. Never raise a value or add an entry to make a check pass."
+  ],
+  "nameSwappedQuestions": {
+    "What is the photo size for the {name} application?": 23,
+    "What is the signature size for {name}?": 21,
+    "What should I check before submitting {name} files?": 23,
+    "Is this {name} resizer free and private?": 23,
+    "Where can I confirm the official {name} requirements?": 23,
+    "How do I resize my photo to #–# KB for {name}?": 16,
+    "How do I resize my photo to under # KB for {name}?": 5,
+    "What size is a passport photo for {name}?": 6,
+    "What background colour does a passport photo for {name} need?": 6,
+    "What is the head size in a passport photo for {name}?": 6,
+    "Can I wear glasses or smile in a passport photo for {name}?": 6,
+    "What file size does the {name} online passport upload need?": 5,
+    "Is the {name} photo maker free and private?": 18,
+    "What size is a visa photo for {name}?": 13,
+    "What background colour does a visa photo for {name} need?": 13,
+    "What is the head size in a visa photo for {name}?": 13,
+    "Can I wear glasses or smile in a visa photo for {name}?": 13,
+    "What file size does the {name} online visa upload need?": 11
+  },
+  "splicedValueAnswers": [
+    "/exam-requirements/cat/",
+    "/exam-requirements/clat/",
+    "/exam-requirements/cuet/",
+    "/exam-requirements/oci/",
+    "/exam-requirements/upsc/",
+    "/exam-requirements/voter-id/"
+  ],
+  "siteWideDuplicateQuestions": {
+    "what size is a schengen visa photo?": 4,
+    "is it free and private?": 5
+  }
+}

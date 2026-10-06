@@ -1,0 +1,164 @@
+{
+  "_readme": [
+    "Ratchet baseline recorded from origin/dev on 2026-10-06 (CLAUDE.md §1: template families have a similarity ceiling; the baseline only moves down). Checked by scripts/quality-gate.mjs after `npm run build`.",
+    "Text: each indexed page's <main> without nav/footer. Tokens are lower-cased words; numbers become <n>; in name-normalised families the page's own subject (breadcrumb name + URL slug) becomes <name>. Shingles are 5 tokens.",
+    "maxJaccard: the highest pairwise shingle Jaccard in the family, rounded up to 4 places. It may not rise; when it falls by more than tightenWhenImprovedBy.jaccard the gate asks for it to be lowered.",
+    "minUnsharedWords: per page, the words no shingle shared with a sibling covers (the text only this page has). It may not fall; when it rises by more than tightenWhenImprovedBy.words the gate asks for it to be raised. A page not listed needs at least newPageMinUnsharedWords.",
+    "Never raise maxJaccard or lower a minimum to make the gate pass — rewrite the page."
+  ],
+  "shingleSize": 5,
+  "newPageMinUnsharedWords": 250,
+  "tightenWhenImprovedBy": {
+    "jaccard": 0.02,
+    "words": 25
+  },
+  "families": {
+    "exam-requirements": {
+      "maxJaccard": 0.4537,
+      "maxPair": [
+        "/exam-requirements/army-agniveer/",
+        "/exam-requirements/clat/"
+      ],
+      "minUnsharedWords": {
+        "/exam-requirements/afcat/": 284,
+        "/exam-requirements/airforce-agniveer/": 248,
+        "/exam-requirements/army-agniveer/": 262,
+        "/exam-requirements/cat/": 269,
+        "/exam-requirements/clat/": 258,
+        "/exam-requirements/csir-net/": 378,
+        "/exam-requirements/ctet/": 301,
+        "/exam-requirements/cuet/": 267,
+        "/exam-requirements/driving-licence/": 228,
+        "/exam-requirements/ibps/": 284,
+        "/exam-requirements/navy-agniveer/": 238,
+        "/exam-requirements/niacl/": 364,
+        "/exam-requirements/oci/": 278,
+        "/exam-requirements/pan/": 277,
+        "/exam-requirements/passport-seva/": 318,
+        "/exam-requirements/rrb/": 317,
+        "/exam-requirements/sbi/": 303,
+        "/exam-requirements/ssc/": 435,
+        "/exam-requirements/tgpsc/": 322,
+        "/exam-requirements/up-police/": 292,
+        "/exam-requirements/uppsc/": 262,
+        "/exam-requirements/upsc/": 387,
+        "/exam-requirements/voter-id/": 260
+      }
+    },
+    "country-makers": {
+      "maxJaccard": 0.3907,
+      "maxPair": [
+        "/new-zealand-visa-photo-maker/",
+        "/saudi-visa-photo-maker/"
+      ],
+      "minUnsharedWords": {
+        "/australia-passport-photo-maker/": 575,
+        "/canada-visa-photo-maker/": 501,
+        "/china-visa-photo-maker/": 289,
+        "/france-visa-photo-maker/": 255,
+        "/germany-visa-photo-maker/": 302,
+        "/india-passport-photo-maker/": 511,
+        "/ireland-visa-photo-maker/": 592,
+        "/italy-visa-photo-maker/": 237,
+        "/malaysia-visa-photo-maker/": 354,
+        "/nepal-passport-photo-maker/": 351,
+        "/netherlands-visa-photo-maker/": 311,
+        "/new-zealand-visa-photo-maker/": 244,
+        "/oman-visa-photo-maker/": 294,
+        "/pakistan-passport-photo-maker/": 339,
+        "/saudi-visa-photo-maker/": 199,
+        "/schengen-visa-photo-maker/": 369,
+        "/uae-visa-photo-maker/": 398,
+        "/uk-passport-photo-maker/": 864,
+        "/us-passport-photo-maker/": 542
+      }
+    },
+    "country-guides": {
+      "maxJaccard": 0.0443,
+      "maxPair": [
+        "/schengen-visa-photo/",
+        "/uk-passport-photo/"
+      ],
+      "minUnsharedWords": {
+        "/canada-passport-photo/": 724,
+        "/schengen-visa-photo/": 711,
+        "/uk-passport-photo/": 1003,
+        "/us-passport-photo/": 700
+      }
+    },
+    "tools": {
+      "maxJaccard": 0.1949,
+      "maxPair": [
+        "/tools/signature-background-removal/",
+        "/tools/signature-cleaner/"
+      ],
+      "minUnsharedWords": {
+        "/tools/aadhaar-ocr/": 351,
+        "/tools/background-removal/": 267,
+        "/tools/compliance-checker/": 801,
+        "/tools/document-scanner/": 439,
+        "/tools/dpi-converter/": 483,
+        "/tools/exam-package/": 1004,
+        "/tools/face-centering/": 409,
+        "/tools/pan-card-ocr/": 353,
+        "/tools/photo-signature-merge/": 399,
+        "/tools/photo-with-name-date/": 419,
+        "/tools/resize-kb/": 352,
+        "/tools/resume-photo/": 448,
+        "/tools/sign-image/": 534,
+        "/tools/signature-background-removal/": 302,
+        "/tools/signature-cleaner/": 276,
+        "/tools/signature-crop/": 356,
+        "/tools/signature-resize/": 384,
+        "/tools/white-background/": 391
+      }
+    },
+    "blog": {
+      "maxJaccard": 0.152,
+      "maxPair": [
+        "/blog/nda-cds-photo-signature-guide-2026/",
+        "/blog/upsc-cse-ias-photo-signature-guide-2026/"
+      ],
+      "minUnsharedWords": {
+        "/blog/add-name-date-on-exam-photo/": 897,
+        "/blog/baby-and-infant-passport-photo-guide/": 847,
+        "/blog/best-free-exam-photo-resizer-india/": 1375,
+        "/blog/best-free-passport-photo-maker-india-2026/": 1480,
+        "/blog/cutout-pro-alternative-india/": 1135,
+        "/blog/driving-licence-photo-size-sarathi/": 682,
+        "/blog/exam-photo-signature-size-guide/": 2316,
+        "/blog/how-to-compress-pdf/": 966,
+        "/blog/how-to-compress-photo-to-50kb/": 861,
+        "/blog/how-to-mask-aadhaar-before-sharing/": 610,
+        "/blog/how-to-merge-pdf-free/": 708,
+        "/blog/how-to-prepare-documents-for-exam-applications-india/": 1358,
+        "/blog/how-to-print-passport-photos-at-home/": 949,
+        "/blog/how-to-reduce-passport-photo-size-for-online-forms/": 691,
+        "/blog/how-to-remove-background-from-photo-free/": 1112,
+        "/blog/how-to-sign-exam-application-forms-india/": 1577,
+        "/blog/how-to-sign-on-image-online/": 1271,
+        "/blog/how-to-take-a-passport-photo-at-home/": 815,
+        "/blog/ibps-po-2026-photo-signature-checklist/": 552,
+        "/blog/image-to-text-online-free-ocr/": 899,
+        "/blog/indian-government-id-photo-requirements/": 1189,
+        "/blog/indian-passport-photo-requirements/": 920,
+        "/blog/linkedin-profile-photo-size-and-tips/": 622,
+        "/blog/nda-cds-photo-signature-guide-2026/": 843,
+        "/blog/pan-card-photo-size/": 1022,
+        "/blog/pan-vs-voter-id-vs-driving-licence-photo/": 590,
+        "/blog/passport-photo-background-color/": 701,
+        "/blog/passport-photo-size-by-country/": 571,
+        "/blog/resume-photo-size-and-rules/": 614,
+        "/blog/schengen-europe-visa-photo-size/": 647,
+        "/blog/sir-enumeration-form-photo-2026/": 790,
+        "/blog/ssc-cgl-chsl-photo-signature-guide-2026/": 545,
+        "/blog/upsc-cse-ias-photo-signature-guide-2026/": 798,
+        "/blog/visafoto-alternative-india-free/": 806,
+        "/blog/voter-id-photo-requirements-2026/": 894,
+        "/blog/what-is-dpi-and-how-to-change-it/": 1277,
+        "/blog/why-exam-photo-signature-rejected/": 704,
+        "/blog/why-passport-photos-get-rejected/": 825
+      }
+    }
+  }
+}
