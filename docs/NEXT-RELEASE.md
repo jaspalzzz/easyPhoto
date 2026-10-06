@@ -9,7 +9,7 @@ release PR `dev → master`.
 | Date | Release | Contents | SEO-visible |
 |---|---|---|---|
 | any day | **Hotfix** | Wrong output, wrong spec or a crash: branch from `master`, test that fails on the old code, §6 gate, PR into `master` the same day, verify on easyphoto.in, back-merge into `dev`. | only if the fix itself is |
-| Thu 15 Oct | GSC review + release | Morning: 14-day review of release #57 (Google + Bing). Then item 4 (JavaScript-only follow-ups). | none |
+| Thu 15 Oct | GSC review + release | Morning: 14-day review of release #57 (Google + Bing). Then item 4 (JavaScript-only follow-ups, #60–#64) plus the fixes from the 6 Oct production sweep (#71–#76): signature format/DPI, Driving Licence JPG, broken blog images removed, past calendar entries hidden, KB caps safe for 1000/1024-byte portals, AI tools bounded. Owner-approved 6 Oct. | Driving Licence page, exam calendar, 7 blog posts (images) |
 | Thu 22 Oct | UI polish release | Type scale option C (#65) and card hierarchy option A (#66), both owner-approved from live-page mockups; any further approved polish (FAQ rows, footer) that is merged and verified by 20 Oct. Presentation only — SEO diff must show 0 pages changed. Ships alone so Search Console sees it separately from 15 Oct (fixes) and 29 Oct (content). | none |
 | Thu 29 Oct | Content release | Items 1, 2, 3 (first ≤ 3 pages) and 6. | ~6 pages |
 | Thu 12 Nov | Content release | Item 3, next ≤ 3 pages — only if the first batch held for 14 days. | ≤ 3 pages |
@@ -103,6 +103,21 @@ gap between the engines and the largest single demand we serve.
   position for the three queries above; Bing — CTR at position ~9 on
   "photo resizer in kb" (0.5%).
 - Judge after 14 days on both engines; revert if clicks fall on either.
+
+## 7. `/exam-requirements/voter-id/` — drop the "under 2048 KB" claim (one-page experiment)
+
+Found in the 6 Oct sweep: ECI publishes no upload KB cap for Form 6 (CLAUDE.md
+§3: "we claim none"), yet the page states "under 2048 KB" in five places — meta
+description, the photo-requirement row, the tool label and two FAQ items (also
+in FAQPage JSON-LD), e.g. "How do I resize my photo to under 2048 KB for Voter
+ID?". It is the #2 Google page and gets "voter id photo size in kb" queries, so
+the owner deferred it (6 Oct) to a measured change after the update window.
+
+- Mark the 2 MB as a compatibility target in data (not a published cap) and
+  render "No published limit" where the page states a requirement; keep the
+  tool's working target.
+- One page, one change; note the GSC baseline (page + "in kb" queries) the day
+  before; judge after 14 days.
 
 ## Not doing
 
