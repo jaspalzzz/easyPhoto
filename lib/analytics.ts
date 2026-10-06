@@ -16,6 +16,8 @@
  *  - Respects Do-Not-Track and an explicit opt-out. Never throws.
  */
 
+import type { SupportAmount } from "@/lib/supportCard";
+
 /** Coarse device class — no fingerprinting, just routing/diagnostics buckets. */
 export type DeviceClass = "desktop" | "android" | "ios";
 
@@ -68,7 +70,12 @@ export type AnalyticsEvent =
     }
   | { name: "exam_select"; exam: string }
   | { name: "country_select"; country: string }
-  | { name: "related_tool_click"; from: string; to: string };
+  | { name: "related_tool_click"; from: string; to: string }
+  // ── Support card (components/site/SupportCard.tsx) ───────────────────────
+  // Never the merchant VPA, never anything about the user: the page/tool slug,
+  // the device class, and the tapped amount from a fixed set.
+  | { name: "support_view"; tool?: string; device?: DeviceClass }
+  | { name: "support_tap"; tool?: string; amount: SupportAmount };
 
 export type AnalyticsSink = (event: AnalyticsEvent) => void;
 

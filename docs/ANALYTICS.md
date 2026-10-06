@@ -43,12 +43,13 @@ binding there instead.)*
 
 | Field | Example | Notes |
 |---|---|---|
-| `name` | `tool_success` | one of: tool_view, tool_start, tool_success, tool_failure, download |
+| `name` | `tool_success` | one of: tool_view, tool_start, tool_success, tool_failure, download, support_view, support_tap (plus the navigation events) |
 | `tool` | `background-removal` | tool slug (index) |
 | `device` | `android` | desktop / android / ios |
 | `engine` | `wasm-fp32` | which on-device engine ran |
 | `reason` | `oom` | failure reason code (no PII) |
 | `format` | `png` | download format |
+| `amount` | `20` | support_tap only: `10`, `20` or `50` (any other value drops the event); stored in the format/variant column |
 | `ms` | `1240` | processing time |
 | `country` | `IN` | coarse, from edge; not stored with anything else |
 
