@@ -9,9 +9,10 @@ release PR `dev → master`.
 | Date | Release | Contents | SEO-visible |
 |---|---|---|---|
 | any day | **Hotfix** | Wrong output, wrong spec or a crash: branch from `master`, test that fails on the old code, §6 gate, PR into `master` the same day, verify on easyphoto.in, back-merge into `dev`. | only if the fix itself is |
-| Thu 15 Oct | GSC review + release | Morning: 14-day review of release #57 (Google + Bing). Then item 4 (JavaScript-only follow-ups, #60–#64) plus the fixes from the 6 Oct production sweep (#71–#76): signature format/DPI, Driving Licence JPG, broken blog images removed, past calendar entries hidden, KB caps safe for 1000/1024-byte portals, AI tools bounded. Owner-approved 6 Oct. | Driving Licence page, exam calendar, 7 blog posts (images) |
+| Thu 15 Oct | GSC review + release | Morning: 14-day review of release #57 (Google + Bing). Then the JavaScript fixes: item 4 (#60–#64), signature format/DPI (#71), KB caps safe for 1000/1024-byte portals (#75), AI tools bounded (#76) — plus the Driving Licence JPG fix (#72) as a wrong-output hotfix (CLAUDE.md §5). Split by the owner on 6 Oct: the calendar and blog-image fixes wait for the window. | /exam-requirements/driving-licence/ only |
 | Thu 22 Oct | UI polish release | Type scale option C (#65) and card hierarchy option A (#66), both owner-approved from live-page mockups; any further approved polish (FAQ rows, footer) that is merged and verified by 20 Oct. Presentation only — SEO diff must show 0 pages changed. Ships alone so Search Console sees it separately from 15 Oct (fixes) and 29 Oct (content). | none |
-| Thu 29 Oct | Content release | Items 1, 2, 3 (first ≤ 3 pages) and 6. | ~6 pages |
+| Thu 16–20 Oct | Prevention (no release) | Guard rules in CLAUDE.md + tests from the 6 Oct Google-guidelines audit (item 8). No page changes. | none |
+| Thu 29 Oct | Content release | Items 1, 2 (incl. #74 past-entry hiding), 3 (first ≤ 3 pages) and 6, plus #73 (broken blog images removed). Item 9 starts here. | ~6 pages |
 | Thu 12 Nov | Content release | Item 3, next ≤ 3 pages — only if the first batch held for 14 days. | ≤ 3 pages |
 
 **29 Oct holds only if** Google marks the September 2026 spam update complete by
@@ -118,6 +119,34 @@ the owner deferred it (6 Oct) to a measured change after the update window.
   tool's working target.
 - One page, one change; note the GSC baseline (page + "in kb" queries) the day
   before; judge after 14 days.
+
+## 8. Prevention: guard rules and tests (after 15 Oct, before monetisation)
+
+From the 6 Oct audit of the site against Google's current guidelines (Search
+Essentials, spam policies, helpful-content and gen-AI guidance). The site breaks
+no policy; the risk is quality: unpublished numbers shown as "the size",
+templated exam pages (the same FAQ questions, name swapped, on 16–20 of 23 exam
+pages) and internal jargon ("stored" ×241 on exam pages). Owner decision (6 Oct):
+add the guards right after the 15 Oct release, before monetisation.
+
+- CLAUDE.md additions: unpublished numbers are never "the size"; write for
+  applicants (no internal vocabulary); no shared FAQ templates; static demos are
+  labelled "Example"; AI-drafted text gets an owner read-aloud pass; template
+  families have a similarity ceiling; visible dates, dateModified and lastmod
+  agree; every PR answers a spam-policy checklist.
+- Tests on the built HTML (no new dependencies): template similarity ratchet,
+  FAQ-template ratchet, unpublished-spec claims, structured data matches visible
+  text, date consistency, no history manipulation / UA sniffing, "Example" label
+  on the homepage demo, jargon list in boundedClaims.
+- Ratchets start at today's values and only move down; no page text changes.
+
+## 9. Exam-page honesty and de-templating (after the window, ≤ 3 pages per release)
+
+The 8 needs-review exam pages stop presenting unpublished numbers as the
+requirement, the name-swapped FAQ is replaced by exam-specific Q&As, and
+jargon/repeats go. Order: clat, up-police, tgpsc → passport-seva,
+army-agniveer, rrb → ssc and voter-id (each its own 14-day experiment; Voter ID
+is item 7). Owner reviews every rewritten page.
 
 ## Not doing
 
