@@ -15,13 +15,13 @@ type Shown = Omit<SupportCardPanelProps, "onDismiss"> & {
 };
 
 /**
- * "Support easyPhoto" — a quiet UPI tip card placed directly below a tool.
+ * "Support easyPhoto" — a quiet tip card placed directly below a tool.
  *
  * Renders nothing in the static HTML (not SEO-visible) and nothing until the
  * global "ep:download" event (lib/download.ts) confirms a file was saved, so it
  * never stands between the user and their file. At most once per browser
- * session; the rules live in lib/supportCard.ts. With no valid
- * NEXT_PUBLIC_UPI_VPA it never renders anywhere.
+ * session; the rules live in lib/supportCard.ts. With neither valid payment
+ * pages nor a valid NEXT_PUBLIC_UPI_VPA it never renders anywhere.
  *
  * Only this listener ships with the page; the card itself (SupportCardPanel)
  * is fetched the first time it is actually going to show, which keeps the
