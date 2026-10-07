@@ -29,7 +29,7 @@ export default function TermsPage() {
             description:
               "Terms of use for easyPhoto — a free, in-browser passport/visa photo and image tool provided as-is. Always verify against official requirements.",
             url: "/terms/",
-            dateModified: "2026-06-06",
+            dateModified: "2026-10-07",
           }),
         ]}
       />
@@ -40,7 +40,7 @@ export default function TermsPage() {
         <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
           Terms of Use
         </h1>
-        <p className="text-sm text-muted-foreground">Last updated: June 6, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: October 7, 2026</p>
       </header>
 
       {/* The one that matters most, surfaced up top */}
@@ -102,6 +102,16 @@ export default function TermsPage() {
           change visible detail or arrangement. You decide whether the result is
           suitable for the intended form and whether you have permission to edit,
           sign, or share the underlying material.
+        </Section>
+
+        <Section title="Support payments">
+          Tips through the “Support easyPhoto” card are voluntary payments for a
+          free service and are not refundable, except for a duplicate or mistaken
+          charge. Write to us through the{" "}
+          <Link href="/contact/" className="text-brand hover:underline">
+            contact page
+          </Link>{" "}
+          within 7 days and we&apos;ll refund it to the original payment method.
         </Section>
 
         <Section title="Changes">

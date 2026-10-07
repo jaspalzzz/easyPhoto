@@ -23,6 +23,8 @@ const MAKERS_UPDATED = "2026-08-02";
 /** Tool pages and their category hubs — moves when a tool or its copy changes. */
 const TOOLS_UPDATED = "2026-09-08";
 const TRUST_PAGES_UPDATED = "2026-07-13";
+/** /terms/ — moves only when the terms text changes (7 Oct 2026: support-payment refunds). */
+const TERMS_UPDATED = "2026-10-07";
 
 /**
  * When the exam-requirement template itself last changed, as opposed to when a
@@ -68,7 +70,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about/",
     "/contact/",
     "/privacy/",
-    "/terms/",
     "/disclaimer/",
     "/exam-requirements/",
     "/exam-photo-size/",
@@ -107,6 +108,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...simpleRoutes.filter((path) => !isDeindexed(path)).map((path) => ({
       url: `${SITE_URL}${path}`,
       lastModified: LAST_UPDATED,
+    })),
+
+    // ── Terms: its own date, so a terms edit doesn't restamp the simple pages ─
+    ...["/terms/"].filter((path) => !isDeindexed(path)).map((path) => ({
+      url: `${SITE_URL}${path}`,
+      lastModified: TERMS_UPDATED,
     })),
 
     // ── Indexable trust and methodology pages ───────────────────────────────
