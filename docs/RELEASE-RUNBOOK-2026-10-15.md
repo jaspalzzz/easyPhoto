@@ -101,8 +101,8 @@ No data, route or sitemap change besides the Driving Licence lastmod.
   compact, #70 ToolCard. Presentation only — SEO diff must show 0 pages changed.
 - Rerun the combined UI check on the final dev preview before release: top
   pages at 390 and desktop, light and dark, page speed vs production.
-- Support pop-up (#79, #83, #85, #86): right after a download, one "Buy us a
-  chai" button and the visitor chooses the amount (owner decision 7 Oct: no
+- Support pop-up (#79, #83, #85, #86): right after a download, one "Help keep
+  it free" button and the visitor chooses the amount (owner decision 7 Oct: no
   fixed amounts, no email/phone form where avoidable). Owner's individual
   Razorpay account, live 7 Oct. Cloudflare variables, Production and Preview:
   - `NEXT_PUBLIC_UPI_LINK` = the text inside the Razorpay multiple-payment QR

@@ -25,7 +25,7 @@ export interface SupportCardPanelProps {
 
 /**
  * The visible "Support easyPhoto" pop-up (owner-approved 7 Oct 2026: centred
- * on desktop, a bottom sheet on phones; one "Buy us a chai" button, any
+ * on desktop, a bottom sheet on phones; one "Help keep it free" button, any
  * amount, no fixed tiers). Loaded on demand by
  * SupportCard right after a download, so the offer is in view at the moment
  * the tool has proved itself — not below the fold.
@@ -114,7 +114,7 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
         </h2>
         <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground md:text-[15px]">
           easyPhoto is free for everyone, and your photos never leave your device. If it saved you
-          a trip to the cyber café, buy us a chai, a snack or even lunch.
+          a trip to the cyber café, a small tip helps keep it free for the next person filling a form.
         </p>
 
         <div className="mt-4 md:mt-5">
@@ -123,10 +123,10 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
               <a
                 href={buildUpiLink(config.upi)}
                 onClick={() => onTip("upi")}
-                aria-label="Buy us a chai: opens your UPI app, where you choose the amount"
+                aria-label="Help keep it free: opens your UPI app, where you choose the amount"
                 className={tipClass}
               >
-                Buy us a chai
+                Help keep it free
               </a>
               <p className="mt-2 text-xs text-muted-foreground">Opens your UPI app. You choose the amount.</p>
             </>
@@ -139,10 +139,10 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => onTip("link")}
-                aria-label="Buy us a chai: opens Razorpay in a new tab, where you choose the amount"
+                aria-label="Help keep it free: opens Razorpay in a new tab, where you choose the amount"
                 className={tipClass}
               >
-                Buy us a chai
+                Help keep it free
               </a>
               <p className="mt-2 text-xs text-muted-foreground">You choose the amount on the next screen.</p>
             </>

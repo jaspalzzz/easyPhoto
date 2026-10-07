@@ -1,7 +1,7 @@
 /**
  * SupportCard (components/site/SupportCard.tsx) in a DOM: invisible in the
  * static HTML and before a download; the approved pop-up copy after one; one
- * "Buy us a chai" button per device — the UPI app on Android, the payment link
+ * "Help keep it free" button per device — the UPI app on Android, the payment link
  * on iPhone, the QR on a computer; every way to close it; the open/close events
  * other prompts rely on; analytics payloads.
  */
@@ -32,11 +32,11 @@ const QR_SRC = "/upi-qr.png";
 
 const HEADING = "Glad we could help!";
 const BODY =
-  "easyPhoto is free for everyone, and your photos never leave your device. If it saved you a trip to the cyber café, buy us a chai, a snack or even lunch.";
+  "easyPhoto is free for everyone, and your photos never leave your device. If it saved you a trip to the cyber café, a small tip helps keep it free for the next person filling a form.";
 const SAVED_LINE = "Saved on your device";
 const FOOTNOTE = "No pressure. easyPhoto stays free either way.";
 const SKIP = "Maybe later";
-const TIP = "Buy us a chai";
+const TIP = "Help keep it free";
 const ANDROID_HINT = "Opens your UPI app. You choose the amount.";
 const LINK_HINT = "You choose the amount on the next screen.";
 const QR_HINT = "Scan with any UPI app on your phone. You choose the amount.";
@@ -135,7 +135,7 @@ describe("SupportCard", () => {
     expect(links[0].getAttribute("href")).not.toContain("am=");
     expect(links[0].getAttribute("target")).toBeNull();
     expect(links[0].getAttribute("aria-label")).toBe(
-      "Buy us a chai: opens your UPI app, where you choose the amount"
+      "Help keep it free: opens your UPI app, where you choose the amount"
     );
     const buttons = [...card.querySelectorAll("button")];
     expect(buttons.map((b) => b.textContent || b.getAttribute("aria-label"))).toEqual(["Close", SKIP]);
