@@ -9,6 +9,7 @@ import { compressPdfToTarget } from "@/lib/pdfCompress";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track } from "@/lib/analytics";
+import { SupportInline } from "@/components/site/SupportInline";
 
 /** Load a File into an HTMLCanvasElement for image compression. */
 async function fileToCanvas(file: File): Promise<HTMLCanvasElement> {
@@ -256,6 +257,8 @@ export function CompressDocumentTool() {
           </div>
         </div>
       )}
+
+      <SupportInline />
 
       <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
         <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />

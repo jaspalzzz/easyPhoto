@@ -1,8 +1,9 @@
 /**
  * SupportCard (components/site/SupportCard.tsx) in a DOM: invisible in the
- * static HTML and before a download; the approved pop-up copy after one; the
- * deep-link branch on Android, the QR branch elsewhere; every way to close it;
- * the open/close events other prompts rely on; analytics payloads.
+ * static HTML and before a download; the approved pop-up copy after one; one
+ * "Help keep it free" button per device — the UPI app on Android, the payment link
+ * on iPhone, the QR on a computer; every way to close it; the open/close events
+ * other prompts rely on; analytics payloads.
  */
 import * as React from "react";
 import { act } from "react";
@@ -23,14 +24,22 @@ vi.mock("@/lib/analytics", () => ({
   deviceClass: () => analytics.device,
 }));
 
-const VPA = "easyphoto@ybl";
-const HEADING = "Glad we could help!";
+const VPA = "easyphoto641476.rzp@rxairtel";
+/** The owner's Razorpay multiple-payment QR payload (decoded 7 Oct 2026). */
+const QR_LINK = `upi://pay?cu=INR&mc=7338&mode=19&pa=${VPA}&tn=Payment%20To%20Easyphoto&tr=Tkx9z1TtIKezToqrv2`;
+const PAY_LINK = "https://razorpay.me/@easyphoto2806";
+const QR_SRC = "/upi-qr.png";
+
+const HEADING = "Support easyPhoto with a small tip";
 const BODY =
-  "easyPhoto is free for everyone, and your photos never leave your device. If it saved you some time today, a small tip would mean a lot to us.";
+  "easyPhoto is free for everyone, and your photos never leave your device. If it saved you a trip to the cyber café, a small tip helps keep it free for the next person filling a form.";
 const SAVED_LINE = "Saved on your device";
-const FOOTNOTE = "No pressure. easyPhoto stays free either way.";
+const FOOTNOTE = "No pressure. Every little bit helps.";
 const SKIP = "Maybe later";
-const DESKTOP_LINE = "On a computer? Scan the QR with any UPI app.";
+const TIP = "Help keep it free";
+const ANDROID_HINT = "Opens your UPI app. You choose the amount.";
+const LINK_HINT = "You choose the amount on the next screen.";
+const QR_HINT = "Scan with any UPI app on your phone. You choose the amount.";
 
 let container: HTMLDivElement;
 let root: ReturnType<typeof createRoot>;
@@ -69,12 +78,9 @@ beforeEach(() => {
   localStorage.clear();
   analytics.track.mockClear();
   analytics.device = "android";
-  vi.stubEnv("NEXT_PUBLIC_UPI_VPA", VPA);
-  vi.stubEnv("NEXT_PUBLIC_UPI_PAYEE_NAME", "");
-  vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", "");
-  vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_10", "");
-  vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_20", "");
-  vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_50", "");
+  vi.stubEnv("NEXT_PUBLIC_UPI_LINK", QR_LINK);
+  vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", QR_SRC);
+  vi.stubEnv("NEXT_PUBLIC_SUPPORT_LINK", PAY_LINK);
   container = document.createElement("div");
   document.body.appendChild(container);
   root = createRoot(container);
@@ -109,7 +115,7 @@ describe("SupportCard", () => {
     expect(container.innerHTML).toBe("");
   });
 
-  it("on Android shows the approved copy and three UPI deep links after a download", async () => {
+  it("on Android shows the approved copy and one button into the UPI app, with no amount set", async () => {
     await mount();
     await download();
 
@@ -120,37 +126,98 @@ describe("SupportCard", () => {
     expect(heading.textContent).toBe(HEADING);
     expect(card.getAttribute("aria-labelledby")).toBe(heading.id);
     const texts = [...card.querySelectorAll("p")].map((p) => p.textContent);
-    expect(texts).toEqual([SAVED_LINE, BODY, FOOTNOTE]);
+    expect(texts).toEqual([SAVED_LINE, BODY, ANDROID_HINT, FOOTNOTE]);
 
     const links = [...card.querySelectorAll("a")];
-    expect(links.map((a) => a.textContent)).toEqual(["₹10", "₹20", "₹50"]);
-    expect(links.map((a) => a.getAttribute("aria-label"))).toEqual([
-      "Support easyPhoto with ₹10 via UPI",
-      "Support easyPhoto with ₹20 via UPI",
-      "Support easyPhoto with ₹50 via UPI",
-    ]);
-    expect(links[1].getAttribute("href")).toBe(
-      "upi://pay?pa=easyphoto@ybl&pn=easyPhoto&am=20&cu=INR&tn=Support%20easyPhoto"
+    expect(links).toHaveLength(1);
+    expect(links[0].textContent).toBe(TIP);
+    expect(links[0].getAttribute("href")).toBe(QR_LINK);
+    expect(links[0].getAttribute("href")).not.toContain("am=");
+    expect(links[0].getAttribute("target")).toBeNull();
+    expect(links[0].getAttribute("aria-label")).toBe(
+      "Help keep it free: opens your UPI app, where you choose the amount"
     );
     const buttons = [...card.querySelectorAll("button")];
     expect(buttons.map((b) => b.textContent || b.getAttribute("aria-label"))).toEqual(["Close", SKIP]);
     for (const b of buttons) expect(b.getAttribute("type")).toBe("button");
     expect(card.querySelector("img")).toBeNull();
-    expect(card.textContent).not.toContain(DESKTOP_LINE);
 
     expect(analytics.track).toHaveBeenCalledTimes(1);
     expect(analytics.track).toHaveBeenCalledWith({ name: "support_view", tool: "resize-kb", device: "android" });
   });
 
-  it("records the tapped amount, with no VPA in the event, and snoozes the card", async () => {
+  it("opens with focus on the dialog itself, not on the ✕ (no focus ring on phones)", async () => {
+    await mount();
+    await download();
+    expect(document.activeElement).toBe(region());
+  });
+
+  it("also opens after a completed Share, without claiming the file was saved", async () => {
+    analytics.device = "ios";
+    await mount();
+    await act(async () => {
+      window.dispatchEvent(new CustomEvent("ep:share", { detail: { filename: "photo.jpg", bytes: 20_000 } }));
+      await settle();
+    });
+    const card = region()!;
+    expect(card.querySelector("h2")!.textContent).toBe(HEADING);
+    expect(card.textContent).not.toContain(SAVED_LINE);
+    expect(card.querySelector("a")!.getAttribute("href")).toBe(PAY_LINK);
+  });
+
+  it("on iPhone opens the payment link in a new tab", async () => {
+    analytics.device = "ios";
+    await mount();
+    await download();
+    const card = region()!;
+    expect(card.textContent).toContain(BODY);
+    expect(card.textContent).toContain(LINK_HINT);
+    const links = [...card.querySelectorAll("a")];
+    expect(links).toHaveLength(1);
+    expect(links[0].textContent).toBe(TIP);
+    expect(links[0].getAttribute("href")).toBe(PAY_LINK);
+    expect(links[0].getAttribute("target")).toBe("_blank");
+    expect(links[0].getAttribute("rel")).toBe("noopener noreferrer");
+    expect(card.querySelector("img")).toBeNull();
+  });
+
+  it("on a computer shows the QR to scan, and no button", async () => {
+    analytics.device = "desktop";
+    await mount();
+    await download();
+    const card = region()!;
+    expect(card.querySelector("h2")!.textContent).toBe(HEADING);
+    expect(card.textContent).toContain(BODY);
+    expect(card.textContent).toContain(QR_HINT);
+    const img = card.querySelector("img")!;
+    expect(img.getAttribute("src")).toBe(QR_SRC);
+    expect(img.getAttribute("alt")).toBe("UPI QR code to support easyPhoto");
+    expect(card.querySelectorAll("a")).toHaveLength(0);
+    expect(skipButton(card)).toBeDefined();
+    expect(analytics.track).toHaveBeenCalledWith({ name: "support_view", tool: "resize-kb", device: "desktop" });
+  });
+
+  it.each([
+    ["android", "NEXT_PUBLIC_UPI_LINK"],
+    ["desktop", "NEXT_PUBLIC_UPI_QR_SRC"],
+  ] as const)("%s falls back to the payment link when %s is unset", async (device, unset) => {
+    analytics.device = device;
+    vi.stubEnv(unset, "");
+    await mount();
+    await download();
+    const links = [...region()!.querySelectorAll("a")];
+    expect(links.map((a) => a.getAttribute("href"))).toEqual([PAY_LINK]);
+  });
+
+  it("records a tap with its route only, and snoozes the card", async () => {
     await mount("exam-ssc");
     await download();
-    const link = [...region()!.querySelectorAll("a")][2];
+    const link = region()!.querySelector("a")!;
     // jsdom cannot navigate to upi:// — stop the default action, keep React's handler.
     link.addEventListener("click", (e) => e.preventDefault());
     act(() => link.click());
 
-    expect(analytics.track).toHaveBeenLastCalledWith({ name: "support_tap", tool: "exam-ssc", amount: "50" });
+    expect(analytics.track).toHaveBeenLastCalledWith({ name: "support_tap", tool: "exam-ssc", method: "upi" });
     expect(JSON.stringify(analytics.track.mock.calls)).not.toContain(VPA);
     expect(Number(localStorage.getItem("ep:support-tapped-at"))).toBeGreaterThan(0);
 
@@ -160,6 +227,16 @@ describe("SupportCard", () => {
       await new Promise((r) => setTimeout(r, 0));
     });
     expect(region()).toBeNull();
+  });
+
+  it("records an iPhone tap as the payment-link route", async () => {
+    analytics.device = "ios";
+    await mount();
+    await download();
+    const link = region()!.querySelector("a")!;
+    link.addEventListener("click", (e) => e.preventDefault());
+    act(() => link.click());
+    expect(analytics.track).toHaveBeenLastCalledWith({ name: "support_tap", tool: "resize-kb", method: "link" });
   });
 
   it.each([
@@ -216,64 +293,10 @@ describe("SupportCard", () => {
     expect(analytics.track).toHaveBeenCalledTimes(1);
   });
 
-  it("on desktop with a QR configured shows the QR and the desktop line, no amounts", async () => {
-    analytics.device = "desktop";
-    vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", "/upi-qr.png");
-    await mount();
-    await download();
-
-    const card = region()!;
-    expect(card.querySelector("h2")!.textContent).toBe(HEADING);
-    expect(card.textContent).toContain(BODY);
-    expect(card.textContent).toContain(DESKTOP_LINE);
-    const img = card.querySelector("img")!;
-    expect(img.getAttribute("src")).toBe("/upi-qr.png");
-    expect(img.getAttribute("alt")).toBe("UPI QR code to support easyPhoto");
-    expect(card.querySelectorAll("a")).toHaveLength(0);
-    expect(skipButton(card)).toBeDefined();
-    expect(analytics.track).toHaveBeenCalledWith({ name: "support_view", tool: "resize-kb", device: "desktop" });
-  });
-
-  it("shows no card on iPhone, even with a QR configured", async () => {
+  it("shows nothing on iPhone when only the UPI link and QR are configured", async () => {
     // upi:// links aren't reliable on iOS and a QR on the same phone can't be scanned.
     analytics.device = "ios";
-    vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", "/upi-qr.png");
-    await mount();
-    await download();
-    expect(container.innerHTML).toBe("");
-    expect(analytics.track).not.toHaveBeenCalled();
-  });
-
-  it.each(["ios", "desktop", "android"] as const)(
-    "with Razorpay payment pages, %s gets three amount links that open in a new tab",
-    async (device) => {
-      analytics.device = device;
-      vi.stubEnv("NEXT_PUBLIC_UPI_VPA", "");
-      vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_10", "https://rzp.io/rzp/support10");
-      vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_20", "https://rzp.io/rzp/support20");
-      vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_50", "https://rzp.io/rzp/support50");
-      await mount();
-      await download();
-      const card = region()!;
-      expect(card.textContent).toContain(HEADING);
-      expect(card.textContent).toContain(BODY);
-      expect(card.textContent).not.toContain(DESKTOP_LINE);
-      const links = [...card.querySelectorAll("a")];
-      expect(links.map((a) => a.getAttribute("href"))).toEqual([
-        "https://rzp.io/rzp/support10",
-        "https://rzp.io/rzp/support20",
-        "https://rzp.io/rzp/support50",
-      ]);
-      expect(links.map((a) => a.textContent)).toEqual(["₹10", "₹20", "₹50"]);
-      for (const a of links) {
-        expect(a.getAttribute("target")).toBe("_blank");
-        expect(a.getAttribute("rel")).toBe("noopener noreferrer");
-      }
-    }
-  );
-
-  it("shows no card on desktop when no QR is configured", async () => {
-    analytics.device = "desktop";
+    vi.stubEnv("NEXT_PUBLIC_SUPPORT_LINK", "");
     await mount();
     await download();
     expect(container.innerHTML).toBe("");
@@ -282,11 +305,11 @@ describe("SupportCard", () => {
 
   it.each([
     ["unset", ""],
-    ["invalid", "not a vpa"],
-  ])("never renders when NEXT_PUBLIC_UPI_VPA is %s", async (_label, value) => {
+    ["invalid", "upi://pay?pa=not a vpa"],
+  ])("never renders on Android when NEXT_PUBLIC_UPI_LINK is %s and there is no payment link", async (_label, value) => {
     vi.spyOn(console, "warn").mockImplementation(() => {});
-    vi.stubEnv("NEXT_PUBLIC_UPI_VPA", value);
-    vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", "/upi-qr.png");
+    vi.stubEnv("NEXT_PUBLIC_UPI_LINK", value);
+    vi.stubEnv("NEXT_PUBLIC_SUPPORT_LINK", "");
     await mount();
     await download();
     expect(container.innerHTML).toBe("");

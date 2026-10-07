@@ -2,31 +2,24 @@
 
 import * as React from "react";
 import { Check, X } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { track } from "@/lib/analytics";
+import { SupportOffer } from "@/components/site/SupportOffer";
 import { cn } from "@/lib/utils";
-import {
-  SUPPORT_AMOUNTS,
-  buildUpiLink,
-  markSupportTapped,
-  type SupportAmount,
-  type SupportConfig,
-  type SupportVariant,
-} from "@/lib/supportCard";
+import type { SupportConfig, SupportVariant } from "@/lib/supportCard";
 import { SUPPORT_CLOSE_EVENT, SUPPORT_OPEN_EVENT } from "@/lib/supportEvents";
-
-const QR_SIZE_PX = 128;
 
 export interface SupportCardPanelProps {
   config: SupportConfig;
   variant: SupportVariant;
   tool?: string;
+  /** The file was downloaded (true) rather than shared to another app. */
+  saved: boolean;
   onDismiss: () => void;
 }
 
 /**
  * The visible "Support easyPhoto" pop-up (owner-approved 7 Oct 2026: centred
- * on desktop, a bottom sheet on phones, wording 1). Loaded on demand by
+ * on desktop, a bottom sheet on phones; one "Help keep it free" button, any
+ * amount, no fixed tiers). Loaded on demand by
  * SupportCard right after a download, so the offer is in view at the moment
  * the tool has proved itself — not below the fold.
  *
@@ -34,9 +27,10 @@ export interface SupportCardPanelProps {
  * containment, Esc and the backdrop. Closing is always one action away
  * (✕, "Maybe later", Esc or a click outside), and it announces itself with
  * SUPPORT_OPEN_EVENT / SUPPORT_CLOSE_EVENT so the download toast and the
- * install hint never stack on top of it.
+ * install hint never stack on top of it. The ask itself is SupportOffer,
+ * shared with the card that stays under the Download button.
  */
-export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCardPanelProps) {
+export function SupportCardPanel({ config, variant, tool, saved, onDismiss }: SupportCardPanelProps) {
   const headingId = React.useId();
   const dialogRef = React.useRef<HTMLDialogElement>(null);
 
@@ -47,20 +41,15 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
     // still shows the offer and every close control still works.
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
+    // Focus the dialog itself, not its first control: Safari otherwise draws
+    // a keyboard focus ring round the ✕ on a phone. Tab still reaches ✕ first.
+    dialog.focus({ preventScroll: true });
     window.dispatchEvent(new Event(SUPPORT_OPEN_EVENT));
     return () => {
       if (typeof dialog.close === "function" && dialog.open) dialog.close();
       window.dispatchEvent(new Event(SUPPORT_CLOSE_EVENT));
     };
   }, []);
-
-  const onAmount = (amount: SupportAmount) => {
-    markSupportTapped();
-    track({ name: "support_tap", tool, amount });
-    // Close after the click has finished, so the link's own navigation
-    // (a new Razorpay tab, or the UPI app) is never cancelled by the unmount.
-    window.setTimeout(onDismiss, 0);
-  };
 
   const onCancel = (e: React.SyntheticEvent<HTMLDialogElement>) => {
     // Esc: let React state close it, so the unmount path is the only one.
@@ -74,19 +63,15 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
     if (e.target === e.currentTarget) onDismiss();
   };
 
-  const amountClass = buttonVariants({
-    variant: "cta",
-    className: "min-h-11 min-w-[4.5rem] px-4 text-base font-semibold md:min-w-[5.5rem]",
-  });
-
   return (
     <dialog
       ref={dialogRef}
+      tabIndex={-1}
       aria-labelledby={headingId}
       onCancel={onCancel}
       onClick={onBackdropClick}
       className={cn(
-        "ep-toast-in w-[calc(100%-1.5rem)] max-w-md overflow-visible rounded-2xl border border-hairline bg-card p-0 text-ink shadow-xl",
+        "ep-toast-in w-[calc(100%-1.5rem)] max-w-md overflow-visible rounded-2xl border border-hairline bg-card p-0 text-ink shadow-xl outline-none",
         // Phones: a bottom sheet within thumb reach. Desktop: centred.
         "mb-[max(1rem,env(safe-area-inset-bottom))] mt-auto md:my-auto",
         "backdrop:bg-black/30 md:backdrop:bg-black/45"
@@ -102,79 +87,24 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
           <X className="h-4 w-4" strokeWidth={2} />
         </button>
 
-        <p className="flex items-center gap-1.5 pr-10 text-xs text-muted-foreground md:justify-center md:px-10">
-          <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-brand">
-            <Check className="h-3 w-3 text-white" strokeWidth={3} />
-          </span>
-          Saved on your device
-        </p>
+        {saved && (
+          <p className="flex items-center gap-1.5 pr-10 text-xs text-muted-foreground md:justify-center md:px-10">
+            <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-brand">
+              <Check className="h-3 w-3 text-white" strokeWidth={3} />
+            </span>
+            Saved on your device
+          </p>
+        )}
 
-        <h2 id={headingId} className="mt-2.5 text-lg font-semibold text-ink md:mt-3.5 md:text-xl">
-          Glad we could help!
+        <h2 id={headingId} className="mt-2.5 pr-10 text-lg font-semibold text-ink md:mt-3.5 md:px-10 md:text-xl">
+          Support easyPhoto with a small tip
         </h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground md:text-[15px]">
-          easyPhoto is free for everyone, and your photos never leave your device. If it saved you
-          some time today, a small tip would mean a lot to us.
-        </p>
-
-        <div className="mt-4 flex flex-wrap items-center gap-2.5 md:mt-5 md:justify-center">
-          {variant === "pages" && config.pages ? (
-            <ul className="flex flex-wrap gap-2.5 md:justify-center">
-              {SUPPORT_AMOUNTS.map((amount) => (
-                <li key={amount}>
-                  {/* A payment page opens in a new tab so the user's tool and
-                      file stay put; noopener keeps the two pages independent. */}
-                  <a
-                    href={config.pages![amount]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => onAmount(amount)}
-                    aria-label={`Support easyPhoto with ₹${amount} (opens Razorpay in a new tab)`}
-                    className={amountClass}
-                  >
-                    ₹{amount}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : variant === "deeplink" && config.vpa ? (
-            <ul className="flex flex-wrap gap-2.5 md:justify-center">
-              {SUPPORT_AMOUNTS.map((amount) => (
-                <li key={amount}>
-                  <a
-                    href={buildUpiLink({ vpa: config.vpa!, payee: config.payee }, amount)}
-                    onClick={() => onAmount(amount)}
-                    aria-label={`Support easyPhoto with ₹${amount} via UPI`}
-                    className={amountClass}
-                  >
-                    ₹{amount}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="flex items-center gap-3 md:flex-col">
-              {/* A static same-origin file from public/; next/image adds nothing
-                  here (images are unoptimized in the static export). */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={config.qrSrc ?? ""}
-                alt="UPI QR code to support easyPhoto"
-                width={QR_SIZE_PX}
-                height={QR_SIZE_PX}
-                className="h-32 w-32 shrink-0 rounded-md bg-white p-1.5"
-              />
-              <p className="text-xs leading-relaxed text-muted-foreground">
-                On a computer? Scan the QR with any UPI app.
-              </p>
-            </div>
-          )}
-        </div>
+        <SupportOffer config={config} variant={variant} tool={tool} onTapped={onDismiss} layout="dialog" />
 
         {/* Phones: the reassurance and the skip share one row under the
-            amounts. Desktop: stacked and centred, the skip first. */}
+            button. Desktop: stacked and centred, the skip first. */}
         <div className="mt-3 flex items-center justify-between gap-3 md:flex-col-reverse md:gap-1">
-          <p className="text-xs text-muted-foreground">No pressure. easyPhoto stays free either way.</p>
+          <p className="text-xs text-muted-foreground">No pressure. Every little bit helps.</p>
           <button
             type="button"
             onClick={onDismiss}

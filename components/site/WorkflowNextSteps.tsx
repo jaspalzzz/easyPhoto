@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2 } from "lucide-react";
+import { SupportInline } from "@/components/site/SupportInline";
 import {
   setWorkflowPayload,
   type WorkflowAssetKind,
@@ -60,41 +61,46 @@ export function WorkflowNextSteps({
   };
 
   return (
-    <div className="mt-5 border-t border-hairline pt-5">
-      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
-        Continue editing
-      </p>
-      <div className={`grid gap-2 ${steps.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
-        {steps.map((step) => {
-          const busy = loading === step.slug;
-          return (
-            <button
-              key={step.slug}
-              onClick={() => handleStep(step.slug)}
-              disabled={!!loading}
-              className="group flex items-start gap-3 rounded-lg border border-hairline bg-accent/40 px-3.5 py-3 text-left transition-colors hover:border-brand/25 hover:bg-accent disabled:cursor-wait disabled:opacity-60"
-            >
-              <span className="mt-0.5 shrink-0 text-brand">
-                {busy
-                  ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
-                  : step.icon}
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[14px] font-semibold leading-snug text-ink">
-                  {step.label}
-                </p>
-                <p className="mt-0.5 text-xs leading-snug text-ink-soft">
-                  {step.hint}
-                </p>
-              </div>
-              <ArrowRight
-                className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-faint transition-transform group-hover:translate-x-0.5"
-                strokeWidth={1.75}
-              />
-            </button>
-          );
-        })}
+    <>
+      {/* Sits right under the tool's Download button: the tip offer stays here
+          after a save for anyone who closed or missed the pop-up. */}
+      <SupportInline className="mt-5" />
+      <div className="mt-5 border-t border-hairline pt-5">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
+          Continue editing
+        </p>
+        <div className={`grid gap-2 ${steps.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
+          {steps.map((step) => {
+            const busy = loading === step.slug;
+            return (
+              <button
+                key={step.slug}
+                onClick={() => handleStep(step.slug)}
+                disabled={!!loading}
+                className="group flex items-start gap-3 rounded-lg border border-hairline bg-accent/40 px-3.5 py-3 text-left transition-colors hover:border-brand/25 hover:bg-accent disabled:cursor-wait disabled:opacity-60"
+              >
+                <span className="mt-0.5 shrink-0 text-brand">
+                  {busy
+                    ? <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} />
+                    : step.icon}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[14px] font-semibold leading-snug text-ink">
+                    {step.label}
+                  </p>
+                  <p className="mt-0.5 text-xs leading-snug text-ink-soft">
+                    {step.hint}
+                  </p>
+                </div>
+                <ArrowRight
+                  className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-faint transition-transform group-hover:translate-x-0.5"
+                  strokeWidth={1.75}
+                />
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -44,7 +44,7 @@ const ALLOWED_PATH = new Set(["exam", "passport", "utilities"]);
 const ALLOWED_SURFACE = new Set(["homepage", "tools", "exam", "blog"]);
 const ALLOWED_RESULT = new Set(["selected", "no_result"]);
 const ALLOWED_METHOD = new Set(["native", "download"]);
-const ALLOWED_AMOUNT = new Set(["10", "20", "50"]);
+const ALLOWED_SUPPORT_METHOD = new Set(["upi", "link"]);
 
 function str(v: unknown, max: number): string {
   return typeof v === "string" ? v.slice(0, max) : "";
@@ -97,8 +97,8 @@ export const onRequestPost = async (context: {
     if (!event || !ALLOWED_EVENTS.has(String(event.name))) {
       return new Response(null, { status: 204 });
     }
-    // A support tap is only meaningful with one of the fixed amounts.
-    if (event.name === "support_tap" && !ALLOWED_AMOUNT.has(String(event.amount))) {
+    // A support tap is only meaningful with the route it took.
+    if (event.name === "support_tap" && !ALLOWED_SUPPORT_METHOD.has(String(event.method))) {
       return new Response(null, { status: 204 });
     }
     // Binding not configured yet → accept-and-drop so deploys never 500.
@@ -109,12 +109,12 @@ export const onRequestPost = async (context: {
       : "";
     const cfCountry = str(request.cf?.country, 2);
 
-    // format (download), method (compliance_share) and amount (support_tap)
-    // share a "variant" column. A support tap records only its validated
-    // amount, so no other client-supplied value can ride along in that slot.
+    // format (download), method (compliance_share) and the support route
+    // (support_tap) share a "variant" column. A support tap records only its
+    // validated route, so no other client-supplied value can ride along there.
     const variant =
       event.name === "support_tap"
-        ? pick(ALLOWED_AMOUNT, event.amount)
+        ? pick(ALLOWED_SUPPORT_METHOD, event.method)
         : str(event.format, 12) || pick(ALLOWED_METHOD, event.method);
 
     // Navigation events have no `tool`. `navSubject` folds the single subject
