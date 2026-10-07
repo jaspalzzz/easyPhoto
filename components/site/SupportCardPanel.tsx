@@ -51,12 +51,31 @@ export function SupportCardPanel({ config, variant, tool, className, onDismiss }
       </p>
 
       <div className="mt-3 flex flex-wrap items-center gap-3">
-        {variant === "deeplink" ? (
+        {variant === "pages" && config.pages ? (
+          <ul className="flex flex-wrap gap-2.5">
+            {SUPPORT_AMOUNTS.map((amount) => (
+              <li key={amount}>
+                {/* A payment page opens in a new tab so the user's tool and
+                    file stay put; noopener keeps the two pages independent. */}
+                <a
+                  href={config.pages![amount]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => onAmount(amount)}
+                  aria-label={`Support easyPhoto with ₹${amount} (opens Razorpay in a new tab)`}
+                  className={buttonVariants({ variant: "cta", className: "min-h-11 px-4 font-semibold" })}
+                >
+                  ₹{amount}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : variant === "deeplink" && config.vpa ? (
           <ul className="flex flex-wrap gap-2.5">
             {SUPPORT_AMOUNTS.map((amount) => (
               <li key={amount}>
                 <a
-                  href={buildUpiLink(config, amount)}
+                  href={buildUpiLink({ vpa: config.vpa!, payee: config.payee }, amount)}
                   onClick={() => onAmount(amount)}
                   aria-label={`Support easyPhoto with ₹${amount} via UPI`}
                   className={buttonVariants({ variant: "cta", className: "min-h-11 px-4 font-semibold" })}

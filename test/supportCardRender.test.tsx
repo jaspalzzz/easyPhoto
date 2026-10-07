@@ -64,6 +64,9 @@ beforeEach(() => {
   vi.stubEnv("NEXT_PUBLIC_UPI_VPA", VPA);
   vi.stubEnv("NEXT_PUBLIC_UPI_PAYEE_NAME", "");
   vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", "");
+  vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_10", "");
+  vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_20", "");
+  vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_50", "");
   container = document.createElement("div");
   document.body.appendChild(container);
   root = createRoot(container);
@@ -189,6 +192,34 @@ describe("SupportCard", () => {
     expect(container.innerHTML).toBe("");
     expect(analytics.track).not.toHaveBeenCalled();
   });
+
+  it.each(["ios", "desktop", "android"] as const)(
+    "with Razorpay payment pages, %s gets three amount links that open in a new tab",
+    async (device) => {
+      analytics.device = device;
+      vi.stubEnv("NEXT_PUBLIC_UPI_VPA", "");
+      vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_10", "https://rzp.io/rzp/support10");
+      vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_20", "https://rzp.io/rzp/support20");
+      vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_50", "https://rzp.io/rzp/support50");
+      await mount();
+      await download();
+      const card = region()!;
+      expect(card.textContent).toContain(HEADING);
+      expect(card.textContent).toContain(BODY);
+      expect(card.textContent).not.toContain(DESKTOP_LINE);
+      const links = [...card.querySelectorAll("a")];
+      expect(links.map((a) => a.getAttribute("href"))).toEqual([
+        "https://rzp.io/rzp/support10",
+        "https://rzp.io/rzp/support20",
+        "https://rzp.io/rzp/support50",
+      ]);
+      expect(links.map((a) => a.textContent)).toEqual(["₹10", "₹20", "₹50"]);
+      for (const a of links) {
+        expect(a.getAttribute("target")).toBe("_blank");
+        expect(a.getAttribute("rel")).toBe("noopener noreferrer");
+      }
+    }
+  );
 
   it("shows no card on desktop when no QR is configured", async () => {
     analytics.device = "desktop";

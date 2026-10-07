@@ -7,9 +7,14 @@
  * NEXT_PUBLIC_ADSENSE_ENABLED): with no valid merchant VPA the card never
  * renders, so unsetting the variable and rebuilding is the rollback.
  *
- * Deep link: NPCI "UPI Linking Specification" — upi://pay with pa (payee VPA),
- * pn (payee name), am (amount), cu (currency, INR only) and tn (note). Every
- * value is percent-encoded.
+ * Two ways to pay, chosen by which variables are set:
+ *  - Hosted payment pages (NEXT_PUBLIC_SUPPORT_PAGE_10/_20/_50): one reusable
+ *    Razorpay Payment Page per amount. Works on every device (UPI and cards),
+ *    so this mode wins when all three are set.
+ *  - Merchant UPI ID (NEXT_PUBLIC_UPI_VPA): NPCI "UPI Linking Specification"
+ *    deep link — upi://pay with pa (payee VPA), pn (payee name), am (amount),
+ *    cu (currency, INR only) and tn (note) — on Android, a static QR on
+ *    computers.
  */
 
 import type { DeviceClass } from "@/lib/analytics";
@@ -37,16 +42,37 @@ const TRANSACTION_NOTE = "Support easyPhoto";
 const VPA_RE = /^[a-z0-9._-]{2,256}@[a-z][a-z0-9.-]{1,63}$/i;
 
 export interface SupportConfig {
-  vpa: string;
+  /** Merchant UPI ID, or null when only payment pages are configured. */
+  vpa: string | null;
   payee: string;
   /** Same-origin path to the merchant QR in public/, or null when not set. */
   qrSrc: string | null;
+  /** One hosted payment page per amount, or null unless all three are valid. */
+  pages: Record<SupportAmount, string> | null;
 }
 
 export interface SupportEnv {
   vpa?: string;
   payee?: string;
   qrSrc?: string;
+  page10?: string;
+  page20?: string;
+  page50?: string;
+}
+
+/**
+ * Payment-page links must be https on Razorpay's own hosts, so a typo in the
+ * Cloudflare variable can never send a visitor to someone else's page.
+ */
+const PAGE_HOSTS = ["rzp.io", "pages.razorpay.com", "razorpay.me"];
+
+export function isValidPaymentPage(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && PAGE_HOSTS.includes(url.hostname) && url.pathname.length > 1;
+  } catch {
+    return false;
+  }
 }
 
 export function isValidVpa(value: string): boolean {
@@ -63,18 +89,33 @@ function isSameOriginPath(value: string): boolean {
 
 let warnedVpa = false;
 let warnedQr = false;
+let warnedPages = false;
+
+function parsePages(env: SupportEnv): Record<SupportAmount, string> | null {
+  const raw = { "10": env.page10?.trim() ?? "", "20": env.page20?.trim() ?? "", "50": env.page50?.trim() ?? "" };
+  if (!raw["10"] && !raw["20"] && !raw["50"]) return null;
+  if (SUPPORT_AMOUNTS.every((a) => isValidPaymentPage(raw[a]))) return raw;
+  if (!warnedPages) {
+    warnedPages = true;
+    console.warn("[support-card] NEXT_PUBLIC_SUPPORT_PAGE_10/_20/_50 must all be https Razorpay payment page links; payment pages are disabled.");
+  }
+  return null;
+}
 
 /** Validate raw env values. Returns null when the card must not render. */
 export function parseSupportConfig(env: SupportEnv): SupportConfig | null {
-  const vpa = env.vpa?.trim() ?? "";
-  if (!vpa) return null;
-  if (!isValidVpa(vpa)) {
-    if (!warnedVpa) {
+  const pages = parsePages(env);
+  const rawVpa = env.vpa?.trim() ?? "";
+  let vpa: string | null = null;
+  if (rawVpa) {
+    if (isValidVpa(rawVpa)) {
+      vpa = rawVpa;
+    } else if (!warnedVpa) {
       warnedVpa = true;
-      console.warn("[support-card] NEXT_PUBLIC_UPI_VPA is not a valid UPI ID; the card is disabled.");
+      console.warn("[support-card] NEXT_PUBLIC_UPI_VPA is not a valid UPI ID; UPI links are disabled.");
     }
-    return null;
   }
+  if (!vpa && !pages) return null;
 
   const payee = env.payee?.trim().slice(0, PAYEE_MAX) || DEFAULT_PAYEE;
 
@@ -89,7 +130,7 @@ export function parseSupportConfig(env: SupportEnv): SupportConfig | null {
     }
   }
 
-  return { vpa, payee, qrSrc };
+  return { vpa, payee, qrSrc, pages };
 }
 
 /** The build's config. Each NEXT_PUBLIC_* reference must stay literal so Next inlines it. */
@@ -98,10 +139,13 @@ export function supportConfig(): SupportConfig | null {
     vpa: process.env.NEXT_PUBLIC_UPI_VPA,
     payee: process.env.NEXT_PUBLIC_UPI_PAYEE_NAME,
     qrSrc: process.env.NEXT_PUBLIC_UPI_QR_SRC,
+    page10: process.env.NEXT_PUBLIC_SUPPORT_PAGE_10,
+    page20: process.env.NEXT_PUBLIC_SUPPORT_PAGE_20,
+    page50: process.env.NEXT_PUBLIC_SUPPORT_PAGE_50,
   });
 }
 
-export function buildUpiLink(config: Pick<SupportConfig, "vpa" | "payee">, amount: SupportAmount): string {
+export function buildUpiLink(config: { vpa: string; payee: string }, amount: SupportAmount): string {
   const params: [string, string][] = [
     ["pa", config.vpa],
     ["pn", config.payee],
@@ -115,18 +159,21 @@ export function buildUpiLink(config: Pick<SupportConfig, "vpa" | "payee">, amoun
 }
 
 /**
- * What the card offers on this device. Android opens a UPI app per amount via
- * the deep link. On a computer a static QR is the only route (it cannot preset
- * an amount), so without a configured QR there is no card. iPhone gets no card:
+ * What the card offers on this device. Hosted payment pages work everywhere,
+ * so with them every device gets the amount buttons. Without them: Android
+ * opens a UPI app per amount via the deep link; a computer gets the static QR
+ * (it cannot preset an amount), so no QR means no card; iPhone gets no card —
  * upi:// links aren't reliably handled there, and a QR on the same phone can't
  * be scanned.
  */
-export type SupportVariant = "deeplink" | "qr";
+export type SupportVariant = "pages" | "deeplink" | "qr";
 
 export function supportVariant(
   device: DeviceClass,
   config: SupportConfig
 ): SupportVariant | null {
+  if (config.pages) return "pages";
+  if (!config.vpa) return null;
   if (device === "android") return "deeplink";
   if (device === "ios") return null;
   return config.qrSrc ? "qr" : null;

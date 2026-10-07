@@ -13,6 +13,7 @@ import {
   SUPPORT_TAPPED_KEY,
   buildUpiLink,
   isValidVpa,
+  isValidPaymentPage,
   parseSupportConfig,
   supportVariant,
 } from "@/lib/supportCard";
@@ -67,6 +68,7 @@ describe("parseSupportConfig", () => {
       vpa: "shop@ybl",
       payee: "easyPhoto",
       qrSrc: null,
+      pages: null,
     });
     expect(parseSupportConfig({ vpa: "shop@ybl", payee: "  " })?.payee).toBe("easyPhoto");
     expect(parseSupportConfig({ vpa: "shop@ybl", payee: "Easy Photo Studio" })?.payee).toBe(
@@ -110,7 +112,7 @@ describe("buildUpiLink (NPCI upi://pay deep link)", () => {
 });
 
 describe("supportVariant", () => {
-  const withQr = { vpa: "shop@ybl", payee: "easyPhoto", qrSrc: "/upi-qr.png" };
+  const withQr = { vpa: "shop@ybl", payee: "easyPhoto", qrSrc: "/upi-qr.png", pages: null };
   const noQr = { ...withQr, qrSrc: null };
 
   it("uses the deep link on Android, with or without a QR", () => {
@@ -123,6 +125,49 @@ describe("supportVariant", () => {
     expect(supportVariant("ios", withQr)).toBeNull(); // a QR on the same phone cannot be scanned
     expect(supportVariant("desktop", noQr)).toBeNull();
     expect(supportVariant("ios", noQr)).toBeNull();
+  });
+});
+
+describe("payment pages (Razorpay)", () => {
+  const PAGES = {
+    page10: "https://rzp.io/rzp/support10",
+    page20: "https://pages.razorpay.com/support20",
+    page50: "https://rzp.io/rzp/support50",
+  };
+
+  it("accepts only https links on Razorpay's own hosts", () => {
+    expect(isValidPaymentPage("https://rzp.io/rzp/abc")).toBe(true);
+    expect(isValidPaymentPage("https://pages.razorpay.com/support")).toBe(true);
+    expect(isValidPaymentPage("https://razorpay.me/@easyphoto")).toBe(true);
+    expect(isValidPaymentPage("http://rzp.io/rzp/abc")).toBe(false);
+    expect(isValidPaymentPage("https://rzp.io/")).toBe(false);
+    expect(isValidPaymentPage("https://rzp.io.evil.example/abc")).toBe(false);
+    expect(isValidPaymentPage("https://evil.example/rzp.io/abc")).toBe(false);
+    expect(isValidPaymentPage("not a url")).toBe(false);
+  });
+
+  it("configures the card from three valid pages alone, with no UPI ID", () => {
+    expect(parseSupportConfig(PAGES)).toEqual({
+      vpa: null,
+      payee: "easyPhoto",
+      qrSrc: null,
+      pages: { "10": PAGES.page10, "20": PAGES.page20, "50": PAGES.page50 },
+    });
+  });
+
+  it("ignores the pages unless all three are valid, and warns once", async () => {
+    const { parseSupportConfig: parse } = await freshModule();
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    expect(parse({ ...PAGES, page50: "" })).toBeNull();
+    expect(parse({ ...PAGES, page20: "https://example.com/pay" })).toBeNull();
+    expect(parse({ ...PAGES, page50: "", vpa: "shop@ybl" })?.pages).toBeNull(); // UPI still works
+    expect(warn).toHaveBeenCalledTimes(1);
+    vi.restoreAllMocks();
+  });
+
+  it("offers the payment pages on every device, ahead of UPI", () => {
+    const config = { vpa: "shop@ybl", payee: "easyPhoto", qrSrc: null, pages: { "10": PAGES.page10, "20": PAGES.page20, "50": PAGES.page50 } };
+    for (const device of ["android", "ios", "desktop"] as const) expect(supportVariant(device, config)).toBe("pages");
   });
 });
 
