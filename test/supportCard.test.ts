@@ -15,7 +15,9 @@ import {
   isValidVpa,
   isValidPaymentPage,
   parseSupportConfig,
+  parseUpiLink,
   supportVariant,
+  type SupportConfig,
 } from "@/lib/supportCard";
 import { onRequestPost } from "@/functions/api/event";
 
@@ -46,95 +48,133 @@ describe("VPA validation", () => {
   ])("rejects %j", (vpa) => expect(isValidVpa(vpa)).toBe(false));
 });
 
+/** The payload of the owner's Razorpay multiple-payment QR (decoded 7 Oct 2026). */
+const QR_LINK =
+  "upi://pay?cu=INR&mc=7338&mode=19&pa=easyphoto641476.rzp@rxairtel&tn=Payment%20To%20Easyphoto&tr=Tkx9z1TtIKezToqrv2";
+
+const PAGES = {
+  page10: "https://rzp.io/rzp/support10",
+  page20: "https://pages.razorpay.com/support20",
+  page50: "https://rzp.io/rzp/support50",
+};
+const PAGE_MAP = { "10": PAGES.page10, "20": PAGES.page20, "50": PAGES.page50 };
+
+describe("parseUpiLink (merchant QR payload)", () => {
+  it("keeps the QR's parameters in order", () => {
+    expect(parseUpiLink(QR_LINK)).toEqual([
+      ["cu", "INR"],
+      ["mc", "7338"],
+      ["mode", "19"],
+      ["pa", "easyphoto641476.rzp@rxairtel"],
+      ["tn", "Payment To Easyphoto"],
+      ["tr", "Tkx9z1TtIKezToqrv2"],
+    ]);
+  });
+
+  it("drops an amount and unknown parameters, and adds INR when absent", () => {
+    expect(parseUpiLink("upi://pay?pa=shop@ybl&am=5000&url=https://evil.example&pn=Shop")).toEqual([
+      ["pa", "shop@ybl"],
+      ["pn", "Shop"],
+      ["cu", "INR"],
+    ]);
+  });
+
+  it.each([
+    ["not a upi link", "https://rzp.io/rzp/x?pa=shop@ybl"],
+    ["upi but not pay", "upi://mandate?pa=shop@ybl"],
+    ["no payee", "upi://pay?tn=hi&cu=INR"],
+    ["invalid payee", "upi://pay?pa=not%20a%20vpa"],
+    ["foreign currency", "upi://pay?pa=shop@ybl&cu=USD"],
+    ["duplicate payee", "upi://pay?pa=shop@ybl&pa=evil@ybl"],
+    ["empty", ""],
+  ])("rejects %s", (_label, value) => expect(parseUpiLink(value)).toBeNull());
+});
+
 describe("parseSupportConfig", () => {
   afterEach(() => vi.restoreAllMocks());
 
-  it("returns null when the VPA is unset or blank — the card never renders", () => {
+  it("returns null when nothing is set — the card never renders", () => {
     expect(parseSupportConfig({})).toBeNull();
-    expect(parseSupportConfig({ vpa: "" })).toBeNull();
-    expect(parseSupportConfig({ vpa: "   ", qrSrc: "/upi-qr.png" })).toBeNull();
+    expect(parseSupportConfig({ upiLink: "", qrSrc: "  " })).toBeNull();
   });
 
-  it("ignores an invalid VPA and warns once", async () => {
+  it("ignores an invalid UPI link and warns once", async () => {
     const { parseSupportConfig: parse } = await freshModule();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    expect(parse({ vpa: "not-a-vpa" })).toBeNull();
-    expect(parse({ vpa: "still bad" })).toBeNull();
+    expect(parse({ upiLink: "upi://pay?pa=bad" })).toBeNull();
+    expect(parse({ upiLink: "still bad" })).toBeNull();
     expect(warn).toHaveBeenCalledTimes(1);
   });
 
-  it("trims values and defaults the payee name to easyPhoto", () => {
-    expect(parseSupportConfig({ vpa: " shop@ybl " })).toEqual({
-      vpa: "shop@ybl",
-      payee: "easyPhoto",
+  it("configures each option independently", () => {
+    expect(parseSupportConfig({ upiLink: ` ${QR_LINK} ` })).toEqual({
+      upi: parseUpiLink(QR_LINK),
       qrSrc: null,
       pages: null,
     });
-    expect(parseSupportConfig({ vpa: "shop@ybl", payee: "  " })?.payee).toBe("easyPhoto");
-    expect(parseSupportConfig({ vpa: "shop@ybl", payee: "Easy Photo Studio" })?.payee).toBe(
-      "Easy Photo Studio"
-    );
+    expect(parseSupportConfig({ qrSrc: "/upi-qr.png" })).toEqual({ upi: null, qrSrc: "/upi-qr.png", pages: null });
+    expect(parseSupportConfig(PAGES)).toEqual({ upi: null, qrSrc: null, pages: PAGE_MAP });
   });
 
   it("accepts only a same-origin QR path", async () => {
     const { parseSupportConfig: parse } = await freshModule();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    expect(parse({ vpa: "shop@ybl", qrSrc: "/images/upi-qr.png" })?.qrSrc).toBe("/images/upi-qr.png");
-    expect(parse({ vpa: "shop@ybl", qrSrc: "https://evil.example/qr.png" })?.qrSrc).toBeNull();
-    expect(parse({ vpa: "shop@ybl", qrSrc: "//evil.example/qr.png" })?.qrSrc).toBeNull();
-    expect(parse({ vpa: "shop@ybl", qrSrc: "javascript:alert(1)" })?.qrSrc).toBeNull();
+    expect(parse({ ...PAGES, qrSrc: "/images/upi-qr.png" })?.qrSrc).toBe("/images/upi-qr.png");
+    expect(parse({ ...PAGES, qrSrc: "https://evil.example/qr.png" })?.qrSrc).toBeNull();
+    expect(parse({ ...PAGES, qrSrc: "//evil.example/qr.png" })?.qrSrc).toBeNull();
+    expect(parse({ ...PAGES, qrSrc: "javascript:alert(1)" })?.qrSrc).toBeNull();
     expect(warn).toHaveBeenCalledTimes(1);
   });
 });
 
 describe("buildUpiLink (NPCI upi://pay deep link)", () => {
-  const config = { vpa: "easyphoto@ybl", payee: "easyPhoto" };
-
-  it("builds the exact link for each approved amount", () => {
+  it("is the merchant QR's payload plus the tapped amount", () => {
+    const upi = parseUpiLink(QR_LINK)!;
     expect(SUPPORT_AMOUNTS).toEqual(["10", "20", "50"]);
     for (const amount of SUPPORT_AMOUNTS) {
-      expect(buildUpiLink(config, amount)).toBe(
-        `upi://pay?pa=easyphoto@ybl&pn=easyPhoto&am=${amount}&cu=INR&tn=Support%20easyPhoto`
+      expect(buildUpiLink(upi, amount)).toBe(
+        `upi://pay?cu=INR&mc=7338&mode=19&pa=easyphoto641476.rzp@rxairtel&tn=Payment%20To%20Easyphoto&tr=Tkx9z1TtIKezToqrv2&am=${amount}.00`
       );
     }
   });
 
-  it("percent-encodes every parameter so a value cannot add or change parameters", () => {
-    const link = buildUpiLink({ vpa: "shop@ybl", payee: "Easy & Co=1 ₹" }, "20");
-    expect(link).toBe(
-      "upi://pay?pa=shop@ybl&pn=Easy%20%26%20Co%3D1%20%E2%82%B9&am=20&cu=INR&tn=Support%20easyPhoto"
-    );
+  it("percent-encodes every value so it cannot add or change parameters", () => {
+    const upi = parseUpiLink("upi://pay?pa=shop@ybl&pn=Easy%20%26%20Co%3D1%20%E2%82%B9")!;
+    const link = buildUpiLink(upi, "20");
+    expect(link).toBe("upi://pay?pa=shop@ybl&pn=Easy%20%26%20Co%3D1%20%E2%82%B9&cu=INR&am=20.00");
     const params = new URLSearchParams(link.split("?")[1]);
-    expect([...params.keys()]).toEqual(["pa", "pn", "am", "cu", "tn"]);
+    expect([...params.keys()]).toEqual(["pa", "pn", "cu", "am"]);
     expect(params.get("pn")).toBe("Easy & Co=1 ₹");
-    expect(params.get("am")).toBe("20");
   });
 });
 
-describe("supportVariant", () => {
-  const withQr = { vpa: "shop@ybl", payee: "easyPhoto", qrSrc: "/upi-qr.png", pages: null };
-  const noQr = { ...withQr, qrSrc: null };
+describe("supportVariant — the fewest steps that work on the device", () => {
+  const all: SupportConfig = { upi: parseUpiLink(QR_LINK), qrSrc: "/upi-qr.png", pages: PAGE_MAP };
 
-  it("uses the deep link on Android, with or without a QR", () => {
-    expect(supportVariant("android", withQr)).toBe("deeplink");
-    expect(supportVariant("android", noQr)).toBe("deeplink");
+  it("Android opens the UPI app; a computer shows the QR; iPhone gets the payment pages", () => {
+    expect(supportVariant("android", all)).toBe("deeplink");
+    expect(supportVariant("desktop", all)).toBe("qr");
+    expect(supportVariant("ios", all)).toBe("pages");
   });
 
-  it("uses the QR on desktop and iPhone, and nothing when no QR is configured", () => {
-    expect(supportVariant("desktop", withQr)).toBe("qr");
-    expect(supportVariant("ios", withQr)).toBeNull(); // a QR on the same phone cannot be scanned
-    expect(supportVariant("desktop", noQr)).toBeNull();
-    expect(supportVariant("ios", noQr)).toBeNull();
+  it("falls back to the payment pages when the UPI option for the device is missing", () => {
+    const pagesOnly: SupportConfig = { upi: null, qrSrc: null, pages: PAGE_MAP };
+    for (const device of ["android", "ios", "desktop"] as const) {
+      expect(supportVariant(device, pagesOnly)).toBe("pages");
+    }
+  });
+
+  it("shows nothing where no option fits the device", () => {
+    const upiOnly: SupportConfig = { upi: parseUpiLink(QR_LINK), qrSrc: null, pages: null };
+    expect(supportVariant("desktop", upiOnly)).toBeNull();
+    expect(supportVariant("ios", upiOnly)).toBeNull();
+    const qrOnly: SupportConfig = { upi: null, qrSrc: "/upi-qr.png", pages: null };
+    expect(supportVariant("android", qrOnly)).toBeNull(); // a QR on the same phone can't be scanned
+    expect(supportVariant("ios", qrOnly)).toBeNull();
   });
 });
 
 describe("payment pages (Razorpay)", () => {
-  const PAGES = {
-    page10: "https://rzp.io/rzp/support10",
-    page20: "https://pages.razorpay.com/support20",
-    page50: "https://rzp.io/rzp/support50",
-  };
-
   it("accepts only https links on Razorpay's own hosts", () => {
     expect(isValidPaymentPage("https://rzp.io/rzp/abc")).toBe(true);
     expect(isValidPaymentPage("https://pages.razorpay.com/support")).toBe(true);
@@ -146,28 +186,14 @@ describe("payment pages (Razorpay)", () => {
     expect(isValidPaymentPage("not a url")).toBe(false);
   });
 
-  it("configures the card from three valid pages alone, with no UPI ID", () => {
-    expect(parseSupportConfig(PAGES)).toEqual({
-      vpa: null,
-      payee: "easyPhoto",
-      qrSrc: null,
-      pages: { "10": PAGES.page10, "20": PAGES.page20, "50": PAGES.page50 },
-    });
-  });
-
   it("ignores the pages unless all three are valid, and warns once", async () => {
     const { parseSupportConfig: parse } = await freshModule();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     expect(parse({ ...PAGES, page50: "" })).toBeNull();
     expect(parse({ ...PAGES, page20: "https://example.com/pay" })).toBeNull();
-    expect(parse({ ...PAGES, page50: "", vpa: "shop@ybl" })?.pages).toBeNull(); // UPI still works
+    expect(parse({ ...PAGES, page50: "", upiLink: QR_LINK })?.pages).toBeNull(); // UPI still works
     expect(warn).toHaveBeenCalledTimes(1);
     vi.restoreAllMocks();
-  });
-
-  it("offers the payment pages on every device, ahead of UPI", () => {
-    const config = { vpa: "shop@ybl", payee: "easyPhoto", qrSrc: null, pages: { "10": PAGES.page10, "20": PAGES.page20, "50": PAGES.page50 } };
-    for (const device of ["android", "ios", "desktop"] as const) expect(supportVariant(device, config)).toBe("pages");
   });
 });
 

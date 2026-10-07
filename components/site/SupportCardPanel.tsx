@@ -15,7 +15,7 @@ import {
 } from "@/lib/supportCard";
 import { SUPPORT_CLOSE_EVENT, SUPPORT_OPEN_EVENT } from "@/lib/supportEvents";
 
-const QR_SIZE_PX = 128;
+const QR_SIZE_PX = 160;
 
 export interface SupportCardPanelProps {
   config: SupportConfig;
@@ -137,12 +137,12 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
                 </li>
               ))}
             </ul>
-          ) : variant === "deeplink" && config.vpa ? (
+          ) : variant === "deeplink" && config.upi ? (
             <ul className="flex flex-wrap gap-2.5 md:justify-center">
               {SUPPORT_AMOUNTS.map((amount) => (
                 <li key={amount}>
                   <a
-                    href={buildUpiLink({ vpa: config.vpa!, payee: config.payee }, amount)}
+                    href={buildUpiLink(config.upi!, amount)}
                     onClick={() => onAmount(amount)}
                     aria-label={`Support easyPhoto with ₹${amount} via UPI`}
                     className={amountClass}
@@ -162,7 +162,7 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
                 alt="UPI QR code to support easyPhoto"
                 width={QR_SIZE_PX}
                 height={QR_SIZE_PX}
-                className="h-32 w-32 shrink-0 rounded-md bg-white p-1.5"
+                className="h-40 w-40 shrink-0 rounded-md bg-white p-1.5"
               />
               <p className="text-xs leading-relaxed text-muted-foreground">
                 On a computer? Scan the QR with any UPI app.

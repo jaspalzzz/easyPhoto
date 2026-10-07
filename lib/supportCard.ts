@@ -1,20 +1,22 @@
 /**
- * "Support easyPhoto" UPI card — configuration, deep-link builder and the
+ * "Support easyPhoto" tip pop-up — configuration, UPI deep-link builder and the
  * show/hide rules. The React surface lives in components/site/SupportCard.tsx;
  * everything testable without a DOM lives here.
  *
  * Config is build-time (NEXT_PUBLIC_* is inlined by Next.js, like
- * NEXT_PUBLIC_ADSENSE_ENABLED): with no valid merchant VPA the card never
- * renders, so unsetting the variable and rebuilding is the rollback.
+ * NEXT_PUBLIC_ADSENSE_ENABLED): with nothing valid set the pop-up never
+ * renders, so unsetting the variables and rebuilding is the rollback.
  *
- * Two ways to pay, chosen by which variables are set:
- *  - Hosted payment pages (NEXT_PUBLIC_SUPPORT_PAGE_10/_20/_50): one reusable
- *    Razorpay Payment Page per amount. Works on every device (UPI and cards),
- *    so this mode wins when all three are set.
- *  - Merchant UPI ID (NEXT_PUBLIC_UPI_VPA): NPCI "UPI Linking Specification"
- *    deep link — upi://pay with pa (payee VPA), pn (payee name), am (amount),
- *    cu (currency, INR only) and tn (note) — on Android, a static QR on
- *    computers.
+ * Three ways to pay, each optional, picked per device (supportVariant):
+ *  - UPI deep link (NEXT_PUBLIC_UPI_LINK): the upi://pay payload of the
+ *    merchant's Razorpay multiple-payment QR. On Android each amount button
+ *    opens the UPI app with that exact payload plus `am` — no form to fill.
+ *  - QR image (NEXT_PUBLIC_UPI_QR_SRC): the same QR, shown on computers to
+ *    scan with a phone.
+ *  - Hosted payment pages (NEXT_PUBLIC_SUPPORT_PAGE_10/_20/_50): one Razorpay
+ *    Payment Page per amount. Works on every device (UPI and cards) but asks
+ *    for email and phone, so it is the fallback: iPhone always, and Android or
+ *    computers when the UPI options above aren't set.
  */
 
 import type { DeviceClass } from "@/lib/analytics";
@@ -30,10 +32,6 @@ export const SUPPORT_TAPPED_KEY = "ep:support-tapped-at";
 /** After an amount tap the card stays away this long. */
 export const SUPPORT_SNOOZE_MS = 30 * 24 * 60 * 60 * 1000;
 
-const DEFAULT_PAYEE = "easyPhoto";
-const PAYEE_MAX = 50;
-const TRANSACTION_NOTE = "Support easyPhoto";
-
 /**
  * VPA shape `name@handle`: the NPCI handle is letters (optionally with digits,
  * dots or hyphens after the first letter); the name part allows letters,
@@ -41,10 +39,21 @@ const TRANSACTION_NOTE = "Support easyPhoto";
  */
 const VPA_RE = /^[a-z0-9._-]{2,256}@[a-z][a-z0-9.-]{1,63}$/i;
 
+/**
+ * Parameters carried over from the merchant QR's upi://pay payload (NPCI UPI
+ * Linking Specification): payee address and name, merchant category code,
+ * initiation mode, Razorpay's transaction reference for that QR (how the
+ * payment is matched to it), note and currency. Anything else — including
+ * an `am` — is dropped; the amount comes only from the tapped button.
+ */
+const UPI_LINK_KEYS = new Set(["pa", "pn", "mc", "mode", "tr", "tn", "cu"]);
+
+/** A validated upi://pay payload, in its original order, without an amount. */
+export type UpiParams = ReadonlyArray<readonly [string, string]>;
+
 export interface SupportConfig {
-  /** Merchant UPI ID, or null when only payment pages are configured. */
-  vpa: string | null;
-  payee: string;
+  /** The merchant QR's UPI payload, or null when not set or invalid. */
+  upi: UpiParams | null;
   /** Same-origin path to the merchant QR in public/, or null when not set. */
   qrSrc: string | null;
   /** One hosted payment page per amount, or null unless all three are valid. */
@@ -52,8 +61,7 @@ export interface SupportConfig {
 }
 
 export interface SupportEnv {
-  vpa?: string;
-  payee?: string;
+  upiLink?: string;
   qrSrc?: string;
   page10?: string;
   page20?: string;
@@ -80,6 +88,29 @@ export function isValidVpa(value: string): boolean {
 }
 
 /**
+ * Validate a merchant QR payload such as
+ * `upi://pay?pa=shop.rzp@bank&mc=7338&tr=…&tn=…&cu=INR`. Returns the kept
+ * parameters, or null unless it is a upi://pay link with a valid payee
+ * address, at most one of each parameter, and INR (added when absent).
+ */
+export function parseUpiLink(value: string): UpiParams | null {
+  const match = /^upi:\/\/pay\?(.+)$/i.exec(value);
+  if (!match) return null;
+  const all = [...new URLSearchParams(match[1])];
+  const keys = all.map(([k]) => k.toLowerCase());
+  if (new Set(keys).size !== keys.length) return null; // no duplicate (smuggled) parameters
+  const kept: [string, string][] = all
+    .map(([k, v]): [string, string] => [k.toLowerCase(), v.trim()])
+    .filter(([k, v]) => UPI_LINK_KEYS.has(k) && v !== "");
+  const pa = kept.find(([k]) => k === "pa")?.[1];
+  if (!pa || !isValidVpa(pa)) return null;
+  const cu = kept.find(([k]) => k === "cu");
+  if (cu && cu[1] !== "INR") return null;
+  if (!cu) kept.push(["cu", "INR"]);
+  return kept;
+}
+
+/**
  * Only a site-relative path is accepted: the CSP allows images from 'self',
  * and a merchant QR must never be pulled from a third-party host.
  */
@@ -87,7 +118,7 @@ function isSameOriginPath(value: string): boolean {
   return value.startsWith("/") && !value.startsWith("//") && !value.includes("\\");
 }
 
-let warnedVpa = false;
+let warnedUpi = false;
 let warnedQr = false;
 let warnedPages = false;
 
@@ -105,19 +136,16 @@ function parsePages(env: SupportEnv): Record<SupportAmount, string> | null {
 /** Validate raw env values. Returns null when the card must not render. */
 export function parseSupportConfig(env: SupportEnv): SupportConfig | null {
   const pages = parsePages(env);
-  const rawVpa = env.vpa?.trim() ?? "";
-  let vpa: string | null = null;
-  if (rawVpa) {
-    if (isValidVpa(rawVpa)) {
-      vpa = rawVpa;
-    } else if (!warnedVpa) {
-      warnedVpa = true;
-      console.warn("[support-card] NEXT_PUBLIC_UPI_VPA is not a valid UPI ID; UPI links are disabled.");
+
+  const rawUpi = env.upiLink?.trim() ?? "";
+  let upi: UpiParams | null = null;
+  if (rawUpi) {
+    upi = parseUpiLink(rawUpi);
+    if (!upi && !warnedUpi) {
+      warnedUpi = true;
+      console.warn("[support-card] NEXT_PUBLIC_UPI_LINK must be the upi://pay link from the merchant QR; UPI links are disabled.");
     }
   }
-  if (!vpa && !pages) return null;
-
-  const payee = env.payee?.trim().slice(0, PAYEE_MAX) || DEFAULT_PAYEE;
 
   const rawQr = env.qrSrc?.trim() ?? "";
   let qrSrc: string | null = null;
@@ -130,14 +158,14 @@ export function parseSupportConfig(env: SupportEnv): SupportConfig | null {
     }
   }
 
-  return { vpa, payee, qrSrc, pages };
+  if (!upi && !qrSrc && !pages) return null;
+  return { upi, qrSrc, pages };
 }
 
 /** The build's config. Each NEXT_PUBLIC_* reference must stay literal so Next inlines it. */
 export function supportConfig(): SupportConfig | null {
   return parseSupportConfig({
-    vpa: process.env.NEXT_PUBLIC_UPI_VPA,
-    payee: process.env.NEXT_PUBLIC_UPI_PAYEE_NAME,
+    upiLink: process.env.NEXT_PUBLIC_UPI_LINK,
     qrSrc: process.env.NEXT_PUBLIC_UPI_QR_SRC,
     page10: process.env.NEXT_PUBLIC_SUPPORT_PAGE_10,
     page20: process.env.NEXT_PUBLIC_SUPPORT_PAGE_20,
@@ -145,26 +173,22 @@ export function supportConfig(): SupportConfig | null {
   });
 }
 
-export function buildUpiLink(config: { vpa: string; payee: string }, amount: SupportAmount): string {
-  const params: [string, string][] = [
-    ["pa", config.vpa],
-    ["pn", config.payee],
-    ["am", amount],
-    ["cu", "INR"],
-    ["tn", TRANSACTION_NOTE],
-  ];
+/** The merchant payload plus the tapped amount, in rupees with two decimals. */
+export function buildUpiLink(upi: UpiParams, amount: SupportAmount): string {
+  const params: (readonly [string, string])[] = [...upi, ["am", `${amount}.00`]];
   // "@" in the UPI ID stays literal: it's the form UPI apps expect, and some
   // reject a percent-encoded "%40" in `pa`. Everything else is encoded.
   return `upi://pay?${params.map(([k, v]) => `${k}=${encodeURIComponent(v).replace(/%40/g, "@")}`).join("&")}`;
 }
 
 /**
- * What the card offers on this device. Hosted payment pages work everywhere,
- * so with them every device gets the amount buttons. Without them: Android
- * opens a UPI app per amount via the deep link; a computer gets the static QR
- * (it cannot preset an amount), so no QR means no card; iPhone gets no card —
- * upi:// links aren't reliably handled there, and a QR on the same phone can't
- * be scanned.
+ * What the pop-up offers on this device — the option with the fewest steps
+ * that works there:
+ *  - Android: the UPI deep link (straight into the UPI app, no form);
+ *  - a computer: the QR to scan with a phone (the payer types the amount);
+ *  - otherwise, and always on iPhone (upi:// links aren't reliably handled
+ *    there, and a QR on the same phone can't be scanned): the payment pages;
+ *  - nothing when none of these is configured for the device.
  */
 export type SupportVariant = "pages" | "deeplink" | "qr";
 
@@ -172,11 +196,9 @@ export function supportVariant(
   device: DeviceClass,
   config: SupportConfig
 ): SupportVariant | null {
-  if (config.pages) return "pages";
-  if (!config.vpa) return null;
-  if (device === "android") return "deeplink";
-  if (device === "ios") return null;
-  return config.qrSrc ? "qr" : null;
+  if (device === "android" && config.upi) return "deeplink";
+  if (device === "desktop" && config.qrSrc) return "qr";
+  return config.pages ? "pages" : null;
 }
 
 // ── Show/hide rules ─────────────────────────────────────────────────────────

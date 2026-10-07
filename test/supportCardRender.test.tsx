@@ -23,7 +23,9 @@ vi.mock("@/lib/analytics", () => ({
   deviceClass: () => analytics.device,
 }));
 
-const VPA = "easyphoto@ybl";
+const VPA = "easyphoto641476.rzp@rxairtel";
+/** The owner's Razorpay multiple-payment QR payload (decoded 7 Oct 2026). */
+const QR_LINK = `upi://pay?cu=INR&mc=7338&mode=19&pa=${VPA}&tn=Payment%20To%20Easyphoto&tr=Tkx9z1TtIKezToqrv2`;
 const HEADING = "Glad we could help!";
 const BODY =
   "easyPhoto is free for everyone, and your photos never leave your device. If it saved you some time today, a small tip would mean a lot to us.";
@@ -69,8 +71,7 @@ beforeEach(() => {
   localStorage.clear();
   analytics.track.mockClear();
   analytics.device = "android";
-  vi.stubEnv("NEXT_PUBLIC_UPI_VPA", VPA);
-  vi.stubEnv("NEXT_PUBLIC_UPI_PAYEE_NAME", "");
+  vi.stubEnv("NEXT_PUBLIC_UPI_LINK", QR_LINK);
   vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", "");
   vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_10", "");
   vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_20", "");
@@ -130,7 +131,7 @@ describe("SupportCard", () => {
       "Support easyPhoto with ₹50 via UPI",
     ]);
     expect(links[1].getAttribute("href")).toBe(
-      "upi://pay?pa=easyphoto@ybl&pn=easyPhoto&am=20&cu=INR&tn=Support%20easyPhoto"
+      `${QR_LINK}&am=20.00`
     );
     const buttons = [...card.querySelectorAll("button")];
     expect(buttons.map((b) => b.textContent || b.getAttribute("aria-label"))).toEqual(["Close", SKIP]);
@@ -234,7 +235,7 @@ describe("SupportCard", () => {
     expect(analytics.track).toHaveBeenCalledWith({ name: "support_view", tool: "resize-kb", device: "desktop" });
   });
 
-  it("shows no card on iPhone, even with a QR configured", async () => {
+  it("shows no card on iPhone when only the UPI link and QR are configured", async () => {
     // upi:// links aren't reliable on iOS and a QR on the same phone can't be scanned.
     analytics.device = "ios";
     vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", "/upi-qr.png");
@@ -248,7 +249,7 @@ describe("SupportCard", () => {
     "with Razorpay payment pages, %s gets three amount links that open in a new tab",
     async (device) => {
       analytics.device = device;
-      vi.stubEnv("NEXT_PUBLIC_UPI_VPA", "");
+      vi.stubEnv("NEXT_PUBLIC_UPI_LINK", "");
       vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_10", "https://rzp.io/rzp/support10");
       vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_20", "https://rzp.io/rzp/support20");
       vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_50", "https://rzp.io/rzp/support50");
@@ -280,12 +281,37 @@ describe("SupportCard", () => {
     expect(analytics.track).not.toHaveBeenCalled();
   });
 
+  it("with every option configured, Android, iPhone and desktop each get theirs", async () => {
+    vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", "/upi-qr.png");
+    vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_10", "https://rzp.io/rzp/support10");
+    vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_20", "https://rzp.io/rzp/support20");
+    vi.stubEnv("NEXT_PUBLIC_SUPPORT_PAGE_50", "https://rzp.io/rzp/support50");
+    const seen: Record<string, string> = {};
+    for (const device of ["android", "ios", "desktop"] as const) {
+      sessionStorage.clear();
+      analytics.device = device;
+      act(() => root.unmount());
+      root = createRoot(container);
+      await mount();
+      await download();
+      const card = region()!;
+      seen[device] = card.querySelector("img")
+        ? `qr:${card.querySelector("img")!.getAttribute("src")}`
+        : (card.querySelector("a")!.getAttribute("href") ?? "");
+    }
+    expect(seen).toEqual({
+      android: `${QR_LINK}&am=10.00`,
+      ios: "https://rzp.io/rzp/support10",
+      desktop: "qr:/upi-qr.png",
+    });
+  });
+
   it.each([
     ["unset", ""],
-    ["invalid", "not a vpa"],
-  ])("never renders when NEXT_PUBLIC_UPI_VPA is %s", async (_label, value) => {
+    ["invalid", "upi://pay?pa=not a vpa"],
+  ])("never renders on Android when NEXT_PUBLIC_UPI_LINK is %s and nothing else is set", async (_label, value) => {
     vi.spyOn(console, "warn").mockImplementation(() => {});
-    vi.stubEnv("NEXT_PUBLIC_UPI_VPA", value);
+    vi.stubEnv("NEXT_PUBLIC_UPI_LINK", value);
     vi.stubEnv("NEXT_PUBLIC_UPI_QR_SRC", "/upi-qr.png");
     await mount();
     await download();
