@@ -101,8 +101,14 @@ No data, route or sitemap change besides the Driving Licence lastmod.
   compact, #70 ToolCard. Presentation only — SEO diff must show 0 pages changed.
 - Rerun the combined UI check on the final dev preview before release: top
   pages at 390 and desktop, light and dark, page speed vs production.
-- UPI support card (#79) is built and dormant until `NEXT_PUBLIC_UPI_VPA` is set
-  in Cloudflare (production). On hold (6 Oct) until the owner has a merchant UPI
-  account. Before enabling: add the QR to `public/` via PR and set
-  `NEXT_PUBLIC_UPI_QR_SRC`; test a real ₹1 tap-to-pay on Android (GPay, PhonePe,
-  Paytm) and a QR scan from a computer screen.
+- Support card (#79, #83) uses Razorpay Payment Pages (owner's individual
+  Razorpay account, live 7 Oct). Cloudflare variables set by the owner on 7 Oct,
+  Production and Preview:
+  `NEXT_PUBLIC_SUPPORT_PAGE_10/_20/_50` = `https://rzp.io/rzp/easyphoto-tip-10`,
+  `-20`, `-50` (verified: "Support easyPhoto", fixed Pay ₹10/₹20/₹50). The card
+  code reaches master with this release, so tips start on 22 Oct.
+- Ship with it: the owner-approved refund note in `/terms/` (Razorpay requires a
+  refund policy) — page text, so it rides the 22 Oct release.
+- After deploy: on easyphoto.in, a real download on /tools/resize-kb/ shows the
+  card; each amount opens its Razorpay page; one real ₹10 test payment reaches
+  the Razorpay dashboard.
