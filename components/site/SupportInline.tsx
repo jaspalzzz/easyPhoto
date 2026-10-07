@@ -25,7 +25,8 @@ function pageSlug(): string | undefined {
  *
  * Mounted by WorkflowNextSteps (the "Continue editing" block under most tools'
  * Download button) and directly by the tools that have no such block. Renders
- * nothing in the static HTML and nothing until the global "ep:download" event;
+ * nothing in the static HTML and nothing until a file is saved or shared (the
+ * global "ep:download" / "ep:share" events);
  * it does not show while a tap is snoozing the offer (SUPPORT_SNOOZE_MS) and
  * hides when the pop-up is closed by a tap. The ask is fetched on first show.
  */
@@ -57,10 +58,12 @@ export function SupportInline({ className }: { className?: string }) {
       if (isSupportSnoozed()) setShown(null);
     };
     window.addEventListener("ep:download", onDownload);
+    window.addEventListener("ep:share", onDownload);
     window.addEventListener(SUPPORT_CLOSE_EVENT, onSupportClose);
     return () => {
       active = false;
       window.removeEventListener("ep:download", onDownload);
+      window.removeEventListener("ep:share", onDownload);
       window.removeEventListener(SUPPORT_CLOSE_EVENT, onSupportClose);
     };
   }, []);

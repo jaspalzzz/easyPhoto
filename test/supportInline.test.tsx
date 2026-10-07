@@ -96,6 +96,17 @@ describe("SupportInline", () => {
     expect(card.contains(document.activeElement)).toBe(false);
   });
 
+  it("also appears after a completed Share (how most iPhone users keep a photo)", async () => {
+    analytics.device = "ios";
+    await mount();
+    await act(async () => {
+      window.dispatchEvent(new CustomEvent("ep:share", { detail: { filename: "photo.jpg", bytes: 20_000 } }));
+      await import("@/components/site/SupportOffer");
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(offer()!.querySelector("a")!.getAttribute("href")).toBe(PAY_LINK);
+  });
+
   it("keeps showing on later downloads — it is not limited to once per session", async () => {
     sessionStorage.setItem("ep:support-seen", "1"); // the pop-up already showed this session
     await mount();

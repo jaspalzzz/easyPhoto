@@ -146,6 +146,25 @@ describe("SupportCard", () => {
     expect(analytics.track).toHaveBeenCalledWith({ name: "support_view", tool: "resize-kb", device: "android" });
   });
 
+  it("opens with focus on the dialog itself, not on the ✕ (no focus ring on phones)", async () => {
+    await mount();
+    await download();
+    expect(document.activeElement).toBe(region());
+  });
+
+  it("also opens after a completed Share, without claiming the file was saved", async () => {
+    analytics.device = "ios";
+    await mount();
+    await act(async () => {
+      window.dispatchEvent(new CustomEvent("ep:share", { detail: { filename: "photo.jpg", bytes: 20_000 } }));
+      await settle();
+    });
+    const card = region()!;
+    expect(card.querySelector("h2")!.textContent).toBe(HEADING);
+    expect(card.textContent).not.toContain(SAVED_LINE);
+    expect(card.querySelector("a")!.getAttribute("href")).toBe(PAY_LINK);
+  });
+
   it("on iPhone opens the payment link in a new tab", async () => {
     analytics.device = "ios";
     await mount();

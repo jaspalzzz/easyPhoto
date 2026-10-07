@@ -20,7 +20,8 @@ type Shown = Omit<SupportCardPanelProps, "onDismiss"> & {
  * is a modal dialog, so where it sits in the DOM doesn't affect where it shows.
  *
  * Renders nothing in the static HTML (not SEO-visible) and nothing until the
- * global "ep:download" event (lib/download.ts) confirms a file was saved, so it
+ * global "ep:download" or "ep:share" event (lib/download.ts) confirms a file was
+ * saved or shared, so it
  * never stands between the user and their file. At most once per browser
  * session; the rules live in lib/supportCard.ts. With no payment option
  * configured for the visitor's device it never renders.
@@ -43,11 +44,14 @@ export function SupportCard({ tool }: { tool?: string }) {
     const onDownload = (e: Event) => {
       const detail = (e as CustomEvent<{ filename?: string }>).detail;
       if (!detail?.filename || !canShowSupport()) return;
+      // "Saved on your device" is only true for a download; a share may have
+      // sent the file to another app.
+      const saved = e.type === "ep:download";
       markSupportShown();
       import("@/components/site/SupportCardPanel")
         .then(({ SupportCardPanel }) => {
           if (!active) return;
-          setShown({ Panel: SupportCardPanel, config, variant, tool });
+          setShown({ Panel: SupportCardPanel, config, variant, tool, saved });
           track({ name: "support_view", tool, device });
         })
         .catch((err: unknown) => {
@@ -56,9 +60,11 @@ export function SupportCard({ tool }: { tool?: string }) {
         });
     };
     window.addEventListener("ep:download", onDownload);
+    window.addEventListener("ep:share", onDownload);
     return () => {
       active = false;
       window.removeEventListener("ep:download", onDownload);
+      window.removeEventListener("ep:share", onDownload);
     };
   }, [tool]);
 

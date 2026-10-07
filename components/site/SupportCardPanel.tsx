@@ -11,6 +11,8 @@ export interface SupportCardPanelProps {
   config: SupportConfig;
   variant: SupportVariant;
   tool?: string;
+  /** The file was downloaded (true) rather than shared to another app. */
+  saved: boolean;
   onDismiss: () => void;
 }
 
@@ -28,7 +30,7 @@ export interface SupportCardPanelProps {
  * install hint never stack on top of it. The ask itself is SupportOffer,
  * shared with the card that stays under the Download button.
  */
-export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCardPanelProps) {
+export function SupportCardPanel({ config, variant, tool, saved, onDismiss }: SupportCardPanelProps) {
   const headingId = React.useId();
   const dialogRef = React.useRef<HTMLDialogElement>(null);
 
@@ -39,6 +41,9 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
     // still shows the offer and every close control still works.
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
+    // Focus the dialog itself, not its first control: Safari otherwise draws
+    // a keyboard focus ring round the ✕ on a phone. Tab still reaches ✕ first.
+    dialog.focus({ preventScroll: true });
     window.dispatchEvent(new Event(SUPPORT_OPEN_EVENT));
     return () => {
       if (typeof dialog.close === "function" && dialog.open) dialog.close();
@@ -61,11 +66,12 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
   return (
     <dialog
       ref={dialogRef}
+      tabIndex={-1}
       aria-labelledby={headingId}
       onCancel={onCancel}
       onClick={onBackdropClick}
       className={cn(
-        "ep-toast-in w-[calc(100%-1.5rem)] max-w-md overflow-visible rounded-2xl border border-hairline bg-card p-0 text-ink shadow-xl",
+        "ep-toast-in w-[calc(100%-1.5rem)] max-w-md overflow-visible rounded-2xl border border-hairline bg-card p-0 text-ink shadow-xl outline-none",
         // Phones: a bottom sheet within thumb reach. Desktop: centred.
         "mb-[max(1rem,env(safe-area-inset-bottom))] mt-auto md:my-auto",
         "backdrop:bg-black/30 md:backdrop:bg-black/45"
@@ -81,14 +87,16 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
           <X className="h-4 w-4" strokeWidth={2} />
         </button>
 
-        <p className="flex items-center gap-1.5 pr-10 text-xs text-muted-foreground md:justify-center md:px-10">
-          <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-brand">
-            <Check className="h-3 w-3 text-white" strokeWidth={3} />
-          </span>
-          Saved on your device
-        </p>
+        {saved && (
+          <p className="flex items-center gap-1.5 pr-10 text-xs text-muted-foreground md:justify-center md:px-10">
+            <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-brand">
+              <Check className="h-3 w-3 text-white" strokeWidth={3} />
+            </span>
+            Saved on your device
+          </p>
+        )}
 
-        <h2 id={headingId} className="mt-2.5 text-lg font-semibold text-ink md:mt-3.5 md:text-xl">
+        <h2 id={headingId} className="mt-2.5 pr-10 text-lg font-semibold text-ink md:mt-3.5 md:px-10 md:text-xl">
           Glad we could help!
         </h2>
         <SupportOffer config={config} variant={variant} tool={tool} onTapped={onDismiss} layout="dialog" />

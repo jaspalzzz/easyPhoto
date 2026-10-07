@@ -40,6 +40,12 @@ export function downloadBlob(blob: Blob, filename: string, tool?: string): void 
  * Share a Blob via the Web Share API (navigator.share).
  * Falls back silently (returns false) when the API or file sharing is not
  * available — callers should guard the button with `"share" in navigator`.
+ *
+ * A completed share dispatches an "ep:share" CustomEvent ({ filename, bytes }):
+ * on iPhone, Share → "Save Image" is how most people keep a photo, so the
+ * post-save surfaces (the support pop-up and card) listen to it as well as to
+ * "ep:download". The download toast does not — the file may have gone to an
+ * app rather than to this device.
  */
 export async function shareFile(
   blob: Blob,
@@ -50,6 +56,11 @@ export async function shareFile(
   const file = new File([blob], filename, { type: blob.type });
   try {
     await navigator.share({ files: [file], title });
+    window.dispatchEvent(
+      new CustomEvent("ep:share", {
+        detail: { filename, bytes: blob.size },
+      })
+    );
     return true;
   } catch (err) {
     // AbortError = user cancelled — not a real error.
