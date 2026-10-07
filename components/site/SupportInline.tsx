@@ -76,7 +76,7 @@ export function SupportInline({ className }: { className?: string }) {
       className={cn("ep-fade-in rounded-xl border border-hairline bg-paper p-4", className)}
     >
       <p id={headingId} className="text-base font-semibold text-ink">
-        Glad we could help!
+        Support easyPhoto with a small tip
       </p>
       <Offer
         config={config}

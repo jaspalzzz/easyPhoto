@@ -86,7 +86,7 @@ describe("SupportInline", () => {
     expect(card).not.toBeNull();
     expect(card.className).toContain("mt-5");
     const heading = card.querySelector("p")!;
-    expect(heading.textContent).toBe("Glad we could help!");
+    expect(heading.textContent).toBe("Support easyPhoto with a small tip");
     expect(card.getAttribute("aria-labelledby")).toBe(heading.id);
     expect(card.textContent).toContain(BODY);
     const link = card.querySelector("a")!;

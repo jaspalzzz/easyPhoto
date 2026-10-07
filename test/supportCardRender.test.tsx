@@ -30,7 +30,7 @@ const QR_LINK = `upi://pay?cu=INR&mc=7338&mode=19&pa=${VPA}&tn=Payment%20To%20Ea
 const PAY_LINK = "https://razorpay.me/@easyphoto2806";
 const QR_SRC = "/upi-qr.png";
 
-const HEADING = "Glad we could help!";
+const HEADING = "Support easyPhoto with a small tip";
 const BODY =
   "easyPhoto is free for everyone, and your photos never leave your device. If it saved you a trip to the cyber café, a small tip helps keep it free for the next person filling a form.";
 const SAVED_LINE = "Saved on your device";

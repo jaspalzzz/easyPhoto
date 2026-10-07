@@ -97,7 +97,7 @@ export function SupportCardPanel({ config, variant, tool, saved, onDismiss }: Su
         )}
 
         <h2 id={headingId} className="mt-2.5 pr-10 text-lg font-semibold text-ink md:mt-3.5 md:px-10 md:text-xl">
-          Glad we could help!
+          Support easyPhoto with a small tip
         </h2>
         <SupportOffer config={config} variant={variant} tool={tool} onTapped={onDismiss} layout="dialog" />
 

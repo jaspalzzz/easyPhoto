@@ -10,6 +10,9 @@ import {
 } from "@/lib/supportCard";
 import type { SupportCardPanelProps } from "@/components/site/SupportCardPanel";
 
+/** Late enough not to compete with the page's own loading. */
+const PREFETCH_DELAY_MS = 3000;
+
 type Shown = Omit<SupportCardPanelProps, "onDismiss"> & {
   Panel: React.ComponentType<SupportCardPanelProps>;
 };
@@ -27,8 +30,10 @@ type Shown = Omit<SupportCardPanelProps, "onDismiss"> & {
  * configured for the visitor's device it never renders.
  *
  * Only this listener ships with the page; the card itself (SupportCardPanel)
- * is fetched the first time it is actually going to show, which keeps the
- * first-load cost on every tool page to a few hundred bytes.
+ * is fetched a few seconds after the page loads (never on the critical path),
+ * so on the first download it opens at once — on iPhone it is already open
+ * behind Safari's own "Do you want to download?" box instead of arriving a
+ * moment after it.
  */
 export function SupportCard({ tool }: { tool?: string }) {
   const [shown, setShown] = React.useState<Shown | null>(null);
@@ -41,6 +46,13 @@ export function SupportCard({ tool }: { tool?: string }) {
     if (!variant) return;
 
     let active = true;
+    // Warm the card's code off the critical path; the download handler's
+    // import below then resolves from cache.
+    const prefetch = window.setTimeout(() => {
+      import("@/components/site/SupportCardPanel").catch(() => {
+        /* offline: the handler retries and logs on a real download */
+      });
+    }, PREFETCH_DELAY_MS);
     const onDownload = (e: Event) => {
       const detail = (e as CustomEvent<{ filename?: string }>).detail;
       if (!detail?.filename || !canShowSupport()) return;
@@ -62,6 +74,7 @@ export function SupportCard({ tool }: { tool?: string }) {
     window.addEventListener("ep:download", onDownload);
     window.addEventListener("ep:share", onDownload);
     return () => {
+      window.clearTimeout(prefetch);
       active = false;
       window.removeEventListener("ep:download", onDownload);
       window.removeEventListener("ep:share", onDownload);
