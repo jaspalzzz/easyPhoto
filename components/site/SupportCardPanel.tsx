@@ -96,7 +96,7 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
         {/* Phones: the reassurance and the skip share one row under the
             button. Desktop: stacked and centred, the skip first. */}
         <div className="mt-3 flex items-center justify-between gap-3 md:flex-col-reverse md:gap-1">
-          <p className="text-xs text-muted-foreground">No pressure. easyPhoto stays free either way.</p>
+          <p className="text-xs text-muted-foreground">No pressure. Every little bit helps.</p>
           <button
             type="button"
             onClick={onDismiss}

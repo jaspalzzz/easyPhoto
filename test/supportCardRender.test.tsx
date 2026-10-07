@@ -34,7 +34,7 @@ const HEADING = "Glad we could help!";
 const BODY =
   "easyPhoto is free for everyone, and your photos never leave your device. If it saved you a trip to the cyber café, a small tip helps keep it free for the next person filling a form.";
 const SAVED_LINE = "Saved on your device";
-const FOOTNOTE = "No pressure. easyPhoto stays free either way.";
+const FOOTNOTE = "No pressure. Every little bit helps.";
 const SKIP = "Maybe later";
 const TIP = "Help keep it free";
 const ANDROID_HINT = "Opens your UPI app. You choose the amount.";
