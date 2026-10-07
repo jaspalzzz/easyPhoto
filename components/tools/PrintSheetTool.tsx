@@ -12,6 +12,7 @@ import { track, deviceClass } from "@/lib/analytics";
 import type { CropRect } from "@/lib/headPositioning";
 import { PAPER_DIMENSIONS, sheetPlacements } from "@/lib/printSheet";
 import { setBlobDensityDpi } from "@/lib/jpegDensity";
+import { SupportInline } from "@/components/site/SupportInline";
 
 /** Per-photo refinements applied before tiling: an optional crop sub-rect (in
  *  source pixels) plus brightness/contrast as percentages (100 = unchanged). */
@@ -607,6 +608,7 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
             <FileDown className="h-4 w-4" strokeWidth={1.75} />
             {pdfBusy ? "Building PDF…" : "Download PDF"}
           </Button>
+          <SupportInline />
           {"share" in navigator && (
             <Button variant="outline" className="w-full" onClick={handleShare}>
               <Share2 className="h-4 w-4" strokeWidth={1.75} />

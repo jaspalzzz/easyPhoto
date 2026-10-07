@@ -7,6 +7,7 @@ import { track } from "@/lib/analytics";
 import { downloadBlob } from "@/lib/download";
 import { fillAndExport, loadPdfFormFields, PdfFillNotAllowedError, type FormField } from "@/lib/formFill";
 import { PdfEncryptedError } from "@/lib/pdfToImages";
+import { SupportInline } from "@/components/site/SupportInline";
 
 /**
  * Form Fill only throws PdfEncryptedError for a PDF that needs a password to
@@ -222,6 +223,7 @@ export function FormFillTool() {
             )}
             Fill &amp; Download PDF
           </Button>
+          <SupportInline />
         </div>
       )}
 

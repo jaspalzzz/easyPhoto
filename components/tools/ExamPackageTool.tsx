@@ -53,6 +53,7 @@ import {
   type WorkflowPayload,
 } from "@/lib/workflowHandoff";
 import { useRouter } from "next/navigation";
+import { SupportInline } from "@/components/site/SupportInline";
 
 type Step = "exam" | "photo" | "signature" | "done";
 
@@ -817,6 +818,8 @@ export function ExamPackageTool() {
                   Download all as ZIP
                   {signature ? " (photo + signature)" : ""}
                 </Button>
+
+                <SupportInline />
 
                 {/* What now — the moment after download is where applicants
                     feel most alone; walk them to the portal. */}

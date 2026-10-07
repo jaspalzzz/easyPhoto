@@ -103,8 +103,10 @@ No data, route or sitemap change besides the Driving Licence lastmod.
   pages at 390 and desktop, light and dark, page speed vs production.
 - Support pop-up (#79, #83, #85, #86): right after a download, one "Help keep
   it free" button and the visitor chooses the amount (owner decision 7 Oct: no
-  fixed amounts, no email/phone form where avoidable). Owner's individual
-  Razorpay account, live 7 Oct. Cloudflare variables, Production and Preview:
+  fixed amounts, no email/phone form where avoidable). The same offer also
+  stays in a card under the Download button after a save, for anyone who
+  closed the pop-up. After a tap on either, it stays away for 7 days.
+  Owner's individual Razorpay account, live 7 Oct. Cloudflare variables, Production and Preview:
   - `NEXT_PUBLIC_UPI_LINK` = the text inside the Razorpay multiple-payment QR
     "Support easyPhoto" (`upi://pay?…pa=easyphoto641476.rzp@rxairtel…`) —
     Android opens the UPI app with it, no form.

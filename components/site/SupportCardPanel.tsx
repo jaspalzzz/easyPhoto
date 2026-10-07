@@ -2,19 +2,10 @@
 
 import * as React from "react";
 import { Check, X } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { track } from "@/lib/analytics";
+import { SupportOffer } from "@/components/site/SupportOffer";
 import { cn } from "@/lib/utils";
-import {
-  buildUpiLink,
-  markSupportTapped,
-  type SupportConfig,
-  type SupportMethod,
-  type SupportVariant,
-} from "@/lib/supportCard";
+import type { SupportConfig, SupportVariant } from "@/lib/supportCard";
 import { SUPPORT_CLOSE_EVENT, SUPPORT_OPEN_EVENT } from "@/lib/supportEvents";
-
-const QR_SIZE_PX = 160;
 
 export interface SupportCardPanelProps {
   config: SupportConfig;
@@ -34,7 +25,8 @@ export interface SupportCardPanelProps {
  * containment, Esc and the backdrop. Closing is always one action away
  * (✕, "Maybe later", Esc or a click outside), and it announces itself with
  * SUPPORT_OPEN_EVENT / SUPPORT_CLOSE_EVENT so the download toast and the
- * install hint never stack on top of it.
+ * install hint never stack on top of it. The ask itself is SupportOffer,
+ * shared with the card that stays under the Download button.
  */
 export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCardPanelProps) {
   const headingId = React.useId();
@@ -54,14 +46,6 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
     };
   }, []);
 
-  const onTip = (method: SupportMethod) => {
-    markSupportTapped();
-    track({ name: "support_tap", tool, method });
-    // Close after the click has finished, so the link's own navigation
-    // (the UPI app, or Razorpay in a new tab) is never cancelled by the unmount.
-    window.setTimeout(onDismiss, 0);
-  };
-
   const onCancel = (e: React.SyntheticEvent<HTMLDialogElement>) => {
     // Esc: let React state close it, so the unmount path is the only one.
     e.preventDefault();
@@ -73,11 +57,6 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
     // click whose target is the <dialog> itself landed on the backdrop.
     if (e.target === e.currentTarget) onDismiss();
   };
-
-  const tipClass = buttonVariants({
-    variant: "cta",
-    className: "min-h-12 w-full px-6 text-base font-semibold md:w-auto",
-  });
 
   return (
     <dialog
@@ -112,58 +91,7 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
         <h2 id={headingId} className="mt-2.5 text-lg font-semibold text-ink md:mt-3.5 md:text-xl">
           Glad we could help!
         </h2>
-        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground md:text-[15px]">
-          easyPhoto is free for everyone, and your photos never leave your device. If it saved you
-          a trip to the cyber café, a small tip helps keep it free for the next person filling a form.
-        </p>
-
-        <div className="mt-4 md:mt-5">
-          {variant === "deeplink" && config.upi ? (
-            <>
-              <a
-                href={buildUpiLink(config.upi)}
-                onClick={() => onTip("upi")}
-                aria-label="Help keep it free: opens your UPI app, where you choose the amount"
-                className={tipClass}
-              >
-                Help keep it free
-              </a>
-              <p className="mt-2 text-xs text-muted-foreground">Opens your UPI app. You choose the amount.</p>
-            </>
-          ) : variant === "link" && config.link ? (
-            <>
-              {/* The payment page opens in a new tab so the user's tool and
-                  file stay put; noopener keeps the two pages independent. */}
-              <a
-                href={config.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => onTip("link")}
-                aria-label="Help keep it free: opens Razorpay in a new tab, where you choose the amount"
-                className={tipClass}
-              >
-                Help keep it free
-              </a>
-              <p className="mt-2 text-xs text-muted-foreground">You choose the amount on the next screen.</p>
-            </>
-          ) : (
-            <div className="flex items-center gap-3 md:flex-col">
-              {/* A static same-origin file from public/; next/image adds nothing
-                  here (images are unoptimized in the static export). */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={config.qrSrc ?? ""}
-                alt="UPI QR code to support easyPhoto"
-                width={QR_SIZE_PX}
-                height={QR_SIZE_PX}
-                className="h-40 w-40 shrink-0 rounded-md bg-white p-1.5"
-              />
-              <p className="text-xs leading-relaxed text-muted-foreground">
-                Scan with any UPI app on your phone. You choose the amount.
-              </p>
-            </div>
-          )}
-        </div>
+        <SupportOffer config={config} variant={variant} tool={tool} onTapped={onDismiss} layout="dialog" />
 
         {/* Phones: the reassurance and the skip share one row under the
             button. Desktop: stacked and centred, the skip first. */}

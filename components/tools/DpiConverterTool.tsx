@@ -13,6 +13,7 @@ import {
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track } from "@/lib/analytics";
+import { SupportInline } from "@/components/site/SupportInline";
 
 const PRESETS = [
   { dpi: 200, label: "200 DPI", hint: "NSDL PAN scan requirement" },
@@ -246,6 +247,7 @@ export function DpiConverterTool() {
               unchanged — only the metadata was rewritten.
             </p>
           )}
+          <SupportInline />
         </>
       )}
     </div>

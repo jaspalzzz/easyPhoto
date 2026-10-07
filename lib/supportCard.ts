@@ -26,8 +26,13 @@ import type { DeviceClass } from "@/lib/analytics";
 export const SUPPORT_SEEN_KEY = "ep:support-seen";
 /** Local timestamp (epoch ms) of the last tap on the tip button. */
 export const SUPPORT_TAPPED_KEY = "ep:support-tapped-at";
-/** After a tap the card stays away this long. */
-export const SUPPORT_SNOOZE_MS = 30 * 24 * 60 * 60 * 1000;
+/**
+ * After a tap the offer stays away this long (owner, 7 Oct 2026: 7 days). We
+ * can't see whether the payment was completed, so a tap counts as "probably
+ * tipped": long enough not to nag someone who paid, short enough to ask again
+ * someone who changed their mind.
+ */
+export const SUPPORT_SNOOZE_MS = 7 * 24 * 60 * 60 * 1000;
 
 /** How a tap left the pop-up — the only detail a support_tap records. */
 export type SupportMethod = "upi" | "link";
@@ -206,16 +211,19 @@ function writeStorage(kind: "local" | "session", key: string, value: string): vo
   }
 }
 
-/** Whether a fresh download may reveal the card now. */
+/** Whether a tap on the tip button in the last SUPPORT_SNOOZE_MS hides the offer. */
+export function isSupportSnoozed(now: number = Date.now()): boolean {
+  const tappedAt = Number(readStorage("local", SUPPORT_TAPPED_KEY));
+  if (!Number.isFinite(tappedAt) || tappedAt <= 0) return false;
+  const age = now - tappedAt;
+  return age >= 0 && age < SUPPORT_SNOOZE_MS;
+}
+
+/** Whether a fresh download may open the pop-up now (once per session, not when snoozed). */
 export function canShowSupport(now: number = Date.now()): boolean {
   if (shownThisPageLoad) return false;
   if (readStorage("session", SUPPORT_SEEN_KEY)) return false;
-  const tappedAt = Number(readStorage("local", SUPPORT_TAPPED_KEY));
-  if (Number.isFinite(tappedAt) && tappedAt > 0) {
-    const age = now - tappedAt;
-    if (age >= 0 && age < SUPPORT_SNOOZE_MS) return false;
-  }
-  return true;
+  return !isSupportSnoozed(now);
 }
 
 /** Record that the card was shown — it stays away for the rest of the session. */

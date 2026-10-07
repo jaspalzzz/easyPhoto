@@ -203,8 +203,9 @@ describe("show/hide rules", () => {
     expect(reloaded.canShowSupport(NOW)).toBe(true);
   });
 
-  it("stays away for 30 days after a tap, then may show again", async () => {
+  it("stays away for 7 days after a tap, then may show again", async () => {
     const m = await freshModule();
+    expect(SUPPORT_SNOOZE_MS).toBe(7 * 24 * 60 * 60 * 1000);
     m.markSupportTapped(NOW);
     expect(localStorage.getItem(SUPPORT_TAPPED_KEY)).toBe(String(NOW));
     expect(m.canShowSupport(NOW + 1)).toBe(false);

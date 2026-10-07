@@ -11,6 +11,7 @@ import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
+import { SupportInline } from "@/components/site/SupportInline";
 
 interface Rect {
   x: number;
@@ -362,6 +363,8 @@ function Body({ source }: { source: ToolSource }) {
           <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
         </Button>
       </div>
+
+      <SupportInline />
 
       <p className="flex items-start gap-2 text-xs text-muted-foreground">
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
