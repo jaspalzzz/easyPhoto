@@ -1,7 +1,8 @@
 /**
  * SupportCard (components/site/SupportCard.tsx) in a DOM: invisible in the
- * static HTML and before a download; the approved copy after one; the deep-link
- * branch on Android, the QR branch elsewhere; "Not now"; analytics payloads.
+ * static HTML and before a download; the approved pop-up copy after one; the
+ * deep-link branch on Android, the QR branch elsewhere; every way to close it;
+ * the open/close events other prompts rely on; analytics payloads.
  */
 import * as React from "react";
 import { act } from "react";
@@ -23,8 +24,12 @@ vi.mock("@/lib/analytics", () => ({
 }));
 
 const VPA = "easyphoto@ybl";
-const HEADING = "Saved you a cyber-café trip?";
-const BODY = "easyPhoto is free, private and runs on your device. A small UPI tip keeps it that way.";
+const HEADING = "Glad we could help!";
+const BODY =
+  "easyPhoto is free for everyone, and your photos never leave your device. If it saved you some time today, a small tip would mean a lot to us.";
+const SAVED_LINE = "Saved on your device";
+const FOOTNOTE = "No pressure. easyPhoto stays free either way.";
+const SKIP = "Maybe later";
 const DESKTOP_LINE = "On a computer? Scan the QR with any UPI app.";
 
 let container: HTMLDivElement;
@@ -54,7 +59,10 @@ async function download(filename = "photo_20kb.jpg") {
   });
 }
 
-const region = () => container.querySelector('[role="region"]');
+const region = () => container.querySelector("dialog");
+/** The text-labelled skip control (the ✕ is the icon-only "Close" button). */
+const skipButton = (card: Element) =>
+  [...card.querySelectorAll("button")].find((b) => b.textContent === SKIP)!;
 
 beforeEach(() => {
   sessionStorage.clear();
@@ -107,10 +115,12 @@ describe("SupportCard", () => {
 
     const card = region()!;
     expect(card).not.toBeNull();
+    expect(card.hasAttribute("open")).toBe(true);
     const heading = card.querySelector("h2")!;
     expect(heading.textContent).toBe(HEADING);
     expect(card.getAttribute("aria-labelledby")).toBe(heading.id);
-    expect(card.querySelector("p")!.textContent).toBe(BODY);
+    const texts = [...card.querySelectorAll("p")].map((p) => p.textContent);
+    expect(texts).toEqual([SAVED_LINE, BODY, FOOTNOTE]);
 
     const links = [...card.querySelectorAll("a")];
     expect(links.map((a) => a.textContent)).toEqual(["₹10", "₹20", "₹50"]);
@@ -122,13 +132,11 @@ describe("SupportCard", () => {
     expect(links[1].getAttribute("href")).toBe(
       "upi://pay?pa=easyphoto@ybl&pn=easyPhoto&am=20&cu=INR&tn=Support%20easyPhoto"
     );
-    const notNow = card.querySelector("button")!;
-    expect(notNow.textContent).toBe("Not now");
-    expect(notNow.getAttribute("type")).toBe("button");
+    const buttons = [...card.querySelectorAll("button")];
+    expect(buttons.map((b) => b.textContent || b.getAttribute("aria-label"))).toEqual(["Close", SKIP]);
+    for (const b of buttons) expect(b.getAttribute("type")).toBe("button");
     expect(card.querySelector("img")).toBeNull();
     expect(card.textContent).not.toContain(DESKTOP_LINE);
-    // The card is an offer, not an alert: it must not grab focus.
-    expect(card.contains(document.activeElement)).toBe(false);
 
     expect(analytics.track).toHaveBeenCalledTimes(1);
     expect(analytics.track).toHaveBeenCalledWith({ name: "support_view", tool: "resize-kb", device: "android" });
@@ -145,12 +153,55 @@ describe("SupportCard", () => {
     expect(analytics.track).toHaveBeenLastCalledWith({ name: "support_tap", tool: "exam-ssc", amount: "50" });
     expect(JSON.stringify(analytics.track.mock.calls)).not.toContain(VPA);
     expect(Number(localStorage.getItem("ep:support-tapped-at"))).toBeGreaterThan(0);
+
+    // The pop-up closes once the click (and the link's own navigation) is done.
+    expect(region()).not.toBeNull();
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(region()).toBeNull();
   });
 
-  it("'Not now' hides the card and it does not return for the session", async () => {
+  it.each([
+    ["the ✕ button", (card: Element) => (card.querySelector('button[aria-label="Close"]') as HTMLElement).click()],
+    ["'Maybe later'", (card: Element) => skipButton(card).click()],
+    ["Esc", (card: Element) => card.dispatchEvent(new Event("cancel", { cancelable: true }))],
+    ["a click on the backdrop", (card: Element) => (card as HTMLElement).click()],
+  ])("%s closes the pop-up", async (_label, close) => {
     await mount();
     await download();
-    act(() => region()!.querySelector("button")!.click());
+    act(() => close(region()!));
+    expect(region()).toBeNull();
+  });
+
+  it("a click inside the pop-up does not close it", async () => {
+    await mount();
+    await download();
+    act(() => region()!.querySelector("h2")!.click());
+    expect(region()).not.toBeNull();
+  });
+
+  it("announces opening and closing so other prompts can step aside", async () => {
+    const events: string[] = [];
+    const log = (e: Event) => events.push(e.type);
+    window.addEventListener("ep:support-open", log);
+    window.addEventListener("ep:support-close", log);
+    try {
+      await mount();
+      await download();
+      expect(events).toEqual(["ep:support-open"]);
+      act(() => skipButton(region()!).click());
+      expect(events).toEqual(["ep:support-open", "ep:support-close"]);
+    } finally {
+      window.removeEventListener("ep:support-open", log);
+      window.removeEventListener("ep:support-close", log);
+    }
+  });
+
+  it("'Maybe later' hides the pop-up and it does not return for the session", async () => {
+    await mount();
+    await download();
+    act(() => skipButton(region()!).click());
     expect(container.innerHTML).toBe("");
 
     await download("second.jpg");
@@ -179,7 +230,7 @@ describe("SupportCard", () => {
     expect(img.getAttribute("src")).toBe("/upi-qr.png");
     expect(img.getAttribute("alt")).toBe("UPI QR code to support easyPhoto");
     expect(card.querySelectorAll("a")).toHaveLength(0);
-    expect(card.querySelector("button")!.textContent).toBe("Not now");
+    expect(skipButton(card)).toBeDefined();
     expect(analytics.track).toHaveBeenCalledWith({ name: "support_view", tool: "resize-kb", device: "desktop" });
   });
 
@@ -254,7 +305,7 @@ describe("SupportCard", () => {
     expect(region()).not.toBeNull();
 
     // Dismiss, then a later download on the same page load stays quiet.
-    act(() => region()!.querySelector("button")!.click());
+    act(() => skipButton(region()!).click());
     act(() => root.render(<SupportCard tool="resize-kb" key="remount" />));
     await download("again.jpg");
     expect(container.innerHTML).toBe("");

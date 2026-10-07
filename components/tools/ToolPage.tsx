@@ -150,14 +150,14 @@ export function ToolPage({
         <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
           <div className="min-w-0">
             {children}
-            <SupportCard tool={supportTool} className="mt-6" />
+            <SupportCard tool={supportTool} />
           </div>
           <aside>{aside}</aside>
         </div>
       ) : (
         <div className="mt-6">
           {children}
-          <SupportCard tool={supportTool} className="mt-6" />
+          <SupportCard tool={supportTool} />
         </div>
       )}
 
