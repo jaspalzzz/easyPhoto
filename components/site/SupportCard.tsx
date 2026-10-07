@@ -15,7 +15,9 @@ type Shown = Omit<SupportCardPanelProps, "onDismiss"> & {
 };
 
 /**
- * "Support easyPhoto" — a quiet tip card placed directly below a tool.
+ * "Support easyPhoto" — a tip pop-up shown right after a download. Placed in
+ * each tool's template so `tool` attributes the analytics; the pop-up itself
+ * is a modal dialog, so where it sits in the DOM doesn't affect where it shows.
  *
  * Renders nothing in the static HTML (not SEO-visible) and nothing until the
  * global "ep:download" event (lib/download.ts) confirms a file was saved, so it
@@ -27,7 +29,7 @@ type Shown = Omit<SupportCardPanelProps, "onDismiss"> & {
  * is fetched the first time it is actually going to show, which keeps the
  * first-load cost on every tool page to a few hundred bytes.
  */
-export function SupportCard({ tool, className }: { tool?: string; className?: string }) {
+export function SupportCard({ tool }: { tool?: string }) {
   const [shown, setShown] = React.useState<Shown | null>(null);
 
   React.useEffect(() => {
@@ -45,7 +47,7 @@ export function SupportCard({ tool, className }: { tool?: string; className?: st
       import("@/components/site/SupportCardPanel")
         .then(({ SupportCardPanel }) => {
           if (!active) return;
-          setShown({ Panel: SupportCardPanel, config, variant, tool, className });
+          setShown({ Panel: SupportCardPanel, config, variant, tool });
           track({ name: "support_view", tool, device });
         })
         .catch((err: unknown) => {
@@ -58,7 +60,7 @@ export function SupportCard({ tool, className }: { tool?: string; className?: st
       active = false;
       window.removeEventListener("ep:download", onDownload);
     };
-  }, [tool, className]);
+  }, [tool]);
 
   if (!shown) return null;
   const { Panel, ...props } = shown;
