@@ -6,11 +6,10 @@ import { buttonVariants } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import {
-  SUPPORT_AMOUNTS,
   buildUpiLink,
   markSupportTapped,
-  type SupportAmount,
   type SupportConfig,
+  type SupportMethod,
   type SupportVariant,
 } from "@/lib/supportCard";
 import { SUPPORT_CLOSE_EVENT, SUPPORT_OPEN_EVENT } from "@/lib/supportEvents";
@@ -26,7 +25,8 @@ export interface SupportCardPanelProps {
 
 /**
  * The visible "Support easyPhoto" pop-up (owner-approved 7 Oct 2026: centred
- * on desktop, a bottom sheet on phones, wording 1). Loaded on demand by
+ * on desktop, a bottom sheet on phones; one "Buy us a chai" button, any
+ * amount, no fixed tiers). Loaded on demand by
  * SupportCard right after a download, so the offer is in view at the moment
  * the tool has proved itself — not below the fold.
  *
@@ -54,11 +54,11 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
     };
   }, []);
 
-  const onAmount = (amount: SupportAmount) => {
+  const onTip = (method: SupportMethod) => {
     markSupportTapped();
-    track({ name: "support_tap", tool, amount });
+    track({ name: "support_tap", tool, method });
     // Close after the click has finished, so the link's own navigation
-    // (a new Razorpay tab, or the UPI app) is never cancelled by the unmount.
+    // (the UPI app, or Razorpay in a new tab) is never cancelled by the unmount.
     window.setTimeout(onDismiss, 0);
   };
 
@@ -74,9 +74,9 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
     if (e.target === e.currentTarget) onDismiss();
   };
 
-  const amountClass = buttonVariants({
+  const tipClass = buttonVariants({
     variant: "cta",
-    className: "min-h-11 min-w-[4.5rem] px-4 text-base font-semibold md:min-w-[5.5rem]",
+    className: "min-h-12 w-full px-6 text-base font-semibold md:w-auto",
   });
 
   return (
@@ -114,44 +114,38 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
         </h2>
         <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground md:text-[15px]">
           easyPhoto is free for everyone, and your photos never leave your device. If it saved you
-          some time today, a small tip would mean a lot to us.
+          a trip to the cyber café, buy us a chai, a snack or even lunch.
         </p>
 
-        <div className="mt-4 flex flex-wrap items-center gap-2.5 md:mt-5 md:justify-center">
-          {variant === "pages" && config.pages ? (
-            <ul className="flex flex-wrap gap-2.5 md:justify-center">
-              {SUPPORT_AMOUNTS.map((amount) => (
-                <li key={amount}>
-                  {/* A payment page opens in a new tab so the user's tool and
-                      file stay put; noopener keeps the two pages independent. */}
-                  <a
-                    href={config.pages![amount]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => onAmount(amount)}
-                    aria-label={`Support easyPhoto with ₹${amount} (opens Razorpay in a new tab)`}
-                    className={amountClass}
-                  >
-                    ₹{amount}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : variant === "deeplink" && config.upi ? (
-            <ul className="flex flex-wrap gap-2.5 md:justify-center">
-              {SUPPORT_AMOUNTS.map((amount) => (
-                <li key={amount}>
-                  <a
-                    href={buildUpiLink(config.upi!, amount)}
-                    onClick={() => onAmount(amount)}
-                    aria-label={`Support easyPhoto with ₹${amount} via UPI`}
-                    className={amountClass}
-                  >
-                    ₹{amount}
-                  </a>
-                </li>
-              ))}
-            </ul>
+        <div className="mt-4 md:mt-5">
+          {variant === "deeplink" && config.upi ? (
+            <>
+              <a
+                href={buildUpiLink(config.upi)}
+                onClick={() => onTip("upi")}
+                aria-label="Buy us a chai: opens your UPI app, where you choose the amount"
+                className={tipClass}
+              >
+                Buy us a chai
+              </a>
+              <p className="mt-2 text-xs text-muted-foreground">Opens your UPI app. You choose the amount.</p>
+            </>
+          ) : variant === "link" && config.link ? (
+            <>
+              {/* The payment page opens in a new tab so the user's tool and
+                  file stay put; noopener keeps the two pages independent. */}
+              <a
+                href={config.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => onTip("link")}
+                aria-label="Buy us a chai: opens Razorpay in a new tab, where you choose the amount"
+                className={tipClass}
+              >
+                Buy us a chai
+              </a>
+              <p className="mt-2 text-xs text-muted-foreground">You choose the amount on the next screen.</p>
+            </>
           ) : (
             <div className="flex items-center gap-3 md:flex-col">
               {/* A static same-origin file from public/; next/image adds nothing
@@ -165,14 +159,14 @@ export function SupportCardPanel({ config, variant, tool, onDismiss }: SupportCa
                 className="h-40 w-40 shrink-0 rounded-md bg-white p-1.5"
               />
               <p className="text-xs leading-relaxed text-muted-foreground">
-                On a computer? Scan the QR with any UPI app.
+                Scan with any UPI app on your phone. You choose the amount.
               </p>
             </div>
           )}
         </div>
 
         {/* Phones: the reassurance and the skip share one row under the
-            amounts. Desktop: stacked and centred, the skip first. */}
+            button. Desktop: stacked and centred, the skip first. */}
         <div className="mt-3 flex items-center justify-between gap-3 md:flex-col-reverse md:gap-1">
           <p className="text-xs text-muted-foreground">No pressure. easyPhoto stays free either way.</p>
           <button

@@ -3,34 +3,34 @@
  * show/hide rules. The React surface lives in components/site/SupportCard.tsx;
  * everything testable without a DOM lives here.
  *
+ * One button, any amount: the visitor decides what to give, and the route is
+ * the one with the fewest steps on their device (supportVariant).
+ *
  * Config is build-time (NEXT_PUBLIC_* is inlined by Next.js, like
  * NEXT_PUBLIC_ADSENSE_ENABLED): with nothing valid set the pop-up never
  * renders, so unsetting the variables and rebuilding is the rollback.
- *
- * Three ways to pay, each optional, picked per device (supportVariant):
  *  - UPI deep link (NEXT_PUBLIC_UPI_LINK): the upi://pay payload of the
- *    merchant's Razorpay multiple-payment QR. On Android each amount button
- *    opens the UPI app with that exact payload plus `am` — no form to fill.
+ *    merchant's Razorpay multiple-payment QR, used as-is on Android — the UPI
+ *    app opens and the payer types the amount. No form.
  *  - QR image (NEXT_PUBLIC_UPI_QR_SRC): the same QR, shown on computers to
  *    scan with a phone.
- *  - Hosted payment pages (NEXT_PUBLIC_SUPPORT_PAGE_10/_20/_50): one Razorpay
- *    Payment Page per amount. Works on every device (UPI and cards) but asks
- *    for email and phone, so it is the fallback: iPhone always, and Android or
- *    computers when the UPI options above aren't set.
+ *  - Payment link (NEXT_PUBLIC_SUPPORT_LINK): the merchant's Razorpay link
+ *    (razorpay.me/@handle), where the payer types the amount; Razorpay then
+ *    asks for a phone number. The fallback: iPhone always, and Android or
+ *    computers when their UPI option isn't set.
  */
 
 import type { DeviceClass } from "@/lib/analytics";
 
-/** The three approved tip amounts, in rupees. */
-export const SUPPORT_AMOUNTS = ["10", "20", "50"] as const;
-export type SupportAmount = (typeof SUPPORT_AMOUNTS)[number];
-
 /** Session flag: the card has been shown in this browser session. */
 export const SUPPORT_SEEN_KEY = "ep:support-seen";
-/** Local timestamp (epoch ms) of the last amount tap. */
+/** Local timestamp (epoch ms) of the last tap on the tip button. */
 export const SUPPORT_TAPPED_KEY = "ep:support-tapped-at";
-/** After an amount tap the card stays away this long. */
+/** After a tap the card stays away this long. */
 export const SUPPORT_SNOOZE_MS = 30 * 24 * 60 * 60 * 1000;
+
+/** How a tap left the pop-up — the only detail a support_tap records. */
+export type SupportMethod = "upi" | "link";
 
 /**
  * VPA shape `name@handle`: the NPCI handle is letters (optionally with digits,
@@ -44,7 +44,7 @@ const VPA_RE = /^[a-z0-9._-]{2,256}@[a-z][a-z0-9.-]{1,63}$/i;
  * Linking Specification): payee address and name, merchant category code,
  * initiation mode, Razorpay's transaction reference for that QR (how the
  * payment is matched to it), note and currency. Anything else — including
- * an `am` — is dropped; the amount comes only from the tapped button.
+ * an `am` — is dropped, so the payer always chooses the amount.
  */
 const UPI_LINK_KEYS = new Set(["pa", "pn", "mc", "mode", "tr", "tn", "cu"]);
 
@@ -56,28 +56,26 @@ export interface SupportConfig {
   upi: UpiParams | null;
   /** Same-origin path to the merchant QR in public/, or null when not set. */
   qrSrc: string | null;
-  /** One hosted payment page per amount, or null unless all three are valid. */
-  pages: Record<SupportAmount, string> | null;
+  /** The merchant's hosted payment link, or null when not set or invalid. */
+  link: string | null;
 }
 
 export interface SupportEnv {
   upiLink?: string;
   qrSrc?: string;
-  page10?: string;
-  page20?: string;
-  page50?: string;
+  link?: string;
 }
 
 /**
- * Payment-page links must be https on Razorpay's own hosts, so a typo in the
+ * Payment links must be https on Razorpay's own hosts, so a typo in the
  * Cloudflare variable can never send a visitor to someone else's page.
  */
-const PAGE_HOSTS = ["rzp.io", "pages.razorpay.com", "razorpay.me"];
+const LINK_HOSTS = ["razorpay.me", "rzp.io", "pages.razorpay.com"];
 
-export function isValidPaymentPage(value: string): boolean {
+export function isValidPaymentLink(value: string): boolean {
   try {
     const url = new URL(value);
-    return url.protocol === "https:" && PAGE_HOSTS.includes(url.hostname) && url.pathname.length > 1;
+    return url.protocol === "https:" && LINK_HOSTS.includes(url.hostname) && url.pathname.length > 1;
   } catch {
     return false;
   }
@@ -118,48 +116,35 @@ function isSameOriginPath(value: string): boolean {
   return value.startsWith("/") && !value.startsWith("//") && !value.includes("\\");
 }
 
-let warnedUpi = false;
-let warnedQr = false;
-let warnedPages = false;
-
-function parsePages(env: SupportEnv): Record<SupportAmount, string> | null {
-  const raw = { "10": env.page10?.trim() ?? "", "20": env.page20?.trim() ?? "", "50": env.page50?.trim() ?? "" };
-  if (!raw["10"] && !raw["20"] && !raw["50"]) return null;
-  if (SUPPORT_AMOUNTS.every((a) => isValidPaymentPage(raw[a]))) return raw;
-  if (!warnedPages) {
-    warnedPages = true;
-    console.warn("[support-card] NEXT_PUBLIC_SUPPORT_PAGE_10/_20/_50 must all be https Razorpay payment page links; payment pages are disabled.");
-  }
-  return null;
+const warned = new Set<string>();
+function warnOnce(key: string, message: string): void {
+  if (warned.has(key)) return;
+  warned.add(key);
+  console.warn(`[support-card] ${message}`);
 }
 
 /** Validate raw env values. Returns null when the card must not render. */
 export function parseSupportConfig(env: SupportEnv): SupportConfig | null {
-  const pages = parsePages(env);
-
   const rawUpi = env.upiLink?.trim() ?? "";
-  let upi: UpiParams | null = null;
-  if (rawUpi) {
-    upi = parseUpiLink(rawUpi);
-    if (!upi && !warnedUpi) {
-      warnedUpi = true;
-      console.warn("[support-card] NEXT_PUBLIC_UPI_LINK must be the upi://pay link from the merchant QR; UPI links are disabled.");
-    }
+  const upi = rawUpi ? parseUpiLink(rawUpi) : null;
+  if (rawUpi && !upi) {
+    warnOnce("upi", "NEXT_PUBLIC_UPI_LINK must be the upi://pay link from the merchant QR; UPI links are disabled.");
   }
 
   const rawQr = env.qrSrc?.trim() ?? "";
-  let qrSrc: string | null = null;
-  if (rawQr) {
-    if (isSameOriginPath(rawQr)) {
-      qrSrc = rawQr;
-    } else if (!warnedQr) {
-      warnedQr = true;
-      console.warn("[support-card] NEXT_PUBLIC_UPI_QR_SRC must be a site path such as /upi-qr.png; the QR is disabled.");
-    }
+  const qrSrc = rawQr && isSameOriginPath(rawQr) ? rawQr : null;
+  if (rawQr && !qrSrc) {
+    warnOnce("qr", "NEXT_PUBLIC_UPI_QR_SRC must be a site path such as /upi-qr.png; the QR is disabled.");
   }
 
-  if (!upi && !qrSrc && !pages) return null;
-  return { upi, qrSrc, pages };
+  const rawLink = env.link?.trim() ?? "";
+  const link = rawLink && isValidPaymentLink(rawLink) ? rawLink : null;
+  if (rawLink && !link) {
+    warnOnce("link", "NEXT_PUBLIC_SUPPORT_LINK must be an https Razorpay link such as https://razorpay.me/@name; it is disabled.");
+  }
+
+  if (!upi && !qrSrc && !link) return null;
+  return { upi, qrSrc, link };
 }
 
 /** The build's config. Each NEXT_PUBLIC_* reference must stay literal so Next inlines it. */
@@ -167,30 +152,27 @@ export function supportConfig(): SupportConfig | null {
   return parseSupportConfig({
     upiLink: process.env.NEXT_PUBLIC_UPI_LINK,
     qrSrc: process.env.NEXT_PUBLIC_UPI_QR_SRC,
-    page10: process.env.NEXT_PUBLIC_SUPPORT_PAGE_10,
-    page20: process.env.NEXT_PUBLIC_SUPPORT_PAGE_20,
-    page50: process.env.NEXT_PUBLIC_SUPPORT_PAGE_50,
+    link: process.env.NEXT_PUBLIC_SUPPORT_LINK,
   });
 }
 
-/** The merchant payload plus the tapped amount, in rupees with two decimals. */
-export function buildUpiLink(upi: UpiParams, amount: SupportAmount): string {
-  const params: (readonly [string, string])[] = [...upi, ["am", `${amount}.00`]];
+/** The merchant payload as a upi://pay link; the payer enters the amount. */
+export function buildUpiLink(upi: UpiParams): string {
   // "@" in the UPI ID stays literal: it's the form UPI apps expect, and some
   // reject a percent-encoded "%40" in `pa`. Everything else is encoded.
-  return `upi://pay?${params.map(([k, v]) => `${k}=${encodeURIComponent(v).replace(/%40/g, "@")}`).join("&")}`;
+  return `upi://pay?${upi.map(([k, v]) => `${k}=${encodeURIComponent(v).replace(/%40/g, "@")}`).join("&")}`;
 }
 
 /**
- * What the pop-up offers on this device — the option with the fewest steps
+ * What the pop-up offers on this device — the route with the fewest steps
  * that works there:
  *  - Android: the UPI deep link (straight into the UPI app, no form);
- *  - a computer: the QR to scan with a phone (the payer types the amount);
+ *  - a computer: the QR to scan with a phone;
  *  - otherwise, and always on iPhone (upi:// links aren't reliably handled
- *    there, and a QR on the same phone can't be scanned): the payment pages;
+ *    there, and a QR on the same phone can't be scanned): the payment link;
  *  - nothing when none of these is configured for the device.
  */
-export type SupportVariant = "pages" | "deeplink" | "qr";
+export type SupportVariant = "deeplink" | "qr" | "link";
 
 export function supportVariant(
   device: DeviceClass,
@@ -198,7 +180,7 @@ export function supportVariant(
 ): SupportVariant | null {
   if (device === "android" && config.upi) return "deeplink";
   if (device === "desktop" && config.qrSrc) return "qr";
-  return config.pages ? "pages" : null;
+  return config.link ? "link" : null;
 }
 
 // ── Show/hide rules ─────────────────────────────────────────────────────────
@@ -242,7 +224,7 @@ export function markSupportShown(): void {
   writeStorage("session", SUPPORT_SEEN_KEY, "1");
 }
 
-/** Record an amount tap — the card stays away for SUPPORT_SNOOZE_MS. */
+/** Record a tap on the tip button — the card stays away for SUPPORT_SNOOZE_MS. */
 export function markSupportTapped(now: number = Date.now()): void {
   writeStorage("local", SUPPORT_TAPPED_KEY, String(now));
 }

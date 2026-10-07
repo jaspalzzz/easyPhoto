@@ -8,12 +8,11 @@
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  SUPPORT_AMOUNTS,
   SUPPORT_SNOOZE_MS,
   SUPPORT_TAPPED_KEY,
   buildUpiLink,
   isValidVpa,
-  isValidPaymentPage,
+  isValidPaymentLink,
   parseSupportConfig,
   parseUpiLink,
   supportVariant,
@@ -52,12 +51,7 @@ describe("VPA validation", () => {
 const QR_LINK =
   "upi://pay?cu=INR&mc=7338&mode=19&pa=easyphoto641476.rzp@rxairtel&tn=Payment%20To%20Easyphoto&tr=Tkx9z1TtIKezToqrv2";
 
-const PAGES = {
-  page10: "https://rzp.io/rzp/support10",
-  page20: "https://pages.razorpay.com/support20",
-  page50: "https://rzp.io/rzp/support50",
-};
-const PAGE_MAP = { "10": PAGES.page10, "20": PAGES.page20, "50": PAGES.page50 };
+const PAY_LINK = "https://razorpay.me/@easyphoto2806";
 
 describe("parseUpiLink (merchant QR payload)", () => {
   it("keeps the QR's parameters in order", () => {
@@ -95,105 +89,89 @@ describe("parseSupportConfig", () => {
 
   it("returns null when nothing is set — the card never renders", () => {
     expect(parseSupportConfig({})).toBeNull();
-    expect(parseSupportConfig({ upiLink: "", qrSrc: "  " })).toBeNull();
+    expect(parseSupportConfig({ upiLink: "", qrSrc: "  ", link: "" })).toBeNull();
   });
 
-  it("ignores an invalid UPI link and warns once", async () => {
+  it("configures each option independently, trimmed", () => {
+    expect(parseSupportConfig({ upiLink: ` ${QR_LINK} ` })).toEqual({
+      upi: parseUpiLink(QR_LINK),
+      qrSrc: null,
+      link: null,
+    });
+    expect(parseSupportConfig({ qrSrc: "/upi-qr.png" })).toEqual({ upi: null, qrSrc: "/upi-qr.png", link: null });
+    expect(parseSupportConfig({ link: ` ${PAY_LINK} ` })).toEqual({ upi: null, qrSrc: null, link: PAY_LINK });
+  });
+
+  it("ignores each invalid value and warns once per variable", async () => {
     const { parseSupportConfig: parse } = await freshModule();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     expect(parse({ upiLink: "upi://pay?pa=bad" })).toBeNull();
     expect(parse({ upiLink: "still bad" })).toBeNull();
-    expect(warn).toHaveBeenCalledTimes(1);
-  });
-
-  it("configures each option independently", () => {
-    expect(parseSupportConfig({ upiLink: ` ${QR_LINK} ` })).toEqual({
-      upi: parseUpiLink(QR_LINK),
-      qrSrc: null,
-      pages: null,
-    });
-    expect(parseSupportConfig({ qrSrc: "/upi-qr.png" })).toEqual({ upi: null, qrSrc: "/upi-qr.png", pages: null });
-    expect(parseSupportConfig(PAGES)).toEqual({ upi: null, qrSrc: null, pages: PAGE_MAP });
+    expect(parse({ link: "https://evil.example/pay" })).toBeNull();
+    expect(parse({ qrSrc: "https://evil.example/qr.png" })).toBeNull();
+    expect(warn).toHaveBeenCalledTimes(3);
   });
 
   it("accepts only a same-origin QR path", async () => {
     const { parseSupportConfig: parse } = await freshModule();
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    expect(parse({ ...PAGES, qrSrc: "/images/upi-qr.png" })?.qrSrc).toBe("/images/upi-qr.png");
-    expect(parse({ ...PAGES, qrSrc: "https://evil.example/qr.png" })?.qrSrc).toBeNull();
-    expect(parse({ ...PAGES, qrSrc: "//evil.example/qr.png" })?.qrSrc).toBeNull();
-    expect(parse({ ...PAGES, qrSrc: "javascript:alert(1)" })?.qrSrc).toBeNull();
-    expect(warn).toHaveBeenCalledTimes(1);
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    expect(parse({ link: PAY_LINK, qrSrc: "/images/upi-qr.png" })?.qrSrc).toBe("/images/upi-qr.png");
+    expect(parse({ link: PAY_LINK, qrSrc: "https://evil.example/qr.png" })?.qrSrc).toBeNull();
+    expect(parse({ link: PAY_LINK, qrSrc: "//evil.example/qr.png" })?.qrSrc).toBeNull();
+    expect(parse({ link: PAY_LINK, qrSrc: "javascript:alert(1)" })?.qrSrc).toBeNull();
   });
 });
 
 describe("buildUpiLink (NPCI upi://pay deep link)", () => {
-  it("is the merchant QR's payload plus the tapped amount", () => {
-    const upi = parseUpiLink(QR_LINK)!;
-    expect(SUPPORT_AMOUNTS).toEqual(["10", "20", "50"]);
-    for (const amount of SUPPORT_AMOUNTS) {
-      expect(buildUpiLink(upi, amount)).toBe(
-        `upi://pay?cu=INR&mc=7338&mode=19&pa=easyphoto641476.rzp@rxairtel&tn=Payment%20To%20Easyphoto&tr=Tkx9z1TtIKezToqrv2&am=${amount}.00`
-      );
-    }
+  it("is the merchant QR's payload with no amount, so the payer chooses it", () => {
+    expect(buildUpiLink(parseUpiLink(QR_LINK)!)).toBe(QR_LINK);
   });
 
   it("percent-encodes every value so it cannot add or change parameters", () => {
-    const upi = parseUpiLink("upi://pay?pa=shop@ybl&pn=Easy%20%26%20Co%3D1%20%E2%82%B9")!;
-    const link = buildUpiLink(upi, "20");
-    expect(link).toBe("upi://pay?pa=shop@ybl&pn=Easy%20%26%20Co%3D1%20%E2%82%B9&cu=INR&am=20.00");
+    const link = buildUpiLink(parseUpiLink("upi://pay?pa=shop@ybl&pn=Easy%20%26%20Co%3D1%20%E2%82%B9")!);
+    expect(link).toBe("upi://pay?pa=shop@ybl&pn=Easy%20%26%20Co%3D1%20%E2%82%B9&cu=INR");
     const params = new URLSearchParams(link.split("?")[1]);
-    expect([...params.keys()]).toEqual(["pa", "pn", "cu", "am"]);
+    expect([...params.keys()]).toEqual(["pa", "pn", "cu"]);
     expect(params.get("pn")).toBe("Easy & Co=1 ₹");
   });
 });
 
 describe("supportVariant — the fewest steps that work on the device", () => {
-  const all: SupportConfig = { upi: parseUpiLink(QR_LINK), qrSrc: "/upi-qr.png", pages: PAGE_MAP };
+  const all: SupportConfig = { upi: parseUpiLink(QR_LINK), qrSrc: "/upi-qr.png", link: PAY_LINK };
 
-  it("Android opens the UPI app; a computer shows the QR; iPhone gets the payment pages", () => {
+  it("Android opens the UPI app; a computer shows the QR; iPhone gets the payment link", () => {
     expect(supportVariant("android", all)).toBe("deeplink");
     expect(supportVariant("desktop", all)).toBe("qr");
-    expect(supportVariant("ios", all)).toBe("pages");
+    expect(supportVariant("ios", all)).toBe("link");
   });
 
-  it("falls back to the payment pages when the UPI option for the device is missing", () => {
-    const pagesOnly: SupportConfig = { upi: null, qrSrc: null, pages: PAGE_MAP };
+  it("falls back to the payment link when the UPI option for the device is missing", () => {
+    const linkOnly: SupportConfig = { upi: null, qrSrc: null, link: PAY_LINK };
     for (const device of ["android", "ios", "desktop"] as const) {
-      expect(supportVariant(device, pagesOnly)).toBe("pages");
+      expect(supportVariant(device, linkOnly)).toBe("link");
     }
   });
 
   it("shows nothing where no option fits the device", () => {
-    const upiOnly: SupportConfig = { upi: parseUpiLink(QR_LINK), qrSrc: null, pages: null };
+    const upiOnly: SupportConfig = { upi: parseUpiLink(QR_LINK), qrSrc: null, link: null };
     expect(supportVariant("desktop", upiOnly)).toBeNull();
     expect(supportVariant("ios", upiOnly)).toBeNull();
-    const qrOnly: SupportConfig = { upi: null, qrSrc: "/upi-qr.png", pages: null };
+    const qrOnly: SupportConfig = { upi: null, qrSrc: "/upi-qr.png", link: null };
     expect(supportVariant("android", qrOnly)).toBeNull(); // a QR on the same phone can't be scanned
     expect(supportVariant("ios", qrOnly)).toBeNull();
   });
 });
 
-describe("payment pages (Razorpay)", () => {
+describe("payment link (Razorpay)", () => {
   it("accepts only https links on Razorpay's own hosts", () => {
-    expect(isValidPaymentPage("https://rzp.io/rzp/abc")).toBe(true);
-    expect(isValidPaymentPage("https://pages.razorpay.com/support")).toBe(true);
-    expect(isValidPaymentPage("https://razorpay.me/@easyphoto")).toBe(true);
-    expect(isValidPaymentPage("http://rzp.io/rzp/abc")).toBe(false);
-    expect(isValidPaymentPage("https://rzp.io/")).toBe(false);
-    expect(isValidPaymentPage("https://rzp.io.evil.example/abc")).toBe(false);
-    expect(isValidPaymentPage("https://evil.example/rzp.io/abc")).toBe(false);
-    expect(isValidPaymentPage("not a url")).toBe(false);
-  });
-
-  it("ignores the pages unless all three are valid, and warns once", async () => {
-    const { parseSupportConfig: parse } = await freshModule();
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    expect(parse({ ...PAGES, page50: "" })).toBeNull();
-    expect(parse({ ...PAGES, page20: "https://example.com/pay" })).toBeNull();
-    expect(parse({ ...PAGES, page50: "", upiLink: QR_LINK })?.pages).toBeNull(); // UPI still works
-    expect(warn).toHaveBeenCalledTimes(1);
-    vi.restoreAllMocks();
+    expect(isValidPaymentLink(PAY_LINK)).toBe(true);
+    expect(isValidPaymentLink("https://rzp.io/rzp/abc")).toBe(true);
+    expect(isValidPaymentLink("https://pages.razorpay.com/support")).toBe(true);
+    expect(isValidPaymentLink("http://razorpay.me/@easyphoto")).toBe(false);
+    expect(isValidPaymentLink("https://razorpay.me/")).toBe(false);
+    expect(isValidPaymentLink("https://razorpay.me.evil.example/@x")).toBe(false);
+    expect(isValidPaymentLink("https://evil.example/razorpay.me/@x")).toBe(false);
+    expect(isValidPaymentLink("not a url")).toBe(false);
   });
 });
 
@@ -225,7 +203,7 @@ describe("show/hide rules", () => {
     expect(reloaded.canShowSupport(NOW)).toBe(true);
   });
 
-  it("stays away for 30 days after an amount tap, then may show again", async () => {
+  it("stays away for 30 days after a tap, then may show again", async () => {
     const m = await freshModule();
     m.markSupportTapped(NOW);
     expect(localStorage.getItem(SUPPORT_TAPPED_KEY)).toBe(String(NOW));
@@ -278,22 +256,25 @@ describe("collector: support events", () => {
     expect(blobs(writeDataPoint).slice(0, 3)).toEqual(["support_view", "resize-kb", "android"]);
   });
 
-  it.each(["10", "20", "50"])("records support_tap amount %s in the variant column", async (amount) => {
-    const { writeDataPoint } = await post({ name: "support_tap", tool: "exam-ssc", amount });
+  it.each(["upi", "link"])("records support_tap route %s in the variant column", async (method) => {
+    const { writeDataPoint } = await post({ name: "support_tap", tool: "exam-ssc", method });
     expect(blobs(writeDataPoint)[0]).toBe("support_tap");
-    expect(blobs(writeDataPoint)[5]).toBe(amount);
+    expect(blobs(writeDataPoint)[5]).toBe(method);
   });
 
-  it("drops a support_tap whose amount is not one of the fixed values", async () => {
-    for (const amount of ["5000", "", "25", "20; drop", null, undefined]) {
-      const { res, writeDataPoint } = await post({ name: "support_tap", amount });
+  it("drops a support_tap without a known route", async () => {
+    for (const method of ["qr", "", "native", "upi; drop", null, undefined]) {
+      const { res, writeDataPoint } = await post({ name: "support_tap", method });
       expect(res.status).toBe(204);
       expect(writeDataPoint).not.toHaveBeenCalled();
     }
+    // The old fixed-amount shape is no longer a valid tap.
+    const { writeDataPoint } = await post({ name: "support_tap", amount: "10" });
+    expect(writeDataPoint).not.toHaveBeenCalled();
   });
 
   it("never lets a support_tap smuggle another value into the variant column", async () => {
-    const { writeDataPoint } = await post({ name: "support_tap", amount: "10", format: "shop@ybl" });
-    expect(blobs(writeDataPoint)[5]).toBe("10");
+    const { writeDataPoint } = await post({ name: "support_tap", method: "upi", format: "shop@ybl" });
+    expect(blobs(writeDataPoint)[5]).toBe("upi");
   });
 });

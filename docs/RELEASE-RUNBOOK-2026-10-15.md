@@ -101,14 +101,25 @@ No data, route or sitemap change besides the Driving Licence lastmod.
   compact, #70 ToolCard. Presentation only — SEO diff must show 0 pages changed.
 - Rerun the combined UI check on the final dev preview before release: top
   pages at 390 and desktop, light and dark, page speed vs production.
-- Support card (#79, #83) uses Razorpay Payment Pages (owner's individual
-  Razorpay account, live 7 Oct). Cloudflare variables set by the owner on 7 Oct,
-  Production and Preview:
-  `NEXT_PUBLIC_SUPPORT_PAGE_10/_20/_50` = `https://rzp.io/rzp/easyphoto-tip-10`,
-  `-20`, `-50` (verified: "Support easyPhoto", fixed Pay ₹10/₹20/₹50). The card
-  code reaches master with this release, so tips start on 22 Oct.
+- Support pop-up (#79, #83, #85, #86): right after a download, one "Buy us a
+  chai" button and the visitor chooses the amount (owner decision 7 Oct: no
+  fixed amounts, no email/phone form where avoidable). Owner's individual
+  Razorpay account, live 7 Oct. Cloudflare variables, Production and Preview:
+  - `NEXT_PUBLIC_UPI_LINK` = the text inside the Razorpay multiple-payment QR
+    "Support easyPhoto" (`upi://pay?…pa=easyphoto641476.rzp@rxairtel…`) —
+    Android opens the UPI app with it, no form.
+  - `NEXT_PUBLIC_UPI_QR_SRC` = `/upi-qr.png` — computers scan the QR.
+  - `NEXT_PUBLIC_SUPPORT_LINK` = `https://razorpay.me/@easyphoto2806` — iPhone
+    (Razorpay asks for amount and phone there).
+  - The older `NEXT_PUBLIC_SUPPORT_PAGE_10/_20/_50` are no longer read; delete
+    them once 22 Oct is live.
+  - Before production: one real ₹10 from an Android phone through the button
+    (GPay, and PhonePe if available) reaches Razorpay → QR Codes. If a UPI app
+    refuses the link, unset `NEXT_PUBLIC_UPI_LINK` — Android then uses the
+    razorpay.me link.
 - Ship with it: the owner-approved refund note in `/terms/` (Razorpay requires a
   refund policy) — page text, so it rides the 22 Oct release.
 - After deploy: on easyphoto.in, a real download on /tools/resize-kb/ shows the
-  card; each amount opens its Razorpay page; one real ₹10 test payment reaches
-  the Razorpay dashboard.
+  pop-up — the QR on a computer, the button opening the UPI app on Android and
+  razorpay.me on iPhone; one real ₹10 test payment reaches the Razorpay
+  dashboard.
