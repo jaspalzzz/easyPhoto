@@ -24,11 +24,14 @@ spam update is still rolling out, so nothing else that changes page text ships.
 | `07a13ef` | Driving Licence: Sarathi JPG format (wrong-output hotfix, §5) | #72 |
 | `31565d1` | KB caps safe for portals counting 1 KB as 1000 or 1024 bytes | #75 |
 | `095f679 1e187db 4f6f48f 77cc9ab` | AI tools never hang: OCR/face model loads bounded, mirror on a stalled model host | #76 |
+| `23f8d41` | signatures export at the exam's published shape (SSC 3:1 and six others), margins only — added by the owner 8 Oct | #93 |
 
 **Not in this release:** `7e29d71` (broken blog images, #73) and `03e089f`
 (calendar past entries, #74) → 29 Oct; print-sheet `b877a16` (held); UI polish
 #65 #66 #68 #69 #70 and the UPI card #79 → 22 Oct; guards #81 come to master
 with the 22 Oct release.
+
+**Dry run 8 Oct (with #93, draft PR #89):** 15 commits apply cleanly on `master` 157639f; tsc clean; 799 unit tests; build OK; SEO diff = the 3 Driving Licence pages only; e2e 88/89 + the known handoff flake passing on rerun.
 
 **Dry runs (6 Oct):** all 14 commits apply cleanly on `master`; tsc clean;
 794 unit tests; build OK; e2e for every fixed tool 35/35. The unsplit 16-commit
