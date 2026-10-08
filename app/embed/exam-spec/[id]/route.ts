@@ -76,9 +76,9 @@ function renderEmbed(spec: PortalSpec): string {
   <div class="bd">
     <div class="grp">
       <div class="t">Photograph</div>
-      ${row("File size", kb(spec.photoMinKb, spec.photoLimitKb))}
-      ${photoDim ? row("Dimensions", photoDim) : ""}
-      ${spec.dpi ? row("Scan DPI", String(spec.dpi)) : ""}
+      ${spec.noPhotoUpload ? row("Upload", "None — taken live in the form") : row("File size", kb(spec.photoMinKb, spec.photoLimitKb))}
+      ${!spec.noPhotoUpload && photoDim ? row("Dimensions", photoDim) : ""}
+      ${spec.dpi && !spec.noPhotoUpload ? row("Scan DPI", String(spec.dpi)) : ""}
       ${spec.photoFormat ? row("Format", spec.photoFormat) : ""}
       ${spec.photoBackground ? row("Background", spec.photoBackground) : ""}
     </div>
@@ -88,6 +88,7 @@ function renderEmbed(spec: PortalSpec): string {
       <div class="t">Signature</div>
       ${row("File size", kb(spec.sigMinKb, spec.sigLimitKb!))}
       ${sigDim ? row("Dimensions", sigDim) : ""}
+      ${spec.dpi && spec.noPhotoUpload ? row("DPI", String(spec.dpi)) : ""}
       ${spec.sigFormat ? row("Format", spec.sigFormat) : ""}
     </div>`
         : ""

@@ -79,6 +79,13 @@ export interface PortalSpec {
    */
   isLiveCapture?: boolean;
   /**
+   * True when the application takes no photo file at all — the photograph is
+   * only captured live inside the form (SSC). Tools then offer the signature
+   * alone and never route a photo here; the photo size fields stay only for
+   * the overview tables that still list them.
+   */
+  noPhotoUpload?: boolean;
+  /**
    * Signature ink requirement, when the official source specifies one exactly
    * (e.g. driving-licence and up-police confirm "black" only, not blue). Only
    * set this when actually confirmed — the exam-requirements template falls
@@ -127,30 +134,32 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   ssc: {
     id: "ssc",
     name: "SSC (Staff Selection Commission)",
-    // Compatibility-only photo target. Current SSC notices use live capture
-    // and publish no pre-existing photo-upload KB or pixel requirement.
+    // SSC takes no photo file: the form captures the photo live. These photo
+    // fields only feed the overview tables; the SSC page and tools ignore them
+    // (noPhotoUpload).
     photoLimitKb: 50,
     photoMinKb: 20,
     sigLimitKb: 20,
     sigMinKb: 10,
     sigAspectRatio: 6 / 2,
     sigFormat: "JPEG / JPG",
+    dpi: 300,
     description:
-      "Current 2026 SSC applications capture the candidate's photograph live and do not use a pre-existing photo upload. The stored 20–50 KB photo target is compatibility-only, not a current SSC requirement. The current notice specifies a JPEG/JPG signature of 10–20 KB at about 6.0×2.0 cm; it publishes no photo or signature pixel dimensions, photo aspect ratio, DPI, or name/date rule. Confirm the current exam notice before using the compatibility photo output.",
+      "SSC's form captures your photo live through the camera, so there is no photo file to upload. The signature is a JPEG/JPG file of 10–20 KB, about 6.0 cm wide and 2.0 cm high, the same in every SSC notice for 2026.",
+    // CGL is the most-used SSC application; the SSC page lists the other 2026
+    // notices (CHSL, CPO, GD, JE, Stenographer, Selection Post XIV, Hindi
+    // Translators) — all read 8 Oct 2026 and identical on these fields. The
+    // 300 DPI figure is from the GD 2026 notice (Annex-II 21) and the CPO 2026
+    // portal screenshot (Annex-IIB). Body paras say 6.0 cm wide; five
+    // annexures say 4.0 cm — the page explains which to follow.
     source: {
-      url: "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_cht_2026.pdf",
-      label: "SSC Combined Hindi Translators Examination 2026 notice, paragraphs 8.4–8.7",
+      url: "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_cgl_2026.pdf",
+      label: "SSC Combined Graduate Level Examination 2026 notice, paragraphs 9.3–9.6",
     },
-    verification: "needs-review",
+    verification: "official",
+    verifiedOn: "2026-10-08",
     isLiveCapture: true,
-    context:
-      "The current SSC application module captures a live photograph from the candidate's computer or mobile camera. A pre-existing photograph is not uploaded. The signature remains a separate JPEG/JPG upload; confirm the current notice for the specific SSC examination before preparing files.",
-    applicationNotes: [
-      "SSC does not take a prepared photograph. The notice states plainly that a candidate is not required to have a pre-existing photograph, because the application module captures one while you fill the form. Anything you prepare in advance is for reference only.",
-      "Photographing an existing photograph is called out separately. The notice says that in no case should a candidate capture a photograph of a pre-existing photograph and describes such applications as liable to rejection — but it also states an exception: applications submitted through Aadhaar-based authentication are not rejected on those grounds. Do not rely on the exception if you are not using that route. Holding up a printed photo to the camera is the specific failure it describes.",
-      "During capture: even light, plain background, camera at eye level, face fully inside the outline the module draws and neither too close nor too far, and no cap, mask or spectacles. Your appearance at the examination is expected to match what was captured.",
-      "The signature is the part you do prepare. It uploads as a JPEG of 10 to 20 KB at roughly 6.0cm wide by 2.0cm high, and the notice warns that blurred or miniature signatures are rejected summarily.",
-    ]
+    noPhotoUpload: true,
   },
   upsc: {
     id: "upsc",

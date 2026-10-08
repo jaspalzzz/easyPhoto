@@ -142,7 +142,11 @@ export default function Page() {
                     {s.name.split(" (")[0]}
                   </span>
                   <span className="spec mt-1 block normal-case tracking-[0.06em]">
-                    Photo {photoKb(s.photoMinKb, s.photoLimitKb)}
+                    {s.noPhotoUpload ? (
+                      "Photo: live capture"
+                    ) : (
+                      <>Photo {photoKb(s.photoMinKb, s.photoLimitKb)}</>
+                    )}
                     {s.sigLimitKb
                       ? ` · Sign ${photoKb(s.sigMinKb, s.sigLimitKb)}`
                       : ""}

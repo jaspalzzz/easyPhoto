@@ -7,7 +7,6 @@
     "Entries may only be removed. A fixed field fails the check until its entry is deleted. Never add an entry to make a check pass."
   ],
   "sourceFields": [
-    "ssc: meta",
     "passport-seva: meta",
     "passport-seva: faq \"What is the photo size for the {name} application?\" answer",
     "passport-seva: faq \"How do I resize my photo to #–# KB for {name}?\" question",
@@ -36,7 +35,6 @@
     "voter-id: faq \"What should I check before submitting {name} files?\" answer"
   ],
   "renderedFields": [
-    "ssc: requirementCard",
     "passport-seva: requirementCard",
     "rrb: requirementCard",
     "tgpsc: requirementCard",

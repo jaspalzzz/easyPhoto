@@ -27,13 +27,26 @@ describe("live-capture exam resizer flow", () => {
     expect(html).not.toContain("Optional compatibility photo tool");
   });
 
-  it("opens the embedded SSC portal workspace on signature, not photo upload", () => {
+  it("offers SSC only the signature workspace: SSC takes no photo file", () => {
     const html = renderToStaticMarkup(<PortalResizer portalId="ssc" />);
 
     expect(html).toContain("Photo: live capture in the application");
-    expect(html).toContain("Prepare Signature File");
     expect(html).toContain("Signature Workspace");
+    // No photo tab or photo tool at all (noPhotoUpload), not just a signature default.
+    expect(html).not.toContain("Optional photo tool");
+    expect(html).not.toContain("Prepare Signature File");
     expect(html).not.toContain("Upload a prepared photograph");
+  });
+
+  it("compact mode drops the banner and the shared limitation lists", () => {
+    const html = renderToStaticMarkup(<PortalResizer portalId="ssc" hideDescription compact />);
+
+    expect(html).not.toContain("Photo: live capture in the application");
+    expect(html).not.toContain("Can check");
+    expect(html).not.toContain("All operations run entirely in your browser");
+    expect(html).not.toContain("selected 10–20 KB target");
+    // The tool itself is still there.
+    expect(html).toContain('type="file"');
   });
 
   it("keeps non-live embedded portal workspaces photo-first", () => {
