@@ -607,3 +607,46 @@ export function detectInkBBox(
   const height = Math.min(source.height - y, Math.round(bbox.height * inv) + pad * 2);
   return { x, y, width, height };
 }
+
+/**
+ * Size and placement that grow a `width × height` image to `ratio`
+ * (width ÷ height) by adding margins only — never by cropping, so no stroke is
+ * ever cut. Returns null when the image is already within `tolerance` of the
+ * ratio (relative), or when the inputs are unusable.
+ *
+ * Exams such as SSC publish a signature shape ("about 6.0 cm × 2.0 cm") but no
+ * pixel size; a signature trimmed tight to its ink rarely has that shape.
+ */
+export function aspectPadding(
+  width: number,
+  height: number,
+  ratio: number,
+  tolerance = 0.03
+): { width: number; height: number; x: number; y: number } | null {
+  if (!(ratio > 0) || !(width > 0) || !(height > 0)) return null;
+  const current = width / height;
+  if (Math.abs(current - ratio) / ratio <= tolerance) return null;
+  if (current > ratio) {
+    // Wider than the shape: add space above and below.
+    const padded = Math.round(width / ratio);
+    return { width, height: padded, x: 0, y: Math.floor((padded - height) / 2) };
+  }
+  // Taller than the shape: add space left and right.
+  const padded = Math.round(height * ratio);
+  return { width: padded, height, x: Math.floor((padded - width) / 2), y: 0 };
+}
+
+/**
+ * Centre `source` on a transparent canvas of the requested shape (see
+ * aspectPadding). The margins become white when the caller flattens to JPEG.
+ * Returns `source` itself when no padding is needed.
+ */
+export function padToAspect(source: HTMLCanvasElement, ratio: number): HTMLCanvasElement {
+  const pad = aspectPadding(source.width, source.height, ratio);
+  if (!pad) return source;
+  const out = document.createElement("canvas");
+  out.width = pad.width;
+  out.height = pad.height;
+  out.getContext("2d")?.drawImage(source, pad.x, pad.y);
+  return out;
+}
