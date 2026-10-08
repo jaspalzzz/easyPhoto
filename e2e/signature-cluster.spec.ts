@@ -259,6 +259,34 @@ test("driving-licence exam page: signature exports a 256x64 JPG inside 10–20 K
   expect(dims).toEqual([256, 64]);
 });
 
+// SSC publishes the signature as "about 6.0 cm (width) x 2.0 cm (height)" and
+// no pixel size. The tool used to export the signature trimmed tight to its
+// ink, whatever its shape; it must come out at 3:1, with margins, not cropped.
+test("ssc exam page: signature exports at SSC's 6.0 × 2.0 cm (3:1) shape", async ({ page }) => {
+  await page.goto("/exam-requirements/ssc/");
+  await page.locator('#resizer input[type="file"]').first().setInputFiles({
+    name: "sig.png",
+    mimeType: "image/png",
+    // A 240 × 140 ink blob: far from 3:1 once trimmed.
+    buffer: await makeScannedSignature(page),
+  });
+  const download = page.getByRole("button", { name: /download .*jpg/i });
+  await expect(download).toBeVisible({ timeout: 30_000 });
+  const [dl] = await Promise.all([page.waitForEvent("download"), download.click()]);
+  const b64 = await readDownloadBase64(dl);
+  const [w, h] = await page.evaluate(async (data) => {
+    const img = new Image();
+    img.src = `data:image/jpeg;base64,${data}`;
+    await img.decode();
+    return [img.naturalWidth, img.naturalHeight];
+  }, b64);
+  expect(Math.abs(w / h - 3) / 3, `exported ${w}×${h}`).toBeLessThan(0.03);
+  // Still inside SSC's 10–20 KB band whether the portal counts 1000 or 1024 bytes.
+  const bytes = Buffer.from(b64, "base64").length;
+  expect(bytes).toBeGreaterThanOrEqual(10 * 1024);
+  expect(bytes).toBeLessThanOrEqual(20 * 1000);
+});
+
 test("upsc exam page: warns when the signature image has fewer than three signatures", async ({ page }) => {
   await page.goto("/exam-requirements/upsc/");
   await page.getByRole("button", { name: /clean & compress signature/i }).click();
