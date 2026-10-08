@@ -11,7 +11,7 @@ release PR `dev → master`.
 | any day | **Hotfix** | Wrong output, wrong spec or a crash: branch from `master`, test that fails on the old code, §6 gate, PR into `master` the same day, verify on easyphoto.in, back-merge into `dev`. | only if the fix itself is |
 | Thu 15 Oct | GSC review + release | Morning: 14-day review of release #57 (Google + Bing). Then the JavaScript fixes: item 4 (#60–#64), signature format/DPI (#71), KB caps safe for 1000/1024-byte portals (#75), AI tools bounded (#76) — plus the Driving Licence JPG fix (#72) as a wrong-output hotfix (CLAUDE.md §5). Split by the owner on 6 Oct: the calendar and blog-image fixes wait for the window. | /exam-requirements/driving-licence/ only |
 | 6–20 Oct | Prevention (no release) | Guard rules in CLAUDE.md + tests from the 6 Oct Google-guidelines audit (item 8) — started 6 Oct at the owner's request. No page changes. | none |
-| Thu 22 Oct | UI polish release | Type scale option C (#65), card hierarchy option A (#66), FAQ/footer (#68), sign-image compact (#69), ToolCard (#70); the UPI support card (#79) is built but stays off until a merchant UPI account exists (on hold 6 Oct), both owner-approved from live-page mockups; any further approved polish (FAQ rows, footer) that is merged and verified by 20 Oct. Presentation only — SEO diff must show 0 pages changed. Ships alone so Search Console sees it separately from 15 Oct (fixes) and 29 Oct (content). | none |
+| Thu 22 Oct | UI polish release | Type scale option C (#65), card hierarchy option A (#66), FAQ/footer (#68), sign-image compact (#69), ToolCard (#70); the support pop-up (#79, #83, #85, #86 — one "Help keep it free" button, any amount: UPI app on Android, QR on computers, razorpay.me on iPhone, plus a card under Download; on dev and owner-tested on Android and iPhone 7 Oct; the owner adds the three Production variables before release, see the 15 Oct runbook), all owner-approved from live-page mockups; any further approved polish (FAQ rows, footer) that is merged and verified by 20 Oct. Presentation only — SEO diff must show 0 pages changed. Ships alone so Search Console sees it separately from 15 Oct (fixes) and 29 Oct (content). | none |
 | Thu 29 Oct | Content release | Items 1, 2 (incl. #74 past-entry hiding), 3 (first ≤ 3 pages) and 6, plus #73 (broken blog images removed). Item 9 starts here. | ~6 pages |
 | Thu 12 Nov | Content release | Item 3, next ≤ 3 pages — only if the first batch held for 14 days. | ≤ 3 pages |
 
@@ -147,6 +147,25 @@ requirement, the name-swapped FAQ is replaced by exam-specific Q&As, and
 jargon/repeats go. Order: clat, up-police, tgpsc → passport-seva,
 army-agniveer, rrb → ssc and voter-id (each its own 14-day experiment; Voter ID
 is item 7). Owner reviews every rewritten page.
+
+## 10. Money: tips first, then traffic (owner decision 7 Oct)
+
+- **Tips** go live with 22 Oct. Measure two weeks: pop-up views
+  (`support_view`) and taps (`support_tap`, by route) against payments in the
+  Razorpay dashboard (QR Codes for Android/desktop, Payments for razorpay.me).
+- **Testbook affiliate on the site — parked.** Search Console 25 Sep–6 Oct:
+  exam-intent visitors are mostly on `/exam-requirements/ssc/` (9.6 clicks/day,
+  99% exam queries), `/upsc/` (4.0) and `/rrb/` (2.9). A Testbook Pass is ₹775 a
+  year, so 5–10% is ₹40–₹78 a sale: roughly ₹50–₹200 a month at today's
+  traffic — not worth a Google risk. Ready to build when traffic is 3–5×:
+  one client-rendered "Sponsored" box after the tool on SSC/UPSC/RRB and the
+  SSC guide, `rel="sponsored"`, disclosure line, never in a pop-up, switch-off
+  variable. Compare EarnKaro with Testbook's own referral (10% to UPI, buyer
+  gets up to 12% off, first purchase only) at that point.
+- **The lever is traffic.** After the 15 Oct release: pages ranking 4–10 in
+  Search Console first (CLAUDE.md §8). Off-site (item 5): exam-photo Shorts;
+  once the channel has steady views, approach exam-prep brands (Testbook
+  sponsors 300+ YouTube creators) for paid sponsorships.
 
 ## Not doing
 
