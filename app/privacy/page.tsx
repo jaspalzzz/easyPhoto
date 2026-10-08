@@ -29,7 +29,7 @@ export default function PrivacyPage() {
             description:
               "How easyPhoto handles your data: it doesn't. Photos and PDFs are processed entirely in your browser and never uploaded.",
             url: "/privacy/",
-            dateModified: "2026-07-01",
+            dateModified: "2026-10-08",
           }),
         ]}
       />
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
         <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
           Privacy Policy
         </h1>
-        <p className="text-sm text-muted-foreground">Last updated: July 1, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: October 8, 2026</p>
       </header>
 
       {/* The short version — highlighted so it's the first thing read */}
@@ -107,11 +107,38 @@ export default function PrivacyPage() {
           personalisation in your Google ad settings. We do not place ads or load
           Google&apos;s advertising or consent scripts inside upload areas, result
           previews, private document workflows, or pages that contain your
-          images or PDFs.
+          images or PDFs. Third-party vendors, including Google, use cookies to
+          serve ads based on your prior visits to this and other websites.
+          Google&apos;s advertising cookies let it and its partners show you ads
+          based on those visits. You can turn off personalised ads in{" "}
+          <a
+            href="https://www.google.com/settings/ads"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand hover:underline"
+          >
+            Google Ads Settings
+          </a>
+          , or opt out of other vendors&apos; cookies at{" "}
+          <a
+            href="https://www.aboutads.info/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand hover:underline"
+          >
+            aboutads.info
+          </a>
+          .
         </Section>
 
         <Section title="Accounts and payments">
-          There are no accounts and no payments. The tool is free to use.
+          There are no accounts. The tools are free. If you choose to leave a
+          tip, the payment is handled by Razorpay or your UPI app; we never see
+          your card, bank or UPI PIN details. See our{" "}
+          <Link href="/terms/" className="text-brand hover:underline">
+            Terms
+          </Link>{" "}
+          for the refund rule on tips.
         </Section>
 
         <Section title="Children">
