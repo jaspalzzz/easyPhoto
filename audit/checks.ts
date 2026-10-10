@@ -108,6 +108,8 @@ export function rulesFor(spec: PortalSpec, kind: FileKind): FileRules | null {
         spec.photoWidthPx && spec.photoHeightPx
           ? { width: spec.photoWidthPx, height: spec.photoHeightPx }
           : undefined,
+      // OCI: 200–900 px on each side (hotfix #103).
+      sidePx: spec.photoSidePx,
       ratio: spec.photoWidthPx && spec.photoHeightPx ? undefined : spec.photoAspectRatio,
       dpi: spec.dpi,
     };
