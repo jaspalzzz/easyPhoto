@@ -643,10 +643,49 @@ export function aspectPadding(
  */
 export function padToAspect(source: HTMLCanvasElement, ratio: number): HTMLCanvasElement {
   const pad = aspectPadding(source.width, source.height, ratio);
-  if (!pad) return source;
+  return pad ? padCanvas(source, pad) : source;
+}
+
+/** Centre `source` on a transparent canvas of `pad.width × pad.height`. */
+export function padCanvas(
+  source: HTMLCanvasElement,
+  pad: { width: number; height: number; x: number; y: number }
+): HTMLCanvasElement {
   const out = document.createElement("canvas");
   out.width = pad.width;
   out.height = pad.height;
   out.getContext("2d")?.drawImage(source, pad.x, pad.y);
   return out;
+}
+
+/**
+ * How to bring a `width × height` signature inside a per-side pixel range —
+ * UPSC: "The height and width of signature image must be between 350 and 500
+ * pixels". First adds margins (never crops) when the shape is too tall or too
+ * wide for any size in the range, then scales as little as possible. Returns
+ * null when the image already fits or the inputs are unusable.
+ */
+export function sideRangeFit(
+  width: number,
+  height: number,
+  minSide: number,
+  maxSide: number
+): { pad: { width: number; height: number; x: number; y: number } | null; width: number; height: number } | null {
+  if (!(width > 0) || !(height > 0) || !(minSide > 0) || !(maxSide >= minSide)) return null;
+  // The narrowest shape that fits is minSide : maxSide (and its inverse).
+  const lo = minSide / maxSide;
+  let padW = width;
+  let padH = height;
+  if (width / height < lo) padW = Math.ceil(height * lo);
+  else if (height / width < lo) padH = Math.ceil(width * lo);
+  const pad =
+    padW !== width || padH !== height
+      ? { width: padW, height: padH, x: Math.floor((padW - width) / 2), y: Math.floor((padH - height) / 2) }
+      : null;
+
+  const long = Math.max(padW, padH);
+  const short = Math.min(padW, padH);
+  const scale = long > maxSide ? maxSide / long : short < minSide ? minSide / short : 1;
+  if (!pad && scale === 1) return null;
+  return { pad, width: Math.round(padW * scale), height: Math.round(padH * scale) };
 }
