@@ -75,6 +75,43 @@ ratio, but "face" needs pinning down.
 back, and we ship only clearer guidance instead of a number we can't stand
 behind (§3: no invented figures).
 
+### Calibration result (10 Oct 2026) — passed
+
+The photos are from UPSC's form, `upsconline.nic.in/caf/assets/icons/`. We
+measured them with the site's own face detector (MediaPipe FaceLandmarker
+0.10.35): chin from the landmarks, hair top and ear-to-ear width from the
+pixels against UPSC's white background.
+
+| UPSC sample | UPSC's verdict | Head box ÷ photo area | Head height ÷ photo height | Ear-to-ear ÷ photo width | Face landmarks box ÷ photo area |
+|---|---|---|---|---|---|
+| akash_1 (1024 × 1024) | rejected, coverage | **38.6%** | 72.2% | 53.4% | 21.7% |
+| akash_2 (808 × 861) | rejected, coverage | **58.0%** | 85.7% | 67.7% | 33.1% |
+| akash_3 (619 × 775) | **accepted** | **84.3%** | 95.6% | 88.2% | 47.6% |
+
+- **The measure:** "head box" = (hair top → chin) × (ear → ear), divided by
+  the photo's area. It puts both coverage-rejected samples below UPSC's 75%
+  and the accepted one above it, matching the form's wording ("75% … of the
+  area in the photo"). We use UPSC's own 75% as the line; we don't invent a
+  different one.
+- **Hair may touch the top edge.** In the accepted akash_3 the hair touches the
+  top of the frame and the ears sit 29 px from the sides. So the crop may take
+  the hair to the edge, but must keep the forehead, the chin and both ears
+  fully inside.
+- **Too close is also refused.** UPSC's specimen list marks "Too Close"
+  (forehead and ears cut off) as invalid. The tool must say so when the head
+  is cut, and "Crop closer" must never cut it.
+- **Small icons not used for the line.** UPSC's small 166 × 196 specimen
+  icons sit inside a rounded card frame, so they can't be measured reliably:
+  the acceptable icon reads 60% including the frame, about 72% excluding it.
+- **Limitation:** only three full-size samples, with a wide gap (58% → 84%).
+  The 75% line comes from UPSC's text; the samples confirm the measure, not
+  the exact threshold.
+- **On real photos** (any background), hair top and ear width will come from
+  the person mask the passport tool already computes (`lib/segmentation.ts`)
+  instead of the white-background scan. Tests pin the three numbers above
+  (±2 points) on the white-background path and check that the two paths agree
+  on a white-background photo.
+
 ## 4. Which existing page hosts it
 
 - `/exam-requirements/upsc/`, in the existing photo tab. No new URL (§1).
