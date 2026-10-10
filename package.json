@@ -21,7 +21,8 @@
     "verify:adsense-on": "NEXT_PUBLIC_ADSENSE_ENABLED=true npm run build && npm run check:adsense-export:on",
     "freshness": "node scripts/freshness-audit.mjs",
     "indexnow": "node scripts/indexnow.mjs",
-    "audit:adsense-readiness": "node scripts/audit-adsense-readiness.mjs"
+    "audit:adsense-readiness": "node scripts/audit-adsense-readiness.mjs",
+    "audit:outputs": "playwright test -c playwright.audit.config.ts; node scripts/audit/report.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.2.0",
