@@ -399,3 +399,28 @@ test("sign-pdf: places a signature and exports a valid PDF with every page prese
     inputBytes.length
   );
 });
+
+// UPPSC publishes no signature file format, only a 200 DPI scan. The tool used
+// to fall back to a transparent PNG, which carries no DPI; an exam with no
+// recorded format now gets a white JPG (output audit, 10 Oct 2026).
+test("uppsc exam page: signature exports a JPG that declares 200 DPI", async ({ page }) => {
+  await page.goto("/exam-requirements/uppsc/");
+  await page.getByRole("button", { name: /clean & compress signature/i }).click();
+  await page.setInputFiles('input[type="file"]', {
+    name: "sig.png",
+    mimeType: "image/png",
+    buffer: await makeStackedSignatures(page, 1),
+  });
+  const download = page.locator("#sig-download");
+  await expect(download).toHaveText(/jpg/i, { timeout: 30_000 });
+  const [dl] = await Promise.all([page.waitForEvent("download"), download.click()]);
+  const bytes = Buffer.from(await readDownloadBase64(dl), "base64");
+  expect(bytes[0]).toBe(0xff);
+  expect(bytes[1]).toBe(0xd8);
+  // JFIF APP0: units byte 1 = dots per inch, then X density.
+  const jfif = bytes.indexOf(Buffer.from("JFIF\0"));
+  expect(jfif).toBeGreaterThan(0);
+  expect(bytes[jfif + 7]).toBe(1);
+  expect(bytes.readUInt16BE(jfif + 8)).toBe(200);
+  expect(bytes.length).toBeLessThanOrEqual(30 * 1000);
+});

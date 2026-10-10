@@ -5,6 +5,7 @@ import { PORTAL_PRESETS } from "@/lib/portalPresets";
 import { photoDimsPx, sigDimsPx, specProvenance } from "@/lib/specRegistry";
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
+import { signatureExportFormat } from "@/lib/signature";
 import type { ToolSource } from "@/components/tools/ImageToolShell";
 import { peekWorkflowPayloadKind, setWorkflowPayload } from "@/lib/workflowHandoff";
 import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
@@ -213,7 +214,7 @@ export function PortalResizer({
               defaultKb={spec.sigLimitKb}
               minKb={spec.sigMinKb}
               defaultPresetKey={portalId}
-              defaultFormat={spec.sigFormat && /\b(?:JPG|JPEG)\b/i.test(spec.sigFormat) ? "jpeg" : "png"}
+              defaultFormat={signatureExportFormat(spec)}
               autoCropDefault={true}
               onSourceChange={handleSignatureSourceChange}
             />
