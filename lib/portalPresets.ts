@@ -1146,32 +1146,32 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   "up-police": {
     id: "up-police",
     name: "UP Police (UPPBPB)",
+    // UPPBPB takes no photo file: the form captures the photo live (§5.7).
+    // These photo fields only feed the overview tables; the UP Police page and
+    // tools ignore them (noPhotoUpload).
     photoLimitKb: 50,
     photoMinKb: 20,
-    sigLimitKb: 20,
-    sigMinKb: 5,
-    photoAspectRatio: 35 / 45,
-    photoFormat: "JPEG / JPG / JPE",
+    // §5.8: "50mm X 20mm या 140 X 60 पिक्सल", "30 KB से 50 KB", "JPG/JPEG",
+    // black pen on white paper.
+    sigLimitKb: 50,
+    sigMinKb: 30,
+    sigWidthPx: 140,
+    sigHeightPx: 60,
+    sigFormat: "JPG / JPEG",
     signatureInk: "Black ink on white paper",
     description:
-      "Uttar Pradesh Police Recruitment & Promotion Board (UPPBPB) online registration — constable, SI and other posts. The figures recorded here are photo 35×45 mm JPEG/JPG/JPE at 20-50 KB and signature 35×15 mm at 5-20 KB in black ink, but the linked notice is an image-only Hindi scan whose upload section we have not been able to read, so these are unconfirmed. Confirm the current limits on your own notification and at the upload screen, which validates the file.",
+      "UPPBPB's form captures your photo live through the camera, so there is no photo file to upload. The signature is a JPG/JPEG file of 30–50 KB at 140 × 60 pixels (50 × 20 mm), signed in running letters with a black pen.",
+    // Constable (Civil Police) and equivalent posts, Direct Recruitment 2025,
+    // no. PRPB-B-07/2025 of 31 Dec 2025 — the latest UPPBPB recruitment notice.
+    // Scanned Hindi PDF; §5.7–5.8 (pages 23–24) read 10 Oct 2026.
     source: {
       url: "https://uppbpb.gov.in/FilesUploaded/Notice/CONSTABLE-VIGYAPTIc7be0cc8-3365-471e-9237-447c528d341a.pdf",
-      label: "UPPBPB Constable recruitment notification (uppbpb.gov.in)",
+      label: "UPPBPB notice for Constable and equivalent posts, 31 Dec 2025",
     },
-    // ⚠ The linked notice is an image-only Hindi scan. Nobody has OCR'd or
-    // manually read its upload section, so an "official · Verified" badge over
-    // precise KB figures claims a reading that was never done. Downgraded until
-    // the exact section is extracted.
-    verification: "needs-review",
-    context:
-      "UP Police (UPPBPB) recruits Constables, Sub-Inspectors and other posts under the Uttar Pradesh Police Recruitment & Promotion Board; limits are set per recruitment notification and the portal validates the file at upload, so re-check the current notification's numbers before applying.",
-    applicationNotes: [
-      "The linked constable notification is an image-only Hindi scan, and its upload section has not been extracted reliably in this review. The displayed 20 to 50 KB photograph and 5 to 20 KB signature figures therefore remain compatibility values, not a claimed transcription from that notice.",
-      "The preset records a 35 x 45 mm portrait shape, a 35 x 15 mm landscape signature and black ink on white paper. Treat every one of those fields as provisional until the current recruitment screen shows the rule; a post-specific UPPBPB notice can differ from another police recruitment.",
-      "JPEG, JPG and JPE are listed as possible extensions, but the active field may expose a narrower encoded-format list. Check the file's real format and the preview after upload; changing only the extension text does not convert image data.",
-      "Constable and Sub-Inspector recruitments are separate cycles under the same board. Keep the original photograph and signature so they can be exported again if the current cycle displays different geometry or byte limits than this compatibility preset.",
-    ],
+    verification: "official",
+    verifiedOn: "2026-10-10",
+    isLiveCapture: true,
+    noPhotoUpload: true,
   },
   // ---- Indian identity documents ----
   pan: {

@@ -24,10 +24,6 @@
     "army-agniveer: faq \"What is the photo size for the {name} application?\" answer",
     "army-agniveer: faq \"How do I resize my photo to #–# KB for {name}?\" question",
     "army-agniveer: faq \"What should I check before submitting {name} files?\" answer",
-    "up-police: meta",
-    "up-police: faq \"What is the photo size for the {name} application?\" answer",
-    "up-police: faq \"How do I resize my photo to #–# KB for {name}?\" question",
-    "up-police: faq \"What should I check before submitting {name} files?\" answer",
     "voter-id: meta",
     "voter-id: lead",
     "voter-id: faq \"What is the photo size for the {name} application?\" answer",
@@ -40,7 +36,6 @@
     "tgpsc: requirementCard",
     "clat: requirementCard",
     "army-agniveer: requirementCard",
-    "up-police: requirementCard",
     "voter-id: requirementCard"
   ]
 }

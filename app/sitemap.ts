@@ -29,6 +29,12 @@ const TERMS_UPDATED = "2026-10-07";
 const PRIVACY_UPDATED = "2026-10-08";
 /** /tools/ index — moves only when its own content changes (8 Oct 2026: unfinished-tool cards removed). */
 const TOOLS_INDEX_UPDATED = "2026-10-08";
+/**
+ * /exam-requirements/ and /exam-photo-size/ — the overview list and table of
+ * every exam. Move when an exam's row or card changes (8 Oct 2026: SSC live
+ * photo and signature; 10 Oct 2026: UP Police live photo and signature).
+ */
+const EXAM_OVERVIEW_UPDATED = "2026-10-10";
 
 /**
  * When the exam-requirement template itself last changed, as opposed to when a
@@ -73,8 +79,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about/",
     "/contact/",
     "/disclaimer/",
-    "/exam-requirements/",
-    "/exam-photo-size/",
     "/exam-calendar/",
     "/aadhaar-photo/",
     // Hinglish pages are noindex (thin duplicates) — intentionally not in sitemap.
@@ -116,6 +120,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...(
       [
         ["/tools/", TOOLS_INDEX_UPDATED],
+        ["/exam-requirements/", EXAM_OVERVIEW_UPDATED],
+        ["/exam-photo-size/", EXAM_OVERVIEW_UPDATED],
         ["/privacy/", PRIVACY_UPDATED],
         ["/terms/", TERMS_UPDATED],
       ] as const

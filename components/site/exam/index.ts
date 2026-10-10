@@ -1,6 +1,7 @@
 import type { FaqItem } from "@/components/site/Faq";
 import { SscGuide, SSC_FAQ } from "@/components/site/exam/SscGuide";
 import { UpscGuide, UPSC_FAQ } from "@/components/site/exam/UpscGuide";
+import { UpPoliceGuide, UP_POLICE_FAQ } from "@/components/site/exam/UpPoliceGuide";
 
 /**
  * Exam pages rewritten to stand on their own (docs/NEXT-RELEASE.md item 9):
@@ -27,4 +28,10 @@ export const EXAM_GUIDES: Readonly<
   },
   // Meta unchanged (owner, 10 Oct): UPSC's spec is verified and its numbers are UPSC's own.
   upsc: { Body: UpscGuide, faq: UPSC_FAQ },
+  "up-police": {
+    Body: UpPoliceGuide,
+    faq: UP_POLICE_FAQ,
+    metaDescription:
+      "UP Police signature: JPG/JPEG, 30–50 KB, 140 × 60 pixels, in running letters. Your photo is taken live while you apply, so the signature is the only image you prepare.",
+  },
 };
