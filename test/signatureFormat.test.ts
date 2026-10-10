@@ -16,6 +16,22 @@ describe("signatureExportFormat", () => {
     for (const id of ["uppsc", "tgpsc", "clat", "army-agniveer", "passport-seva", "up-police"]) {
       expect(signatureExportFormat(PORTAL_PRESETS[id]), id).toBe("jpeg");
     }
+    // ...and so does every other preset that takes a signature upload but
+    // records no format, so a newly added exam can't slip back to PNG.
+    const unrecorded = Object.values(PORTAL_PRESETS).filter(
+      (p) => !p.sigFormat && (p.sigLimitKb || p.sigWidthPx || p.sigAspectRatio || p.sigSidePx),
+    );
+    expect(unrecorded.length).toBeGreaterThan(0);
+    for (const p of unrecorded) expect(signatureExportFormat(p), p.id).toBe("jpeg");
+  });
+
+  it("records Sarathi's JPG requirement for the driving-licence signature and photo", () => {
+    // Sarathi PhotoSign.pdf: "The image file should be JPG format" (both files).
+    const dl = PORTAL_PRESETS["driving-licence"];
+    expect(dl.sigFormat).toBe("JPG");
+    expect(dl.photoFormat).toBe("JPG");
+    expect(dl.source?.url).toBe("https://sarathi.parivahan.gov.in/sarathiservice/pdf/PhotoSign.pdf");
+    expect(signatureExportFormat(dl)).toBe("jpeg");
   });
 
   it("keeps the transparent PNG when no exam is selected", () => {
