@@ -174,15 +174,15 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     description:
       "UPSC's current application portal requires a JPG photograph of 20–200 KB with a plain white background and about 75% face coverage, plus a JPG image containing three signatures arranged vertically at 20–100 KB and 350–500 pixels. The instructions publish no fixed photo pixel dimensions, photo aspect ratio, DPI, or name/date strip.",
     // UPSC moved its instruction PDF (old /ngrp/assets/PDF/ path 404s, checked
-    // 10 Oct 2026). The current copy was created 4 Feb 2026, before the 16 Jul
-    // check, so the verified figures stand. The file name carries a
-    // build hash, so recheck this link when verifying.
+    // 10 Oct 2026). Re-verified against the current copy (created 4 Feb 2026)
+    // on 10 Oct 2026 for the page rewrite. The file name carries a build hash,
+    // so recheck this link when verifying.
     source: {
       url: "https://upsconline.nic.in/candidate/resources/bzh30/login/upsc-candidates-portal/dist/assets/instruction-photo-signature-upload-upsc-CCLCIgId.pdf",
       label: "UPSC — Instructions for Uploading the Photo & Signature",
     },
     verification: "official",
-    verifiedOn: "2026-07-16",
+    verifiedOn: "2026-10-10",
     signatureInk: "Black ink on plain white paper",
     sigCopies: 3,
     context:
