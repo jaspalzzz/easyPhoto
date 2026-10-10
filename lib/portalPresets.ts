@@ -47,6 +47,12 @@ export interface PortalSpec {
    * height). The signature tool fits its output inside it.
    */
   sigSidePx?: { min: number; max: number };
+  /**
+   * Pixel range each side of the photo must fall in, when the authority
+   * publishes one instead of an exact size (OCI: 200–900 px wide and high).
+   * The photo tool scales its output inside it.
+   */
+  photoSidePx?: { min: number; max: number };
   /** File format published for the prepared photograph upload. */
   photoFormat?: string;
   /** Background published for the prepared photograph upload. */
@@ -244,6 +250,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoLimitKb: 200,
     sigLimitKb: 200,
     photoAspectRatio: 1,
+    photoSidePx: { min: 200, max: 900 },
     photoFormat: "JPEG / JPG",
     photoBackground: "Plain light-coloured (not white)",
     sigFormat: "JPEG / JPG",
