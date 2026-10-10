@@ -43,6 +43,13 @@ describe("checkFile", () => {
     expect(failed(checkFile(rules, facts({ width: 360, height: 500, bytes: 20_480 })))).toEqual([]);
   });
 
+  it("catches the OCI photo that came out 2168 × 2168 (#103)", () => {
+    const rules = rulesFor(PORTAL_PRESETS.oci, "photo")!;
+    expect(failed(checkFile(rules, facts({ width: 2168, height: 2168, bytes: 198_000 })))).toEqual(["side range"]);
+    expect(failed(checkFile(rules, facts({ width: 150, height: 150, bytes: 20_000 })))).toEqual(["side range"]);
+    expect(failed(checkFile(rules, facts({ width: 900, height: 900, bytes: 192_764 })))).toEqual([]);
+  });
+
   it("holds the cap in 1,000-byte KB and the floor in 1,024-byte KB", () => {
     const rules = rulesFor(PORTAL_PRESETS.ibps, "photo")!;
     expect(failed(checkFile(rules, facts({ bytes: 50_001, dpi: 200 })))).toEqual(["max size"]);
