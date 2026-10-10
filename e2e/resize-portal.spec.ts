@@ -145,3 +145,21 @@ test("portal resizer: prepared photo carries into the selected Exam Kit", async 
     timeout: 30_000,
   });
 });
+
+// OCI's FAQ: square photo, "The maximum dimensions are 900 pixels (width) x 900
+// pixels (height)" (minimum 200). A 1024 × 1024 photo used to come out at full
+// size, which the OCI portal rejects.
+test("oci exam page: the photo comes out square and within 200–900 px", async ({ page }) => {
+  await page.goto("/exam-requirements/oci/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await page.getByRole("button", { name: /compress to size/i }).click();
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: /download jpg/i }).click({ timeout: 30_000 }),
+  ]);
+  const bytes = fs.readFileSync((await download.path())!);
+  const [w, h] = await decode(page, bytes);
+  expect(w, `${w}×${h}`).toBe(h);
+  expect(w, `${w}×${h}`).toBeGreaterThanOrEqual(200);
+  expect(w, `${w}×${h}`).toBeLessThanOrEqual(900);
+});

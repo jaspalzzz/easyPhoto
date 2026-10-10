@@ -87,6 +87,22 @@ export function matchesAspectRatio(
 }
 
 /**
+ * Scale factor that brings a `width × height` image inside a per-side pixel
+ * range (OCI: "minimum … 200 pixels … maximum … 900 pixels", width and
+ * height). 1 when it already fits. Shapes too narrow for the range (shorter
+ * side would drop below `minSide` when the longer one is capped) favour the
+ * cap, which portals enforce first.
+ */
+export function sideRangeScale(width: number, height: number, minSide: number, maxSide: number): number {
+  if (!(width > 0) || !(height > 0) || !(minSide > 0) || !(maxSide >= minSide)) return 1;
+  const long = Math.max(width, height);
+  const short = Math.min(width, height);
+  if (long > maxSide) return maxSide / long;
+  if (short < minSide) return Math.min(minSide / short, maxSide / long);
+  return 1;
+}
+
+/**
  * Centre-crop an image to a published aspect ratio without inventing an output
  * pixel size. The largest possible crop is retained; the KB compressor may then
  * scale it proportionally when a portal has only a size cap.
