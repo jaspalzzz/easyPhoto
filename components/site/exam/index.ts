@@ -1,5 +1,6 @@
 import type { FaqItem } from "@/components/site/Faq";
 import { SscGuide, SSC_FAQ } from "@/components/site/exam/SscGuide";
+import { UpscGuide, UPSC_FAQ } from "@/components/site/exam/UpscGuide";
 
 /**
  * Exam pages rewritten to stand on their own (docs/NEXT-RELEASE.md item 9):
@@ -8,7 +9,15 @@ import { SscGuide, SSC_FAQ } from "@/components/site/exam/SscGuide";
  * template unchanged. Add one exam per reviewed rewrite, ≤ 3 per release.
  */
 export const EXAM_GUIDES: Readonly<
-  Record<string, { Body: () => React.JSX.Element; faq: FaqItem[]; metaDescription: string }>
+  Record<
+    string,
+    {
+      Body: () => React.JSX.Element;
+      faq: FaqItem[];
+      /** Only when the template's generated meta would be wrong for this page. */
+      metaDescription?: string;
+    }
+  >
 > = {
   ssc: {
     Body: SscGuide,
@@ -16,4 +25,6 @@ export const EXAM_GUIDES: Readonly<
     metaDescription:
       "SSC signature: JPEG/JPG, 10–20 KB, about 6.0 × 2.0 cm at 300 DPI. The photo is captured live in the form, so there's no photo file to upload.",
   },
+  // Meta unchanged (owner, 10 Oct): UPSC's spec is verified and its numbers are UPSC's own.
+  upsc: { Body: UpscGuide, faq: UPSC_FAQ },
 };

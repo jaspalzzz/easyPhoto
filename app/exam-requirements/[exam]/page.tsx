@@ -368,7 +368,7 @@ export default async function Page({
         </>
       )}
 
-      {spec.applicationNotes && spec.applicationNotes.length > 0 && (
+      {!guide && spec.applicationNotes && spec.applicationNotes.length > 0 && (
         <section className="space-y-3 border-t border-hairline pt-8">
           <h2 className="text-lg font-semibold">
             Application-specific notes for {spec.name.split(" (")[0]}
@@ -384,7 +384,7 @@ export default async function Page({
         </section>
       )}
 
-      {spec.context && (
+      {!guide && spec.context && (
         <section className="space-y-2">
           <h2 className="eyebrow">About this exam</h2>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
@@ -541,7 +541,7 @@ export default async function Page({
         </section>
       )}
 
-      {SUB_EXAMS[exam] && (
+      {!guide && SUB_EXAMS[exam] && (
         <section className="space-y-3">
           <h2 className="eyebrow">Covers these {spec.name.split(" (")[0]} exams</h2>
           <p className="text-sm text-muted-foreground">
@@ -562,41 +562,6 @@ export default async function Page({
               </span>
             ))}
           </div>
-        </section>
-      )}
-
-      {exam === "upsc" && (
-        <section className="space-y-6 border-t border-hairline pt-8">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">UPSC sets separate file-size bands for photo and signature</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The verified UPSC record sets the photo at {photoKb(spec)} and the
-              signature at {sig} — two separate bands, so one file cannot satisfy
-              both. UPSC publishes these size limits rather than a pixel requirement.
-              Both are JPG uploads, and the photo uses a plain white background.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">A live photograph and three signatures on one sheet</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Besides the uploaded photograph, UPSC&apos;s portal captures a live
-              photograph during the application and matches it against the file you
-              uploaded — so use a current photo that looks like you today. The
-              signature upload is one image holding your signature{" "}
-              <strong>three times, arranged vertically</strong> on plain white
-              paper; a single signature is not what the form expects.
-            </p>
-          </div>
-          {spec.source && (
-            <a
-              href={spec.source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-            >
-              Check the UPSC online application source <ExternalLink className="h-3.5 w-3.5" />
-            </a>
-          )}
         </section>
       )}
 
