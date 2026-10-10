@@ -61,9 +61,10 @@ describe("specRegistry — staleness", () => {
     expect(review).not.toContain("upsc");
     expect(review).not.toContain("ibps");
     expect(review).not.toContain("sbi");
+    // SSC verified 8 Oct 2026 against its 2026 notices:
+    expect(review).not.toContain("ssc");
     // Current workflows use live capture or retain conditional/compatibility
     // values that still need workflow-specific confirmation:
-    expect(review).toContain("ssc");
     expect(review).toContain("passport-seva");
     expect(review).toContain("rrb");
     expect(review).toContain("voter-id");

@@ -14,6 +14,7 @@ export function PortalResizer({
   portalId,
   displayName,
   hideDescription = false,
+  compact = false,
 }: {
   portalId: string;
   /** Override the shown name (sub-exam pages pass e.g. "SSC CGL"; spec stays the parent's). */
@@ -24,15 +25,26 @@ export function PortalResizer({
    * the embedded tool repeated the whole authority paragraph twice per page.
    */
   hideDescription?: boolean;
+  /**
+   * Tool only: no summary banner, no "can / cannot check" lists, no privacy
+   * line. For pages that already state the requirement above the tool and
+   * link one shared explainer instead of repeating the same boilerplate.
+   */
+  compact?: boolean;
 }) {
   const spec = PORTAL_PRESETS[portalId];
   const shownName = displayName ?? spec?.name.split(" (")[0];
-  const defaultSubTool = spec?.isLiveCapture && spec.sigLimitKb !== undefined ? "signature" : "photo";
+  // An exam that takes no photo file (noPhotoUpload) only ever shows the
+  // signature workspace; a live-capture exam opens on the signature tab.
+  const signatureOnly = spec?.noPhotoUpload === true && spec.sigLimitKb !== undefined;
+  const defaultSubTool =
+    (spec?.isLiveCapture || signatureOnly) && spec?.sigLimitKb !== undefined ? "signature" : "photo";
   // A photo handed over from another tool (e.g. the compliance checker's "Fix
   // it") must land on the photo tab even for live-capture exams, or the
   // signature tab consumes and drops it. The pending payload only exists after
   // a client-side navigation, so this can't diverge from the static HTML.
   const [activeSubTool, setActiveSubTool] = React.useState<"photo" | "signature">(() => {
+    if (signatureOnly) return "signature";
     const incoming = peekWorkflowPayloadKind();
     return incoming === "photo" || incoming === "image" ? "photo" : defaultSubTool;
   });
@@ -88,56 +100,58 @@ export function PortalResizer({
   return (
     <div className="space-y-6">
       {/* Specs Summary Banner */}
-      <div className="rounded-lg border border-brand bg-brand-soft/10 p-5">
-        <h3 className="font-semibold text-brand text-base mb-1.5">
-          {shownName} {spec.isLiveCapture ? "application workflow" : "requirements"}
-        </h3>
-        {!hideDescription && (
-          <p className="text-sm text-muted-foreground leading-relaxed mb-3">{spec.description}</p>
-        )}
-        <p className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-ink-soft">
-          <ProvenanceIcon
-            className={`h-3.5 w-3.5 shrink-0 ${
-              provenance.verified ? "text-brand" : "text-amber-600 dark:text-amber-400"
-            }`}
-            strokeWidth={1.75}
-          />
-          <span>{provenance.label}.</span>
-          {provenance.url && (
-            <a
-              href={provenance.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-0.5 font-medium text-brand hover:underline"
-            >
-              {provenance.verified ? "Official source" : "Source to confirm"} <ExternalLink className="h-3 w-3" />
-            </a>
+      {!compact && (
+        <div className="rounded-lg border border-brand bg-brand-soft/10 p-5">
+          <h3 className="font-semibold text-brand text-base mb-1.5">
+            {shownName} {spec.isLiveCapture ? "application workflow" : "requirements"}
+          </h3>
+          {!hideDescription && (
+            <p className="text-sm text-muted-foreground leading-relaxed mb-3">{spec.description}</p>
           )}
-        </p>
-        <div className="flex flex-wrap gap-4 text-xs font-mono">
-          <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
-            <Camera className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
-            {spec.isLiveCapture ? (
-              <>Photo: live capture in the application</>
-            ) : (
-              <>
-                Photo: {spec.photoMinKb ? `${spec.photoMinKb}–` : ""}{spec.photoLimitKb} KB
-                {photoDimsPx(spec) && ` · ${photoDimsPx(spec)}`}
-              </>
+          <p className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-ink-soft">
+            <ProvenanceIcon
+              className={`h-3.5 w-3.5 shrink-0 ${
+                provenance.verified ? "text-brand" : "text-amber-600 dark:text-amber-400"
+              }`}
+              strokeWidth={1.75}
+            />
+            <span>{provenance.label}.</span>
+            {provenance.url && (
+              <a
+                href={provenance.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-0.5 font-medium text-brand hover:underline"
+              >
+                {provenance.verified ? "Official source" : "Source to confirm"} <ExternalLink className="h-3 w-3" />
+              </a>
+            )}
+          </p>
+          <div className="flex flex-wrap gap-4 text-xs font-mono">
+            <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
+              <Camera className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
+              {spec.isLiveCapture ? (
+                <>Photo: live capture in the application</>
+              ) : (
+                <>
+                  Photo: {spec.photoMinKb ? `${spec.photoMinKb}–` : ""}{spec.photoLimitKb} KB
+                  {photoDimsPx(spec) && ` · ${photoDimsPx(spec)}`}
+                </>
+              )}
+            </div>
+            {hasSignature && (
+              <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
+                <PenLine className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
+                Signature: {spec.sigMinKb ? `${spec.sigMinKb}–` : ""}{spec.sigLimitKb} KB
+                {sigDimsPx(spec) && ` · ${sigDimsPx(spec)}`}
+              </div>
             )}
           </div>
-          {hasSignature && (
-            <div className="flex items-center gap-1.5 bg-card px-2.5 py-1 rounded border border-hairline">
-              <PenLine className="h-3.5 w-3.5 shrink-0 text-ink-soft" strokeWidth={1.75} />
-              Signature: {spec.sigMinKb ? `${spec.sigMinKb}–` : ""}{spec.sigLimitKb} KB
-              {sigDimsPx(spec) && ` · ${sigDimsPx(spec)}`}
-            </div>
-          )}
         </div>
-      </div>
+      )}
 
       {/* Sub-tool Selector tabs */}
-      {hasSignature && (
+      {hasSignature && !signatureOnly && (
         <div className="flex border-b border-hairline gap-2">
           <button
             type="button"
@@ -199,8 +213,12 @@ export function PortalResizer({
         ) : (
           <div className="space-y-3">
             <div className="px-1">
-              <h4 className="text-sm font-semibold mb-1">Signature Workspace</h4>
-              <p className="text-xs text-muted-foreground">Upload a scan/photo of your signature to remove the background paper, auto-crop, and apply the selected {spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}{spec.sigLimitKb} KB target.</p>
+              {!compact && (
+                <>
+                  <h4 className="text-sm font-semibold mb-1">Signature Workspace</h4>
+                  <p className="text-xs text-muted-foreground">Upload a scan/photo of your signature to remove the background paper, auto-crop, and apply the selected {spec.sigMinKb ? `${spec.sigMinKb}–` : "under "}{spec.sigLimitKb} KB target.</p>
+                </>
+              )}
               {spec.sigCopies && spec.sigCopies > 1 && (
                 <p className="mt-2 border-l-2 border-amber-500 bg-amber-50/60 p-2 text-xs font-medium text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
                   {shownName} needs your signature {spec.sigCopies} times, one below another, on one image. Sign {spec.sigCopies} times
@@ -221,23 +239,27 @@ export function PortalResizer({
         )}
       </div>
 
-      <ToolLimitationsNotice
-        summary="Checks measurable file properties such as dimensions and file size. This resizer does not assess background uniformity or approximate face position, and it cannot guarantee acceptance — verify the current application instructions on the official portal."
-        canCheck={[
-          "Output file size and pixel dimensions shown by the resizer",
-          "Whether the generated file reaches the selected size target",
-        ]}
-        cannotCheck={[
-          "Background, expression, face position, identity, or recency",
-          "Requirements not included in the selected preset",
-          "The portal or reviewing authority’s final decision",
-        ]}
-      />
+      {!compact && (
+        <>
+          <ToolLimitationsNotice
+            summary="Checks measurable file properties such as dimensions and file size. This resizer does not assess background uniformity or approximate face position, and it cannot guarantee acceptance — verify the current application instructions on the official portal."
+            canCheck={[
+              "Output file size and pixel dimensions shown by the resizer",
+              "Whether the generated file reaches the selected size target",
+            ]}
+            cannotCheck={[
+              "Background, expression, face position, identity, or recency",
+              "Requirements not included in the selected preset",
+              "The portal or reviewing authority’s final decision",
+            ]}
+          />
 
-      <p className="flex items-start gap-2 text-xs text-muted-foreground">
-        <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
-        All operations run entirely in your browser. Your images and signature scans are never uploaded or stored.
-      </p>
+          <p className="flex items-start gap-2 text-xs text-muted-foreground">
+            <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
+            All operations run entirely in your browser. Your images and signature scans are never uploaded or stored.
+          </p>
+        </>
+      )}
     </div>
   );
 }

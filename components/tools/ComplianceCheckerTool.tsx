@@ -366,7 +366,9 @@ export function ComplianceCheckerTool() {
             </div>
           )}
           <div className="flex flex-wrap gap-1.5 pt-1">
-            {report.verdict !== "pass" && spec && (
+            {/* No photo "Fix it" for an exam that takes no photo file (SSC
+                captures it live): there is nothing to resize it to. */}
+            {report.verdict !== "pass" && spec && !(kind === "photo" && spec.noPhotoUpload) && (
               // Resizing fixes file-fact failures (size/dimensions/format), so
               // this keys off the file verdict, not the face checks. Photo fixes
               // carry the file into the exam page's embedded resizer (which

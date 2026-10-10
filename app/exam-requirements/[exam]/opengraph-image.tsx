@@ -19,9 +19,11 @@ export default async function Image({
   const { exam } = await params;
   const spec = getPortalSpec(exam);
   if (!spec) return ogImage({ title: "Exam Photo & Signature Requirements" });
-  const photo = spec.photoMinKb
-    ? `${spec.photoMinKb}–${spec.photoLimitKb} KB`
-    : `under ${spec.photoLimitKb} KB`;
+  const photo = spec.noPhotoUpload
+    ? "taken live in the form"
+    : spec.photoMinKb
+      ? `${spec.photoMinKb}–${spec.photoLimitKb} KB`
+      : `under ${spec.photoLimitKb} KB`;
   const sig = spec.sigLimitKb
     ? ` · signature ${spec.sigMinKb ? `${spec.sigMinKb}–${spec.sigLimitKb}` : `under ${spec.sigLimitKb}`} KB`
     : "";

@@ -20,7 +20,7 @@
     "app/driving-licence-photo-resizer/page.tsx — stored … target": 1,
     "app/embed/exam-spec/[id]/route.ts — compatibility target": 1,
     "app/exam-photo-size/page.tsx — stored … target": 1,
-    "app/exam-requirements/[exam]/page.tsx — compatibility target": 2,
+    "app/exam-requirements/[exam]/page.tsx — compatibility target": 1,
     "app/exam-requirements/[exam]/page.tsx — compatibility-only": 1,
     "app/exam-requirements/[exam]/page.tsx — selected stored": 1,
     "app/exam-requirements/[exam]/page.tsx — stored … target": 3,
@@ -41,9 +41,9 @@
     "lib/faqs.ts — selected stored": 1,
     "lib/faqs.ts — stored … target": 1,
     "lib/portalPresets.ts — compatibility target": 5,
-    "lib/portalPresets.ts — compatibility-only": 3,
+    "lib/portalPresets.ts — compatibility-only": 2,
     "lib/portalPresets.ts — in this review": 1,
-    "lib/portalPresets.ts — stored … target": 6
+    "lib/portalPresets.ts — stored … target": 5
   },
   "renderedPages": {
     "/ — stored": 3,
@@ -87,12 +87,6 @@
     "/tools/photo-with-name-date/ — preset": 1,
     "/tools/dpi-converter/ — stored": 1,
     "/tools/pan-card-ocr/ — extracted": 1,
-    "/exam-requirements/ssc/ — stored": 9,
-    "/exam-requirements/ssc/ — stored … target": 3,
-    "/exam-requirements/ssc/ — selected stored": 1,
-    "/exam-requirements/ssc/ — compatibility-only": 1,
-    "/exam-requirements/ssc/ — compatibility target": 2,
-    "/exam-requirements/ssc/ — preset": 1,
     "/exam-requirements/upsc/ — stored": 10,
     "/exam-requirements/upsc/ — stored … target": 3,
     "/exam-requirements/upsc/ — selected stored": 2,

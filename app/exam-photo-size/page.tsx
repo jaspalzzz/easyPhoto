@@ -24,7 +24,12 @@ export const metadata = pageMetadata({
 });
 
 const photoKb = (s: PortalSpec) =>
-  s.photoMinKb ? `${s.photoMinKb}–${s.photoLimitKb} KB` : `≤ ${s.photoLimitKb} KB`;
+  // SSC takes no photo file — the form captures it live.
+  s.noPhotoUpload
+    ? "Live capture"
+    : s.photoMinKb
+      ? `${s.photoMinKb}–${s.photoLimitKb} KB`
+      : `≤ ${s.photoLimitKb} KB`;
 const sigKb = (s: PortalSpec) =>
   s.sigLimitKb
     ? s.sigMinKb

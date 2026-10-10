@@ -28,6 +28,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { examGuideLinks } from "@/lib/examGuides";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { SupportCard } from "@/components/site/SupportCard";
+import { EXAM_GUIDES } from "@/components/site/exam";
 
 // One static page per exam (the cited Spec Database).
 export function generateStaticParams() {
@@ -103,6 +104,7 @@ export async function generateMetadata({
     titleAbsolute: !!EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam],
     description:
       descriptionOverride ??
+      EXAM_GUIDES[exam]?.metaDescription ??
       // Omit the pixel clause when the authority publishes none — px() renders an
       // em-dash for the spec table, which reads as "(—)" in a SERP snippet.
       `${shortName}: photo ${photoKb(spec)}${parens(photoDimsPx(spec, " px"))}` +
@@ -130,7 +132,6 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
 // size" / "upsc nda photo size" queries on this verified page — no separate
 // pages, no fabricated specs (they inherit the parent's exact numbers).
 const SUB_EXAMS: Record<string, string[]> = {
-  ssc: ["SSC CGL", "SSC CHSL", "SSC GD Constable", "SSC MTS", "SSC CPO", "SSC JE", "SSC Stenographer", "SSC Selection Post"],
   upsc: ["UPSC CSE (IAS/IPS)", "UPSC NDA", "UPSC CDS", "UPSC CAPF", "UPSC IFS", "UPSC EPFO", "UPSC CMS"],
   ibps: ["IBPS PO", "IBPS Clerk", "IBPS SO", "IBPS RRB"],
   sbi: ["SBI PO", "SBI Clerk", "SBI SO"],
@@ -150,7 +151,9 @@ export default async function Page({
   const prov = specProvenance(spec);
   const sig = sigKb(spec);
   const path = `/exam-requirements/${exam}/`;
-  const faqItems = portalFaqItems(spec);
+  // A rewritten exam page brings its own body and FAQ; the rest use the template.
+  const guide = EXAM_GUIDES[exam];
+  const faqItems = guide?.faq ?? portalFaqItems(spec);
   const related = relatedPortals(exam, 6);
   const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(exam)];
   const guideLinks = examGuideLinks(exam);
@@ -192,9 +195,11 @@ export default async function Page({
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
           {spec.name} Photo{sig ? <> &amp; Signature</> : null} Size
         </h1>
-        <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          {spec.description}
-        </p>
+        {!guide && (
+          <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+            {spec.description}
+          </p>
+        )}
         {/* Reviewer byline — named-person E-E-A-T signal ("Who"), matching the
             blog post treatment. Compact (no full author card) since this
             template covers 50+ pages. */}
@@ -220,142 +225,148 @@ export default async function Page({
         />
       </header>
 
-      {/* Above-the-fold jump link to the embedded resizer further down this
-          same page. On mobile the tool section can sit several screens below
-          the spec table; this gives a visitor who already knows the numbers
-          a one-tap path to the tool without hunting for it. Pure in-page
-          anchor — no new route, no change to the H1 or section order. */}
-      <a
-        href="#resizer"
-        className={buttonVariants({ variant: "cta", className: "min-h-11 w-full sm:w-auto" })}
-      >
-        Resize your {spec.name.split(" (")[0]} photo{sig ? " & signature" : ""} now <ArrowDown className="h-4 w-4" />
-      </a>
+      {guide && <guide.Body />}
 
-      {/* The spec table — the authoritative, citable data */}
-      <section className="grid gap-8 md:grid-cols-2">
-        <div className="space-y-3">
-          <h2 className="eyebrow">Photo requirement</h2>
-          <dl>
-            <Row label="File size" value={photoKb(spec)} />
-            <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? "—"} />
-            {spec.photoAspectRatio && (
-              <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
-            )}
-            {spec.photoFormat && <Row label="Format" value={spec.photoFormat} />}
-            {spec.photoBackground && (
-              <Row label="Background" value={spec.photoBackground} />
-            )}
-          </dl>
-        </div>
-        <div className="space-y-3">
-          <h2 className="eyebrow">Signature requirement</h2>
-          {sig ? (
-            <dl>
-              <Row label="File size" value={sig} />
-              <Row label="Dimensions" value={sigDimsPx(spec, " px") ?? "—"} />
-              {spec.sigFormat && <Row label="Format" value={spec.sigFormat} />}
-              <Row label="Ink" value={spec.signatureInk ?? "Confirm current notice"} />
-            </dl>
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              No separate signature upload is specified for this form. Check the official notification.
-            </p>
-          )}
-        </div>
-      </section>
+      {!guide && (
+        <>
+          {/* Above-the-fold jump link to the embedded resizer further down this
+              same page. On mobile the tool section can sit several screens below
+              the spec table; this gives a visitor who already knows the numbers
+              a one-tap path to the tool without hunting for it. Pure in-page
+              anchor — no new route, no change to the H1 or section order. */}
+          <a
+            href="#resizer"
+            className={buttonVariants({ variant: "cta", className: "min-h-11 w-full sm:w-auto" })}
+          >
+            Resize your {spec.name.split(" (")[0]} photo{sig ? " & signature" : ""} now <ArrowDown className="h-4 w-4" />
+          </a>
 
-      {/* Transactional tool — embedded, not linked out. AI Overviews answer
-          "what size"; hosting the resizer on this indexed URL lets the page win
-          "do it" queries ("<exam> photo resizer") too. Previously this section
-          linked to /tools/form-resizer/{exam}/, which is noindexed — so the
-          transactional ranking had no indexable page to migrate to. The H1
-          stays "Photo … Size" (protects the informational rankings); this H2
-          carries the "resize" intent. */}
-      <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
-        <div>
-          <h2 className="text-base font-semibold tracking-tight">
-            Prepare your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null} to the selected stored target
-          </h2>
-          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Verify the current form before use. Processing is free and stays in your browser.
-          </p>
-        </div>
-
-        <PortalResizer portalId={exam} hideDescription />
-
-        {/* Read-next guides. This used to be hardcoded for voter-id alone,
-            which left 48 exam pages with no route to the longer explanation.
-            The map only offers a guide that genuinely covers the portal. */}
-        {guideLinks.length > 0 && (
-          <div className="support rounded-lg border p-4">
-            <h3 className="text-sm font-semibold text-ink">
-              Before you upload
-            </h3>
-            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-              Read the{" "}
-              {guideLinks.map((guide, i) => (
-                <Fragment key={guide.slug}>
-                  {i > 0 && (i === guideLinks.length - 1 ? " and " : ", ")}
-                  <Link
-                    href={`/blog/${guide.slug}/`}
-                    className="font-medium text-brand hover:underline"
-                  >
-                    {guide.label}
-                  </Link>
-                </Fragment>
-              ))}
-              .
-            </p>
-          </div>
-        )}
-
-        {(spec.requiresNameDate || spec.requiresSlateNameDate) && (
-          <div className="rounded-lg border border-amber-300 bg-amber-50/70 p-4 dark:border-amber-800 dark:bg-amber-950/30">
-            <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
-              {spec.requiresSlateNameDate
-                ? "This photo needs a name-and-date slate"
-                : "This form needs your name & date on the photo"}
-            </h3>
-            <p className="mt-1 text-sm leading-relaxed text-amber-800 dark:text-amber-300">
-              {spec.requiresSlateNameDate ? (
-                <>
-                  The current notice requires the candidate to be photographed holding
-                  a black slate with their name and the photography date written in
-                  white chalk. This must be present when the photo is taken, not added
-                  digitally afterward.
-                </>
+          {/* The spec table — the authoritative, citable data */}
+          <section className="grid gap-8 md:grid-cols-2">
+            <div className="space-y-3">
+              <h2 className="eyebrow">Photo requirement</h2>
+              <dl>
+                <Row label="File size" value={photoKb(spec)} />
+                <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? "—"} />
+                {spec.photoAspectRatio && (
+                  <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
+                )}
+                {spec.photoFormat && <Row label="Format" value={spec.photoFormat} />}
+                {spec.photoBackground && (
+                  <Row label="Background" value={spec.photoBackground} />
+                )}
+              </dl>
+            </div>
+            <div className="space-y-3">
+              <h2 className="eyebrow">Signature requirement</h2>
+              {sig ? (
+                <dl>
+                  <Row label="File size" value={sig} />
+                  <Row label="Dimensions" value={sigDimsPx(spec, " px") ?? "—"} />
+                  {spec.sigFormat && <Row label="Format" value={spec.sigFormat} />}
+                  <Row label="Ink" value={spec.signatureInk ?? "Confirm current notice"} />
+                </dl>
               ) : (
-                <>
-                  {spec.name.split(" (")[0]} requires the candidate&apos;s name and the
-                  date of photography printed on the photo itself. After sizing it here,
-                  add the strip with the{" "}
-                  <Link
-                    href="/tools/photo-with-name-date/"
-                    className="font-medium underline underline-offset-2"
-                  >
-                    Photo with Name &amp; Date tool
-                  </Link>
-                  .
-                </>
+                <p className="text-sm text-muted-foreground">
+                  No separate signature upload is specified for this form. Check the official notification.
+                </p>
               )}
-            </p>
-          </div>
-        )}
+            </div>
+          </section>
 
-        {sig && (
-          <p className="text-sm text-muted-foreground">
-            Prefer a guided flow?{" "}
-            <Link href="/tools/exam-package/" className="font-medium text-brand hover:underline">
-              The photo + signature kit
-            </Link>{" "}
-            walks both documents through in one place.
-          </p>
-        )}
-      </section>
+          {/* Transactional tool — embedded, not linked out. AI Overviews answer
+              "what size"; hosting the resizer on this indexed URL lets the page win
+              "do it" queries ("<exam> photo resizer") too. Previously this section
+              linked to /tools/form-resizer/{exam}/, which is noindexed — so the
+              transactional ranking had no indexable page to migrate to. The H1
+              stays "Photo … Size" (protects the informational rankings); this H2
+              carries the "resize" intent. */}
+          <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
+            <div>
+              <h2 className="text-base font-semibold tracking-tight">
+                Prepare your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null} to the selected stored target
+              </h2>
+              <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                Verify the current form before use. Processing is free and stays in your browser.
+              </p>
+            </div>
 
-      {/* Appears only after a file from the resizer above is saved. */}
-      <SupportCard tool={`exam-${exam}`} />
+            <PortalResizer portalId={exam} hideDescription />
+
+            {/* Read-next guides. This used to be hardcoded for voter-id alone,
+                which left 48 exam pages with no route to the longer explanation.
+                The map only offers a guide that genuinely covers the portal. */}
+            {guideLinks.length > 0 && (
+              <div className="support rounded-lg border p-4">
+                <h3 className="text-sm font-semibold text-ink">
+                  Before you upload
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                  Read the{" "}
+                  {guideLinks.map((guide, i) => (
+                    <Fragment key={guide.slug}>
+                      {i > 0 && (i === guideLinks.length - 1 ? " and " : ", ")}
+                      <Link
+                        href={`/blog/${guide.slug}/`}
+                        className="font-medium text-brand hover:underline"
+                      >
+                        {guide.label}
+                      </Link>
+                    </Fragment>
+                  ))}
+                  .
+                </p>
+              </div>
+            )}
+
+            {(spec.requiresNameDate || spec.requiresSlateNameDate) && (
+              <div className="rounded-lg border border-amber-300 bg-amber-50/70 p-4 dark:border-amber-800 dark:bg-amber-950/30">
+                <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                  {spec.requiresSlateNameDate
+                    ? "This photo needs a name-and-date slate"
+                    : "This form needs your name & date on the photo"}
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-amber-800 dark:text-amber-300">
+                  {spec.requiresSlateNameDate ? (
+                    <>
+                      The current notice requires the candidate to be photographed holding
+                      a black slate with their name and the photography date written in
+                      white chalk. This must be present when the photo is taken, not added
+                      digitally afterward.
+                    </>
+                  ) : (
+                    <>
+                      {spec.name.split(" (")[0]} requires the candidate&apos;s name and the
+                      date of photography printed on the photo itself. After sizing it here,
+                      add the strip with the{" "}
+                      <Link
+                        href="/tools/photo-with-name-date/"
+                        className="font-medium underline underline-offset-2"
+                      >
+                        Photo with Name &amp; Date tool
+                      </Link>
+                      .
+                    </>
+                  )}
+                </p>
+              </div>
+            )}
+
+            {sig && (
+              <p className="text-sm text-muted-foreground">
+                Prefer a guided flow?{" "}
+                <Link href="/tools/exam-package/" className="font-medium text-brand hover:underline">
+                  The photo + signature kit
+                </Link>{" "}
+                walks both documents through in one place.
+              </p>
+            )}
+          </section>
+
+          {/* Appears only after a file from the resizer above is saved. */}
+          <SupportCard tool={`exam-${exam}`} />
+        </>
+      )}
 
       {spec.applicationNotes && spec.applicationNotes.length > 0 && (
         <section className="space-y-3 border-t border-hairline pt-8">
@@ -551,41 +562,6 @@ export default async function Page({
               </span>
             ))}
           </div>
-        </section>
-      )}
-
-      {exam === "ssc" && (
-        <section className="space-y-6 border-t border-hairline pt-8">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">SSC captures the photo live — the signature is the file you prepare</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Current SSC applications capture the photograph live through the
-              portal&apos;s camera, so there is no pre-existing photo file to upload.
-              The signature is the upload to prepare: {sig}, JPG, on plain white
-              paper. The {photoKb(spec)} photo figure stored here is a
-              compatibility target, not a current SSC upload requirement — set up
-              good light and a plain background before you open the form.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">SSC-specific application note</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              SSC uses these files across recruitments including CGL, CHSL, MTS,
-              GD Constable, Stenographer and Junior Engineer through its One-Time
-              Registration flow. The current notice publishes no name-and-date rule
-              for the image, so no digital name/date strip is needed.
-            </p>
-          </div>
-          {spec.source && (
-            <a
-              href={spec.source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-            >
-              Check the SSC official portal <ExternalLink className="h-3.5 w-3.5" />
-            </a>
-          )}
         </section>
       )}
 
@@ -830,22 +806,26 @@ export default async function Page({
         </section>
       )}
 
-      {/* Stored-field checks generated only from fields this record carries. */}
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">What to check before submitting {spec.name.split(" (")[0]} files</h2>
-        <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-          {portalRejectionReasons(spec, !!sig).map((r) => (
-            <li key={r} className="flex items-start gap-2">
-              <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-faint" strokeWidth={1.75} />
-              {r}
-            </li>
-          ))}
-        </ul>
-        <p className="text-xs text-muted-foreground">
-          Specs can change between notification cycles — always confirm the current limit on the official
-          portal before submitting.
-        </p>
-      </section>
+      {!guide && (
+        <>
+          {/* Stored-field checks generated only from fields this record carries. */}
+          <section className="space-y-3">
+            <h2 className="text-lg font-semibold">What to check before submitting {spec.name.split(" (")[0]} files</h2>
+            <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
+              {portalRejectionReasons(spec, !!sig).map((r) => (
+                <li key={r} className="flex items-start gap-2">
+                  <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-faint" strokeWidth={1.75} />
+                  {r}
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-muted-foreground">
+              Specs can change between notification cycles — always confirm the current limit on the official
+              portal before submitting.
+            </p>
+          </section>
+        </>
+      )}
 
       <section className="space-y-3">
         <h2 className="eyebrow">{categoryLabel} &amp; more</h2>
