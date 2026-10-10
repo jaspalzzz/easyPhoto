@@ -42,7 +42,6 @@
     "lib/faqs.ts — stored … target": 1,
     "lib/portalPresets.ts — compatibility target": 5,
     "lib/portalPresets.ts — compatibility-only": 2,
-    "lib/portalPresets.ts — in this review": 1,
     "lib/portalPresets.ts — stored … target": 5
   },
   "renderedPages": {
@@ -152,12 +151,6 @@
     "/exam-requirements/airforce-agniveer/ — stored … target": 3,
     "/exam-requirements/airforce-agniveer/ — selected stored": 2,
     "/exam-requirements/airforce-agniveer/ — preset": 1,
-    "/exam-requirements/up-police/ — stored": 11,
-    "/exam-requirements/up-police/ — stored … target": 3,
-    "/exam-requirements/up-police/ — selected stored": 2,
-    "/exam-requirements/up-police/ — in this review": 1,
-    "/exam-requirements/up-police/ — extracted": 1,
-    "/exam-requirements/up-police/ — preset": 3,
     "/exam-requirements/pan/ — stored": 11,
     "/exam-requirements/pan/ — stored … target": 3,
     "/exam-requirements/pan/ — selected stored": 2,
