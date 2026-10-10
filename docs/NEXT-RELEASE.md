@@ -11,21 +11,22 @@ release PR `dev → master`.
 | any day | **Hotfix** | Wrong output, wrong spec or a crash: branch from `master`, test that fails on the old code, §6 gate, PR into `master` the same day, verify on easyphoto.in, back-merge into `dev`. | only if the fix itself is |
 | Thu 15 Oct | GSC review + release | Morning: 14-day review of release #57 (Google + Bing). Then the JavaScript fixes: item 4 (#60–#64), signature format/DPI (#71), KB caps safe for 1000/1024-byte portals (#75), AI tools bounded (#76) — plus the Driving Licence JPG fix (#72) as a wrong-output hotfix (CLAUDE.md §5). Split by the owner on 6 Oct: the calendar and blog-image fixes wait for the window. | /exam-requirements/driving-licence/ only |
 | 6–20 Oct | Prevention (no release) | Guard rules in CLAUDE.md + tests from the 6 Oct Google-guidelines audit (item 8) — started 6 Oct at the owner's request. No page changes. | none |
-| Thu 22 Oct | UI polish release | Type scale option C (#65), card hierarchy option A (#66), FAQ/footer (#68), sign-image compact (#69), ToolCard (#70); the support pop-up (#79, #83, #85, #86 — one "Help keep it free" button, any amount: UPI app on Android, QR on computers, razorpay.me on iPhone, plus a card under Download; on dev and owner-tested on Android and iPhone 7 Oct; the owner adds the three Production variables before release, see the 15 Oct runbook), all owner-approved from live-page mockups; any further approved polish (FAQ rows, footer) that is merged and verified by 20 Oct. Presentation only — SEO diff must show 0 pages changed. Ships alone so Search Console sees it separately from 15 Oct (fixes) and 29 Oct (content). | none |
-| Thu 29 Oct | Content release | Items 1, 2 (incl. #74 past-entry hiding), 3 (first ≤ 3 pages) and 6, plus #73 (broken blog images removed). Item 9 starts here. | ~6 pages |
+| Thu 22 Oct, **after 13:30 IST** | UI polish release | Type scale option C (#65), card hierarchy option A (#66), FAQ/footer (#68), sign-image compact (#69), ToolCard (#70); the support pop-up (#79, #83, #85, #86 — one "Help keep it free" button, any amount: UPI app on Android, QR on computers, razorpay.me on iPhone, plus a card under Download; on dev and owner-tested on Android and iPhone 7 Oct; the owner adds the three Production variables before release, see the 15 Oct runbook), all owner-approved from live-page mockups; any further approved polish (FAQ rows, footer) that is merged and verified by 20 Oct; plus three small page-text fixes: /terms/ refund rule (#88), /privacy/ ad-cookie disclosure and tips (#90), /tools/ "Coming soon" cards removed (#90). Released in the afternoon because the quiet window after the September spam update ends 22 Oct 01:00 PT = 13:30 IST (owner decision 10 Oct). Ships alone so Search Console sees it separately from 15 Oct (fixes) and 29 Oct (content). | /terms/, /privacy/, /tools/ |
+| Thu 29 Oct | Content release | Items 1, 2 (incl. #74 past-entry hiding), 3 (first ≤ 3 pages) and 6, plus #73 (broken blog images removed). Item 9 starts here with the SSC page rewrite (#92, owner-approved 8 Oct; also changes the SSC row on /exam-photo-size/ and card on /exam-requirements/). Confirmed: the spam update ended before 15 Oct. | ~8 pages |
 | Thu 12 Nov | Content release | Item 3, next ≤ 3 pages — only if the first batch held for 14 days. | ≤ 3 pages |
 
-**29 Oct holds only if** Google marks the September 2026 spam update complete by
-15 Oct (CLAUDE.md §2: 14 days after it ends) **and** the 15 Oct review of #57
-shows no damage. Otherwise it moves to the update's end date + 14 days.
+**Spam update finished.** Google marked the September 2026 spam update complete:
+it ran 2026-09-24 09:15 → **2026-10-08 01:00 US/Pacific** (status.search.google.com,
+checked 10 Oct). The 14-day quiet window (CLAUDE.md §2) ends **22 Oct 01:00 PT =
+13:30 IST** — hence the 22 Oct release goes out in the afternoon. 29 Oct is
+confirmed, subject only to the 15 Oct review of #57 showing no damage.
 
 Release #57 (1 Oct) shipped SEO-visible changes during the rollout by the
 owner's explicit override — recorded in `docs/weekly-log.md`.
 
-**Earliest production date:** 14 days after Google marks the *September 2026 spam
-update* complete (started 24 Sep; still rolling out on 29 Sep —
-status.search.google.com). Items 1–3 change page text, so they wait for that
-window (CLAUDE.md §2). Item 4 is JavaScript only and could ship earlier as a
+**Earliest production date for page-text changes:** 22 Oct 13:30 IST, 14 days
+after the September 2026 spam update completed (8 Oct). Items 1–3 change page
+text, so they ship on 29 Oct (CLAUDE.md §2). Item 4 is JavaScript only and could ship earlier as a
 hotfix if a user-facing bug is severe.
 
 ## 1. Print-sheet fix — held from release #50

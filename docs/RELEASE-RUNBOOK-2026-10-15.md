@@ -100,6 +100,12 @@ No data, route or sitemap change besides the Driving Licence lastmod.
 
 # 22 Oct (UI polish) — prep notes
 
+- **Timing: release after 13:30 IST on 22 Oct** (owner, 10 Oct). The September
+  2026 spam update ended 8 Oct 01:00 PT, so the 14-day quiet window closes
+  22 Oct 01:00 PT = 13:30 IST, and this release changes page text on /terms/,
+  /privacy/ and /tools/ (#88, #90). Recheck status.search.google.com for any
+  new update that morning; record it in the PR.
+
 - Contents: #65 type scale, #66 card hierarchy, #68 FAQ/footer, #69 sign-image
   compact, #70 ToolCard. Presentation only — SEO diff must show 0 pages changed.
 - Rerun the combined UI check on the final dev preview before release: top
