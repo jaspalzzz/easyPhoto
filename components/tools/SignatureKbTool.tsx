@@ -16,7 +16,7 @@ import { padBlobToMin } from "@/lib/padBytes";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
 import { downloadBlob } from "@/lib/download";
-import { formatKb } from "@/lib/utils";
+import { formatKb, kbFloorBytes } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import {
@@ -124,8 +124,8 @@ function Body({
         } else {
           const res = await pngUnderKb(framed, kb, hasRequiredDimensions ? 1 : 0.05);
           blob =
-            minKb && res.underCap && res.blob.size < minKb * 1024
-              ? await padBlobToMin(res.blob, minKb * 1024)
+            minKb && res.underCap && res.blob.size < kbFloorBytes(minKb)
+              ? await padBlobToMin(res.blob, kbFloorBytes(minKb))
               : res.blob;
           bytes = blob.size;
           width = res.canvas.width;
@@ -239,7 +239,7 @@ function Body({
             Result: <strong className="font-semibold">{formatKb(out.bytes)}</strong> · {out.width}×
             {out.height}px · {out.format === "jpeg" ? "JPG" : "transparent PNG"}
           </p>
-          {minKb && out.bytes < minKb * 1024 && (
+          {minKb && out.bytes < kbFloorBytes(minKb) && (
             <p className="border-l-2 border-amber-500 pl-3 text-amber-700 dark:text-amber-300">
               This file is below the portal&apos;s {minKb} KB minimum.
             </p>

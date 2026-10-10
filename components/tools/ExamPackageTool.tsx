@@ -42,7 +42,7 @@ import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { useExamSearch } from "@/components/tools/ExamSearch";
 import { whiteToTransparent, trimToContent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
-import { formatKb } from "@/lib/utils";
+import { formatKb, kbCapBytes, kbFloorBytes } from "@/lib/utils";
 import { displayFileFormatBundle } from "@/lib/fileFormats";
 import { track, deviceClass } from "@/lib/analytics";
 import {
@@ -119,6 +119,10 @@ export function ExamPackageTool() {
   const [step, setStep] = React.useState<Step>("exam");
   const [examId, setExamId] = React.useState<string>("");
   const [photo, setPhoto] = React.useState<AssetResult | null>(null);
+  // The upload the photo was prepared from. The name/date step stamps this,
+  // not photo.blob: that JPEG is already cropped and compressed to the band,
+  // and stamping it would re-crop and re-encode an encoded file.
+  const [photoSource, setPhotoSource] = React.useState<File | null>(null);
   const [signature, setSignature] = React.useState<AssetResult | null>(null);
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -134,10 +138,11 @@ export function ExamPackageTool() {
   const router = useRouter();
 
   // Round-trip through the Name & Date tool: it reads the exam draft, stamps
-  // the photo, and its "Continue in the Exam Kit" step brings the result back.
+  // the original upload, and its "Continue in the Exam Kit" step brings back a
+  // lossless composite that processPhoto encodes to the spec exactly once.
   const addNameDate = () => {
-    if (!photo || !examId) return;
-    setWorkflowPayload(photo.blob, `${examId}-photo.jpg`, {
+    if (!photo || !photoSource || !examId) return;
+    setWorkflowPayload(photoSource, photoSource.name, {
       kind: "photo",
       examId,
       rememberForExamKit: true,
@@ -157,6 +162,7 @@ export function ExamPackageTool() {
     if (photo?.url) URL.revokeObjectURL(photo.url);
     if (signature?.url) URL.revokeObjectURL(signature.url);
     setPhoto(null);
+    setPhotoSource(null);
     setSignature(null);
     setExamId("");
     setError(null);
@@ -173,6 +179,7 @@ export function ExamPackageTool() {
       if (photo?.url) URL.revokeObjectURL(photo.url);
       if (signature?.url) URL.revokeObjectURL(signature.url);
       setPhoto(null);
+      setPhotoSource(null);
       setSignature(null);
     }
     setExamId(id);
@@ -225,7 +232,7 @@ export function ExamPackageTool() {
       if (photo?.url) URL.revokeObjectURL(photo.url);
       const photoCompliant =
         res.underCap &&
-        (!spec.photoMinKb || res.bytes >= spec.photoMinKb * 1024) &&
+        (!spec.photoMinKb || res.bytes >= kbFloorBytes(spec.photoMinKb)) &&
         (!hasRequiredDimensions ||
           (res.width === spec.photoWidthPx && res.height === spec.photoHeightPx)) &&
         (!hasRequiredAspect ||
@@ -241,6 +248,7 @@ export function ExamPackageTool() {
         format: "jpg",
         qualityReduced: res.qualityReduced,
       });
+      setPhotoSource(file);
       return true;
     } catch (e) {
       console.error(e);
@@ -302,8 +310,8 @@ export function ExamPackageTool() {
       } else {
         const res = await pngUnderKb(framed, spec.sigLimitKb, hasRequiredDimensions ? 1 : 0.05);
         sigBlob =
-          spec.sigMinKb && res.underCap && res.blob.size < spec.sigMinKb * 1024
-            ? await padBlobToMin(res.blob, spec.sigMinKb * 1024)
+          spec.sigMinKb && res.underCap && res.blob.size < kbFloorBytes(spec.sigMinKb)
+            ? await padBlobToMin(res.blob, kbFloorBytes(spec.sigMinKb))
             : res.blob;
         sigWidth = res.canvas.width;
         sigHeight = res.canvas.height;
@@ -312,7 +320,7 @@ export function ExamPackageTool() {
       if (signature?.url) URL.revokeObjectURL(signature.url);
       const sigCompliant =
         underCap &&
-        (!spec.sigMinKb || sigBlob.size >= spec.sigMinKb * 1024) &&
+        (!spec.sigMinKb || sigBlob.size >= kbFloorBytes(spec.sigMinKb)) &&
         (!hasRequiredDimensions ||
           (sigWidth === spec.sigWidthPx && sigHeight === spec.sigHeightPx));
       setSignature({
@@ -710,8 +718,8 @@ export function ExamPackageTool() {
                           ? `${formatKb(photo.bytes)} (needs ${spec.photoMinKb}–${spec.photoLimitKb} KB)`
                           : `${formatKb(photo.bytes)} (needs ≤ ${spec.photoLimitKb} KB)`,
                         ok:
-                          photo.bytes <= spec.photoLimitKb * 1024 &&
-                          (!spec.photoMinKb || photo.bytes >= spec.photoMinKb * 1024),
+                          photo.bytes <= kbCapBytes(spec.photoLimitKb) &&
+                          (!spec.photoMinKb || photo.bytes >= kbFloorBytes(spec.photoMinKb)),
                       },
                       ...(spec.photoWidthPx && spec.photoHeightPx
                         ? [
@@ -744,9 +752,9 @@ export function ExamPackageTool() {
                                 ? `${formatKb(signature.bytes)} (needs ${spec.sigMinKb}–${spec.sigLimitKb} KB)`
                                 : `${formatKb(signature.bytes)} (needs ≤ ${spec.sigLimitKb} KB)`,
                               ok:
-                                signature.bytes <= spec.sigLimitKb * 1024 &&
+                                signature.bytes <= kbCapBytes(spec.sigLimitKb) &&
                                 (!spec.sigMinKb ||
-                                  signature.bytes >= spec.sigMinKb * 1024),
+                                  signature.bytes >= kbFloorBytes(spec.sigMinKb)),
                             },
                           ]
                         : []),
@@ -887,8 +895,8 @@ function StepUpload({
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   // Determine the non-compliance reason for the amber warning (Fix 1 UI)
-  const overCap = asset && asset.bytes > targetKb * 1024;
-  const belowMin = asset && minKb && asset.bytes < minKb * 1024;
+  const overCap = asset && asset.bytes > kbCapBytes(targetKb);
+  const belowMin = asset && minKb && asset.bytes < kbFloorBytes(minKb);
 
   return (
     <div className="space-y-4">

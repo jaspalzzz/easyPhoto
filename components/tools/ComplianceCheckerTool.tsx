@@ -86,18 +86,35 @@ export function ComplianceCheckerTool() {
   const spec = getPortalSpec(examId);
   const noSig = kind === "signature" && spec && spec.sigLimitKb == null;
 
+  // Latest-request guard: a check is async (decode, then face analysis), so an
+  // earlier, slower check — e.g. before the user changed the exam or uploaded
+  // another file — can finish after a newer one. Only the latest run may set
+  // state; superseded runs drop their results.
+  const checkRunRef = React.useRef(0);
+
   // Exam and document kind are explicit parameters (not read from state) so a
   // handed-over file can be checked in the same tick its exam/kind are set.
   const runCheck = async (file: File, spec: ReturnType<typeof getPortalSpec>, kind: DocKind) => {
     if (!spec) return;
-    setBusy(true);
+    const runId = ++checkRunRef.current;
+    const isLatest = () => runId === checkRunRef.current;
     setError(null);
     setReport(null);
     setPhotoChecks(null);
     setSourceFile(file);
+    // An exam with no separate signature upload has nothing to check a
+    // signature against — the UI shows that instead of a verdict. Keep the
+    // file (so another exam re-checks it); taking a run id above already
+    // discards any check still in flight.
+    if (kind === "signature" && spec.sigLimitKb == null) {
+      setBusy(false);
+      return;
+    }
+    setBusy(true);
     track({ name: "tool_start", tool: "compliance-checker", device: deviceClass() });
     const bmp = await createImageBitmap(file).catch(() => null);
     try {
+      if (!isLatest()) return;
       let width: number | null = null;
       let height: number | null = null;
       let backgroundLight: boolean | undefined;
@@ -123,18 +140,21 @@ export function ComplianceCheckerTool() {
           ac.width = cw;
           ac.height = ch;
           ac.getContext("2d")?.drawImage(bmp, 0, 0, cw, ch);
-          setPhotoChecks(await checkPhotoQuality(ac, { width: cw, height: ch }));
+          const quality = await checkPhotoQuality(ac, { width: cw, height: ch });
+          if (!isLatest()) return;
+          setPhotoChecks(quality);
         } catch {
           // Face/quality analysis is best-effort — never block the file report.
         }
       }
       track({ name: "tool_success", tool: "compliance-checker", device: deviceClass() });
     } catch {
+      if (!isLatest()) return;
       setError("Couldn't read that file. Try a JPG or PNG.");
       track({ name: "tool_failure", tool: "compliance-checker", device: deviceClass(), reason: "decode" });
     } finally {
       bmp?.close?.(); // release the bitmap's memory once all analysis is done
-      setBusy(false);
+      if (isLatest()) setBusy(false);
     }
   };
 
@@ -230,8 +250,7 @@ export function ComplianceCheckerTool() {
                 onClick={() => {
                   setKind(k);
                   setReport(null);
-                  const noSigField = k === "signature" && spec?.sigLimitKb == null;
-                  if (sourceFile && !noSigField) void runCheck(sourceFile, spec, k);
+                  if (sourceFile) void runCheck(sourceFile, spec, k);
                 }}
                 className={`rounded-md border px-3 py-2 text-sm font-medium capitalize transition-colors ${
                   kind === k

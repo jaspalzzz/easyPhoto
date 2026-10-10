@@ -10,6 +10,7 @@ import {
   detectFace,
   disposeLandmarker,
   FaceDetectionError,
+  FaceModelLoadError,
 } from "@/lib/faceDetection";
 import {
   computeSquareFaceCrop,
@@ -65,14 +66,17 @@ function Body({ source }: { source: ToolSource }) {
         } catch (e) {
           if (!(e instanceof FaceDetectionError)) throw e;
           // No face → centred square so the tool still produces something useful.
+          // If the model never loaded, say that — it isn't the photo's fault.
+          const modelFailed = e instanceof FaceModelLoadError;
           crop = centerSquareCrop(source.size);
-          warn =
-            "We couldn't detect a face, so we used a centred square crop. For best results, use a clear, front-facing photo.";
+          warn = modelFailed
+            ? `${e.message} For now, we used a centred square crop.`
+            : "We couldn't detect a face, so we used a centred square crop. For best results, use a clear, front-facing photo.";
           track({
             name: "tool_failure",
             tool: "linkedin-photo",
             device: deviceClass(),
-            reason: "no-face",
+            reason: modelFailed ? "model-load" : "no-face",
           });
         }
 

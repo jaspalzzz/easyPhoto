@@ -5,9 +5,18 @@ import { FileUp, Download, ShieldCheck, Loader2, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { downloadBlob } from "@/lib/download";
-import { fillAndExport, loadPdfFormFields, type FormField } from "@/lib/formFill";
+import { fillAndExport, loadPdfFormFields, PdfFillNotAllowedError, type FormField } from "@/lib/formFill";
 import { PdfEncryptedError } from "@/lib/pdfToImages";
-import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
+
+/**
+ * Form Fill only throws PdfEncryptedError for a PDF that needs a password to
+ * open (owner-restricted ones are filled — see lib/formFill.ts). Don't point to
+ * Unlock PDF here: it rebuilds pages as images, so the form fields are lost.
+ */
+const PASSWORD_PROTECTED =
+  "This PDF needs a password to open, so its form can't be filled here. Open it with the password in a PDF reader and fill it there.";
+const FILL_NOT_ALLOWED =
+  "This PDF's issuer doesn't allow its form to be filled outside their own software, so it can't be filled here. Use the form the issuer provides, or ask them for a fillable copy.";
 
 export function FormFillTool() {
   const [file, setFile] = React.useState<File | null>(null);
@@ -16,7 +25,10 @@ export function FormFillTool() {
   const [filling, setFilling] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  /** Set after downloading an owner-restricted PDF, which can't be flattened. */
+  const [keptRestrictions, setKeptRestrictions] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const fieldIdPrefix = React.useId();
 
   React.useEffect(() => {
     track({ name: "tool_view", tool: "form-fill" });
@@ -28,6 +40,7 @@ export function FormFillTool() {
       return;
     }
     setError(null);
+    setKeptRestrictions(false);
     setFields(null);
     setFile(null);
     setLoading(true);
@@ -43,7 +56,9 @@ export function FormFillTool() {
       }
     } catch (err) {
       if (err instanceof PdfEncryptedError) {
-        setError("encrypted");
+        setError(PASSWORD_PROTECTED);
+      } else if (err instanceof PdfFillNotAllowedError) {
+        setError(FILL_NOT_ALLOWED);
       } else {
         setError("Could not read this PDF. Make sure it is not corrupted.");
       }
@@ -72,9 +87,11 @@ export function FormFillTool() {
   const fill = async () => {
     if (!file || !fields) return;
     setFilling(true);
+    setKeptRestrictions(false);
     try {
-      const { blob, failed } = await fillAndExport(file, fields);
+      const { blob, failed, flattened } = await fillAndExport(file, fields);
       downloadBlob(blob, file.name.replace(/\.pdf$/i, "-filled.pdf"));
+      setKeptRestrictions(!flattened);
       setError(
         failed.length
           ? `Downloaded, but ${failed.length} field${failed.length === 1 ? "" : "s"} could not be filled: ${failed.join(", ")}. Check the value fits the field.`
@@ -82,7 +99,9 @@ export function FormFillTool() {
       );
     } catch (err) {
       if (err instanceof PdfEncryptedError) {
-        setError("encrypted");
+        setError(PASSWORD_PROTECTED);
+      } else if (err instanceof PdfFillNotAllowedError) {
+        setError(FILL_NOT_ALLOWED);
       } else {
         setError("Failed to fill and export the PDF. Please try again.");
       }
@@ -133,11 +152,15 @@ export function FormFillTool() {
         </p>
       )}
 
-      {error === "encrypted" ? (
-        <EncryptedPdfNotice />
-      ) : error ? (
+      {error && (
         <p className="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</p>
-      ) : null}
+      )}
+
+      {keptRestrictions && (
+        <p role="status" className="text-sm text-muted-foreground">
+          This PDF has restrictions set by its issuer, so the filled copy keeps them and its fields stay editable.
+        </p>
+      )}
 
       {fields && fields.length > 0 && (
         <div className="space-y-4">
@@ -148,12 +171,13 @@ export function FormFillTool() {
           <div className="space-y-3">
             {fields.map((field, i) => (
               <div key={field.name + i} className="space-y-1">
-                <label className="block text-sm font-medium text-ink">
+                <label htmlFor={`${fieldIdPrefix}-${i}`} className="block text-sm font-medium text-ink">
                   {field.name}
                   <span className="ml-2 text-xs font-normal text-muted-foreground">({field.type})</span>
                 </label>
                 {field.options ? (
                   <select
+                    id={`${fieldIdPrefix}-${i}`}
                     className="rounded-lg border border-hairline bg-background px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
                     value={field.value}
                     onChange={(e) => updateField(i, e.target.value)}
@@ -167,6 +191,7 @@ export function FormFillTool() {
                   </select>
                 ) : field.type === "CheckBox" ? (
                   <select
+                    id={`${fieldIdPrefix}-${i}`}
                     className="rounded-lg border border-hairline bg-background px-3 py-2 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-brand/40"
                     value={field.value}
                     onChange={(e) => updateField(i, e.target.value)}
@@ -177,6 +202,7 @@ export function FormFillTool() {
                   </select>
                 ) : (
                   <input
+                    id={`${fieldIdPrefix}-${i}`}
                     type="text"
                     value={field.value}
                     onChange={(e) => updateField(i, e.target.value)}

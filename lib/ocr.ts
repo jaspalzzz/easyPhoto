@@ -10,6 +10,7 @@
 
 import type { Worker } from "tesseract.js";
 import { preprocessForOcr, type PreprocessOptions } from "./ocrPreprocess";
+import { withTimeout } from "./withTimeout";
 
 // LSTM-only core from jsDelivr — tesseract.js v7 auto-picks the right SIMD
 // variant (relaxedsimd-lstm / simd-lstm / lstm) based on browser capability.
@@ -19,6 +20,62 @@ const CORE_CDN = "https://cdn.jsdelivr.net/npm/tesseract.js-core@7/";
 // treat lstmOnly as false, loading the full legacy Tesseract core which does
 // not exist at this CDN path, hanging the worker indefinitely.
 const OEM_LSTM_ONLY = 1 as const;
+
+/**
+ * Upper bound for starting the OCR engine: worker boot, the wasm core (~1.4 MB)
+ * and language data (~3 MB eng, ~1.4 MB hin) downloads, then init. 90 s still
+ * lets a cold ~6 MB download finish below 1 Mbit/s; past it the CDN has
+ * stalled, and without a bound the tool sat on "Loading OCR engine… 0%" forever.
+ */
+export const OCR_ENGINE_LOAD_TIMEOUT_MS = 90_000;
+
+/** Shown when the engine can't be started (stall, network error, CDN down). */
+export const OCR_ENGINE_LOAD_ERROR =
+  "The text recognition engine couldn't be loaded. Check your connection and try again.";
+
+type OcrLogger = (m: { status: string; progress: number }) => void;
+
+/**
+ * Start a Tesseract worker for `lang`, bounded by OCR_ENGINE_LOAD_TIMEOUT_MS.
+ * On a stall or a failed download it rejects with OCR_ENGINE_LOAD_ERROR, so
+ * every OCR tool shows a clear error.
+ */
+async function startOcrWorker(lang: OcrLang, logger?: OcrLogger): Promise<Worker> {
+  const { createWorker } = await import("tesseract.js");
+
+  // tesseract.js never settles createWorker() when a language-data download
+  // fails — it only reports it through `errorHandler` — so surface that here
+  // instead of waiting out the full timeout.
+  let failEarly: (reason: unknown) => void = () => {};
+  const failed = new Promise<never>((_, reject) => (failEarly = reject));
+
+  const starting = createWorker(lang, OEM_LSTM_ONLY, {
+    workerPath: "/tessdata/worker.min.js",
+    corePath: CORE_CDN,
+    // langPath omitted → tesseract.js auto-resolves the correct jsDelivr
+    // URL for the LSTM-only traineddata (e.g. @tesseract.js-data/eng/4.0.0_best_int)
+    logger,
+    errorHandler: failEarly,
+  });
+
+  try {
+    return await withTimeout(
+      Promise.race([starting, failed]),
+      OCR_ENGINE_LOAD_TIMEOUT_MS,
+      OCR_ENGINE_LOAD_ERROR
+    );
+  } catch (e) {
+    console.warn("OCR engine failed to load.", e);
+    // If the load completes after we gave up, release that worker. One whose
+    // load never settles can't be reached (tesseract.js only returns the worker
+    // once loaded); it sits idle waiting on the network and costs ~nothing.
+    starting.then(
+      (w) => w.terminate(),
+      () => {}
+    );
+    throw new Error(OCR_ENGINE_LOAD_ERROR);
+  }
+}
 
 export type OcrLang = "eng" | "hin" | "eng+hin";
 
@@ -68,17 +125,15 @@ export async function getOcrWorker(lang: OcrLang = "eng"): Promise<Worker> {
 
   if (!workerPromise) {
     workerPromise = (async () => {
-      const { createWorker } = await import("tesseract.js");
-      const w = await createWorker(lang, OEM_LSTM_ONLY, {
-        workerPath: "/tessdata/worker.min.js",
-        corePath: CORE_CDN,
-        // langPath omitted → tesseract.js auto-resolves the correct jsDelivr
-        // URL for the LSTM-only traineddata (e.g. @tesseract.js-data/eng/4.0.0_best_int)
-      });
+      const w = await startOcrWorker(lang);
       workerInstance = w;
       currentLang = lang;
       return w;
     })();
+    // Don't cache a failed start: the next call must be able to retry.
+    workerPromise.catch(() => {
+      workerPromise = null;
+    });
   }
 
   return workerPromise;
@@ -107,22 +162,18 @@ export async function recognizeImage(
   onProgress?: (pct: number) => void,
   params: OcrParams = {}
 ): Promise<OcrResult> {
-  const { createWorker } = await import("tesseract.js");
-
   // Spin up a fresh worker for each call so progress events are clean.
   // For batch use cases, callers can use getOcrWorker() directly.
-  const w = await createWorker(lang, OEM_LSTM_ONLY, {
-    workerPath: "/tessdata/worker.min.js",
-    corePath: CORE_CDN,
-    // langPath omitted → auto-resolves correct jsDelivr URL for LSTM traineddata
-    logger: onProgress
-      ? (m: { status: string; progress: number }) => {
+  const w = await startOcrWorker(
+    lang,
+    onProgress
+      ? (m) => {
           if (m.status === "recognizing text") {
             onProgress(Math.round(m.progress * 100));
           }
         }
-      : undefined,
-  });
+      : undefined
+  );
 
   try {
     await w.setParameters(toTesseractParams(params));
@@ -229,8 +280,6 @@ export async function recognizeFileDualPass(
     numericRotations = [],
   }: RecognizeFileDualPassOptions = {}
 ): Promise<DualPassResult> {
-  const { createWorker } = await import("tesseract.js");
-
   const source: Blob | HTMLCanvasElement =
     preprocess === false
       ? file
@@ -246,19 +295,18 @@ export async function recognizeFileDualPass(
   const numericScale = 0.45 / numericPasses;
   const ps = { offset: 0, scale: 0.55 };
 
-  const w = await createWorker(lang, OEM_LSTM_ONLY, {
-    workerPath: "/tessdata/worker.min.js",
-    corePath: CORE_CDN,
-    logger: onProgress
-      ? (m: { status: string; progress: number }) => {
+  const w = await startOcrWorker(
+    lang,
+    onProgress
+      ? (m) => {
           if (m.status === "recognizing text") {
             onProgress(
               Math.min(99, Math.round(ps.offset + m.progress * ps.scale * 100))
             );
           }
         }
-      : undefined,
-  });
+      : undefined
+  );
 
   try {
     // ── Pass 1: full text (SPARSE, retry as SINGLE_BLOCK when weak) ────────

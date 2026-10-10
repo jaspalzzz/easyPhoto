@@ -137,10 +137,10 @@ test("exam-package: IBPS exports the published fixed photo/signature frames and 
 
   expect(await dimensions(photoBuf)).toEqual([200, 230]);
   expect(photoBuf.length).toBeGreaterThanOrEqual(20 * 1024);
-  expect(photoBuf.length).toBeLessThanOrEqual(50 * 1024);
+  expect(photoBuf.length).toBeLessThanOrEqual(50 * 1000); // passes 1000- and 1024-byte KB portals
   expect(await dimensions(signatureBuf)).toEqual([140, 60]);
   expect(signatureBuf.length).toBeGreaterThanOrEqual(10 * 1024);
-  expect(signatureBuf.length).toBeLessThanOrEqual(20 * 1024);
+  expect(signatureBuf.length).toBeLessThanOrEqual(20 * 1000);
   expect(signatureBuf[0]).toBe(0xff);
   expect(signatureBuf[1]).toBe(0xd8);
 });
