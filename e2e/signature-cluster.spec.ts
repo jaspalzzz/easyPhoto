@@ -98,6 +98,17 @@ async function samplePixel(
   );
 }
 
+/** Pixel size from a JPEG's start-of-frame marker. */
+function jpegSize(bytes: Buffer): { width: number; height: number } {
+  for (let i = 2; i + 9 < bytes.length; i += 2 + bytes.readUInt16BE(i + 2)) {
+    const marker = bytes[i + 1];
+    if (marker >= 0xc0 && marker <= 0xc2) {
+      return { width: bytes.readUInt16BE(i + 7), height: bytes.readUInt16BE(i + 5) };
+    }
+  }
+  throw new Error("no JPEG frame header");
+}
+
 async function readDownloadBase64(download: import("@playwright/test").Download) {
   const path = await download.path();
   expect(path, "download did not save").not.toBeNull();
@@ -188,7 +199,7 @@ test("signature-resize: output is genuinely bound to the KB target", async ({ pa
 
 // /upsc-signature-resizer/ is a retired route (host redirect to the UPSC exam
 // page, which opens on the photo tab), so the test opens the signature tab itself.
-test("upsc exam page: signature exports a JPG inside the stored 20–100 KB band", async ({ page }) => {
+test("upsc exam page: signature exports a JPG inside 20–100 KB and 350–500 px per side", async ({ page }) => {
   await page.goto("/exam-requirements/upsc/");
   await page.getByRole("button", { name: /clean & compress signature/i }).click();
   await page.setInputFiles('input[type="file"]', {
@@ -206,6 +217,13 @@ test("upsc exam page: signature exports a JPG inside the stored 20–100 KB band
   expect(bytes[1]).toBe(0xd8);
   expect(bytes.length).toBeGreaterThanOrEqual(20 * 1024);
   expect(bytes.length).toBeLessThanOrEqual(100 * 1000);
+  // UPSC's form: "The height and width of signature image must be between 350
+  // and 500 pixels". Three stacked signatures used to come out 384 × 534.
+  const { width, height } = jpegSize(bytes);
+  for (const side of [width, height]) {
+    expect(side, `${width} × ${height}`).toBeGreaterThanOrEqual(350);
+    expect(side, `${width} × ${height}`).toBeLessThanOrEqual(500);
+  }
 });
 
 // PAN's official spec mandates 200 DPI scans; the photo export already carried
