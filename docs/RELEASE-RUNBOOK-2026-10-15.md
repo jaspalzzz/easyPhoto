@@ -107,7 +107,18 @@ No data, route or sitemap change besides the Driving Licence lastmod.
   new update that morning; record it in the PR.
 
 - Contents: #65 type scale, #66 card hierarchy, #68 FAQ/footer, #69 sign-image
-  compact, #70 ToolCard. Presentation only — SEO diff must show 0 pages changed.
+  compact, #70 ToolCard. Presentation only — SEO diff must show 0 pages changed
+  for these; the expected page-text changes are /terms/, /privacy/, /tools/
+  (#88, #90) and the UPSC PDF link (#97) below.
+- UPSC fixes (owner, 10 Oct):
+  - #97 — UPSC's instruction PDF moved (old /ngrp/assets/PDF/ path 404s); the
+    link on /exam-requirements/upsc/ and the UPSC CSE blog now points to the
+    current PDF. Its file name carries a build hash: open it once on release
+    day and confirm it still loads.
+  - #99 — UPSC/NDA/CDS signatures now export at 350–500 px on both sides
+    (UPSC's rule; we used to export e.g. 384 × 534). JavaScript only. After
+    release, run the UPSC signature e2e test against production:
+    `E2E_BASE_URL=https://easyphoto.in npx playwright test -c playwright.remote.config.ts -g "upsc exam page"`.
 - Rerun the combined UI check on the final dev preview before release: top
   pages at 390 and desktop, light and dark, page speed vs production.
 - Support pop-up (#79, #83, #85, #86): right after a download, one "Help keep
