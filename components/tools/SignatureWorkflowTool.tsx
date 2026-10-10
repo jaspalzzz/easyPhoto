@@ -19,6 +19,7 @@ import {
   countStackedSignatures,
   whiteToTransparent,
   trimToContent,
+  padToAspect,
 } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb, kbFloorBytes, minCapKbForFloor } from "@/lib/utils";
@@ -351,6 +352,13 @@ function Body({
             ? countStackedSignatures(alphaRowHits(finalCanvas), signatureStackParams(finalCanvas.width, finalCanvas.height))
             : undefined;
 
+        // Give the signature the exam's published shape (e.g. SSC's "about
+        // 6.0 cm × 2.0 cm") when the exam sets a shape but no exact pixel
+        // frame — the exact-frame branch below already fits its frame. Margins
+        // only, so no stroke is cut; they turn white when flattened to JPEG.
+        const shapeRatio = resizeMode === "kb" ? selectedPreset?.sigAspectRatio : undefined;
+        if (shapeRatio) finalCanvas = padToAspect(finalCanvas, shapeRatio);
+
         // Apply white background flattening if JPEG is requested
         let renderCanvas = finalCanvas;
         if (bgFormat === "jpeg") {
@@ -500,6 +508,7 @@ function Body({
     minKb,
     requiredCopies,
     selectedPreset?.dpi,
+    selectedPreset?.sigAspectRatio,
   ]);
 
   // Handle preset selections
