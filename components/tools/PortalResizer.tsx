@@ -182,16 +182,18 @@ export function PortalResizer({
       <div>
         {activeSubTool === "photo" ? (
           <div className="space-y-3">
-            <div className="px-1">
-              <h4 className="text-sm font-semibold mb-1">
-                {spec.isLiveCapture ? "Optional compatibility photo tool" : "Photo Sizer"}
-              </h4>
-              <p className="text-xs text-muted-foreground">
-                {spec.isLiveCapture
-                  ? `This stored ${spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}${spec.photoLimitKb} KB target is not a current portal requirement and does not replace the live-photo step.`
-                  : `Upload a prepared photograph to apply the selected stored ${spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}${spec.photoLimitKb} KB target.`}
-              </p>
-            </div>
+            {!compact && (
+              <div className="px-1">
+                <h4 className="text-sm font-semibold mb-1">
+                  {spec.isLiveCapture ? "Optional compatibility photo tool" : "Photo Sizer"}
+                </h4>
+                <p className="text-xs text-muted-foreground">
+                  {spec.isLiveCapture
+                    ? `This stored ${spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}${spec.photoLimitKb} KB target is not a current portal requirement and does not replace the live-photo step.`
+                    : `Upload a prepared photograph to apply the selected stored ${spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}${spec.photoLimitKb} KB target.`}
+                </p>
+              </div>
+            )}
             <ResizeKbTool
               defaultKb={spec.photoLimitKb}
               requiredWidth={spec.photoWidthPx}
