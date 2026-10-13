@@ -27,6 +27,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { examGuideLinks } from "@/lib/examGuides";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { SupportCard } from "@/components/site/SupportCard";
+import { examPageLastModified } from "@/lib/examPageDates";
 import { EXAM_GUIDES } from "@/components/site/exam";
 
 // One static page per exam (the cited Spec Database).
@@ -174,7 +175,7 @@ export default async function Page({
             name: `${spec.name} Photo${sig ? " & Signature" : ""} Size`,
             description: spec.description,
             url: path,
-            ...(prov.verifiedOn ? { dateModified: prov.verifiedOn } : {}),
+            dateModified: examPageLastModified(exam),
             author: { name: AUTHOR.name, url: absoluteUrl(AUTHOR.url) },
           }),
           // The resizer below is a real embedded tool, not just a spec table —
@@ -184,7 +185,7 @@ export default async function Page({
             name: `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Resizer`,
             description: `Free browser-based resizer for the ${spec.name.split(" (")[0]} photo${sig ? " and signature" : ""} target.`,
             url: path,
-            ...(prov.verifiedOn ? { dateModified: prov.verifiedOn } : {}),
+            dateModified: examPageLastModified(exam),
           }),
           faqItems.length > 0 ? faqSchema(faqItems) : null,
         ]}
