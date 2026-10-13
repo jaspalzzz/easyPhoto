@@ -14,7 +14,7 @@
   },
   "families": {
     "exam-requirements": {
-      "maxJaccard": 0.4537,
+      "maxJaccard": 0.1607,
       "maxPair": [
         "/exam-requirements/army-agniveer/",
         "/exam-requirements/clat/"
