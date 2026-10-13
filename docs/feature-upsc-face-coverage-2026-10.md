@@ -177,3 +177,18 @@ pixels against UPSC's white background.
 1. Plan approved as written.
 2. "Crop closer" is a button the person presses; the tool never crops on its
    own.
+
+## Build notes (13 Oct 2026)
+
+- **Crop layout.** The closer crop aims for 80% (UPSC's line is 75%): the head
+  fills 90% of the width, and two thirds of the spare height goes above the
+  head. A first version aimed for 82% with little room on top, and on the
+  test photo (long hair) it cut the top of the hair, because the head
+  estimate is calibrated on UPSC's short-haired samples. Fuller hair only
+  makes the real coverage higher, so the extra room above can't take a photo
+  under 75%.
+- **Page load.** The check's code loads only on UPSC, NDA and CDS, after a
+  photo is chosen. First-load JS on the exam pages grew about 1 KB gzipped
+  (the crop step inside the resizer), under the 2 KB budget.
+- **Where it shows.** UPSC, NDA and CDS (the same UPSC form) through the
+  `faceCoverage` preset field. No other exam publishes a coverage rule.

@@ -185,6 +185,7 @@ export function PortalResizer({
               requiredHeight={spec.photoHeightPx}
               requiredAspectRatio={spec.photoAspectRatio}
               sidePx={spec.photoSidePx}
+              faceCoverage={spec.faceCoverage}
               minKb={spec.photoMinKb}
               densityDpi={spec.dpi}
               requirementLabel={shownName}

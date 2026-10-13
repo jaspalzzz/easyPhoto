@@ -48,6 +48,8 @@ export interface DetectionResult extends FaceMeasurements {
   faceCount: number;
   /** Horizontal span of the face oval — used by segmentation to find the crown. */
   faceXSpan: { min: number; max: number };
+  /** Vertical span of the face landmarks (forehead to chin) — face-coverage estimate. */
+  faceYSpan: { min: number; max: number };
   /** True when crownY is a landmark extrapolation, not a measured value. */
   crownIsEstimated: boolean;
   /** Centre of each eye (source-image px) — midpoint of its inner/outer corners. */
@@ -194,10 +196,15 @@ export async function detectFace(
   // Horizontal face span from the full landmark set (for Phase 2 crown search).
   let minX = Infinity;
   let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
   for (const p of lm) {
     const x = p.x * size.width;
+    const y = p.y * size.height;
     if (x < minX) minX = x;
     if (x > maxX) maxX = x;
+    if (y < minY) minY = y;
+    if (y > maxY) maxY = y;
   }
 
   return {
@@ -207,6 +214,7 @@ export async function detectFace(
     crownY,
     faceCount: faces.length,
     faceXSpan: { min: minX, max: maxX },
+    faceYSpan: { min: minY, max: maxY },
     crownIsEstimated: true,
     leftEyeCenter: leftPt,
     rightEyeCenter: rightPt,
