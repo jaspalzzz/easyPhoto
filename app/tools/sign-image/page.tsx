@@ -8,14 +8,13 @@ import { SIGN_IMAGE_FAQ } from "@/lib/faqs";
 const tool = getTool("sign-image")!;
 
 export const metadata = pageMetadata({
-  // Leads with the exact head term this page already ranks page-1 for
-  // ("sign on image" / "sign on photo", ~120 impressions/90d in GSC) plus the
-  // transactional "add signature to photo" phrasing, and stays short enough
-  // that the "— easyPhoto" suffix keeps the rendered SERP title under 60 chars.
-  title: "Add Signature to Photo & Sign on Image Online",
+  // Searchers' own words (GSC 25 Sep – 12 Oct 2026): "photo sign", "photo
+  // signature add", "sign in photo", "sign across the photo" (320 impressions,
+  // position 5.4, no clicks). Under 60 characters with the "— easyPhoto" suffix.
+  title: "Add Signature to Photo — Sign On or Across It",
   description:
-    "Add your signature to any photo or image online — draw it or upload a signature file. " +
-    "Free, works fully in your browser, nothing is uploaded.",
+    "Add your signature to a photo: draw or upload it, place it on the photo or across its " +
+    "lower part, resize it and download a JPG. Free; nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
@@ -128,17 +127,25 @@ export default function Page() {
         </div>
         <div className="space-y-2">
           <h2 className="text-lg font-semibold text-ink">
-            Add a signature to an exam or application photo
+            Sign across the photo
           </h2>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Some forms ask for your signature written across the photograph. Add
-            it here, then size the result to your form&apos;s KB limit with the{" "}
+            On a paper form, &ldquo;sign across the photo&rdquo; means pasting the
+            photo first, then signing so the signature runs from the photo onto the
+            form; do that by hand with a pen. When an online form wants the
+            signature across the uploaded photo, place it over the lower part of the
+            photo here, below the chin so the face stays clear. Then size the result
+            to your form&apos;s KB limit with the{" "}
             <Link href="/tools/resize-kb/" className="font-medium text-brand hover:underline">
               resize-to-KB tool
             </Link>
             . If the form wants your name and date on the photo instead, use the{" "}
             <Link href="/tools/photo-with-name-date/" className="font-medium text-brand hover:underline">
               name &amp; date tool
+            </Link>
+            ; if it wants the photo and signature side by side in one image, use{" "}
+            <Link href="/tools/photo-signature-merge/" className="font-medium text-brand hover:underline">
+              merge photo and signature
             </Link>
             .
           </p>
