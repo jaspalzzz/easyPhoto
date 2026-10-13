@@ -11,11 +11,6 @@
     "passport-seva: faq \"What is the photo size for the {name} application?\" answer",
     "passport-seva: faq \"How do I resize my photo to #–# KB for {name}?\" question",
     "passport-seva: faq \"What should I check before submitting {name} files?\" answer",
-    "rrb: meta",
-    "tgpsc: meta",
-    "tgpsc: faq \"What is the photo size for the {name} application?\" answer",
-    "tgpsc: faq \"How do I resize my photo to #–# KB for {name}?\" question",
-    "tgpsc: faq \"What should I check before submitting {name} files?\" answer",
     "clat: meta",
     "clat: faq \"What is the photo size for the {name} application?\" answer",
     "clat: faq \"How do I resize my photo to #–# KB for {name}?\" question",
@@ -23,19 +18,11 @@
     "army-agniveer: meta",
     "army-agniveer: faq \"What is the photo size for the {name} application?\" answer",
     "army-agniveer: faq \"How do I resize my photo to #–# KB for {name}?\" question",
-    "army-agniveer: faq \"What should I check before submitting {name} files?\" answer",
-    "voter-id: meta",
-    "voter-id: lead",
-    "voter-id: faq \"What is the photo size for the {name} application?\" answer",
-    "voter-id: faq \"How do I resize my photo to under # KB for {name}?\" question",
-    "voter-id: faq \"What should I check before submitting {name} files?\" answer"
+    "army-agniveer: faq \"What should I check before submitting {name} files?\" answer"
   ],
   "renderedFields": [
     "passport-seva: requirementCard",
-    "rrb: requirementCard",
-    "tgpsc: requirementCard",
     "clat: requirementCard",
-    "army-agniveer: requirementCard",
-    "voter-id: requirementCard"
+    "army-agniveer: requirementCard"
   ]
 }

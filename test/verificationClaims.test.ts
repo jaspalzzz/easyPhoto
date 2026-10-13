@@ -30,9 +30,9 @@ describe("exam meta descriptions only claim source checking for verified specs",
     expect(await descriptionFor("upsc")).toMatch(VERIFIED_CLAIM);
   });
 
-  it("a needs-review preset (rrb) does NOT claim verification", async () => {
-    expect(specProvenance(allPortalSpecs().find((s) => s.id === "rrb")!).verified).toBe(false);
-    const desc = await descriptionFor("rrb");
+  it("a needs-review preset (army-agniveer) does NOT claim verification", async () => {
+    expect(specProvenance(allPortalSpecs().find((s) => s.id === "army-agniveer")!).verified).toBe(false);
+    const desc = await descriptionFor("army-agniveer");
     expect(desc).not.toMatch(VERIFIED_CLAIM);
     expect(desc).toMatch(/confirm the current figures/i);
   });

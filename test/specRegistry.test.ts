@@ -63,11 +63,13 @@ describe("specRegistry — staleness", () => {
     expect(review).not.toContain("sbi");
     // SSC verified 8 Oct 2026 against its 2026 notices:
     expect(review).not.toContain("ssc");
-    // Current workflows use live capture or retain conditional/compatibility
-    // values that still need workflow-specific confirmation:
+    // Verified 13 Oct 2026: RRB (CEN 06/2026), TGPSC (OTR manual) and Voter ID
+    // (ECI portal Form 6 photo field):
+    expect(review).not.toContain("rrb");
+    expect(review).not.toContain("tgpsc");
+    expect(review).not.toContain("voter-id");
+    // Still awaiting first-hand confirmation:
     expect(review).toContain("passport-seva");
-    expect(review).toContain("rrb");
-    expect(review).toContain("voter-id");
     // Other presets still pending re-confirmation:
     expect(review).toContain("itbp");
     expect(review).toContain("clat");

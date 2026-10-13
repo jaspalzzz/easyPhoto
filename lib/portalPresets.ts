@@ -301,16 +301,16 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-10-13",
     source: {
       url: "https://rrb.indianrailways.gov.in/getdata?cennum=06/2026&loc=chennai&category=Notification",
-      label: "RRB CEN 06/2026 (NTPC Graduate), published 7 Oct 2026, paragraphs 14.4–14.5",
+      label: "RRB CEN 06/2026 (NTPC Graduate) notice of 7 Oct 2026, live photo and signature sections",
     },
     verification: "official",
     isLiveCapture: true,
     context: "RRB recruits through Centralised Employment Notices (CENs), published on every regional RRB website. These rules are from CEN 06/2026 for the NTPC graduate posts (7 October 2026); CEN 05/2026 for paramedical posts gives the same signature rules.",
     applicationNotes: [
       "Follow the capture screen's own instructions for lighting and framing; nothing prepared in advance substitutes for the live photo. RRB asks for a pure plain white background with no scenery or pictures behind you, and dark, non-white clothes that cover your shoulders and chest, so you stand out from the wall.",
-      "Never point the camera at a printed or on-screen photograph of yourself. RRB summarily rejects any application where the live photo is a picture of an existing photograph.",
+      "Taking the live photo of a printed or digital copy of an old photo is not allowed; RRB summarily rejects such applications.",
       "The signature is the part you do prepare, and its constraints are specific: 30 to 49 KB, at least 140 by 60 pixels, at 100 DPI or more. That is a narrow band — only 19 KB wide — so compress deliberately rather than aiming for the smallest file you can make.",
-      "Sign in running handwriting (joined letters) with a black ink pen on white paper — not in block, capital or separated letters — and keep the signature centred inside a box 35 mm wide and 20 mm high, then scan just that box.",
+      "Sign in running handwriting (joined letters) with a black ink pen on white paper — not in block, capital or separated letters — and keep the signature centred in a 35 × 20 mm box, then scan just that box.",
       "RRB lists the signature faults that get an application rejected at any stage: someone else's signature, a non-white background, non-black ink, block or capital letters, a blurred or partly hidden signature, an image that isn't a signature, a blank, or a thumb impression in place of a signature.",
       "Because the photograph is captured live and only the signature is uploaded, the usual advice to prepare both files in advance does not apply here. Spend the preparation time on the signature — it is the only file you control and the only one that can be rejected for a size fault.",
       "The signature canvas of 140 x 60 pixels is close to 7:3. Keep the signature centred and use the available width without touching the edges, so the crop does not leave excessive empty margins or clip a stroke.",
@@ -628,7 +628,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPG / JPEG",
     sigFormat: "JPG / JPEG",
     description: "Joint CSIR-UGC NET covers the five science streams — Chemical, Earth Atmospheric Ocean and Planetary, Life, Mathematical and Physical Sciences — for Junior Research Fellowship and Lectureship. It is a different examination from UGC-NET with its own subject list, though NTA administers both. The December 2026 bulletin asks for a colour photograph of 10–200 KB and a signature of 10–50 KB, both JPG/JPEG, with no fixed pixel dimensions, plus a live photo taken during the application.",
-    photoBackground: "White",
     source: {
       url: "https://cdnbbsr.s3waas.gov.in/s3efdf562ce2fb0ad460fd8e9d33e57f57/uploads/2026/10/202610071407707951.pdf",
       label: "Joint CSIR-UGC NET December 2026 Information Bulletin (NTA)",
@@ -639,7 +638,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     applicationNotes: [
       "You upload a scanned photograph and also take a live photo while filling in the form, through your webcam or by scanning a QR code with your phone. The uploaded photo needs 80% of the frame to be your face, ears included and no mask, against a white background; for the live photo, sit against a light-coloured background in good light.",
       "Bring two extra passport-size photographs to the exam, the same as the one uploaded on the form: one is pasted on the admit card and one on the attendance sheet in the exam hall. Print copies of the same image rather than a different sitting.",
-      "Both files are JPG or JPEG and must be clearly legible: the photograph between 10 and 200 KB, the signature between 10 and 50 KB. If you apply without Aadhaar or DigiLocker, your identity proof is a third JPG/JPEG of 10–200 KB.",
+      "Both files are JPG or JPEG and must be clearly legible: the photograph between 10 and 200 KB, the signature between 10 and 50 KB. If you apply without Aadhaar or DigiLocker, you also upload an identity proof (JPG/JPEG, 10–200 KB).",
     ],
   },
 
@@ -715,7 +714,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPG / JPEG",
     sigFormat: "JPG / JPEG",
     description: "Air Force Common Admission Test. Three uploads with DIFFERENT bands: photograph 100-200 KB, signature 80-150 KB, thumb impression 50-100 KB, all JPG/JPEG. AFCAT specifies file sizes and formats but no fixed pixel dimensions. Confirm the current notification before submitting.",
-    photoBackground: "Light background",
     source: {
       url: "https://afcat.edcil.co.in/assets/images/news/AFCAT_02_2026/Notification%20for%20AFCAT%20Cycle%2002-2026.pdf",
       label: "AFCAT 02/2026 notification (IAF)",
@@ -1147,7 +1145,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPG / JPEG",
     sigFormat: "JPG / JPEG",
     description: "Indian Air Force Agniveervayu Intake 02/2027 online application. Photo 100–200 KB in JPG/JPEG — a recent passport-size colour photo, front-facing on a light background without a mask, holding a black slate at chest level with the candidate's name and the date written in white chalk. Signature 80–150 KB in JPG/JPEG, signed in black ink on white paper. The notice publishes no fixed pixel dimensions.",
-    photoBackground: "Light background",
     source: {
       url: "https://iafrecruitment.edcil.co.in/agniveervayu/pdffiles/Advt%20Agniveervayu%2002%20of%2027.pdf",
       label: "IAF Agniveervayu Intake 02/2027 notice",
@@ -1241,7 +1238,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     description:
       "Driving licence / learner's licence application on the Sarathi Parivahan portal (sarathi.parivahan.gov.in). Photo 35×45 mm (420×525 px), 10-20 KB; signature 256×64 px, 10-20 KB, black pen on white paper. This is a single national spec document, not a state-specific one.",
     dpi: 300,
-    photoBackground: "Light-coloured, preferably white",
     applicationNotes: [
       "Sarathi asks for camera photos or scans at a resolution of at least 300 DPI, in true colour, saved as JPG (for example image01.jpg).",
       "The photo should be in colour against a light-coloured, preferably white, background, taken within the last six months.",
@@ -1265,7 +1261,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoLimitKb: 2048,
     photoAspectRatio: 3.5 / 4.5,
     photoBackground: "White",
-    description: "ECI Form 6 asks for a recent, unsigned colour passport-size photograph, 4.5 × 3.5 cm, showing the front of the full face on a white background, eyes open and both edges of the face visible. On the Voters' Service Portal the Form 6 photo upload takes a JPG or JPEG of up to 2 MB.",
+    description: "ECI Form 6 asks for a recent, unsigned colour passport-size photograph, 4.5 × 3.5 cm, showing the front of the full face on a white background, eyes open and both edges of the face visible. On the Voters' Service Portal, the Form 6 photo field accepts JPG or JPEG files up to 2 MB.",
     photoFormat: "JPG / JPEG",
     verifiedOn: "2026-10-13",
     source: {
@@ -1275,7 +1271,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "official",
     context: "Form 6 is the application to register as a new voter, filed online on voters.eci.gov.in or on paper. The online form asks for a photograph only; there is no separate signature image.",
     applicationNotes: [
-      "On the paper Form 6 the photograph is pasted in the box provided; online, the same 4.5 × 3.5 cm photo is uploaded as a JPG or JPEG of up to 2 MB, so a sharp, well-lit file well under the limit is better than the smallest possible one.",
+      "On the paper Form 6 the photograph is pasted in the box provided; online it is uploaded instead, and a sharp, well-lit file comfortably inside the limit is better than the smallest one you can make.",
       "The form asks for an UNSIGNED photograph. Several Indian applications want your name or signature across the image; this one specifically does not, and signing it is a reason for the form to come back.",
       "It states that both edges of the face must be clearly visible and the eyes open. A three-quarter angle, hair across the cheek, or a crop that clips an ear are the framing faults this wording is aimed at.",
     ],
@@ -1549,7 +1545,6 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoMinKb: 10,
     description:
       "Indian Navy Agniveer SSR/MR recruitment. The notice requires a 10-50 KB recent colour passport-style photo with the candidate holding a black slate showing their name and the photograph date in white chalk, plus a separate webcam live photograph during the application. It publishes no photo pixel dimensions or separate signature upload.",
-    photoBackground: "Light background",
     source: {
       url: "https://www.joinindiannavy.gov.in/files/Advt_Agniveer_MR_01_27_and_02_27_English.pdf",
       label: "Indian Navy Agniveer MR 01/2027 and 02/2027 notice, paragraph 34",
