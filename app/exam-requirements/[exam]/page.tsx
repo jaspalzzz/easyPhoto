@@ -249,7 +249,12 @@ export default async function Page({
       {guide && <guide.Body />}
 
       {!guide && (
-        <>
+        // Phones show the resizer first: every top-3 result for "<exam> photo /
+        // signature size" puts the tool on the first screen (SERP research,
+        // 13 Oct 2026), and the intro above already states the figures. Only
+        // the visual order changes (CSS order below md); the HTML order — what
+        // Google reads — stays the same.
+        <div className="flex flex-col gap-8">
           {/* Above-the-fold jump link to the embedded resizer further down this
               same page. On mobile the tool section can sit several screens below
               the spec table; this gives a visitor who already knows the numbers
@@ -257,7 +262,7 @@ export default async function Page({
               anchor — no new route, no change to the H1 or section order. */}
           <a
             href="#resizer"
-            className={buttonVariants({ variant: "cta", className: "min-h-11 w-full sm:w-auto" })}
+            className={buttonVariants({ variant: "cta", className: "min-h-11 w-full max-md:hidden sm:w-auto" })}
           >
             {spec.noPhotoUpload
               ? <>Prepare your {spec.name.split(" (")[0]} signature now</>
@@ -313,7 +318,7 @@ export default async function Page({
               transactional ranking had no indexable page to migrate to. The H1
               stays "Photo … Size" (protects the informational rankings); this H2
               carries the "resize" intent. */}
-          <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
+          <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 max-md:order-first sm:p-6">
             <div>
               <h2 className="text-base font-semibold tracking-tight">
                 {spec.noPhotoUpload ? (
@@ -396,8 +401,10 @@ export default async function Page({
           </section>
 
           {/* Appears only after a file from the resizer above is saved. */}
-          <SupportCard tool={`exam-${exam}`} />
-        </>
+          <div className="empty:hidden max-md:order-first">
+            <SupportCard tool={`exam-${exam}`} />
+          </div>
+        </div>
       )}
 
       {!guide && spec.applicationNotes && spec.applicationNotes.length > 0 && (
