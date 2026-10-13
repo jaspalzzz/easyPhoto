@@ -312,7 +312,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     applicationNotes: [
       "Follow the capture screen's own instructions for lighting and framing; nothing prepared in advance substitutes for the live photo. RRB asks for a pure plain white background with no scenery or pictures behind you, and dark, non-white clothes that cover your shoulders and chest, so you stand out from the wall.",
       "Taking the live photo of a printed or digital copy of an old photo is not allowed; RRB summarily rejects such applications.",
-      "The signature is the part you do prepare, and its constraints are specific: 30 to 49 KB, at least 140 by 60 pixels, at 100 DPI or more. That is a narrow band — only 19 KB wide — so compress deliberately rather than aiming for the smallest file you can make.",
+      "The signature's size band is narrow — only 19 KB wide — so compress deliberately rather than aiming for the smallest file you can make.",
       "Sign in running handwriting (joined letters) with a black ink pen on white paper — not in block, capital or separated letters — and keep the signature centred in a 35 × 20 mm box, then scan just that box.",
       "RRB lists the signature faults that get an application rejected at any stage: someone else's signature, a non-white background, non-black ink, block or capital letters, a blurred or partly hidden signature, an image that isn't a signature, a blank, or a thumb impression in place of a signature.",
       "Because the photograph is captured live and only the signature is uploaded, the usual advice to prepare both files in advance does not apply here. Spend the preparation time on the signature — it is the only file you control and the only one that can be rejected for a size fault.",
