@@ -27,6 +27,7 @@ export function ExamResizerSteps({
       requiredHeight={spec.photoHeightPx}
       requiredAspectRatio={spec.photoAspectRatio}
       sidePx={spec.photoSidePx}
+      faceCoverage={spec.faceCoverage}
       minKb={spec.photoMinKb}
       densityDpi={spec.dpi}
       requirementLabel={spec.name.split(" (")[0]}

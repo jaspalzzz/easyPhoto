@@ -95,3 +95,11 @@ test("passport maker: a failed face-model load is not cached, so Retry loads it 
   await expect.poll(() => retried, { timeout: 5_000 }).toBeGreaterThan(0);
   await expect(page.getByText(MODEL_ERROR)).toHaveCount(0);
 });
+
+test("upsc face-coverage check: a stalled face model leaves the resizer working", async ({ page }) => {
+  await stallFaceModelAndUpload(page, "/exam-requirements/upsc/");
+  await expect(page.getByText(/couldn.t check the face size on this device/i)).toBeVisible({ timeout: 5_000 });
+  await expect(page.getByText(/checking how much of the photo/i)).toHaveCount(0);
+  await expect(page.getByText(/couldn.t find a face/i)).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /compress to size/i })).toBeEnabled();
+});
