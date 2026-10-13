@@ -38,6 +38,16 @@ export default function Page() {
       ]}
     >
       <DpiConverterTool />
+      {/* Forms print this exact phrase; it is the page's top query (GSC 25 Sep – 12 Oct 2026). */}
+      <section className="mt-10 space-y-2 border-t border-hairline pt-8">
+        <h2 className="text-lg font-semibold text-ink">My form says &ldquo;DPI should be 200&rdquo;</h2>
+        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          That message means the form reads the DPI number saved inside your JPG. Get the file
+          to the form&apos;s pixel size and KB limit first, then open it here, choose 200 and
+          download. Upload that file: the photo is unchanged and its KB size barely moves, so it
+          still fits the limit.
+        </p>
+      </section>
     </ToolPage>
   );
 }
