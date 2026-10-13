@@ -33,9 +33,10 @@ const TOOLS_INDEX_UPDATED = "2026-10-08";
 /**
  * /exam-requirements/ and /exam-photo-size/ — the overview list and table of
  * every exam. Move when an exam's row or card changes (8 Oct 2026: SSC live
- * photo and signature; 10 Oct 2026: UP Police live photo and signature).
+ * photo and signature; 10 Oct 2026: UP Police live photo and signature;
+ * 13 Oct 2026: Voter ID photo 2000 KB and the exam-page corrections).
  */
-const EXAM_OVERVIEW_UPDATED = "2026-10-10";
+const EXAM_OVERVIEW_UPDATED = "2026-10-13";
 /** /exam-calendar/ — moves only when its own content changes (13 Oct 2026: made date-free, links each board's calendar). */
 const EXAM_CALENDAR_UPDATED = "2026-10-13";
 
