@@ -25,7 +25,7 @@ for (const preset of [
   }) => {
     await page.goto("/tools/photo-with-name-date/");
     await page.setInputFiles('input[type="file"]', FACE_PHOTO);
-    const presetSelect = page.getByLabel("Select Exam Preset");
+    const presetSelect = page.getByLabel("Exam or photo size");
     await presetSelect.selectOption(preset.id);
     await page.getByLabel("Candidate Name").fill("TEST USER");
     await expect(page.getByAltText(/real-time preview/i)).toBeVisible({ timeout: 30_000 });
@@ -59,7 +59,7 @@ test("TNPSC workflow carries the sized photo through name/date into the Exam Kit
   await addStrip.click();
   await expect(page).toHaveURL(/\/tools\/photo-with-name-date\/$/);
 
-  const presetSelect = page.getByLabel("Select Exam Preset");
+  const presetSelect = page.getByLabel("Exam or photo size");
   await expect(presetSelect).toHaveValue("tnpsc", { timeout: 15_000 });
   await page.getByLabel("Candidate Name").fill("TEST USER");
   await expect(page.getByAltText(/real-time preview/i)).toBeVisible({ timeout: 30_000 });
@@ -200,7 +200,7 @@ test("Exam Kit name/date step stamps the original upload and encodes the TNPSC p
   await expect(page.getByText(/face-photo\.jpg · 1024×1024px/)).toBeVisible({
     timeout: 15_000,
   });
-  await expect(page.getByLabel("Select Exam Preset")).toHaveValue("tnpsc");
+  await expect(page.getByLabel("Exam or photo size")).toHaveValue("tnpsc");
   await page.getByLabel("Candidate Name").fill("TEST USER");
   await expect(page.getByAltText(/real-time preview/i)).toBeVisible({ timeout: 30_000 });
   await Promise.all([
@@ -259,4 +259,33 @@ test("Exam Kit name/date step stamps the original upload and encodes the TNPSC p
   // Measured: 32.4 dB with this fix; 10.7 dB when the strip tool cropped the
   // Exam Kit's banded 130x170 JPEG.
   expect(psnr).toBeGreaterThanOrEqual(30);
+});
+
+// "passport size photo with name and date" searchers name no exam: a plain
+// 35 × 45 mm size (413 × 531 px at 300 DPI) with the strip inside the frame.
+test("name-date tool: passport size gives a 413 × 531 photo with the strip inside", async ({ page }) => {
+  await page.goto("/tools/photo-with-name-date/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await page.getByLabel("Exam or photo size").selectOption("passport-35x45");
+  await page.getByLabel("Candidate Name").fill("TEST USER");
+  await expect(page.getByAltText(/real-time preview/i)).toBeVisible({ timeout: 30_000 });
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: /download & export jpg/i }).click(),
+  ]);
+  const bytes = fs.readFileSync((await download.path())!);
+  expect(await decodeJpeg(page, bytes)).toEqual([413, 531]);
+  expect(bytes.length).toBeLessThanOrEqual(100 * 1000);
+});
+
+test("name-date tool: name only and date only hide the other field", async ({ page }) => {
+  await page.goto("/tools/photo-with-name-date/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await expect(page.getByLabel("Candidate Name")).toBeVisible({ timeout: 30_000 });
+  await page.getByRole("button", { name: "Date only" }).click();
+  await expect(page.getByLabel("Candidate Name")).toBeHidden();
+  await expect(page.getByLabel("Date of Photo (DOP)")).toBeVisible();
+  await page.getByRole("button", { name: "Name only" }).click();
+  await expect(page.getByLabel("Date of Photo (DOP)")).toBeHidden();
+  await expect(page.getByLabel("Candidate Name")).toBeVisible();
 });
