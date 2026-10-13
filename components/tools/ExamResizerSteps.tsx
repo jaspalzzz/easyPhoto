@@ -22,6 +22,7 @@ export function ExamResizerSteps({
 
   const photo = (
     <ResizeKbTool
+      allowCamera
       defaultKb={spec.photoLimitKb}
       requiredWidth={spec.photoWidthPx}
       requiredHeight={spec.photoHeightPx}

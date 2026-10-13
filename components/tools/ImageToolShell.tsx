@@ -59,6 +59,7 @@ export function ImageToolShell({
   acceptedWorkflowKinds,
   uploaderTitle,
   uploaderHint,
+  allowCamera = false,
 }: {
   children: (source: ToolSource, reset: () => void) => React.ReactNode;
   /** Asset kinds this workspace can safely interpret. */
@@ -66,8 +67,15 @@ export function ImageToolShell({
   /** Override the dropzone copy (e.g. for signature scans, not photos). */
   uploaderTitle?: string;
   uploaderHint?: string;
+  /** Offer "Take a photo" next to upload — for photo inputs, not signature scans. */
+  allowCamera?: boolean;
 }) {
   const [source, setSource] = React.useState<ToolSource | null>(null);
+  // The camera option appears after hydration: whether a camera exists is only
+  // known in the browser, and keeping it out of the static HTML leaves the
+  // page text Google sees unchanged.
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -118,7 +126,7 @@ export function ImageToolShell({
         )}
 
         {!source && !loading && (
-          <Uploader onFile={onFile} title={uploaderTitle} hint={uploaderHint} />
+          <Uploader onFile={onFile} title={uploaderTitle} hint={uploaderHint} allowCamera={allowCamera && mounted} />
         )}
 
         {loading && <ProcessingState label="Reading your image…" />}
