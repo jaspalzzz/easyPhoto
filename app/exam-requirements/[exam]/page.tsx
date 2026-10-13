@@ -69,8 +69,20 @@ function aspectLabel(r: number): string {
 // /exam-requirements/voter-id/ around 2026-07-31; if it doesn't improve,
 // revert this single line (the template default is the fallback). Do NOT roll
 // this out to the other 49 exam pages until this test reads positive.
+// Kept as is: the follow-up title test was dropped in the October wrap-up
+// (owner, 13 Oct 2026).
 const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {
   "voter-id": "Voter ID Photo Size & Resizer 2026 — easyPhoto",
+};
+
+// Per-exam meta descriptions, in the authority's own words, where the template
+// reads badly. voter-id: ECI's Form 6 photo rules and the Voters' Service
+// Portal upload field ("Document size maximum 2MB,.jpg,.jpeg"), checked 13 Oct
+// 2026 (owner-approved meta fix, 13 Oct 2026).
+const EXAM_REQUIREMENTS_DESCRIPTION_OVERRIDES: Record<string, string> = {
+  "voter-id":
+    "Voter ID Form 6 photo: 4.5 × 3.5 cm, colour, white background, unsigned. " +
+    "The Voters' Service Portal accepts JPG or JPEG up to 2 MB. Resize yours here.",
 };
 
 export async function generateMetadata({
@@ -103,6 +115,7 @@ export async function generateMetadata({
       titleBase,
     titleAbsolute: !!EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam],
     description:
+      EXAM_REQUIREMENTS_DESCRIPTION_OVERRIDES[exam] ??
       descriptionOverride ??
       EXAM_GUIDES[exam]?.metaDescription ??
       // Omit the pixel clause when the authority publishes none — px() renders an
