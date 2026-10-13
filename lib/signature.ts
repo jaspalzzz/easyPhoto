@@ -140,18 +140,22 @@ export function signatureKbFloor(
 }
 
 /**
- * File format to export a signature in for a portal preset. The preset's
- * published `sigFormat` decides; the description is only a fallback for
- * presets that don't state one. Matching the description alone exported a
- * transparent PNG for the Driving Licence (Sarathi) preset, whose source
- * requires JPG but whose description never says so.
+ * File format to export a signature in. The one rule every exam tool uses
+ * (signature resizer, exam pages, Exam Kit):
+ * - an exam that publishes a format gets it — PNG only when it names PNG and
+ *   not JPG/JPEG;
+ * - an exam that publishes none gets a white-background JPG, the format
+ *   Indian application portals accept. A transparent PNG was the old default
+ *   and the output audit (10 Oct 2026) found it on 13 exams, UPPSC among
+ *   them, whose own instruction asks for a 200 DPI scan that a PNG can't carry;
+ * - no exam selected (generic signature tools) keeps the transparent PNG.
  */
 export function signatureExportFormat(
-  preset: { sigFormat?: string; description?: string } | undefined,
+  preset: { sigFormat?: string } | undefined,
 ): "jpeg" | "png" {
-  const jpg = /\b(?:JPG|JPEG)\b/i;
-  if (preset?.sigFormat) return jpg.test(preset.sigFormat) ? "jpeg" : "png";
-  return jpg.test(preset?.description ?? "") ? "jpeg" : "png";
+  if (!preset) return "png";
+  if (!preset.sigFormat) return "jpeg";
+  return /\b(?:JPG|JPEG)\b/i.test(preset.sigFormat) || !/\bPNG\b/i.test(preset.sigFormat) ? "jpeg" : "png";
 }
 
 /**
@@ -606,4 +610,86 @@ export function detectInkBBox(
   const width = Math.min(source.width - x, Math.round(bbox.width * inv) + pad * 2);
   const height = Math.min(source.height - y, Math.round(bbox.height * inv) + pad * 2);
   return { x, y, width, height };
+}
+
+/**
+ * Size and placement that grow a `width × height` image to `ratio`
+ * (width ÷ height) by adding margins only — never by cropping, so no stroke is
+ * ever cut. Returns null when the image is already within `tolerance` of the
+ * ratio (relative), or when the inputs are unusable.
+ *
+ * Exams such as SSC publish a signature shape ("about 6.0 cm × 2.0 cm") but no
+ * pixel size; a signature trimmed tight to its ink rarely has that shape.
+ */
+export function aspectPadding(
+  width: number,
+  height: number,
+  ratio: number,
+  tolerance = 0.03
+): { width: number; height: number; x: number; y: number } | null {
+  if (!(ratio > 0) || !(width > 0) || !(height > 0)) return null;
+  const current = width / height;
+  if (Math.abs(current - ratio) / ratio <= tolerance) return null;
+  if (current > ratio) {
+    // Wider than the shape: add space above and below.
+    const padded = Math.round(width / ratio);
+    return { width, height: padded, x: 0, y: Math.floor((padded - height) / 2) };
+  }
+  // Taller than the shape: add space left and right.
+  const padded = Math.round(height * ratio);
+  return { width: padded, height, x: Math.floor((padded - width) / 2), y: 0 };
+}
+
+/**
+ * Centre `source` on a transparent canvas of the requested shape (see
+ * aspectPadding). The margins become white when the caller flattens to JPEG.
+ * Returns `source` itself when no padding is needed.
+ */
+export function padToAspect(source: HTMLCanvasElement, ratio: number): HTMLCanvasElement {
+  const pad = aspectPadding(source.width, source.height, ratio);
+  return pad ? padCanvas(source, pad) : source;
+}
+
+/** Centre `source` on a transparent canvas of `pad.width × pad.height`. */
+export function padCanvas(
+  source: HTMLCanvasElement,
+  pad: { width: number; height: number; x: number; y: number }
+): HTMLCanvasElement {
+  const out = document.createElement("canvas");
+  out.width = pad.width;
+  out.height = pad.height;
+  out.getContext("2d")?.drawImage(source, pad.x, pad.y);
+  return out;
+}
+
+/**
+ * How to bring a `width × height` signature inside a per-side pixel range —
+ * UPSC: "The height and width of signature image must be between 350 and 500
+ * pixels". First adds margins (never crops) when the shape is too tall or too
+ * wide for any size in the range, then scales as little as possible. Returns
+ * null when the image already fits or the inputs are unusable.
+ */
+export function sideRangeFit(
+  width: number,
+  height: number,
+  minSide: number,
+  maxSide: number
+): { pad: { width: number; height: number; x: number; y: number } | null; width: number; height: number } | null {
+  if (!(width > 0) || !(height > 0) || !(minSide > 0) || !(maxSide >= minSide)) return null;
+  // The narrowest shape that fits is minSide : maxSide (and its inverse).
+  const lo = minSide / maxSide;
+  let padW = width;
+  let padH = height;
+  if (width / height < lo) padW = Math.ceil(height * lo);
+  else if (height / width < lo) padH = Math.ceil(width * lo);
+  const pad =
+    padW !== width || padH !== height
+      ? { width: padW, height: padH, x: Math.floor((padW - width) / 2), y: Math.floor((padH - height) / 2) }
+      : null;
+
+  const long = Math.max(padW, padH);
+  const short = Math.min(padW, padH);
+  const scale = long > maxSide ? maxSide / long : short < minSide ? minSide / short : 1;
+  if (!pad && scale === 1) return null;
+  return { pad, width: Math.round(padW * scale), height: Math.round(padH * scale) };
 }

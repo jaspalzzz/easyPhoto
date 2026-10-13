@@ -13,6 +13,8 @@ import {
   cropToAspectRatio,
   imageToCanvas,
   matchesAspectRatio,
+  picaResizeTo,
+  sideRangeScale,
 } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
@@ -36,6 +38,8 @@ interface BodyProps {
   requiredHeight?: number;
   /** Published width/height ratio when the portal does not publish fixed pixels. */
   requiredAspectRatio?: number;
+  /** Published pixel range per side (OCI: 200–900) when there's no exact size. */
+  sidePx?: { min: number; max: number };
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -50,7 +54,7 @@ interface BodyProps {
   onSourceChange?: (source: ToolSource | null) => void;
 }
 
-function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, minKb, densityDpi, requirementLabel, examWorkflow, onSourceChange }: BodyProps) {
+function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, sidePx, minKb, densityDpi, requirementLabel, examWorkflow, onSourceChange }: BodyProps) {
   React.useEffect(() => {
     onSourceChange?.(source);
     return () => onSourceChange?.(null);
@@ -119,7 +123,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         !!requiredAspectRatio &&
         Number.isFinite(requiredAspectRatio) &&
         requiredAspectRatio > 0;
-      const canvas = hasRequiredDimensions
+      let canvas = hasRequiredDimensions
         ? await cropAndResizeToExact(
             source.image,
             requiredWidth!,
@@ -134,6 +138,15 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
             source.size.height,
             "#ffffff" // JPEG output — fill white so transparent areas don't go black
           );
+      // A published per-side range (OCI: 200–900 px) is enforced by the portal,
+      // so bring the image inside it before compressing.
+      const sides = hasRequiredDimensions ? undefined : sidePx;
+      if (sides) {
+        const scale = sideRangeScale(canvas.width, canvas.height, sides.min, sides.max);
+        if (scale !== 1) {
+          canvas = await picaResizeTo(canvas, canvas.width * scale, canvas.height * scale);
+        }
+      }
       // A published width/height is the final output frame, not a lower bound.
       // Start at that exact frame and prevent compression from shrinking it.
       // Portals without published pixels can still scale down to hit a tight cap.
@@ -141,7 +154,13 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         ? { width: requiredWidth!, height: requiredHeight! }
         : undefined;
       const res = await compressToCap(canvas, effectiveKb, {
-        minScale: hasRequiredDimensions ? 1 : 0.1,
+        // Compression may shrink a resizable photo to hit the cap, but never
+        // below a published per-side minimum.
+        minScale: hasRequiredDimensions
+          ? 1
+          : sides
+            ? Math.min(1, sides.min / Math.min(canvas.width, canvas.height))
+            : 0.1,
         minDimensions,
         minKb,
         densityDpi,
@@ -415,6 +434,7 @@ export function ResizeKbTool({
   requiredWidth,
   requiredHeight,
   requiredAspectRatio,
+  sidePx,
   minKb,
   densityDpi,
   requirementLabel,
@@ -429,6 +449,8 @@ export function ResizeKbTool({
   requiredWidth?: number;
   requiredHeight?: number;
   requiredAspectRatio?: number;
+  /** Published pixel range per side (OCI: 200–900) when there's no exact size. */
+  sidePx?: { min: number; max: number };
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -457,6 +479,7 @@ export function ResizeKbTool({
           requiredWidth={requiredWidth}
           requiredHeight={requiredHeight}
           requiredAspectRatio={requiredAspectRatio}
+          sidePx={sidePx}
           minKb={minKb}
           densityDpi={densityDpi}
           requirementLabel={requirementLabel}

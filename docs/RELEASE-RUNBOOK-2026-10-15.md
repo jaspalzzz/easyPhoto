@@ -24,11 +24,14 @@ spam update is still rolling out, so nothing else that changes page text ships.
 | `07a13ef` | Driving Licence: Sarathi JPG format (wrong-output hotfix, §5) | #72 |
 | `31565d1` | KB caps safe for portals counting 1 KB as 1000 or 1024 bytes | #75 |
 | `095f679 1e187db 4f6f48f 77cc9ab` | AI tools never hang: OCR/face model loads bounded, mirror on a stalled model host | #76 |
+| `23f8d41` | signatures export at the exam's published shape (SSC 3:1 and six others), margins only — added by the owner 8 Oct | #93 |
 
 **Not in this release:** `7e29d71` (broken blog images, #73) and `03e089f`
 (calendar past entries, #74) → 29 Oct; print-sheet `b877a16` (held); UI polish
 #65 #66 #68 #69 #70 and the UPI card #79 → 22 Oct; guards #81 come to master
 with the 22 Oct release.
+
+**Dry run 8 Oct (with #93, draft PR #89):** 15 commits apply cleanly on `master` 157639f; tsc clean; 799 unit tests; build OK; SEO diff = the 3 Driving Licence pages only; e2e 88/89 + the known handoff flake passing on rerun.
 
 **Dry runs (6 Oct):** all 14 commits apply cleanly on `master`; tsc clean;
 794 unit tests; build OK; e2e for every fixed tool 35/35. The unsplit 16-commit
@@ -97,8 +100,25 @@ No data, route or sitemap change besides the Driving Licence lastmod.
 
 # 22 Oct (UI polish) — prep notes
 
+- **Timing: release after 13:30 IST on 22 Oct** (owner, 10 Oct). The September
+  2026 spam update ended 8 Oct 01:00 PT, so the 14-day quiet window closes
+  22 Oct 01:00 PT = 13:30 IST, and this release changes page text on /terms/,
+  /privacy/ and /tools/ (#88, #90). Recheck status.search.google.com for any
+  new update that morning; record it in the PR.
+
 - Contents: #65 type scale, #66 card hierarchy, #68 FAQ/footer, #69 sign-image
-  compact, #70 ToolCard. Presentation only — SEO diff must show 0 pages changed.
+  compact, #70 ToolCard. Presentation only — SEO diff must show 0 pages changed
+  for these; the expected page-text changes are /terms/, /privacy/, /tools/
+  (#88, #90) and the UPSC PDF link (#97) below.
+- UPSC fixes (owner, 10 Oct):
+  - #97 — UPSC's instruction PDF moved (old /ngrp/assets/PDF/ path 404s); the
+    link on /exam-requirements/upsc/ and the UPSC CSE blog now points to the
+    current PDF. Its file name carries a build hash: open it once on release
+    day and confirm it still loads.
+  - #99 — UPSC/NDA/CDS signatures now export at 350–500 px on both sides
+    (UPSC's rule; we used to export e.g. 384 × 534). JavaScript only. After
+    release, run the UPSC signature e2e test against production:
+    `E2E_BASE_URL=https://easyphoto.in npx playwright test -c playwright.remote.config.ts -g "upsc exam page"`.
 - Rerun the combined UI check on the final dev preview before release: top
   pages at 390 and desktop, light and dark, page speed vs production.
 - Support pop-up (#79, #83, #85, #86): right after a download, one "Help keep
