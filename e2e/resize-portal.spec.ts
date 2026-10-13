@@ -98,10 +98,10 @@ test("voter-id-photo-resizer: surfaces the ECI spec and binds output to a set ta
   await page.goto("/voter-id-photo-resizer/");
 
   // The literal answer a "voter id photo size in mb" searcher is looking for
-  // must be on the page (ECI Form 6 cap ~2 MB = 2048 KB).
-  await expect(page.getByText(/2048 KB/i).first()).toBeVisible();
+  // must be on the page (ECI Form 6 cap 2 MB, kept at 2000 KB so either byte count accepts it).
+  await expect(page.getByText(/2000 KB/i).first()).toBeVisible();
 
-  // The embedded resizer (defaultKb 2048) must still compress to a tight target
+  // The embedded resizer (defaultKb 2000) must still compress to a tight target
   // — the spec description itself recommends ~100-300 KB for fast upload.
   await page.setInputFiles('input[type="file"]', FACE_PHOTO);
   const bytes = await compressAndDownload(page, 100);

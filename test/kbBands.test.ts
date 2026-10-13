@@ -159,3 +159,11 @@ describe("compressPdfToTarget — 'already under' means under both conventions",
     await expect(compressPdfToTarget(pdf(50_500), 50)).rejects.toThrow(/no readable pages/i);
   });
 });
+
+describe("caps published in MB", () => {
+  // ECI's Form 6 field says "Document size maximum 2MB" without the byte count.
+  // At 2048 KB the tool could return 2,048,000 bytes, over a 2,000,000-byte limit.
+  it("keeps the Voter ID photo under 2 MB counted as 2,000,000 bytes", () => {
+    expect(kbCapBytes(PORTAL_PRESETS["voter-id"].photoLimitKb)).toBeLessThanOrEqual(2_000_000);
+  });
+});
