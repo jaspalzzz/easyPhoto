@@ -40,7 +40,7 @@ import { padBlobToMin } from "@/lib/padBytes";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
 import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { useExamSearch } from "@/components/tools/ExamSearch";
-import { whiteToTransparent, trimToContent } from "@/lib/signature";
+import { whiteToTransparent, trimToContent, signatureExportFormat } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb, kbCapBytes, kbFloorBytes } from "@/lib/utils";
 import { displayFileFormatBundle } from "@/lib/fileFormats";
@@ -278,9 +278,7 @@ export function ExamPackageTool() {
       });
       if (!bbox) throw new Error("No signature detected.");
       const hasRequiredDimensions = !!(spec.sigWidthPx && spec.sigHeightPx);
-      const signatureFormat: "jpg" | "png" = spec.sigFormat && /\b(?:JPG|JPEG)\b/i.test(spec.sigFormat)
-        ? "jpg"
-        : "png";
+      const signatureFormat: "jpg" | "png" = signatureExportFormat(spec) === "jpeg" ? "jpg" : "png";
       const framed = hasRequiredDimensions
         ? await fitToExactFrame(
             trimmed,

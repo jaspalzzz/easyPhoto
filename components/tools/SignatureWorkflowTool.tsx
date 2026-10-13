@@ -8,7 +8,7 @@ import { Download, ShieldCheck, Eraser, Crop, Maximize2, Info, FileStack } from 
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
-import { fitToExactFrame, imageToCanvas, pngUnderKb } from "@/lib/imaging";
+import { fitToExactFrame, imageToCanvas, picaResizeTo, pngUnderKb } from "@/lib/imaging";
 import {
   SIGNATURE_CLEAN_DEFAULTS,
   signatureExportFormat,
@@ -20,6 +20,8 @@ import {
   whiteToTransparent,
   trimToContent,
   padToAspect,
+  padCanvas,
+  sideRangeFit,
 } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb, kbFloorBytes, minCapKbForFloor } from "@/lib/utils";
@@ -359,6 +361,16 @@ function Body({
         const shapeRatio = resizeMode === "kb" ? selectedPreset?.sigAspectRatio : undefined;
         if (shapeRatio) finalCanvas = padToAspect(finalCanvas, shapeRatio);
 
+        // Exams that publish a pixel range per side (UPSC: 350–500 px wide and
+        // high) reject anything outside it, so fit the image inside the range —
+        // margins first if the shape needs them, then the smallest rescale.
+        const sides = resizeMode === "kb" ? selectedPreset?.sigSidePx : undefined;
+        const sideFit = sides ? sideRangeFit(finalCanvas.width, finalCanvas.height, sides.min, sides.max) : null;
+        if (sideFit) {
+          const padded = sideFit.pad ? padCanvas(finalCanvas, sideFit.pad) : finalCanvas;
+          finalCanvas = await picaResizeTo(padded, sideFit.width, sideFit.height);
+        }
+
         // Apply white background flattening if JPEG is requested
         let renderCanvas = finalCanvas;
         if (bgFormat === "jpeg") {
@@ -381,7 +393,10 @@ function Body({
           if (bgFormat === "jpeg") {
             // High-quality JPEG binary search compression
             const compressed = await compressToCap(renderCanvas, dTargetKb, {
-              minScale: 0.1,
+              // Within a published side range, never shrink the short side below it.
+              minScale: sides
+                ? Math.min(1, sides.min / Math.min(renderCanvas.width, renderCanvas.height))
+                : 0.1,
               densityDpi: selectedPreset?.dpi,
             });
             resultBlob = compressed.blob;
@@ -509,6 +524,7 @@ function Body({
     requiredCopies,
     selectedPreset?.dpi,
     selectedPreset?.sigAspectRatio,
+    selectedPreset?.sigSidePx,
   ]);
 
   // Handle preset selections
