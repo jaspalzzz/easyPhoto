@@ -41,6 +41,18 @@ export interface PortalSpec {
   sigHeightPx?: number;
   photoAspectRatio?: number; // width / height
   sigAspectRatio?: number;
+  /**
+   * Pixel range each side of the signature image must fall in, when the exam
+   * publishes one instead of an exact size (UPSC: 350–500 for both width and
+   * height). The signature tool fits its output inside it.
+   */
+  sigSidePx?: { min: number; max: number };
+  /**
+   * Pixel range each side of the photo must fall in, when the authority
+   * publishes one instead of an exact size (OCI: 200–900 px wide and high).
+   * The photo tool scales its output inside it.
+   */
+  photoSidePx?: { min: number; max: number };
   /** File format published for the prepared photograph upload. */
   photoFormat?: string;
   /** Background published for the prepared photograph upload. */
@@ -171,6 +183,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPG",
     photoBackground: "Plain white",
     sigFormat: "JPG",
+    sigSidePx: { min: 350, max: 500 },
     description:
       "UPSC's current application portal requires a JPG photograph of 20–200 KB with a plain white background and about 75% face coverage, plus a JPG image containing three signatures arranged vertically at 20–100 KB and 350–500 pixels. The instructions publish no fixed photo pixel dimensions, photo aspect ratio, DPI, or name/date strip.",
     // UPSC moved its instruction PDF (old /ngrp/assets/PDF/ path 404s, checked
@@ -246,6 +259,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoLimitKb: 200,
     sigLimitKb: 200,
     photoAspectRatio: 1,
+    photoSidePx: { min: 200, max: 900 },
     photoFormat: "JPEG / JPG",
     photoBackground: "Plain light-coloured (not white)",
     sigFormat: "JPEG / JPG",
@@ -645,6 +659,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigMinKb: 20,
     photoFormat: "JPG",
     sigFormat: "JPG",
+    sigSidePx: { min: 350, max: 500 },
     description:
       "The NDA & NA examination recruits unmarried candidates straight out of school into the Army, Navy and Air Force wings of the National Defence Academy, so most applicants are uploading an identity photograph for the first time. UPSC runs the upload through its common One Time Registration portal, whose instructions apply \"for any examination\": a JPG photograph of 20–200 KB with about 75% face coverage, and a separate JPG holding three signatures stacked vertically at 20–100 KB and 350–500 pixels. No pixel dimensions, aspect ratio, DPI or name/date strip are specified for the photograph.",
     source: {
@@ -672,6 +687,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigMinKb: 20,
     photoFormat: "JPG",
     sigFormat: "JPG",
+    sigSidePx: { min: 350, max: 500 },
     description:
       "The Combined Defence Services examination is the graduate entry route to the Indian Military Academy, Naval Academy, Air Force Academy and Officers Training Academy. A photograph already stored in UPSC One Time Registration still has to meet the current rule: a JPG of 20–200 KB at roughly 75% face coverage, with three vertically stacked signatures in a separate JPG of 20–100 KB and 350–500 pixels. UPSC publishes no pixel size, aspect ratio, DPI or name/date strip for the photo, so review an existing upload against the current instructions.",
     source: {
