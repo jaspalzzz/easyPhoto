@@ -100,8 +100,6 @@ export async function generateMetadata({
   // well past the ~155-160 char SERP display width, so they were truncating.
   const shortName = spec.name.split(" (")[0];
   const titleBase = `${shortName} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR}`;
-  const hasRecordedFormat = Boolean(spec.photoFormat || (sig && spec.sigFormat));
-  const recordedFields = hasRecordedFormat ? "size & format" : "size";
   const descriptionOverride =
     exam === "airforce-agniveer"
       ? `${shortName}: photo ${photoKb(spec)}${spec.photoFormat ? ` (${spec.photoFormat})` : ""}, signature ${sig}${spec.sigFormat ? ` (${spec.sigFormat})` : ""}. ` +
@@ -122,13 +120,19 @@ export async function generateMetadata({
       // em-dash for the spec table, which reads as "(—)" in a SERP snippet.
       (spec.noPhotoUpload
         ? `${shortName}: photo captured live in the form`
-        : `${shortName}: photo ${photoKb(spec)}${parens(photoDimsPx(spec, " px"))}`) +
+        : `${shortName}: photo ${photoKb(spec)}` +
+          parens(
+            // CLAUDE.md §3: a figure the source doesn't confirm is labelled ours.
+            [photoDimsPx(spec, " px"), specProvenance(spec).verified ? null : "our default, not an official limit"]
+              .filter(Boolean)
+              .join("; ") || null
+          )) +
       (sig ? `, signature ${sig}${parens(sigDimsPx(spec, " px"))}` : "") +
-      // Only claim "verified" for specs actually confirmed against their source
-      // and dated; needs-review presets get an honest "confirm on the source".
+      // Only say "checked" for specs actually confirmed against their source
+      // and dated; needs-review presets point the reader to the notice.
       (specProvenance(spec).verified
-        ? `. Stored ${recordedFields} checked against the linked official source.`
-        : `. Stored ${recordedFields} for the form — confirm the current figures on the official source.`),
+        ? ". Checked against the official notice, linked on the page."
+        : ". Confirm the current notice before you upload."),
     path: `/exam-requirements/${exam}/`,
   });
 }
