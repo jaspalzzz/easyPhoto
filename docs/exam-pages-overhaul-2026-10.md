@@ -169,7 +169,7 @@ Source: [Indian Navy Agniveer MR 01/2027 and 02/2027 notice, paragraph 34](https
 - Agniveer entries run in batches with their own advertisement each cycle, and the photograph date rule is tied to that cycle rather than to a rolling number of months. Read the date named in the notification you are applying under before deciding an existing photograph is recent enough.
 
 
-## Owner decisions
+## Owner decisions — all approved 13 Oct 2026 ("approved, yes to all three")
 
 1. **Approve the corrected text above** (read aloud), or mark changes.
 2. **Approve lowering 16 "words of its own" minimums** (CLAUDE.md §1). The
