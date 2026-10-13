@@ -22,6 +22,16 @@ const LAST_UPDATED = "2026-08-02";
 const MAKERS_UPDATED = "2026-08-02";
 /** Tool pages and their category hubs — moves when a tool or its copy changes. */
 const TOOLS_UPDATED = "2026-09-08";
+/**
+ * Tool pages whose own copy changed after TOOLS_UPDATED, so the rest keep
+ * their real date (13 Oct 2026: titles, snippets and FAQs in searchers' words).
+ */
+const TOOL_UPDATED: Record<string, string> = {
+  "photo-with-name-date": "2026-10-13",
+  "photo-signature-merge": "2026-10-13",
+  "sign-image": "2026-10-13",
+  "dpi-converter": "2026-10-13",
+};
 const TRUST_PAGES_UPDATED = "2026-07-13";
 /** /terms/ — moves only when the terms text changes (7 Oct 2026: support-payment refunds). */
 const TERMS_UPDATED = "2026-10-07";
@@ -153,7 +163,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Individual tool pages — all have opengraph-image.tsx ─────────────────
     ...READY_TOOLS.filter((t) => !isDeindexed(`/tools/${t.slug}/`)).map((t) => ({
       url: `${SITE_URL}/tools/${t.slug}/`,
-      lastModified: TOOLS_UPDATED,
+      lastModified: TOOL_UPDATED[t.slug] ?? TOOLS_UPDATED,
       images: ogImg(`/tools/${t.slug}/`),
     })),
 

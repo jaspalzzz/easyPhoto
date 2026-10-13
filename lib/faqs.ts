@@ -373,7 +373,8 @@ export const RESIZE_DIMENSIONS_FAQ: FaqItem[] = [
 ];
 
 export const PHOTO_NAME_DATE_FAQ: FaqItem[] = [
-  { q: "How do I add my name and date under a photo?", a: "Upload your photo, type your name and the date, and the tool prints them in a clean strip at the bottom — then you download it." },
+  { q: "How do I add my name and date to a passport size photo?", a: "Upload your photo, type your name and pick the date. The tool prints both in capitals, with the date as DD/MM/YYYY, on a white strip at the bottom of the photo. Set the KB limit your form gives, then download the JPG." },
+  { q: "Should the date be the photo date or my date of birth?", a: "Forms that ask for a name-and-date strip almost always mean the date the photo was taken, often written DOP (date of photo). The date field accepts any date, so enter your date of birth only if your notice asks for it." },
   { q: "Which applications use a digital name-and-date strip?", a: "The current APPSC Direct Recruitment OTPR manual and Kerala PSC guidance require the candidate's name and photography date on the image. Confirm the current notice for your application before using a strip." },
   { q: "Can I use this tool for UPSC, SSC, IBPS or Agniveer forms?", a: "Current UPSC, SSC and IBPS instructions do not list a digital strip. Navy Agniveer and Agniveervayu notices require a physical black slate held in the photograph, which cannot be added by this tool." },
   { q: "Can I change the date or text format?", a: "Yes. Enter the photography date and use the wording or date format stated by the current application instructions." },
