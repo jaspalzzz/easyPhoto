@@ -305,6 +305,9 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     isLiveCapture: true,
+    // CEN 06/2026 §14.4: "Candidates are not required to upload a pre-existing
+    // photograph" — the photo fields above only feed overview tables.
+    noPhotoUpload: true,
     context: "RRB recruits through Centralised Employment Notices (CENs), published on every regional RRB website. These rules are from CEN 06/2026 for the NTPC graduate posts (7 October 2026); CEN 05/2026 for paramedical posts gives the same signature rules.",
     applicationNotes: [
       "Follow the capture screen's own instructions for lighting and framing; nothing prepared in advance substitutes for the live photo. RRB asks for a pure plain white background with no scenery or pictures behind you, and dark, non-white clothes that cover your shoulders and chest, so you stand out from the wall.",

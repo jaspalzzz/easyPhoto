@@ -107,7 +107,9 @@ export async function generateMetadata({
       EXAM_GUIDES[exam]?.metaDescription ??
       // Omit the pixel clause when the authority publishes none — px() renders an
       // em-dash for the spec table, which reads as "(—)" in a SERP snippet.
-      `${shortName}: photo ${photoKb(spec)}${parens(photoDimsPx(spec, " px"))}` +
+      (spec.noPhotoUpload
+        ? `${shortName}: photo captured live in the form`
+        : `${shortName}: photo ${photoKb(spec)}${parens(photoDimsPx(spec, " px"))}`) +
       (sig ? `, signature ${sig}${parens(sigDimsPx(spec, " px"))}` : "") +
       // Only claim "verified" for specs actually confirmed against their source
       // and dated; needs-review presets get an honest "confirm on the source".
@@ -240,13 +242,23 @@ export default async function Page({
             href="#resizer"
             className={buttonVariants({ variant: "cta", className: "min-h-11 w-full sm:w-auto" })}
           >
-            Resize your {spec.name.split(" (")[0]} photo{sig ? " & signature" : ""} now <ArrowDown className="h-4 w-4" />
+            {spec.noPhotoUpload
+              ? <>Prepare your {spec.name.split(" (")[0]} signature now</>
+              : <>Resize your {spec.name.split(" (")[0]} photo{sig ? " & signature" : ""} now</>}{" "}
+            <ArrowDown className="h-4 w-4" />
           </a>
 
           {/* The spec table — the authoritative, citable data */}
           <section className="grid gap-8 md:grid-cols-2">
             <div className="space-y-3">
               <h2 className="eyebrow">Photo requirement</h2>
+              {spec.noPhotoUpload ? (
+                // The form captures the photo live; any photo figure in the
+                // record is ours, not the authority's, so none is shown here.
+                <dl>
+                  <Row label="Photo" value="Captured live in the form" />
+                </dl>
+              ) : (
               <dl>
                 <Row label="File size" value={photoKb(spec)} />
                 <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? "—"} />
@@ -258,6 +270,7 @@ export default async function Page({
                   <Row label="Background" value={spec.photoBackground} />
                 )}
               </dl>
+              )}
             </div>
             <div className="space-y-3">
               <h2 className="eyebrow">Signature requirement</h2>
@@ -286,7 +299,11 @@ export default async function Page({
           <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
             <div>
               <h2 className="text-base font-semibold tracking-tight">
-                Resize your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null}
+                {spec.noPhotoUpload ? (
+                  <>Prepare your {spec.name.split(" (")[0]} signature</>
+                ) : (
+                  <>Resize your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null}</>
+                )}
               </h2>
             </div>
 
