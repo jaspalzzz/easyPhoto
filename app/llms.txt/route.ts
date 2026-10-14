@@ -106,7 +106,9 @@ export function GET() {
   );
   lines.push("");
   for (const s of allPortalSpecs()) {
-    const photo = `photo ${kb(s.photoMinKb, s.photoLimitKb)}`;
+    const photo = s.noPhotoUpload
+      ? "photo taken live in the form (no upload)"
+      : `photo ${kb(s.photoMinKb, s.photoLimitKb)}`;
     const sig = s.sigLimitKb
       ? `, signature ${kb(s.sigMinKb, s.sigLimitKb)}`
       : "";
