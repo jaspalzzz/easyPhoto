@@ -1289,9 +1289,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   "voter-id": {
     id: "voter-id",
     name: "Voter ID (ECI Form 6)",
-    // Compatibility-only digital cap. The public Form 6 guidance confirms the
-    // physical dimensions/composition but does not publish an upload file cap.
-    photoLimitKb: 2048,
+    // The portal's Form 6 photo field says "Document size maximum 2MB,.jpg,.jpeg"
+    // (https://voters.eci.gov.in/, checked 13 Oct 2026) without saying whether
+    // 2 MB is 2,000,000 or 2,097,152 bytes, and checks it on the server. 2000 KB
+    // (2,000,000 bytes, since caps count 1 KB as 1000 bytes) passes either way.
+    photoLimitKb: 2000,
     photoAspectRatio: 3.5 / 4.5,
     photoBackground: "White",
     description: "ECI Form 6 asks for a recent, unsigned colour passport-size photograph, 4.5 × 3.5 cm, showing the front of the full face on a white background, eyes open and both edges of the face visible. On the Voters' Service Portal, the Form 6 photo field accepts JPG or JPEG files up to 2 MB.",

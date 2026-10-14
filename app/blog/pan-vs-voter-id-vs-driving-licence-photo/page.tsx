@@ -9,15 +9,15 @@ const post = getPost("pan-vs-voter-id-vs-driving-licence-photo")!;
 const FAQ_ITEMS = [
   {
     q: "Is the PAN, voter ID and driving licence photo the same?",
-    a: "No. Each application route has its own instructions. ECI's public Form 6 specifies a 4.5 cm by 3.5 cm colour photo on white but does not publish a universal digital KB, pixel or format rule; PAN and Sarathi publish separate digital guidance for their own workflows.",
+    a: "No. Each application route has its own instructions. Form 6 wants a 4.5 cm by 3.5 cm colour photo on white and lets the file be as large as 2 MB, while PAN and Sarathi each set far tighter limits of their own.",
   },
   {
     q: "Which of the three has the strictest photo size limit?",
-    a: "Do not use one assumed cap across all three. Their application routes publish different instructions, and ECI's public Form 6 does not state a universal digital KB cap. Check the current upload screen for the route you use.",
+    a: "The driving licence: Sarathi takes a photo of 10–20 KB. PAN's two routes allow a little more, and the Voter ID portal accepts up to 2 MB.",
   },
   {
     q: "Can I use one photo for my PAN card, voter ID and driving licence?",
-    a: "Keep a good-quality colour source photo, then prepare a separate export for each application route. Do not assume one KB target, pixel canvas or format covers all three, because ECI's public Form 6 does not publish those digital fields and the PAN and Sarathi workflows use their own instructions.",
+    a: "Keep a good-quality colour source photo, then prepare a separate export for each application route. Do not assume one KB target or crop covers all three: a Voter ID file is usually far too heavy for the licence portal, and PAN via UTIITSL needs a square.",
   },
   {
     q: "Why is only the PAN photo square?",
@@ -59,8 +59,8 @@ export default function Page() {
         </p>
         <ul className="!mt-2 text-[15px]">
           <li>
-            <strong>File-size cap:</strong> PAN and Sarathi publish workflow-specific
-            limits; public Form 6 does not publish a universal Voter ID digital cap.
+            <strong>File-size cap:</strong> PAN and the driving licence allow tens of
+            KB; the Voter ID portal allows up to 2&nbsp;MB.
           </li>
           <li>
             <strong>Crop shape:</strong> only <strong>PAN via UTIITSL</strong> needs
@@ -96,7 +96,7 @@ export default function Page() {
             ["PAN (UTIITSL)", "myutiitsl.com", "30 KB", "213×213 px", "Square"],
             ["Driving Licence", "sarathi.parivahan.gov.in", "10–20 KB", "420×525 px preferred", "Portrait"],
             ["PAN (NSDL / Protean)", "onlineservices.proteantech.in", "50 KB", "197×276 px", "Portrait"],
-            ["Voter ID (Form 6)", "voters.eci.gov.in", "Not publicly specified", "4.5×3.5 cm physical", "Portrait"],
+            ["Voter ID (Form 6)", "voters.eci.gov.in", "2 MB", "No pixel rule (paper size 4.5×3.5 cm)", "Portrait"],
           ].map(([doc, portal, kb, px, crop]) => (
             <tr key={doc} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{doc}</td>
@@ -110,9 +110,8 @@ export default function Page() {
       </table>
 
       <p>
-        The public Voter ID guidance confirms a colour photo and white background but
-        does not publish the digital format or file-size rule. The PAN and Sarathi rows
-        describe their separate digital workflows. (PAN appears twice because it has
+        Voter ID&apos;s 2&nbsp;MB is printed next to the photo box on the online Form 6.
+        The PAN and Sarathi rows describe their own workflows. (PAN appears twice because it has
         two portals with different rules;{" "}
         <Link href="/blog/pan-card-photo-size/" className="text-brand underline">
           the PAN card photo size guide
@@ -120,19 +119,28 @@ export default function Page() {
         covers both.)
       </p>
 
-      <h2>Difference 1: no universal Voter ID digital cap is published</h2>
+      <h2>Difference 1: the file-size limits are far apart</h2>
 
       <p>
-        ECI&apos;s public Form 6 instructions state the physical size and visible photo
-        qualities, but not a digital KB window. A numeric Voter ID comparison would
-        turn a compatibility target into an ECI rule. Check the current upload screen;
-        do not carry a PAN or Sarathi cap across to it.
+        Sarathi refuses a photo over 20&nbsp;KB; Voter ID takes one a hundred times that
+        size. Reusing the Voter ID file for the licence therefore fails almost every time.
+      </p>
+
+      <p>
+        In practice, start from the same original photo for each card. For Voter ID you
+        can leave it large and sharp. For the licence, it has to come down to
+        420&nbsp;×&nbsp;525 pixels and under 20&nbsp;KB, which the{" "}
+        <Link href="/exam-requirements/driving-licence/" className="text-brand underline">
+          driving licence resizer
+        </Link>{" "}
+        does in one step. For PAN, choose your route first, because NSDL and UTIITSL crop
+        differently.
       </p>
 
       <div className="my-8 rounded-xl border border-hairline bg-paper p-5 text-sm leading-relaxed text-ink-soft">
-        Source boundary: the public ECI Form 6 guidance confirms 4.5&nbsp;cm high by
-        3.5&nbsp;cm wide, white background, open eyes and both face edges visible.
-        It does not support a Voter ID digital KB or pixel comparison.
+        The Voter ID rules here (the 4.5&nbsp;×&nbsp;3.5&nbsp;cm white-background photo and
+        the 2&nbsp;MB file) were read from the Election Commission&apos;s Form&nbsp;6 notes and
+        its online form on 13 Oct 2026.
       </div>
 
       <h2>Difference 2: only PAN (UTIITSL) is square</h2>
@@ -150,16 +158,14 @@ export default function Page() {
 
       <p>
         The cited PAN routes publish their own pixel guidance, and Sarathi prefers
-        420×525&nbsp;px. Public Form 6 does not publish Voter ID pixel dimensions, so
-        the current online form is the place to confirm any digital canvas it enforces.
+        420×525&nbsp;px. Voter ID has no pixel rule of any kind.
       </p>
 
       <h2>So can one photo cover all three?</h2>
 
       <p>
-        Keep one clear source photo, but prepare separate exports. That avoids claiming
-        that a PAN or Sarathi digital target is also an ECI rule and lets you follow the
-        current fields shown by each application route.
+        Keep one clear source photo, but prepare separate exports. Each portal checks
+        its own size and crop, and they rarely agree.
       </p>
 
       <p>

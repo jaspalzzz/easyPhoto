@@ -13,11 +13,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "Which Indian government portal has the strictest photo size limit?",
-    a: "Among the cited upload workflows, Sarathi publishes a 10–20 KB photo band and UTIITSL records a 30 KB ceiling for its PAN route. ECI's public Form 6 does not publish a universal Voter ID digital cap. File size is only one requirement, so verify the selected portal.",
+    a: "Among the cited upload workflows, Sarathi publishes a 10–20 KB photo band and UTIITSL records a 30 KB ceiling for its PAN route. Voter ID sits at the other end, allowing files up to 2 MB. File size is only one requirement, so verify the selected portal.",
   },
   {
     q: "What file format do Indian government ID applications need?",
-    a: "PAN and Sarathi publish format instructions for their own workflows. ECI's public Voter ID Form 6 guidance does not publish a digital format, so confirm the current upload screen rather than assuming JPEG/JPG. Aadhaar photos are captured at a centre.",
+    a: "JPG (JPEG) for all three upload portals: PAN and Sarathi state it in their own instructions, and the Voter ID portal's photo field accepts .jpg and .jpeg. Aadhaar photos are captured at a centre.",
   },
   {
     q: "Can I use the same photo for my PAN card, voter ID and driving licence?",
@@ -98,7 +98,7 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["Voter ID (Form 6)", "voters.eci.gov.in", "Not publicly specified", "4.5×3.5 cm physical", "Not publicly specified"],
+            ["Voter ID (Form 6)", "voters.eci.gov.in", "2 MB", "None set; print is 4.5×3.5 cm", "JPG / JPEG"],
             ["PAN (NSDL / Protean)", "onlineservices.proteantech.in", "50 KB", "197×276 px", "JPEG"],
             ["PAN (UTIITSL)", "myutiitsl.com", "30 KB", "213×213 px (square)", "JPEG"],
             ["Driving Licence", "sarathi.parivahan.gov.in", "20 KB", "420×525 px preferred", "JPEG"],
@@ -125,25 +125,35 @@ export default function Page() {
       <h2>Why can&apos;t you use one photo for every ID?</h2>
 
       <p>
-        Because the file-size ceilings sit far apart. The driving-licence portal
-        (Sarathi) accepts <strong>40&nbsp;KB</strong>; the voter ID portal accepts
-        up to <strong>200&nbsp;KB</strong> — five times larger. A photo saved for
-        the voter ID form is usually 120–180&nbsp;KB, so uploading it to Sarathi
-        fails on size alone. The portals validate automatically: a single parameter
-        out of range triggers an immediate rejection with no human review.
+        Because the file-size ceilings sit far apart. Sarathi wants a licence photo of
+        <strong>10 to 20&nbsp;KB</strong>, while Voter ID allows up to
+        <strong>2&nbsp;MB</strong>, a hundred times more. A sharp photo saved for
+        Voter ID can easily weigh several hundred KB, so Sarathi refuses it on size
+        alone. The portals validate automatically: a single
+        parameter out of range triggers an immediate rejection with no human review.
       </p>
 
       <p>
         The practical fix is to keep one good source photo and make a separate export
-        for each workflow. A single low-KB file is not automatically suitable for all
-        portals, and public Form 6 does not establish a Voter ID digital cap or pixel
-        minimum to include in a numeric comparison.
+        for each workflow. A single small file isn&apos;t automatically right for every
+        portal either, because the crops and pixel sizes differ too.
+      </p>
+
+      <p>
+        A good order of work: keep the original photo untouched, make the Voter ID file
+        first (it needs the least shrinking), then make the PAN and licence files from
+        the original again rather than from an already-compressed copy. Each round of
+        compression costs detail, and the 20&nbsp;KB licence file is where a soft face
+        shows most.
       </p>
 
       <div className="my-8 rounded-xl border border-hairline bg-paper p-5 text-sm leading-relaxed text-ink-soft">
-        Voter ID is intentionally omitted from a digital-cap chart: ECI&apos;s public
-        Form 6 guidance publishes the physical photo and composition, not a national
-        KB limit or pixel canvas. Confirm those fields on the current upload screen.
+        Where the Voter ID figures come from: the Election Commission&apos;s Form&nbsp;6
+        notes and the photo box on its online form, read on 13 Oct 2026. The{" "}
+        <Link href="/blog/voter-id-photo-requirements-2026/" className="text-brand underline">
+          voter ID guide
+        </Link>{" "}
+        quotes both.
       </div>
 
       <h2>PAN card photo requirements</h2>
@@ -201,9 +211,7 @@ export default function Page() {
         </a>{" "}
         publishes a recent good-quality unsigned colour Form&nbsp;6 photo measuring
         <strong>4.5&nbsp;cm high by 3.5&nbsp;cm wide</strong>, with a white background,
-        open eyes and both face edges visible. Its public Form&nbsp;6 guidance does not
-        publish a universal digital KB cap, pixel size, format or DPI; confirm those
-        fields on the current application screen.
+        open eyes and both face edges visible.
       </p>
 
       <p>
@@ -215,7 +223,7 @@ export default function Page() {
         <Link href="/exam-requirements/voter-id/" className="text-brand underline">
           voter ID photo spec &amp; resizer
         </Link>{" "}
-        to choose a compatibility target after checking the current upload screen.
+        to crop and save the photo.
       </p>
 
       <h2>Driving licence photo requirements</h2>
