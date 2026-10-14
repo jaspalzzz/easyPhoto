@@ -18,7 +18,7 @@ export default function Page() {
       h1="Free Indian Passport Size Photo Maker"
       intro="For an ordinary adult fresh/reissue application in India, your photo and biometrics are captured at the PSK/POPSK — there is no photo upload or print to carry. Use the India preset for the 35×45 mm white-background print required for a child below four, overseas guidance when your mission requests it, or choose another country's preset. Processing stays in your browser."
       faqItems={PASSPORT_FAQ}
-      dateModified="2026-06-11"
+      dateModified="2026-10-14"
     />
   );
 }
