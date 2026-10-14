@@ -11,6 +11,7 @@ import {
   type CountrySpec,
 } from "@/lib/countrySpecs";
 import type { PortalSpec } from "@/lib/portalPresets";
+import { mmToPx } from "@/lib/headPositioning";
 import { photoDimsPx, sigDimsPx } from "@/lib/specRegistry";
 
 /**
@@ -142,7 +143,10 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
 }
 
 export const PASSPORT_FAQ: FaqItem[] = [
-  { q: "What size is a passport photo?", a: "Most countries use 35×45mm. The US and a few others use 2×2 inches (51×51mm). EasyPhoto sets the correct size automatically once you pick your country." },
+  {
+    q: "What size is a passport photo?",
+    a: `Most countries use 35 mm × 45 mm (3.5 cm × 4.5 cm). Printed at 300 DPI, that is ${mmToPx(35, 300)} × ${mmToPx(45, 300)} pixels. The US and a few others use 2×2 inches (51×51mm). EasyPhoto sets the correct size automatically once you pick your country.`,
+  },
   { q: "How do I make a passport photo at home for free?", a: "Upload a clear, front-facing photo, choose your country, and download the prepared result. Check it against the linked current requirements before submitting. No app, no payment, no watermark." },
   { q: "Can I take a passport photo on my phone?", a: "Yes. Any recent phone photo in even lighting works, and the tool crops and sizes it for you." },
   { q: "What background colour should a passport photo have?", a: "White for the US and India. The UK accepts any plain light colour, white included, and some Schengen consulates ask for light grey specifically. EasyPhoto applies a colour that suits each country and you can adjust it." },
@@ -184,9 +188,6 @@ export const VISA_FAQ: FaqItem[] = [
 
 export const PHOTO_RESIZE_FAQ: FaqItem[] = [
   { q: "How do I resize a photo online for free?", a: "Upload it, set a target file size in KB or exact pixel dimensions, and download. No watermark and nothing gets uploaded." },
-  { q: "How do I reduce a photo to 20KB?", a: "Set the target to 20KB and the tool compresses your image under 20KB while keeping it as clear as possible." },
-  { q: "How do I resize a photo to 50KB?", a: "Enter 50KB as the target and download the compressed file. It's handy for passport, visa and exam uploads." },
-  { q: "How do I compress an image to 100KB or 200KB?", a: "Type any target in KB. There are quick presets for 10, 20, 50, 100 and 200KB." },
   { q: "How do I resize a photo without losing quality?", a: "We lower JPEG quality only as much as needed and shrink dimensions last, so the photo stays as sharp as the target allows." },
   { q: "How do I resize a photo for SSC, UPSC or government forms?", a: "Select the limit stated in the current notification, compress to that target, and confirm the downloaded file before uploading." },
   { q: "Can I resize a photo on my phone?", a: "Yes, it works the same in a mobile browser." },
