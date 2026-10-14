@@ -28,7 +28,7 @@ export default function Page() {
 
       <section className="mt-10 space-y-3 border-t border-hairline pt-8">
         <h2 className="text-lg font-semibold text-ink">
-          How to resize a photo to 20 KB, 50 KB, 100 KB or 200 KB
+          Resize a photo to 20 KB, 50 KB, 100 KB or 200 KB
         </h2>
         <ol className="max-w-2xl list-decimal space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
           <li>Upload your photo in the box above.</li>
