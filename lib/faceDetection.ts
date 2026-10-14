@@ -18,6 +18,7 @@
  */
 
 import type { FaceMeasurements } from "./headPositioning";
+import { withTimeout } from "./withTimeout";
 
 // Pinned versions keep the wasm + model in lock-step and the result reproducible.
 // MUST match the installed @mediapipe/tasks-vision package version (the JS API
@@ -60,31 +61,67 @@ export interface DetectionResult extends FaceMeasurements {
   rollDeg: number;
 }
 
+/**
+ * Upper bound for loading the FaceLandmarker: the wasm runtime (~3 MB) and
+ * model (~3.8 MB) downloads plus init. Same 90 s the passport maker always
+ * allowed — a cold ~7 MB download still finishes below 1 Mbit/s. Past it the
+ * CDN has stalled, and every face tool would otherwise spin forever.
+ */
+export const FACE_MODEL_LOAD_TIMEOUT_MS = 90_000;
+
+/** Shown when the face model can't be loaded (stall, network error, CDN down). */
+export const FACE_MODEL_LOAD_ERROR =
+  "The face detection model couldn't be loaded. Check your connection and try again.";
+
 // Lazy singleton so the heavy model only loads once, on first use.
 let landmarkerPromise: Promise<unknown> | null = null;
 
+async function loadLandmarker() {
+  const { FilesetResolver, FaceLandmarker } = await import(
+    "@mediapipe/tasks-vision"
+  );
+  const fileset = await FilesetResolver.forVisionTasks(WASM_BASE);
+  const create = (delegate: "GPU" | "CPU") =>
+    FaceLandmarker.createFromOptions(fileset, {
+      baseOptions: { modelAssetPath: MODEL_URL, delegate },
+      runningMode: "IMAGE",
+      numFaces: 1,
+    });
+  // GPU is faster, but its delegate fails to init on some browsers/older
+  // Android (no WebGL2, blocked GPU). Fall back to CPU so detection still
+  // works instead of throwing and failing the whole photo flow.
+  try {
+    return await create("GPU");
+  } catch {
+    return await create("CPU");
+  }
+}
+
+/**
+ * The one load path every face tool goes through (via detectFace), so the
+ * time limit and the failure handling below apply to all of them.
+ */
 async function getLandmarker() {
   if (!landmarkerPromise) {
-    landmarkerPromise = (async () => {
-      const { FilesetResolver, FaceLandmarker } = await import(
-        "@mediapipe/tasks-vision"
+    const loading = loadLandmarker();
+    const bounded: Promise<unknown> = withTimeout(
+      loading,
+      FACE_MODEL_LOAD_TIMEOUT_MS,
+      FACE_MODEL_LOAD_ERROR
+    ).catch((e: unknown) => {
+      console.warn("Face detection model failed to load.", e);
+      // Never cache a failure: one network blip must not break face detection
+      // for the rest of the session — the next attempt loads afresh.
+      if (landmarkerPromise === bounded) landmarkerPromise = null;
+      // A load that finishes after we gave up must not keep its GPU/WASM memory.
+      loading.then(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (lm: any) => lm?.close?.(),
+        () => {}
       );
-      const fileset = await FilesetResolver.forVisionTasks(WASM_BASE);
-      const create = (delegate: "GPU" | "CPU") =>
-        FaceLandmarker.createFromOptions(fileset, {
-          baseOptions: { modelAssetPath: MODEL_URL, delegate },
-          runningMode: "IMAGE",
-          numFaces: 1,
-        });
-      // GPU is faster, but its delegate fails to init on some browsers/older
-      // Android (no WebGL2, blocked GPU). Fall back to CPU so detection still
-      // works instead of throwing and failing the whole photo flow.
-      try {
-        return await create("GPU");
-      } catch {
-        return await create("CPU");
-      }
-    })();
+      throw new FaceModelLoadError(FACE_MODEL_LOAD_ERROR);
+    });
+    landmarkerPromise = bounded;
   }
   return landmarkerPromise;
 }
@@ -185,8 +222,20 @@ export class FaceDetectionError extends Error {
 }
 
 /**
+ * Raised when the face model couldn't be loaded — it stalled past
+ * FACE_MODEL_LOAD_TIMEOUT_MS or its download failed. Not a verdict on the
+ * photo: tools must show its message (and offer a retry), never "no face".
+ */
+export class FaceModelLoadError extends FaceDetectionError {
+  constructor(message: string) {
+    super(message);
+    this.name = "FaceModelLoadError";
+  }
+}
+
+/**
  * Raised specifically when the model finds zero faces (distinct from a
- * detection timeout, which uses the base FaceDetectionError). Lets the UI
+ * model-load failure, FaceModelLoadError). Lets the UI
  * offer a crop-and-retry recovery path instead of a generic dead-end — a
  * full-body or wide shot often just needs the head cropped in closer.
  */

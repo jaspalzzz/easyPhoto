@@ -7,6 +7,7 @@ import {
   searchUnderCap,
   type Encoder,
 } from "@/lib/compress";
+import { kbCapBytes } from "@/lib/utils";
 
 /**
  * Deterministic encoder model: bytes grow monotonically with both dimension
@@ -133,7 +134,7 @@ describe("compressToCap — low-quality fallback is opt-in", () => {
     const res = await compressToCap(sizedCanvas(), capKb, { minScale: 1, allowLowQualityFallback: true });
     expect(res.underCap).toBe(true);
     expect(res.qualityReduced).toBe(true);
-    expect(res.bytes).toBeLessThanOrEqual(600);
+    expect(res.bytes).toBeLessThanOrEqual(kbCapBytes(capKb));
     expect(res.quality).toBeLessThan(DEFAULT_MIN_QUALITY);
     expect(res.quality).toBeGreaterThanOrEqual(LAST_RESORT_MIN_QUALITY);
   });

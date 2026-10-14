@@ -140,6 +140,21 @@ export function signatureKbFloor(
 }
 
 /**
+ * File format to export a signature in for a portal preset. The preset's
+ * published `sigFormat` decides; the description is only a fallback for
+ * presets that don't state one. Matching the description alone exported a
+ * transparent PNG for the Driving Licence (Sarathi) preset, whose source
+ * requires JPG but whose description never says so.
+ */
+export function signatureExportFormat(
+  preset: { sigFormat?: string; description?: string } | undefined,
+): "jpeg" | "png" {
+  const jpg = /\b(?:JPG|JPEG)\b/i;
+  if (preset?.sigFormat) return jpg.test(preset.sigFormat) ? "jpeg" : "png";
+  return jpg.test(preset?.description ?? "") ? "jpeg" : "png";
+}
+
+/**
  * Turn light paper into transparency, keeping the dark ink. Returns a NEW RGBA
  * canvas; the source is untouched.
  */
@@ -210,6 +225,25 @@ export function signatureTrimAttach(width: number, height: number): { minRun: nu
   return {
     minRun,
     keepAttached: { attachGap: minRun * 4, minSpeckArea: Math.max(4, Math.round((minRun * minRun) / 4)) },
+  };
+}
+
+/**
+ * Trim settings for a signature uploaded to sign-image (the full-resolution
+ * photo or scan, after whiteToTransparent). Same attached-strokes rule as the
+ * signature tools: a lone dust speck or stray mark away from the signature no
+ * longer stretches the crop, while thin strokes, i-dots and pen lifts next to
+ * it are kept. Without keepAttached the floor would cut thin strokes off.
+ * If nothing clears the floor it falls back to every ink pixel, as before.
+ */
+export function signatureUploadTrim(width: number, height: number) {
+  return {
+    mode: "alpha" as const,
+    padding: 8,
+    ...signatureTrimAttach(width, height),
+    // Before this trim, sign-image found any visible ink; a faint signature
+    // too sparse for the floor must still crop, not fail as "no signature".
+    fallbackToAnyInk: true,
   };
 }
 
@@ -398,6 +432,10 @@ export function getContentBBox(
     minRun?: number;
     /** Keep thin strokes attached to the dense core (see attachedInkBBox). */
     keepAttached?: AttachOptions;
+    /** With keepAttached: if no row/column clears the floor (a faint or tiny
+     *  signature in a large photo), fall back to every content pixel instead
+     *  of finding nothing. */
+    fallbackToAnyInk?: boolean;
   } = {}
 ): BBox | null {
   const mode = opts.mode ?? "alpha";
@@ -427,7 +465,9 @@ export function getContentBBox(
   if (opts.keepAttached) {
     const ink = new Uint8Array(width * height);
     for (let p = 0; p < ink.length; p++) if (isContent(p * 4)) ink[p] = 1;
-    return attachedInkBBox({ width, height, ink }, minRun, opts.keepAttached);
+    const attached = attachedInkBBox({ width, height, ink }, minRun, opts.keepAttached);
+    if (attached || !opts.fallbackToAnyInk) return attached;
+    return attachedInkBBox({ width, height, ink }, 0, { attachGap: 0, minSpeckArea: 0 });
   }
 
   // Per-row / per-column content histograms, so the density floor applies
@@ -566,4 +606,47 @@ export function detectInkBBox(
   const width = Math.min(source.width - x, Math.round(bbox.width * inv) + pad * 2);
   const height = Math.min(source.height - y, Math.round(bbox.height * inv) + pad * 2);
   return { x, y, width, height };
+}
+
+/**
+ * Size and placement that grow a `width × height` image to `ratio`
+ * (width ÷ height) by adding margins only — never by cropping, so no stroke is
+ * ever cut. Returns null when the image is already within `tolerance` of the
+ * ratio (relative), or when the inputs are unusable.
+ *
+ * Exams such as SSC publish a signature shape ("about 6.0 cm × 2.0 cm") but no
+ * pixel size; a signature trimmed tight to its ink rarely has that shape.
+ */
+export function aspectPadding(
+  width: number,
+  height: number,
+  ratio: number,
+  tolerance = 0.03
+): { width: number; height: number; x: number; y: number } | null {
+  if (!(ratio > 0) || !(width > 0) || !(height > 0)) return null;
+  const current = width / height;
+  if (Math.abs(current - ratio) / ratio <= tolerance) return null;
+  if (current > ratio) {
+    // Wider than the shape: add space above and below.
+    const padded = Math.round(width / ratio);
+    return { width, height: padded, x: 0, y: Math.floor((padded - height) / 2) };
+  }
+  // Taller than the shape: add space left and right.
+  const padded = Math.round(height * ratio);
+  return { width: padded, height, x: Math.floor((padded - width) / 2), y: 0 };
+}
+
+/**
+ * Centre `source` on a transparent canvas of the requested shape (see
+ * aspectPadding). The margins become white when the caller flattens to JPEG.
+ * Returns `source` itself when no padding is needed.
+ */
+export function padToAspect(source: HTMLCanvasElement, ratio: number): HTMLCanvasElement {
+  const pad = aspectPadding(source.width, source.height, ratio);
+  if (!pad) return source;
+  const out = document.createElement("canvas");
+  out.width = pad.width;
+  out.height = pad.height;
+  out.getContext("2d")?.drawImage(source, pad.x, pad.y);
+  return out;
 }

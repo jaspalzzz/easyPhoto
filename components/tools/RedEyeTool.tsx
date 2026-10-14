@@ -8,7 +8,12 @@ import { ImageToolShell, type ToolSource } from "./ImageToolShell";
 import { downloadBlob, shareFile } from "@/lib/download";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { track, deviceClass } from "@/lib/analytics";
-import { detectFace, disposeLandmarker, type Point } from "@/lib/faceDetection";
+import {
+  detectFace,
+  disposeLandmarker,
+  FaceModelLoadError,
+  type Point,
+} from "@/lib/faceDetection";
 
 type Brush = "S" | "M" | "L";
 
@@ -111,7 +116,9 @@ const EYE_TAP_TOLERANCE_FRACTION = 0.35;
 type FaceState =
   | { status: "detecting" }
   | { status: "found"; left: Point; right: Point; tolerance: number }
-  | { status: "not-found" };
+  | { status: "not-found" }
+  /** The face model couldn't load — not a verdict on the photo. */
+  | { status: "model-error"; message: string };
 
 function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -168,8 +175,13 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
           tolerance: Math.max(20, eyeDist * EYE_TAP_TOLERANCE_FRACTION),
         });
       })
-      .catch(() => {
-        if (!cancelled) setFaceState({ status: "not-found" });
+      .catch((e: unknown) => {
+        if (cancelled) return;
+        setFaceState(
+          e instanceof FaceModelLoadError
+            ? { status: "model-error", message: e.message }
+            : { status: "not-found" }
+        );
       })
       .finally(() => {
         // Model + wasm memory is heavy — free it once this tool is done with
@@ -187,7 +199,7 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
     // the old unguarded pixel-colour heuristic (which is what let this tool
     // "fix" random reddish hair/skin pixels on photos with no eyes at all),
     // decline entirely and point at the warning banner explaining why.
-    if (faceState.status === "detecting" || faceState.status === "not-found") return;
+    if (faceState.status !== "found") return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -265,6 +277,13 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
           ? "Checking the photo for a face…"
           : "Tap directly on a red flash pupil. Normal dark/brown eyes will not change."}
       </p>
+
+      {faceState.status === "model-error" && (
+        <p className="flex items-start gap-2 rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.75} />
+          {faceState.message}
+        </p>
+      )}
 
       {faceState.status === "not-found" && (
         <p className="flex items-start gap-2 rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">

@@ -13,6 +13,7 @@
 
 import { padBlobToMin } from "@/lib/padBytes";
 import { setBlobDensityDpi } from "@/lib/jpegDensity";
+import { kbCapBytes, kbFloorBytes } from "@/lib/utils";
 
 // ── Pure, testable search ────────────────────────────────────────────────
 
@@ -303,8 +304,11 @@ export async function compressToCap(
     };
   };
 
+  // Cap and floor in bytes that satisfy portals counting 1 KB as either 1000
+  // or 1024 bytes (see kbCapBytes / kbFloorBytes).
+  const capBytes = kbCapBytes(maxKb);
   const res = await searchUnderCap(encode, {
-    maxBytes: maxKb * 1024,
+    maxBytes: capBytes,
     minQuality: opts.minQuality,
     lastResortMinQuality: opts.allowLowQualityFallback ? LAST_RESORT_MIN_QUALITY : undefined,
     maxQuality: opts.maxQuality,
@@ -318,8 +322,8 @@ export async function compressToCap(
     blob = await setBlobDensityDpi(blob, opts.densityDpi);
   }
   // …then the portal minimum-KB floor: pad up when below the band.
-  if (opts.minKb && res.underCap && blob.size < opts.minKb * 1024) {
-    blob = await padBlobToMin(blob, opts.minKb * 1024);
+  if (opts.minKb && res.underCap && blob.size < kbFloorBytes(opts.minKb)) {
+    blob = await padBlobToMin(blob, kbFloorBytes(opts.minKb));
   }
 
   return {
@@ -332,7 +336,7 @@ export async function compressToCap(
     // Padding can only satisfy a portal band when its floor is not above the
     // selected ceiling. Re-evaluate the final blob instead of reporting the
     // pre-padding encoder verdict.
-    underCap: res.underCap && blob.size <= maxKb * 1024,
+    underCap: res.underCap && blob.size <= capBytes,
     qualityReduced: res.underCap && res.quality < (opts.minQuality ?? DEFAULT_MIN_QUALITY),
   };
 }

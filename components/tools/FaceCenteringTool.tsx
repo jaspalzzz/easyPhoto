@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FileImage, Loader2, RefreshCcw, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
-import { detectFace } from "@/lib/faceDetection";
+import { detectFace, FaceModelLoadError } from "@/lib/faceDetection";
 
 type Status = "centered" | "slightly-off" | "off";
 
@@ -133,7 +133,12 @@ export function FaceCenteringTool() {
 
     try {
       const size = { width: img.naturalWidth, height: img.naturalHeight };
-      const det = await detectFace(img, size).catch(() => null);
+      // A model that couldn't load says nothing about the photo — surface it
+      // (outer catch) instead of reporting "no face".
+      const det = await detectFace(img, size).catch((e: unknown) => {
+        if (e instanceof FaceModelLoadError) throw e;
+        return null;
+      });
 
       if (!det) {
         setAnalysis({
@@ -179,9 +184,13 @@ export function FaceCenteringTool() {
         rollDeg: det.rollDeg,
       });
       track({ name: "tool_success", tool: "face-centering" });
-    } catch {
+    } catch (e) {
       URL.revokeObjectURL(url);
-      setError("Face analysis failed. Please try a clearer front-facing photo.");
+      setError(
+        e instanceof FaceModelLoadError
+          ? e.message
+          : "Face analysis failed. Please try a clearer front-facing photo."
+      );
       track({ name: "tool_failure", tool: "face-centering" });
     } finally {
       setBusy(false);

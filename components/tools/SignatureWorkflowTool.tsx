@@ -11,6 +11,7 @@ import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell"
 import { fitToExactFrame, imageToCanvas, pngUnderKb } from "@/lib/imaging";
 import {
   SIGNATURE_CLEAN_DEFAULTS,
+  signatureExportFormat,
   signatureKbFloor,
   signatureStackParams,
   signatureTrimAttach,
@@ -18,9 +19,10 @@ import {
   countStackedSignatures,
   whiteToTransparent,
   trimToContent,
+  padToAspect,
 } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
-import { formatKb } from "@/lib/utils";
+import { formatKb, kbFloorBytes, minCapKbForFloor } from "@/lib/utils";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
 import { compressToCap } from "@/lib/compress";
 import { padBlobToMin } from "@/lib/padBytes";
@@ -117,11 +119,8 @@ function Body({
 
   // Background Settings (PNG vs JPEG)
   const initialPreset = defaultPresetKey ? PORTAL_PRESETS[defaultPresetKey] : undefined;
-  const inferredFormat = /\b(?:JPG|JPEG)\b/i.test(initialPreset?.description ?? "")
-    ? "jpeg"
-    : "png";
   const [bgFormat, setBgFormat] = React.useState<"png" | "jpeg">(
-    defaultFormat ?? inferredFormat
+    defaultFormat ?? signatureExportFormat(initialPreset)
   );
 
   // Clean Settings
@@ -137,6 +136,9 @@ function Body({
   const [presetKey, setPresetKey] = React.useState<string>(defaultPresetKey ?? "");
   const selectedPreset = presetKey ? PORTAL_PRESETS[presetKey] : undefined;
   const minKb = signatureKbFloor(selectedPreset, pageMinKb);
+  // Lowest target the slider allows: above the band floor far enough that the
+  // padded file still fits the cap when 1 KB is counted as 1000 bytes.
+  const minTargetKb = minKb ? minCapKbForFloor(minKb) : 5;
   // Some exams want the signature several times on one image (UPSC: three,
   // one below another). Checked after cleaning; see countStackedSignatures.
   const requiredCopies = selectedPreset?.sigCopies ?? 1;
@@ -350,6 +352,13 @@ function Body({
             ? countStackedSignatures(alphaRowHits(finalCanvas), signatureStackParams(finalCanvas.width, finalCanvas.height))
             : undefined;
 
+        // Give the signature the exam's published shape (e.g. SSC's "about
+        // 6.0 cm × 2.0 cm") when the exam sets a shape but no exact pixel
+        // frame — the exact-frame branch below already fits its frame. Margins
+        // only, so no stroke is cut; they turn white when flattened to JPEG.
+        const shapeRatio = resizeMode === "kb" ? selectedPreset?.sigAspectRatio : undefined;
+        if (shapeRatio) finalCanvas = padToAspect(finalCanvas, shapeRatio);
+
         // Apply white background flattening if JPEG is requested
         let renderCanvas = finalCanvas;
         if (bgFormat === "jpeg") {
@@ -373,6 +382,7 @@ function Body({
             // High-quality JPEG binary search compression
             const compressed = await compressToCap(renderCanvas, dTargetKb, {
               minScale: 0.1,
+              densityDpi: selectedPreset?.dpi,
             });
             resultBlob = compressed.blob;
             resultCanvas = imageToCanvas(renderCanvas, compressed.width, compressed.height);
@@ -397,8 +407,8 @@ function Body({
           }
           // Portals reject signatures below the band's floor (e.g. 10–20 KB)
           // too — pad up with inert metadata; the drawn pixels are untouched.
-          if (minKb && isUnderCap && resultBlob.size < minKb * 1024) {
-            resultBlob = await padBlobToMin(resultBlob, minKb * 1024);
+          if (minKb && isUnderCap && resultBlob.size < kbFloorBytes(minKb)) {
+            resultBlob = await padBlobToMin(resultBlob, kbFloorBytes(minKb));
           }
         } else {
           // Exact portal frame: preserve handwriting proportions, then enforce
@@ -417,6 +427,7 @@ function Body({
               minDimensions: { width: targetWidth, height: targetHeight },
               minKb,
               maxQuality: 1,
+              densityDpi: selectedPreset?.dpi,
             });
             resultBlob = compressed.blob;
             isUnderCap = compressed.underCap;
@@ -424,8 +435,8 @@ function Body({
             const compressed = await pngUnderKb(resized, dTargetKb, 1);
             resultBlob = compressed.blob;
             isUnderCap = compressed.underCap;
-            if (minKb && isUnderCap && resultBlob.size < minKb * 1024) {
-              resultBlob = await padBlobToMin(resultBlob, minKb * 1024);
+            if (minKb && isUnderCap && resultBlob.size < kbFloorBytes(minKb)) {
+              resultBlob = await padBlobToMin(resultBlob, kbFloorBytes(minKb));
             }
           }
           resultCanvas = resized;
@@ -496,6 +507,8 @@ function Body({
     toolName,
     minKb,
     requiredCopies,
+    selectedPreset?.dpi,
+    selectedPreset?.sigAspectRatio,
   ]);
 
   // Handle preset selections
@@ -509,7 +522,7 @@ function Body({
         setResizeMode("kb");
         setTargetKb(preset.sigLimitKb);
       }
-      setBgFormat(/\b(?:JPG|JPEG)\b/i.test(preset.description) ? "jpeg" : "png");
+      setBgFormat(signatureExportFormat(preset));
       
       // If portal specifies preset dimensions, we lock those dimensions
       if (preset.sigWidthPx && preset.sigHeightPx) {
@@ -994,10 +1007,10 @@ function Body({
                     <input
                       id="sig-resize-target-kb"
                       type="range"
-                      min={minKb ?? 5}
+                      min={minTargetKb}
                       max={SIGNATURE_MAX_KB}
                       value={targetKb}
-                      onChange={(e) => setTargetKb(Math.max(minKb ?? 5, Number(e.target.value)))}
+                      onChange={(e) => setTargetKb(Math.max(minTargetKb, Number(e.target.value)))}
                       className="w-full cursor-pointer accent-brand"
                     />
                   </label>
@@ -1060,7 +1073,7 @@ export function SignatureWorkflowTool({
     track({ name: "tool_view", tool: toolName });
   }, [toolName]);
   // Body mounts only after a file is loaded, by which point this has resolved.
-  const urlKb = useUrlKbTarget(targetFromUrl, minKb ?? 5, SIGNATURE_MAX_KB);
+  const urlKb = useUrlKbTarget(targetFromUrl, minKb ? minCapKbForFloor(minKb) : 5, SIGNATURE_MAX_KB);
 
   return (
     <ImageToolShell acceptedWorkflowKinds={WORKFLOW_SIGNATURE_KINDS}>

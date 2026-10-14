@@ -37,7 +37,7 @@ test("HEIC input: an iPhone HEIC decodes and processes on a non-Safari browser",
 
   // A real, decodable JPEG under the cap — proof the HEIC was actually converted,
   // not passed through broken.
-  expect(bytes.length / 1024, `downloaded ${(bytes.length / 1024).toFixed(1)} KB`).toBeLessThanOrEqual(30);
+  expect(bytes.length, `downloaded ${bytes.length} B`).toBeLessThanOrEqual(30 * 1000);
   expect(bytes[0], "output is a JPEG (FF D8)").toBe(0xff);
   expect(bytes[1]).toBe(0xd8);
 

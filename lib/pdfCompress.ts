@@ -10,6 +10,7 @@
  * should be stated in the UI. Nothing is uploaded; all in-browser.
  */
 import { pdfToCanvases } from "./pdfToImages";
+import { kbCapBytes } from "./utils";
 
 export interface PdfCompressResult {
   blob: Blob;
@@ -120,7 +121,7 @@ export async function compressPdfToTarget(
   targetKb: number,
   onProgress?: (msg: string) => void
 ): Promise<PdfCompressResult> {
-  const targetBytes = targetKb * 1024;
+  const targetBytes = kbCapBytes(targetKb);
 
   // Already within budget → return the original untouched. Rasterising a
   // text/vector PDF to fit a cap it ALREADY meets only inflates it (e.g. an

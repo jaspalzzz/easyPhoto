@@ -5,6 +5,8 @@
  * tool actually resizes something.
  */
 
+import { kbCapBytes } from "@/lib/utils";
+
 let picaInstance: unknown = null;
 async function getPica() {
   if (!picaInstance) {
@@ -222,7 +224,7 @@ export async function pngUnderKb(
 ): Promise<{ canvas: HTMLCanvasElement; blob: Blob; bytes: number; scale: number; underCap: boolean }> {
   // Fix 1: clamp minScale to prevent an infinite loop when caller passes 0 or negative.
   minScale = Math.max(0.01, minScale);
-  const maxBytes = maxKb * 1024;
+  const maxBytes = kbCapBytes(maxKb);
   let scale = 1;
   let smallest: { canvas: HTMLCanvasElement; blob: Blob; bytes: number; scale: number } | null = null;
 

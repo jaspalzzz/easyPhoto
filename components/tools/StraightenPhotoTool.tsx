@@ -5,7 +5,7 @@ import { WORKFLOW_PHOTO_KINDS } from "@/lib/workflowHandoff";
 import { Download, Share2, Loader2, RotateCcw, Scissors, Crop, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, type ToolSource } from "./ImageToolShell";
-import { detectFace, disposeLandmarker } from "@/lib/faceDetection";
+import { detectFace, disposeLandmarker, FaceModelLoadError } from "@/lib/faceDetection";
 import { downloadBlob, shareFile } from "@/lib/download";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { track, deviceClass } from "@/lib/analytics";
@@ -16,6 +16,8 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [detecting, setDetecting] = React.useState(true);
   const [detectedRoll, setDetectedRoll] = React.useState<number | null>(null);
+  /** Set when the face model couldn't load — distinct from "no face found". */
+  const [modelError, setModelError] = React.useState<string | null>(null);
   const [angle, setAngle] = React.useState(0); // applied rotation, degrees
 
   React.useEffect(() => {
@@ -55,6 +57,7 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
     let cancelled = false;
     (async () => {
       setDetecting(true);
+      setModelError(null);
       try {
         const det = await detectFace(source.image, source.size);
         if (cancelled) return;
@@ -62,9 +65,10 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
         const corr = Math.max(-MAX_NUDGE, Math.min(MAX_NUDGE, -det.rollDeg));
         setAngle(Number(corr.toFixed(1)));
         track({ name: "tool_success", tool: "straighten-photo", device: deviceClass() });
-      } catch {
+      } catch (e) {
         if (cancelled) return;
         setDetectedRoll(null);
+        setModelError(e instanceof FaceModelLoadError ? e.message : null);
         setAngle(0);
       } finally {
         // Free MediaPipe memory promptly (mobile budgets are tight).
@@ -116,6 +120,10 @@ function Body({ source, reset }: { source: ToolSource; reset: () => void }) {
         <p className="flex items-center gap-2 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.75} /> Detecting
           tilt…
+        </p>
+      ) : modelError ? (
+        <p className="rounded-lg border border-amber-200 bg-amber-50/60 px-4 py-2 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-300">
+          {modelError} You can still straighten manually with the slider below.
         </p>
       ) : detectedRoll == null ? (
         <p className="rounded-lg border border-amber-200 bg-amber-50/60 px-4 py-2 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-300">
