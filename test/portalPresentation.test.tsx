@@ -84,8 +84,9 @@ describe("portal background and format presentation", () => {
     const itbp = await getExamMetadata({ params: Promise.resolve({ exam: "itbp" }) });
     const oci = await getExamMetadata({ params: Promise.resolve({ exam: "oci" }) });
 
-    expect(itbp.description).toContain("Stored size for the form");
-    expect(itbp.description).not.toMatch(/size (?:&|and) format/i);
-    expect(oci.description).toContain("Stored size & format checked");
+    expect(itbp.description).toContain("Confirm the current notice");
+    expect(itbp.description).not.toMatch(/format/i);
+    expect(oci.description).toContain("Checked against the official notice");
+    expect(oci.description).not.toMatch(/format/i);
   });
 });

@@ -433,12 +433,12 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "voter-id-photo-requirements-2026",
-    title: "Voter ID Photo Size & Requirements 2026 — NVSP Upload Spec",
+    title: "Voter ID Photo Size 2026: 4.5 cm × 3.5 cm, Under 2 MB JPG",
     description:
       "Voter ID photo: 4.5 × 3.5 cm, colour, white background, unsigned; uploaded on the Voters' Service Portal as a JPG or JPEG of up to 2 MB.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
-    updatedISO: "2026-10-13",
+    updatedISO: "2026-10-14",
     excerpt:
       "What ECI's Form 6 asks of the photo, the portal's 2 MB JPG upload limit, and why uploads get refused.",
     readMins: 6,
