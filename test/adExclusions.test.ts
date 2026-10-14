@@ -1,90 +1,127 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { isAdSenseExcludedPath } from "@/lib/adExclusions";
-import { CONVERT_SLUGS } from "@/lib/convertPairs";
+import {
+  ISOLATED_PATHS,
+  isAdSenseExcludedPath,
+  isIsolatedPath,
+  isPrivateAdFreePath,
+} from "@/lib/adExclusions";
 import { HINGLISH_SLUGS } from "@/lib/hinglishPages";
 import { MAKER_PAGES } from "@/lib/makerPages";
-import { PORTAL_KEYS } from "@/lib/portalPresets";
-import { SUB_EXAM_SLUGS } from "@/lib/subExamResizers";
+import { READY_TOOLS, categoryOf } from "@/lib/toolsCatalog";
+
+/**
+ * The ad policy (owner decision, 14 Oct 2026, option B): ads may run on
+ * articles, guides, exam pages and photo tools; never on private pages (ID
+ * documents, PDFs, text recognition, legal pages: the privacy-policy promise),
+ * never on the AI pages that send COEP (ad frames can't load there), and never
+ * on noindexed duplicates or embeds.
+ */
 
 const APP_DIR = path.join(process.cwd(), "app");
-const WORKSPACE_IMPORT =
-  /@\/components\/(?:tool\/(?:PhotoTool|Uploader)|tools\/(?:[A-Za-z]+Tool|ExamResizerSteps|PortalResizer|DocPhotoResizerPage)|site\/(?:DocPhotoLanding|HeroStarter))/;
+const HEADERS = fs.readFileSync(path.join(process.cwd(), "public", "_headers"), "utf8");
 
-function pageFiles(dir: string): string[] {
-  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-    const absolute = path.join(dir, entry.name);
-    if (entry.isDirectory()) return pageFiles(absolute);
-    return entry.name === "page.tsx" ? [absolute] : [];
+/** Paths whose rule in public/_headers sets Cross-Origin-Embedder-Policy. */
+function coepRules(): string[] {
+  const rules: string[] = [];
+  let current: string | null = null;
+  for (const line of HEADERS.split("\n")) {
+    if (/^\S/.test(line) && !line.startsWith("#")) current = line.trim();
+    else if (current && /^\s+Cross-Origin-Embedder-Policy:/.test(line)) rules.push(current);
+  }
+  return rules;
+}
+
+function matches(rule: string, route: string): boolean {
+  const re = new RegExp(`^${rule.split("*").map((p) => p.replace(/[.?+^$()[\]{}|\\/]/g, "\\$&")).join(".*")}$`);
+  return re.test(route);
+}
+
+describe("ad policy: private pages stay ad-free", () => {
+  it("covers every PDF, document and text-recognition tool", () => {
+    const privateCategories = new Set(["pdf", "document", "ocr"]);
+    const missing = READY_TOOLS.filter((t) => privateCategories.has(categoryOf(t.slug)?.slug ?? ""))
+      .map((t) => `/tools/${t.slug}/`)
+      .filter((route) => !isPrivateAdFreePath(route));
+    expect(missing).toEqual([]);
   });
-}
 
-function routeForPage(file: string): string {
-  const relative = path.relative(APP_DIR, file).replace(/\\/g, "/");
-  const route = relative.replace(/\/page\.tsx$/, "");
-  return route ? `/${route}/` : "/";
-}
+  it("covers ID documents, PAN and the legal pages", () => {
+    for (const route of [
+      "/unlock-aadhaar-pdf/",
+      "/aadhaar-photo/",
+      "/exam-requirements/pan/",
+      "/privacy/",
+      "/terms/",
+      "/disclaimer/",
+      "/contact/",
+      "/about/",
+    ]) {
+      expect(isPrivateAdFreePath(route), route).toBe(true);
+      expect(isAdSenseExcludedPath(route), route).toBe(true);
+    }
+  });
+});
 
-function concreteRoutes(file: string): string[] {
-  const route = routeForPage(file);
-  if (!route.includes("[")) return [route];
-  if (route === "/[maker]/") {
-    return MAKER_PAGES.map((maker) => `/${maker.slug}/`);
-  }
-  if (route === "/convert/[pair]/") {
-    return CONVERT_SLUGS.map((slug) => `/convert/${slug}/`);
-  }
-  if (route === "/exam-requirements/[exam]/") {
-    return PORTAL_KEYS.map((portalId) => `/exam-requirements/${portalId}/`);
-  }
-  if (route === "/exam-resizer/[exam]/") {
-    return SUB_EXAM_SLUGS.map((slug) => `/exam-resizer/${slug}/`);
-  }
-  // Dynamic tool routes are covered by the /tools/ policy boundary.
-  if (route.startsWith("/tools/")) return [route.replace(/\[[^/]+\]/g, "fixture")];
-  throw new Error(`Add a concrete route expansion for upload page ${route}`);
-}
+describe("ad policy: AI pages are isolated, and public/_headers agrees", () => {
+  it("isolates every page that mounts the background-removal engine or hands a photo to it", () => {
+    const AI_IMPORT =
+      /@\/components\/(?:tool\/PhotoTool|tools\/(?:BackgroundRemovalTool|WhiteBackgroundTool)|site\/HeroStarter)/;
+    const offenders: string[] = [];
+    const walk = (dir: string) => {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const file = path.join(dir, entry.name);
+        if (entry.isDirectory()) walk(file);
+        else if (entry.name === "page.tsx" && AI_IMPORT.test(fs.readFileSync(file, "utf8"))) {
+          const rel = path.relative(APP_DIR, file).replace(/\\/g, "/").replace(/\/?page\.tsx$/, "");
+          const routes =
+            rel === "[maker]" ? MAKER_PAGES.map((m) => `/${m.slug}/`) : [rel ? `/${rel}/` : "/"];
+          offenders.push(...routes.filter((r) => !isIsolatedPath(r) && !HINGLISH_SLUGS.includes(r.slice(1, -1))));
+        }
+      }
+    };
+    walk(APP_DIR);
+    expect(offenders).toEqual([]);
+  });
 
-describe("AdSense upload/result exclusions", () => {
-  it("excludes every source page that directly mounts a file workspace", () => {
-    const workspacePages = pageFiles(APP_DIR).filter((file) =>
-      WORKSPACE_IMPORT.test(fs.readFileSync(file, "utf8"))
-    );
-    const uncovered = workspacePages.flatMap((file) =>
-      concreteRoutes(file)
-        .filter((route) => !isAdSenseExcludedPath(route))
-        .map((route) => `${path.relative(process.cwd(), file)} -> ${route}`)
-    );
-
-    expect(workspacePages.length).toBeGreaterThan(0);
+  it("sends COEP on exactly the isolated pages", () => {
+    const rules = coepRules();
+    expect(rules).not.toContain("/*");
+    const uncovered = ISOLATED_PATHS.filter((route) => !rules.some((rule) => matches(rule, route)));
     expect(uncovered).toEqual([]);
+    // Every COEP rule must describe an isolated page, so no ad page loses its ads.
+    const strays = rules.filter((rule) => !ISOLATED_PATHS.some((route) => matches(rule, route)));
+    expect(strays).toEqual([]);
   });
 
-  it("derives generated maker, Hinglish, convert, exam and sub-exam exclusions", () => {
-    for (const maker of MAKER_PAGES) {
-      expect(isAdSenseExcludedPath(`/${maker.slug}/`)).toBe(true);
-    }
-    for (const slug of HINGLISH_SLUGS) {
-      expect(isAdSenseExcludedPath(`/${slug}/`)).toBe(true);
-    }
-    for (const slug of CONVERT_SLUGS) {
-      expect(isAdSenseExcludedPath(`/convert/${slug}/`)).toBe(true);
-    }
-    for (const portalId of PORTAL_KEYS) {
-      expect(isAdSenseExcludedPath(`/exam-requirements/${portalId}/`)).toBe(true);
-      expect(isAdSenseExcludedPath(`/${portalId}-photo-resizer/`)).toBe(true);
-      expect(isAdSenseExcludedPath(`/${portalId}-signature-resizer/`)).toBe(true);
-    }
-    for (const slug of SUB_EXAM_SLUGS) {
-      expect(isAdSenseExcludedPath(`/exam-resizer/${slug}/`)).toBe(true);
+  it("sends no site-wide cross-origin isolation", () => {
+    const siteWide = HEADERS.split(/\n(?=\S)/).find((block) => block.startsWith("/*\n"));
+    expect(siteWide).toBeDefined();
+    expect(siteWide).not.toMatch(/Cross-Origin-(?:Embedder|Opener)-Policy/);
+  });
+});
+
+describe("ad policy: ads may run where most visitors land", () => {
+  it("allows the photo tools, signature tools and exam pages", () => {
+    for (const route of [
+      "/tools/resize-kb/",
+      "/tools/sign-image/",
+      "/tools/photo-signature-merge/",
+      "/tools/photo-with-name-date/",
+      "/tools/signature-resize/",
+      "/exam-requirements/ssc/",
+      "/exam-requirements/voter-id/",
+      "/blog/how-to-take-a-passport-photo-at-home/",
+    ]) {
+      expect(isAdSenseExcludedPath(route), route).toBe(false);
     }
   });
 
-  it("keeps existing tool and embed family exclusions intact", () => {
-    expect(isAdSenseExcludedPath("/tools/resize-kb/")).toBe(true);
+  it("keeps noindexed duplicates and embeds ad-free", () => {
+    for (const slug of HINGLISH_SLUGS) expect(isAdSenseExcludedPath(`/${slug}/`)).toBe(true);
     expect(isAdSenseExcludedPath("/embed/exam-spec/ssc/")).toBe(true);
     expect(isAdSenseExcludedPath("/exam-resizer/ssc-cgl/")).toBe(true);
-    expect(isAdSenseExcludedPath("/blog/how-to-take-a-passport-photo-at-home/")).toBe(false);
+    expect(isAdSenseExcludedPath("/tools/form-resizer/ssc/")).toBe(true);
   });
 });

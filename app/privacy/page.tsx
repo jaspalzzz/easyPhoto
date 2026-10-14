@@ -29,7 +29,7 @@ export default function PrivacyPage() {
             description:
               "How easyPhoto handles your data: it doesn't. Photos and PDFs are processed entirely in your browser and never uploaded.",
             url: "/privacy/",
-            dateModified: "2026-10-08",
+            dateModified: "2026-10-14",
           }),
         ]}
       />
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
         <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
           Privacy Policy
         </h1>
-        <p className="text-sm text-muted-foreground">Last updated: October 8, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: October 14, 2026</p>
       </header>
 
       {/* The short version — highlighted so it's the first thing read */}
@@ -83,7 +83,8 @@ export default function PrivacyPage() {
           We use Cloudflare&apos;s cookieless, aggregate web analytics to count
           page views and measure site speed — it sets no cookies, does no
           fingerprinting or cross-site tracking, and builds no personal
-          profiles. Beyond that we run no advertising trackers or behavioural
+          profiles. Apart from Google&apos;s advertising cookies on pages that
+          show ads (see Advertising below), we run no trackers or behavioural
           profiling of any kind. As with any website, the server that hosts
           these pages may keep standard, short-lived technical logs (such as
           IP address and browser type) for the page requests themselves —
@@ -91,8 +92,16 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="Advertising">
-          EasyPhoto may show Google AdSense ads on content pages that do not
-          contain private user files. Google and its advertising partners may
+          When advertising is on, easyPhoto shows Google AdSense ads on
+          articles, guides, exam pages and the photo and signature tools,
+          placed below the tool and its result, never inside the upload,
+          preview or download area. On those tool pages Google&apos;s advertising
+          script runs on the same page as the tool: your photo is still edited
+          on your device and easyPhoto never uploads it, but the script is
+          there. Pages for ID documents and PDFs (Aadhaar, PAN, the PDF tools,
+          the document scanner, form filling and text recognition) and these
+          policy pages never load Google&apos;s advertising or consent scripts.
+          Google and its advertising partners may
           use cookies or similar technologies to serve, limit, and measure ads.
           When advertising is enabled and the European-regulations message is
           published, visitors in the European Economic Area, the United Kingdom,
@@ -104,10 +113,7 @@ export default function PrivacyPage() {
           &quot;Privacy and cookie settings&quot; link that Google adds to an
           ad-supported page to reopen the message and change that choice. You can
           also learn about Google&apos;s advertising practices and control ad
-          personalisation in your Google ad settings. We do not place ads or load
-          Google&apos;s advertising or consent scripts inside upload areas, result
-          previews, private document workflows, or pages that contain your
-          images or PDFs. Third-party vendors, including Google, use cookies to
+          personalisation in your Google ad settings. Third-party vendors, including Google, use cookies to
           serve ads based on your prior visits to this and other websites.
           Google&apos;s advertising cookies let it and its partners show you ads
           based on those visits. You can turn off personalised ads in{" "}

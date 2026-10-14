@@ -36,11 +36,15 @@ describe("privacy network-host disclosure", () => {
     expect(privacy).not.toContain("staticimgly.com");
   });
 
-  it("retains the AdSense cookie and ad-free workspace disclosure", () => {
+  // Owner decision, 14 Oct 2026 (option B): ads may run on photo tools, below
+  // the result; ID-document and PDF pages never load the ad scripts
+  // (lib/adExclusions.ts, test/adExclusions.test.ts).
+  it("discloses AdSense cookies, where ads run, and the ad-free document pages", () => {
     expect(privacy).toContain("Google AdSense");
     expect(privacy).toContain("use cookies or similar technologies");
-    expect(privacy).toContain("do not place ads or load");
-    expect(privacy).toMatch(/pages\s+that\s+contain\s+your\s+images\s+or\s+PDFs/);
+    expect(privacy).toMatch(/never\s+inside\s+the\s+upload,\s+preview\s+or\s+download\s+area/);
+    expect(privacy).toMatch(/Pages\s+for\s+ID\s+documents\s+and\s+PDFs/);
+    expect(privacy).toMatch(/never\s+load\s+Google&apos;s\s+advertising\s+or\s+consent\s+scripts/);
   });
 
   it("documents the regional consent flow and keeps its required hosts constrained", () => {

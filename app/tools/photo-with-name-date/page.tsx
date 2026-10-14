@@ -8,9 +8,12 @@ import { Info } from "lucide-react";
 const tool = getTool("photo-with-name-date")!;
 
 export const metadata = pageMetadata({
-  title: "Photo with Name and Date Generator — DOP Passport Resizer",
+  // Searchers' own words (GSC 25 Sep – 12 Oct 2026): "photo name and date",
+  // "photo with name and date", "add name and date in passport size photo".
+  title: "Add Name and Date to Passport Size Photo Online",
   description:
-    "Create a digital name-and-date strip for forms that request one, including APPSC Direct Recruitment and Kerala PSC. Verify the current notice before use.",
+    "Add your name and the photo date (DOP) in a white strip under your passport size photo, " +
+    "set the file size in KB and download a JPG. Free; nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 

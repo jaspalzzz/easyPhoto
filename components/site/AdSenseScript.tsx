@@ -1,16 +1,36 @@
 "use client";
 
+import * as React from "react";
 import { usePathname } from "next/navigation";
-import { isAdSenseExcludedPath } from "@/lib/adExclusions";
+import { isAdSenseExcludedPath, isPrivateAdFreePath } from "@/lib/adExclusions";
 
-const ADSENSE_CLIENT = "ca-pub-8825078307302402";
+export const ADSENSE_CLIENT = "ca-pub-8825078307302402";
 const CMP_PUBLISHER = "pub-8825078307302402";
+
+export function adsEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_ADSENSE_ENABLED === "true";
+}
+
+/**
+ * A visitor who reaches a private page (ID documents, PDFs, legal pages) by an
+ * in-site link keeps the previous page's document, so an ad script loaded
+ * there would still be running. A fresh load drops it, which is what the
+ * privacy policy promises for these pages. Hand-offs into private tools come
+ * only from other private tools, which never load the script, so no handed-over
+ * file is lost to the reload.
+ */
+function useFreshDocumentOnPrivatePages(pathname: string) {
+  React.useEffect(() => {
+    if (!isPrivateAdFreePath(pathname)) return;
+    if (document.querySelector('script[src*="adsbygoogle.js"]')) window.location.reload();
+  }, [pathname]);
+}
 
 export function AdSenseScript() {
   const pathname = usePathname() || "/";
-  const enabled = process.env.NEXT_PUBLIC_ADSENSE_ENABLED === "true";
+  useFreshDocumentOnPrivatePages(pathname);
 
-  if (!enabled || isAdSenseExcludedPath(pathname)) return null;
+  if (!adsEnabled() || isAdSenseExcludedPath(pathname)) return null;
 
   return (
     <>

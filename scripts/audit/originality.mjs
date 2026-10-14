@@ -29,7 +29,7 @@ const shingles = (text) => {
 
 const byPage = new Map(pages.map((p) => [p.route, shingles(p.mainText)]));
 const owners = new Map();
-for (const [route, set] of byPage) for (const s of set) owners.set(s, (owners.get(s) ?? 0) + 1);
+for (const set of byPage.values()) for (const s of set) owners.set(s, (owners.get(s) ?? 0) + 1);
 
 const family = (route) =>
   route.startsWith("/exam-requirements/") && route !== "/exam-requirements/"

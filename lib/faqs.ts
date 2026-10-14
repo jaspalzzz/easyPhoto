@@ -11,6 +11,7 @@ import {
   type CountrySpec,
 } from "@/lib/countrySpecs";
 import type { PortalSpec } from "@/lib/portalPresets";
+import { mmToPx } from "@/lib/headPositioning";
 import { photoDimsPx, sigDimsPx } from "@/lib/specRegistry";
 
 /**
@@ -142,7 +143,10 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
 }
 
 export const PASSPORT_FAQ: FaqItem[] = [
-  { q: "What size is a passport photo?", a: "Most countries use 35×45mm. The US and a few others use 2×2 inches (51×51mm). EasyPhoto sets the correct size automatically once you pick your country." },
+  {
+    q: "What size is a passport photo?",
+    a: `Most countries use 35 mm × 45 mm (3.5 cm × 4.5 cm). Printed at 300 DPI, that is ${mmToPx(35, 300)} × ${mmToPx(45, 300)} pixels. The US and a few others use 2×2 inches (51×51mm). EasyPhoto sets the correct size automatically once you pick your country.`,
+  },
   { q: "How do I make a passport photo at home for free?", a: "Upload a clear, front-facing photo, choose your country, and download the prepared result. Check it against the linked current requirements before submitting. No app, no payment, no watermark." },
   { q: "Can I take a passport photo on my phone?", a: "Yes. Any recent phone photo in even lighting works, and the tool crops and sizes it for you." },
   { q: "What background colour should a passport photo have?", a: "White for the US and India. The UK accepts any plain light colour, white included, and some Schengen consulates ask for light grey specifically. EasyPhoto applies a colour that suits each country and you can adjust it." },
@@ -184,9 +188,6 @@ export const VISA_FAQ: FaqItem[] = [
 
 export const PHOTO_RESIZE_FAQ: FaqItem[] = [
   { q: "How do I resize a photo online for free?", a: "Upload it, set a target file size in KB or exact pixel dimensions, and download. No watermark and nothing gets uploaded." },
-  { q: "How do I reduce a photo to 20KB?", a: "Set the target to 20KB and the tool compresses your image under 20KB while keeping it as clear as possible." },
-  { q: "How do I resize a photo to 50KB?", a: "Enter 50KB as the target and download the compressed file. It's handy for passport, visa and exam uploads." },
-  { q: "How do I compress an image to 100KB or 200KB?", a: "Type any target in KB. There are quick presets for 10, 20, 50, 100 and 200KB." },
   { q: "How do I resize a photo without losing quality?", a: "We lower JPEG quality only as much as needed and shrink dimensions last, so the photo stays as sharp as the target allows." },
   { q: "How do I resize a photo for SSC, UPSC or government forms?", a: "Select the limit stated in the current notification, compress to that target, and confirm the downloaded file before uploading." },
   { q: "Can I resize a photo on my phone?", a: "Yes, it works the same in a mobile browser." },
@@ -349,10 +350,10 @@ export const SIGNATURE_CLEANER_FAQ: FaqItem[] = [
 ];
 
 export const SIGNATURE_CROP_FAQ: FaqItem[] = [
-  { q: "How do I crop a signature to the ink?", a: "Upload your signature scan or phone photo, then drag the crop box around your signature — the dimmed area is removed and the bright area is kept. Or tap Auto-detect to snap the box to the ink automatically. Download as PNG or JPG." },
   { q: "Can I crop a photo of my signature, not just a clean scan?", a: "Yes. The manual crop box works on any photo — including phone photos with shadows or off-white paper, where automatic trimming alone can struggle. Just drag the box to exactly what you want to keep." },
   { q: "Why crop a signature before uploading?", a: "Forms expect the signature to fill the frame, not float in a sea of white. A tight crop also helps it meet pixel-dimension limits." },
-  { q: "Can I also remove the paper background?", a: "Yes — use the signature cleaner or background-removal tool to drop the paper and keep a transparent PNG." },
+  { q: "How can I extract a signature from an image?", a: "Extracting means two things: cutting out just the signature, and dropping the paper behind it. Crop the signature here, then choose Transparent to keep only the ink, as a PNG you can place on other documents, or White for a clean JPG for forms." },
+  { q: "Can I make a form signature from a phone photo?", a: "Yes. Write your signature in dark ink on blank paper, photograph it straight-on in good light, crop it here with the paper set to White, then fit it to your form's limit with the signature resizer. If the ink looks faint, the signature cleaner darkens the strokes as well." },
   { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser." },
 ];
 
@@ -373,7 +374,8 @@ export const RESIZE_DIMENSIONS_FAQ: FaqItem[] = [
 ];
 
 export const PHOTO_NAME_DATE_FAQ: FaqItem[] = [
-  { q: "How do I add my name and date under a photo?", a: "Upload your photo, type your name and the date, and the tool prints them in a clean strip at the bottom — then you download it." },
+  { q: "How do I add my name and date to a passport size photo?", a: "Upload your photo, type your name and pick the date. The tool prints both in capitals, with the date as DD/MM/YYYY, on a white strip at the bottom of the photo. Set the KB limit your form gives, then download the JPG." },
+  { q: "Should the date be the photo date or my date of birth?", a: "Forms that ask for a name-and-date strip almost always mean the date the photo was taken, often written DOP (date of photo). The date field accepts any date, so enter your date of birth only if your notice asks for it." },
   { q: "Which applications use a digital name-and-date strip?", a: "The current APPSC Direct Recruitment OTPR manual and Kerala PSC guidance require the candidate's name and photography date on the image. Confirm the current notice for your application before using a strip." },
   { q: "Can I use this tool for UPSC, SSC, IBPS or Agniveer forms?", a: "Current UPSC, SSC and IBPS instructions do not list a digital strip. Navy Agniveer and Agniveervayu notices require a physical black slate held in the photograph, which cannot be added by this tool." },
   { q: "Can I change the date or text format?", a: "Yes. Enter the photography date and use the wording or date format stated by the current application instructions." },
