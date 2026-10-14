@@ -133,9 +133,9 @@ describe("spec copy — renders cleanly for every portal in the registry", () =>
     expect(navy.sigLimitKb).toBeUndefined();
     expect(navy.isLiveCapture).toBeUndefined();
     expect(navy.verification).toBe("official");
-    expect(navy.verifiedOn).toBe("2026-07-18");
+    expect(navy.verifiedOn).toBe("2026-10-13");
     expect(navy.source?.url).toBe(
-      "https://www.joinindiannavy.gov.in/files/Advt_Agniveer_MR_English.pdf"
+      "https://www.joinindiannavy.gov.in/files/Advt_Agniveer_MR_01_27_and_02_27_English.pdf"
     );
     expect(`${navy.description} ${navy.context}`).toMatch(/separate webcam live photograph/i);
     expect(`${navy.description} ${navy.context}`).toMatch(/no (?:photo )?pixel|no fixed pixels/i);

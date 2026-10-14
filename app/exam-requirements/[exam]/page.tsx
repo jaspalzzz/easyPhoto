@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, AlertTriangle, ArrowDown } from "lucide-react";
+import { ExternalLink, ArrowDown } from "lucide-react";
 import { PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
 import {
   getPortalSpec,
@@ -13,7 +13,6 @@ import {
   sigDimsPx,
   PORTAL_CATEGORY_LABEL,
 } from "@/lib/specRegistry";
-import { portalFaqItems, portalRejectionReasons } from "@/lib/faqs";
 import { RESIZER_YEAR } from "@/lib/subExamResizers";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -28,6 +27,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { examGuideLinks } from "@/lib/examGuides";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { SupportCard } from "@/components/site/SupportCard";
+import { examPageLastModified } from "@/lib/examPageDates";
 import { EXAM_GUIDES } from "@/components/site/exam";
 
 // One static page per exam (the cited Spec Database).
@@ -117,7 +117,9 @@ export async function generateMetadata({
       EXAM_GUIDES[exam]?.metaDescription ??
       // Omit the pixel clause when the authority publishes none — px() renders an
       // em-dash for the spec table, which reads as "(—)" in a SERP snippet.
-      `${shortName}: photo ${photoKb(spec)}${parens(photoDimsPx(spec, " px"))}` +
+      (spec.noPhotoUpload
+        ? `${shortName}: photo captured live in the form`
+        : `${shortName}: photo ${photoKb(spec)}${parens(photoDimsPx(spec, " px"))}`) +
       (sig ? `, signature ${sig}${parens(sigDimsPx(spec, " px"))}` : "") +
       // Only claim "verified" for specs actually confirmed against their source
       // and dated; needs-review presets get an honest "confirm on the source".
@@ -163,7 +165,9 @@ export default async function Page({
   const path = `/exam-requirements/${exam}/`;
   // A rewritten exam page brings its own body and FAQ; the rest use the template.
   const guide = EXAM_GUIDES[exam];
-  const faqItems = guide?.faq ?? portalFaqItems(spec);
+  // Only rewritten pages carry a FAQ: the template's five questions were the
+  // same on every exam page with the name swapped, and restated the spec table.
+  const faqItems = guide?.faq ?? [];
   const related = relatedPortals(exam, 6);
   const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(exam)];
   const guideLinks = examGuideLinks(exam);
@@ -183,7 +187,7 @@ export default async function Page({
             name: `${spec.name} Photo${sig ? " & Signature" : ""} Size`,
             description: spec.description,
             url: path,
-            ...(prov.verifiedOn ? { dateModified: prov.verifiedOn } : {}),
+            dateModified: examPageLastModified(exam),
             author: { name: AUTHOR.name, url: absoluteUrl(AUTHOR.url) },
           }),
           // The resizer below is a real embedded tool, not just a spec table —
@@ -193,9 +197,9 @@ export default async function Page({
             name: `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Resizer`,
             description: `Free browser-based resizer for the ${spec.name.split(" (")[0]} photo${sig ? " and signature" : ""} target.`,
             url: path,
-            ...(prov.verifiedOn ? { dateModified: prov.verifiedOn } : {}),
+            dateModified: examPageLastModified(exam),
           }),
-          faqSchema(faqItems),
+          faqItems.length > 0 ? faqSchema(faqItems) : null,
         ]}
       />
 
@@ -248,13 +252,23 @@ export default async function Page({
             href="#resizer"
             className={buttonVariants({ variant: "cta", className: "min-h-11 w-full sm:w-auto" })}
           >
-            Resize your {spec.name.split(" (")[0]} photo{sig ? " & signature" : ""} now <ArrowDown className="h-4 w-4" />
+            {spec.noPhotoUpload
+              ? <>Prepare your {spec.name.split(" (")[0]} signature now</>
+              : <>Resize your {spec.name.split(" (")[0]} photo{sig ? " & signature" : ""} now</>}{" "}
+            <ArrowDown className="h-4 w-4" />
           </a>
 
           {/* The spec table — the authoritative, citable data */}
           <section className="grid gap-8 md:grid-cols-2">
             <div className="space-y-3">
               <h2 className="eyebrow">Photo requirement</h2>
+              {spec.noPhotoUpload ? (
+                // The form captures the photo live; any photo figure in the
+                // record is ours, not the authority's, so none is shown here.
+                <dl>
+                  <Row label="Photo" value="Captured live in the form" />
+                </dl>
+              ) : (
               <dl>
                 <Row label="File size" value={photoKb(spec)} />
                 <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? "—"} />
@@ -266,6 +280,7 @@ export default async function Page({
                   <Row label="Background" value={spec.photoBackground} />
                 )}
               </dl>
+              )}
             </div>
             <div className="space-y-3">
               <h2 className="eyebrow">Signature requirement</h2>
@@ -294,14 +309,24 @@ export default async function Page({
           <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
             <div>
               <h2 className="text-base font-semibold tracking-tight">
-                Prepare your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null} to the selected stored target
+                {spec.noPhotoUpload ? (
+                  <>Prepare your {spec.name.split(" (")[0]} signature</>
+                ) : (
+                  <>Resize your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null}</>
+                )}
               </h2>
-              <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Verify the current form before use. Processing is free and stays in your browser.
-              </p>
             </div>
 
-            <PortalResizer portalId={exam} hideDescription />
+            {/* Compact: the requirement is stated above and how the tool works
+                is explained once, on /how-photo-checking-works/, instead of
+                being repeated on every exam page (AdSense "low value content":
+                the same boilerplate on 20 pages read as a templated site). */}
+            <PortalResizer portalId={exam} hideDescription compact />
+            <p className="text-xs text-muted-foreground">
+              <Link href="/how-photo-checking-works/" className="font-medium text-brand hover:underline">
+                What this resizer checks
+              </Link>
+            </p>
 
             {/* Read-next guides. This used to be hardcoded for voter-id alone,
                 which left 48 exam pages with no route to the longer explanation.
@@ -360,16 +385,6 @@ export default async function Page({
                   )}
                 </p>
               </div>
-            )}
-
-            {sig && (
-              <p className="text-sm text-muted-foreground">
-                Prefer a guided flow?{" "}
-                <Link href="/tools/exam-package/" className="font-medium text-brand hover:underline">
-                  The photo + signature kit
-                </Link>{" "}
-                walks both documents through in one place.
-              </p>
             )}
           </section>
 
@@ -781,27 +796,6 @@ export default async function Page({
         </section>
       )}
 
-      {!guide && (
-        <>
-          {/* Stored-field checks generated only from fields this record carries. */}
-          <section className="space-y-3">
-            <h2 className="text-lg font-semibold">What to check before submitting {spec.name.split(" (")[0]} files</h2>
-            <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-              {portalRejectionReasons(spec, !!sig).map((r) => (
-                <li key={r} className="flex items-start gap-2">
-                  <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-faint" strokeWidth={1.75} />
-                  {r}
-                </li>
-              ))}
-            </ul>
-            <p className="text-xs text-muted-foreground">
-              Specs can change between notification cycles — always confirm the current limit on the official
-              portal before submitting.
-            </p>
-          </section>
-        </>
-      )}
-
       <section className="space-y-3">
         <h2 className="eyebrow">{categoryLabel} &amp; more</h2>
         <div className="flex flex-wrap gap-1.5">
@@ -823,9 +817,11 @@ export default async function Page({
         </div>
       </section>
 
-      <section>
-        <Faq items={faqItems} noSchema />
-      </section>
+      {faqItems.length > 0 && (
+        <section>
+          <Faq items={faqItems} noSchema />
+        </section>
+      )}
 
       <AffiliateCta examId={exam} />
     </div>
