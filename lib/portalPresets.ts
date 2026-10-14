@@ -63,6 +63,12 @@ export interface PortalSpec {
    */
   faq?: ReadonlyArray<{ q: string; a: string }>;
   /**
+   * File names the authority asks for, without the extension (UPSC: "photo",
+   * "signature"). The tools save downloads under these names.
+   */
+  photoFileName?: string;
+  sigFileName?: string;
+  /**
    * Least share of the photo's area the head must fill, and who sets it, when
    * an authority publishes one (UPSC: "Face must cover at least 75% or 3/4th of
    * the area in the photo"). The photo tool measures it and offers a closer crop.
@@ -198,6 +204,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPG",
     // UPSC portal form note 3 and instruction PDF §1 (4 Feb 2026), read 10 Oct 2026.
     faceCoverage: { min: 0.75, authority: "UPSC" },
+    // UPSC "Instructions for Uploading the Photo & Signature" (4 Feb 2026) §1a, §2e: save the
+    // photo as "photo" and the signature as "signature", JPG (read 14 Oct 2026).
+    photoFileName: "photo",
+    sigFileName: "signature",
     photoBackground: "Plain white",
     sigFormat: "JPG",
     sigSidePx: { min: 350, max: 500 },
@@ -681,6 +691,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPG",
     // UPSC portal form note 3 and instruction PDF §1 (4 Feb 2026), read 10 Oct 2026.
     faceCoverage: { min: 0.75, authority: "UPSC" },
+    // UPSC "Instructions for Uploading the Photo & Signature" (4 Feb 2026) §1a, §2e: save the
+    // photo as "photo" and the signature as "signature", JPG (read 14 Oct 2026).
+    photoFileName: "photo",
+    sigFileName: "signature",
     sigFormat: "JPG",
     sigSidePx: { min: 350, max: 500 },
     description:
@@ -711,6 +725,10 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPG",
     // UPSC portal form note 3 and instruction PDF §1 (4 Feb 2026), read 10 Oct 2026.
     faceCoverage: { min: 0.75, authority: "UPSC" },
+    // UPSC "Instructions for Uploading the Photo & Signature" (4 Feb 2026) §1a, §2e: save the
+    // photo as "photo" and the signature as "signature", JPG (read 14 Oct 2026).
+    photoFileName: "photo",
+    sigFileName: "signature",
     sigFormat: "JPG",
     sigSidePx: { min: 350, max: 500 },
     description:

@@ -45,6 +45,8 @@ interface BodyProps {
   sidePx?: { min: number; max: number };
   /** Published minimum share of the photo the head must fill (UPSC: 75%). */
   faceCoverage?: { min: number; authority: string };
+  /** File name the authority asks for, without ".jpg" (UPSC: "photo"). */
+  downloadName?: string;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -59,7 +61,7 @@ interface BodyProps {
   onSourceChange?: (source: ToolSource | null) => void;
 }
 
-function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, sidePx, faceCoverage, minKb, densityDpi, requirementLabel, examWorkflow, onSourceChange }: BodyProps) {
+function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, sidePx, faceCoverage, downloadName, minKb, densityDpi, requirementLabel, examWorkflow, onSourceChange }: BodyProps) {
   React.useEffect(() => {
     onSourceChange?.(source);
     return () => onSourceChange?.(null);
@@ -252,12 +254,12 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
 
   const handleDownload = () => {
     if (!result) return;
-    downloadBlob(result.blob, `resized-${result.target}kb.jpg`, toolName);
+    downloadBlob(result.blob, `${downloadName ?? `resized-${result.target}kb`}.jpg`, toolName);
   };
 
   const handleShare = async () => {
     if (!result) return;
-    await shareFile(result.blob, `resized-${result.target}kb.jpg`, "Resized photo");
+    await shareFile(result.blob, `${downloadName ?? `resized-${result.target}kb`}.jpg`, "Resized photo");
   };
 
   // The source is already at full quality + resolution yet still under the
@@ -489,6 +491,7 @@ export function ResizeKbTool({
   requiredAspectRatio,
   sidePx,
   faceCoverage,
+  downloadName,
   minKb,
   densityDpi,
   requirementLabel,
@@ -510,6 +513,8 @@ export function ResizeKbTool({
   sidePx?: { min: number; max: number };
   /** See BodyProps.faceCoverage. */
   faceCoverage?: { min: number; authority: string };
+  /** See BodyProps.downloadName. */
+  downloadName?: string;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -540,6 +545,7 @@ export function ResizeKbTool({
           requiredAspectRatio={requiredAspectRatio}
           sidePx={sidePx}
           faceCoverage={faceCoverage}
+          downloadName={downloadName}
           minKb={minKb}
           densityDpi={densityDpi}
           requirementLabel={requirementLabel}
