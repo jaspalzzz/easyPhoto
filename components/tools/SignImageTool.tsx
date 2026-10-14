@@ -9,11 +9,80 @@ import { CardContent, ToolCard } from "@/components/ui/card";
 import { canvasToBlob } from "@/lib/imaging";
 import { ensureDecodable } from "@/lib/heic";
 import { downloadBlob } from "@/lib/download";
+import { formatKb } from "@/lib/utils";
+import { useNumericField } from "@/components/tool/useNumericField";
 import { SignaturePad } from "./SignaturePad";
 import { SignatureOverlay, type Placement } from "./SignatureOverlay";
 import { track, deviceClass } from "@/lib/analytics";
 
 const TOOL = "sign-image";
+
+/**
+ * "Sign across the edge": white paper added around the photo so a signature
+ * can run off the photo onto the paper, as forms ask when they say "sign
+ * across the photo". Shares of the photo's own size.
+ */
+const EDGE_SIDE = 0.08;
+const EDGE_BOTTOM = 0.4;
+
+/** The photo on white paper: EDGE_SIDE of its width each side, EDGE_BOTTOM of its height below. */
+async function photoOnPaper(photo: HTMLImageElement): Promise<{ image: HTMLImageElement; url: string }> {
+  const side = Math.round(photo.width * EDGE_SIDE);
+  const bottom = Math.round(photo.height * EDGE_BOTTOM);
+  const canvas = document.createElement("canvas");
+  canvas.width = photo.width + side * 2;
+  canvas.height = photo.height + bottom;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Could not acquire 2D canvas context.");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(photo, side, 0);
+  const url = URL.createObjectURL(await canvasToBlob(canvas, "image/jpeg", 0.95));
+  const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = url;
+  });
+  return { image, url };
+}
+
+/**
+ * Re-express a placement (percent of one frame) in another frame. `offsetX` is
+ * where the photo starts inside the larger frame, in pixels; signatures keep
+ * their position over the photo, clamped inside the new frame.
+ */
+function movePlacement(
+  p: Placement,
+  from: { width: number; height: number; offsetX: number },
+  to: { width: number; height: number; offsetX: number }
+): Placement {
+  const w = (p.width / 100) * from.width;
+  const h = (p.height / 100) * from.height;
+  const x = (p.x / 100) * from.width - from.offsetX + to.offsetX;
+  const y = (p.y / 100) * from.height;
+  const width = Math.min(100, (w / to.width) * 100);
+  const height = Math.min(100, (h / to.height) * 100);
+  return {
+    ...p,
+    x: Math.min(100 - width, Math.max(0, (x / to.width) * 100)),
+    y: Math.min(100 - height, Math.max(0, (y / to.height) * 100)),
+    width,
+    height,
+  };
+}
+
+function KbInput({ value, onChange }: { value: number; onChange: (n: number) => void }) {
+  const field = useNumericField(value, onChange, { min: 5, max: 5000 });
+  return (
+    <input
+      type="text"
+      aria-label="KB limit"
+      {...field}
+      className="h-8 w-20 rounded-md border border-hairline-strong bg-background px-2 font-mono text-xs"
+    />
+  );
+}
 
 interface PlacedSignature {
   id: string;
@@ -24,6 +93,13 @@ interface PlacedSignature {
 export function SignImageTool() {
   const [baseFile, setBaseFile] = React.useState<File | null>(null);
   const [baseImage, setBaseImage] = React.useState<HTMLImageElement | null>(null);
+  // The uploaded photo; baseImage is this, or this on white paper when signing across the edge.
+  const [photoImage, setPhotoImage] = React.useState<HTMLImageElement | null>(null);
+  const [acrossEdge, setAcrossEdge] = React.useState(false);
+  const edgeUrlRef = React.useRef<string | null>(null);
+  const [limitKb, setLimitKb] = React.useState(false);
+  const [maxKb, setMaxKb] = React.useState(50);
+  const [savedInfo, setSavedInfo] = React.useState<string | null>(null);
   const [placements, setPlacements] = React.useState<PlacedSignature[]>([]);
 
   // Active signature configuration (drawn or uploaded)
@@ -44,15 +120,44 @@ export function SignImageTool() {
     track({ name: "tool_view", tool: TOOL });
   }, []);
 
-  // Clean up object URL on unmount
+  // Clean up object URLs on unmount
   React.useEffect(() => {
     return () => {
-      if (baseObjectUrlRef.current) {
-        URL.revokeObjectURL(baseObjectUrlRef.current);
-        baseObjectUrlRef.current = null;
+      for (const ref of [baseObjectUrlRef, edgeUrlRef]) {
+        if (ref.current) {
+          URL.revokeObjectURL(ref.current);
+          ref.current = null;
+        }
       }
     };
   }, []);
+
+  const toggleAcrossEdge = async (on: boolean) => {
+    if (!photoImage) return;
+    const side = Math.round(photoImage.width * EDGE_SIDE);
+    const plain = { width: photoImage.width, height: photoImage.height, offsetX: 0 };
+    // Tick the box at once; building the paper image is async.
+    setAcrossEdge(on);
+    try {
+      if (on) {
+        const { image, url } = await photoOnPaper(photoImage);
+        if (edgeUrlRef.current) URL.revokeObjectURL(edgeUrlRef.current);
+        edgeUrlRef.current = url;
+        const paper = { width: image.width, height: image.height, offsetX: side };
+        setPlacements((prev) => prev.map((sig) => ({ ...sig, placement: movePlacement(sig.placement, plain, paper) })));
+        setBaseImage(image);
+      } else {
+        const paper = { width: photoImage.width + side * 2, height: baseImage?.height ?? photoImage.height, offsetX: side };
+        setPlacements((prev) => prev.map((sig) => ({ ...sig, placement: movePlacement(sig.placement, paper, plain) })));
+        setBaseImage(photoImage);
+      }
+      setExportedBlob(null);
+    } catch (err) {
+      setAcrossEdge(!on);
+      console.error("[sign-image] could not add the paper margin", err);
+      setError("Couldn't add the paper around this photo. Try again, or use a smaller image.");
+    }
+  };
 
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -96,6 +201,8 @@ export function SignImageTool() {
       });
       
       setBaseImage(img);
+      setPhotoImage(img);
+      setAcrossEdge(false);
     } catch (err) {
       console.error(err);
       setError(err instanceof Error ? err.message : "Could not read that image. Ensure it is not corrupted.");
@@ -180,7 +287,21 @@ export function SignImageTool() {
         }
       }
 
-      const blob = await canvasToBlob(canvas, "image/jpeg", 0.95);
+      let blob: Blob;
+      if (limitKb) {
+        // Loaded on demand: most people save without a KB limit.
+        const { compressToCap } = await import("@/lib/compress");
+        const res = await compressToCap(canvas, maxKb, { minScale: 0.2 });
+        blob = res.blob;
+        setSavedInfo(
+          res.underCap
+            ? `Saved at ${res.width} × ${res.height} px, ${formatKb(res.bytes)}.`
+            : `This couldn't be brought under ${maxKb} KB (it's ${formatKb(res.bytes)}). Try a higher KB limit.`
+        );
+      } else {
+        blob = await canvasToBlob(canvas, "image/jpeg", 0.95);
+        setSavedInfo(null);
+      }
       const baseName = baseFile?.name.replace(/\.[^/.]+$/, "") || "signed-image";
       setExportedBlob(blob);
       track({ name: "tool_success", tool: TOOL, device: deviceClass() });
@@ -199,8 +320,15 @@ export function SignImageTool() {
       URL.revokeObjectURL(baseObjectUrlRef.current);
       baseObjectUrlRef.current = null;
     }
+    if (edgeUrlRef.current) {
+      URL.revokeObjectURL(edgeUrlRef.current);
+      edgeUrlRef.current = null;
+    }
     setBaseFile(null);
     setBaseImage(null);
+    setPhotoImage(null);
+    setAcrossEdge(false);
+    setSavedInfo(null);
     setPlacements([]);
     setError(null);
     setExportedBlob(null);
@@ -317,6 +445,48 @@ export function SignImageTool() {
                   Place at least one signature before saving.
                 </p>
               )}
+
+              <div className="space-y-2 rounded-md border border-hairline bg-paper p-3 text-xs">
+                <label className="flex items-start gap-2">
+                  <input
+                    id="image-signer-across-edge"
+                    type="checkbox"
+                    checked={acrossEdge}
+                    onChange={(e) => toggleAcrossEdge(e.target.checked)}
+                    disabled={busy}
+                    className="mt-0.5 h-4 w-4"
+                  />
+                  <span>
+                    <span className="font-semibold text-foreground">Sign across the edge</span>
+                    <span className="mt-0.5 block text-muted-foreground">
+                      Adds white paper below and beside the photo, so the signature can run off
+                      the photo onto the paper.
+                    </span>
+                  </span>
+                </label>
+                <div className="flex flex-wrap items-center gap-2">
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={limitKb}
+                      onChange={(e) => setLimitKb(e.target.checked)}
+                      className="h-4 w-4"
+                    />
+                    Keep the file under
+                  </label>
+                  {limitKb && (
+                    <>
+                      <KbInput value={maxKb} onChange={setMaxKb} />
+                      <span className="text-muted-foreground">KB</span>
+                    </>
+                  )}
+                </div>
+                {savedInfo && (
+                  <p role="status" className="text-muted-foreground">
+                    {savedInfo}
+                  </p>
+                )}
+              </div>
 
               {exportedBlob && (
                 <WorkflowNextSteps
