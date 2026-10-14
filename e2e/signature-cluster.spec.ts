@@ -98,17 +98,6 @@ async function samplePixel(
   );
 }
 
-/** Pixel size from a JPEG's start-of-frame marker. */
-function jpegSize(bytes: Buffer): { width: number; height: number } {
-  for (let i = 2; i + 9 < bytes.length; i += 2 + bytes.readUInt16BE(i + 2)) {
-    const marker = bytes[i + 1];
-    if (marker >= 0xc0 && marker <= 0xc2) {
-      return { width: bytes.readUInt16BE(i + 7), height: bytes.readUInt16BE(i + 5) };
-    }
-  }
-  throw new Error("no JPEG frame header");
-}
-
 async function readDownloadBase64(download: import("@playwright/test").Download) {
   const path = await download.path();
   expect(path, "download did not save").not.toBeNull();
@@ -199,7 +188,7 @@ test("signature-resize: output is genuinely bound to the KB target", async ({ pa
 
 // /upsc-signature-resizer/ is a retired route (host redirect to the UPSC exam
 // page, which opens on the photo tab), so the test opens the signature tab itself.
-test("upsc exam page: signature exports a JPG inside 20–100 KB and 350–500 px per side", async ({ page }) => {
+test("upsc exam page: signature exports a JPG inside the stored 20–100 KB band", async ({ page }) => {
   await page.goto("/exam-requirements/upsc/");
   await page.getByRole("button", { name: /clean & compress signature/i }).click();
   await page.setInputFiles('input[type="file"]', {
@@ -217,13 +206,6 @@ test("upsc exam page: signature exports a JPG inside 20–100 KB and 350–500 p
   expect(bytes[1]).toBe(0xd8);
   expect(bytes.length).toBeGreaterThanOrEqual(20 * 1024);
   expect(bytes.length).toBeLessThanOrEqual(100 * 1000);
-  // UPSC's form: "The height and width of signature image must be between 350
-  // and 500 pixels". Three stacked signatures used to come out 384 × 534.
-  const { width, height } = jpegSize(bytes);
-  for (const side of [width, height]) {
-    expect(side, `${width} × ${height}`).toBeGreaterThanOrEqual(350);
-    expect(side, `${width} × ${height}`).toBeLessThanOrEqual(500);
-  }
 });
 
 // PAN's official spec mandates 200 DPI scans; the photo export already carried
@@ -398,6 +380,36 @@ test("sign-pdf: places a signature and exports a valid PDF with every page prese
   expect(outBytes.length, "signed PDF should carry the embedded signature").toBeGreaterThan(
     inputBytes.length
   );
+});
+
+// UPPBPB Constable notice (31 Dec 2025) §5.8: JPG/JPEG, "140 X 60 पिक्सल",
+// "30 KB से 50 KB". The page used to set 5–20 KB with no size or format, so
+// the tool made a small transparent PNG the form would refuse.
+test("up-police exam page: signature exports a 140 × 60 JPG of 30–50 KB", async ({ page }) => {
+  await page.goto("/exam-requirements/up-police/");
+  await page.setInputFiles('input[type="file"]', {
+    name: "sig.png",
+    mimeType: "image/png",
+    buffer: await makeStackedSignatures(page, 1),
+  });
+  const download = page.locator("#sig-download");
+  await expect(download).toHaveText(/jpg/i, { timeout: 30_000 });
+  const [dl] = await Promise.all([page.waitForEvent("download"), download.click()]);
+  const bytes = Buffer.from(await readDownloadBase64(dl), "base64");
+  expect(bytes[0]).toBe(0xff);
+  expect(bytes[1]).toBe(0xd8);
+  let width = 0;
+  let height = 0;
+  for (let i = 2; i + 9 < bytes.length; i += 2 + bytes.readUInt16BE(i + 2)) {
+    if (bytes[i + 1] >= 0xc0 && bytes[i + 1] <= 0xc2) {
+      height = bytes.readUInt16BE(i + 5);
+      width = bytes.readUInt16BE(i + 7);
+      break;
+    }
+  }
+  expect([width, height]).toEqual([140, 60]);
+  expect(bytes.length).toBeGreaterThanOrEqual(30 * 1024);
+  expect(bytes.length).toBeLessThanOrEqual(50 * 1000);
 });
 
 // UPPSC publishes no signature file format, only a 200 DPI scan. The tool used

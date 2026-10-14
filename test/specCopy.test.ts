@@ -170,7 +170,7 @@ describe("spec copy — renders cleanly for every portal in the registry", () =>
     expect(answers).not.toMatch(/photo should be 20[–-]50 KB/i);
   });
 
-  const liveCaptureIds = ["ssc", "rrb", "bpsc", "rpsc"];
+  const liveCaptureIds = ["ssc", "rrb", "bpsc", "rpsc", "up-police"];
 
   it("marks only the source-confirmed replacement live-photo workflows", () => {
     expect(

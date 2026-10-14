@@ -24,7 +24,9 @@ const LIVE_CAPTURE_ALIASES = Object.values(PORTAL_PRESETS)
   .filter((spec) => spec.isLiveCapture)
   .map((spec) => ({
     id: spec.id,
-    aliases: [spec.id, spec.name.split(/[ (]/)[0]].map((value) => value.toLowerCase()),
+    // The name before any parenthesis ("SSC", "UP Police"); its first word
+    // alone ("UP") would match every "sign-up".
+    aliases: [spec.id, spec.name.split(" (")[0]].map((value) => value.toLowerCase()),
   }));
 
 const CORRECTIVE_CONTEXT =
