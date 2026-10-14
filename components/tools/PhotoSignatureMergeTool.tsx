@@ -455,7 +455,27 @@ export function PhotoSignatureMergeTool() {
               Keep the file under
             </label>
             {limitKb && (
-              <NumberInput label="Limit" value={maxKb} onChange={changed(setMaxKb)} min={5} max={5000} suffix="KB" />
+              <>
+                <NumberInput label="Limit" value={maxKb} onChange={changed(setMaxKb)} min={5} max={5000} suffix="KB" />
+                {/* The limits forms most often state (competitors lead with them). */}
+                <div className="flex gap-1.5">
+                  {[20, 50, 100].map((kb) => (
+                    <button
+                      key={kb}
+                      type="button"
+                      onClick={() => changed(setMaxKb)(kb)}
+                      aria-pressed={maxKb === kb}
+                      className={`h-10 rounded-md border px-3 text-sm font-medium transition-colors ${
+                        maxKb === kb
+                          ? "border-brand bg-brand text-white"
+                          : "border-hairline-strong bg-background text-foreground hover:bg-accent/40"
+                      }`}
+                    >
+                      {kb} KB
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
           </div>
 

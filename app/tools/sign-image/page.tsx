@@ -39,6 +39,14 @@ export default function Page() {
           >
             how to sign on an image or add a signature to a photo
           </Link>
+          .{" "}
+          {/* Most "photo sign" / "photo signature add" searchers want the two
+              joined in one file (the top results are joiner tools); send them
+              to the tool that does that. */}
+          Want your photo and signature side by side in one file instead? Use{" "}
+          <Link href="/tools/photo-signature-merge/" className="font-medium text-brand hover:underline">
+            merge photo and signature
+          </Link>
           .
         </div>
 
@@ -127,7 +135,7 @@ export default function Page() {
         </div>
         <div className="space-y-2">
           <h2 className="text-lg font-semibold text-ink">
-            Sign across the photo
+            What does &ldquo;sign across the photo&rdquo; mean?
           </h2>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
             On a paper form, &ldquo;sign across the photo&rdquo; means pasting the
