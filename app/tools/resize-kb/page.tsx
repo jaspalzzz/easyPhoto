@@ -9,17 +9,17 @@ import { PHOTO_RESIZE_FAQ } from "@/lib/faqs";
 const tool = getTool("resize-kb")!;
 
 export const metadata = pageMetadata({
-  title: "Resize Image by KB — Compress to an Exact File Size",
+  title: "Photo Resizer in KB — Resize Image to 20, 50, 100 KB",
   description:
-    "Compress a JPG or PNG to a target file size in KB, right in your browser. " +
-    "Drops quality first, then dimensions, to land under your limit. No upload.",
+    "Resize a photo or image in KB online: type 20, 50, 100 or 200 KB and download a JPG " +
+    "just under that limit. Works on your phone; nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
 export default function Page() {
   return (
     <ToolPage
-      title="Resize Image by KB"
+      title="Photo Resizer in KB"
       slug={tool.slug}
       blurb={tool.blurb}
       faqItems={PHOTO_RESIZE_FAQ}

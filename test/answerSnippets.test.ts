@@ -26,6 +26,11 @@ describe("passport size answer", () => {
 describe("resize by KB how-to", () => {
   const page = fs.readFileSync(path.join("app", "tools", "resize-kb", "page.tsx"), "utf8");
 
+  it("is titled in the words searchers use (Bing: \"photo resizer in kb\")", () => {
+    expect(page).toContain('title: "Photo Resizer in KB — Resize Image to 20, 50, 100 KB"');
+    expect(page).toContain('title="Photo Resizer in KB"');
+  });
+
   it("answers the common KB sizes in one how-to section", () => {
     expect(page).toContain("How to resize a photo to 20 KB, 50 KB, 100 KB or 200 KB");
   });
