@@ -69,12 +69,6 @@ export interface PortalSpec {
   photoFileName?: string;
   sigFileName?: string;
   /**
-   * File names the authority asks for, without the extension (UPSC: "photo",
-   * "signature"). The tools save downloads under these names.
-   */
-  photoFileName?: string;
-  sigFileName?: string;
-  /**
    * Least share of the photo's area the head must fill, and who sets it, when
    * an authority publishes one (UPSC: "Face must cover at least 75% or 3/4th of
    * the area in the photo"). The photo tool measures it and offers a closer crop.
