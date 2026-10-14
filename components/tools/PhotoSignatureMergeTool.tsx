@@ -29,7 +29,6 @@ const PHOTO_W = 480; // target photo width in the composite (px)
 const SIG_MAX_W = 480; // signature scaled to fit this width
 const SIG_MAX_H = 200; // …but never taller than this
 const SIG_MAX_EDGE = 1600; // a phone photo of a signature is cleaned at this size at most
-const PAPER_STEP = 16; // the paper map is built from a copy this many times smaller
 const MM_PER_INCH = 25.4;
 
 /** Load a File into an HTMLImageElement via the app's HEIC-safe decode path. */
@@ -50,24 +49,14 @@ async function loadSlot(file: File): Promise<Slot> {
  * in the layout. A fixed threshold alone kept grey paper as a grey block.
  */
 async function trimSignature(slot: Slot): Promise<{ canvas: HTMLCanvasElement; w: number; h: number }> {
-  const { flattenPaper, paperLevels, upsampleLevels } = await import("@/lib/paperFlatten");
+  const { whitenPaperOnCanvas } = await import("@/lib/paperFlatten");
   const scale = Math.min(1, SIG_MAX_EDGE / Math.max(slot.width, slot.height));
   const c = document.createElement("canvas");
   c.width = Math.max(1, Math.round(slot.width * scale));
   c.height = Math.max(1, Math.round(slot.height * scale));
   const ctx = c.getContext("2d")!;
   ctx.drawImage(slot.image, 0, 0, c.width, c.height);
-
-  const small = document.createElement("canvas");
-  small.width = Math.max(1, Math.round(c.width / PAPER_STEP));
-  small.height = Math.max(1, Math.round(c.height / PAPER_STEP));
-  const sctx = small.getContext("2d")!;
-  sctx.drawImage(c, 0, 0, small.width, small.height);
-  const levels = paperLevels(sctx.getImageData(0, 0, small.width, small.height).data, small.width, small.height, 1);
-  const paper = upsampleLevels(levels, small.width, small.height, c.width, c.height);
-  const img = ctx.getImageData(0, 0, c.width, c.height);
-  flattenPaper(img.data, paper);
-  ctx.putImageData(img, 0, 0);
+  whitenPaperOnCanvas(c);
 
   const { canvas } = trimToContent(c, { mode: "luma", threshold: 235, padding: 8 });
   return { canvas, w: canvas.width, h: canvas.height };
