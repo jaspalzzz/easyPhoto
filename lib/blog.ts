@@ -40,6 +40,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Compare the recorded PAN, voter ID and driving-licence photo requirements, why the workflows differ, and why one file should not be assumed suitable for every portal.",
     date: "July 10, 2026",
     dateISO: "2026-07-10",
+    updatedISO: "2026-10-13",
     excerpt:
       "The three IDs may start from the same portrait, but their application workflows differ. Compare the recorded requirements and confirm the current route before submitting.",
     readMins: 7,
@@ -51,6 +52,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Compare the recorded photo requirements for PAN, voter ID, driving licence and Aadhaar applications, with source and verification context for each workflow.",
     date: "July 4, 2026",
     dateISO: "2026-07-04",
+    updatedISO: "2026-10-13",
     excerpt:
       "PAN, voter ID, Aadhaar and driving-licence workflows do not publish one interchangeable photo specification. Compare the recorded requirements and source notes.",
     readMins: 8,
@@ -431,14 +433,14 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "voter-id-photo-requirements-2026",
-    title: "Voter ID Photo Size & Requirements 2026 — NVSP Upload Spec",
+    title: "Voter ID Photo Size 2026: 4.5 cm × 3.5 cm, Under 2 MB JPG",
     description:
-      "ECI Form 6 publishes physical photo and composition guidance but no universal digital KB cap. Review the source and confirm the current upload screen.",
+      "Voter ID photo: 4.5 × 3.5 cm, colour, white background, unsigned; uploaded on the Voters' Service Portal as a JPG or JPEG of up to 2 MB.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
-    updatedISO: "2026-07-08",
+    updatedISO: "2026-10-14",
     excerpt:
-      "ECI Form 6 publishes physical photo and composition guidance but no universal digital KB cap. Review what is published and what the current upload screen must confirm.",
+      "What ECI's Form 6 asks of the photo, the portal's 2 MB JPG upload limit, and why uploads get refused.",
     readMins: 6,
   },
   {

@@ -57,7 +57,8 @@ export function SscGuide() {
           <strong className="font-semibold">10–20 KB</strong>, about{" "}
           <strong className="font-semibold">6.0 cm wide × 2.0 cm high</strong>. SSC&apos;s portal adds
           &quot;at 300 DPI&quot;, which works out to about 709 × 236 pixels (our conversion; SSC gives
-          no pixel size).
+          no pixel size). Pixel sizes such as 140 × 60, quoted on other sites, are not in SSC&apos;s
+          notice.
         </p>
         <p className="text-[15px] leading-relaxed text-ink">
           <strong className="font-semibold">SSC photo:</strong> you don&apos;t upload one. The form

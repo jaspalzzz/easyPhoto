@@ -17,7 +17,7 @@ import { describe, it, expect } from "vitest";
 import { generateMetadata } from "@/app/exam-requirements/[exam]/page";
 import { allPortalSpecs, specProvenance } from "@/lib/specRegistry";
 
-const VERIFIED_CLAIM = /checked against the linked official source/i;
+const VERIFIED_CLAIM = /checked against the official notice/i;
 
 async function descriptionFor(exam: string): Promise<string> {
   const meta = await generateMetadata({ params: Promise.resolve({ exam }) });
@@ -34,7 +34,8 @@ describe("exam meta descriptions only claim source checking for verified specs",
     expect(specProvenance(allPortalSpecs().find((s) => s.id === "army-agniveer")!).verified).toBe(false);
     const desc = await descriptionFor("army-agniveer");
     expect(desc).not.toMatch(VERIFIED_CLAIM);
-    expect(desc).toMatch(/confirm the current figures/i);
+    expect(desc).toMatch(/confirm the current notice/i);
+    expect(desc).toMatch(/our default, not an official limit/i);
   });
 
   it("no needs-review preset's description asserts verification", async () => {

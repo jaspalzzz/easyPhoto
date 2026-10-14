@@ -55,6 +55,9 @@ function aspectLabel(r: number): string {
   return `${r.toFixed(2)} : 1`;
 }
 
+/** ID-document pages built from this template: "application", not "exam". */
+const ID_DOCUMENTS = new Set(["voter-id", "driving-licence", "pan", "oci", "passport-seva", "ds160"]);
+
 // Per-exam custom titles bypass the template below (titleAbsolute). These are
 // the full SERP title, including the brand suffix.
 //
@@ -69,14 +72,31 @@ function aspectLabel(r: number): string {
 // /exam-requirements/voter-id/ around 2026-07-31; if it doesn't improve,
 // revert this single line (the template default is the fallback). Do NOT roll
 // this out to the other 49 exam pages until this test reads positive.
+// Kept as is: the follow-up title test was dropped in the October wrap-up
+// (owner, 13 Oct 2026).
+//
+// ssc / rrb / upsc (14 Oct 2026 competitor teardown, owner-approved): every
+// top result for "<exam> signature size" puts the figures in its title; these
+// state the official figures recorded on each page.
 const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {
   "voter-id": "Voter ID Photo Size & Resizer 2026 — easyPhoto",
+  ssc: "SSC Signature Size 2026: 10–20 KB, 6 × 2 cm — easyPhoto",
+  rrb: "RRB Signature Size 2026: 30–49 KB, 140 × 60 px — easyPhoto",
+  upsc: "UPSC Photo & Signature Size 2026 (20–200 KB) — easyPhoto",
 };
 
-// Per-exam meta descriptions where the template reads badly. driving-licence:
-// it ranks 2–4 for "driving licence photo and signature size" with almost no
-// clicks (GSC 25 Sep – 12 Oct 2026); this states Sarathi's figures plainly.
+// Per-exam meta descriptions, in the authority's own words, where the template
+// reads badly.
+// - voter-id: ECI's Form 6 photo rules and the Voters' Service Portal upload
+//   field ("Document size maximum 2MB,.jpg,.jpeg"), checked 13 Oct 2026
+//   (owner-approved meta fix, 13 Oct 2026).
+// - driving-licence: it ranks 2–4 for "driving licence photo and signature
+//   size" with almost no clicks (GSC 25 Sep – 12 Oct 2026); this states
+//   Sarathi's figures plainly.
 const EXAM_REQUIREMENTS_DESCRIPTION_OVERRIDES: Record<string, string> = {
+  "voter-id":
+    "Voter ID Form 6 photo: 4.5 × 3.5 cm, colour, white background, unsigned. " +
+    "The Voters' Service Portal accepts JPG or JPEG up to 2 MB. Resize yours here.",
   "driving-licence":
     "Driving Licence photo and signature size on Sarathi: photo 420 × 525 px, signature " +
     "256 × 64 px, each 10–20 KB JPG. Resize both here, free.",
@@ -97,8 +117,6 @@ export async function generateMetadata({
   // well past the ~155-160 char SERP display width, so they were truncating.
   const shortName = spec.name.split(" (")[0];
   const titleBase = `${shortName} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR}`;
-  const hasRecordedFormat = Boolean(spec.photoFormat || (sig && spec.sigFormat));
-  const recordedFields = hasRecordedFormat ? "size & format" : "size";
   const descriptionOverride =
     exam === "airforce-agniveer"
       ? `${shortName}: photo ${photoKb(spec)}${spec.photoFormat ? ` (${spec.photoFormat})` : ""}, signature ${sig}${spec.sigFormat ? ` (${spec.sigFormat})` : ""}. ` +
@@ -119,13 +137,19 @@ export async function generateMetadata({
       // em-dash for the spec table, which reads as "(—)" in a SERP snippet.
       (spec.noPhotoUpload
         ? `${shortName}: photo captured live in the form`
-        : `${shortName}: photo ${photoKb(spec)}${parens(photoDimsPx(spec, " px"))}`) +
+        : `${shortName}: photo ${photoKb(spec)}` +
+          parens(
+            // CLAUDE.md §3: a figure the source doesn't confirm is labelled ours.
+            [photoDimsPx(spec, " px"), specProvenance(spec).verified ? null : "our default, not an official limit"]
+              .filter(Boolean)
+              .join("; ") || null
+          )) +
       (sig ? `, signature ${sig}${parens(sigDimsPx(spec, " px"))}` : "") +
-      // Only claim "verified" for specs actually confirmed against their source
-      // and dated; needs-review presets get an honest "confirm on the source".
+      // Only say "checked" for specs actually confirmed against their source
+      // and dated; needs-review presets point the reader to the notice.
       (specProvenance(spec).verified
-        ? `. Stored ${recordedFields} checked against the linked official source.`
-        : `. Stored ${recordedFields} for the form — confirm the current figures on the official source.`),
+        ? ". Checked against the official notice, linked on the page."
+        : ". Confirm the current notice before you upload."),
     path: `/exam-requirements/${exam}/`,
   });
 }
@@ -167,7 +191,7 @@ export default async function Page({
   const guide = EXAM_GUIDES[exam];
   // Only rewritten pages carry a FAQ: the template's five questions were the
   // same on every exam page with the name swapped, and restated the spec table.
-  const faqItems = guide?.faq ?? [];
+  const faqItems = guide?.faq ?? spec.faq ?? [];
   const related = relatedPortals(exam, 6);
   const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(exam)];
   const guideLinks = examGuideLinks(exam);
@@ -242,7 +266,12 @@ export default async function Page({
       {guide && <guide.Body />}
 
       {!guide && (
-        <>
+        // Phones show the resizer first: every top-3 result for "<exam> photo /
+        // signature size" puts the tool on the first screen (SERP research,
+        // 13 Oct 2026), and the intro above already states the figures. Only
+        // the visual order changes (CSS order below md); the HTML order — what
+        // Google reads — stays the same.
+        <div className="flex flex-col gap-8">
           {/* Above-the-fold jump link to the embedded resizer further down this
               same page. On mobile the tool section can sit several screens below
               the spec table; this gives a visitor who already knows the numbers
@@ -250,7 +279,7 @@ export default async function Page({
               anchor — no new route, no change to the H1 or section order. */}
           <a
             href="#resizer"
-            className={buttonVariants({ variant: "cta", className: "min-h-11 w-full sm:w-auto" })}
+            className={buttonVariants({ variant: "cta", className: "min-h-11 w-full max-md:hidden sm:w-auto" })}
           >
             {spec.noPhotoUpload
               ? <>Prepare your {spec.name.split(" (")[0]} signature now</>
@@ -271,7 +300,7 @@ export default async function Page({
               ) : (
               <dl>
                 <Row label="File size" value={photoKb(spec)} />
-                <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? "—"} />
+                <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? spec.photoDimsNote ?? "—"} />
                 {spec.photoAspectRatio && (
                   <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
                 )}
@@ -282,6 +311,7 @@ export default async function Page({
               </dl>
               )}
             </div>
+            {!spec.noSignatureUpload && (
             <div className="space-y-3">
               <h2 className="eyebrow">Signature requirement</h2>
               {sig ? (
@@ -297,6 +327,7 @@ export default async function Page({
                 </p>
               )}
             </div>
+            )}
           </section>
 
           {/* Transactional tool — embedded, not linked out. AI Overviews answer
@@ -306,7 +337,7 @@ export default async function Page({
               transactional ranking had no indexable page to migrate to. The H1
               stays "Photo … Size" (protects the informational rankings); this H2
               carries the "resize" intent. */}
-          <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
+          <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 max-md:order-first sm:p-6">
             <div>
               <h2 className="text-base font-semibold tracking-tight">
                 {spec.noPhotoUpload ? (
@@ -389,8 +420,10 @@ export default async function Page({
           </section>
 
           {/* Appears only after a file from the resizer above is saved. */}
-          <SupportCard tool={`exam-${exam}`} />
-        </>
+          <div className="empty:hidden max-md:order-first">
+            <SupportCard tool={`exam-${exam}`} />
+          </div>
+        </div>
       )}
 
       {!guide && spec.applicationNotes && spec.applicationNotes.length > 0 && (
@@ -411,7 +444,7 @@ export default async function Page({
 
       {!guide && spec.context && (
         <section className="space-y-2">
-          <h2 className="eyebrow">About this exam</h2>
+          <h2 className="eyebrow">{ID_DOCUMENTS.has(exam) ? "About this application" : "About this exam"}</h2>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
             {spec.context}
           </p>
