@@ -10,6 +10,7 @@ import { isDeindexed } from "@/lib/deindexed";
 import { TrackedLink } from "@/components/site/TrackedLink";
 import { ToolDepth } from "@/components/tools/ToolDepth";
 import { SupportCard } from "@/components/site/SupportCard";
+import { AdSlot } from "@/components/site/AdSlot";
 
 /** Shared chrome for a tool page: breadcrumb, heading, body, related links. */
 export function ToolPage({
@@ -160,6 +161,9 @@ export function ToolPage({
           <SupportCard tool={supportTool} />
         </div>
       )}
+
+      {/* Below the tool and its result, never inside it (components/site/AdSlot). */}
+      <AdSlot placement="tool" />
 
       <ToolDepth slug={slug} />
 

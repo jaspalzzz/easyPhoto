@@ -196,11 +196,13 @@ export function PortalResizer({
               </div>
             )}
             <ResizeKbTool
+              allowCamera
               defaultKb={spec.photoLimitKb}
               requiredWidth={spec.photoWidthPx}
               requiredHeight={spec.photoHeightPx}
               requiredAspectRatio={spec.photoAspectRatio}
               sidePx={spec.photoSidePx}
+              faceCoverage={spec.faceCoverage}
               minKb={spec.photoMinKb}
               densityDpi={spec.dpi}
               requirementLabel={shownName}

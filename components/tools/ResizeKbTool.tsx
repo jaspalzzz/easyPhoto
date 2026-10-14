@@ -17,6 +17,7 @@ import {
   sideRangeScale,
 } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
+import type { CropRect } from "@/lib/faceCoverage";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
 import { downloadBlob, shareFile } from "@/lib/download";
 import { formatKb, kbCapBytes, kbFloorBytes, minCapKbForFloor } from "@/lib/utils";
@@ -25,6 +26,8 @@ import {
   examPhotoNextAction,
   type ExamPhotoWorkflowFlags,
 } from "@/lib/examWorkflow";
+
+type FaceCheckComponent = typeof import("./FaceCoverageCheck").FaceCoverageCheck;
 
 /** Upper bound for a `?target=` preset — anything larger is not a real form limit. */
 const MAX_URL_TARGET_KB = 10_000;
@@ -40,6 +43,8 @@ interface BodyProps {
   requiredAspectRatio?: number;
   /** Published pixel range per side (OCI: 200–900) when there's no exact size. */
   sidePx?: { min: number; max: number };
+  /** Published minimum share of the photo the head must fill (UPSC: 75%). */
+  faceCoverage?: { min: number; authority: string };
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -54,7 +59,7 @@ interface BodyProps {
   onSourceChange?: (source: ToolSource | null) => void;
 }
 
-function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, sidePx, minKb, densityDpi, requirementLabel, examWorkflow, onSourceChange }: BodyProps) {
+function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, sidePx, faceCoverage, minKb, densityDpi, requirementLabel, examWorkflow, onSourceChange }: BodyProps) {
   React.useEffect(() => {
     onSourceChange?.(source);
     return () => onSourceChange?.(null);
@@ -69,6 +74,39 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
   const minTarget = minKb ? minCapKbForFloor(minKb) : 5;
   const kbField = useNumericField(targetKb, setTargetKb, { min: minTarget });
   const [busy, setBusy] = React.useState(false);
+  // A closer crop chosen in the face-coverage check, tied to the photo it was
+  // planned for so a new photo starts uncropped.
+  const [cropFor, setCropFor] = React.useState<{ source: ToolSource; rect: CropRect } | null>(null);
+  const crop = cropFor?.source === source ? cropFor.rect : null;
+  // Loaded only for exams that publish a face-coverage rule (UPSC), so every
+  // other page using this tool keeps its first-load size.
+  const wantsFaceCheck = !!faceCoverage;
+  const [FaceCheck, setFaceCheck] = React.useState<FaceCheckComponent | null>(null);
+  React.useEffect(() => {
+    if (!wantsFaceCheck) return;
+    let active = true;
+    import("./FaceCoverageCheck")
+      .then(({ FaceCoverageCheck }) => {
+        if (active) setFaceCheck(() => FaceCoverageCheck);
+      })
+      .catch((err: unknown) => {
+        // Offline or a stale deploy: the check is optional, the resizer still works.
+        console.warn("[resize-kb] could not load the face-coverage check", err);
+      });
+    return () => {
+      active = false;
+    };
+  }, [wantsFaceCheck]);
+  const cropped = React.useMemo(() => {
+    if (!crop) return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+    canvas
+      .getContext("2d")
+      ?.drawImage(source.image, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
+    return { canvas, url: canvas.toDataURL("image/jpeg", 0.9) };
+  }, [crop, source]);
   const [error, setError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<{
     url: string;
@@ -123,19 +161,21 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         !!requiredAspectRatio &&
         Number.isFinite(requiredAspectRatio) &&
         requiredAspectRatio > 0;
+      const image = cropped?.canvas ?? source.image;
+      const size = cropped ? { width: cropped.canvas.width, height: cropped.canvas.height } : source.size;
       let canvas = hasRequiredDimensions
         ? await cropAndResizeToExact(
-            source.image,
+            image,
             requiredWidth!,
             requiredHeight!,
             "#ffffff"
           )
         : hasRequiredAspect
-          ? cropToAspectRatio(source.image, requiredAspectRatio!, "#ffffff")
+          ? cropToAspectRatio(image, requiredAspectRatio!, "#ffffff")
         : imageToCanvas(
-            source.image,
-            source.size.width,
-            source.size.height,
+            image,
+            size.width,
+            size.height,
             "#ffffff" // JPEG output — fill white so transparent areas don't go black
           );
       // A published per-side range (OCI: 200–900 px) is enforced by the portal,
@@ -243,8 +283,8 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
           <PreviewFrame>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={source.url}
-              alt="Original"
+              src={cropped?.url ?? source.url}
+              alt={cropped ? "Original, cropped closer" : "Original"}
               className="max-h-[320px] w-auto rounded-md"
             />
           </PreviewFrame>
@@ -263,6 +303,19 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
           </div>
         )}
       </div>
+
+      {faceCoverage && FaceCheck && (
+        <FaceCheck
+          source={source}
+          min={faceCoverage.min}
+          authority={faceCoverage.authority}
+          crop={crop}
+          onCropChange={(rect) => {
+            setCropFor(rect ? { source, rect } : null);
+            setResult(null);
+          }}
+        />
+      )}
 
       <div className="flex flex-wrap items-end gap-3">
         <label className="text-sm">
@@ -435,22 +488,28 @@ export function ResizeKbTool({
   requiredHeight,
   requiredAspectRatio,
   sidePx,
+  faceCoverage,
   minKb,
   densityDpi,
   requirementLabel,
   examWorkflow,
   onSourceChange,
   targetFromUrl = false,
+  allowCamera = false,
 }: {
   defaultKb?: number;
   /** Honour a `?target=<kb>` URL preset (the standalone /tools/resize-kb/ page). */
   targetFromUrl?: boolean;
+  /** Offer "Take a photo" next to upload (exam and ID photo resizers). */
+  allowCamera?: boolean;
   toolName?: string;
   requiredWidth?: number;
   requiredHeight?: number;
   requiredAspectRatio?: number;
   /** Published pixel range per side (OCI: 200–900) when there's no exact size. */
   sidePx?: { min: number; max: number };
+  /** See BodyProps.faceCoverage. */
+  faceCoverage?: { min: number; authority: string };
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -470,7 +529,7 @@ export function ResizeKbTool({
   const urlKb = useUrlKbTarget(targetFromUrl, minKb ? minCapKbForFloor(minKb) : 5, MAX_URL_TARGET_KB);
 
   return (
-    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}>
+    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS} allowCamera={allowCamera}>
       {(source) => (
         <Body
           source={source}
@@ -480,6 +539,7 @@ export function ResizeKbTool({
           requiredHeight={requiredHeight}
           requiredAspectRatio={requiredAspectRatio}
           sidePx={sidePx}
+          faceCoverage={faceCoverage}
           minKb={minKb}
           densityDpi={densityDpi}
           requirementLabel={requirementLabel}
