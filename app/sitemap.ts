@@ -31,6 +31,16 @@ const TOOL_UPDATED: Record<string, string> = {
   "photo-signature-merge": "2026-10-13",
   "sign-image": "2026-10-13",
   "dpi-converter": "2026-10-13",
+  // 14 Oct 2026: how-to steps for the common KB sizes searchers ask for.
+  "resize-kb": "2026-10-14",
+};
+/**
+ * Landing pages whose own copy changed after LAST_UPDATED. The page's
+ * dateModified must match (test/dateConsistency.test.ts).
+ */
+const LANDING_UPDATED: Record<string, string> = {
+  // 14 Oct 2026: passport size in cm and in pixels at 300 DPI.
+  "/passport-photo/": "2026-10-14",
 };
 const TRUST_PAGES_UPDATED = "2026-07-13";
 /** /terms/ — moves only when the terms text changes (7 Oct 2026: support-payment refunds). */
@@ -142,7 +152,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Landing pages with OG images ─────────────────────────────────────────
     ...ogRoutes.filter((path) => !isDeindexed(path)).map((path) => ({
       url: `${SITE_URL}${path}`,
-      lastModified: LAST_UPDATED,
+      lastModified: LANDING_UPDATED[path] ?? LAST_UPDATED,
       images: ogImg(path),
     })),
 

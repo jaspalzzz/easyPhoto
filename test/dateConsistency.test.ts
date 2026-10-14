@@ -127,4 +127,12 @@ describe("dates agree and never run ahead", () => {
     });
     expect(problems, explain(problems)).toEqual([]);
   });
+
+  it("the passport landing page's dateModified matches its sitemap lastmod", () => {
+    const source = fs.readFileSync(path.join("app", "passport-photo", "page.tsx"), "utf8");
+    const dateModified = source.match(/dateModified="([^"]+)"/)?.[1];
+    const entry = sitemap().find((e) => e.url === `${SITE_URL}/passport-photo/`);
+    expect(dateModified).toBeDefined();
+    expect(String(entry?.lastModified)).toBe(dateModified);
+  });
 });
