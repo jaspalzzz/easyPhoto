@@ -495,10 +495,13 @@ export function ResizeKbTool({
   examWorkflow,
   onSourceChange,
   targetFromUrl = false,
+  allowCamera = false,
 }: {
   defaultKb?: number;
   /** Honour a `?target=<kb>` URL preset (the standalone /tools/resize-kb/ page). */
   targetFromUrl?: boolean;
+  /** Offer "Take a photo" next to upload (exam and ID photo resizers). */
+  allowCamera?: boolean;
   toolName?: string;
   requiredWidth?: number;
   requiredHeight?: number;
@@ -526,7 +529,7 @@ export function ResizeKbTool({
   const urlKb = useUrlKbTarget(targetFromUrl, minKb ? minCapKbForFloor(minKb) : 5, MAX_URL_TARGET_KB);
 
   return (
-    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}>
+    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS} allowCamera={allowCamera}>
       {(source) => (
         <Body
           source={source}
