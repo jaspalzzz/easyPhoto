@@ -23,11 +23,32 @@ const LAST_UPDATED = "2026-08-02";
 const MAKERS_UPDATED = "2026-08-02";
 /** Tool pages and their category hubs — moves when a tool or its copy changes. */
 const TOOLS_UPDATED = "2026-09-08";
+/**
+ * Tool pages whose own copy changed after TOOLS_UPDATED, so the rest keep
+ * their real date (13 Oct 2026: titles, snippets and FAQs in searchers' words).
+ */
+const TOOL_UPDATED: Record<string, string> = {
+  "photo-with-name-date": "2026-10-13",
+  "photo-signature-merge": "2026-10-13",
+  "sign-image": "2026-10-13",
+  "dpi-converter": "2026-10-13",
+  "signature-crop": "2026-10-14",
+  // 14 Oct 2026: how-to steps for the common KB sizes searchers ask for.
+  "resize-kb": "2026-10-14",
+};
+/**
+ * Landing pages whose own copy changed after LAST_UPDATED. The page's
+ * dateModified must match (test/dateConsistency.test.ts).
+ */
+const LANDING_UPDATED: Record<string, string> = {
+  // 14 Oct 2026: passport size in cm and in pixels at 300 DPI.
+  "/passport-photo/": "2026-10-14",
+};
 const TRUST_PAGES_UPDATED = "2026-07-13";
 /** /terms/ — moves only when the terms text changes (7 Oct 2026: support-payment refunds). */
 const TERMS_UPDATED = "2026-10-07";
-/** /privacy/ — moves only when the policy text changes (8 Oct 2026: ad-cookie disclosure, tips). */
-const PRIVACY_UPDATED = "2026-10-08";
+/** /privacy/ — moves only when the policy text changes (8 Oct 2026: ad-cookie disclosure, tips; 14 Oct 2026: where ads run). */
+const PRIVACY_UPDATED = "2026-10-14";
 /** /tools/ index — moves only when its own content changes (8 Oct 2026: unfinished-tool cards removed). */
 const TOOLS_INDEX_UPDATED = "2026-10-08";
 /**
@@ -123,7 +144,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Landing pages with OG images ─────────────────────────────────────────
     ...ogRoutes.filter((path) => !isDeindexed(path)).map((path) => ({
       url: `${SITE_URL}${path}`,
-      lastModified: LAST_UPDATED,
+      lastModified: LANDING_UPDATED[path] ?? LAST_UPDATED,
       images: ogImg(path),
     })),
 
@@ -144,7 +165,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Individual tool pages — all have opengraph-image.tsx ─────────────────
     ...READY_TOOLS.filter((t) => !isDeindexed(`/tools/${t.slug}/`)).map((t) => ({
       url: `${SITE_URL}/tools/${t.slug}/`,
-      lastModified: TOOLS_UPDATED,
+      lastModified: TOOL_UPDATED[t.slug] ?? TOOLS_UPDATED,
       images: ogImg(`/tools/${t.slug}/`),
     })),
 

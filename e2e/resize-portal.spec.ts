@@ -190,3 +190,97 @@ test("oci exam page: the photo comes out square and within 200–900 px", async 
   expect(w, `${w}×${h}`).toBeGreaterThanOrEqual(200);
   expect(w, `${w}×${h}`).toBeLessThanOrEqual(900);
 });
+
+// UPSC: "Face must cover at least 75% or 3/4th of the area in the photo". The
+// fixture is a wide shot with a small head, so the tool measures it, offers a
+// closer crop on request (never automatically) and exports that crop.
+test("upsc exam page: measures face coverage and exports the closer crop", async ({ page }) => {
+  await page.goto("/exam-requirements/upsc/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await expect(page.getByText(/your face fills about \d+% of the photo\. UPSC asks for 75% or more/i)).toBeVisible({
+    timeout: 30_000,
+  });
+
+  await page.getByRole("button", { name: /^crop closer$/i }).click();
+  const after = page.getByText(/cropped closer: your face now fills about (\d+)%/i);
+  await expect(after).toBeVisible();
+  const coverage = Number((await after.innerText()).match(/about (\d+)%/)![1]);
+  expect(coverage).toBeGreaterThanOrEqual(75);
+  await expect(page.getByRole("button", { name: /^undo crop$/i })).toBeVisible();
+
+  await page.getByRole("button", { name: /compress to size/i }).click();
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: /download jpg/i }).click({ timeout: 30_000 }),
+  ]);
+  const bytes = fs.readFileSync((await download.path())!);
+  const [w, h] = await decode(page, bytes);
+  // The 1024 × 1024 photo comes out as the portrait crop, not the whole shot.
+  expect(w, `${w}×${h}`).toBeLessThan(1024);
+  expect(h, `${w}×${h}`).toBeGreaterThan(w);
+  expect(bytes.length).toBeGreaterThanOrEqual(20 * 1024);
+  expect(bytes.length).toBeLessThanOrEqual(200 * 1000);
+});
+
+test("upsc exam page: undo crop restores the whole photo", async ({ page }) => {
+  await page.goto("/exam-requirements/upsc/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await page.getByRole("button", { name: /^crop closer$/i }).click({ timeout: 30_000 });
+  await expect(page.getByAltText("Original, cropped closer")).toBeVisible();
+  await page.getByRole("button", { name: /^undo crop$/i }).click();
+  await expect(page.getByAltText("Original", { exact: true })).toBeVisible();
+  await expect(page.getByText(/^your face fills about \d+%/i)).toBeVisible();
+});
+
+test("upsc exam page: a photo the face already fills passes without a crop", async ({ page }) => {
+  // The tool's own closer crop of the wide shot is a photo the face fills.
+  await page.goto("/exam-requirements/upsc/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await page.getByRole("button", { name: /^crop closer$/i }).click({ timeout: 30_000 });
+  await page.getByRole("button", { name: /compress to size/i }).click();
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: /download jpg/i }).click({ timeout: 30_000 }),
+  ]);
+  const tight = fs.readFileSync((await download.path())!);
+
+  await page.goto("/exam-requirements/upsc/");
+  await page.setInputFiles('input[type="file"]', { name: "tight.jpg", mimeType: "image/jpeg", buffer: tight });
+  const measured = page.getByText(/your face fills about (\d+)% of the photo/i);
+  await expect(measured).toBeVisible({ timeout: 30_000 });
+  expect(Number((await measured.innerText()).match(/about (\d+)%/)![1])).toBeGreaterThanOrEqual(75);
+  await expect(page.getByRole("button", { name: /^crop closer$/i })).toHaveCount(0);
+  await expect(page.getByText(/cut off|can.t be cropped closer/i)).toHaveCount(0);
+});
+
+test("upsc exam page: a photo with no face says so", async ({ page }) => {
+  await page.goto("/exam-requirements/upsc/");
+  const blank = await page.evaluate(async () => {
+    const c = document.createElement("canvas");
+    c.width = 600;
+    c.height = 800;
+    const g = c.getContext("2d")!;
+    g.fillStyle = "#d8d4cc";
+    g.fillRect(0, 0, c.width, c.height);
+    const blob = await new Promise<Blob>((r) => c.toBlob((b) => r(b!), "image/jpeg", 0.9));
+    const bytes = new Uint8Array(await blob.arrayBuffer());
+    let bin = "";
+    for (const b of bytes) bin += String.fromCharCode(b);
+    return btoa(bin);
+  });
+  await page.setInputFiles('input[type="file"]', {
+    name: "blank.jpg",
+    mimeType: "image/jpeg",
+    buffer: Buffer.from(blank, "base64"),
+  });
+  await expect(page.getByText(/couldn.t find a face in this photo/i)).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole("button", { name: /compress to size/i })).toBeEnabled();
+});
+
+test("ibps exam page has no face-coverage check (only UPSC publishes one)", async ({ page }) => {
+  await page.goto("/exam-requirements/ibps/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await expect(page.getByRole("button", { name: /compress to size/i })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText(/your face fills about/i)).toHaveCount(0);
+  await expect(page.getByText(/checking how much of the photo/i)).toHaveCount(0);
+});

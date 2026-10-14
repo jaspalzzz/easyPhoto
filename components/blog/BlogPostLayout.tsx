@@ -10,6 +10,7 @@ import type { FaqItem } from "@/components/site/Faq";
 import { absoluteUrl } from "@/lib/seo";
 import { AUTHOR } from "@/lib/author";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { AdSlot } from "@/components/site/AdSlot";
 
 /** Shared chrome + Article schema for a blog post. */
 export function BlogPostLayout({
@@ -117,6 +118,8 @@ export function BlogPostLayout({
         >
           {children}
         </article>
+
+        <AdSlot placement="article" />
 
         {/* About the author — named-person E-E-A-T card with profile link. */}
         <aside className="mt-12 flex items-start gap-4 rounded-xl border border-hairline bg-card p-5">

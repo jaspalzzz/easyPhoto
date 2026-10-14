@@ -1,8 +1,40 @@
 # Next release — plan
 
-Status: **planned** (written 29 Sep 2026, dated 1 Oct 2026). Follows
+Status: **wrap-up** (updated 13 Oct 2026). Written 29 Sep 2026. Follows
 `CLAUDE.md`; every item goes feature branch → PR into `dev` → verified → one
 release PR `dev → master`.
+
+## Wrap-up plan (owner decision, 13 Oct 2026)
+
+All work ships by **31 Oct 2026**: after October there are no people, AI
+subscriptions or budget to maintain the site. So every remaining release is
+big, and nothing is left that needs follow-up measurement or upkeep. Bigger
+releases than CLAUDE.md §2 normally allows are the owner's override, logged
+in `docs/weekly-log.md` with each release. **This section replaces the
+schedule below where they differ.**
+
+| Date | Release | Contents | Status |
+|---|---|---|---|
+| Thu 15 Oct | Fixes | #89: JavaScript fixes + Driving Licence JPG hotfix | ready (draft, dry-run passed 8 Oct); owner merges after the morning GSC/Bing review |
+| Thu 22 Oct, after 13:30 IST | Polish | UI polish, tip pop-up, /terms/ (#88), /privacy/ and /tools/ (#90), UPSC PDF link (#97), UPSC signature 350–500 px (#99), unknown-format signatures → white JPG (#106) | #99, #106 on `dev`; owner adds the three tip variables in Cloudflare Production first |
+| Thu 29 Oct | Final content | SSC (#92), UPSC (#98), UP Police (#107) rewrites; exam pages overhaul for AdSense (#110); date-free exam calendar (#111); Voter ID meta in ECI's words (#113); print-sheet fix (`b877a16`); broken blog images removed (#73); UPSC face-coverage check (#112) | stack #92 → #98 → #107 → #110 → #111 → #113, each retargeted to `dev` as the one below merges; #73, `b877a16`, #112 on `dev` |
+| 30–31 Oct | Hand-over | `docs/HANDOVER.md`: running costs (domain renewal), Cloudflare rollback, tips and ads switches, the AdSense review request, a monthly 10-minute check | to write |
+
+**Before 29 Oct:** real-phone check of the UPSC face check on the dev preview
+(Android and iPhone; a selfie and a photo of a printed passport photo).
+
+**After 29 Oct:** the owner requests the AdSense review (Sites → Request
+review) and, once approved, sets `NEXT_PUBLIC_ADSENSE_ENABLED=true` in
+Cloudflare Production and redeploys.
+
+**Dropped in the wrap-up** (each needs dates kept current or results judged
+after October):
+- item 2's dated calendar → the calendar became date-free (#111);
+- item 3, the "This cycle" boxes;
+- item 6, the `/tools/resize-kb/` title experiment;
+- item 7's title test → Voter ID gets the meta fix only (#113);
+- item 9 beyond the 29 Oct pages, and the 12 Nov release;
+- the Bing resize work and the React #418 upstream report.
 
 ## Schedule
 

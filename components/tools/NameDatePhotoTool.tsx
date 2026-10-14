@@ -31,16 +31,40 @@ function getTodayIsoString() {
   return `${y}-${m}-${d}`;
 }
 
-// Convert a YYYY-MM-DD string to DD/MM/YYYY for display on the photo.
-function isoToDmy(iso: string): string {
+/** Separators offered for the printed date; forms write it either way. */
+const DATE_SEPARATORS = ["/", "-", "."] as const;
+type DateSeparator = (typeof DATE_SEPARATORS)[number];
+
+/** What the strip prints: forms ask for both, or only one of them. */
+type StripText = "both" | "name" | "date";
+
+// Convert a YYYY-MM-DD string to DD/MM/YYYY (or DD-MM-YYYY, DD.MM.YYYY) for the photo.
+function isoToDmy(iso: string, sep: DateSeparator = "/"): string {
   if (!iso) return "";
   const parts = iso.split("-");
   if (parts.length !== 3) return iso; // fallback: return as-is
-  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  return [parts[2], parts[1], parts[0]].join(sep);
 }
+
+/** 35 × 45 mm at 300 DPI, the strip inside the frame as studios print it. */
+const PASSPORT_W = 413;
+const PASSPORT_H = 531;
 
 const PRESETS: Array<NameDatePreset | (Omit<NameDatePreset, "specId"> & { specId: null })> = [
   ...NAME_DATE_PRESETS,
+  // Passport size for searchers who name no exam ("passport size photo with
+  // name and date"). A size, not an exam rule: no specId, no provenance block.
+  {
+    id: "passport-35x45",
+    name: `Passport size, 35 × 45 mm (${PASSPORT_W} × ${PASSPORT_H} px)`,
+    specId: null,
+    width: PASSPORT_W,
+    height: PASSPORT_H,
+    ar: PASSPORT_W / (PASSPORT_H - Math.round(PASSPORT_H * 0.15)),
+    kb: 100,
+    minKb: null,
+    stripHeightPx: null,
+  },
   // Free-form crop: NaN is Cropper.js's "no aspect-ratio lock" value, so the
   // box can be dragged to ANY size — including the full width/height of a tall
   // screenshot or an odd source photo. The spec presets above stay locked to
@@ -155,6 +179,10 @@ function Body({
   const [activePreset, setActivePreset] = React.useState(initialPreset);
   const [name, setName] = React.useState("");
   const [date, setDate] = React.useState(getTodayIsoString());
+  const [stripText, setStripText] = React.useState<StripText>("both");
+  const [dateSep, setDateSep] = React.useState<DateSeparator>("/");
+  const printedName = (n: string) => (stripText === "date" ? "" : n);
+  const printedDate = (iso: string) => (stripText === "name" ? "" : isoToDmy(iso, dateSep));
   const [stripHeight, setStripHeight] = React.useState(15);
   const [targetKb, setTargetKb] = React.useState(initialPreset.kb);
   // Lowest target the slider allows: above a portal floor far enough that the
@@ -247,8 +275,8 @@ function Body({
 
     try {
       const { canvas: annotCanvas, legible } = drawNameDateStrip(croppedCanvas, {
-        name: dName,
-        date: isoToDmy(dDate),
+        name: printedName(dName),
+        date: printedDate(dDate),
         stripHeightPercent: dStripHeight,
         totalHeight: activePreset.height ?? undefined,
         stripHeightPx: previewStripPx,
@@ -267,7 +295,8 @@ function Body({
     } catch (e) {
       console.error("Preview render failed:", e);
     }
-  }, [dName, dDate, dStripHeight, activePreset, cropperReady, fixedStripHeight]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- printedName/printedDate read stripText and dateSep
+  }, [dName, dDate, dStripHeight, activePreset, cropperReady, fixedStripHeight, stripText, dateSep]);
 
   React.useEffect(() => {
     updatePreview();
@@ -330,8 +359,8 @@ function Body({
 
       // Draw Name/Date strip at full resolution
       const { canvas: annotCanvas } = drawNameDateStrip(croppedCanvas, {
-        name,
-        date: isoToDmy(date),
+        name: printedName(name),
+        date: printedDate(date),
         stripHeightPercent: stripHeight,
         totalHeight: activePreset.height ?? undefined,
         stripHeightPx: exportStripPx,
@@ -450,7 +479,7 @@ function Body({
         <div className="panel p-5 space-y-5">
           {/* Preset Selector */}
           <div>
-            <label htmlFor="name-date-preset" className="block text-sm font-semibold mb-2">Select Exam Preset</label>
+            <label htmlFor="name-date-preset" className="block text-sm font-semibold mb-2">Exam or photo size</label>
             <select
               id="name-date-preset"
               value={activePreset.id}
@@ -485,8 +514,34 @@ function Body({
             </div>
           )}
 
+          {/* What the strip prints */}
+          <fieldset>
+            <legend className="mb-1.5 block text-sm font-semibold">Print on the photo</legend>
+            <div className="flex flex-wrap gap-2">
+              {([
+                ["both", "Name and date"],
+                ["name", "Name only"],
+                ["date", "Date only"],
+              ] as [StripText, string][]).map(([val, label]) => (
+                <button
+                  key={val}
+                  type="button"
+                  onClick={() => setStripText(val)}
+                  aria-pressed={stripText === val}
+                  className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors ${
+                    stripText === val
+                      ? "border-brand bg-brand text-white"
+                      : "border-hairline-strong bg-background text-foreground hover:bg-accent/40"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+
           {/* Name Input */}
-          <div>
+          <div hidden={stripText === "date"}>
             <label htmlFor="name-date-candidate" className="block text-sm font-semibold mb-1.5 flex items-center gap-1.5">
               <User className="h-4 w-4 text-ink-soft" />
               Candidate Name
@@ -512,7 +567,7 @@ function Body({
           </div>
 
           {/* Date Input */}
-          <div>
+          <div hidden={stripText === "name"}>
             <label htmlFor="name-date-photo-date" className="block text-sm font-semibold mb-1.5 flex items-center gap-1.5">
               <Calendar className="h-4 w-4 text-ink-soft" />
               Date of Photo (DOP)
@@ -524,6 +579,20 @@ function Body({
               onChange={(e) => setDate(e.target.value)}
               className="w-full h-10 rounded-md border border-hairline-strong bg-background px-3 text-sm font-mono focus:border-brand"
             />
+            <label className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+              Printed as
+              <select
+                value={dateSep}
+                onChange={(e) => setDateSep(e.target.value as DateSeparator)}
+                className="h-8 rounded-md border border-hairline-strong bg-background px-2 font-mono text-xs text-foreground"
+              >
+                {DATE_SEPARATORS.map((sep) => (
+                  <option key={sep} value={sep}>
+                    {["DD", "MM", "YYYY"].join(sep)}
+                  </option>
+                ))}
+              </select>
+            </label>
             <span className="text-xs text-muted-foreground mt-1 block">
               Use the date the photograph was taken, as stated by the current notice.
             </span>
@@ -694,7 +763,7 @@ export function NameDatePhotoTool({ defaultPresetId }: { defaultPresetId?: strin
   const resolvedPresetId = defaultPresetId ?? workflowPresetId;
 
   return (
-    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_PHOTO_KINDS}>
+    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_PHOTO_KINDS} allowCamera>
       {(source) => (
         <Body
           key={resolvedPresetId ?? "default"}

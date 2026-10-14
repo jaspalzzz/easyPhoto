@@ -73,6 +73,15 @@ const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {
   "voter-id": "Voter ID Photo Size & Resizer 2026 — easyPhoto",
 };
 
+// Per-exam meta descriptions where the template reads badly. driving-licence:
+// it ranks 2–4 for "driving licence photo and signature size" with almost no
+// clicks (GSC 25 Sep – 12 Oct 2026); this states Sarathi's figures plainly.
+const EXAM_REQUIREMENTS_DESCRIPTION_OVERRIDES: Record<string, string> = {
+  "driving-licence":
+    "Driving Licence photo and signature size on Sarathi: photo 420 × 525 px, signature " +
+    "256 × 64 px, each 10–20 KB JPG. Resize both here, free.",
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -103,6 +112,7 @@ export async function generateMetadata({
       titleBase,
     titleAbsolute: !!EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam],
     description:
+      EXAM_REQUIREMENTS_DESCRIPTION_OVERRIDES[exam] ??
       descriptionOverride ??
       EXAM_GUIDES[exam]?.metaDescription ??
       // Omit the pixel clause when the authority publishes none — px() renders an
