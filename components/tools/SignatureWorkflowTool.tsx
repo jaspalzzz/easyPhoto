@@ -580,7 +580,8 @@ function Body({
   const handleDownload = () => {
     if (!out) return;
     const ext = bgFormat === "jpeg" ? "jpg" : "png";
-    downloadBlob(out.blob, `signature-processed.${ext}`, toolName);
+    // The authority's own file name when it names one (UPSC: "signature").
+    downloadBlob(out.blob, `${selectedPreset?.sigFileName ?? "signature-processed"}.${ext}`, toolName);
   };
 
   return (
