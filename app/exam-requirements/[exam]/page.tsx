@@ -55,6 +55,9 @@ function aspectLabel(r: number): string {
   return `${r.toFixed(2)} : 1`;
 }
 
+/** ID-document pages built from this template: "application", not "exam". */
+const ID_DOCUMENTS = new Set(["voter-id", "driving-licence", "pan", "oci", "passport-seva", "ds160"]);
+
 // Per-exam custom titles bypass the template below (titleAbsolute). These are
 // the full SERP title, including the brand suffix.
 //
@@ -71,8 +74,15 @@ function aspectLabel(r: number): string {
 // this out to the other 49 exam pages until this test reads positive.
 // Kept as is: the follow-up title test was dropped in the October wrap-up
 // (owner, 13 Oct 2026).
+//
+// ssc / rrb / upsc (14 Oct 2026 competitor teardown, owner-approved): every
+// top result for "<exam> signature size" puts the figures in its title; these
+// state the official figures recorded on each page.
 const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {
   "voter-id": "Voter ID Photo Size & Resizer 2026 — easyPhoto",
+  ssc: "SSC Signature Size 2026: 10–20 KB, 6 × 2 cm — easyPhoto",
+  rrb: "RRB Signature Size 2026: 30–49 KB, 140 × 60 px — easyPhoto",
+  upsc: "UPSC Photo & Signature Size 2026 (20–200 KB) — easyPhoto",
 };
 
 // Per-exam meta descriptions, in the authority's own words, where the template
@@ -174,7 +184,7 @@ export default async function Page({
   const guide = EXAM_GUIDES[exam];
   // Only rewritten pages carry a FAQ: the template's five questions were the
   // same on every exam page with the name swapped, and restated the spec table.
-  const faqItems = guide?.faq ?? [];
+  const faqItems = guide?.faq ?? spec.faq ?? [];
   const related = relatedPortals(exam, 6);
   const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(exam)];
   const guideLinks = examGuideLinks(exam);
@@ -283,7 +293,7 @@ export default async function Page({
               ) : (
               <dl>
                 <Row label="File size" value={photoKb(spec)} />
-                <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? "—"} />
+                <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? spec.photoDimsNote ?? "—"} />
                 {spec.photoAspectRatio && (
                   <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
                 )}
@@ -294,6 +304,7 @@ export default async function Page({
               </dl>
               )}
             </div>
+            {!spec.noSignatureUpload && (
             <div className="space-y-3">
               <h2 className="eyebrow">Signature requirement</h2>
               {sig ? (
@@ -309,6 +320,7 @@ export default async function Page({
                 </p>
               )}
             </div>
+            )}
           </section>
 
           {/* Transactional tool — embedded, not linked out. AI Overviews answer
@@ -425,7 +437,7 @@ export default async function Page({
 
       {!guide && spec.context && (
         <section className="space-y-2">
-          <h2 className="eyebrow">About this exam</h2>
+          <h2 className="eyebrow">{ID_DOCUMENTS.has(exam) ? "About this application" : "About this exam"}</h2>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
             {spec.context}
           </p>

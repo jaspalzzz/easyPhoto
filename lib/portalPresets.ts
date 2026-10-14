@@ -53,6 +53,15 @@ export interface PortalSpec {
    * The photo tool scales its output inside it.
    */
   photoSidePx?: { min: number; max: number };
+  /** Shown in place of the pixel size when the authority sets none (e.g. ECI). */
+  photoDimsNote?: string;
+  /** The form takes no signature upload at all (ECI Form 6): hide the signature card. */
+  noSignatureUpload?: boolean;
+  /**
+   * Page FAQ for a template exam page, in searchers' own questions. Answers use
+   * only figures recorded (and sourced) in this record.
+   */
+  faq?: ReadonlyArray<{ q: string; a: string }>;
   /** File format published for the prepared photograph upload. */
   photoFormat?: string;
   /** Background published for the prepared photograph upload. */
@@ -308,6 +317,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     // CEN 06/2026 §14.4: "Candidates are not required to upload a pre-existing
     // photograph" — the photo fields above only feed overview tables.
     noPhotoUpload: true,
+    faq: [
+      {
+        q: "How do I resize the RRB signature to 140 × 60 pixels?",
+        a: "Sign on plain white paper, take a clear photo or scan, and open it in the resizer on this page. It crops to 140 × 60 pixels and keeps the JPG between 30 and 49 KB, the size RRB's notice sets.",
+      },
+    ],
     context: "RRB recruits through Centralised Employment Notices (CENs), published on every regional RRB website. These rules are from CEN 06/2026 for the NTPC graduate posts (7 October 2026); CEN 05/2026 for paramedical posts gives the same signature rules.",
     applicationNotes: [
       "Follow the capture screen's own instructions for lighting and framing; nothing prepared in advance substitutes for the live photo. RRB asks for a pure plain white background with no scenery or pictures behind you, and dark, non-white clothes that cover your shoulders and chest, so you stand out from the wall.",
@@ -1253,6 +1268,12 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-10-13",
+    faq: [
+      {
+        q: "How do I resize my photo and signature for a driving licence?",
+        a: "Use the two tabs in the resizer on this page. The photo comes out at 420 × 525 pixels and the signature at 256 × 64 pixels, each a JPG of 10 to 20 KB, as Sarathi's scan guide asks. Upload each file in its own box on Sarathi.",
+      },
+    ],
     context:
       "Driving licence and learner's licence applications nationwide go through the single Sarathi Parivahan portal (sarathi.parivahan.gov.in) — this is one national spec document, not a state-by-state one, even though the RTO issuing the licence is run by the state.",
   },
@@ -1265,6 +1286,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     // (2,000,000 bytes, since caps count 1 KB as 1000 bytes) passes either way.
     photoLimitKb: 2000,
     photoAspectRatio: 3.5 / 4.5,
+    photoDimsNote: "None set by ECI",
+    noSignatureUpload: true,
     photoBackground: "White",
     description: "ECI Form 6 asks for a recent, unsigned colour passport-size photograph, 4.5 × 3.5 cm, showing the front of the full face on a white background, eyes open and both edges of the face visible. On the Voters' Service Portal, the Form 6 photo field accepts JPG or JPEG files up to 2 MB.",
     photoFormat: "JPG / JPEG",

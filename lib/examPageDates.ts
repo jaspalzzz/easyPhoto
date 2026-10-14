@@ -15,7 +15,25 @@ export const EXAM_TEMPLATE_UPDATED = "2026-10-13";
  * The visible "Verified <date>" line stays the verification date — a
  * different fact.
  */
+/**
+ * Pages whose own text changed after the template date. 14 Oct 2026 (the top-10
+ * competitor fixes): titles with the official figures (SSC, RRB, UPSC), FAQs
+ * (RRB, Driving Licence), "About this application" on ID-document pages, and
+ * the Voter ID dimensions note and hidden signature card.
+ */
+const PAGE_UPDATED: Record<string, string> = {
+  ssc: "2026-10-14",
+  rrb: "2026-10-14",
+  upsc: "2026-10-14",
+  "driving-licence": "2026-10-14",
+  "voter-id": "2026-10-14",
+  pan: "2026-10-14",
+  oci: "2026-10-14",
+  "passport-seva": "2026-10-14",
+  ds160: "2026-10-14",
+};
+
 export function examPageLastModified(examId: string): string {
-  const verified = PORTAL_PRESETS[examId]?.verifiedOn;
-  return verified && verified > EXAM_TEMPLATE_UPDATED ? verified : EXAM_TEMPLATE_UPDATED;
+  const dates = [EXAM_TEMPLATE_UPDATED, PORTAL_PRESETS[examId]?.verifiedOn, PAGE_UPDATED[examId]];
+  return dates.filter((d): d is string => !!d).sort().at(-1)!;
 }
