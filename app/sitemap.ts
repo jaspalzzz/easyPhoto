@@ -31,6 +31,7 @@ const TOOL_UPDATED: Record<string, string> = {
   "photo-signature-merge": "2026-10-13",
   "sign-image": "2026-10-13",
   "dpi-converter": "2026-10-13",
+  "signature-crop": "2026-10-14",
 };
 const TRUST_PAGES_UPDATED = "2026-07-13";
 /** /terms/ — moves only when the terms text changes (7 Oct 2026: support-payment refunds). */
