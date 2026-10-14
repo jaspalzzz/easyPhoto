@@ -284,3 +284,16 @@ test("ibps exam page has no face-coverage check (only UPSC publishes one)", asyn
   await expect(page.getByText(/your face fills about/i)).toHaveCount(0);
   await expect(page.getByText(/checking how much of the photo/i)).toHaveCount(0);
 });
+
+// UPSC's instructions (§1a, §2e): save the photo as "photo" and the signature
+// as "signature" (JPG). The download now carries that name.
+test("upsc exam page: the photo downloads as photo.jpg", async ({ page }) => {
+  await page.goto("/exam-requirements/upsc/");
+  await page.setInputFiles('input[type="file"]', FACE_PHOTO);
+  await page.getByRole("button", { name: /compress to size/i }).click({ timeout: 30_000 });
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: /download jpg/i }).click({ timeout: 30_000 }),
+  ]);
+  expect(download.suggestedFilename()).toBe("photo.jpg");
+});

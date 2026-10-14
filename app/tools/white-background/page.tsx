@@ -7,10 +7,13 @@ import { WHITE_BACKGROUND_FAQ } from "@/lib/faqs";
 const tool = getTool("white-background")!;
 
 export const metadata = pageMetadata({
-  title: "White Background Generator — Replace Photo Background",
+  // "white background maker/generator" is held by global brands (remove.bg,
+  // Canva, Photoroom; we sat at position ~16 with 0.5% CTR, GSC Sep–Oct 2026).
+  // Lead with the photos our visitors actually need white: exam and ID forms.
+  title: "White Background for Passport & Exam Photos",
   description:
-    "Swap any photo's background for clean white (or any solid colour) in your " +
-    "browser. Great for profile photos and product shots. Nothing is uploaded.",
+    "Make a photo's background plain white for exam, passport and visa forms that ask for it, " +
+    "right in your browser, or any plain colour. Free; nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
