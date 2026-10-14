@@ -58,6 +58,8 @@ const TOOLS_INDEX_UPDATED = "2026-10-08";
  * photo and signature; 10 Oct 2026: UP Police live photo and signature).
  */
 const EXAM_OVERVIEW_UPDATED = "2026-10-10";
+/** /exam-calendar/ — moves only when its own content changes (13 Oct 2026: made date-free, links each board's calendar). */
+const EXAM_CALENDAR_UPDATED = "2026-10-13";
 
 
 // Helper: add the page's OG image as an image sitemap entry.
@@ -86,7 +88,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about/",
     "/contact/",
     "/disclaimer/",
-    "/exam-calendar/",
     "/aadhaar-photo/",
     // Hinglish pages are noindex (thin duplicates) — intentionally not in sitemap.
     "/convert/",
@@ -129,6 +130,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ["/tools/", TOOLS_INDEX_UPDATED],
         ["/exam-requirements/", EXAM_OVERVIEW_UPDATED],
         ["/exam-photo-size/", EXAM_OVERVIEW_UPDATED],
+        ["/exam-calendar/", EXAM_CALENDAR_UPDATED],
         ["/privacy/", PRIVACY_UPDATED],
         ["/terms/", TERMS_UPDATED],
       ] as const
