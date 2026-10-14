@@ -350,10 +350,10 @@ export const SIGNATURE_CLEANER_FAQ: FaqItem[] = [
 ];
 
 export const SIGNATURE_CROP_FAQ: FaqItem[] = [
-  { q: "How do I crop a signature to the ink?", a: "Upload your signature scan or phone photo, then drag the crop box around your signature — the dimmed area is removed and the bright area is kept. Or tap Auto-detect to snap the box to the ink automatically. Download as PNG or JPG." },
   { q: "Can I crop a photo of my signature, not just a clean scan?", a: "Yes. The manual crop box works on any photo — including phone photos with shadows or off-white paper, where automatic trimming alone can struggle. Just drag the box to exactly what you want to keep." },
   { q: "Why crop a signature before uploading?", a: "Forms expect the signature to fill the frame, not float in a sea of white. A tight crop also helps it meet pixel-dimension limits." },
-  { q: "Can I also remove the paper background?", a: "Yes — use the signature cleaner or background-removal tool to drop the paper and keep a transparent PNG." },
+  { q: "How can I extract a signature from an image?", a: "Extracting means two things: cutting out just the signature, and dropping the paper behind it. Crop the signature here, then choose Transparent to keep only the ink, as a PNG you can place on other documents, or White for a clean JPG for forms." },
+  { q: "Can I make a form signature from a phone photo?", a: "Yes. Write your signature in dark ink on blank paper, photograph it straight-on in good light, crop it here with the paper set to White, then fit it to your form's limit with the signature resizer. If the ink looks faint, the signature cleaner darkens the strokes as well." },
   { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser." },
 ];
 

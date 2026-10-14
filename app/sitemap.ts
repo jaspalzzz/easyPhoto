@@ -31,6 +31,7 @@ const TOOL_UPDATED: Record<string, string> = {
   "photo-signature-merge": "2026-10-13",
   "sign-image": "2026-10-13",
   "dpi-converter": "2026-10-13",
+  "signature-crop": "2026-10-14",
   // 14 Oct 2026: how-to steps for the common KB sizes searchers ask for.
   "resize-kb": "2026-10-14",
 };

@@ -96,3 +96,27 @@ export function flattenPaper(pixels: Uint8ClampedArray, paper: Uint8ClampedArray
     pixels[i + 2] = b + (255 - b) * t;
   }
 }
+
+/** The paper map is built from a copy this many times smaller than the image. */
+const PAPER_STEP = 16;
+
+/**
+ * Whiten the paper of `canvas` in place (browser only): builds the paper map
+ * from a small copy, then flattens every pixel against it. Grey phone-photo
+ * paper and soft shadows become white; ink keeps its colour.
+ */
+export function whitenPaperOnCanvas(canvas: HTMLCanvasElement): void {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Could not acquire 2D canvas context.");
+  const small = document.createElement("canvas");
+  small.width = Math.max(1, Math.round(canvas.width / PAPER_STEP));
+  small.height = Math.max(1, Math.round(canvas.height / PAPER_STEP));
+  const sctx = small.getContext("2d");
+  if (!sctx) throw new Error("Could not acquire 2D canvas context.");
+  sctx.drawImage(canvas, 0, 0, small.width, small.height);
+  const levels = paperLevels(sctx.getImageData(0, 0, small.width, small.height).data, small.width, small.height, 1);
+  const paper = upsampleLevels(levels, small.width, small.height, canvas.width, canvas.height);
+  const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  flattenPaper(img.data, paper);
+  ctx.putImageData(img, 0, 0);
+}

@@ -32,7 +32,7 @@ describe("resize by KB how-to", () => {
   });
 
   it("answers the common KB sizes in one how-to section", () => {
-    expect(page).toContain("How to resize a photo to 20 KB, 50 KB, 100 KB or 200 KB");
+    expect(page).toContain("Resize a photo to 20 KB, 50 KB, 100 KB or 200 KB");
   });
 
   it("promises a file under the limit in both KB conventions, as the compressor enforces", () => {
