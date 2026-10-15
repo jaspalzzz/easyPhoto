@@ -62,6 +62,25 @@ pages. Bringing one back is an owner decision, needs its own unique text
 2. `/tools/print-sheet/`: "passport size photo print sheet" / "8 photos on 4×6". The passport page already links it.
 3. `/tools/resize-dimensions/`: "resize image to 200 × 230 pixels" and similar exam sizes.
 
+## Visa and country maker pages (15 indexed visa pages, ~30 makers)
+
+These share one template, the most alike family on the site (CLAUDE.md §1).
+Google brings them almost no searches: the largest, UAE, had 106 named
+impressions in 90 days. Several sizes are recorded from aggregators, not
+embassies (UAE's 43 × 55 mm is `verified: "aggregator"`), so titles must not
+state them.
+
+- **22 Oct 2026:** UAE only. Title and H1 say "UAE & Dubai" (people search
+  "dubai visa photo size" at ~54 and "sharjah visa photo size" at ~7), and
+  GDRFA is named as Dubai's office. No new numbers.
+- **After October (main item for this family):** make each country page
+  genuinely different, with its own official source, the facts Indian
+  applicants actually need and its own questions. Or fold the weakest
+  (France, Italy, China, Spain, Japan: almost no impressions) into
+  `/visa-photo/` with a redirect, as an owner decision under CLAUDE.md §1.
+  Do one country at a time and measure each for 14 days. Never retitle the
+  family in one batch.
+
 ## Ceiling
 
 On-page work gets a page to answer the right search. **Positions 2–6** on

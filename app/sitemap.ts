@@ -56,6 +56,8 @@ const TOOL_UPDATED: Record<string, string> = {
  * dateModified must match (test/dateConsistency.test.ts).
  */
 const LANDING_UPDATED: Record<string, string> = {
+  // 15 Oct 2026: "UAE & Dubai" in the title and H1; GDRFA named as Dubai's office.
+  "/uae-visa-photo-maker/": "2026-10-15",
   // 15 Oct 2026: homepage H1 in visitors' words.
   "/": "2026-10-15",
   // 15 Oct 2026: "Passport Size Photo Maker" title, intro and tool links
@@ -172,7 +174,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Country/visa maker pages — all use [maker]/opengraph-image ────────────
     ...MAKER_PAGES.map((m) => ({
       url: `${SITE_URL}/${m.slug}/`,
-      lastModified: MAKERS_UPDATED,
+      lastModified: LANDING_UPDATED[`/${m.slug}/`] ?? MAKERS_UPDATED,
       images: ogImg(`/${m.slug}/`),
     })),
 

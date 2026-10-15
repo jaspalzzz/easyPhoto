@@ -73,11 +73,22 @@ export async function generateMetadata({
       : `${labelWithDoc(spec.label, doc)} photo, recorded at ${mm.width}×${mm.height}mm, ${background}. Confirm current requirements. Free, nothing uploaded.`,
   );
   return pageMetadata({
-    title: `${labelWithDoc(spec.label, doc, doc === "visa" ? "Visa" : "Passport")} Photo Size & Maker`,
+    title: `${labelWithDoc(pageLabel(spec), doc, doc === "visa" ? "Visa" : "Passport")} Photo Size & Maker`,
     description,
     path: `/${maker}/`,
   });
 }
+
+/**
+ * Page-only names, keyed by spec id, where searchers use a different name from
+ * the shared label (which also appears on country cards across the site).
+ * uae (owner, 15 Oct 2026): Indians search "dubai visa photo size" and "sharjah
+ * visa photo size"; this page covers GDRFA Dubai's channel.
+ */
+const PAGE_LABEL: Record<string, string> = {
+  uae: "UAE & Dubai",
+};
+const pageLabel = (spec: { id: string; label: string }) => PAGE_LABEL[spec.id] ?? spec.label;
 
 /**
  * User-facing "Good to know" copy, keyed by spec id. Kept here (not in the spec
@@ -197,7 +208,7 @@ export default async function MakerPage({
   const crumbs: Crumb[] = [
     { name: "Home", path: "/" },
     { name: hub.name, path: hub.path },
-    { name: `${labelWithDoc(spec.label, doc)} photo`, path: `/${maker}/` },
+    { name: `${labelWithDoc(pageLabel(spec), doc)} photo`, path: `/${maker}/` },
   ];
 
   return (
@@ -206,7 +217,7 @@ export default async function MakerPage({
         schema={[
           breadcrumbSchema(crumbs),
           softwareApplicationSchema({
-            name: `${labelWithDoc(spec.label, doc, Doc)} Photo Maker`,
+            name: `${labelWithDoc(pageLabel(spec), doc, Doc)} Photo Maker`,
             description: `Prepare a ${labelWithDoc(spec.label, doc)} photo at the selected size and background in your browser, then confirm the current authority instructions.`,
             url: `/${maker}/`,
           }),
@@ -218,7 +229,7 @@ export default async function MakerPage({
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">{Doc} photo bureau</span>
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
-          {labelWithDoc(spec.label, doc, Doc)} Photo Maker
+          {labelWithDoc(pageLabel(spec), doc, Doc)} Photo Maker
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           {content?.intro ??
