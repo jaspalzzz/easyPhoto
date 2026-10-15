@@ -28,7 +28,8 @@ const TOOLS_UPDATED = "2026-09-08";
  * their real date (13 Oct 2026: titles, snippets and FAQs in searchers' words).
  */
 const TOOL_UPDATED: Record<string, string> = {
-  "photo-with-name-date": "2026-10-13",
+  // 15 Oct 2026: title and "Which exams need a photo with name and date?".
+  "photo-with-name-date": "2026-10-15",
   "photo-signature-merge": "2026-10-13",
   "sign-image": "2026-10-14",
   "dpi-converter": "2026-10-13",
