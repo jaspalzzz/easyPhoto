@@ -176,7 +176,7 @@ export default function Page() {
             <text key={i} x={220 + i * 108} y="266" textAnchor="middle" fontSize="11" fontWeight="700" fill="#163A6B">{s}/6</text>
           ))}
         </svg>
-        <figcaption className="mt-2 text-center text-xs text-muted-foreground">Feature snapshot from the products&apos; public pages as reviewed in June 2026. Coverage and features can change; verify before use.</figcaption>
+        <figcaption className="mt-2 text-center text-xs text-muted-foreground">Feature snapshot from the products&apos; public pages as reviewed in June 2026 (ExamMint re-checked 15 Oct 2026). Coverage and features can change; verify before use.</figcaption>
       </figure>
 
       <div className="my-8 overflow-x-auto rounded-xl border border-hairline text-sm">
@@ -196,7 +196,7 @@ export default function Page() {
               <td className="px-4 py-3 font-medium text-ink">ExamMint Resizer</td>
               <td className="px-4 py-3 font-medium text-emerald-700">✓</td>
               <td className="px-4 py-3 font-medium text-emerald-700">✓</td>
-              <td className="px-4 py-3 text-muted-foreground">104+</td>
+              <td className="px-4 py-3 text-muted-foreground">~120</td>
               <td className="px-4 py-3 font-medium text-emerald-700">✓ Both + thumb</td>
               <td className="px-4 py-3 font-medium text-amber-700">No dedicated page</td>
             </tr>
@@ -235,7 +235,7 @@ export default function Page() {
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
-          Based on each tool&apos;s own website, June 2026.
+          Based on each tool&apos;s own website, June 2026; ExamMint re-checked 15 Oct 2026.
         </p>
       </div>
 
@@ -243,20 +243,21 @@ export default function Page() {
 
       <p>
         ExamMint Resizer (resizer.exammint.in) is the most comprehensive exam photo tool
-        available. With 104+ exams across Central, State PSC, Banking, Police, Judiciary, and
-        Admission categories, it covers more portals than any other free tool. It handles photo,
-        signature, and left thumb impression: the third document type required by some Railway
-        boards. Processing is on-device (&quot;Your photos are processed locally in your browser
-        and never uploaded to any server&quot;, confirmed on multiple pages), completely free,
-        and works offline after initial page load.
+        available. With about 120 exam settings across Central, State PSC, Banking, Police,
+        Judiciary, and Admission categories, it covers more portals than any other free tool. It
+        handles photo, signature, and left thumb impression: the third document type required by
+        some Railway boards. It can also add your name and the photo date in a strip below the
+        photo. Processing is on-device (its pages say photos are processed locally in your
+        browser), completely free, and it works offline after the page loads.
       </p>
 
       <p>
         What it doesn&apos;t do: ExamMint is built exclusively for exam document photos. No
         passport photos (no dedicated page for India&apos;s under-four 35×45 mm print
         or the separate overseas workflow), no PDF compression, no Aadhaar masking, and no format
-        conversion. Spec pages reference the issuing body by name but link to a third-party
-        syllabus site rather than the official government notification directly.
+        conversion. Check its numbers against your notice: on 15 Oct 2026 its SSC CGL page said
+        the setting &quot;has not been independently verified against an official notice&quot;,
+        and its UPSC page was marked &quot;Partially verified&quot;.
       </p>
 
       <h2>myexamphoto.in — pre-upload validator, PDF tools, smaller exam list</h2>
@@ -292,7 +293,7 @@ export default function Page() {
 
       <p>
         easyPhoto covers{" "}
-        <Link href="/exam-requirements/" className="text-brand underline">40+ exam portals</Link>: less than ExamMint&apos;s 104+, more than
+        <Link href="/exam-requirements/" className="text-brand underline">40+ exam portals</Link>: less than ExamMint&apos;s ~120, more than
         myexamphoto.in&apos;s ~13. Specification pages show a linked source where available,
         plus either a verification date or a needs-review notice.
       </p>
@@ -352,8 +353,8 @@ export default function Page() {
 
       <ul>
         <li>
-          <strong>You want the widest exam coverage possible:</strong> ExamMint Resizer (104+
-          exams, free, on-device, photo + signature + thumb impression).
+          <strong>You want the widest exam coverage possible:</strong> ExamMint Resizer (about
+          120 exams, free, on-device, photo + signature + thumb impression).
         </li>
         <li>
           <strong>You want to pre-validate your file before submitting to the portal:</strong>{" "}
