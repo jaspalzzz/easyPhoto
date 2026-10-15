@@ -739,7 +739,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source: "https://icp.gov.ae/wp-content/uploads/2021/11/icao_english.pdf",
     verified: "aggregator",
     applicationNotes: [
-      "43 x 55 mm is recorded here only for UAE visa applications through typing centres and GDRFA channels. We have not found an ICP page establishing it across every visit, employment and residence route, and ICP's own services state other dimensions in places, so confirm against the channel you are applying through. It is not the Emirates ID size.",
+      "43 x 55 mm is recorded here only for UAE visa applications through typing centres and GDRFA, the residency and visa office for Dubai. We have not found an ICP page establishing it across every visit, employment and residence route, and ICP's own services state other dimensions in places, so confirm against the channel you are applying through. It is not the Emirates ID size.",
       "The ICP guide linked here is the ICAO standard document. It supports the framing, background and quality rules — face covering 70-80%, no tint or glare on glasses, head covering for religious reasons only with the full face visible — but it does not itself state the 43 x 55 mm print size, which is the channel convention.",
       "File limits differ by channel (ICP, GDRFA, or a typing centre), so check the one you are actually submitting through.",
     ]
