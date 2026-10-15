@@ -12,7 +12,7 @@ export const metadata = pageMetadata({
   title: "Exam Photo & Signature Resizer — SSC UPSC IBPS NEET All-in-One",
   description:
     "Prepare your exam photo and signature together for SSC, UPSC, IBPS, SBI, RRB, NEET/JEE and more, " +
-    "each to its form's size. Check the current notice before you upload.",
+    "each to its form's size. Check the notice before uploading.",
   path: `/tools/${tool.slug}/`,
 });
 
