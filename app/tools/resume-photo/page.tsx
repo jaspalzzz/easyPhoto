@@ -10,9 +10,11 @@ const spec = COUNTRY_SPECS["india"];
 const mm = effectivePrintMm(spec);
 
 export const metadata = pageMetadata({
-  title: "Resume / CV Photo Maker — Passport-Size, Free",
+  // Searchers' words (GSC, 28 days to 13 Oct 2026): "resume photo", "resume
+  // photo maker", "cv photo maker", "passport size photo for resume".
+  title: "Resume Photo Maker — Passport Size Photo for CV & Biodata",
   description:
-    "Make a professional passport-size photo for your resume, CV or bio-data. " +
+    "Make a professional passport size photo for your resume, CV or biodata. " +
     `Auto-crops to ${mm.width}×${mm.height}mm with a clean white background. ` +
     "Free, private, and entirely in your browser — nothing is uploaded.",
   path: "/tools/resume-photo/",
@@ -44,7 +46,7 @@ const FAQ: FaqItem[] = [
 export default function Page() {
   return (
     <ToolPage
-      title="Resume / CV Photo Maker"
+      title="Resume & CV Photo Maker"
       slug="resume-photo"
       path="/tools/resume-photo/"
       blurb={`Make a professional passport-size photo (${mm.width}×${mm.height}mm) for your resume, CV or bio-data — correct size, clean white background, free. Nothing is uploaded.`}

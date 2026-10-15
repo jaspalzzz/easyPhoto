@@ -28,6 +28,11 @@ const TOOLS_UPDATED = "2026-09-08";
  * their real date (13 Oct 2026: titles, snippets and FAQs in searchers' words).
  */
 const TOOL_UPDATED: Record<string, string> = {
+  // 15 Oct 2026: keyword map (docs/keyword-map-2026-10.md) for the next four tool pages.
+  "aadhaar-ocr": "2026-10-15",
+  "resume-photo": "2026-10-15",
+  "face-centering": "2026-10-15",
+  "signature-resize": "2026-10-15",
   // 15 Oct 2026: background and signature pages, each with its own job.
   "background-removal": "2026-10-15",
   "signature-background-removal": "2026-10-15",

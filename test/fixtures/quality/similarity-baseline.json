@@ -93,13 +93,13 @@
         "/tools/signature-cleaner/"
       ],
       "minUnsharedWords": {
-        "/tools/aadhaar-ocr/": 351,
+        "/tools/aadhaar-ocr/": 447,
         "/tools/background-removal/": 301,
         "/tools/compliance-checker/": 801,
         "/tools/document-scanner/": 439,
         "/tools/dpi-converter/": 543,
         "/tools/exam-package/": 1004,
-        "/tools/face-centering/": 409,
+        "/tools/face-centering/": 542,
         "/tools/pan-card-ocr/": 353,
         "/tools/photo-signature-merge/": 471,
         "/tools/photo-with-name-date/": 686,
@@ -107,9 +107,9 @@
         "/tools/resume-photo/": 448,
         "/tools/sign-image/": 752,
         "/tools/signature-background-removal/": 302,
-        "/tools/signature-cleaner/": 276,
+        "/tools/signature-cleaner/": 303,
         "/tools/signature-crop/": 471,
-        "/tools/signature-resize/": 384,
+        "/tools/signature-resize/": 422,
         "/tools/white-background/": 391
       }
     },
