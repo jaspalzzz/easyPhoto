@@ -28,6 +28,9 @@ const TOOLS_UPDATED = "2026-09-08";
  * their real date (13 Oct 2026: titles, snippets and FAQs in searchers' words).
  */
 const TOOL_UPDATED: Record<string, string> = {
+  // 15 Oct 2026: "Scan Photo Online" title and steps; exam kit description without internal words.
+  "document-scanner": "2026-10-15",
+  "exam-package": "2026-10-15",
   // 15 Oct 2026: keyword map (docs/keyword-map-2026-10.md) for the next four tool pages.
   "aadhaar-ocr": "2026-10-15",
   "resume-photo": "2026-10-15",
