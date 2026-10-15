@@ -94,7 +94,7 @@
       ],
       "minUnsharedWords": {
         "/tools/aadhaar-ocr/": 351,
-        "/tools/background-removal/": 267,
+        "/tools/background-removal/": 301,
         "/tools/compliance-checker/": 801,
         "/tools/document-scanner/": 439,
         "/tools/dpi-converter/": 543,
