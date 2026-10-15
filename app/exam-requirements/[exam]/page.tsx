@@ -83,6 +83,18 @@ const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {
   ssc: "SSC Signature Size 2026: 10–20 KB, 6 × 2 cm — easyPhoto",
   rrb: "RRB Signature Size 2026: 30–49 KB, 140 × 60 px — easyPhoto",
   upsc: "UPSC Photo & Signature Size 2026 (20–200 KB) — easyPhoto",
+  // Searchers type "agniveer vayu" / "air force", not the official "Agniveervayu";
+  // "agniveer vayu photo guidelines" was landing on the Army page (GSC, 90 days).
+  "airforce-agniveer": "Air Force Agniveer Vayu Photo Size 2026 (100–200 KB) — easyPhoto",
+};
+
+/**
+ * H1s in searchers' words where the template's "<name> Photo Size" misses them.
+ * voter-id (owner, 15 Oct 2026): "voter photo resize", "voter card photo resize"
+ * and "voter id photo resizer" had ~1,850 impressions in 90 days at 7.7–8.3.
+ */
+const EXAM_REQUIREMENTS_H1_OVERRIDES: Record<string, string> = {
+  "voter-id": "Voter ID Photo Resizer & Size (ECI Form 6)",
 };
 
 // Per-exam meta descriptions, in the authority's own words, where the template
@@ -119,8 +131,8 @@ export async function generateMetadata({
   const titleBase = `${shortName} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR}`;
   const descriptionOverride =
     exam === "airforce-agniveer"
-      ? `${shortName}: photo ${photoKb(spec)}${spec.photoFormat ? ` (${spec.photoFormat})` : ""}, signature ${sig}${spec.sigFormat ? ` (${spec.sigFormat})` : ""}. ` +
-        "No fixed pixel dimensions are published; confirm the current intake notice."
+      ? `Air Force Agniveer Vayu photo: ${photoKb(spec)}${spec.photoFormat ? ` ${spec.photoFormat}` : ""}, holding a black slate ` +
+        `with your name and the date in white chalk. Signature: ${sig}${spec.sigFormat ? ` ${spec.sigFormat}` : ""}.`
       : undefined;
   return pageMetadata({
     // Short exam name keeps the SERP title under ~60 chars and matches how
@@ -208,7 +220,7 @@ export default async function Page({
         schema={[
           breadcrumbSchema(crumbs),
           webPageSchema({
-            name: `${spec.name} Photo${sig ? " & Signature" : ""} Size`,
+            name: EXAM_REQUIREMENTS_H1_OVERRIDES[exam] ?? `${spec.name} Photo${sig ? " & Signature" : ""} Size`,
             description: spec.description,
             url: path,
             dateModified: examPageLastModified(exam),
@@ -231,7 +243,11 @@ export default async function Page({
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
-          {spec.name} Photo{sig ? <> &amp; Signature</> : null} Size
+          {EXAM_REQUIREMENTS_H1_OVERRIDES[exam] ?? (
+            <>
+              {spec.name} Photo{sig ? <> &amp; Signature</> : null} Size
+            </>
+          )}
         </h1>
         {!guide && (
           <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">

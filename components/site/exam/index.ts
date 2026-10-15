@@ -23,11 +23,19 @@ export const EXAM_GUIDES: Readonly<
   ssc: {
     Body: SscGuide,
     faq: SSC_FAQ,
+    // Names only exams whose 2026 notices the page cites (SSC_NOTICES); "ssc cpo
+    // signature size" had 426 impressions at position 9.6 (GSC, 90 days to 13 Oct 2026).
     metaDescription:
-      "SSC signature: JPEG/JPG, 10–20 KB, about 6.0 × 2.0 cm at 300 DPI. The photo is captured live in the form, so there's no photo file to upload.",
+      "SSC signature for CGL, CHSL, CPO, GD, JE and Steno 2026: JPEG/JPG, 10–20 KB, about 6.0 × 2.0 cm at 300 DPI. The photo is taken live in the form.",
   },
-  // Meta unchanged (owner, 10 Oct): UPSC's spec is verified and its numbers are UPSC's own.
-  upsc: { Body: UpscGuide, faq: UPSC_FAQ },
+  // Owner, 15 Oct 2026 (replacing the 10 Oct "meta unchanged"): name the 75% face
+  // rule, which searchers type ("upsc 75 face coverage photo") and the page checks.
+  upsc: {
+    Body: UpscGuide,
+    faq: UPSC_FAQ,
+    metaDescription:
+      "UPSC photo: 20–200 KB JPG with your face covering at least 75%, checked here. Signature: 20–100 KB, signed three times, one below the other, on one image.",
+  },
   "up-police": {
     Body: UpPoliceGuide,
     faq: UP_POLICE_FAQ,
