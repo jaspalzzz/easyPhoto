@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { NameDatePhotoTool } from "@/components/tools/NameDatePhotoTool";
@@ -52,6 +53,13 @@ export default function Page() {
       footnote="All processing runs entirely on your device. Your photo data, name, and date are never uploaded."
     >
       <NameDatePhotoTool />
+      <p className="mt-6 text-sm text-muted-foreground">
+        Need just a plain passport size photo, with no name or date? Use the{" "}
+        <Link href="/passport-photo/" className="font-medium text-brand hover:underline">
+          passport size photo maker
+        </Link>
+        .
+      </p>
 
       <section className="mt-10 space-y-4 border-t border-hairline pt-8">
         <h2 className="text-lg font-semibold text-ink">

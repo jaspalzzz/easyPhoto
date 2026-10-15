@@ -44,8 +44,9 @@ const TOOL_UPDATED: Record<string, string> = {
  * dateModified must match (test/dateConsistency.test.ts).
  */
 const LANDING_UPDATED: Record<string, string> = {
-  // 14 Oct 2026: passport size in cm and in pixels at 300 DPI.
-  "/passport-photo/": "2026-10-14",
+  // 15 Oct 2026: "Passport Size Photo Maker" title, intro and tool links
+  // (14 Oct: passport size in cm and in pixels at 300 DPI).
+  "/passport-photo/": "2026-10-15",
 };
 const TRUST_PAGES_UPDATED = "2026-07-13";
 /** /terms/ — moves only when the terms text changes (7 Oct 2026: support-payment refunds). */
