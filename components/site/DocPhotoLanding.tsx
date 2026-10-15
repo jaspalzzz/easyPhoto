@@ -32,6 +32,7 @@ export function DocPhotoLanding({
   faqItems,
   path,
   dateModified,
+  afterIntro,
 }: {
   kind: "passport" | "visa";
   h1: string;
@@ -40,6 +41,8 @@ export function DocPhotoLanding({
   path: string;
   /** ISO date the page content / specs were last reviewed. Adds freshness signal to schema. */
   dateModified?: string;
+  /** Optional links under the intro (e.g. print, KB and name & date tools). */
+  afterIntro?: React.ReactNode;
 }) {
   const doc = kind === "passport" ? "passport" : "visa";
   // Same single source as the picker (hubCountries) → the two sections cannot
@@ -106,6 +109,7 @@ export function DocPhotoLanding({
           <p className="mt-3.5 text-[15px] leading-relaxed text-muted-foreground">
             {intro}
           </p>
+          {afterIntro}
         </div>
 
         {/* Tool — top-right (handy), spans both rows on desktop */}
