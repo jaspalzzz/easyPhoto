@@ -7,7 +7,7 @@ export const metadata = pageMetadata({
   title: "Aadhaar Card OCR — Read Aadhaar Number, Name & DOB Free",
   description:
     "Read the Aadhaar number, name, DOB, gender and address from a photo of your card, on your device. " +
-    "Also: how to get your Aadhaar photo or the card as a JPG. Free; nothing is uploaded.",
+    "Also: getting your Aadhaar photo or card as a JPG.",
   path: "/tools/aadhaar-ocr/",
 });
 

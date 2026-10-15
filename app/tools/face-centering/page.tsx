@@ -9,8 +9,8 @@ export const metadata = pageMetadata({
   // "face is tilted in uploaded image", "align your face inside the circle".
   title: "Center Your Face in a Photo — Check Position & Head Tilt",
   description:
-    "Form says \"Position your face in the center\" or \"Face is tilted in uploaded image\"? Upload the photo " +
-    "to see how far your face is off-centre and how much your head tilts. Free, on your device.",
+    "Form says \"Position your face in the center\" or \"Face is tilted in uploaded image\"? " +
+    "See how far off-centre your face is and how much your head tilts. Free.",
   path: "/tools/face-centering/",
 });
 

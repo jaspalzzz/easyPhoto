@@ -13,7 +13,7 @@ export const metadata = pageMetadata({
   title: "Remove Background from Signature — White or Transparent",
   description:
     "Remove the paper background from a signature photo or scan. Download it on solid white " +
-    "as a JPG for forms, or as a transparent PNG for documents. Free; nothing is uploaded.",
+    "as a JPG for forms, or as a transparent PNG for documents. Free.",
   path: `/tools/${tool.slug}/`,
 });
 

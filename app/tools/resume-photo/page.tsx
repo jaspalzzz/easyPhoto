@@ -14,9 +14,9 @@ export const metadata = pageMetadata({
   // photo maker", "cv photo maker", "passport size photo for resume".
   title: "Resume Photo Maker — Passport Size Photo for CV & Biodata",
   description:
-    "Make a professional passport size photo for your resume, CV or biodata. " +
-    `Auto-crops to ${mm.width}×${mm.height}mm with a clean white background. ` +
-    "Free, private, and entirely in your browser — nothing is uploaded.",
+    "Make a passport size photo for your resume, CV or biodata: " +
+    `auto-cropped to ${mm.width}×${mm.height} mm on a clean white background. ` +
+    "Free and private; nothing is uploaded.",
   path: "/tools/resume-photo/",
 });
 

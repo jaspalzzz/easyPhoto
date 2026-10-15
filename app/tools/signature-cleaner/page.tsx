@@ -10,8 +10,8 @@ const tool = getTool("signature-cleaner")!;
 export const metadata = pageMetadata({
   title: "Photo to Signature Converter — Clean, Crop & Resize",
   description:
-    "Turn a phone photo of your signature into a form-ready signature: clean the paper away, crop tight " +
-    "to the ink and resize it to your form's KB limit, such as 20 KB. Free; nothing is uploaded.",
+    "Turn a phone photo of your signature into a form-ready one: clean the paper away, crop tight " +
+    "to the ink and shrink it to your form's KB limit. Free.",
   path: `/tools/${tool.slug}/`,
 });
 
