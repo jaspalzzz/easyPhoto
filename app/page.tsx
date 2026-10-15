@@ -57,7 +57,7 @@ export default function HomePage() {
               "Free tools for Indian passport photos, visa photos, exam form resizing and government document images. Everything runs in your browser, nothing is uploaded.",
             url: "/",
             category: "UtilitiesApplication",
-            dateModified: "2026-06-21",
+            dateModified: "2026-10-15",
           }),
           faqSchema(HOME_FAQ),
         ]}
@@ -80,8 +80,8 @@ export default function HomePage() {
                 Passport · Visa · ID Card · Exam — prepared to selected dimensions
               </span>
               <h1 className="mt-4 text-balance text-[36px] font-semibold leading-[1.04] tracking-tightest sm:text-[48px]">
-                Document photos{" "}
-                <span className="mark-gold"><span>prepared to spec</span></span>
+                Passport, exam and document photos,{" "}
+                <span className="mark-gold"><span>ready for Indian forms</span></span>
               </h1>
               <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
                 100% free tools. No uploads. No data stored.

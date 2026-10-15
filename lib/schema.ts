@@ -55,8 +55,11 @@ export function organizationSchema() {
     },
     // Verified brand profiles — ties easyPhoto together as an entity for Google.
     // Add more (Instagram, X, YouTube, Facebook) here as they go live.
+    // Product Hunt: confirmed live and linking easyphoto.in on 15 Oct 2026. "easyPhoto"
+    // is shared by unrelated apps; these profiles tell Google which one we are.
     sameAs: [
       "https://www.pinterest.com/easyphoto0604/",
+      "https://www.producthunt.com/products/easyphoto",
     ],
     // Named founder strengthens entity disambiguation for AI knowledge graphs.
     founder: {
