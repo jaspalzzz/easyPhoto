@@ -56,6 +56,8 @@ const TOOL_UPDATED: Record<string, string> = {
  * dateModified must match (test/dateConsistency.test.ts).
  */
 const LANDING_UPDATED: Record<string, string> = {
+  // 15 Oct 2026: homepage H1 in visitors' words.
+  "/": "2026-10-15",
   // 15 Oct 2026: "Passport Size Photo Maker" title, intro and tool links
   // (14 Oct: passport size in cm and in pixels at 300 DPI).
   "/passport-photo/": "2026-10-15",
@@ -137,7 +139,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Simple pages (no images) ─────────────────────────────────────────────
     ...simpleRoutes.filter((path) => !isDeindexed(path)).map((path) => ({
       url: `${SITE_URL}${path}`,
-      lastModified: LAST_UPDATED,
+      lastModified: LANDING_UPDATED[path] ?? LAST_UPDATED,
     })),
 
     // ── Pages with their own date, so editing one doesn't restamp the others ─
