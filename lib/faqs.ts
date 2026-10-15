@@ -223,14 +223,11 @@ export const SIGNATURE_FAQ: FaqItem[] = [
 ];
 
 export const BACKGROUND_REMOVER_FAQ: FaqItem[] = [
-  { q: "How do I remove the background from an image for free?", a: "Drop in a photo and download a transparent PNG. It's free, with no sign-up and no watermark." },
   { q: "How do I make a transparent PNG?", a: "Remove the background and save. The result is a PNG with a transparent background." },
   { q: "Is this background remover really free with no watermark?", a: "Yes. You get a full-resolution download with no paywall and no watermark." },
   { q: "Does the background remover upload my photo?", a: "No. The AI model runs in your browser, so your image never leaves your device." },
-  { q: "How do I add a white background to a photo?", a: "Remove the original background, then use the white-background tool to drop in white or any colour." },
   { q: "Can I remove the background from a product photo?", a: "Yes, it's well suited to product shots for listings and catalogues." },
   { q: "Does it work on hair and fine edges?", a: "Yes, the model handles hair and detailed edges reasonably well." },
-  { q: "How do I remove the background from a signature?", a: "For ink on paper, the dedicated signature tools give cleaner results than the photo remover." },
   { q: "Can I remove a background on my phone?", a: "Yes, it runs in mobile browsers, and the first run downloads the AI model." },
   { q: "What file formats are supported?", a: "JPG, PNG, WebP and HEIC inputs." },
   { q: "What format is the output?", a: "A transparent PNG at full resolution." },
@@ -339,7 +336,7 @@ export const TRANSPARENT_SIGNATURE_FAQ: FaqItem[] = [
 ];
 
 export const SIGNATURE_BG_REMOVAL_FAQ: FaqItem[] = [
-  { q: "How do I remove the background from a signature?", a: "Upload a photo or scan of your signature and the tool lifts the paper tone, keeping just the ink on a transparent background." },
+  { q: "How do I remove the background from a signature?", a: "Upload a photo or scan of your signature and the tool lifts the paper tone, keeping just the ink on a white or transparent background." },
   { q: "Does it keep the ink sharp?", a: "Yes. It targets the paper colour and leaves the ink intact; a strength control lets you push faint paper fully transparent." },
   { q: "What's the difference from the transparent signature tool?", a: "This focuses on background removal; the transparent signature tool also auto-trims and optimises the file. Use whichever fits, or chain them." },
   { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser. Your signature is never uploaded." },

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { SignatureWorkflowTool } from "@/components/tools/SignatureWorkflowTool";
@@ -9,15 +10,18 @@ const tool = getTool("signature-cleaner")!;
 export const metadata = pageMetadata({
   title: "Photo to Signature Converter — Clean, Crop & Resize",
   description:
-    "Turn a photo or image of your signature into a clean, form-ready signature — remove the paper background, " +
-    "make it white or transparent, then crop and resize to PAN, passport or exam limits like 20 KB or 50 KB.",
+    "Turn a phone photo of your signature into a form-ready signature: clean the paper away, crop tight " +
+    "to the ink and resize it to your form's KB limit, such as 20 KB. Free; nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
+// Its own job: phone photo → finished form signature (clean, crop, KB). Removing
+// only the background is /tools/signature-background-removal/, so the two pages
+// no longer compete for the same searches.
 const BLURB =
-  "Have a handwritten signature on paper? Upload a photo or scan — the tool removes the paper background, " +
-  "trims tightly to the ink, and exports a clean signature image ready for exam forms, PAN card, " +
-  "passport, or any portal that needs a white-background JPG or transparent PNG under 20 KB.";
+  "Signed on paper and only have your phone? Snap the signature, upload the picture here, and the tool " +
+  "wipes away the paper tone, trims the empty margin around the ink and shrinks the file under the cap " +
+  "your application sets, ready for PAN, passport or exam uploads.";
 
 export default function Page() {
   return (
@@ -28,6 +32,13 @@ export default function Page() {
         defaultKb={20}
         toolName={tool.slug}
       />
+      <p className="mt-6 text-sm text-muted-foreground">
+        Just want the paper gone, without trimming or shrinking? Try{" "}
+        <Link href="/tools/signature-background-removal/" className="font-medium text-brand hover:underline">
+          Remove Background from Signature
+        </Link>
+        .
+      </p>
     </ToolPage>
   );
 }
