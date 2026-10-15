@@ -8,22 +8,22 @@ import { SIGN_IMAGE_FAQ } from "@/lib/faqs";
 const tool = getTool("sign-image")!;
 
 export const metadata = pageMetadata({
-  // Searchers' own words (GSC 25 Sep – 12 Oct 2026): "photo sign", "photo
-  // signature add", "sign in photo", "sign across the photo" (320 impressions,
-  // position 5.4, no clicks). Under 60 characters with the "— easyPhoto" suffix.
-  title: "Add Signature to Photo — Sign On or Across It",
+  // Searchers' own words (GSC, 28 days to 13 Oct 2026): "sign on photo" phrasings
+  // 5,618 impressions at position 6.5, "sign on image" phrasings 274 at 9.6.
+  // Both lead the title; "across" stays in the description.
+  title: "Sign on Photo or Image Online — Add Signature to Photo",
   description:
-    "Add your signature to a photo: draw or upload it, place it on the photo or across its " +
-    "lower part, resize it and download a JPG. Free; nothing is uploaded.",
+    "Sign on a photo or image: draw, type or upload your signature, place it on or across " +
+    "the photo, and download a JPG or PNG. Free; nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
 export default function Page() {
   return (
     <ToolPage
-      title="Sign on Picture or Photo Online"
+      title="Sign on Photo or Image Online"
       slug={tool.slug}
-      blurb={tool.blurb}
+      blurb="Draw your signature, type your name in a handwriting style, or upload a signature image, then place it on any photo or image."
       faqItems={SIGN_IMAGE_FAQ}
       footnote="Signing runs entirely on your device. Your photos and signature data are never uploaded."
     >
@@ -127,10 +127,14 @@ export default function Page() {
             Overlap a signature on a photo
           </h2>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Drop your photo into the tool above, then draw your signature or add
-            a signature image on top of it. Drag it to position, resize it, and
-            download the combined image — the signature sits over the photo, not
-            beside it.
+            Drop your photo into the tool above, then draw your signature, type
+            your name, or upload a signature image and put it on top. Drag it to
+            position, resize it, and download the combined image — the signature
+            sits over the photo, not beside it. Signing a PDF instead? Use{" "}
+            <Link href="/tools/sign-pdf/" className="font-medium text-brand hover:underline">
+              Sign PDF
+            </Link>
+            .
           </p>
         </div>
         <div className="space-y-2">
