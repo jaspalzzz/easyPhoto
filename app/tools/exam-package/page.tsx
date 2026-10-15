@@ -11,7 +11,8 @@ const tool = getTool("exam-package")!;
 export const metadata = pageMetadata({
   title: "Exam Photo & Signature Resizer — SSC UPSC IBPS NEET All-in-One",
   description:
-    "Prepare photo and signature files to selected stored targets for SSC, UPSC, IBPS, SBI, RRB, NEET/JEE and more. Verify the current form before use.",
+    "Prepare your exam photo and signature together for SSC, UPSC, IBPS, SBI, RRB, NEET/JEE and more, " +
+    "each to its form's size. Check the current notice before you upload.",
   path: `/tools/${tool.slug}/`,
 });
 
