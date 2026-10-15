@@ -22,11 +22,14 @@ export const EXAM_TEMPLATE_UPDATED = "2026-10-13";
  * the Voter ID dimensions note and hidden signature card.
  */
 const PAGE_UPDATED: Record<string, string> = {
-  ssc: "2026-10-14",
+  // 15 Oct 2026: searchers' words in the SSC and UPSC descriptions, the Air Force
+  // title and description, and the Voter ID H1.
+  ssc: "2026-10-15",
   rrb: "2026-10-14",
-  upsc: "2026-10-14",
+  upsc: "2026-10-15",
   "driving-licence": "2026-10-14",
-  "voter-id": "2026-10-14",
+  "voter-id": "2026-10-15",
+  "airforce-agniveer": "2026-10-15",
   pan: "2026-10-14",
   oci: "2026-10-14",
   "passport-seva": "2026-10-14",

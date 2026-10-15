@@ -25,9 +25,11 @@ async function descriptionFor(exam: string): Promise<string> {
 }
 
 describe("exam meta descriptions only claim source checking for verified specs", () => {
-  it("a verified preset (upsc) claims source checking", async () => {
-    expect(specProvenance(allPortalSpecs().find((s) => s.id === "upsc")!).verified).toBe(true);
-    expect(await descriptionFor("upsc")).toMatch(VERIFIED_CLAIM);
+  // UPSC and SSC now carry their own descriptions (components/site/exam), so a
+  // verified exam that still uses the template stands in (IBPS).
+  it("a verified preset (ibps) claims source checking", async () => {
+    expect(specProvenance(allPortalSpecs().find((s) => s.id === "ibps")!).verified).toBe(true);
+    expect(await descriptionFor("ibps")).toMatch(VERIFIED_CLAIM);
   });
 
   it("a needs-review preset (army-agniveer) does NOT claim verification", async () => {
