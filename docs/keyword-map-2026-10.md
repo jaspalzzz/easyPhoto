@@ -45,7 +45,7 @@ search. Every title and H1 uses the words people actually type.
 
 | Search | Owner | The other page should… |
 |---|---|---|
-| photo signature add, signature photo, photo with signature | **merge** when they want both in one file; **sign-image** when they want the signature on the photo | sign-image links to merge (#124). Watch which page Google picks; if merge searches keep landing on sign-image, add a one-line link back from merge. |
+| photo signature add, signature photo, photo with signature | **merge** when they want both in one file; **sign-image** when they want the signature on the photo | The two pages link to each other (sign-image → merge since #124). Watch which page Google picks for each search. |
 | crop signature from image | **signature-crop** | signature-cleaner mentions cropping only as one step; don't add crop wording to the cleaner. |
 | PAN card signature background remover | **signature-background-removal** | The cleaner links to it (#132). |
 | remove background from signature | **signature-background-removal** | Its FAQ answer was removed from signature-resize and background-removal (#132, batch 2). |
