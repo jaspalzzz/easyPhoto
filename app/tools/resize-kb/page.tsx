@@ -24,7 +24,7 @@ export default function Page() {
       blurb={tool.blurb}
       faqItems={PHOTO_RESIZE_FAQ}
     >
-      <ResizeKbTool targetFromUrl />
+      <ResizeKbTool targetFromUrl minField />
 
       <section className="mt-10 space-y-3 border-t border-hairline pt-8">
         <h2 className="text-lg font-semibold text-ink">
@@ -41,6 +41,13 @@ export default function Page() {
             counts 1 KB as 1,000 or 1,024 bytes.
           </li>
         </ol>
+        <h3 className="pt-2 text-sm font-semibold text-ink">
+          When your form gives a range, such as 20 KB to 50 KB
+        </h3>
+        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          A file below the lower number is refused too. Type the lower number in the Minimum box and
+          the higher one in the Target size box; the download lands between the two.
+        </p>
         <p className="text-sm text-muted-foreground">Or open the tool set to a common size:</p>
         <div className="flex flex-wrap gap-2">
           {KB_TARGETS.map((kb) => (

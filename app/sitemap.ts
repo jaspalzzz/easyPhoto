@@ -36,8 +36,8 @@ const TOOL_UPDATED: Record<string, string> = {
   "dpi-converter": "2026-10-13",
   "signature-crop": "2026-10-14",
   "white-background": "2026-10-14",
-  // 14 Oct 2026: how-to steps for the common KB sizes searchers ask for.
-  "resize-kb": "2026-10-14",
+  // 15 Oct 2026: optional minimum, for forms that give a KB range.
+  "resize-kb": "2026-10-15",
 };
 /**
  * Landing pages whose own copy changed after LAST_UPDATED. The page's

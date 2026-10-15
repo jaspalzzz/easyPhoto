@@ -200,6 +200,7 @@ export const PHOTO_RESIZE_FAQ: FaqItem[] = [
   { q: "How do I resize a passport photo for online upload?", a: "Make the passport photo first, then compress it here to the portal's KB limit." },
   { q: "Why does my form reject my photo for size?", a: "It's over the file-size cap. Compress it under the stated limit and re-upload." },
   { q: "How small can I make an image?", a: "Down to around 10KB while keeping a face recognisable. Below that, detail starts to suffer." },
+  { q: "Can I make a photo bigger in KB?", a: "Yes, when a form refuses small files. Type the form's lower limit in the Minimum box and the file is raised to it. The picture itself does not change: the extra bytes are blank data that every image viewer ignores." },
 ];
 
 export const SIGNATURE_FAQ: FaqItem[] = [
