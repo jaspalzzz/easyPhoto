@@ -81,6 +81,24 @@ state them.
   Do one country at a time and measure each for 14 days. Never retitle the
   family in one batch.
 
+## Country passport pages (10)
+
+- **22 Oct 2026:** Nepal only. Title "Nepal MRP Size Photo & Passport Photo
+  Maker" and H1 "Nepal MRP Size Photo Maker" ("mrp size photo" 263 and "mrp
+  photo size" 72 impressions, 0 clicks). A visitor-facing Good to know
+  replaces the developer notes it used to show. No size in the title (35 × 45
+  mm is aggregator-sourced).
+- **After October, owner decisions:**
+  - **US and UK:** the requirements guide and the maker page both answer
+    "us/uk passport photo size" (guide ~10, maker ~13–24). Pick one owner per
+    country and point the other at it, or merge them (CLAUDE.md §1).
+  - **Pakistan:** searchers type "pakistani e passport picture". Add it only
+    with an official DGIP source for the e-passport photo.
+  - **Good to know on 19 country maker pages** (Pakistan and 18 visa makers): pages without a `GOOD_TO_KNOW` entry
+    in `app/[maker]/page.tsx` show the record's developer `notes` ("⚠ SCOPE…")
+    to visitors (CLAUDE.md §3, internal vocabulary). Write a short
+    visitor-facing entry per country, one page at a time.
+
 ## Ceiling
 
 On-page work gets a page to answer the right search. **Positions 2–6** on

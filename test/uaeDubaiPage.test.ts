@@ -18,7 +18,7 @@ describe("UAE & Dubai visa page", () => {
 
   it("keeps the unverified size out of the title", () => {
     expect(COUNTRY_SPECS.uae.verified).toBe("aggregator");
-    const titleLine = page.match(/title: `\$\{labelWithDoc\(pageLabel\(spec\)[^\n]*/)![0];
+    const titleLine = page.split("\n").find((l) => l.includes("Photo Size & Maker`"))!;
     expect(titleLine).not.toMatch(/\d+\s*[×x]\s*\d+/);
   });
 

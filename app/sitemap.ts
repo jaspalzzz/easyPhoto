@@ -58,6 +58,8 @@ const TOOL_UPDATED: Record<string, string> = {
 const LANDING_UPDATED: Record<string, string> = {
   // 15 Oct 2026: "UAE & Dubai" in the title and H1; GDRFA named as Dubai's office.
   "/uae-visa-photo-maker/": "2026-10-15",
+  // 15 Oct 2026: "MRP size photo" title and H1; visitor-facing Good to know.
+  "/nepal-passport-photo-maker/": "2026-10-15",
   // 15 Oct 2026: homepage H1 in visitors' words.
   "/": "2026-10-15",
   // 15 Oct 2026: "Passport Size Photo Maker" title, intro and tool links
