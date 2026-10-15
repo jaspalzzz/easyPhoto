@@ -93,12 +93,15 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "best-free-exam-photo-resizer-india",
-    title: "5 Free Exam Photo & Signature Resizers Compared (2026)",
+    // Searchers type ExamMint's name ("exam mint resizer", "exammint resize",
+    // "exammint"; GSC, 90 days to 13 Oct 2026) and land here at position ~6–7.
+    // The ExamMint section was re-checked against its site on 15 Oct 2026.
+    title: "ExamMint Resizer & 4 Other Free Exam Photo Resizers Compared (2026)",
     description:
-      "Compare tools for SSC and RRB live-photo preparation plus IBPS and UPSC prepared-file requirements. Five free exam workflows reviewed for coverage and privacy.",
+      "ExamMint Resizer and four other free exam photo and signature resizers compared on exam coverage, privacy and passport photos. ExamMint re-checked 15 Oct 2026.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
-    updatedISO: "2026-06-18",
+    updatedISO: "2026-10-15",
     excerpt:
       "Exam workflows differ: SSC and RRB use live photo capture, while IBPS and UPSC publish prepared-file requirements. Five free tools compared on coverage, privacy, and breadth.",
     readMins: 7,
@@ -151,12 +154,15 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "ssc-cgl-chsl-photo-signature-guide-2026",
-    title: "SSC CGL & CHSL 2026 Photo: Live Capture Only — Spec & Resizer",
+    // Searchers ask how the live photo works ("ssc chsl live photo upload", "ssc
+    // live photo capture instructions"); the SSC exam page owns "signature size".
+    // Re-checked against SSC's 2026 notices (as on the SSC page, 8 Oct 2026).
+    title: "SSC CHSL & CGL Live Photo 2026: How the Photo Step Works",
     description:
-      "Current SSC forms capture the photo live; the cited notice separately lists a 10–20 KB JPG/JPEG signature. See what is published and what is not.",
+      "SSC CHSL and CGL 2026 capture your photo live through the camera, so there is no photo file to upload. How the photo step works, what gets rejected, and the signature.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
-    updatedISO: "2026-07-18",
+    updatedISO: "2026-10-15",
     excerpt:
       "SSC now requires live photo capture — no gallery uploads. See the published signature band, live-camera preparation and common measurable problems for CGL and CHSL.",
     readMins: 7,

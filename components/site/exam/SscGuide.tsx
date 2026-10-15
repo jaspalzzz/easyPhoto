@@ -16,7 +16,9 @@ import { buttonVariants } from "@/components/ui/button";
 const NOTICE_BASE = "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/";
 
 /** SSC's 2026 notices, all identical on the photo and signature rules. */
-const SSC_NOTICES: ReadonlyArray<{ exam: string; date: string; file: string }> = [
+export const SSC_NOTICE_BASE = NOTICE_BASE;
+
+export const SSC_NOTICES: ReadonlyArray<{ exam: string; date: string; file: string }> = [
   { exam: "Combined Graduate Level (CGL)", date: "21 May 2026", file: "Notice_of_adv_cgl_2026.pdf" },
   { exam: "Combined Higher Secondary (CHSL)", date: "7 Sep 2026", file: "Notice_of_adv_chsl_2026.pdf" },
   { exam: "Sub-Inspector, Delhi Police and CAPF (CPO)", date: "10 Sep 2026", file: "Notice_of_adv_capf_2026.pdf" },
