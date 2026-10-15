@@ -114,7 +114,7 @@
       }
     },
     "blog": {
-      "maxJaccard": 0.152,
+      "maxJaccard": 0.1312,
       "maxPair": [
         "/blog/nda-cds-photo-signature-guide-2026/",
         "/blog/upsc-cse-ias-photo-signature-guide-2026/"
@@ -126,7 +126,7 @@
         "/blog/best-free-passport-photo-maker-india-2026/": 1480,
         "/blog/cutout-pro-alternative-india/": 1135,
         "/blog/driving-licence-photo-size-sarathi/": 682,
-        "/blog/exam-photo-signature-size-guide/": 2316,
+        "/blog/exam-photo-signature-size-guide/": 2406,
         "/blog/how-to-compress-pdf/": 966,
         "/blog/how-to-compress-photo-to-50kb/": 861,
         "/blog/how-to-mask-aadhaar-before-sharing/": 610,
@@ -143,7 +143,7 @@
         "/blog/indian-government-id-photo-requirements/": 1252,
         "/blog/indian-passport-photo-requirements/": 920,
         "/blog/linkedin-profile-photo-size-and-tips/": 622,
-        "/blog/nda-cds-photo-signature-guide-2026/": 843,
+        "/blog/nda-cds-photo-signature-guide-2026/": 1135,
         "/blog/pan-card-photo-size/": 1022,
         "/blog/pan-vs-voter-id-vs-driving-licence-photo/": 648,
         "/blog/passport-photo-background-color/": 701,
@@ -152,7 +152,7 @@
         "/blog/schengen-europe-visa-photo-size/": 647,
         "/blog/sir-enumeration-form-photo-2026/": 790,
         "/blog/ssc-cgl-chsl-photo-signature-guide-2026/": 545,
-        "/blog/upsc-cse-ias-photo-signature-guide-2026/": 798,
+        "/blog/upsc-cse-ias-photo-signature-guide-2026/": 1022,
         "/blog/visafoto-alternative-india-free/": 806,
         "/blog/voter-id-photo-requirements-2026/": 938,
         "/blog/what-is-dpi-and-how-to-change-it/": 1277,

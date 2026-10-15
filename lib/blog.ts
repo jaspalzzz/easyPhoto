@@ -134,22 +134,27 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "upsc-cse-ias-photo-signature-guide-2026",
     title: "UPSC CSE / IAS Photo & Signature Requirements 2026",
     description:
-      "UPSC CSE: 20–200 KB JPG photo, plain white background, ~75% face coverage, plus three signatures on one sheet at 20–100 KB. UPSC publishes no fixed pixel size or name/date strip.",
+      "UPSC CSE 2026: a 20–200 KB JPG photo on white, a live photo taken in the form, and three black-ink signatures in one 20–100 KB, 350–500 px JPG.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
+    // Re-checked against UPSC's upload instructions: live photo added (15 Oct 2026).
+    updatedISO: "2026-10-15",
     excerpt:
-      "UPSC uses one OTR portal for CSE, NDA and CDS. Here are the file-size limits it actually publishes, why three signatures are required, and the complete upload workflow.",
+      "UPSC uses one OTR portal for CSE, NDA and CDS. Here are the limits it publishes, how the three-signature sheet and the live photo work, and the complete upload workflow.",
     readMins: 7,
   },
   {
     slug: "nda-cds-photo-signature-guide-2026",
     title: "NDA & CDS 2026 Photo & Signature Requirements — Published KB Ranges",
     description:
-      "NDA and CDS use the same UPSC OTR portal: a 20–200 KB JPG photo on a plain white background, plus three signatures on one sheet at 20–100 KB. UPSC publishes no fixed pixel size or name/date strip.",
+      "NDA & CDS 2026: three black-ink signatures in one 20–100 KB, 350–500 px JPG, a 20–200 KB JPG photo with no fixed pixel size, and a live photo matched to it.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
+    // Signature corrected to UPSC's three black-ink signatures at 350–500 px, and
+    // the live photo added (15 Oct 2026).
+    updatedISO: "2026-10-15",
     excerpt:
-      "NDA and CDS upload through the same UPSC OTR portal as CSE. Here are the file-size limits UPSC actually publishes, why three signatures are required, and the complete upload workflow.",
+      "NDA and CDS upload through the same UPSC OTR portal as CSE. Here are the limits UPSC publishes, the photo rules defence applicants miss, and how the live photo works.",
     readMins: 7,
   },
   {
@@ -286,7 +291,8 @@ export const BLOG_POSTS: BlogPost[] = [
       "Compare recorded photo and signature workflows for SSC, UPSC, IBPS, SBI, RRB and NTA, including live capture, published KB bands and available dimensions.",
     date: "June 8, 2026",
     dateISO: "2026-06-08",
-    updatedISO: "2026-06-21",
+    // UPSC signature pixels and live photo corrected, SBI link fixed (15 Oct 2026).
+    updatedISO: "2026-10-15",
     excerpt:
       "Wrong KB, wrong published dimensions and an unsuitable signature background are common measurable upload problems. Compare the recorded requirements and practical fixes.",
     readMins: 10,

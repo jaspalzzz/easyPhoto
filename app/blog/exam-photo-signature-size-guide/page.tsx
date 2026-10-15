@@ -25,6 +25,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo" faqItems={FAQ_ITEMS}>
+      <p className="text-sm text-ink-soft">Last reviewed: 15 October 2026</p>
       <p>
         Exam application workflows differ: some accept prepared photo files, while
         current SSC and RRB instructions capture the photograph live and ask for a
@@ -38,7 +39,7 @@ export default function Page() {
           <li>IBPS and several bank forms publish a <strong>20–50&nbsp;KB JPG photo</strong> and a <strong>10–20&nbsp;KB JPG signature</strong>.</li>
           <li>Current SSC and RRB notices use live photo capture; prepare the separately listed signature file instead.</li>
           <li>Portals check a <em>band</em>: a photo under the minimum is rejected as firmly as one over the cap.</li>
-          <li>UPSC and NDA/CDS use a wider <strong>20–200&nbsp;KB</strong> photo range and a <strong>20–100&nbsp;KB</strong> three-signature sheet — with no fixed pixel size or square requirement.</li>
+          <li>UPSC and NDA/CDS use a wider <strong>20–200&nbsp;KB</strong> photo range with no fixed pixel size, a live photo during the application, and a <strong>20–100&nbsp;KB</strong> three-signature sheet of 350–500 pixels.</li>
           <li>NTA (NEET, JEE) records a 10–200&nbsp;KB JPG photo and a 10–100&nbsp;KB JPG signature.</li>
           <li>Always confirm the current KB and pixel figures in the exam notification — they can change between cycles.</li>
         </ul>
@@ -143,7 +144,7 @@ export default function Page() {
         confirm the active notification before applying. Sources:{" "}
         <a href="https://ssc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC</a>,{" "}
         <a href="https://ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS</a>,{" "}
-        <a href="https://sbi.co.in/careers" className="text-brand underline" target="_blank" rel="noopener noreferrer">SBI</a>,{" "}
+        <a href="https://sbi.bank.in/web/careers" className="text-brand underline" target="_blank" rel="noopener noreferrer">SBI</a>,{" "}
         <a href="https://upsc.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">UPSC</a>,{" "}
         <a href="https://indianrailways.gov.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">Railways</a>,{" "}
         <a href="https://nta.ac.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">NTA</a>.
@@ -220,7 +221,7 @@ export default function Page() {
         confirmed photo requirement (per{" "}
         <a href="https://ibps.in" className="text-brand underline" target="_blank" rel="noopener noreferrer">ibps.in</a>{" "}
         and{" "}
-        <a href="https://sbi.co.in/careers" className="text-brand underline" target="_blank" rel="noopener noreferrer">sbi.co.in/careers</a>)
+        <a href="https://sbi.bank.in/web/careers" className="text-brand underline" target="_blank" rel="noopener noreferrer">sbi.bank.in</a>)
         is a JPG between{" "}
         <strong>20&nbsp;KB and 50&nbsp;KB at 200×230&nbsp;px</strong>. The
         signature is a JPG between{" "}
@@ -266,9 +267,12 @@ export default function Page() {
       <p>
         The signature is where UPSC differs most: instead of one signature, the
         portal expects a single JPG image holding{" "}
-        <strong>three signatures arranged vertically</strong>, 20–100&nbsp;KB in
-        total. Prepare all three on one plain white sheet in black ink, then scan
-        and resize the sheet as a single file.
+        <strong>three signatures arranged vertically</strong>, 20–100&nbsp;KB, with
+        image dimensions of 350–500 pixels. Prepare all three on one plain white sheet in black ink,
+        then scan and resize the sheet as a single file. UPSC also captures a live
+        photograph during the application, by webcam or by phone through a QR
+        code, and stops the application if it doesn&apos;t match the photo you
+        uploaded.
       </p>
       <p>
         NDA and CDS upload through the same UPSC OTR portal and use the same
