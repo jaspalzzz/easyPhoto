@@ -18,6 +18,15 @@ import { track, deviceClass } from "@/lib/analytics";
 const TOOL = "sign-image";
 
 /**
+ * Whether the signed image is saved as a PNG: only when the uploaded file is a
+ * PNG and no KB limit is set (a KB limit needs JPG compression).
+ */
+export function savesAsPng(file: Pick<File, "type" | "name"> | null, limitKb: boolean): boolean {
+  if (!file || limitKb) return false;
+  return file.type === "image/png" || /\.png$/i.test(file.name);
+}
+
+/**
  * "Sign across the edge": white paper added around the photo so a signature
  * can run off the photo onto the paper, as forms ask when they say "sign
  * across the photo". Shares of the photo's own size.
@@ -251,8 +260,13 @@ export function SignImageTool() {
       const ctx = canvas.getContext("2d");
       if (!ctx) throw new Error("Could not acquire 2D canvas context.");
 
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // A PNG comes back as a PNG with its transparency, unless the KB limit
+      // asks for compression (JPG). Everything else is a JPG on white.
+      const keepPng = savesAsPng(baseFile, limitKb);
+      if (!keepPng) {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
       // Draw base image at full scale
       ctx.drawImage(baseImage, 0, 0);
 
@@ -299,13 +313,13 @@ export function SignImageTool() {
             : `This couldn't be brought under ${maxKb} KB (it's ${formatKb(res.bytes)}). Try a higher KB limit.`
         );
       } else {
-        blob = await canvasToBlob(canvas, "image/jpeg", 0.95);
+        blob = await canvasToBlob(canvas, keepPng ? "image/png" : "image/jpeg", 0.95);
         setSavedInfo(null);
       }
       const baseName = baseFile?.name.replace(/\.[^/.]+$/, "") || "signed-image";
       setExportedBlob(blob);
       track({ name: "tool_success", tool: TOOL, device: deviceClass() });
-      downloadBlob(blob, `${baseName}-signed.jpg`, TOOL);
+      downloadBlob(blob, `${baseName}-signed.${keepPng ? "png" : "jpg"}`, TOOL);
     } catch (err) {
       console.error(err);
       setError("Failed to compile signed image. Please try again.");
@@ -494,7 +508,7 @@ export function SignImageTool() {
                     if (!exportedBlob) throw new Error("No output");
                     return exportedBlob;
                   }}
-                  filename={`${baseFile?.name.replace(/\.[^/.]+$/, "") || "signed-image"}-signed.jpg`}
+                  filename={`${baseFile?.name.replace(/\.[^/.]+$/, "") || "signed-image"}-signed.${exportedBlob?.type === "image/png" ? "png" : "jpg"}`}
                   assetKind="image"
                   steps={[
                     {
