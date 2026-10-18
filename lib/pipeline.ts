@@ -14,6 +14,8 @@
 import type { CountrySpec } from "./countrySpecs";
 import {
   computeCrop,
+  DEFAULT_MAX_UPSCALE,
+  LOW_RESOLUTION_WARNING,
   mmToPx,
   type CropResult,
   type CropRect,
@@ -253,11 +255,7 @@ export async function buildPresetFromCrop(
   const headPct = crop.sh > 0 ? (srcHeadPx / crop.sh) * 100 : 0;
   const upscale = crop.sh > 0 ? output.height / crop.sh : 0;
 
-  if (upscale > 1.15)
-    warnings.push(
-      `Low source resolution: needs ${upscale.toFixed(2)}x upscaling (> 1.15). ` +
-        `Result may be soft. Request a higher-res photo.`
-    );
+  if (upscale > DEFAULT_MAX_UPSCALE) warnings.push(LOW_RESOLUTION_WARNING);
   if (
     spec.headPercentOfFrame &&
     (headPct > spec.headPercentOfFrame.max + 0.5 ||
