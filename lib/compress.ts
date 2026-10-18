@@ -14,6 +14,7 @@
 import { padBlobToMin } from "@/lib/padBytes";
 import { setBlobDensityDpi } from "@/lib/jpegDensity";
 import { kbCapBytes, kbFloorBytes } from "@/lib/utils";
+import { CANVAS_ENCODE_FAILED_MESSAGE } from "@/lib/imaging";
 
 // ── Pure, testable search ────────────────────────────────────────────────
 
@@ -211,7 +212,7 @@ function toBlob(
 ): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(
-      (b) => (b ? resolve(b) : reject(new Error("canvas.toBlob returned null"))),
+      (b) => (b ? resolve(b) : reject(new Error(CANVAS_ENCODE_FAILED_MESSAGE))),
       type,
       quality
     );

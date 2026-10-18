@@ -581,7 +581,14 @@ async function rebuildPresets(
     sourceSize,
     measurements,
     rspec,
-    { dpi: printDpi, source: sourceSize, brightness, contrast }
+    {
+      dpi: printDpi,
+      source: sourceSize,
+      brightness,
+      contrast,
+      // Names ExportPanel's online-upload button; keep the two in step.
+      digitalUploadHint: "For online portals, use the “JPG for upload” download.",
+    }
   );
   const digitalPreset = await buildPreset(
     renderSource,

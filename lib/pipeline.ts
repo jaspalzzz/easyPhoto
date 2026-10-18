@@ -21,6 +21,7 @@ import {
   type ComputeCropOpts,
 } from "./headPositioning";
 import { fillBackground } from "./background";
+import { CANVAS_ENCODE_FAILED_MESSAGE } from "./imaging";
 
 export interface LoadedImage {
   image: HTMLImageElement;
@@ -66,7 +67,7 @@ export function canvasToObjectURL(canvas: HTMLCanvasElement): Promise<string> {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (!blob) {
-        reject(new Error("canvas.toBlob returned null"));
+        reject(new Error(CANVAS_ENCODE_FAILED_MESSAGE));
         return;
       }
       resolve(URL.createObjectURL(blob));
