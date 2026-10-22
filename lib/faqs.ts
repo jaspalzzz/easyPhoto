@@ -11,6 +11,7 @@ import {
   type CountrySpec,
 } from "@/lib/countrySpecs";
 import type { PortalSpec } from "@/lib/portalPresets";
+import { mmToPx } from "@/lib/headPositioning";
 import { photoDimsPx, sigDimsPx } from "@/lib/specRegistry";
 
 /**
@@ -142,7 +143,10 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
 }
 
 export const PASSPORT_FAQ: FaqItem[] = [
-  { q: "What size is a passport photo?", a: "Most countries use 35×45mm. The US and a few others use 2×2 inches (51×51mm). EasyPhoto sets the correct size automatically once you pick your country." },
+  {
+    q: "What size is a passport photo?",
+    a: `Most countries use 35 mm × 45 mm (3.5 cm × 4.5 cm). Printed at 300 DPI, that is ${mmToPx(35, 300)} × ${mmToPx(45, 300)} pixels. The US and a few others use 2×2 inches (51×51mm). EasyPhoto sets the correct size automatically once you pick your country.`,
+  },
   { q: "How do I make a passport photo at home for free?", a: "Upload a clear, front-facing photo, choose your country, and download the prepared result. Check it against the linked current requirements before submitting. No app, no payment, no watermark." },
   { q: "Can I take a passport photo on my phone?", a: "Yes. Any recent phone photo in even lighting works, and the tool crops and sizes it for you." },
   { q: "What background colour should a passport photo have?", a: "White for the US and India. The UK accepts any plain light colour, white included, and some Schengen consulates ask for light grey specifically. EasyPhoto applies a colour that suits each country and you can adjust it." },
@@ -184,9 +188,6 @@ export const VISA_FAQ: FaqItem[] = [
 
 export const PHOTO_RESIZE_FAQ: FaqItem[] = [
   { q: "How do I resize a photo online for free?", a: "Upload it, set a target file size in KB or exact pixel dimensions, and download. No watermark and nothing gets uploaded." },
-  { q: "How do I reduce a photo to 20KB?", a: "Set the target to 20KB and the tool compresses your image under 20KB while keeping it as clear as possible." },
-  { q: "How do I resize a photo to 50KB?", a: "Enter 50KB as the target and download the compressed file. It's handy for passport, visa and exam uploads." },
-  { q: "How do I compress an image to 100KB or 200KB?", a: "Type any target in KB. There are quick presets for 10, 20, 50, 100 and 200KB." },
   { q: "How do I resize a photo without losing quality?", a: "We lower JPEG quality only as much as needed and shrink dimensions last, so the photo stays as sharp as the target allows." },
   { q: "How do I resize a photo for SSC, UPSC or government forms?", a: "Select the limit stated in the current notification, compress to that target, and confirm the downloaded file before uploading." },
   { q: "Can I resize a photo on my phone?", a: "Yes, it works the same in a mobile browser." },
@@ -199,21 +200,19 @@ export const PHOTO_RESIZE_FAQ: FaqItem[] = [
   { q: "How do I resize a passport photo for online upload?", a: "Make the passport photo first, then compress it here to the portal's KB limit." },
   { q: "Why does my form reject my photo for size?", a: "It's over the file-size cap. Compress it under the stated limit and re-upload." },
   { q: "How small can I make an image?", a: "Down to around 10KB while keeping a face recognisable. Below that, detail starts to suffer." },
+  { q: "Can I make a photo bigger in KB?", a: "Yes, when a form refuses small files. Type the form's lower limit in the Minimum box and the file is raised to it. The picture itself does not change: the extra bytes are blank data that every image viewer ignores." },
 ];
 
 export const SIGNATURE_FAQ: FaqItem[] = [
   { q: "How do I resize my signature for an online form?", a: "Upload a scan or photo of your signature, set the size, and download. The paper background is removed and transparency is kept." },
   { q: "What size should a signature be for a form?", a: "It varies by authority and cycle. Check the current form for its format, KB band and any published dimensions before resizing." },
-  { q: "How do I make my signature 10KB or 20KB?", a: "Use the signature-to-20KB tool, which compresses to the cap while keeping a transparent background." },
   { q: "How do I resize a signature for UPSC or SSC?", a: "Current UPSC instructions request one 20–100 KB JPG containing three signatures vertically. The cited SSC notice requests a separate 10–20 KB JPG/JPEG signature at about 6.0×2.0 cm. Confirm your exam notice before use." },
   { q: "What are the signature dimensions in pixels for forms?", a: "Use pixel dimensions only when the current authority source publishes them. Several portals publish a KB band or physical size but no fixed pixels." },
   { q: "How do I get a transparent signature?", a: "The tool lifts the paper background and exports a transparent PNG so it sits cleanly on documents." },
   { q: "How do I scan my signature for a form?", a: "Sign on plain white paper, photograph or scan it in good light, then upload, and we clean it up." },
   { q: "Can I resize my signature on my phone?", a: "Yes, photograph your signature and process it directly in the mobile browser." },
-  { q: "How do I remove the background from a signature?", a: "Use the signature background-removal tool or the transparent option to drop the paper." },
   { q: "Why won't my signature upload?", a: "Compare the actual encoded format, KB band and any published dimensions with the current field. A transparent PNG will not satisfy a field that requests JPG/JPEG." },
   { q: "What format should a signature be, PNG or JPG?", a: "Use the format requested by the destination. PNG preserves transparency for overlays; many exam portals instead request JPG/JPEG on a white field." },
-  { q: "How do I crop my signature?", a: "The signature crop tool auto-trims the empty space around the ink." },
   { q: "Is the signature resizer free?", a: "Yes, free with no watermark." },
   { q: "Is my signature uploaded anywhere?", a: "No, it's processed on your device only." },
   { q: "How do I make my signature clearer or darker?", a: "Increase the background-removal strength to lift the paper and sharpen the ink." },
@@ -221,14 +220,11 @@ export const SIGNATURE_FAQ: FaqItem[] = [
 ];
 
 export const BACKGROUND_REMOVER_FAQ: FaqItem[] = [
-  { q: "How do I remove the background from an image for free?", a: "Drop in a photo and download a transparent PNG. It's free, with no sign-up and no watermark." },
   { q: "How do I make a transparent PNG?", a: "Remove the background and save. The result is a PNG with a transparent background." },
   { q: "Is this background remover really free with no watermark?", a: "Yes. You get a full-resolution download with no paywall and no watermark." },
   { q: "Does the background remover upload my photo?", a: "No. The AI model runs in your browser, so your image never leaves your device." },
-  { q: "How do I add a white background to a photo?", a: "Remove the original background, then use the white-background tool to drop in white or any colour." },
   { q: "Can I remove the background from a product photo?", a: "Yes, it's well suited to product shots for listings and catalogues." },
   { q: "Does it work on hair and fine edges?", a: "Yes, the model handles hair and detailed edges reasonably well." },
-  { q: "How do I remove the background from a signature?", a: "For ink on paper, the dedicated signature tools give cleaner results than the photo remover." },
   { q: "Can I remove a background on my phone?", a: "Yes, it runs in mobile browsers, and the first run downloads the AI model." },
   { q: "What file formats are supported?", a: "JPG, PNG, WebP and HEIC inputs." },
   { q: "What format is the output?", a: "A transparent PNG at full resolution." },
@@ -320,7 +316,10 @@ export const SIGN_PDF_FAQ: FaqItem[] = [
 ];
 
 export const SIGN_IMAGE_FAQ: FaqItem[] = [
-  { q: "How do I add a signature to a photo or image?", a: "Upload your image, draw or place a transparent signature on top, position and size it, then download the signed image." },
+  { q: "How do I add a signature to a photo or image?", a: "Upload your image, then draw your signature, type your name in a handwriting style, or upload a signature image. Drag it into place, resize it and download the signed image." },
+  { q: "Is this a digital signature?", a: "No. It places a picture of your signature on the image, like signing a printout. A legally valid digital signature on a document needs a digital signature certificate (DSC) or Aadhaar eSign." },
+  { q: "Will my image stay a PNG?", a: "Yes. A PNG is saved as a PNG and keeps any transparent background; other images are saved as JPG. If you set a KB limit, the file is saved as JPG so it can be compressed." },
+  { q: "Do I need an app to sign on a photo?", a: "No. It works in the browser on your phone or computer, with nothing to install." },
   { q: "Can I overlay a transparent signature PNG?", a: "Yes. Upload a transparent signature and drop it onto the photo, or draw a new one directly." },
   { q: "Will the signature have a white box around it?", a: "No, if you use a transparent signature. Make one with the transparent signature tool first for a clean overlay." },
   { q: "Is it free and private?", a: "Yes — free, no watermark, and the image is processed in your browser, never uploaded." },
@@ -334,7 +333,7 @@ export const TRANSPARENT_SIGNATURE_FAQ: FaqItem[] = [
 ];
 
 export const SIGNATURE_BG_REMOVAL_FAQ: FaqItem[] = [
-  { q: "How do I remove the background from a signature?", a: "Upload a photo or scan of your signature and the tool lifts the paper tone, keeping just the ink on a transparent background." },
+  { q: "How do I remove the background from a signature?", a: "Upload a photo or scan of your signature and the tool lifts the paper tone, keeping just the ink on a white or transparent background." },
   { q: "Does it keep the ink sharp?", a: "Yes. It targets the paper colour and leaves the ink intact; a strength control lets you push faint paper fully transparent." },
   { q: "What's the difference from the transparent signature tool?", a: "This focuses on background removal; the transparent signature tool also auto-trims and optimises the file. Use whichever fits, or chain them." },
   { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser. Your signature is never uploaded." },
@@ -349,10 +348,10 @@ export const SIGNATURE_CLEANER_FAQ: FaqItem[] = [
 ];
 
 export const SIGNATURE_CROP_FAQ: FaqItem[] = [
-  { q: "How do I crop a signature to the ink?", a: "Upload your signature scan or phone photo, then drag the crop box around your signature — the dimmed area is removed and the bright area is kept. Or tap Auto-detect to snap the box to the ink automatically. Download as PNG or JPG." },
   { q: "Can I crop a photo of my signature, not just a clean scan?", a: "Yes. The manual crop box works on any photo — including phone photos with shadows or off-white paper, where automatic trimming alone can struggle. Just drag the box to exactly what you want to keep." },
   { q: "Why crop a signature before uploading?", a: "Forms expect the signature to fill the frame, not float in a sea of white. A tight crop also helps it meet pixel-dimension limits." },
-  { q: "Can I also remove the paper background?", a: "Yes — use the signature cleaner or background-removal tool to drop the paper and keep a transparent PNG." },
+  { q: "How can I extract a signature from an image?", a: "Extracting means two things: cutting out just the signature, and dropping the paper behind it. Crop the signature here, then choose Transparent to keep only the ink, as a PNG you can place on other documents, or White for a clean JPG for forms." },
+  { q: "Can I make a form signature from a phone photo?", a: "Yes. Write your signature in dark ink on blank paper, photograph it straight-on in good light, crop it here with the paper set to White, then fit it to your form's limit with the signature resizer. If the ink looks faint, the signature cleaner darkens the strokes as well." },
   { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser." },
 ];
 
@@ -373,9 +372,8 @@ export const RESIZE_DIMENSIONS_FAQ: FaqItem[] = [
 ];
 
 export const PHOTO_NAME_DATE_FAQ: FaqItem[] = [
-  { q: "How do I add my name and date under a photo?", a: "Upload your photo, type your name and the date, and the tool prints them in a clean strip at the bottom — then you download it." },
-  { q: "Which applications use a digital name-and-date strip?", a: "The current APPSC Direct Recruitment OTPR manual and Kerala PSC guidance require the candidate's name and photography date on the image. Confirm the current notice for your application before using a strip." },
-  { q: "Can I use this tool for UPSC, SSC, IBPS or Agniveer forms?", a: "Current UPSC, SSC and IBPS instructions do not list a digital strip. Navy Agniveer and Agniveervayu notices require a physical black slate held in the photograph, which cannot be added by this tool." },
+  { q: "How do I add my name and date to a passport size photo?", a: "Upload your photo, type your name and pick the date. The tool prints both in capitals, with the date as DD/MM/YYYY, on a white strip at the bottom of the photo. Set the KB limit your form gives, then download the JPG." },
+  { q: "Should the date be the photo date or my date of birth?", a: "Forms that ask for a name-and-date strip almost always mean the date the photo was taken, often written DOP (date of photo). The date field accepts any date, so enter your date of birth only if your notice asks for it." },
   { q: "Can I change the date or text format?", a: "Yes. Enter the photography date and use the wording or date format stated by the current application instructions." },
   { q: "Is it free and private?", a: "Yes — free, no watermark, and your photo is processed on your device only." },
 ];

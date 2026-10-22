@@ -13,6 +13,7 @@ import {
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track } from "@/lib/analytics";
+import { SupportInline } from "@/components/site/SupportInline";
 
 const PRESETS = [
   { dpi: 200, label: "200 DPI", hint: "NSDL PAN scan requirement" },
@@ -220,7 +221,7 @@ export function DpiConverterTool() {
                 <input
                   type="text"
                   {...dpiField}
-                  className="h-7 w-20 rounded border border-hairline bg-background px-2 font-mono text-[13px]"
+                  className="h-7 w-20 rounded border border-hairline bg-background px-2 font-mono text-[14px]"
                 />
               </label>
             </div>
@@ -246,6 +247,7 @@ export function DpiConverterTool() {
               unchanged — only the metadata was rewritten.
             </p>
           )}
+          <SupportInline />
         </>
       )}
     </div>

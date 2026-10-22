@@ -137,8 +137,8 @@ function PathCard({ path }: { path: Path }) {
       <p className="mb-1 text-xs font-bold uppercase tracking-widest text-muted-foreground">
         {eyebrow}
       </p>
-      <h3 className="mb-2 text-[17px] font-bold leading-tight text-ink">{title}</h3>
-      <p className="mb-4 flex-1 text-[12.5px] leading-relaxed text-muted-foreground">{desc}</p>
+      <h3 className="mb-2 text-[18px] font-bold leading-tight text-ink">{title}</h3>
+      <p className="mb-4 flex-1 text-[12px] leading-relaxed text-muted-foreground">{desc}</p>
 
       {/* Sub-links — the most-searched entries for this path */}
       <div className="mb-5 flex flex-wrap gap-1.5">
@@ -147,7 +147,7 @@ function PathCard({ path }: { path: Path }) {
             key={c.href + c.label}
             href={c.href}
             event={{ name: "path_select", path: analyticsPath }}
-            className={`rounded-full border border-hairline bg-card px-2.5 py-1 text-[11.5px] font-medium text-ink-soft transition-colors ${chipHover}`}
+            className={`rounded-full border border-hairline bg-card px-2.5 py-1 text-[12px] font-medium text-ink-soft transition-colors ${chipHover}`}
           >
             {c.label}
           </TrackedLink>
@@ -157,7 +157,7 @@ function PathCard({ path }: { path: Path }) {
       <TrackedLink
         href={href}
         event={{ name: "path_select", path: analyticsPath }}
-        className="group/cta flex items-center gap-1.5 text-[13px] font-bold text-brand hover:underline"
+        className="group/cta flex items-center gap-1.5 text-[14px] font-bold text-brand hover:underline"
       >
         {cta}
         <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/cta:translate-x-1" />
@@ -169,10 +169,10 @@ function PathCard({ path }: { path: Path }) {
 export function ChoosePath() {
   return (
     <section className="border-t border-hairline bg-paper">
-      <div className="container reveal py-12 sm:py-14">
+      <div className="container reveal py-12 sm:py-20">
         {/* Broad promise — passport and exam users both belong here */}
         <div className="mx-auto mb-8 max-w-2xl text-center">
-          <h2 className="text-[1.7rem] font-bold tracking-tight text-ink sm:text-[2rem]">
+          <h2 className="text-[30px] font-bold tracking-tight text-ink sm:text-[30px]">
             Prepare application photos &amp; documents using{" "}
             <span className="mark-gold whitespace-nowrap text-ink">published specs</span>
           </h2>

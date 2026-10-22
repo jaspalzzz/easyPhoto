@@ -87,15 +87,6 @@ export default function Page() {
         rejected and can be re-uploaded before scrutiny is complete.
       </p>
 
-      <img
-        src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Car keys and driving licence on a table — driving licence application process India"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
-
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
           <tr className="border-b border-hairline text-left">
@@ -144,15 +135,6 @@ export default function Page() {
       </p>
 
       <h2>Why do driving licence photos get rejected on Sarathi?</h2>
-
-      <img
-        src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Person using a laptop to complete an online government application form"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
 
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>

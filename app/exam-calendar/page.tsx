@@ -1,52 +1,85 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  CalendarDays,
-  CalendarPlus,
-  CheckCircle2,
-  Clock3,
-  ExternalLink,
-  ShieldCheck,
-} from "lucide-react";
-import { calendarSorted } from "@/lib/examCalendar";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
+/**
+ * Date-free on purpose (owner decision, 13 Oct 2026). This is a static export
+ * and the site stops being rebuilt after October 2026, so any date printed
+ * here would go stale and stay wrong. The page points to each board's own
+ * calendar instead; the boards keep those current.
+ */
+
 export const metadata = pageMetadata({
-  title: "Exam Calendar 2026-27 — Upcoming Notification & Exam Dates",
+  title: "Official Exam Calendars: SSC, UPSC, IBPS, NTA, RRB — easyPhoto",
   titleAbsolute: true,
   description:
-    "Upcoming Indian exam notifications, application windows and exam dates " +
-    "from the official SSC, UPSC and IBPS calendars — each entry sourced and " +
-    "dated, with the photo & signature specs you'll need when the form opens.",
+    "Where SSC, UPSC, IBPS, NTA and RRB publish their exam dates, with links to each official " +
+    "calendar and the photo and signature rules you'll need when the form opens.",
   path: "/exam-calendar/",
 });
 
+/** Each board's own calendar, checked 13 Oct 2026. */
+const BOARDS: ReadonlyArray<{
+  board: string;
+  what: string;
+  link: { href: string; label: string };
+  specs: ReadonlyArray<{ href: string; label: string }>;
+}> = [
+  {
+    board: "SSC (Staff Selection Commission)",
+    what: "Publishes a tentative calendar of examinations for the year on ssc.gov.in; each exam's exact dates are then fixed in its own notice.",
+    link: { href: "https://ssc.gov.in/for-candidates/examination-calendar", label: "SSC examination calendar" },
+    specs: [{ href: "/exam-requirements/ssc/", label: "SSC photo & signature" }],
+  },
+  {
+    board: "UPSC (Union Public Service Commission)",
+    what: "Publishes its calendar of examinations for the coming year as a PDF; the 2027 calendar was released on 20 May 2026.",
+    link: { href: "https://upsc.gov.in/examinations/exam-calendar", label: "UPSC exam calendar" },
+    specs: [{ href: "/exam-requirements/upsc/", label: "UPSC photo & signature" }],
+  },
+  {
+    board: "IBPS (Institute of Banking Personnel Selection)",
+    what: "Announces a tentative calendar for its common recruitment processes on ibps.in; each process then opens with its own notification.",
+    link: { href: "https://www.ibps.in", label: "IBPS website" },
+    specs: [{ href: "/exam-requirements/ibps/", label: "IBPS photo & signature" }],
+  },
+  {
+    board: "NTA (National Testing Agency)",
+    what: "Keeps one examination calendar PDF for its tests, including UGC-NET, the Joint CSIR-UGC NET, CUET and JEE (Main).",
+    link: { href: "https://nta.ac.in/Download/Notice/Examcalendar.pdf", label: "NTA examination calendar (PDF)" },
+    specs: [
+      { href: "/exam-requirements/cuet/", label: "CUET photo & signature" },
+      { href: "/exam-requirements/csir-net/", label: "CSIR-NET photo & signature" },
+    ],
+  },
+  {
+    board: "RRB (Railway Recruitment Boards)",
+    what: "Has no single calendar page: each recruitment is a Centralised Employment Notice (CEN), listed on the regional RRB websites.",
+    link: { href: "https://rrb.indianrailways.gov.in/", label: "RRB notices" },
+    specs: [{ href: "/exam-requirements/rrb/", label: "RRB signature" }],
+  },
+];
+
 const FAQS: FaqItem[] = [
   {
-    q: "Where do these dates come from?",
-    a: "Each entry is taken from the board's official annual calendar (ssc.gov.in, upsc.gov.in, ibps.in) and shows the date we last confirmed it. Tentative entries are month-level windows from the official calendar; confirmed entries are exact published dates.",
+    q: "Why doesn't this page list exam dates?",
+    a: "Boards revise their calendars between cycles, and a copied date can be wrong by the time you read it. The official calendars linked here are kept current by the boards themselves.",
   },
   {
-    q: "Can the dates change?",
-    a: "Yes — boards revise calendars between cycles, and exact application windows are fixed only when each notification is published. Always check the official notification before planning; this page links the official source on every entry.",
-  },
-  {
-    q: "How do I get reminded before a window opens?",
-    a: "Use the “Add to my calendar” button — it downloads a standard .ics file with the confirmed dates. Open it and your own phone's calendar (Google, Apple, anything) saves the events and reminds you. Nothing is tracked by us; the reminder lives on your device.",
+    q: "When are the exact application dates fixed?",
+    a: "When the board publishes the notice for that exam. The annual calendars give planned months or dates, and both UPSC and NTA mark theirs as subject to change.",
   },
   {
     q: "What should I prepare before the form opens?",
-    a: "Prepare the photo and signature using the dimensions and file-size limits listed for the selected portal. Each entry links to its recorded photo and signature specification and source status. Confirm the current notification when the application window opens.",
+    a: "Your photo and signature, to the rules on the exam's page here. Recheck them against the new notice when it's published, because boards sometimes change them between cycles.",
   },
 ];
 
 export default function ExamCalendarPage() {
-  const entries = calendarSorted();
-
   const crumbs: Crumb[] = [
     { name: "Home", path: "/" },
     { name: "Exam Requirements", path: "/exam-requirements/" },
@@ -55,113 +88,56 @@ export default function ExamCalendarPage() {
 
   return (
     <div className="container max-w-4xl space-y-8 py-10">
-      <JsonLd
-        schema={[
-          breadcrumbSchema(crumbs),
-          faqSchema(FAQS),
-        ]}
-      />
+      <JsonLd schema={[breadcrumbSchema(crumbs), faqSchema(FAQS)]} />
       <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
-        <span className="eyebrow block text-brand">Official calendars, sourced &amp; dated</span>
-        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
-          Upcoming Exam Dates &amp; Application Windows
+        <span className="eyebrow block text-brand">Official calendars</span>
+        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
+          Where to Find Official Exam Dates
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          What&apos;s opening next, from the official SSC, UPSC and IBPS
-          calendars — so your photo and signature are ready{" "}
-          <em>before</em> the form opens, not scrambled together on deadline day.
-        </p>
-        {/* Plain anchor, not next/link: `trailingSlash: true` rewrites Link
-            hrefs, and /exam-calendar/ics/ 404s because the route handler emits
-            the calendar at /exam-calendar/ics with no trailing slash. */}
-        <a
-          href="/exam-calendar/ics"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-cta px-4 py-2.5 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
-        >
-          <CalendarPlus className="h-4 w-4" strokeWidth={2} />
-          Add to my calendar (.ics)
-        </a>
-        <p className="text-xs text-muted-foreground">
-          Your phone&apos;s own calendar does the reminding — nothing is tracked by us.
+          Exam boards publish their own calendars and revise them between cycles, so this page
+          doesn&apos;t copy dates that may change. It links each board&apos;s official calendar, and
+          the photo and signature rules for its exams, so your files are ready before the form
+          opens.
         </p>
       </header>
 
-      {/* Timeline */}
-      <ol className="space-y-4">
-        {entries.map((e) => {
-          const confirmed = e.status === "confirmed";
-          return (
-            <li key={e.id} className="ep-card p-5">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="flex flex-wrap items-center gap-2">
-                    <span className="font-semibold text-ink">{e.name}</span>
-                    <span
-                      className={
-                        confirmed
-                          ? "inline-flex items-center gap-1 rounded-full bg-[hsl(142_55%_45%/0.12)] px-2 py-0.5 text-xs font-semibold text-[hsl(142_55%_28%)] dark:bg-[hsl(142_55%_45%/0.20)] dark:text-[hsl(142_55%_60%)]"
-                          : "inline-flex items-center gap-1 rounded-full bg-[hsl(38_92%_50%/0.14)] px-2 py-0.5 text-xs font-semibold text-[hsl(32_80%_34%)] dark:bg-[hsl(38_92%_50%/0.20)] dark:text-[hsl(32_80%_62%)]"
-                      }
-                    >
-                      {confirmed ? (
-                        <CheckCircle2 className="h-3 w-3" strokeWidth={2} />
-                      ) : (
-                        <Clock3 className="h-3 w-3" strokeWidth={2} />
-                      )}
-                      {confirmed ? "Confirmed" : "Tentative"}
-                    </span>
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">{e.event}</p>
-                  <p className="mt-2 inline-flex items-center gap-1.5 font-mono text-[13px] font-medium text-ink">
-                    <CalendarDays className="h-3.5 w-3.5 text-brand" strokeWidth={1.75} />
-                    {e.window}
-                  </p>
-                </div>
+      <ul className="space-y-4">
+        {BOARDS.map((b) => (
+          <li key={b.board} className="ep-card p-5">
+            <p className="font-semibold text-ink">{b.board}</p>
+            <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">{b.what}</p>
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+              <a
+                href={b.link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 font-medium text-brand hover:underline"
+              >
+                {b.link.label} <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+              {b.specs.map((s) => (
                 <Link
-                  href={e.specPath}
-                  className="group inline-flex shrink-0 items-center gap-1 rounded-lg border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-brand transition-colors hover:bg-brand-soft/40"
+                  key={s.href}
+                  href={s.href}
+                  className="group inline-flex items-center gap-1 font-medium text-ink hover:text-brand"
                 >
-                  Photo &amp; signature spec
+                  {s.label}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={1.75} />
                 </Link>
-              </div>
-              <p className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-hairline pt-2.5 text-xs text-ink-soft">
-                <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
-                <span>Verified {e.verifiedOn} ·</span>
-                <a
-                  href={e.source.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-0.5 font-medium text-brand hover:underline"
-                >
-                  {e.source.label} <ExternalLink className="h-3 w-3" />
-                </a>
-              </p>
-            </li>
-          );
-        })}
-      </ol>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ul>
 
-      <p className="text-xs text-muted-foreground">
-        Exact application windows are fixed only when each notification is
-        published — confirm on the official portal before planning. Spotted a
-        date that&apos;s changed?{" "}
-        <Link href="/contact/" className="text-brand hover:underline">
-          Tell us
-        </Link>
-        .
-      </p>
-
-      {/* Be ready before the window opens */}
       <section className="rounded-lg border border-brand/25 bg-brand-soft/20 p-5 sm:p-6">
-        <h2 className="text-base font-semibold tracking-tight">
-          Be ready before the form opens
-        </h2>
+        <h2 className="text-base font-semibold tracking-tight">Be ready before the form opens</h2>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          The photo and signature sizes are published long before each window —
-          prepare the listed file targets now and review the current notice before applying.
+          Photo and signature rules are published in each notice, often long before the window
+          opens. Prepare your files now, then check them again against the notice when you apply.
         </p>
         <div className="mt-4 flex flex-wrap gap-1.5">
           <Link

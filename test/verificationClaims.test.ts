@@ -17,7 +17,7 @@ import { describe, it, expect } from "vitest";
 import { generateMetadata } from "@/app/exam-requirements/[exam]/page";
 import { allPortalSpecs, specProvenance } from "@/lib/specRegistry";
 
-const VERIFIED_CLAIM = /checked against the linked official source/i;
+const VERIFIED_CLAIM = /checked against the official notice/i;
 
 async function descriptionFor(exam: string): Promise<string> {
   const meta = await generateMetadata({ params: Promise.resolve({ exam }) });
@@ -25,16 +25,19 @@ async function descriptionFor(exam: string): Promise<string> {
 }
 
 describe("exam meta descriptions only claim source checking for verified specs", () => {
-  it("a verified preset (upsc) claims source checking", async () => {
-    expect(specProvenance(allPortalSpecs().find((s) => s.id === "upsc")!).verified).toBe(true);
-    expect(await descriptionFor("upsc")).toMatch(VERIFIED_CLAIM);
+  // UPSC and SSC now carry their own descriptions (components/site/exam), so a
+  // verified exam that still uses the template stands in (IBPS).
+  it("a verified preset (ibps) claims source checking", async () => {
+    expect(specProvenance(allPortalSpecs().find((s) => s.id === "ibps")!).verified).toBe(true);
+    expect(await descriptionFor("ibps")).toMatch(VERIFIED_CLAIM);
   });
 
-  it("a needs-review preset (ssc) does NOT claim verification", async () => {
-    expect(specProvenance(allPortalSpecs().find((s) => s.id === "ssc")!).verified).toBe(false);
-    const desc = await descriptionFor("ssc");
+  it("a needs-review preset (army-agniveer) does NOT claim verification", async () => {
+    expect(specProvenance(allPortalSpecs().find((s) => s.id === "army-agniveer")!).verified).toBe(false);
+    const desc = await descriptionFor("army-agniveer");
     expect(desc).not.toMatch(VERIFIED_CLAIM);
-    expect(desc).toMatch(/confirm the current figures/i);
+    expect(desc).toMatch(/confirm the current notice/i);
+    expect(desc).toMatch(/our default, not an official limit/i);
   });
 
   it("no needs-review preset's description asserts verification", async () => {

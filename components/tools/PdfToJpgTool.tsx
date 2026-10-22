@@ -5,7 +5,7 @@ import { Download, FileUp, ShieldCheck, Minimize2, Crop, Image as ImageIcon } fr
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { pdfToCanvases, PdfTooLargeError, PdfEncryptedError } from "@/lib/pdfToImages";
 import { canvasToBlob } from "@/lib/imaging";
 import { downloadBlob } from "@/lib/download";
@@ -106,7 +106,7 @@ export function PdfToJpgTool() {
   };
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         <div
           role="button"
@@ -215,6 +215,6 @@ export function PdfToJpgTool() {
           </>
         )}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

@@ -86,7 +86,7 @@ export function BeforeAfter() {
         {/* Heading */}
         <div className="mb-10 text-center">
           <span className="eyebrow text-[#7a5c06]">Transformation</span>
-          <h2 className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-[2rem]">
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-ink sm:text-[30px]">
             Compare the prepared result
           </h2>
         </div>
@@ -114,7 +114,7 @@ export function BeforeAfter() {
           {/* Automated-processing badge — sits between panels */}
           <div className="flex shrink-0 items-center justify-center sm:relative sm:z-10 sm:-mx-5 sm:py-6">
             <div className="flex h-16 w-16 flex-col items-center justify-center rounded-full bg-[hsl(222_60%_8%)] shadow-xl ring-4 ring-white sm:h-[68px] sm:w-[68px]">
-              <span className="text-[0.85rem] font-black leading-none tracking-tight text-[hsl(var(--cta))]">AUTO</span>
+              <span className="text-[14px] font-black leading-none tracking-tight text-[hsl(var(--cta))]">AUTO</span>
               <span className="mt-0.5 text-xs font-semibold uppercase tracking-widest text-[hsl(var(--cta))]/70">
                 auto
               </span>
@@ -154,7 +154,7 @@ export function BeforeAfter() {
               </p>
               <ul className="space-y-2.5">
                 {BEFORE_PROBLEMS.map((p) => (
-                  <li key={p} className="flex items-center gap-2.5 text-[13px] text-red-300">
+                  <li key={p} className="flex items-center gap-2.5 text-[14px] text-red-300">
                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500/20 text-xs font-bold text-red-400">
                       ✕
                     </span>
@@ -169,7 +169,7 @@ export function BeforeAfter() {
               </p>
               <ul className="space-y-2.5">
                 {AFTER_SOLUTIONS.map((s) => (
-                  <li key={s} className="flex items-center gap-2.5 text-[13px] text-green-300">
+                  <li key={s} className="flex items-center gap-2.5 text-[14px] text-green-300">
                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-500/20 text-xs font-bold text-green-400">
                       ✓
                     </span>

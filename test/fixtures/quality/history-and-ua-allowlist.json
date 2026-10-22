@@ -1,0 +1,28 @@
+{
+  "_readme": [
+    "Recorded from origin/dev on 2026-10-06 (Google spam policies: cloaking, sneaky redirects, back-button hijacking; CLAUDE.md §6.9 question 8). Checked by test/noCloakingNoHijack.test.ts.",
+    "userAgentReads: files allowed to read navigator.userAgent / platform / vendor, and how many times. Counts may only fall; a file that stops reading it must be deleted here.",
+    "why: the reason each read is legitimate. None of them changes the text, links or structured data a page serves — Googlebot and a browser get the same HTML.",
+    "History manipulation, popstate/beforeunload traps, script redirects, meta refresh, crawler-name sniffing and server-side user-agent reads have no allowlist: zero today, zero allowed."
+  ],
+  "userAgentReads": {
+    "components/site/MobileNav.tsx": 1,
+    "components/site/PwaInstallHint.tsx": 1,
+    "lib/analytics.ts": 1,
+    "lib/download.ts": 1,
+    "lib/heic.ts": 1,
+    "lib/pipeline.ts": 1,
+    "lib/segmentation.ts": 1,
+    "store/useToolStore.ts": 1
+  },
+  "why": {
+    "components/site/MobileNav.tsx": "Chooses how to offer 'install the app' in the mobile menu (iOS Safari has no install prompt, so it shows instructions). Client-only UI after hydration; page content is unchanged.",
+    "components/site/PwaInstallHint.tsx": "Same install-hint choice for iOS Safari. Client-only; page content is unchanged.",
+    "lib/analytics.ts": "deviceClass(): a coarse ios/android/desktop bucket for anonymous analytics events. Never affects what is rendered.",
+    "lib/download.ts": "iOS Safari reads a blob URL late, so it is revoked after 10 s instead of 1.5 s. Download plumbing only.",
+    "lib/heic.ts": "iOS decodes HEIC natively; skipping the WASM converter there avoids a Safari out-of-memory crash. Tool behaviour only.",
+    "lib/pipeline.ts": "Caps the working image size on iOS/Android to stay inside mobile browser memory. Tool behaviour only.",
+    "lib/segmentation.ts": "Picks the background-removal engine (WebGPU/WASM, model size) per device class to avoid mobile crashes. Tool behaviour only.",
+    "store/useToolStore.ts": "Same device-class engine choice for the photo tool's background removal. Tool behaviour only."
+  }
+}

@@ -91,15 +91,6 @@ export default function Page() {
         their own current specification.
       </p>
 
-      <img
-        src="https://images.unsplash.com/photo-1606189934390-4e80b9d1e0ea?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Sheet of passport photos printed on glossy photo paper with cut guides — home printing setup"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
-
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
           <tr className="border-b border-hairline text-left">
@@ -218,15 +209,6 @@ export default function Page() {
           craft knife and ruler.
         </li>
       </ol>
-
-      <img
-        src="https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Inkjet printer producing a colour print — home photo printing setup"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
 
       <h2>Common printing mistakes and how to avoid them</h2>
 

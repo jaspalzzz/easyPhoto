@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { PhotoSignatureMergeTool } from "@/components/tools/PhotoSignatureMergeTool";
@@ -6,16 +7,19 @@ import { getTool } from "@/lib/toolsCatalog";
 const tool = getTool("photo-signature-merge")!;
 
 export const metadata = pageMetadata({
-  title: "Merge Photo and Signature into One Image — Free, Private",
+  // Searchers' own words (GSC 25 Sep – 12 Oct 2026): "merge photo and
+  // signature", "photo sign merge", "photo and signature merge".
+  title: "Merge Photo and Signature Online — One JPG, Free",
   description:
-    "Combine your passport photo and signature into a single image for forms that need both together. Stacked or side-by-side, in your browser. Nothing uploaded.",
+    "Merge your photo and signature into one JPG, photo above signature or side by side. " +
+    "Then compress it to your form's KB limit. Free; nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
 export default function Page() {
   return (
     <ToolPage
-      title="Photo + Signature Merger"
+      title="Merge Photo and Signature"
       slug={tool.slug}
       blurb={tool.blurb}
       faqItems={[
@@ -32,12 +36,23 @@ export default function Page() {
           a: "Yes — the tool automatically trims the empty white space around your signature so it sits tight next to your photo, even if you scanned it on a large sheet of paper. For the cleanest result, sign in dark ink on plain white paper.",
         },
         {
+          q: "My form has a KB limit. What do I do with the merged file?",
+          a: "Download the merged JPG, then open it in the Compress to KB tool (linked under the result) and enter your form's limit. Merging adds the signature's pixels, so check the size even if your photo alone was under the limit.",
+        },
+        {
           q: "Is anything uploaded to a server?",
           a: "No. Both images are read and combined entirely in your browser using JavaScript and the HTML canvas. Neither your photo nor your signature ever leaves your device.",
         },
       ]}
     >
       <PhotoSignatureMergeTool />
+      <p className="mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+        Need your signature written on the photo itself, not beside it? Use{" "}
+        <Link href="/tools/sign-image/" className="font-medium text-brand hover:underline">
+          sign on photo
+        </Link>
+        .
+      </p>
     </ToolPage>
   );
 }

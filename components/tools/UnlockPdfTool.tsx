@@ -6,7 +6,7 @@ import { ProcessingState } from "@/components/site/ProcessingState";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { consumeWorkflowPayload, WORKFLOW_PDF_KINDS } from "@/lib/workflowHandoff";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { unlockPdf, PdfPasswordError } from "@/lib/pdfUnlock";
 import { downloadBlob } from "@/lib/download";
 import { track, deviceClass } from "@/lib/analytics";
@@ -94,7 +94,7 @@ export function UnlockPdfTool() {
   };
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         {!file && (
           <div
@@ -228,6 +228,6 @@ export function UnlockPdfTool() {
           <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-300">{error}</p>
         )}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

@@ -78,7 +78,7 @@ export function CategoryPage({ slug }: { slug: string }) {
 
       <header className="mt-5 max-w-2xl space-y-2.5 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">{tools.length} free tools · nothing uploaded</span>
-        <h1 className="text-[1.8rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2.25rem]">
+        <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
           Free {cat.group}
         </h1>
         <p className="text-[15px] leading-relaxed text-muted-foreground">{cat.tagline}</p>

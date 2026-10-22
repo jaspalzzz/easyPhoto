@@ -4,8 +4,15 @@ import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
+import { PORTAL_PRESETS } from "@/lib/portalPresets";
 
+/*
+ * Re-checked against UPSC's "Instructions for Uploading the Photo & Signature"
+ * on 15 Oct 2026: added the mandatory live photo, and removed signature box
+ * sizes, gaps and reasons the instructions don't give.
+ */
 const post = getPost("upsc-cse-ias-photo-signature-guide-2026")!;
+const spec = PORTAL_PRESETS.upsc;
 
 export const metadata = pageMetadata({
   title: post.title,
@@ -18,13 +25,23 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} ctaHref="/exam-requirements/upsc/" ctaLabel="Resize your UPSC photo">
+      <p className="text-sm text-ink-soft">Last reviewed: 15 October 2026</p>
       <p>
         UPSC CSE, NDA and CDS all upload through the same UPSC OTR (One-Time
         Registration) portal, so they share one set of file rules. The part that
         trips most candidates is the signature: UPSC wants three signatures on a
-        single sheet, not one. Whether you&apos;re preparing a Mains Detailed
-        Application Form or planning for the next cycle, here are the file-size
-        limits UPSC actually publishes and how to get both files right in one pass.
+        single sheet, not one. The other is newer: the form also takes a live
+        photograph of you and checks it against the photo you upload. Here is
+        what{" "}
+        <a
+          href={spec.source?.url ?? "https://upsconline.nic.in"}
+          className="text-brand underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          UPSC&apos;s upload instructions
+        </a>{" "}
+        actually say, and how to get every step right in one pass.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
@@ -38,7 +55,12 @@ export default function Page() {
           <li>
             <strong>Signature:</strong> sign your name{" "}
             <em>three times vertically</em> on a single plain white sheet in
-            black ink, then upload it as one 20–100&nbsp;KB JPG.
+            black ink, then upload it as a single 350–500 pixel JPG of
+            20–100&nbsp;KB.
+          </li>
+          <li>
+            <strong>Live photo:</strong> taken during the application with a
+            webcam or a phone, and matched with your uploaded photo.
           </li>
           <li>
             <strong>Before you apply:</strong> read the current notification —
@@ -108,7 +130,7 @@ export default function Page() {
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">Pixel dimensions</td>
             <td className="py-2 pr-3">No fixed size published</td>
-            <td className="py-2 pr-3">350–500&nbsp;px (three on one sheet)</td>
+            <td className="py-2 pr-3">350–500&nbsp;px</td>
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">Background</td>
@@ -137,7 +159,7 @@ export default function Page() {
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">Ink colour</td>
             <td className="py-2 pr-3">—</td>
-            <td className="py-2 pr-3">Black (recommended)</td>
+            <td className="py-2 pr-3">Black</td>
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
@@ -177,6 +199,32 @@ export default function Page() {
         follow the notification.
       </p>
 
+      <h2>What is the UPSC live photograph, and how do you take it?</h2>
+      <p>
+        Under UPSC&apos;s current instructions, a live photograph is compulsory for
+        every UPSC examination, CSE included; the application can&apos;t be
+        submitted without it. It is a second picture, taken while you fill in
+        the form, on top of the photo file you upload.
+      </p>
+      <ol>
+        <li>
+          Choose how to take it: with your computer&apos;s web camera, or by
+          scanning the QR code on screen and using your phone&apos;s camera.
+        </li>
+        <li>
+          Face a good light source so your face shows clearly, then capture.
+        </li>
+        <li>
+          Use &ldquo;View Photo&rdquo; to look at the saved image before moving
+          on.
+        </li>
+      </ol>
+      <p>
+        UPSC matches the live photograph against your uploaded one. A mismatch
+        blocks the rest of the application, so don&apos;t upload an old photo
+        from a previous attempt if you look different now.
+      </p>
+
       <h2>
         Why does UPSC CSE require three signatures — and how do you prepare
         them?
@@ -184,25 +232,20 @@ export default function Page() {
       <p>
         UPSC requires candidates to write their signature three times on a
         single sheet of white paper, with the three signatures arranged
-        vertically, one below the other. You photograph or scan this one sheet
-        and upload it as a single image file. All three must be in black ink,
-        cursive or running hand, and consistent with each other. The portal
-        does not accept three separate files.
-      </p>
-      <p>
-        UPSC uses all three as verification references throughout the selection
-        process — at the examination hall, document verification, and the
-        medical board. Signatures that look very different from each other get
-        flagged. Prepare them in one sitting so the style is consistent.
+        vertically, one below the other, in black ink. You photograph or scan
+        this one sheet and upload it as a single image file; the portal does
+        not take three separate files. UPSC doesn&apos;t explain why it wants
+        three, but it is strict about the result: a signature file that breaks
+        its rules is rejected. The image must be clear, sharp and well lit,
+        hold exactly three signatures, and sit the right way up.
       </p>
       <ul>
         <li>
-          <strong>Paper:</strong> plain white A4, no lines, no watermarks.
+          <strong>Paper:</strong> plain white, with no lines and no colour.
         </li>
         <li>
-          <strong>Sign three times vertically</strong> in black ink, cursive
-          hand, with a small gap — roughly 4–5&nbsp;cm per signature — between
-          each.
+          <strong>Sign three times vertically</strong> in black ink, leaving
+          enough space between the signatures that they don&apos;t touch.
         </li>
         <li>
           <strong>Photograph flat</strong> in even overhead light. Check that
@@ -212,84 +255,35 @@ export default function Page() {
           <strong>Upload the single image</strong> through the{" "}
           <Link href="/exam-requirements/upsc/">UPSC signature resizer</Link>.
           It cleans the paper background and outputs a JPG inside the
-          20–100&nbsp;KB band.
+          20–100&nbsp;KB band. Name the file <code>{spec.sigFileName}</code>.
         </li>
       </ul>
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
           src="/images/upsc-cse-ias-photo-signature-guide-2026.webp"
-          alt="UPSC CSE/IAS signature sheet layout showing three 6 cm × 3 cm boxes arranged vertically on A4 paper, each containing the candidate's signature"
+          alt="Example UPSC signature sheet: three matching signatures written one below the other on plain white paper"
           width={760}
           height={760}
           className="w-full h-auto"
         />
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
-          UPSC CSE signature sheet layout: three identical signatures in 6&nbsp;cm&nbsp;×&nbsp;3&nbsp;cm boxes, written in black ink on plain A4 white paper.
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
+          An example layout. UPSC sets no box or paper size; it asks for three signatures in black ink, one below the other, with space between them.
         </figcaption>
       </figure>
 
       <h2>How does UPSC CSE compare to NDA and CDS for photo requirements?</h2>
       <p>
-        All three use the same UPSC OTR portal, so the file rules are the same.
-        Any differences come from cycle-specific rules in each notification:
+        They follow one instruction sheet on the same OTR portal, so nothing
+        above changes for NDA or CDS: the two KB bands, the three black-ink
+        signatures at 350–500 pixels and the live photo all apply as written.
+        What can differ is the notification for a cycle, which may add a rule
+        of its own, such as how recent the photo must be.
       </p>
-      <table className="my-5 w-full border-collapse text-[14px]">
-        <thead>
-          <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-3 font-semibold text-ink">Requirement</th>
-            <th className="py-2 pr-3 font-semibold text-ink">CSE (IAS)</th>
-            <th className="py-2 pr-3 font-semibold text-ink">NDA</th>
-            <th className="py-2 pr-3 font-semibold text-ink">CDS</th>
-          </tr>
-        </thead>
-        <tbody className="text-ink-soft">
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Photo file size</td>
-            <td className="py-2 pr-3">20–200&nbsp;KB</td>
-            <td className="py-2 pr-3">20–200&nbsp;KB</td>
-            <td className="py-2 pr-3">20–200&nbsp;KB</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Signature file size</td>
-            <td className="py-2 pr-3">20–100&nbsp;KB</td>
-            <td className="py-2 pr-3">20–100&nbsp;KB</td>
-            <td className="py-2 pr-3">20–100&nbsp;KB</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Fixed pixel size</td>
-            <td className="py-2 pr-3">None published</td>
-            <td className="py-2 pr-3">None published</td>
-            <td className="py-2 pr-3">None published</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Recency rule</td>
-            <td className="py-2 pr-3">Per notification</td>
-            <td className="py-2 pr-3">Per notification</td>
-            <td className="py-2 pr-3">Per notification</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">
-              Signature count
-            </td>
-            <td className="py-2 pr-3">
-              <strong>Three (one sheet)</strong>
-            </td>
-            <td className="py-2 pr-3">One</td>
-            <td className="py-2 pr-3">One</td>
-          </tr>
-          <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Ink colour</td>
-            <td className="py-2 pr-3">Black (recommended)</td>
-            <td className="py-2 pr-3">Black or blue</td>
-            <td className="py-2 pr-3">Black or blue</td>
-          </tr>
-        </tbody>
-      </table>
       <p>
         The safe habit for a cross-applicant is to take a fresh photo for each
-        application rather than reuse an old file, since a notification may set
-        its own recency window. For the full NDA and CDS photo guide, see the{" "}
+        application rather than reuse an old file; a current photo also passes
+        the live-photo match more easily. For the full NDA and CDS photo guide, see the{" "}
         <Link href="/blog/nda-cds-photo-signature-guide-2026/">
           NDA &amp; CDS photo and signature guide
         </Link>
@@ -354,6 +348,15 @@ export default function Page() {
               style, consistent size; photograph as one image
             </td>
           </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">
+              Live photograph and upload look like different people
+            </td>
+            <td className="py-2 pr-3">
+              Replace the uploaded file with a current photo, then capture the
+              live one again
+            </td>
+          </tr>
         </tbody>
       </table>
       <p>
@@ -371,8 +374,8 @@ export default function Page() {
       <p>For the photo, in this order:</p>
       <ol>
         <li>
-          <strong>Take a fresh photo:</strong> plain white wall, formal
-          attire, face filling about 75% of the frame.
+          <strong>Take a fresh photo:</strong> plain white wall, no shadows,
+          face filling about 75% of the frame.
         </li>
         <li>
           <strong>Resize for UPSC.</strong> Run the image through the{" "}
@@ -391,7 +394,7 @@ export default function Page() {
       <ol>
         <li>
           <strong>Sign three times vertically</strong> on a single plain white
-          A4 sheet in black ink, cursive hand, with even spacing between each.
+          sheet in black ink, with space between each.
         </li>
         <li>
           <strong>Photograph flat</strong> in even light; no shadow should
@@ -424,15 +427,15 @@ export default function Page() {
           items={[
             {
               q: "Is the UPSC CSE photo size the same as NDA and CDS?",
-              a: "Yes — all three use the same UPSC OTR portal: a 20–200 KB JPG photo on a plain white background with about 75% face coverage, plus a three-signature sheet at 20–100 KB. UPSC publishes no fixed pixel size, no square requirement, and no name/date strip. Any recency window is set per notification, so read the one for your cycle.",
+              a: "Yes — all three use the same UPSC OTR portal: a 20–200 KB JPG photo on a plain white background with about 75% face coverage, a three-signature sheet (350–500 pixels, 20–100 KB), and a live photo during the application. The photo has no fixed pixel size, no square requirement and no name/date strip. Any recency window is set per notification, so read the one for your cycle.",
             },
             {
               q: "Why does UPSC CSE require three signatures?",
-              a: "UPSC uses all three signatures as identity verification references throughout the selection process — at the examination hall, document verification, and the medical board. Write all three on a single plain white sheet in black ink, arranged vertically. Upload the one image file containing all three.",
+              a: "UPSC's instructions require it but don't give a reason. What they do set out: sign three times, one below the other, in black ink on plain white paper, and upload all three in one JPG that measures 350–500 pixels and stays within 20–100 KB. A file with fewer than three signatures is rejected.",
             },
             {
               q: "Does UPSC require a square photo or a name-and-date strip?",
-              a: "No. UPSC's instructions publish no fixed pixel dimensions and no aspect ratio, so a normal passport-style portrait is fine — there is no square-crop rule — and they do not ask for a name or date printed on the image. UPSC specifies the JPG format, the 20–200 KB size band, a plain white background, and roughly 75% face coverage.",
+              a: "No. UPSC's instructions publish no fixed photo pixel dimensions and no aspect ratio, so a normal passport-style portrait is fine — there is no square-crop rule — and they do not ask for a name or date printed on the image. UPSC specifies the JPG format, the 20–200 KB size band, a plain white background, and roughly 75% face coverage.",
             },
             {
               q: "Can I reuse my Prelims photo for the UPSC Mains DAF?",

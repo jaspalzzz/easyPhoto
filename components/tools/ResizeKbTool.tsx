@@ -17,6 +17,7 @@ import {
   sideRangeScale,
 } from "@/lib/imaging";
 import { compressToCap } from "@/lib/compress";
+import type { CropRect } from "@/lib/faceCoverage";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
 import { downloadBlob, shareFile } from "@/lib/download";
 import { formatKb, kbCapBytes, kbFloorBytes, minCapKbForFloor } from "@/lib/utils";
@@ -26,8 +27,30 @@ import {
   type ExamPhotoWorkflowFlags,
 } from "@/lib/examWorkflow";
 
+type FaceCheckComponent = typeof import("./FaceCoverageCheck").FaceCoverageCheck;
+
 /** Upper bound for a `?target=` preset — anything larger is not a real form limit. */
 const MAX_URL_TARGET_KB = 10_000;
+
+/**
+ * The optional "Minimum (KB)" box on the standalone resizer, for forms that
+ * give a range ("20 KB to 50 KB"). Empty means no minimum. The target must
+ * leave room for the minimum when 1 KB is counted as 1024 bytes (see
+ * minCapKbForFloor), or no file could satisfy both.
+ */
+export function parseMinKb(text: string, targetKb: number): { minKb: number | null; error: string | null } {
+  const raw = text.trim();
+  if (!raw) return { minKb: null, error: null };
+  if (!/^\d{1,5}$/.test(raw) || Number(raw) < 1) {
+    return { minKb: null, error: "Type the minimum as a whole number of KB, or leave it empty." };
+  }
+  const minKb = Number(raw);
+  const lowestTarget = minCapKbForFloor(minKb);
+  if (targetKb < lowestTarget) {
+    return { minKb: null, error: `For a ${minKb} KB minimum, set the target to ${lowestTarget} KB or more.` };
+  }
+  return { minKb, error: null };
+}
 
 interface BodyProps {
   source: ToolSource;
@@ -40,8 +63,14 @@ interface BodyProps {
   requiredAspectRatio?: number;
   /** Published pixel range per side (OCI: 200–900) when there's no exact size. */
   sidePx?: { min: number; max: number };
+  /** Published minimum share of the photo the head must fill (UPSC: 75%). */
+  faceCoverage?: { min: number; authority: string };
+  /** File name the authority asks for, without ".jpg" (UPSC: "photo"). */
+  downloadName?: string;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
+  /** Offer an optional "Minimum (KB)" box (the standalone resizer, where no portal sets one). */
+  minField?: boolean;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
   densityDpi?: number;
   /** Named requirement for the compliance receipt, e.g. "SSC (Staff Selection Commission)". */
@@ -54,7 +83,7 @@ interface BodyProps {
   onSourceChange?: (source: ToolSource | null) => void;
 }
 
-function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, sidePx, minKb, densityDpi, requirementLabel, examWorkflow, onSourceChange }: BodyProps) {
+function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requiredAspectRatio, sidePx, faceCoverage, downloadName, minKb, minField, densityDpi, requirementLabel, examWorkflow, onSourceChange }: BodyProps) {
   React.useEffect(() => {
     onSourceChange?.(source);
     return () => onSourceChange?.(null);
@@ -68,7 +97,42 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
   // fits the cap when 1 KB is counted as 1000 bytes (IBPS 20 KB floor → 21).
   const minTarget = minKb ? minCapKbForFloor(minKb) : 5;
   const kbField = useNumericField(targetKb, setTargetKb, { min: minTarget });
+  // What the user typed in the optional Minimum box (standalone resizer only).
+  const [minText, setMinText] = React.useState("");
   const [busy, setBusy] = React.useState(false);
+  // A closer crop chosen in the face-coverage check, tied to the photo it was
+  // planned for so a new photo starts uncropped.
+  const [cropFor, setCropFor] = React.useState<{ source: ToolSource; rect: CropRect } | null>(null);
+  const crop = cropFor?.source === source ? cropFor.rect : null;
+  // Loaded only for exams that publish a face-coverage rule (UPSC), so every
+  // other page using this tool keeps its first-load size.
+  const wantsFaceCheck = !!faceCoverage;
+  const [FaceCheck, setFaceCheck] = React.useState<FaceCheckComponent | null>(null);
+  React.useEffect(() => {
+    if (!wantsFaceCheck) return;
+    let active = true;
+    import("./FaceCoverageCheck")
+      .then(({ FaceCoverageCheck }) => {
+        if (active) setFaceCheck(() => FaceCoverageCheck);
+      })
+      .catch((err: unknown) => {
+        // Offline or a stale deploy: the check is optional, the resizer still works.
+        console.warn("[resize-kb] could not load the face-coverage check", err);
+      });
+    return () => {
+      active = false;
+    };
+  }, [wantsFaceCheck]);
+  const cropped = React.useMemo(() => {
+    if (!crop) return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+    canvas
+      .getContext("2d")
+      ?.drawImage(source.image, crop.x, crop.y, crop.width, crop.height, 0, 0, crop.width, crop.height);
+    return { canvas, url: canvas.toDataURL("image/jpeg", 0.9) };
+  }, [crop, source]);
   const [error, setError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<{
     url: string;
@@ -84,6 +148,8 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
     /** The KB target this result was produced for (so the receipt/notes don't
      *  go stale if the user edits the field without re-running). */
     target: number;
+    /** The minimum this result was produced for: the portal's, or the one typed in. */
+    floorKb?: number;
   } | null>(null);
 
   React.useEffect(() => {
@@ -116,6 +182,13 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         ? Math.floor(targetKb)
         : minTarget;
     if (effectiveKb !== targetKb) setTargetKb(effectiveKb);
+    const typedMin = minField && !minKb ? parseMinKb(minText, effectiveKb) : { minKb: null, error: null };
+    if (typedMin.error) {
+      setError(typedMin.error);
+      setBusy(false);
+      return;
+    }
+    const floorKb = minKb ?? typedMin.minKb ?? undefined;
     try {
       const hasRequiredDimensions = !!(requiredWidth && requiredHeight);
       const hasRequiredAspect =
@@ -123,19 +196,21 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         !!requiredAspectRatio &&
         Number.isFinite(requiredAspectRatio) &&
         requiredAspectRatio > 0;
+      const image = cropped?.canvas ?? source.image;
+      const size = cropped ? { width: cropped.canvas.width, height: cropped.canvas.height } : source.size;
       let canvas = hasRequiredDimensions
         ? await cropAndResizeToExact(
-            source.image,
+            image,
             requiredWidth!,
             requiredHeight!,
             "#ffffff"
           )
         : hasRequiredAspect
-          ? cropToAspectRatio(source.image, requiredAspectRatio!, "#ffffff")
+          ? cropToAspectRatio(image, requiredAspectRatio!, "#ffffff")
         : imageToCanvas(
-            source.image,
-            source.size.width,
-            source.size.height,
+            image,
+            size.width,
+            size.height,
             "#ffffff" // JPEG output — fill white so transparent areas don't go black
           );
       // A published per-side range (OCI: 200–900 px) is enforced by the portal,
@@ -162,7 +237,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
             ? Math.min(1, sides.min / Math.min(canvas.width, canvas.height))
             : 0.1,
         minDimensions,
-        minKb,
+        minKb: floorKb,
         densityDpi,
         // A fixed pixel frame can't shrink to reach the cap, so let quality
         // drop further there (e.g. Driving Licence 420×525 ≤ 20 KB). Resizable
@@ -187,6 +262,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         qualityReduced: res.qualityReduced,
         blob: res.blob,
         target: effectiveKb,
+        floorKb,
       });
 
       const duration = typeof performance !== "undefined" ? performance.now() - t0 : 0;
@@ -212,12 +288,12 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
 
   const handleDownload = () => {
     if (!result) return;
-    downloadBlob(result.blob, `resized-${result.target}kb.jpg`, toolName);
+    downloadBlob(result.blob, `${downloadName ?? `resized-${result.target}kb`}.jpg`, toolName);
   };
 
   const handleShare = async () => {
     if (!result) return;
-    await shareFile(result.blob, `resized-${result.target}kb.jpg`, "Resized photo");
+    await shareFile(result.blob, `${downloadName ?? `resized-${result.target}kb`}.jpg`, "Resized photo");
   };
 
   // The source is already at full quality + resolution yet still under the
@@ -228,7 +304,7 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
   const atFullFidelity =
     !!result &&
     result.underCap &&
-    !minKb &&
+    !result.floorKb &&
     result.scale >= 0.999 &&
     result.quality >= 0.999 &&
     result.bytes < kbCapBytes(result.target) * 0.95;
@@ -243,8 +319,8 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
           <PreviewFrame>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={source.url}
-              alt="Original"
+              src={cropped?.url ?? source.url}
+              alt={cropped ? "Original, cropped closer" : "Original"}
               className="max-h-[320px] w-auto rounded-md"
             />
           </PreviewFrame>
@@ -264,14 +340,41 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         )}
       </div>
 
+      {faceCoverage && FaceCheck && (
+        <FaceCheck
+          source={source}
+          min={faceCoverage.min}
+          authority={faceCoverage.authority}
+          crop={crop}
+          onCropChange={(rect) => {
+            setCropFor(rect ? { source, rect } : null);
+            setResult(null);
+          }}
+        />
+      )}
+
       <div className="flex flex-wrap items-end gap-3">
+        {minField && !minKb && (
+          <label className="text-sm">
+            <span className="eyebrow mb-1 block">Minimum (KB, optional)</span>
+            <input
+              type="text"
+              inputMode="numeric"
+              aria-label="Minimum size in KB, optional"
+              value={minText}
+              onChange={(e) => setMinText(e.target.value)}
+              placeholder="none"
+              className="h-10 w-28 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[14px]"
+            />
+          </label>
+        )}
         <label className="text-sm">
           <span className="eyebrow mb-1 block">Target size (KB)</span>
           <input
             type="text"
             aria-label="Target size in KB"
             {...kbField}
-            className="h-10 w-32 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
+            className="h-10 w-32 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[14px]"
           />
         </label>
         <Button variant="cta" onClick={run} disabled={busy}>
@@ -302,16 +405,16 @@ function Body({ source, defaultKb, toolName, requiredWidth, requiredHeight, requ
         <div className="space-y-3">
           {/* The compliance receipt — the verdict an applicant actually needs. */}
           <ComplianceReceipt
-            requirement={requirementLabel ?? `${result.target} KB target`}
+            requirement={requirementLabel ?? (result.floorKb ? `${result.floorKb}–${result.target} KB range` : `${result.target} KB target`)}
             checks={[
               {
                 label: "File size",
-                value: minKb
-                  ? `${formatKb(result.bytes)} (needs ${minKb}–${result.target} KB)`
+                value: result.floorKb
+                  ? `${formatKb(result.bytes)} (needs ${result.floorKb}–${result.target} KB)`
                   : `${formatKb(result.bytes)} (needs ≤ ${result.target} KB)`,
                 ok:
                   result.underCap &&
-                  (!minKb || result.bytes >= kbFloorBytes(minKb)),
+                  (!result.floorKb || result.bytes >= kbFloorBytes(result.floorKb)),
               },
               ...(requiredWidth && requiredHeight
                 ? [
@@ -435,22 +538,34 @@ export function ResizeKbTool({
   requiredHeight,
   requiredAspectRatio,
   sidePx,
+  faceCoverage,
+  downloadName,
   minKb,
   densityDpi,
   requirementLabel,
   examWorkflow,
   onSourceChange,
   targetFromUrl = false,
+  allowCamera = false,
+  minField = false,
 }: {
   defaultKb?: number;
   /** Honour a `?target=<kb>` URL preset (the standalone /tools/resize-kb/ page). */
   targetFromUrl?: boolean;
+  /** See BodyProps.minField. */
+  minField?: boolean;
+  /** Offer "Take a photo" next to upload (exam and ID photo resizers). */
+  allowCamera?: boolean;
   toolName?: string;
   requiredWidth?: number;
   requiredHeight?: number;
   requiredAspectRatio?: number;
   /** Published pixel range per side (OCI: 200–900) when there's no exact size. */
   sidePx?: { min: number; max: number };
+  /** See BodyProps.faceCoverage. */
+  faceCoverage?: { min: number; authority: string };
+  /** See BodyProps.downloadName. */
+  downloadName?: string;
   /** Portal minimum file size (KB band floor) — output is padded up to it. */
   minKb?: number;
   /** Portal-mandated scan DPI, written into the JPEG's JFIF header. */
@@ -470,7 +585,7 @@ export function ResizeKbTool({
   const urlKb = useUrlKbTarget(targetFromUrl, minKb ? minCapKbForFloor(minKb) : 5, MAX_URL_TARGET_KB);
 
   return (
-    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}>
+    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS} allowCamera={allowCamera}>
       {(source) => (
         <Body
           source={source}
@@ -480,7 +595,10 @@ export function ResizeKbTool({
           requiredHeight={requiredHeight}
           requiredAspectRatio={requiredAspectRatio}
           sidePx={sidePx}
+          faceCoverage={faceCoverage}
+          downloadName={downloadName}
           minKb={minKb}
+          minField={minField}
           densityDpi={densityDpi}
           requirementLabel={requirementLabel}
           examWorkflow={examWorkflow}

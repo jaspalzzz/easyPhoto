@@ -6,7 +6,7 @@ import { Download, FileUp, ShieldCheck } from "lucide-react";
 import { consumeWorkflowPayload, WORKFLOW_PDF_KINDS } from "@/lib/workflowHandoff";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { EncryptedPdfNotice } from "./EncryptedPdfNotice";
 import { assertPdfDecryptable, PdfEncryptedError } from "@/lib/pdfToImages";
 import {
@@ -110,7 +110,7 @@ export function PdfPageNumbersTool() {
   };
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         {!file && !busy && !checking && (
           <div
@@ -247,6 +247,6 @@ export function PdfPageNumbersTool() {
           </div>
         )}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

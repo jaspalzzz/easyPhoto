@@ -33,6 +33,9 @@ const ALLOWED_EVENTS = new Set([
   "exam_select",
   "country_select",
   "related_tool_click",
+  // "Support easyPhoto" UPI card.
+  "support_view",
+  "support_tap",
 ]);
 
 const ALLOWED_DEVICE = new Set(["desktop", "android", "ios"]);
@@ -41,6 +44,7 @@ const ALLOWED_PATH = new Set(["exam", "passport", "utilities"]);
 const ALLOWED_SURFACE = new Set(["homepage", "tools", "exam", "blog"]);
 const ALLOWED_RESULT = new Set(["selected", "no_result"]);
 const ALLOWED_METHOD = new Set(["native", "download"]);
+const ALLOWED_SUPPORT_METHOD = new Set(["upi", "link"]);
 
 function str(v: unknown, max: number): string {
   return typeof v === "string" ? v.slice(0, max) : "";
@@ -93,6 +97,10 @@ export const onRequestPost = async (context: {
     if (!event || !ALLOWED_EVENTS.has(String(event.name))) {
       return new Response(null, { status: 204 });
     }
+    // A support tap is only meaningful with the route it took.
+    if (event.name === "support_tap" && !ALLOWED_SUPPORT_METHOD.has(String(event.method))) {
+      return new Response(null, { status: 204 });
+    }
     // Binding not configured yet → accept-and-drop so deploys never 500.
     if (!env?.ANALYTICS) return new Response(null, { status: 204 });
 
@@ -101,8 +109,13 @@ export const onRequestPost = async (context: {
       : "";
     const cfCountry = str(request.cf?.country, 2);
 
-    // format (download) and method (compliance_share) share a "variant" column.
-    const variant = str(event.format, 12) || pick(ALLOWED_METHOD, event.method);
+    // format (download), method (compliance_share) and the support route
+    // (support_tap) share a "variant" column. A support tap records only its
+    // validated route, so no other client-supplied value can ride along there.
+    const variant =
+      event.name === "support_tap"
+        ? pick(ALLOWED_SUPPORT_METHOD, event.method)
+        : str(event.format, 12) || pick(ALLOWED_METHOD, event.method);
 
     // Navigation events have no `tool`. `navSubject` folds the single subject
     // of each nav event (path/surface/exam/selected-country/related-destination)

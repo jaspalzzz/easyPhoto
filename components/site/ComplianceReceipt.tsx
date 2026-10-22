@@ -57,7 +57,7 @@ export function ComplianceReceipt({
 
       <dl className="mt-3 space-y-1.5">
         {checks.map((c) => (
-          <div key={c.label} className="flex items-baseline justify-between gap-3 text-[13px]">
+          <div key={c.label} className="flex items-baseline justify-between gap-3 text-[14px]">
             <dt className="text-ink-soft">{c.label}</dt>
             <dd
               className={cn(

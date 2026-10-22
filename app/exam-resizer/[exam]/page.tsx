@@ -112,7 +112,7 @@ export default async function Page({
         <span className="eyebrow block text-brand">
           {spec.isLiveCapture ? "Live photo guidance & signature resizer" : "Exam photo & signature resizer"}
         </span>
-        <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
+        <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[30px]">
           {spec.isLiveCapture
             ? `${e.name} Live Photo Guide & Signature Resizer ${RESIZER_YEAR}`
             : `${e.name} Photo & Signature Resizer ${RESIZER_YEAR}`}
@@ -163,14 +163,14 @@ export default async function Page({
               <Link
                 key={r.slug}
                 href={`/exam-resizer/${r.slug}/`}
-                className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground"
+                className="rounded-md border border-hairline px-3 py-1.5 text-[14px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground"
               >
                 {r.name}
               </Link>
             ))}
             <Link
               href={`/exam-requirements/${e.parentId}/`}
-              className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-accent/50"
+              className="rounded-md border border-hairline px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-accent/50"
             >
               Full spec &amp; sources
             </Link>

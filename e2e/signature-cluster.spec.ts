@@ -381,3 +381,89 @@ test("sign-pdf: places a signature and exports a valid PDF with every page prese
     inputBytes.length
   );
 });
+
+// UPPBPB Constable notice (31 Dec 2025) §5.8: JPG/JPEG, "140 X 60 पिक्सल",
+// "30 KB से 50 KB". The page used to set 5–20 KB with no size or format, so
+// the tool made a small transparent PNG the form would refuse.
+test("up-police exam page: signature exports a 140 × 60 JPG of 30–50 KB", async ({ page }) => {
+  await page.goto("/exam-requirements/up-police/");
+  await page.setInputFiles('input[type="file"]', {
+    name: "sig.png",
+    mimeType: "image/png",
+    buffer: await makeStackedSignatures(page, 1),
+  });
+  const download = page.locator("#sig-download");
+  await expect(download).toHaveText(/jpg/i, { timeout: 30_000 });
+  const [dl] = await Promise.all([page.waitForEvent("download"), download.click()]);
+  const bytes = Buffer.from(await readDownloadBase64(dl), "base64");
+  expect(bytes[0]).toBe(0xff);
+  expect(bytes[1]).toBe(0xd8);
+  let width = 0;
+  let height = 0;
+  for (let i = 2; i + 9 < bytes.length; i += 2 + bytes.readUInt16BE(i + 2)) {
+    if (bytes[i + 1] >= 0xc0 && bytes[i + 1] <= 0xc2) {
+      height = bytes.readUInt16BE(i + 5);
+      width = bytes.readUInt16BE(i + 7);
+      break;
+    }
+  }
+  expect([width, height]).toEqual([140, 60]);
+  expect(bytes.length).toBeGreaterThanOrEqual(30 * 1024);
+  expect(bytes.length).toBeLessThanOrEqual(50 * 1000);
+});
+
+// UPPSC publishes no signature file format, only a 200 DPI scan. The tool used
+// to fall back to a transparent PNG, which carries no DPI; an exam with no
+// recorded format now gets a white JPG (output audit, 10 Oct 2026).
+test("uppsc exam page: signature exports a JPG that declares 200 DPI", async ({ page }) => {
+  await page.goto("/exam-requirements/uppsc/");
+  await page.getByRole("button", { name: /clean & compress signature/i }).click();
+  await page.setInputFiles('input[type="file"]', {
+    name: "sig.png",
+    mimeType: "image/png",
+    buffer: await makeStackedSignatures(page, 1),
+  });
+  const download = page.locator("#sig-download");
+  await expect(download).toHaveText(/jpg/i, { timeout: 30_000 });
+  const [dl] = await Promise.all([page.waitForEvent("download"), download.click()]);
+  const bytes = Buffer.from(await readDownloadBase64(dl), "base64");
+  expect(bytes[0]).toBe(0xff);
+  expect(bytes[1]).toBe(0xd8);
+  // JFIF APP0: units byte 1 = dots per inch, then X density.
+  const jfif = bytes.indexOf(Buffer.from("JFIF\0"));
+  expect(jfif).toBeGreaterThan(0);
+  expect(bytes[jfif + 7]).toBe(1);
+  expect(bytes.readUInt16BE(jfif + 8)).toBe(200);
+  expect(bytes.length).toBeLessThanOrEqual(30 * 1000);
+});
+
+// Quick exam settings above the tabs: one tap applies the same exam settings
+// as the full list under Resize. RRB publishes 140 × 60 px at 30–49 KB.
+test("signature-resize: the RRB quick button gives a 140 × 60 file within 30–49 KB", async ({ page }) => {
+  await page.goto("/tools/signature-resize/");
+  await page.setInputFiles('input[type="file"]', {
+    name: "sig-detailed.png",
+    mimeType: "image/png",
+    buffer: await makeScannedSignature(page, true),
+  });
+  const download = page.locator("#sig-download");
+  await expect(download).toBeVisible({ timeout: 30_000 });
+
+  await page.getByRole("button", { name: /^RRB/ }).click();
+  await expect(page.getByRole("button", { name: /^RRB/ })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByText(/File size:/i)).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(1500); // let the re-render with the new settings settle
+
+  const [dl] = await Promise.all([page.waitForEvent("download"), download.click()]);
+  const b64 = await readDownloadBase64(dl);
+  const bytes = Buffer.from(b64, "base64").length;
+  const [w, h] = await page.evaluate(async (data) => {
+    const img = new Image();
+    img.src = `data:image/jpeg;base64,${data}`;
+    await img.decode();
+    return [img.naturalWidth, img.naturalHeight];
+  }, b64);
+  expect([w, h]).toEqual([140, 60]);
+  expect(bytes, `downloaded ${bytes} B`).toBeGreaterThanOrEqual(30 * 1024);
+  expect(bytes, `downloaded ${bytes} B`).toBeLessThanOrEqual(49 * 1000);
+});

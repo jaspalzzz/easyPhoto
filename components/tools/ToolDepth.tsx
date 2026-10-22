@@ -165,7 +165,6 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
     heading: "Remove paper texture without erasing the ink",
     paragraphs: [
       "The transparency threshold separates darker pen strokes from lighter paper. Increase it gradually while watching loops, dots and the ends of strokes; an aggressive setting can make a signature look broken. Stroke width can strengthen a faint scan, but it cannot recover ink that was out of focus or hidden by glare.",
-      "Transparent PNG is useful for placing a signature on a document. Many application portals instead request a flattened JPEG on white, so use the exam-specific signature resizer when a form publishes a format and KB band. Always compare the downloaded mark with the original signature before using it.",
       "Contrast between ink and paper decides the result. A blue or black pen on plain white paper, photographed in even daylight, separates cleanly. A faint ballpoint, a signature on lined or tinted paper, or a photograph with a shadow falling across the page will lose stroke ends, and thinning strokes are what make a signature look unlike itself. If the output has gaps, re-signing with a darker pen on plain paper is quicker than repairing the image.",
     ],
     checklist: [

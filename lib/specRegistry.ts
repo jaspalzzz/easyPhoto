@@ -143,7 +143,7 @@ export interface SpecProvenance {
   verifiedOn?: string;
 }
 
-function formatIsoDate(iso: string): string {
+export function formatIsoDate(iso: string): string {
   // Avoid locale/timezone surprises: format from the YYYY-MM-DD parts directly.
   const [y, m, d] = iso.split("-").map(Number);
   const months = [

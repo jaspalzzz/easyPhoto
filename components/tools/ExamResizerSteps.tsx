@@ -1,5 +1,6 @@
 import { ResizeKbTool } from "@/components/tools/ResizeKbTool";
 import { SignatureKbTool } from "@/components/tools/SignatureKbTool";
+import { signatureExportFormat } from "@/lib/signature";
 import type { PortalSpec } from "@/lib/portalPresets";
 
 /**
@@ -21,11 +22,14 @@ export function ExamResizerSteps({
 
   const photo = (
     <ResizeKbTool
+      allowCamera
       defaultKb={spec.photoLimitKb}
       requiredWidth={spec.photoWidthPx}
       requiredHeight={spec.photoHeightPx}
       requiredAspectRatio={spec.photoAspectRatio}
       sidePx={spec.photoSidePx}
+      faceCoverage={spec.faceCoverage}
+      downloadName={spec.photoFileName}
       minKb={spec.photoMinKb}
       densityDpi={spec.dpi}
       requirementLabel={spec.name.split(" (")[0]}
@@ -39,7 +43,7 @@ export function ExamResizerSteps({
       minKb={spec.sigMinKb}
       requiredWidth={spec.sigWidthPx}
       requiredHeight={spec.sigHeightPx}
-      outputFormat={spec.sigFormat && /\b(?:JPG|JPEG)\b/i.test(spec.sigFormat) ? "jpeg" : "png"}
+      outputFormat={signatureExportFormat(spec)}
       toolName={`${slug}-signature-step`}
     />
   ) : null;

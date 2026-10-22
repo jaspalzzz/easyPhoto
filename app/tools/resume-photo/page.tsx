@@ -10,11 +10,13 @@ const spec = COUNTRY_SPECS["india"];
 const mm = effectivePrintMm(spec);
 
 export const metadata = pageMetadata({
-  title: "Resume / CV Photo Maker — Passport-Size, Free",
+  // Searchers' words (GSC, 28 days to 13 Oct 2026): "resume photo", "resume
+  // photo maker", "cv photo maker", "passport size photo for resume".
+  title: "Resume Photo Maker — Passport Size Photo for CV & Biodata",
   description:
-    "Make a professional passport-size photo for your resume, CV or bio-data. " +
-    `Auto-crops to ${mm.width}×${mm.height}mm with a clean white background. ` +
-    "Free, private, and entirely in your browser — nothing is uploaded.",
+    "Make a passport size photo for your resume, CV or biodata: " +
+    `auto-cropped to ${mm.width}×${mm.height} mm on a clean white background. ` +
+    "Free and private; nothing is uploaded.",
   path: "/tools/resume-photo/",
 });
 
@@ -44,7 +46,7 @@ const FAQ: FaqItem[] = [
 export default function Page() {
   return (
     <ToolPage
-      title="Resume / CV Photo Maker"
+      title="Resume & CV Photo Maker"
       slug="resume-photo"
       path="/tools/resume-photo/"
       blurb={`Make a professional passport-size photo (${mm.width}×${mm.height}mm) for your resume, CV or bio-data — correct size, clean white background, free. Nothing is uploaded.`}
@@ -85,14 +87,14 @@ export default function Page() {
             <Link
               key={kb}
               href={kbPath(kb)}
-              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
+              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
             >
               Resize to {kb} KB
             </Link>
           ))}
           <Link
             href="/tools/resize-kb/"
-            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
+            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
           >
             Custom size
           </Link>

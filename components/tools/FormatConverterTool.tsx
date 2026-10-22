@@ -4,7 +4,7 @@ import * as React from "react";
 import { Loader2, Download, FileUp, Trash2, CheckCircle2, AlertCircle, FileImage, Archive, RefreshCw, ShieldCheck, Minimize2, Crop } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { canvasToBlob } from "@/lib/imaging";
 import { ensureDecodable } from "@/lib/heic";
 import { downloadBlob } from "@/lib/download";
@@ -272,7 +272,7 @@ export function FormatConverterTool({
       : undefined;
 
   return (
-    <Card>
+    <ToolCard>
       <CardContent className="space-y-5 p-6">
         {/* Upload Zone */}
         {items.length === 0 && (
@@ -546,6 +546,6 @@ export function FormatConverterTool({
           </div>
         )}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }

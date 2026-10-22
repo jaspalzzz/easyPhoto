@@ -8,96 +8,109 @@ import { SIGN_IMAGE_FAQ } from "@/lib/faqs";
 const tool = getTool("sign-image")!;
 
 export const metadata = pageMetadata({
-  // Leads with the exact head term this page already ranks page-1 for
-  // ("sign on image" / "sign on photo", ~120 impressions/90d in GSC) plus the
-  // transactional "add signature to photo" phrasing, and stays short enough
-  // that the "— easyPhoto" suffix keeps the rendered SERP title under 60 chars.
-  title: "Add Signature to Photo & Sign on Image Online",
+  // Searchers' own words (GSC, 28 days to 13 Oct 2026): "sign on photo" phrasings
+  // 5,618 impressions at position 6.5, "sign on image" phrasings 274 at 9.6.
+  // Both lead the title; "across" stays in the description.
+  title: "Sign on Photo or Image Online — Add Signature to Photo",
   description:
-    "Add your signature to any photo or image online — draw it or upload a signature file. " +
-    "Free, works fully in your browser, nothing is uploaded.",
+    "Sign on a photo or image: draw, type or upload your signature, place it on or across " +
+    "the photo, and download a JPG or PNG. Free; nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
 export default function Page() {
   return (
     <ToolPage
-      title="Sign on Picture or Photo Online"
+      title="Sign on Photo or Image Online"
       slug={tool.slug}
-      blurb={tool.blurb}
+      blurb="Draw your signature, type your name in a handwriting style, or upload a signature image, then place it on any photo or image."
       faqItems={SIGN_IMAGE_FAQ}
       footnote="Signing runs entirely on your device. Your photos and signature data are never uploaded."
     >
-      <div className="mb-4 rounded-lg border border-brand/25 bg-brand-soft/15 px-4 py-3 text-sm text-ink">
-        Need the workflow first? Read{" "}
-        <Link
-          href="/blog/how-to-sign-on-image-online/"
-          className="font-medium text-brand hover:underline"
-        >
-          how to sign on an image or add a signature to a photo
-        </Link>
-        .
+      {/* One slim row above the tool: the workflow link and a small before →
+          after illustration. The tool is the star of the page, so these stay
+          compact (text and order unchanged) and the upload card sits high. */}
+      <div className="support mb-5 flex items-center gap-4 rounded-xl border px-4 py-3">
+        <div className="min-w-0 flex-1 text-sm text-ink">
+          Need the workflow first? Read{" "}
+          <Link
+            href="/blog/how-to-sign-on-image-online/"
+            className="font-medium text-brand hover:underline"
+          >
+            how to sign on an image or add a signature to a photo
+          </Link>
+          .{" "}
+          {/* Most "photo sign" / "photo signature add" searchers want the two
+              joined in one file (the top results are joiner tools); send them
+              to the tool that does that. */}
+          Want your photo and signature side by side in one file instead? Use{" "}
+          <Link href="/tools/photo-signature-merge/" className="font-medium text-brand hover:underline">
+            merge photo and signature
+          </Link>
+          .
+        </div>
+
+        {/* Before → after illustration: shows what the tool does (upload a photo,
+            get it back with a signature placed on it). A diagram, not a real
+            screenshot — kept schematic so it makes no claim about a specific
+            output. currentColor makes it theme-adapt; the signature + arrow carry
+            the brand accent via text-brand. */}
+        <figure className="m-0 shrink-0 text-ink-soft">
+          <svg
+            viewBox="0 0 560 210"
+            className="h-auto w-[120px] sm:w-[190px]"
+            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+            role="img"
+            aria-label="Before and after: a plain photo on the left, an arrow, then the same photo on the right with a handwritten signature placed across the lower part of the image."
+          >
+            <title>How signing on an image works</title>
+            <desc>
+              On the left, a photo or scanned document with no signature. An arrow
+              points right to the same photo with a handwritten signature added over
+              it — the result the Sign on Image tool produces, entirely in your browser.
+            </desc>
+
+            {/* ── BEFORE card ── */}
+            <g>
+              <rect x="20" y="20" width="190" height="150" rx="10" fill="currentColor" opacity="0.04" />
+              <rect x="20" y="20" width="190" height="150" rx="10" fill="none" stroke="currentColor" opacity="0.25" strokeWidth="1.5" />
+              {/* portrait suggestion */}
+              <circle cx="115" cy="72" r="24" fill="currentColor" opacity="0.14" />
+              <path d="M78 128 Q115 92 152 128" fill="currentColor" opacity="0.14" />
+              {/* empty signature line */}
+              <line x1="48" y1="150" x2="182" y2="150" stroke="currentColor" opacity="0.3" strokeWidth="1.5" strokeDasharray="4 4" />
+              <text x="115" y="192" textAnchor="middle" fontSize="12" fill="currentColor" opacity="0.6">Your photo</text>
+            </g>
+
+            {/* ── arrow ── */}
+            <g className="text-brand">
+              <line x1="240" y1="95" x2="312" y2="95" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+              <path d="M304 86 L318 95 L304 104" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </g>
+
+            {/* ── AFTER card ── */}
+            <g>
+              <rect x="350" y="20" width="190" height="150" rx="10" fill="currentColor" opacity="0.04" />
+              <rect x="350" y="20" width="190" height="150" rx="10" fill="none" stroke="currentColor" opacity="0.25" strokeWidth="1.5" />
+              {/* portrait suggestion */}
+              <circle cx="445" cy="72" r="24" fill="currentColor" opacity="0.14" />
+              <path d="M408 128 Q445 92 482 128" fill="currentColor" opacity="0.14" />
+              {/* signature line + handwritten signature on it (brand accent) */}
+              <line x1="378" y1="150" x2="512" y2="150" stroke="currentColor" opacity="0.3" strokeWidth="1.5" strokeDasharray="4 4" />
+              <path
+                className="text-brand"
+                d="M384 150 c6 -18 12 -22 15 -10 c2 8 -4 20 -9 22 c8 -4 18 -14 26 -20 c-2 8 -4 14 0 14 c6 0 12 -10 18 -14 c-2 8 -1 12 4 12 c8 0 16 -12 24 -14 c-4 8 0 12 8 12 c10 0 18 -6 22 -10"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <text x="445" y="192" textAnchor="middle" fontSize="12" fill="currentColor" opacity="0.6">Signed &amp; ready to download</text>
+            </g>
+          </svg>
+        </figure>
       </div>
-
-      {/* Before → after illustration: shows what the tool does (upload a photo,
-          get it back with a signature placed on it). A diagram, not a real
-          screenshot — kept schematic so it makes no claim about a specific
-          output. currentColor makes it theme-adapt; the signature + arrow carry
-          the brand accent via text-brand. */}
-      <figure className="mb-6 rounded-xl border border-hairline bg-paper p-5 text-ink-soft">
-        <svg
-          viewBox="0 0 560 210"
-          style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif" }}
-          role="img"
-          aria-label="Before and after: a plain photo on the left, an arrow, then the same photo on the right with a handwritten signature placed across the lower part of the image."
-        >
-          <title>How signing on an image works</title>
-          <desc>
-            On the left, a photo or scanned document with no signature. An arrow
-            points right to the same photo with a handwritten signature added over
-            it — the result the Sign on Image tool produces, entirely in your browser.
-          </desc>
-
-          {/* ── BEFORE card ── */}
-          <g>
-            <rect x="20" y="20" width="190" height="150" rx="10" fill="currentColor" opacity="0.04" />
-            <rect x="20" y="20" width="190" height="150" rx="10" fill="none" stroke="currentColor" opacity="0.25" strokeWidth="1.5" />
-            {/* portrait suggestion */}
-            <circle cx="115" cy="72" r="24" fill="currentColor" opacity="0.14" />
-            <path d="M78 128 Q115 92 152 128" fill="currentColor" opacity="0.14" />
-            {/* empty signature line */}
-            <line x1="48" y1="150" x2="182" y2="150" stroke="currentColor" opacity="0.3" strokeWidth="1.5" strokeDasharray="4 4" />
-            <text x="115" y="192" textAnchor="middle" fontSize="12" fill="currentColor" opacity="0.6">Your photo</text>
-          </g>
-
-          {/* ── arrow ── */}
-          <g className="text-brand">
-            <line x1="240" y1="95" x2="312" y2="95" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-            <path d="M304 86 L318 95 L304 104" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          </g>
-
-          {/* ── AFTER card ── */}
-          <g>
-            <rect x="350" y="20" width="190" height="150" rx="10" fill="currentColor" opacity="0.04" />
-            <rect x="350" y="20" width="190" height="150" rx="10" fill="none" stroke="currentColor" opacity="0.25" strokeWidth="1.5" />
-            {/* portrait suggestion */}
-            <circle cx="445" cy="72" r="24" fill="currentColor" opacity="0.14" />
-            <path d="M408 128 Q445 92 482 128" fill="currentColor" opacity="0.14" />
-            {/* signature line + handwritten signature on it (brand accent) */}
-            <line x1="378" y1="150" x2="512" y2="150" stroke="currentColor" opacity="0.3" strokeWidth="1.5" strokeDasharray="4 4" />
-            <path
-              className="text-brand"
-              d="M384 150 c6 -18 12 -22 15 -10 c2 8 -4 20 -9 22 c8 -4 18 -14 26 -20 c-2 8 -4 14 0 14 c6 0 12 -10 18 -14 c-2 8 -1 12 4 12 c8 0 16 -12 24 -14 c-4 8 0 12 8 12 c10 0 18 -6 22 -10"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <text x="445" y="192" textAnchor="middle" fontSize="12" fill="currentColor" opacity="0.6">Signed &amp; ready to download</text>
-          </g>
-        </svg>
-      </figure>
 
       <SignImageTool />
 
@@ -114,25 +127,37 @@ export default function Page() {
             Overlap a signature on a photo
           </h2>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Drop your photo into the tool above, then draw your signature or add
-            a signature image on top of it. Drag it to position, resize it, and
-            download the combined image — the signature sits over the photo, not
-            beside it.
+            Drop your photo into the tool above, then draw your signature, type
+            your name, or upload a signature image and put it on top. Drag it to
+            position, resize it, and download the combined image — the signature
+            sits over the photo, not beside it. Signing a PDF instead? Use{" "}
+            <Link href="/tools/sign-pdf/" className="font-medium text-brand hover:underline">
+              Sign PDF
+            </Link>
+            .
           </p>
         </div>
         <div className="space-y-2">
           <h2 className="text-lg font-semibold text-ink">
-            Add a signature to an exam or application photo
+            What does &ldquo;sign across the photo&rdquo; mean?
           </h2>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Some forms ask for your signature written across the photograph. Add
-            it here, then size the result to your form&apos;s KB limit with the{" "}
+            On a paper form, &ldquo;sign across the photo&rdquo; means pasting the
+            photo first, then signing so the signature runs from the photo onto the
+            form; do that by hand with a pen. When an online form wants the
+            signature across the uploaded photo, place it over the lower part of the
+            photo here, below the chin so the face stays clear. Then size the result
+            to your form&apos;s KB limit with the{" "}
             <Link href="/tools/resize-kb/" className="font-medium text-brand hover:underline">
               resize-to-KB tool
             </Link>
             . If the form wants your name and date on the photo instead, use the{" "}
             <Link href="/tools/photo-with-name-date/" className="font-medium text-brand hover:underline">
               name &amp; date tool
+            </Link>
+            ; if it wants the photo and signature side by side in one image, use{" "}
+            <Link href="/tools/photo-signature-merge/" className="font-medium text-brand hover:underline">
+              merge photo and signature
             </Link>
             .
           </p>

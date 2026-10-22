@@ -57,7 +57,7 @@ export default function HomePage() {
               "Free tools for Indian passport photos, visa photos, exam form resizing and government document images. Everything runs in your browser, nothing is uploaded.",
             url: "/",
             category: "UtilitiesApplication",
-            dateModified: "2026-06-21",
+            dateModified: "2026-10-15",
           }),
           faqSchema(HOME_FAQ),
         ]}
@@ -79,9 +79,9 @@ export default function HomePage() {
               <span className="eyebrow">
                 Passport · Visa · ID Card · Exam — prepared to selected dimensions
               </span>
-              <h1 className="mt-4 text-balance text-[2.5rem] font-semibold leading-[1.04] tracking-tightest sm:text-[3.25rem]">
-                Document photos{" "}
-                <span className="mark-gold"><span>prepared to spec</span></span>
+              <h1 className="mt-4 text-balance text-[36px] font-semibold leading-[1.04] tracking-tightest sm:text-[48px]">
+                Passport, exam and document photos,{" "}
+                <span className="mark-gold"><span>ready for Indian forms</span></span>
               </h1>
               <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
                 100% free tools. No uploads. No data stored.
@@ -139,13 +139,13 @@ export default function HomePage() {
       {/* ── POPULAR SEARCHES ──────────────────────────────────────────── */}
       <section className="border-t border-hairline bg-paper">
         <div className="container py-10">
-          <p className="mb-4 text-[13.5px] font-bold text-ink">Popular Searches</p>
+          <p className="mb-4 text-[14px] font-bold text-ink">Popular Searches</p>
           <div className="flex flex-wrap gap-2">
             {POPULAR_SEARCHES.map((s) => (
               <Link
                 key={s.href + s.label}
                 href={s.href}
-                className="rounded-full border border-hairline bg-card px-3 py-1.5 text-[12.5px] font-medium text-ink transition-colors hover:bg-accent"
+                className="rounded-full border border-hairline bg-card px-3 py-1.5 text-[12px] font-medium text-ink transition-colors hover:bg-accent"
               >
                 {s.label}
               </Link>
@@ -155,7 +155,7 @@ export default function HomePage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────── */}
-      <section className="container py-14 sm:py-16">
+      <section className="container py-14 sm:py-20">
         <Faq noSchema />
       </section>
     </>

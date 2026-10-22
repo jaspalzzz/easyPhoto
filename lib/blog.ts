@@ -40,6 +40,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Compare the recorded PAN, voter ID and driving-licence photo requirements, why the workflows differ, and why one file should not be assumed suitable for every portal.",
     date: "July 10, 2026",
     dateISO: "2026-07-10",
+    updatedISO: "2026-10-13",
     excerpt:
       "The three IDs may start from the same portrait, but their application workflows differ. Compare the recorded requirements and confirm the current route before submitting.",
     readMins: 7,
@@ -51,6 +52,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Compare the recorded photo requirements for PAN, voter ID, driving licence and Aadhaar applications, with source and verification context for each workflow.",
     date: "July 4, 2026",
     dateISO: "2026-07-04",
+    updatedISO: "2026-10-13",
     excerpt:
       "PAN, voter ID, Aadhaar and driving-licence workflows do not publish one interchangeable photo specification. Compare the recorded requirements and source notes.",
     readMins: 8,
@@ -91,12 +93,15 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "best-free-exam-photo-resizer-india",
-    title: "5 Free Exam Photo & Signature Resizers Compared (2026)",
+    // Searchers type ExamMint's name ("exam mint resizer", "exammint resize",
+    // "exammint"; GSC, 90 days to 13 Oct 2026) and land here at position ~6–7.
+    // The ExamMint section was re-checked against its site on 15 Oct 2026.
+    title: "ExamMint Resizer & 4 Other Free Exam Photo Resizers Compared (2026)",
     description:
-      "Compare tools for SSC and RRB live-photo preparation plus IBPS and UPSC prepared-file requirements. Five free exam workflows reviewed for coverage and privacy.",
+      "ExamMint Resizer and four other free exam photo and signature resizers compared on exam coverage, privacy and passport photos. ExamMint re-checked 15 Oct 2026.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
-    updatedISO: "2026-06-18",
+    updatedISO: "2026-10-15",
     excerpt:
       "Exam workflows differ: SSC and RRB use live photo capture, while IBPS and UPSC publish prepared-file requirements. Five free tools compared on coverage, privacy, and breadth.",
     readMins: 7,
@@ -129,32 +134,40 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "upsc-cse-ias-photo-signature-guide-2026",
     title: "UPSC CSE / IAS Photo & Signature Requirements 2026",
     description:
-      "UPSC CSE: 20–200 KB JPG photo, plain white background, ~75% face coverage, plus three signatures on one sheet at 20–100 KB. UPSC publishes no fixed pixel size or name/date strip.",
+      "UPSC CSE 2026: a 20–200 KB JPG photo on white, a live photo taken in the form, and three black-ink signatures in one 20–100 KB, 350–500 px JPG.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
+    // Re-checked against UPSC's upload instructions: live photo added (15 Oct 2026).
+    updatedISO: "2026-10-15",
     excerpt:
-      "UPSC uses one OTR portal for CSE, NDA and CDS. Here are the file-size limits it actually publishes, why three signatures are required, and the complete upload workflow.",
+      "UPSC uses one OTR portal for CSE, NDA and CDS. Here are the limits it publishes, how the three-signature sheet and the live photo work, and the complete upload workflow.",
     readMins: 7,
   },
   {
     slug: "nda-cds-photo-signature-guide-2026",
     title: "NDA & CDS 2026 Photo & Signature Requirements — Published KB Ranges",
     description:
-      "NDA and CDS use the same UPSC OTR portal: a 20–200 KB JPG photo on a plain white background, plus three signatures on one sheet at 20–100 KB. UPSC publishes no fixed pixel size or name/date strip.",
+      "NDA & CDS 2026: three black-ink signatures in one 20–100 KB, 350–500 px JPG, a 20–200 KB JPG photo with no fixed pixel size, and a live photo matched to it.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
+    // Signature corrected to UPSC's three black-ink signatures at 350–500 px, and
+    // the live photo added (15 Oct 2026).
+    updatedISO: "2026-10-15",
     excerpt:
-      "NDA and CDS upload through the same UPSC OTR portal as CSE. Here are the file-size limits UPSC actually publishes, why three signatures are required, and the complete upload workflow.",
+      "NDA and CDS upload through the same UPSC OTR portal as CSE. Here are the limits UPSC publishes, the photo rules defence applicants miss, and how the live photo works.",
     readMins: 7,
   },
   {
     slug: "ssc-cgl-chsl-photo-signature-guide-2026",
-    title: "SSC CGL & CHSL 2026 Photo: Live Capture Only — Spec & Resizer",
+    // Searchers ask how the live photo works ("ssc chsl live photo upload", "ssc
+    // live photo capture instructions"); the SSC exam page owns "signature size".
+    // Re-checked against SSC's 2026 notices (as on the SSC page, 8 Oct 2026).
+    title: "SSC CHSL & CGL Live Photo 2026: How the Photo Step Works",
     description:
-      "Current SSC forms capture the photo live; the cited notice separately lists a 10–20 KB JPG/JPEG signature. See what is published and what is not.",
+      "SSC CHSL and CGL 2026 capture your photo live through the camera, so there is no photo file to upload. How the photo step works, what gets rejected, and the signature.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
-    updatedISO: "2026-07-18",
+    updatedISO: "2026-10-15",
     excerpt:
       "SSC now requires live photo capture — no gallery uploads. See the published signature band, live-camera preparation and common measurable problems for CGL and CHSL.",
     readMins: 7,
@@ -278,7 +291,8 @@ export const BLOG_POSTS: BlogPost[] = [
       "Compare recorded photo and signature workflows for SSC, UPSC, IBPS, SBI, RRB and NTA, including live capture, published KB bands and available dimensions.",
     date: "June 8, 2026",
     dateISO: "2026-06-08",
-    updatedISO: "2026-06-21",
+    // UPSC signature pixels and live photo corrected, SBI link fixed (15 Oct 2026).
+    updatedISO: "2026-10-15",
     excerpt:
       "Wrong KB, wrong published dimensions and an unsuitable signature background are common measurable upload problems. Compare the recorded requirements and practical fixes.",
     readMins: 10,
@@ -431,14 +445,14 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "voter-id-photo-requirements-2026",
-    title: "Voter ID Photo Size & Requirements 2026 — NVSP Upload Spec",
+    title: "Voter ID Photo Size 2026: 4.5 cm × 3.5 cm, Under 2 MB JPG",
     description:
-      "ECI Form 6 publishes physical photo and composition guidance but no universal digital KB cap. Review the source and confirm the current upload screen.",
+      "Voter ID photo: 4.5 × 3.5 cm, colour, white background, unsigned; uploaded on the Voters' Service Portal as a JPG or JPEG of up to 2 MB.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
-    updatedISO: "2026-07-08",
+    updatedISO: "2026-10-14",
     excerpt:
-      "ECI Form 6 publishes physical photo and composition guidance but no universal digital KB cap. Review what is published and what the current upload screen must confirm.",
+      "What ECI's Form 6 asks of the photo, the portal's 2 MB JPG upload limit, and why uploads get refused.",
     readMins: 6,
   },
   {

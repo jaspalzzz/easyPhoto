@@ -110,7 +110,7 @@ function BottomCard({ card }: { card: Card }) {
         {icon}
       </div>
       <h3 className="mb-2 text-[15px] font-bold leading-tight text-ink">{title}</h3>
-      <p className="mb-4 flex-1 text-[12.5px] leading-relaxed text-muted-foreground">{outcome}</p>
+      <p className="mb-4 flex-1 text-[12px] leading-relaxed text-muted-foreground">{outcome}</p>
       <div className="mb-4 flex flex-wrap gap-1.5">
         {includes.map((item) => (
           <span
@@ -121,7 +121,7 @@ function BottomCard({ card }: { card: Card }) {
           </span>
         ))}
       </div>
-      <span className="flex items-center gap-1.5 text-[13px] font-bold text-brand">
+      <span className="flex items-center gap-1.5 text-[14px] font-bold text-brand">
         {cta}
         <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
       </span>
@@ -134,7 +134,7 @@ function BottomCard({ card }: { card: Card }) {
 export function FeaturedTools() {
   return (
     <section className="border-t border-hairline bg-card">
-      <div className="container reveal py-12 sm:py-14">
+      <div className="container reveal py-12 sm:py-20">
 
         {/* heading */}
         <div className="mb-8 flex items-end justify-between gap-4">
@@ -142,14 +142,14 @@ export function FeaturedTools() {
             <p className="mb-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
               Popular Workflows
             </p>
-            <h2 className="text-[1.7rem] font-bold tracking-tight text-ink sm:text-[2rem]">
+            <h2 className="text-[30px] font-bold tracking-tight text-ink sm:text-[30px]">
               What do you need to{" "}
               <span className="mark-gold text-ink">get done?</span>
             </h2>
           </div>
           <Link
             href="/tools/"
-            className="hidden shrink-0 items-center gap-1.5 text-[13px] font-semibold text-brand hover:underline sm:flex"
+            className="hidden shrink-0 items-center gap-1.5 text-[14px] font-semibold text-brand hover:underline sm:flex"
           >
             View all {READY_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
           </Link>
@@ -184,10 +184,10 @@ export function FeaturedTools() {
               </div>
             </div>
 
-            <h3 className="relative mb-2 text-[20px] font-bold leading-tight text-white lg:text-[22px]">
+            <h3 className="relative mb-2 text-[20px] font-bold leading-tight text-white lg:text-[24px]">
               Passport &amp; Visa Photo
             </h3>
-            <p className="relative mb-4 text-[13px] leading-relaxed text-white/55">
+            <p className="relative mb-4 text-[14px] leading-relaxed text-white/55">
               {PASSPORT.outcome}
             </p>
             <div className="relative mb-5 flex flex-wrap gap-2">
@@ -200,7 +200,7 @@ export function FeaturedTools() {
                 </span>
               ))}
             </div>
-            <div className="relative flex items-center gap-2 text-[13.5px] font-bold text-cta">
+            <div className="relative flex items-center gap-2 text-[14px] font-bold text-cta">
               {PASSPORT.cta}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </div>
@@ -215,7 +215,7 @@ export function FeaturedTools() {
 
         {/* mobile "view all" */}
         <div className="mt-6 sm:hidden">
-          <Link href="/tools/" className="flex items-center gap-1 text-[13px] font-semibold text-brand hover:underline">
+          <Link href="/tools/" className="flex items-center gap-1 text-[14px] font-semibold text-brand hover:underline">
             View all {READY_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>

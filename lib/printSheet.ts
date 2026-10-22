@@ -22,7 +22,7 @@ export interface PrintSheetOptions {
   /** Desired copies; clamped to what fits. Defaults to the max that fit. */
   copies?: number;
   /** Custom paper size. Defaults to '4x6'. */
-  paperSize?: "4x6" | "5x7" | "a4" | "letter";
+  paperSize?: PaperSize;
   /** Custom page margins in mm. Defaults to 4. */
   marginMm?: number;
   /** Custom gap spacing in mm. Defaults to 3. */
@@ -37,12 +37,18 @@ interface Layout {
   capacity: number;
 }
 
-const PAPER_DIMENSIONS = {
+/** Physical paper sizes in mm (portrait). */
+export const PAPER_DIMENSIONS = {
   "4x6": { w: 4 * 25.4, h: 6 * 25.4 },
   "5x7": { w: 5 * 25.4, h: 7 * 25.4 },
+  "5x6": { w: 5 * 25.4, h: 6 * 25.4 },
+  "4x4": { w: 4 * 25.4, h: 4 * 25.4 },
   a4: { w: 210, h: 297 },
+  a5: { w: 148, h: 210 },
   letter: { w: 8.5 * 25.4, h: 11 * 25.4 },
-};
+} as const;
+
+export type PaperSize = keyof typeof PAPER_DIMENSIONS;
 
 function gridFor(
   sheetW: number,
@@ -112,17 +118,18 @@ export function getSheetLayout(
   return bestLayout(photoMm, opts);
 }
 
-/** Build a printable PDF; returns a Blob ready to download. */
-export async function generatePrintSheet(
-  opts: PrintSheetOptions
-): Promise<Blob> {
-  const { jsPDF } = await import("jspdf");
-  const { canvas, photoMm, paperSize = "4x6", marginMm = 4, gapMm = 3 } = opts;
-  const layout = bestLayout(photoMm, { paperSize, marginMm, gapMm });
-  if (layout.capacity === 0) {
-    throw new Error("Photo is too large to fit on the selected sheet size.");
-  }
-
+/**
+ * Where each copy goes on the sheet, in mm from the top-left corner: the grid
+ * block is centred on the sheet and filled row by row. `copies` is clamped to
+ * what fits (defaults to a full sheet). Pure — shared by the PDF generator and
+ * the standalone print-sheet tool so both print photos at the exact mm size.
+ */
+export function sheetPlacements(
+  photoMm: { width: number; height: number },
+  opts: Omit<PrintSheetOptions, "canvas" | "photoMm"> = {}
+): { layout: Layout; placements: { x: number; y: number }[] } {
+  const gapMm = opts.gapMm ?? 3;
+  const layout = bestLayout(photoMm, opts);
   const copies = Math.min(Math.max(0, opts.copies ?? layout.capacity), layout.capacity);
   const pw = photoMm.width;
   const ph = photoMm.height;
@@ -132,6 +139,31 @@ export async function generatePrintSheet(
   const blockH = layout.rows * ph + (layout.rows - 1) * gapMm;
   const startX = (layout.sheet.w - blockW) / 2;
   const startY = (layout.sheet.h - blockH) / 2;
+
+  const placements: { x: number; y: number }[] = [];
+  for (let r = 0; r < layout.rows && placements.length < copies; r++) {
+    for (let c = 0; c < layout.cols && placements.length < copies; c++) {
+      placements.push({ x: startX + c * (pw + gapMm), y: startY + r * (ph + gapMm) });
+    }
+  }
+  return { layout, placements };
+}
+
+/** Build a printable PDF; returns a Blob ready to download. */
+export async function generatePrintSheet(
+  opts: PrintSheetOptions
+): Promise<Blob> {
+  const { jsPDF } = await import("jspdf");
+  const { canvas, photoMm, paperSize = "4x6", marginMm = 4, gapMm = 3 } = opts;
+  const { layout, placements } = sheetPlacements(photoMm, {
+    paperSize,
+    marginMm,
+    gapMm,
+    copies: opts.copies,
+  });
+  if (layout.capacity === 0) {
+    throw new Error("Photo is too large to fit on the selected sheet size.");
+  }
 
   const doc = new jsPDF({
     unit: "mm",
@@ -143,15 +175,9 @@ export async function generatePrintSheet(
   doc.setDrawColor(180);
   doc.setLineWidth(0.1);
 
-  let placed = 0;
-  for (let r = 0; r < layout.rows && placed < copies; r++) {
-    for (let c = 0; c < layout.cols && placed < copies; c++) {
-      const x = startX + c * (pw + gapMm);
-      const y = startY + r * (ph + gapMm);
-      doc.addImage(imgData, "JPEG", x, y, pw, ph);
-      doc.rect(x, y, pw, ph); // thin cut guide
-      placed++;
-    }
+  for (const { x, y } of placements) {
+    doc.addImage(imgData, "JPEG", x, y, photoMm.width, photoMm.height);
+    doc.rect(x, y, photoMm.width, photoMm.height); // thin cut guide
   }
 
   return doc.output("blob");

@@ -91,15 +91,6 @@ export default function Page() {
         — giving significantly sharper edges on hair and fine detail.
       </p>
 
-      <img
-        src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Person editing a photo on a laptop with a clean result — online background removal"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
-
       <p>
         The model predicts an alpha matte for each pixel — a value between 0 (fully
         background) and 255 (fully foreground). Semi-transparent values on hair edges
@@ -141,15 +132,6 @@ export default function Page() {
           can go directly into passport, PAN card, or exam photo upload forms.
         </li>
       </ol>
-
-      <img
-        src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Portrait of a person with a clean white background — result of background removal for ID photo"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
 
       <h2>When is a white background required for Indian government photos?</h2>
 
@@ -269,15 +251,6 @@ export default function Page() {
       </table>
 
       <h2>Background removal for passport and visa photos</h2>
-
-      <img
-        src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?fm=jpg&q=80&w=1200&h=630&fit=crop"
-        alt="Passport and travel documents laid out on a table — passport photo white background requirement"
-        className="my-6 w-full rounded-xl object-cover"
-        loading="lazy"
-        width={1200}
-        height={630}
-      />
 
       <p>
         Background removal is only the first step for a compliant passport or visa

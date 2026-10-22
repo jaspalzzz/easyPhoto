@@ -75,7 +75,7 @@ export function TrustPills({ className }: { className?: string }) {
       {pills.map((p) => (
         <span
           key={p.label}
-          className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-3 py-1.5 text-[13px] font-medium text-ink-soft"
+          className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-3 py-1.5 text-[14px] font-medium text-ink-soft"
         >
           <p.icon className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
           {p.label}

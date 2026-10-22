@@ -1,12 +1,64 @@
 # Next release — plan
 
-Status: **planned** (written 29 Sep 2026). Follows `CLAUDE.md`; every item goes
-feature branch → PR into `dev` → verified → one release PR `dev → master`.
+Status: **wrap-up** (updated 13 Oct 2026). Written 29 Sep 2026. Follows
+`CLAUDE.md`; every item goes feature branch → PR into `dev` → verified → one
+release PR `dev → master`.
 
-**Earliest production date:** 14 days after Google marks the *September 2026 spam
-update* complete (started 24 Sep; still rolling out on 29 Sep —
-status.search.google.com). Items 1–3 change page text, so they wait for that
-window (CLAUDE.md §2). Item 4 is JavaScript only and could ship earlier as a
+## Wrap-up plan (owner decision, 13 Oct 2026)
+
+All work ships by **31 Oct 2026**: after October there are no people, AI
+subscriptions or budget to maintain the site. So every remaining release is
+big, and nothing is left that needs follow-up measurement or upkeep. Bigger
+releases than CLAUDE.md §2 normally allows are the owner's override, logged
+in `docs/weekly-log.md` with each release. **This section replaces the
+schedule below where they differ.**
+
+| Date | Release | Contents | Status |
+|---|---|---|---|
+| Thu 15 Oct | Fixes | #89: JavaScript fixes + Driving Licence JPG hotfix | ready (draft, dry-run passed 8 Oct); owner merges after the morning GSC/Bing review |
+| Thu 22 Oct, after 13:30 IST | Polish | UI polish, tip pop-up, /terms/ (#88), /privacy/ and /tools/ (#90), UPSC PDF link (#97), UPSC signature 350–500 px (#99), unknown-format signatures → white JPG (#106) | #99, #106 on `dev`; owner adds the three tip variables in Cloudflare Production first |
+| Thu 29 Oct | Final content | SSC (#92), UPSC (#98), UP Police (#107) rewrites; exam pages overhaul for AdSense (#110); date-free exam calendar (#111); Voter ID meta in ECI's words (#113); print-sheet fix (`b877a16`); broken blog images removed (#73); UPSC face-coverage check (#112) | stack #92 → #98 → #107 → #110 → #111 → #113, each retargeted to `dev` as the one below merges; #73, `b877a16`, #112 on `dev` |
+| 30–31 Oct | Hand-over | `docs/HANDOVER.md`: running costs (domain renewal), Cloudflare rollback, tips and ads switches, the AdSense review request, a monthly 10-minute check | to write |
+
+**Before 29 Oct:** real-phone check of the UPSC face check on the dev preview
+(Android and iPhone; a selfie and a photo of a printed passport photo).
+
+**After 29 Oct:** the owner requests the AdSense review (Sites → Request
+review) and, once approved, sets `NEXT_PUBLIC_ADSENSE_ENABLED=true` in
+Cloudflare Production and redeploys.
+
+**Dropped in the wrap-up** (each needs dates kept current or results judged
+after October):
+- item 2's dated calendar → the calendar became date-free (#111);
+- item 3, the "This cycle" boxes;
+- item 6, the `/tools/resize-kb/` title experiment;
+- item 7's title test → Voter ID gets the meta fix only (#113);
+- item 9 beyond the 29 Oct pages, and the 12 Nov release;
+- the Bing resize work and the React #418 upstream report.
+
+## Schedule
+
+| Date | Release | Contents | SEO-visible |
+|---|---|---|---|
+| any day | **Hotfix** | Wrong output, wrong spec or a crash: branch from `master`, test that fails on the old code, §6 gate, PR into `master` the same day, verify on easyphoto.in, back-merge into `dev`. | only if the fix itself is |
+| Thu 15 Oct | GSC review + release | Morning: 14-day review of release #57 (Google + Bing). Then the JavaScript fixes: item 4 (#60–#64), signature format/DPI (#71), KB caps safe for 1000/1024-byte portals (#75), AI tools bounded (#76) — plus the Driving Licence JPG fix (#72) as a wrong-output hotfix (CLAUDE.md §5). Split by the owner on 6 Oct: the calendar and blog-image fixes wait for the window. | /exam-requirements/driving-licence/ only |
+| 6–20 Oct | Prevention (no release) | Guard rules in CLAUDE.md + tests from the 6 Oct Google-guidelines audit (item 8) — started 6 Oct at the owner's request. No page changes. | none |
+| Thu 22 Oct, **after 13:30 IST** | UI polish release | Type scale option C (#65), card hierarchy option A (#66), FAQ/footer (#68), sign-image compact (#69), ToolCard (#70); the support pop-up (#79, #83, #85, #86 — one "Help keep it free" button, any amount: UPI app on Android, QR on computers, razorpay.me on iPhone, plus a card under Download; on dev and owner-tested on Android and iPhone 7 Oct; the owner adds the three Production variables before release, see the 15 Oct runbook), all owner-approved from live-page mockups; any further approved polish (FAQ rows, footer) that is merged and verified by 20 Oct; plus three small page-text fixes: /terms/ refund rule (#88), /privacy/ ad-cookie disclosure and tips (#90), /tools/ "Coming soon" cards removed (#90); plus two UPSC fixes: the dead UPSC instruction-PDF link repointed to UPSC's current PDF (#97, on /exam-requirements/upsc/ and the UPSC CSE blog) and the signature tool fitting UPSC/NDA/CDS signatures to UPSC's 350–500 px per side (#99, JavaScript only; it used to export e.g. 384 × 534, which the form refuses). Released in the afternoon because the quiet window after the September spam update ends 22 Oct 01:00 PT = 13:30 IST (owner decision 10 Oct). Ships alone so Search Console sees it separately from 15 Oct (fixes) and 29 Oct (content). | /terms/, /privacy/, /tools/, /exam-requirements/upsc/ and the UPSC CSE blog (link only) |
+| Thu 29 Oct | Content release | Items 1, 2 (incl. #74 past-entry hiding), 3 (first ≤ 3 pages) and 6, plus #73 (broken blog images removed). Item 9 starts here with the SSC page rewrite (#92, owner-approved 8 Oct; also changes the SSC row on /exam-photo-size/ and card on /exam-requirements/) and the UPSC page rewrite (#98, owner-approved 10 Oct, stacked on #92 — retarget to dev once #92 merges). Confirmed: the spam update ended before 15 Oct. | ~9 pages |
+| Thu 12 Nov | Content release | Item 3, next ≤ 3 pages — only if the first batch held for 14 days. | ≤ 3 pages |
+
+**Spam update finished.** Google marked the September 2026 spam update complete:
+it ran 2026-09-24 09:15 → **2026-10-08 01:00 US/Pacific** (status.search.google.com,
+checked 10 Oct). The 14-day quiet window (CLAUDE.md §2) ends **22 Oct 01:00 PT =
+13:30 IST** — hence the 22 Oct release goes out in the afternoon. 29 Oct is
+confirmed, subject only to the 15 Oct review of #57 showing no damage.
+
+Release #57 (1 Oct) shipped SEO-visible changes during the rollout by the
+owner's explicit override — recorded in `docs/weekly-log.md`.
+
+**Earliest production date for page-text changes:** 22 Oct 13:30 IST, 14 days
+after the September 2026 spam update completed (8 Oct). Items 1–3 change page
+text, so they ship on 29 Oct (CLAUDE.md §2). Item 4 is JavaScript only and could ship earlier as a
 hotfix if a user-facing bug is severe.
 
 ## 1. Print-sheet fix — held from release #50
@@ -66,6 +118,88 @@ Timed to the windows in item 2: a reel per exam (IBPS Clerk, IBPS RRB, SSC GD)
 using `reels/`, and share cards for Telegram/WhatsApp exam groups, each linking
 to the exam page.
 
+## 6. `/tools/resize-kb/` title/description experiment (one page)
+
+Evidence (Bing Webmaster + GSC, 1 Oct): on Bing the page earned 637 clicks from
+28,938 impressions since 14 Sep at position ~8 — "photo resizer in kb" alone
+11,811 impressions, plus "image resizer in kb" 1,715 and "resize image in kb"
+2,067. On Google the whole page had 150 impressions and 5 clicks in the week
+from 25 Sep, and "photo resizer in kb" does not appear at all. It is the largest
+gap between the engines and the largest single demand we serve.
+
+- First, diagnose: compare our title, H1, first screen and internal links with
+  the pages Google ranks for "photo resizer in kb" / "resize image in kb".
+  Write up the finding before changing anything.
+- Then **one variable**: the `<title>` and meta description of
+  `/tools/resize-kb/` only. No H1, body or URL change in the same release.
+  Copy reviewed by the owner (CLAUDE.md §3).
+- Baseline to beat (record again on 28 Oct): Google — page impressions/week,
+  position for the three queries above; Bing — CTR at position ~9 on
+  "photo resizer in kb" (0.5%).
+- Judge after 14 days on both engines; revert if clicks fall on either.
+
+## 7. `/exam-requirements/voter-id/` — drop the "under 2048 KB" claim (one-page experiment)
+
+Found in the 6 Oct sweep: ECI publishes no upload KB cap for Form 6 (CLAUDE.md
+§3: "we claim none"), yet the page states "under 2048 KB" in five places — meta
+description, the photo-requirement row, the tool label and two FAQ items (also
+in FAQPage JSON-LD), e.g. "How do I resize my photo to under 2048 KB for Voter
+ID?". It is the #2 Google page and gets "voter id photo size in kb" queries, so
+the owner deferred it (6 Oct) to a measured change after the update window.
+
+- Mark the 2 MB as a compatibility target in data (not a published cap) and
+  render "No published limit" where the page states a requirement; keep the
+  tool's working target.
+- One page, one change; note the GSC baseline (page + "in kb" queries) the day
+  before; judge after 14 days.
+
+## 8. Prevention: guard rules and tests (after 15 Oct, before monetisation)
+
+From the 6 Oct audit of the site against Google's current guidelines (Search
+Essentials, spam policies, helpful-content and gen-AI guidance). The site breaks
+no policy; the risk is quality: unpublished numbers shown as "the size",
+templated exam pages (the same FAQ questions, name swapped, on 16–20 of 23 exam
+pages) and internal jargon ("stored" ×241 on exam pages). Owner decision (6 Oct):
+add the guards right after the 15 Oct release, before monetisation.
+
+- CLAUDE.md additions: unpublished numbers are never "the size"; write for
+  applicants (no internal vocabulary); no shared FAQ templates; static demos are
+  labelled "Example"; AI-drafted text gets an owner read-aloud pass; template
+  families have a similarity ceiling; visible dates, dateModified and lastmod
+  agree; every PR answers a spam-policy checklist.
+- Tests on the built HTML (no new dependencies): template similarity ratchet,
+  FAQ-template ratchet, unpublished-spec claims, structured data matches visible
+  text, date consistency, no history manipulation / UA sniffing, "Example" label
+  on the homepage demo, jargon list in boundedClaims.
+- Ratchets start at today's values and only move down; no page text changes.
+
+## 9. Exam-page honesty and de-templating (after the window, ≤ 3 pages per release)
+
+The 8 needs-review exam pages stop presenting unpublished numbers as the
+requirement, the name-swapped FAQ is replaced by exam-specific Q&As, and
+jargon/repeats go. Order: clat, up-police, tgpsc → passport-seva,
+army-agniveer, rrb → ssc and voter-id (each its own 14-day experiment; Voter ID
+is item 7). Owner reviews every rewritten page.
+
+## 10. Money: tips first, then traffic (owner decision 7 Oct)
+
+- **Tips** go live with 22 Oct. Measure two weeks: pop-up views
+  (`support_view`) and taps (`support_tap`, by route) against payments in the
+  Razorpay dashboard (QR Codes for Android/desktop, Payments for razorpay.me).
+- **Testbook affiliate on the site — parked.** Search Console 25 Sep–6 Oct:
+  exam-intent visitors are mostly on `/exam-requirements/ssc/` (9.6 clicks/day,
+  99% exam queries), `/upsc/` (4.0) and `/rrb/` (2.9). A Testbook Pass is ₹775 a
+  year, so 5–10% is ₹40–₹78 a sale: roughly ₹50–₹200 a month at today's
+  traffic — not worth a Google risk. Ready to build when traffic is 3–5×:
+  one client-rendered "Sponsored" box after the tool on SSC/UPSC/RRB and the
+  SSC guide, `rel="sponsored"`, disclosure line, never in a pop-up, switch-off
+  variable. Compare EarnKaro with Testbook's own referral (10% to UPI, buyer
+  gets up to 12% off, first purchase only) at that point.
+- **The lever is traffic.** After the 15 Oct release: pages ranking 4–10 in
+  Search Console first (CLAUDE.md §8). Off-site (item 5): exam-photo Shorts;
+  once the channel has steady views, approach exam-prep brands (Testbook
+  sponsors 300+ YouTube creators) for paid sponsorships.
+
 ## Not doing
 
 - **A new blog post per exam.** Breaks CLAUDE.md §1 (index frozen) and risks
@@ -77,6 +211,6 @@ to the exam page.
 ## Release checklist
 
 The CLAUDE.md §6 gate on every PR; on the release PR: SEO diff vs production
-lists exactly the pages from items 1–3, side-by-side on top traffic pages, smoke
+lists exactly the pages from items 1–3 and 6, side-by-side on top traffic pages, smoke
 test on easyphoto.in after deploy, a row in the Releases table of
 `docs/weekly-log.md` with its GSC check date.

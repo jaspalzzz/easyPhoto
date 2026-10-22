@@ -99,6 +99,7 @@ const sbi = PORTAL_PRESETS.sbi;
 const upsc = PORTAL_PRESETS.upsc;
 const rrb = PORTAL_PRESETS.rrb;
 const nta = PORTAL_PRESETS.nta;
+const upscSigSide = upsc.sigSidePx ? ` measuring ${upsc.sigSidePx.min}–${upsc.sigSidePx.max} pixels` : "";
 
 export const EXAM_SIZE_GUIDE_FAQ_ITEMS: FaqItem[] = [
   {
@@ -115,7 +116,7 @@ export const EXAM_SIZE_GUIDE_FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "What are the current UPSC photo and signature sizes?",
-    a: `The stored UPSC source lists a ${kbBand(upsc.photoMinKb, upsc.photoLimitKb)} ${upsc.photoFormat} photograph on a plain white background and no fixed photo pixel size. Its signature upload is ${kbBand(upsc.sigMinKb, upsc.sigLimitKb)} in ${upsc.sigFormat}, with three signatures arranged vertically in one image. Confirm the current instructions before applying.`,
+    a: `UPSC's instructions list a ${kbBand(upsc.photoMinKb, upsc.photoLimitKb)} ${upsc.photoFormat} photograph on a plain white background, with no fixed photo pixel size, and a live photograph taken during the application. The signature upload is ${kbBand(upsc.sigMinKb, upsc.sigLimitKb)} in ${upsc.sigFormat}: one image${upscSigSide} with three signatures arranged vertically. Confirm the current instructions before applying.`,
   },
   {
     q: "What format should I use — JPG or PNG?",

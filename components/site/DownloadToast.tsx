@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Check } from "lucide-react";
+import { SUPPORT_OPEN_EVENT } from "@/lib/supportEvents";
 import { formatKb } from "@/lib/utils";
 
 interface ToastState {
@@ -15,7 +16,8 @@ interface ToastState {
  * especially, users can't tell whether the file actually saved, which is a
  * real anxiety moment when the file is their exam photo. Listens for the
  * "ep:download" event dispatched by lib/download.ts, so every tool gets the
- * confirmation with no per-tool wiring.
+ * confirmation with no per-tool wiring. When the support pop-up opens it
+ * carries its own "Saved on your device" line, so the toast steps aside.
  */
 export function DownloadToast() {
   const [toast, setToast] = React.useState<ToastState | null>(null);
@@ -30,9 +32,15 @@ export function DownloadToast() {
       if (hideTimer.current) clearTimeout(hideTimer.current);
       hideTimer.current = setTimeout(() => setToast(null), 4500);
     };
+    const onSupportOpen = () => {
+      if (hideTimer.current) clearTimeout(hideTimer.current);
+      setToast(null);
+    };
     window.addEventListener("ep:download", onDownload);
+    window.addEventListener(SUPPORT_OPEN_EVENT, onSupportOpen);
     return () => {
       window.removeEventListener("ep:download", onDownload);
+      window.removeEventListener(SUPPORT_OPEN_EVENT, onSupportOpen);
       if (hideTimer.current) clearTimeout(hideTimer.current);
     };
   }, []);

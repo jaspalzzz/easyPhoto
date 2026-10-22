@@ -8,7 +8,7 @@ import { Download, ShieldCheck, Eraser, Crop, Maximize2, Info, FileStack } from 
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
-import { fitToExactFrame, imageToCanvas, pngUnderKb } from "@/lib/imaging";
+import { fitToExactFrame, imageToCanvas, picaResizeTo, pngUnderKb } from "@/lib/imaging";
 import {
   SIGNATURE_CLEAN_DEFAULTS,
   signatureExportFormat,
@@ -20,10 +20,20 @@ import {
   whiteToTransparent,
   trimToContent,
   padToAspect,
+  padCanvas,
+  sideRangeFit,
 } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb, kbFloorBytes, minCapKbForFloor } from "@/lib/utils";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
+
+/** The exams people search signature sizes for most (GSC, Oct 2026). */
+const QUICK_EXAMS: ReadonlyArray<{ key: string; label: string }> = [
+  { key: "ssc", label: "SSC" },
+  { key: "rrb", label: "RRB" },
+  { key: "ibps", label: "IBPS" },
+  { key: "upsc", label: "UPSC" },
+];
 import { compressToCap } from "@/lib/compress";
 import { padBlobToMin } from "@/lib/padBytes";
 import { track, deviceClass } from "@/lib/analytics";
@@ -359,6 +369,16 @@ function Body({
         const shapeRatio = resizeMode === "kb" ? selectedPreset?.sigAspectRatio : undefined;
         if (shapeRatio) finalCanvas = padToAspect(finalCanvas, shapeRatio);
 
+        // Exams that publish a pixel range per side (UPSC: 350–500 px wide and
+        // high) reject anything outside it, so fit the image inside the range —
+        // margins first if the shape needs them, then the smallest rescale.
+        const sides = resizeMode === "kb" ? selectedPreset?.sigSidePx : undefined;
+        const sideFit = sides ? sideRangeFit(finalCanvas.width, finalCanvas.height, sides.min, sides.max) : null;
+        if (sideFit) {
+          const padded = sideFit.pad ? padCanvas(finalCanvas, sideFit.pad) : finalCanvas;
+          finalCanvas = await picaResizeTo(padded, sideFit.width, sideFit.height);
+        }
+
         // Apply white background flattening if JPEG is requested
         let renderCanvas = finalCanvas;
         if (bgFormat === "jpeg") {
@@ -381,7 +401,10 @@ function Body({
           if (bgFormat === "jpeg") {
             // High-quality JPEG binary search compression
             const compressed = await compressToCap(renderCanvas, dTargetKb, {
-              minScale: 0.1,
+              // Within a published side range, never shrink the short side below it.
+              minScale: sides
+                ? Math.min(1, sides.min / Math.min(renderCanvas.width, renderCanvas.height))
+                : 0.1,
               densityDpi: selectedPreset?.dpi,
             });
             resultBlob = compressed.blob;
@@ -509,6 +532,7 @@ function Body({
     requiredCopies,
     selectedPreset?.dpi,
     selectedPreset?.sigAspectRatio,
+    selectedPreset?.sigSidePx,
   ]);
 
   // Handle preset selections
@@ -564,7 +588,8 @@ function Body({
   const handleDownload = () => {
     if (!out) return;
     const ext = bgFormat === "jpeg" ? "jpg" : "png";
-    downloadBlob(out.blob, `signature-processed.${ext}`, toolName);
+    // The authority's own file name when it names one (UPSC: "signature").
+    downloadBlob(out.blob, `${selectedPreset?.sigFileName ?? "signature-processed"}.${ext}`, toolName);
   };
 
   return (
@@ -696,6 +721,36 @@ function Body({
 
       {/* Right: Controls Panel with Tabs */}
       <div className={`space-y-4 ${busy ? "pointer-events-none opacity-50" : ""}`}>
+        {/* One-tap settings for the most-searched exams, ahead of the tabs:
+            sites ranking for "signature resize 20kb" / "ssc signature size"
+            lead with exam buttons (SERP research, 13 Oct 2026). Same
+            applyPreset as the full list under Resize. */}
+        <div>
+          <span className="mb-1.5 block text-xs font-medium text-muted-foreground">Quick exam settings</span>
+          <div className="flex flex-wrap gap-1.5">
+            {QUICK_EXAMS.map(({ key, label }) => {
+              const p = PORTAL_PRESETS[key];
+              if (!p?.sigLimitKb) return null;
+              const kb = p.sigMinKb ? `${p.sigMinKb}–${p.sigLimitKb} KB` : `≤ ${p.sigLimitKb} KB`;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => applyPreset(key)}
+                  aria-pressed={presetKey === key}
+                  className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                    presetKey === key
+                      ? "border-brand bg-brand text-white"
+                      : "border-hairline-strong bg-background text-foreground hover:bg-accent/40"
+                  }`}
+                >
+                  {label} <span className={presetKey === key ? "opacity-80" : "text-muted-foreground"}>{kb}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Navigation Tabs */}
         <div className="flex overflow-x-auto border-b border-hairline">
           <button

@@ -107,7 +107,7 @@ export default function ConvertHubPage() {
 
       <header className="space-y-4">
         <span className="eyebrow block text-brand">Image tools</span>
-        <h1 className="text-[1.9rem] font-semibold tracking-tight text-ink sm:text-[2.25rem]">
+        <h1 className="text-[30px] font-semibold tracking-tight text-ink sm:text-[36px]">
           Image Format Converter
         </h1>
         <p className="text-[15px] leading-relaxed text-muted-foreground">

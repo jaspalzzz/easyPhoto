@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, AlertTriangle, ArrowDown } from "lucide-react";
+import { ExternalLink, ArrowDown } from "lucide-react";
 import { PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
 import {
   getPortalSpec,
@@ -13,7 +13,6 @@ import {
   sigDimsPx,
   PORTAL_CATEGORY_LABEL,
 } from "@/lib/specRegistry";
-import { portalFaqItems, portalRejectionReasons } from "@/lib/faqs";
 import { RESIZER_YEAR } from "@/lib/subExamResizers";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -27,6 +26,9 @@ import { SpecificationProvenance } from "@/components/site/SpecificationProvenan
 import { buttonVariants } from "@/components/ui/button";
 import { examGuideLinks } from "@/lib/examGuides";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { SupportCard } from "@/components/site/SupportCard";
+import { examPageLastModified } from "@/lib/examPageDates";
+import { EXAM_GUIDES } from "@/components/site/exam";
 
 // One static page per exam (the cited Spec Database).
 export function generateStaticParams() {
@@ -53,6 +55,9 @@ function aspectLabel(r: number): string {
   return `${r.toFixed(2)} : 1`;
 }
 
+/** ID-document pages built from this template: "application", not "exam". */
+const ID_DOCUMENTS = new Set(["voter-id", "driving-licence", "pan", "oci", "passport-seva", "ds160"]);
+
 // Per-exam custom titles bypass the template below (titleAbsolute). These are
 // the full SERP title, including the brand suffix.
 //
@@ -67,8 +72,46 @@ function aspectLabel(r: number): string {
 // /exam-requirements/voter-id/ around 2026-07-31; if it doesn't improve,
 // revert this single line (the template default is the fallback). Do NOT roll
 // this out to the other 49 exam pages until this test reads positive.
+// Kept as is: the follow-up title test was dropped in the October wrap-up
+// (owner, 13 Oct 2026).
+//
+// ssc / rrb / upsc (14 Oct 2026 competitor teardown, owner-approved): every
+// top result for "<exam> signature size" puts the figures in its title; these
+// state the official figures recorded on each page.
 const EXAM_REQUIREMENTS_TITLE_OVERRIDES: Record<string, string> = {
   "voter-id": "Voter ID Photo Size & Resizer 2026 — easyPhoto",
+  ssc: "SSC Signature Size 2026: 10–20 KB, 6 × 2 cm — easyPhoto",
+  rrb: "RRB Signature Size 2026: 30–49 KB, 140 × 60 px — easyPhoto",
+  upsc: "UPSC Photo & Signature Size 2026 (20–200 KB) — easyPhoto",
+  // Searchers type "agniveer vayu" / "air force", not the official "Agniveervayu";
+  // "agniveer vayu photo guidelines" was landing on the Army page (GSC, 90 days).
+  "airforce-agniveer": "Air Force Agniveer Vayu Photo Size 2026 (100–200 KB) — easyPhoto",
+};
+
+/**
+ * H1s in searchers' words where the template's "<name> Photo Size" misses them.
+ * voter-id (owner, 15 Oct 2026): "voter photo resize", "voter card photo resize"
+ * and "voter id photo resizer" had ~1,850 impressions in 90 days at 7.7–8.3.
+ */
+const EXAM_REQUIREMENTS_H1_OVERRIDES: Record<string, string> = {
+  "voter-id": "Voter ID Photo Resizer & Size (ECI Form 6)",
+};
+
+// Per-exam meta descriptions, in the authority's own words, where the template
+// reads badly.
+// - voter-id: ECI's Form 6 photo rules and the Voters' Service Portal upload
+//   field ("Document size maximum 2MB,.jpg,.jpeg"), checked 13 Oct 2026
+//   (owner-approved meta fix, 13 Oct 2026).
+// - driving-licence: it ranks 2–4 for "driving licence photo and signature
+//   size" with almost no clicks (GSC 25 Sep – 12 Oct 2026); this states
+//   Sarathi's figures plainly.
+const EXAM_REQUIREMENTS_DESCRIPTION_OVERRIDES: Record<string, string> = {
+  "voter-id":
+    "Voter ID Form 6 photo: 4.5 × 3.5 cm, colour, white background, unsigned. " +
+    "The Voters' Service Portal accepts JPG or JPEG up to 2 MB. Resize yours here.",
+  "driving-licence":
+    "Driving Licence photo and signature size on Sarathi: photo 420 × 525 px, signature " +
+    "256 × 64 px, each 10–20 KB JPG. Resize both here, free.",
 };
 
 export async function generateMetadata({
@@ -86,12 +129,10 @@ export async function generateMetadata({
   // well past the ~155-160 char SERP display width, so they were truncating.
   const shortName = spec.name.split(" (")[0];
   const titleBase = `${shortName} Photo${sig ? " & Signature" : ""} Size ${RESIZER_YEAR}`;
-  const hasRecordedFormat = Boolean(spec.photoFormat || (sig && spec.sigFormat));
-  const recordedFields = hasRecordedFormat ? "size & format" : "size";
   const descriptionOverride =
     exam === "airforce-agniveer"
-      ? `${shortName}: photo ${photoKb(spec)}${spec.photoFormat ? ` (${spec.photoFormat})` : ""}, signature ${sig}${spec.sigFormat ? ` (${spec.sigFormat})` : ""}. ` +
-        "No fixed pixel dimensions are published; confirm the current intake notice."
+      ? `Air Force Agniveer Vayu photo: ${photoKb(spec)}${spec.photoFormat ? ` ${spec.photoFormat}` : ""}, holding a black slate ` +
+        `with your name and the date in white chalk. Signature: ${sig}${spec.sigFormat ? ` ${spec.sigFormat}` : ""}.`
       : undefined;
   return pageMetadata({
     // Short exam name keeps the SERP title under ~60 chars and matches how
@@ -101,16 +142,26 @@ export async function generateMetadata({
       titleBase,
     titleAbsolute: !!EXAM_REQUIREMENTS_TITLE_OVERRIDES[exam],
     description:
+      EXAM_REQUIREMENTS_DESCRIPTION_OVERRIDES[exam] ??
       descriptionOverride ??
+      EXAM_GUIDES[exam]?.metaDescription ??
       // Omit the pixel clause when the authority publishes none — px() renders an
       // em-dash for the spec table, which reads as "(—)" in a SERP snippet.
-      `${shortName}: photo ${photoKb(spec)}${parens(photoDimsPx(spec, " px"))}` +
+      (spec.noPhotoUpload
+        ? `${shortName}: photo captured live in the form`
+        : `${shortName}: photo ${photoKb(spec)}` +
+          parens(
+            // CLAUDE.md §3: a figure the source doesn't confirm is labelled ours.
+            [photoDimsPx(spec, " px"), specProvenance(spec).verified ? null : "our default, not an official limit"]
+              .filter(Boolean)
+              .join("; ") || null
+          )) +
       (sig ? `, signature ${sig}${parens(sigDimsPx(spec, " px"))}` : "") +
-      // Only claim "verified" for specs actually confirmed against their source
-      // and dated; needs-review presets get an honest "confirm on the source".
+      // Only say "checked" for specs actually confirmed against their source
+      // and dated; needs-review presets point the reader to the notice.
       (specProvenance(spec).verified
-        ? `. Stored ${recordedFields} checked against the linked official source.`
-        : `. Stored ${recordedFields} for the form — confirm the current figures on the official source.`),
+        ? ". Checked against the official notice, linked on the page."
+        : ". Confirm the current notice before you upload."),
     path: `/exam-requirements/${exam}/`,
   });
 }
@@ -119,7 +170,7 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-hairline py-2.5 text-sm last:border-0">
       <dt className="text-ink-soft">{label}</dt>
-      <dd className="text-right font-mono text-[13px] font-medium tabular-nums">{value}</dd>
+      <dd className="text-right font-mono text-[14px] font-medium tabular-nums">{value}</dd>
     </div>
   );
 }
@@ -129,7 +180,6 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
 // size" / "upsc nda photo size" queries on this verified page — no separate
 // pages, no fabricated specs (they inherit the parent's exact numbers).
 const SUB_EXAMS: Record<string, string[]> = {
-  ssc: ["SSC CGL", "SSC CHSL", "SSC GD Constable", "SSC MTS", "SSC CPO", "SSC JE", "SSC Stenographer", "SSC Selection Post"],
   upsc: ["UPSC CSE (IAS/IPS)", "UPSC NDA", "UPSC CDS", "UPSC CAPF", "UPSC IFS", "UPSC EPFO", "UPSC CMS"],
   ibps: ["IBPS PO", "IBPS Clerk", "IBPS SO", "IBPS RRB"],
   sbi: ["SBI PO", "SBI Clerk", "SBI SO"],
@@ -149,7 +199,11 @@ export default async function Page({
   const prov = specProvenance(spec);
   const sig = sigKb(spec);
   const path = `/exam-requirements/${exam}/`;
-  const faqItems = portalFaqItems(spec);
+  // A rewritten exam page brings its own body and FAQ; the rest use the template.
+  const guide = EXAM_GUIDES[exam];
+  // Only rewritten pages carry a FAQ: the template's five questions were the
+  // same on every exam page with the name swapped, and restated the spec table.
+  const faqItems = guide?.faq ?? spec.faq ?? [];
   const related = relatedPortals(exam, 6);
   const categoryLabel = PORTAL_CATEGORY_LABEL[portalCategory(exam)];
   const guideLinks = examGuideLinks(exam);
@@ -166,10 +220,10 @@ export default async function Page({
         schema={[
           breadcrumbSchema(crumbs),
           webPageSchema({
-            name: `${spec.name} Photo${sig ? " & Signature" : ""} Size`,
+            name: EXAM_REQUIREMENTS_H1_OVERRIDES[exam] ?? `${spec.name} Photo${sig ? " & Signature" : ""} Size`,
             description: spec.description,
             url: path,
-            ...(prov.verifiedOn ? { dateModified: prov.verifiedOn } : {}),
+            dateModified: examPageLastModified(exam),
             author: { name: AUTHOR.name, url: absoluteUrl(AUTHOR.url) },
           }),
           // The resizer below is a real embedded tool, not just a spec table —
@@ -179,21 +233,27 @@ export default async function Page({
             name: `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Resizer`,
             description: `Free browser-based resizer for the ${spec.name.split(" (")[0]} photo${sig ? " and signature" : ""} target.`,
             url: path,
-            ...(prov.verifiedOn ? { dateModified: prov.verifiedOn } : {}),
+            dateModified: examPageLastModified(exam),
           }),
-          faqSchema(faqItems),
+          faqItems.length > 0 ? faqSchema(faqItems) : null,
         ]}
       />
 
       <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
-        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
-          {spec.name} Photo{sig ? <> &amp; Signature</> : null} Size
+        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
+          {EXAM_REQUIREMENTS_H1_OVERRIDES[exam] ?? (
+            <>
+              {spec.name} Photo{sig ? <> &amp; Signature</> : null} Size
+            </>
+          )}
         </h1>
-        <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          {spec.description}
-        </p>
+        {!guide && (
+          <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+            {spec.description}
+          </p>
+        )}
         {/* Reviewer byline — named-person E-E-A-T signal ("Who"), matching the
             blog post treatment. Compact (no full author card) since this
             template covers 50+ pages. */}
@@ -219,141 +279,170 @@ export default async function Page({
         />
       </header>
 
-      {/* Above-the-fold jump link to the embedded resizer further down this
-          same page. On mobile the tool section can sit several screens below
-          the spec table; this gives a visitor who already knows the numbers
-          a one-tap path to the tool without hunting for it. Pure in-page
-          anchor — no new route, no change to the H1 or section order. */}
-      <a
-        href="#resizer"
-        className={buttonVariants({ variant: "cta", className: "min-h-11 w-full sm:w-auto" })}
-      >
-        Resize your {spec.name.split(" (")[0]} photo{sig ? " & signature" : ""} now <ArrowDown className="h-4 w-4" />
-      </a>
+      {guide && <guide.Body />}
 
-      {/* The spec table — the authoritative, citable data */}
-      <section className="grid gap-8 md:grid-cols-2">
-        <div className="space-y-3">
-          <h2 className="eyebrow">Photo requirement</h2>
-          <dl>
-            <Row label="File size" value={photoKb(spec)} />
-            <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? "—"} />
-            {spec.photoAspectRatio && (
-              <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
-            )}
-            {spec.photoFormat && <Row label="Format" value={spec.photoFormat} />}
-            {spec.photoBackground && (
-              <Row label="Background" value={spec.photoBackground} />
-            )}
-          </dl>
-        </div>
-        <div className="space-y-3">
-          <h2 className="eyebrow">Signature requirement</h2>
-          {sig ? (
-            <dl>
-              <Row label="File size" value={sig} />
-              <Row label="Dimensions" value={sigDimsPx(spec, " px") ?? "—"} />
-              {spec.sigFormat && <Row label="Format" value={spec.sigFormat} />}
-              <Row label="Ink" value={spec.signatureInk ?? "Confirm current notice"} />
-            </dl>
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              No separate signature upload is specified for this form. Check the official notification.
-            </p>
-          )}
-        </div>
-      </section>
+      {!guide && (
+        // Phones show the resizer first: every top-3 result for "<exam> photo /
+        // signature size" puts the tool on the first screen (SERP research,
+        // 13 Oct 2026), and the intro above already states the figures. Only
+        // the visual order changes (CSS order below md); the HTML order — what
+        // Google reads — stays the same.
+        <div className="flex flex-col gap-8">
+          {/* Above-the-fold jump link to the embedded resizer further down this
+              same page. On mobile the tool section can sit several screens below
+              the spec table; this gives a visitor who already knows the numbers
+              a one-tap path to the tool without hunting for it. Pure in-page
+              anchor — no new route, no change to the H1 or section order. */}
+          <a
+            href="#resizer"
+            className={buttonVariants({ variant: "cta", className: "min-h-11 w-full max-md:hidden sm:w-auto" })}
+          >
+            {spec.noPhotoUpload
+              ? <>Prepare your {spec.name.split(" (")[0]} signature now</>
+              : <>Resize your {spec.name.split(" (")[0]} photo{sig ? " & signature" : ""} now</>}{" "}
+            <ArrowDown className="h-4 w-4" />
+          </a>
 
-      {/* Transactional tool — embedded, not linked out. AI Overviews answer
-          "what size"; hosting the resizer on this indexed URL lets the page win
-          "do it" queries ("<exam> photo resizer") too. Previously this section
-          linked to /tools/form-resizer/{exam}/, which is noindexed — so the
-          transactional ranking had no indexable page to migrate to. The H1
-          stays "Photo … Size" (protects the informational rankings); this H2
-          carries the "resize" intent. */}
-      <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 sm:p-6">
-        <div>
-          <h2 className="text-base font-semibold tracking-tight">
-            Prepare your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null} to the selected stored target
-          </h2>
-          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Verify the current form before use. Processing is free and stays in your browser.
-          </p>
-        </div>
-
-        <PortalResizer portalId={exam} hideDescription />
-
-        {/* Read-next guides. This used to be hardcoded for voter-id alone,
-            which left 48 exam pages with no route to the longer explanation.
-            The map only offers a guide that genuinely covers the portal. */}
-        {guideLinks.length > 0 && (
-          <div className="rounded-lg border border-hairline bg-card p-4">
-            <h3 className="text-sm font-semibold text-ink">
-              Before you upload
-            </h3>
-            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-              Read the{" "}
-              {guideLinks.map((guide, i) => (
-                <Fragment key={guide.slug}>
-                  {i > 0 && (i === guideLinks.length - 1 ? " and " : ", ")}
-                  <Link
-                    href={`/blog/${guide.slug}/`}
-                    className="font-medium text-brand hover:underline"
-                  >
-                    {guide.label}
-                  </Link>
-                </Fragment>
-              ))}
-              .
-            </p>
-          </div>
-        )}
-
-        {(spec.requiresNameDate || spec.requiresSlateNameDate) && (
-          <div className="rounded-lg border border-amber-300 bg-amber-50/70 p-4 dark:border-amber-800 dark:bg-amber-950/30">
-            <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
-              {spec.requiresSlateNameDate
-                ? "This photo needs a name-and-date slate"
-                : "This form needs your name & date on the photo"}
-            </h3>
-            <p className="mt-1 text-sm leading-relaxed text-amber-800 dark:text-amber-300">
-              {spec.requiresSlateNameDate ? (
-                <>
-                  The current notice requires the candidate to be photographed holding
-                  a black slate with their name and the photography date written in
-                  white chalk. This must be present when the photo is taken, not added
-                  digitally afterward.
-                </>
+          {/* The spec table — the authoritative, citable data */}
+          <section className="grid gap-8 md:grid-cols-2">
+            <div className="space-y-3">
+              <h2 className="eyebrow">Photo requirement</h2>
+              {spec.noPhotoUpload ? (
+                // The form captures the photo live; any photo figure in the
+                // record is ours, not the authority's, so none is shown here.
+                <dl>
+                  <Row label="Photo" value="Captured live in the form" />
+                </dl>
               ) : (
-                <>
-                  {spec.name.split(" (")[0]} requires the candidate&apos;s name and the
-                  date of photography printed on the photo itself. After sizing it here,
-                  add the strip with the{" "}
-                  <Link
-                    href="/tools/photo-with-name-date/"
-                    className="font-medium underline underline-offset-2"
-                  >
-                    Photo with Name &amp; Date tool
-                  </Link>
-                  .
-                </>
+              <dl>
+                <Row label="File size" value={photoKb(spec)} />
+                <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? spec.photoDimsNote ?? "—"} />
+                {spec.photoAspectRatio && (
+                  <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
+                )}
+                {spec.photoFormat && <Row label="Format" value={spec.photoFormat} />}
+                {spec.photoBackground && (
+                  <Row label="Background" value={spec.photoBackground} />
+                )}
+              </dl>
               )}
+            </div>
+            {!spec.noSignatureUpload && (
+            <div className="space-y-3">
+              <h2 className="eyebrow">Signature requirement</h2>
+              {sig ? (
+                <dl>
+                  <Row label="File size" value={sig} />
+                  <Row label="Dimensions" value={sigDimsPx(spec, " px") ?? "—"} />
+                  {spec.sigFormat && <Row label="Format" value={spec.sigFormat} />}
+                  <Row label="Ink" value={spec.signatureInk ?? "Confirm current notice"} />
+                </dl>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No separate signature upload is specified for this form. Check the official notification.
+                </p>
+              )}
+            </div>
+            )}
+          </section>
+
+          {/* Transactional tool — embedded, not linked out. AI Overviews answer
+              "what size"; hosting the resizer on this indexed URL lets the page win
+              "do it" queries ("<exam> photo resizer") too. Previously this section
+              linked to /tools/form-resizer/{exam}/, which is noindexed — so the
+              transactional ranking had no indexable page to migrate to. The H1
+              stays "Photo … Size" (protects the informational rankings); this H2
+              carries the "resize" intent. */}
+          <section id="resizer" className="space-y-4 rounded-lg border border-brand/25 bg-brand-soft/15 p-5 max-md:order-first sm:p-6">
+            <div>
+              <h2 className="text-base font-semibold tracking-tight">
+                {spec.noPhotoUpload ? (
+                  <>Prepare your {spec.name.split(" (")[0]} signature</>
+                ) : (
+                  <>Resize your {spec.name.split(" (")[0]} photo{sig ? <> &amp; signature</> : null}</>
+                )}
+              </h2>
+            </div>
+
+            {/* Compact: the requirement is stated above and how the tool works
+                is explained once, on /how-photo-checking-works/, instead of
+                being repeated on every exam page (AdSense "low value content":
+                the same boilerplate on 20 pages read as a templated site). */}
+            <PortalResizer portalId={exam} hideDescription compact />
+            <p className="text-xs text-muted-foreground">
+              <Link href="/how-photo-checking-works/" className="font-medium text-brand hover:underline">
+                What this resizer checks
+              </Link>
             </p>
+
+            {/* Read-next guides. This used to be hardcoded for voter-id alone,
+                which left 48 exam pages with no route to the longer explanation.
+                The map only offers a guide that genuinely covers the portal. */}
+            {guideLinks.length > 0 && (
+              <div className="support rounded-lg border p-4">
+                <h3 className="text-sm font-semibold text-ink">
+                  Before you upload
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                  Read the{" "}
+                  {guideLinks.map((guide, i) => (
+                    <Fragment key={guide.slug}>
+                      {i > 0 && (i === guideLinks.length - 1 ? " and " : ", ")}
+                      <Link
+                        href={`/blog/${guide.slug}/`}
+                        className="font-medium text-brand hover:underline"
+                      >
+                        {guide.label}
+                      </Link>
+                    </Fragment>
+                  ))}
+                  .
+                </p>
+              </div>
+            )}
+
+            {(spec.requiresNameDate || spec.requiresSlateNameDate) && (
+              <div className="rounded-lg border border-amber-300 bg-amber-50/70 p-4 dark:border-amber-800 dark:bg-amber-950/30">
+                <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                  {spec.requiresSlateNameDate
+                    ? "This photo needs a name-and-date slate"
+                    : "This form needs your name & date on the photo"}
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-amber-800 dark:text-amber-300">
+                  {spec.requiresSlateNameDate ? (
+                    <>
+                      The current notice requires the candidate to be photographed holding
+                      a black slate with their name and the photography date written in
+                      white chalk. This must be present when the photo is taken, not added
+                      digitally afterward.
+                    </>
+                  ) : (
+                    <>
+                      {spec.name.split(" (")[0]} requires the candidate&apos;s name and the
+                      date of photography printed on the photo itself. After sizing it here,
+                      add the strip with the{" "}
+                      <Link
+                        href="/tools/photo-with-name-date/"
+                        className="font-medium underline underline-offset-2"
+                      >
+                        Photo with Name &amp; Date tool
+                      </Link>
+                      .
+                    </>
+                  )}
+                </p>
+              </div>
+            )}
+          </section>
+
+          {/* Appears only after a file from the resizer above is saved. */}
+          <div className="empty:hidden max-md:order-first">
+            <SupportCard tool={`exam-${exam}`} />
           </div>
-        )}
+        </div>
+      )}
 
-        {sig && (
-          <p className="text-sm text-muted-foreground">
-            Prefer a guided flow?{" "}
-            <Link href="/tools/exam-package/" className="font-medium text-brand hover:underline">
-              The photo + signature kit
-            </Link>{" "}
-            walks both documents through in one place.
-          </p>
-        )}
-      </section>
-
-      {spec.applicationNotes && spec.applicationNotes.length > 0 && (
+      {!guide && spec.applicationNotes && spec.applicationNotes.length > 0 && (
         <section className="space-y-3 border-t border-hairline pt-8">
           <h2 className="text-lg font-semibold">
             Application-specific notes for {spec.name.split(" (")[0]}
@@ -369,9 +458,9 @@ export default async function Page({
         </section>
       )}
 
-      {spec.context && (
+      {!guide && spec.context && (
         <section className="space-y-2">
-          <h2 className="eyebrow">About this exam</h2>
+          <h2 className="eyebrow">{ID_DOCUMENTS.has(exam) ? "About this application" : "About this exam"}</h2>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
             {spec.context}
           </p>
@@ -526,7 +615,7 @@ export default async function Page({
         </section>
       )}
 
-      {SUB_EXAMS[exam] && (
+      {!guide && SUB_EXAMS[exam] && (
         <section className="space-y-3">
           <h2 className="eyebrow">Covers these {spec.name.split(" (")[0]} exams</h2>
           <p className="text-sm text-muted-foreground">
@@ -541,82 +630,12 @@ export default async function Page({
             {SUB_EXAMS[exam].map((e) => (
               <span
                 key={e}
-                className="rounded-md border border-hairline bg-card px-3 py-1.5 text-[13px] font-medium text-foreground"
+                className="rounded-md border border-hairline bg-card px-3 py-1.5 text-[14px] font-medium text-foreground"
               >
                 {e}
               </span>
             ))}
           </div>
-        </section>
-      )}
-
-      {exam === "ssc" && (
-        <section className="space-y-6 border-t border-hairline pt-8">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">SSC captures the photo live — the signature is the file you prepare</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Current SSC applications capture the photograph live through the
-              portal&apos;s camera, so there is no pre-existing photo file to upload.
-              The signature is the upload to prepare: {sig}, JPG, on plain white
-              paper. The {photoKb(spec)} photo figure stored here is a
-              compatibility target, not a current SSC upload requirement — set up
-              good light and a plain background before you open the form.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">SSC-specific application note</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              SSC uses these files across recruitments including CGL, CHSL, MTS,
-              GD Constable, Stenographer and Junior Engineer through its One-Time
-              Registration flow. The current notice publishes no name-and-date rule
-              for the image, so no digital name/date strip is needed.
-            </p>
-          </div>
-          {spec.source && (
-            <a
-              href={spec.source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-            >
-              Check the SSC official portal <ExternalLink className="h-3.5 w-3.5" />
-            </a>
-          )}
-        </section>
-      )}
-
-      {exam === "upsc" && (
-        <section className="space-y-6 border-t border-hairline pt-8">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">UPSC sets separate file-size bands for photo and signature</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The verified UPSC record sets the photo at {photoKb(spec)} and the
-              signature at {sig} — two separate bands, so one file cannot satisfy
-              both. UPSC publishes these size limits rather than a pixel requirement.
-              Both are JPG uploads, and the photo uses a plain white background.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">A live photograph and three signatures on one sheet</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Besides the uploaded photograph, UPSC&apos;s portal captures a live
-              photograph during the application and matches it against the file you
-              uploaded — so use a current photo that looks like you today. The
-              signature upload is one image holding your signature{" "}
-              <strong>three times, arranged vertically</strong> on plain white
-              paper; a single signature is not what the form expects.
-            </p>
-          </div>
-          {spec.source && (
-            <a
-              href={spec.source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-            >
-              Check the UPSC online application source <ExternalLink className="h-3.5 w-3.5" />
-            </a>
-          )}
         </section>
       )}
 
@@ -826,23 +845,6 @@ export default async function Page({
         </section>
       )}
 
-      {/* Stored-field checks generated only from fields this record carries. */}
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">What to check before submitting {spec.name.split(" (")[0]} files</h2>
-        <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-          {portalRejectionReasons(spec, !!sig).map((r) => (
-            <li key={r} className="flex items-start gap-2">
-              <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ink-faint" strokeWidth={1.75} />
-              {r}
-            </li>
-          ))}
-        </ul>
-        <p className="text-xs text-muted-foreground">
-          Specs can change between notification cycles — always confirm the current limit on the official
-          portal before submitting.
-        </p>
-      </section>
-
       <section className="space-y-3">
         <h2 className="eyebrow">{categoryLabel} &amp; more</h2>
         <div className="flex flex-wrap gap-1.5">
@@ -850,23 +852,25 @@ export default async function Page({
             <Link
               key={s.id}
               href={`/exam-requirements/${s.id}/`}
-              className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground"
+              className="rounded-md border border-hairline px-3 py-1.5 text-[14px] font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/50 hover:text-foreground"
             >
               {s.name.split(" (")[0]}
             </Link>
           ))}
           <Link
             href="/exam-requirements/"
-            className="rounded-md border border-hairline px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-accent/50"
+            className="rounded-md border border-hairline px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-accent/50"
           >
             All exams
           </Link>
         </div>
       </section>
 
-      <section>
-        <Faq items={faqItems} noSchema />
-      </section>
+      {faqItems.length > 0 && (
+        <section>
+          <Faq items={faqItems} noSchema />
+        </section>
+      )}
 
       <AffiliateCta examId={exam} />
     </div>

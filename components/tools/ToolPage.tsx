@@ -9,6 +9,8 @@ import { breadcrumbSchema, faqSchema, softwareApplicationSchema, type Crumb } fr
 import { isDeindexed } from "@/lib/deindexed";
 import { TrackedLink } from "@/components/site/TrackedLink";
 import { ToolDepth } from "@/components/tools/ToolDepth";
+import { SupportCard } from "@/components/site/SupportCard";
+import { AdSlot } from "@/components/site/AdSlot";
 
 /** Shared chrome for a tool page: breadcrumb, heading, body, related links. */
 export function ToolPage({
@@ -70,6 +72,9 @@ export function ToolPage({
     autoCrumbs.push({ name: title, path: urlPath });
   }
   const crumbs = breadcrumbsProp ?? autoCrumbs;
+  // Analytics label for the support card: the catalog slug, else the page's
+  // own path segment (e.g. a Hinglish landing with no catalog entry).
+  const supportTool = slug ?? urlPath?.split("/").filter(Boolean).pop();
 
   const headerInner = (
     <header className="flex items-start gap-4">
@@ -85,7 +90,7 @@ export function ToolPage({
           {category && (
             <span className="eyebrow block text-[#7a5c06]">{category.group}</span>
           )}
-          <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
+          <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[30px]">
             {title}
           </h1>
           <p className="text-[15px] leading-relaxed text-muted-foreground">{blurb}</p>
@@ -102,7 +107,7 @@ export function ToolPage({
           </p>
           {dateModified && (
             <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-[10px] font-bold text-brand">JK</span>
+              <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-[12px] font-bold text-brand">JK</span>
               <span>Jaspal Kumar · easyPhoto developer &amp; document-spec researcher</span>
             </p>
           )}
@@ -144,12 +149,21 @@ export function ToolPage({
 
       {aside ? (
         <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
-          <div className="min-w-0">{children}</div>
+          <div className="min-w-0">
+            {children}
+            <SupportCard tool={supportTool} />
+          </div>
           <aside>{aside}</aside>
         </div>
       ) : (
-        <div className="mt-6">{children}</div>
+        <div className="mt-6">
+          {children}
+          <SupportCard tool={supportTool} />
+        </div>
       )}
+
+      {/* Below the tool and its result, never inside it (components/site/AdSlot). */}
+      <AdSlot placement="tool" />
 
       <ToolDepth slug={slug} />
 
@@ -168,7 +182,7 @@ export function ToolPage({
                 key={t.slug}
                 href={`/tools/${t.slug}/`}
                 event={{ name: "related_tool_click", from: slug!, to: t.slug }}
-                className="ep-card group flex items-center gap-3 p-4"
+                className="ep-card support group flex items-center gap-3 p-4"
               >
                 <ToolIconTile name={t.icon} category={toolColorCategory(t.slug)} size="sm" />
                 <span className="text-sm font-semibold leading-tight text-ink">

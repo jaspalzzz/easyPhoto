@@ -112,7 +112,7 @@ export default function Page() {
           height={1024}
           className="w-full h-auto"
         />
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
           Common passport-photo backgrounds: white for the US and India&apos;s under-four or overseas guidance, plus light grey and cream for the UK.
         </figcaption>
       </figure>

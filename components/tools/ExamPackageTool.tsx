@@ -14,7 +14,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent, ToolCard } from "@/components/ui/card";
 import { ToolIconTile } from "@/components/site/ToolIcon";
 import { PORTAL_PRESETS, PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
 import {
@@ -40,7 +40,7 @@ import { padBlobToMin } from "@/lib/padBytes";
 import { ComplianceReceipt } from "@/components/site/ComplianceReceipt";
 import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
 import { useExamSearch } from "@/components/tools/ExamSearch";
-import { whiteToTransparent, trimToContent } from "@/lib/signature";
+import { whiteToTransparent, trimToContent, signatureExportFormat } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb, kbCapBytes, kbFloorBytes } from "@/lib/utils";
 import { displayFileFormatBundle } from "@/lib/fileFormats";
@@ -53,6 +53,7 @@ import {
   type WorkflowPayload,
 } from "@/lib/workflowHandoff";
 import { useRouter } from "next/navigation";
+import { SupportInline } from "@/components/site/SupportInline";
 
 type Step = "exam" | "photo" | "signature" | "done";
 
@@ -277,9 +278,7 @@ export function ExamPackageTool() {
       });
       if (!bbox) throw new Error("No signature detected.");
       const hasRequiredDimensions = !!(spec.sigWidthPx && spec.sigHeightPx);
-      const signatureFormat: "jpg" | "png" = spec.sigFormat && /\b(?:JPG|JPEG)\b/i.test(spec.sigFormat)
-        ? "jpg"
-        : "png";
+      const signatureFormat: "jpg" | "png" = signatureExportFormat(spec) === "jpeg" ? "jpg" : "png";
       const framed = hasRequiredDimensions
         ? await fitToExactFrame(
             trimmed,
@@ -466,7 +465,7 @@ export function ExamPackageTool() {
   const stepIndex = STEPS.findIndex((s) => s.id === step);
 
   return (
-    <Card className="min-w-0">
+    <ToolCard className="min-w-0">
       <CardContent className="min-w-0 space-y-6 p-4 sm:p-6">
         {/* Stepper — premium progress bar with connecting fill */}
         <nav aria-label="Progress">
@@ -547,7 +546,7 @@ export function ExamPackageTool() {
             </div>
 
             {examQuery.trim() && (
-              <p className="text-[13px] text-muted-foreground">
+              <p className="text-[14px] text-muted-foreground">
                 Showing exams matching “{examQuery.trim()}” —{" "}
                 <button
                   type="button"
@@ -567,7 +566,7 @@ export function ExamPackageTool() {
                 <button
                   type="button"
                   onClick={() => setExamQuery("")}
-                  className="mt-2 text-[13px] font-semibold text-brand hover:underline"
+                  className="mt-2 text-[14px] font-semibold text-brand hover:underline"
                 >
                   Clear search
                 </button>
@@ -818,6 +817,8 @@ export function ExamPackageTool() {
                   {signature ? " (photo + signature)" : ""}
                 </Button>
 
+                <SupportInline />
+
                 {/* What now — the moment after download is where applicants
                     feel most alone; walk them to the portal. */}
                 <div className="rounded-lg border border-hairline bg-paper p-4 text-sm">
@@ -834,7 +835,7 @@ export function ExamPackageTool() {
                     )}
                     <li>
                       Double-check the live form&apos;s stated limits match{" "}
-                      <span className="font-mono text-[13px]">{photoKbText(spec!)}</span> — portals
+                      <span className="font-mono text-[14px]">{photoKbText(spec!)}</span> — portals
                       occasionally change them between cycles.
                     </li>
                   </ol>
@@ -864,7 +865,7 @@ export function ExamPackageTool() {
           </>
         )}
       </CardContent>
-    </Card>
+    </ToolCard>
   );
 }
 

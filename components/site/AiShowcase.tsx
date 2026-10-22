@@ -95,19 +95,19 @@ function EmeraldArrow() {
 export function AiShowcase() {
   return (
     <section className="border-t border-hairline bg-card">
-      <div className="container reveal py-14 sm:py-16">
+      <div className="container reveal py-14 sm:py-20">
 
         {/* ── heading ── */}
         <div className="mb-10 text-center">
           <p className="mb-3 text-xs font-bold uppercase tracking-widest text-muted-foreground">
             Automated photo preparation
           </p>
-          <h2 className="text-[2rem] font-bold tracking-tight text-ink sm:text-[2.6rem]">
+          <h2 className="text-[30px] font-bold tracking-tight text-ink sm:text-[36px]">
             Automated checks for measurable details
           </h2>
-          <p className="mt-3 text-[14.5px] text-muted-foreground">
+          <p className="mt-3 text-[15px] text-muted-foreground">
             From a selfie to a photo reviewed against measurable published requirements.
-            <span className="mt-1 block text-[12.5px] text-ink-faint">
+            <span className="mt-1 block text-[12px] text-ink-faint">
               Example walkthrough below, shown with a sample photo.
             </span>
           </p>
@@ -174,8 +174,8 @@ export function AiShowcase() {
                     {n}
                   </span>
                   <div className="min-w-0">
-                    <p className="text-[12.5px] font-bold leading-5 text-red-700 dark:text-red-300">{title}</p>
-                    <p className="text-[11.5px] leading-snug text-muted-foreground">{desc}</p>
+                    <p className="text-[12px] font-bold leading-5 text-red-700 dark:text-red-300">{title}</p>
+                    <p className="text-[12px] leading-snug text-muted-foreground">{desc}</p>
                   </div>
                 </li>
               ))}
@@ -226,7 +226,7 @@ export function AiShowcase() {
                   </svg>
                   {/* Centered text overlay */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-[1.5rem] font-black leading-none text-emerald-700 dark:text-emerald-300">7/7</span>
+                    <span className="text-[24px] font-black leading-none text-emerald-700 dark:text-emerald-300">7/7</span>
                     <span className="mt-0.5 text-center text-xs font-semibold leading-tight text-muted-foreground">
                       Checks<br />Passed
                     </span>
@@ -430,9 +430,9 @@ export function AiShowcase() {
                     >
                       {n}
                     </span>
-                    <h4 className="text-[13px] font-bold text-ink">{title}</h4>
+                    <h4 className="text-[14px] font-bold text-ink">{title}</h4>
                   </div>
-                  <p className="text-[11.5px] leading-snug text-muted-foreground">{desc}</p>
+                  <p className="text-[12px] leading-snug text-muted-foreground">{desc}</p>
                 </div>
               </div>,
 

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Share, SquarePlus, X } from "lucide-react";
 import { LogoMark } from "@/components/site/LogoMark";
+import { SUPPORT_CLOSE_EVENT, SUPPORT_OPEN_EVENT } from "@/lib/supportEvents";
 
 const DISMISS_KEY = "ep:pwa-hint-dismissed";
 
@@ -51,17 +52,22 @@ function isIosSafari(): boolean {
  * Native install prompt where the browser offers one (Chrome/Android/desktop);
  * share-sheet instructions on iOS Safari; nothing anywhere else. Dismiss once,
  * never shown again.
+ *
+ * One prompt at a time: when the support pop-up opens on a download, this hint
+ * yields and waits for the user's next download instead of stacking on it.
  */
 export function PwaInstallHint() {
   const [mode, setMode] = React.useState<"hidden" | "native" | "ios">("hidden");
   const deferredPrompt = React.useRef<BeforeInstallPromptEvent | null>(null);
   const downloaded = React.useRef(false);
+  const supportOpen = React.useRef(false);
 
   React.useEffect(() => {
     if (dismissed() || isStandalone()) return;
+    let showTimer: ReturnType<typeof setTimeout> | null = null;
 
     const maybeShow = () => {
-      if (!downloaded.current || dismissed()) return;
+      if (!downloaded.current || supportOpen.current || dismissed()) return;
       if (deferredPrompt.current) setMode("native");
       else if (isIosSafari()) setMode("ios");
     };
@@ -73,14 +79,30 @@ export function PwaInstallHint() {
     const onDownload = () => {
       downloaded.current = true;
       // Let the download toast have its moment first.
-      setTimeout(maybeShow, 5000);
+      if (showTimer) clearTimeout(showTimer);
+      showTimer = setTimeout(maybeShow, 5000);
+    };
+    const onSupportOpen = () => {
+      supportOpen.current = true;
+      // This download belongs to the support pop-up; wait for the next one.
+      downloaded.current = false;
+      if (showTimer) clearTimeout(showTimer);
+      setMode("hidden"); // not dismissed — it may still show later
+    };
+    const onSupportClose = () => {
+      supportOpen.current = false;
     };
 
     window.addEventListener("beforeinstallprompt", onBeforeInstall);
     window.addEventListener("ep:download", onDownload);
+    window.addEventListener(SUPPORT_OPEN_EVENT, onSupportOpen);
+    window.addEventListener(SUPPORT_CLOSE_EVENT, onSupportClose);
     return () => {
+      if (showTimer) clearTimeout(showTimer);
       window.removeEventListener("beforeinstallprompt", onBeforeInstall);
       window.removeEventListener("ep:download", onDownload);
+      window.removeEventListener(SUPPORT_OPEN_EVENT, onSupportOpen);
+      window.removeEventListener(SUPPORT_CLOSE_EVENT, onSupportClose);
     };
   }, []);
 

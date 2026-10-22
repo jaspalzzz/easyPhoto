@@ -6,11 +6,45 @@ import { Download, Wand2, Maximize, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, canvasToBlob } from "@/lib/imaging";
-import { detectInkBBox } from "@/lib/signature";
+import { detectInkBBox, whiteToTransparent } from "@/lib/signature";
 import { downloadBlob } from "@/lib/download";
 import { formatKb } from "@/lib/utils";
 import { track, deviceClass } from "@/lib/analytics";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
+import { SupportInline } from "@/components/site/SupportInline";
+
+/** What happens to the paper around the ink after cropping. */
+type Paper = "keep" | "white" | "transparent";
+
+const PAPER_CHOICES: ReadonlyArray<[Paper, string]> = [
+  ["keep", "Keep as is"],
+  ["white", "White"],
+  ["transparent", "Transparent"],
+];
+
+/**
+ * Remove the paper from a cropped signature: whiten it (grey phone-photo paper
+ * and shadows included, lib/paperFlatten.ts), then, for "transparent", turn the
+ * white into transparency. Loaded on demand.
+ */
+async function cleanPaper(canvas: HTMLCanvasElement, paper: Paper): Promise<HTMLCanvasElement> {
+  if (paper === "keep") return canvas;
+  const { whitenPaperOnCanvas } = await import("@/lib/paperFlatten");
+  whitenPaperOnCanvas(canvas);
+  return paper === "transparent" ? whiteToTransparent(canvas, { threshold: 235, softness: 40 }) : canvas;
+}
+
+/** Composite onto white, for JPG (which has no transparency). */
+function onWhite(canvas: HTMLCanvasElement): HTMLCanvasElement {
+  const out = document.createElement("canvas");
+  out.width = canvas.width;
+  out.height = canvas.height;
+  const ctx = out.getContext("2d")!;
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, out.width, out.height);
+  ctx.drawImage(canvas, 0, 0);
+  return out;
+}
 
 interface Rect {
   x: number;
@@ -255,17 +289,20 @@ function Body({ source }: { source: ToolSource }) {
   // Live result preview (debounced) — a small image of exactly what downloads,
   // plus its real file size, so there's no "before/after" guesswork.
   const [preview, setPreview] = React.useState<string | null>(null);
+  const [paper, setPaper] = React.useState<Paper>("keep");
   React.useEffect(() => {
     let cancelled = false;
     let url: string | null = null;
     async function run() {
       try {
-        const out = cropCanvas(false);
-        if (!out) {
+        const cropped = cropCanvas(false);
+        if (!cropped) {
           setPreview(null);
           setSize(null);
           return;
         }
+        const out = await cleanPaper(cropped, paper);
+        if (cancelled) return;
         const blob = await canvasToBlob(out, "image/png");
         if (cancelled) return;
         url = URL.createObjectURL(blob);
@@ -286,11 +323,13 @@ function Body({ source }: { source: ToolSource }) {
     // dCrop is the debounced crop; cropCanvas closes over `crop` so it changes
     // with it. Keying on dCrop keeps the heavy encode off every drag tick.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dCrop]);
+  }, [dCrop, paper]);
 
   const onDownload = async (type: "image/png" | "image/jpeg") => {
-    const out = cropCanvas(type === "image/jpeg");
-    if (!out) return;
+    const cropped = cropCanvas(type === "image/jpeg");
+    if (!cropped) return;
+    let out = await cleanPaper(cropped, paper);
+    if (type === "image/jpeg" && paper === "transparent") out = onWhite(out);
     const blob = await canvasToBlob(out, type, 0.95);
     downloadBlob(blob, `signature-cropped.${type === "image/png" ? "png" : "jpg"}`, "signature-manual-crop");
   };
@@ -339,6 +378,29 @@ function Body({ source }: { source: ToolSource }) {
         </Button>
       </div>
 
+      {/* Competitors that rank for "crop signature from image" either crop
+          (onlinepngtools) or remove the background (remove.bg); this does both. */}
+      <fieldset>
+        <legend className="eyebrow mb-1.5 block text-xs text-ink-soft">Paper around the signature</legend>
+        <div className="flex flex-wrap gap-2">
+          {PAPER_CHOICES.map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setPaper(value)}
+              aria-pressed={paper === value}
+              className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors ${
+                paper === value
+                  ? "border-brand bg-brand text-white"
+                  : "border-hairline-strong bg-background text-foreground hover:bg-accent/40"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
       {/* Live result — the actual output, no toggle to interpret. */}
       {hasCrop && preview && (
         <div className="space-y-2">
@@ -362,6 +424,8 @@ function Body({ source }: { source: ToolSource }) {
           <Download className="h-4 w-4" strokeWidth={1.75} /> JPG
         </Button>
       </div>
+
+      <SupportInline />
 
       <p className="flex items-start gap-2 text-xs text-muted-foreground">
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />

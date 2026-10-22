@@ -129,7 +129,7 @@ function Body({ source }: { source: ToolSource }) {
             value={widthStr}
             onChange={(e) => onWidth(e.target.value)}
             onBlur={commitWidth}
-            className="h-10 w-28 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
+            className="h-10 w-28 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[14px]"
           />
         </label>
         <Button
@@ -154,7 +154,7 @@ function Body({ source }: { source: ToolSource }) {
             value={heightStr}
             onChange={(e) => onHeight(e.target.value)}
             onBlur={commitHeight}
-            className="h-10 w-28 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[13px]"
+            className="h-10 w-28 rounded-md border border-hairline-strong bg-background px-3 font-mono text-[14px]"
           />
         </label>
         <Button variant="cta" onClick={run} disabled={busy}>

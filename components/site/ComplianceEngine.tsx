@@ -22,7 +22,7 @@ const CHECKS = [
 export function ComplianceEngine() {
   return (
     <section className="border-t border-hairline bg-paper">
-      <div className="container py-14 sm:py-16">
+      <div className="container py-14 sm:py-20">
         <h2 className="mb-2 text-center text-2xl font-semibold tracking-tight text-ink">
           Automated photo checks
         </h2>
@@ -58,7 +58,7 @@ export function ComplianceEngine() {
             <h3 className="mb-5 text-[15px] font-semibold text-ink">10 measurable checks</h3>
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
               {CHECKS.map((item) => (
-                <div key={item} className="flex items-center gap-2 text-[13px] text-ink">
+                <div key={item} className="flex items-center gap-2 text-[14px] text-ink">
                   <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[rgba(0,200,83,0.12)] text-xs font-black text-[#00c853]">
                     ✓
                   </span>
@@ -80,7 +80,7 @@ export function ComplianceEngine() {
             <div className="mb-4 h-2 w-full overflow-hidden rounded-full bg-hairline">
               <div className="h-full rounded-full bg-[#00c853]" style={{ width: "100%" }} />
             </div>
-            <p className="mb-5 text-[13px] leading-relaxed text-muted-foreground">
+            <p className="mb-5 text-[14px] leading-relaxed text-muted-foreground">
               No measurable issues detected. Always verify the current application instructions on the named authority&apos;s portal.
             </p>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-4 py-2 text-[12px] font-semibold text-ink">

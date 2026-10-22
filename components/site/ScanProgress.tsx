@@ -48,7 +48,7 @@ export function ScanProgress({
 
       {/* ── Left: vertical stepper ─────────────────────────────────────── */}
       <div className="flex-1 min-w-0">
-        <h3 className="mb-5 text-[17px] font-bold tracking-tight text-ink">
+        <h3 className="mb-5 text-[18px] font-bold tracking-tight text-ink">
           Preparing your photo
         </h3>
 
@@ -74,7 +74,7 @@ export function ScanProgress({
 
                   {/* Step circle */}
                   <span
-                    className={`relative z-10 mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[13px] font-bold transition-all duration-300 ${
+                    className={`relative z-10 mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[14px] font-bold transition-all duration-300 ${
                       done
                         ? "bg-brand text-white"
                         : active

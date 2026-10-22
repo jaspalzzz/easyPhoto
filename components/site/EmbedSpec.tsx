@@ -46,7 +46,7 @@ export function EmbedSpec({
           free · 1 click
         </span>
       </summary>
-      <p className="mt-3 text-[13px] leading-relaxed text-ink-soft">
+      <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">
         Running an exam-prep or coaching site? Drop this always-up-to-date{" "}
         {short} spec card into your page. Free to use — a link back to easyPhoto
         keeps it coming.

@@ -13,7 +13,7 @@ function SpecRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-hairline py-2.5 text-sm last:border-0">
       <dt className="text-ink-soft">{label}</dt>
-      <dd className="text-right font-mono text-[13px] font-medium tabular-nums">
+      <dd className="text-right font-mono text-[14px] font-medium tabular-nums">
         {value}
       </dd>
     </div>

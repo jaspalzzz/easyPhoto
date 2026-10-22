@@ -24,18 +24,17 @@ export function GET() {
   lines.push("# easyPhoto");
   lines.push("");
   lines.push(
-    "> easyPhoto (easyphoto.in) is a free, privacy-first toolkit for creating " +
-      "passport and visa photo preparation, resizing exam photos and signatures " +
-      "to selected KB targets and published pixel dimensions where available, and " +
-      "preparing application documents. Every " +
+    "> easyPhoto (easyphoto.in) is a free toolkit for Indian application photos " +
+      "and documents: passport and visa photos, exam photos and signatures resized " +
+      "to each form's KB and pixel limits, and PDF and document tools. Every " +
       "tool runs entirely in the user's browser — nothing is uploaded, and there " +
       "is no sign-up or watermark."
   );
   lines.push("");
   lines.push(
-    "Photo and signature specifications below show the named source where " +
-      "available and their verification status. Users should confirm the current " +
-      "portal instructions before submitting."
+    "Photo and signature rules below name their official source where one exists " +
+      "and say whether we have checked them against it. Users should confirm the " +
+      "current portal instructions before submitting."
   );
   lines.push("");
 
@@ -57,13 +56,13 @@ export function GET() {
       "and backgrounds."
   );
   lines.push(
-    `- [Exam photo & signature requirements](${u("/exam-requirements/")}): the ` +
-      "recorded size requirements, named sources and verification status for 30+ " +
-      "Indian exam and recruitment portals."
+    `- [Exam photo & signature requirements](${u("/exam-requirements/")}): ` +
+      "photo and signature size rules for 30+ Indian exam and recruitment portals, " +
+      "each with its official source and whether we have checked it."
   );
   lines.push(
-    `- [Exam Application Kit](${u("/tools/exam-package/")}): prepare a photo + ` +
-      "signature to the selected stored targets for a chosen exam, in one guided flow."
+    `- [Exam Application Kit](${u("/tools/exam-package/")}): prepare a photo and ` +
+      "signature to a chosen exam's size rules, in one guided flow."
   );
   lines.push("");
 
@@ -106,7 +105,9 @@ export function GET() {
   );
   lines.push("");
   for (const s of allPortalSpecs()) {
-    const photo = `photo ${kb(s.photoMinKb, s.photoLimitKb)}`;
+    const photo = s.noPhotoUpload
+      ? "photo taken live in the form (no upload)"
+      : `photo ${kb(s.photoMinKb, s.photoLimitKb)}`;
     const sig = s.sigLimitKb
       ? `, signature ${kb(s.sigMinKb, s.sigLimitKb)}`
       : "";

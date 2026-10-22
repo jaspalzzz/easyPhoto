@@ -6,16 +6,20 @@ import { getTool } from "@/lib/toolsCatalog";
 const tool = getTool("document-scanner")!;
 
 export const metadata = pageMetadata({
-  title: "Document Scanner Online — Photo to Clean PDF, Free",
+  // Searchers' words (GSC, 90 days to 13 Oct 2026, positions 24–50): "scan jpg
+  // image", "online photo scanner", "image scanner online", "jpg scanner",
+  // "convert jpg to scanned image", "jpeg to scan copy".
+  title: "Scan Photo Online — JPG to Scanned Copy, PDF or JPG",
   description:
-    "Scan documents with your phone camera and get a flat, evenly-lit PDF. Corrects the angle and removes shadows in your browser — no app, no upload, free.",
+    "Turn a phone photo or JPG of a document into a clean scanned copy: straighten it, remove shadows " +
+    "and download a PDF or JPG. Free; nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
 
 export default function Page() {
   return (
     <ToolPage
-      title="Document Scanner"
+      title="Scan a Photo or JPG Online"
       slug={tool.slug}
       blurb={tool.blurb}
       faqItems={[
@@ -50,6 +54,15 @@ export default function Page() {
       ]}
     >
       <DocumentScannerTool />
+
+      <section className="mt-10 space-y-3 border-t border-hairline pt-8">
+        <h2 className="text-lg font-semibold text-ink">Turn a photo into a scanned copy</h2>
+        <ol className="max-w-2xl list-decimal space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
+          <li>Add the picture of the page, from your phone camera roll or a JPG on your computer.</li>
+          <li>Drag the four corners onto the edges of the paper, then pick Colour, Greyscale or Black &amp; white.</li>
+          <li>Save every page as one PDF, or just the page you are on as a JPG.</li>
+        </ol>
+      </section>
     </ToolPage>
   );
 }

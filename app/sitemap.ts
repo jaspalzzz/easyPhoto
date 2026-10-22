@@ -4,7 +4,8 @@ import { MAKER_PAGES } from "@/lib/makerPages";
 import { READY_TOOLS, CATEGORY_SLUGS } from "@/lib/toolsCatalog";
 import { isDeindexed } from "@/lib/deindexed";
 import { BLOG_POSTS } from "@/lib/blog";
-import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
+import { examPageLastModified } from "@/lib/examPageDates";
+import { PORTAL_KEYS } from "@/lib/portalPresets";
 
 export const dynamic = "force-static";
 
@@ -22,17 +23,66 @@ const LAST_UPDATED = "2026-08-02";
 const MAKERS_UPDATED = "2026-08-02";
 /** Tool pages and their category hubs — moves when a tool or its copy changes. */
 const TOOLS_UPDATED = "2026-09-08";
-const TRUST_PAGES_UPDATED = "2026-07-13";
-
 /**
- * When the exam-requirement template itself last changed, as opposed to when a
- * given exam's specification was last verified. An exam page's lastmod is the
- * later of the two: the spec can be six months old while the page around it
- * gained a read-next block and an above-the-fold action row this week, and
- * Google should be told the page changed without the spec pretending to be
- * newer than it is.
+ * Tool pages whose own copy changed after TOOLS_UPDATED, so the rest keep
+ * their real date (13 Oct 2026: titles, snippets and FAQs in searchers' words).
  */
-const EXAM_TEMPLATE_UPDATED = "2026-08-02";
+const TOOL_UPDATED: Record<string, string> = {
+  // 15 Oct 2026: "Scan Photo Online" title and steps; exam kit description without internal words.
+  "document-scanner": "2026-10-15",
+  "exam-package": "2026-10-15",
+  // 15 Oct 2026: keyword map (docs/keyword-map-2026-10.md) for the next four tool pages.
+  "aadhaar-ocr": "2026-10-15",
+  "resume-photo": "2026-10-15",
+  "face-centering": "2026-10-15",
+  "signature-resize": "2026-10-15",
+  // 15 Oct 2026: background and signature pages, each with its own job.
+  "background-removal": "2026-10-15",
+  "signature-background-removal": "2026-10-15",
+  "signature-cleaner": "2026-10-15",
+  // 15 Oct 2026: title and "Which exams need a photo with name and date?".
+  "photo-with-name-date": "2026-10-15",
+  "photo-signature-merge": "2026-10-13",
+  // 15 Oct 2026: "Sign on Photo or Image" title, type-your-name signature, PNG stays PNG.
+  "sign-image": "2026-10-15",
+  "dpi-converter": "2026-10-13",
+  "signature-crop": "2026-10-14",
+  "white-background": "2026-10-14",
+  // 15 Oct 2026: optional minimum, for forms that give a KB range.
+  "resize-kb": "2026-10-15",
+};
+/**
+ * Landing pages whose own copy changed after LAST_UPDATED. The page's
+ * dateModified must match (test/dateConsistency.test.ts).
+ */
+const LANDING_UPDATED: Record<string, string> = {
+  // 15 Oct 2026: "UAE & Dubai" in the title and H1; GDRFA named as Dubai's office.
+  "/uae-visa-photo-maker/": "2026-10-15",
+  // 15 Oct 2026: "MRP size photo" title and H1; visitor-facing Good to know.
+  "/nepal-passport-photo-maker/": "2026-10-15",
+  // 15 Oct 2026: homepage H1 in visitors' words.
+  "/": "2026-10-15",
+  // 15 Oct 2026: "Passport Size Photo Maker" title, intro and tool links
+  // (14 Oct: passport size in cm and in pixels at 300 DPI).
+  "/passport-photo/": "2026-10-15",
+};
+const TRUST_PAGES_UPDATED = "2026-07-13";
+/** /terms/ — moves only when the terms text changes (7 Oct 2026: support-payment refunds). */
+const TERMS_UPDATED = "2026-10-07";
+/** /privacy/ — moves only when the policy text changes (8 Oct 2026: ad-cookie disclosure, tips; 14 Oct 2026: where ads run). */
+const PRIVACY_UPDATED = "2026-10-14";
+/** /tools/ index — moves only when its own content changes (8 Oct 2026: unfinished-tool cards removed). */
+const TOOLS_INDEX_UPDATED = "2026-10-08";
+/**
+ * /exam-requirements/ and /exam-photo-size/ — the overview list and table of
+ * every exam. Move when an exam's row or card changes (8 Oct 2026: SSC live
+ * photo and signature; 10 Oct 2026: UP Police live photo and signature;
+ * 13 Oct 2026: Voter ID photo 2000 KB and the exam-page corrections).
+ */
+const EXAM_OVERVIEW_UPDATED = "2026-10-13";
+/** /exam-calendar/ — moves only when its own content changes (13 Oct 2026: made date-free, links each board's calendar). */
+const EXAM_CALENDAR_UPDATED = "2026-10-13";
+
 
 // Helper: add the page's OG image as an image sitemap entry.
 // Next.js 15 renders <image:image>/<image:loc> for each entry in `images`.
@@ -45,21 +95,13 @@ function ogImg(path: string): string[] {
 
 /** Static sitemap.xml generated at build (output: export). */
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Exam pages carry the later of two dates: when the spec was last verified
-  // against the official source (verifiedOn) and when the template around it
-  // last changed. Using verifiedOn alone understated pages whose content moved
-  // this week; using the template date alone would claim a stale spec is fresh.
-  const examFreshness = (key: string) => {
-    const verified = PORTAL_PRESETS[key]?.verifiedOn;
-    if (!verified) return EXAM_TEMPLATE_UPDATED;
-    return verified > EXAM_TEMPLATE_UPDATED ? verified : EXAM_TEMPLATE_UPDATED;
-  };
+  // Exam pages: the later of the spec's verification and the template change
+  // (lib/examPageDates.ts, shared with the page's JSON-LD dateModified).
 
   // ── Plain routes (no dedicated OG image) ─────────────────────────────────
   // These pages appear in the sitemap without image entries.
   const simpleRoutes: string[] = [
     "/",
-    "/tools/",
     "/us-passport-photo/",
     "/uk-passport-photo/",
     "/canada-passport-photo/",
@@ -67,12 +109,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/blog/",
     "/about/",
     "/contact/",
-    "/privacy/",
-    "/terms/",
     "/disclaimer/",
-    "/exam-requirements/",
-    "/exam-photo-size/",
-    "/exam-calendar/",
     "/aadhaar-photo/",
     // Hinglish pages are noindex (thin duplicates) — intentionally not in sitemap.
     "/convert/",
@@ -106,8 +143,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Simple pages (no images) ─────────────────────────────────────────────
     ...simpleRoutes.filter((path) => !isDeindexed(path)).map((path) => ({
       url: `${SITE_URL}${path}`,
-      lastModified: LAST_UPDATED,
+      lastModified: LANDING_UPDATED[path] ?? LAST_UPDATED,
     })),
+
+    // ── Pages with their own date, so editing one doesn't restamp the others ─
+    ...(
+      [
+        ["/tools/", TOOLS_INDEX_UPDATED],
+        ["/exam-requirements/", EXAM_OVERVIEW_UPDATED],
+        ["/exam-photo-size/", EXAM_OVERVIEW_UPDATED],
+        ["/exam-calendar/", EXAM_CALENDAR_UPDATED],
+        ["/privacy/", PRIVACY_UPDATED],
+        ["/terms/", TERMS_UPDATED],
+      ] as const
+    )
+      .filter(([path]) => !isDeindexed(path))
+      .map(([path, lastModified]) => ({ url: `${SITE_URL}${path}`, lastModified })),
 
     // ── Indexable trust and methodology pages ───────────────────────────────
     ...trustRoutes.map((path) => ({
@@ -118,14 +169,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Landing pages with OG images ─────────────────────────────────────────
     ...ogRoutes.filter((path) => !isDeindexed(path)).map((path) => ({
       url: `${SITE_URL}${path}`,
-      lastModified: LAST_UPDATED,
+      lastModified: LANDING_UPDATED[path] ?? LAST_UPDATED,
       images: ogImg(path),
     })),
 
     // ── Country/visa maker pages — all use [maker]/opengraph-image ────────────
     ...MAKER_PAGES.map((m) => ({
       url: `${SITE_URL}/${m.slug}/`,
-      lastModified: MAKERS_UPDATED,
+      lastModified: LANDING_UPDATED[`/${m.slug}/`] ?? MAKERS_UPDATED,
       images: ogImg(`/${m.slug}/`),
     })),
 
@@ -139,14 +190,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Individual tool pages — all have opengraph-image.tsx ─────────────────
     ...READY_TOOLS.filter((t) => !isDeindexed(`/tools/${t.slug}/`)).map((t) => ({
       url: `${SITE_URL}/tools/${t.slug}/`,
-      lastModified: TOOLS_UPDATED,
+      lastModified: TOOL_UPDATED[t.slug] ?? TOOLS_UPDATED,
       images: ogImg(`/tools/${t.slug}/`),
     })),
 
     // ── Per-exam spec pages — lastmod = the spec's own verification date ──────
     ...PORTAL_KEYS.map((key) => ({
       url: `${SITE_URL}/exam-requirements/${key}/`,
-      lastModified: examFreshness(key),
+      lastModified: examPageLastModified(key),
     })),
     // ── Blog posts — all have opengraph-image.tsx; use their own publish date ─
     // Portal form resizers (/tools/form-resizer/*) and sub-exam resizers

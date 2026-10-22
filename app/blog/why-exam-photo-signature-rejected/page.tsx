@@ -96,7 +96,7 @@ export default function Page() {
           </tbody>
         </table>
       </div>
-      <p className="text-[13px] text-ink-soft">
+      <p className="text-[14px] text-ink-soft">
         Sources: <a href={ssc.source!.url} target="_blank" rel="noopener noreferrer" className="text-brand underline">SSC 2026 notice</a>,{" "}
         <a href={ibps.source!.url} target="_blank" rel="noopener noreferrer" className="text-brand underline">IBPS notification</a>, and{" "}
         <a href={upsc.source!.url} target="_blank" rel="noopener noreferrer" className="text-brand underline">UPSC upload instructions</a>.

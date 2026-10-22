@@ -59,7 +59,7 @@ export default function AadhaarPhotoPage() {
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">Aadhaar</span>
-        <h1 className="text-3xl font-semibold tracking-tight text-ink sm:text-[2.25rem]">
+        <h1 className="text-3xl font-semibold tracking-tight text-ink sm:text-[36px]">
           Aadhaar Photo: How to Change It
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
@@ -109,7 +109,7 @@ export default function AadhaarPhotoPage() {
           Both run entirely in your browser. Your Aadhaar is never uploaded.
         </p>
         <div className="grid gap-3 sm:grid-cols-2">
-          <Link href="/tools/mask-aadhaar/" className="ep-card group flex items-start gap-3 p-4">
+          <Link href="/tools/mask-aadhaar/" className="ep-card support group flex items-start gap-3 p-4">
             <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(142_55%_34%/0.12)] text-[hsl(142_55%_30%)] dark:bg-[hsl(142_55%_34%/0.20)] dark:text-[hsl(142_55%_60%)]">
               <EyeOff className="h-5 w-5" strokeWidth={1.75} />
             </span>
@@ -124,7 +124,7 @@ export default function AadhaarPhotoPage() {
               </span>
             </span>
           </Link>
-          <Link href="/unlock-aadhaar-pdf/" className="ep-card group flex items-start gap-3 p-4">
+          <Link href="/unlock-aadhaar-pdf/" className="ep-card support group flex items-start gap-3 p-4">
             <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(215_70%_50%/0.12)] text-[hsl(215_70%_45%)] dark:bg-[hsl(215_70%_50%/0.20)] dark:text-[hsl(215_70%_70%)]">
               <LockOpen className="h-5 w-5" strokeWidth={1.75} />
             </span>

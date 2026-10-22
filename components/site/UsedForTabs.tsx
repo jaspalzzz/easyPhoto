@@ -24,7 +24,7 @@ export function UsedForTabs() {
               <button
                 key={tab.id}
                 onClick={() => setActive(tab.id)}
-                className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-semibold transition-colors duration-150 ${
+                className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-[14px] font-semibold transition-colors duration-150 ${
                   active === tab.id
                     ? "bg-[hsl(222_60%_8%)] text-[hsl(var(--cta))]"
                     : "bg-accent text-ink hover:bg-accent/80"

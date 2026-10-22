@@ -178,7 +178,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
 
       {/* Online upload — first on mobile; this is the primary need for portal applicants */}
       <div className="rounded-md border border-hairline">
-        <div className="flex items-center gap-2 border-b border-hairline px-3 py-2 text-[13px] font-semibold">
+        <div className="flex items-center gap-2 border-b border-hairline px-3 py-2 text-[14px] font-semibold">
           <Globe className="h-4 w-4 text-ink-soft" strokeWidth={1.75} /> Online upload
         </div>
         <div className="px-3 py-3">
@@ -241,7 +241,7 @@ export function ExportPanel({ spec, print, digital }: ExportPanelProps) {
       )}
 
       <div className="rounded-md border border-hairline">
-        <div className="flex items-center gap-2 border-b border-hairline px-3 py-2 text-[13px] font-semibold">
+        <div className="flex items-center gap-2 border-b border-hairline px-3 py-2 text-[14px] font-semibold">
           <Printer className="h-4 w-4 text-ink-soft" strokeWidth={1.75} /> Print
         </div>
         <div className="px-3 py-3">

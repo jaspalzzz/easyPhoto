@@ -79,7 +79,7 @@ export function KbResizeLanding({ kb }: { kb: number }) {
         <ToolIconTile name="Scaling" category="photo" className="hidden shrink-0 sm:flex" />
         <div className="space-y-2">
           <span className="eyebrow block text-brand">Photo Tools</span>
-          <h1 className="text-[1.7rem] font-semibold leading-tight tracking-tight text-ink sm:text-[2rem]">
+          <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[30px]">
             Resize Image to {kb} KB
           </h1>
           <p className="text-[15px] leading-relaxed text-muted-foreground">

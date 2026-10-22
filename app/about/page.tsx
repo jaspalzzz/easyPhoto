@@ -87,10 +87,10 @@ export default function AboutPage() {
       {/* Hero */}
       <header className="mt-5 space-y-4 border-b border-hairline pb-9">
         <span className="eyebrow text-brand">Our story</span>
-        <h1 className="text-balance text-[2.1rem] font-semibold leading-[1.08] tracking-tight text-ink sm:text-[2.6rem]">
+        <h1 className="text-balance text-[36px] font-semibold leading-[1.08] tracking-tight text-ink sm:text-[36px]">
           A passport photo should never cost you the application
         </h1>
-        <p className="max-w-2xl text-pretty text-[17px] leading-relaxed text-muted-foreground">
+        <p className="max-w-2xl text-pretty text-[18px] leading-relaxed text-muted-foreground">
           EasyPhoto helps prepare passport, visa and exam photos against published
           requirements — free, private, and entirely in your browser. Here&apos;s why
           we built it that way and how we research the specifications we use.
@@ -104,7 +104,7 @@ export default function AboutPage() {
             key={s.l}
             className={`px-4 py-5 text-center ${i >= 2 ? "border-t border-hairline sm:border-t-0" : ""}`}
           >
-            <dd className="text-2xl font-semibold tracking-tight text-brand sm:text-[1.75rem]">
+            <dd className="text-2xl font-semibold tracking-tight text-brand sm:text-[30px]">
               {s.v}
             </dd>
             <dt className="mt-1 text-xs leading-tight text-muted-foreground">{s.l}</dt>
@@ -115,14 +115,14 @@ export default function AboutPage() {
       {/* The "why" — a short, human mission paragraph */}
       <section className="mt-12 max-w-2xl space-y-5">
         <h2 className="text-xl font-semibold tracking-tight text-ink">Why we built it</h2>
-        <p className="text-[17px] leading-[1.75] text-ink-soft">
+        <p className="text-[18px] leading-[1.75] text-ink-soft">
           Getting a passport or visa photo rejected over a couple of millimetres,
           or the wrong shade of background, is a frustration most people have run
           into. Studio photos are expensive and slow. And the &quot;free&quot;
           online tools usually add a watermark, make you sign up, or quietly upload
           your face to a server you&apos;ll never hear about again.
         </p>
-        <p className="text-[17px] leading-[1.75] text-ink-soft">
+        <p className="text-[18px] leading-[1.75] text-ink-soft">
           We wanted something that applies documented sizes and measurable checks
           without asking for your data. Final acceptance always belongs to the
           authority receiving the application, so we show the source and any

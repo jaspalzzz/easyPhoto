@@ -3,8 +3,15 @@ import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
+import { PORTAL_PRESETS } from "@/lib/portalPresets";
 
+/*
+ * Re-checked line by line against UPSC's "Instructions for Uploading the Photo &
+ * Signature" (the NDA, CDS and UPSC records' source) on 15 Oct 2026: three
+ * signatures in black ink at 350–500 px, and the mandatory live photo.
+ */
 const post = getPost("nda-cds-photo-signature-guide-2026")!;
+const spec = PORTAL_PRESETS.nda;
 
 export const metadata = pageMetadata({
   title: post.title,
@@ -17,14 +24,24 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} ctaHref="/exam-requirements/upsc/" ctaLabel="Resize your NDA/CDS photo">
+      <p className="text-sm text-ink-soft">Last reviewed: 15 October 2026</p>
       <p>
         NDA and CDS upload through the same UPSC OTR portal, so their photo and
-        signature rules are identical to each other and to UPSC CSE. UPSC keeps
-        it simple: it publishes file-format and file-size limits, a plain white
-        background, and a face covering most of the frame — but no fixed pixel
-        size, no square-crop rule, and no name-and-date strip. This guide covers
-        the confirmed specs for both exams and a workflow that gets both files
-        ready before the portal opens.
+        signature rules are identical to each other and to UPSC CSE. The photo
+        is the easy part: a JPG of 20–200&nbsp;KB on plain white, with no fixed
+        pixel size, no square crop and no name-and-date strip. Two steps catch
+        defence applicants out. The signature file holds your signature three
+        times, and the form also takes a live photo of you that must match the
+        one you upload. This guide covers both exams, checked against{" "}
+        <a
+          href={spec.source?.url ?? "https://upsconline.nic.in"}
+          className="text-brand underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          UPSC&apos;s photo and signature instructions
+        </a>
+        .
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
@@ -36,8 +53,14 @@ export default function Page() {
             requirement.
           </li>
           <li>
-            <strong>Signature:</strong> 20–100&nbsp;KB, JPG, black or blue ink
-            on white paper — no all-capitals.
+            <strong>Signature:</strong> sign three times, one below the other,
+            in black ink on plain white paper, and upload the sheet as one
+            350–500 pixel JPG weighing 20–100&nbsp;KB.
+          </li>
+          <li>
+            <strong>Live photo:</strong> the form photographs you through your
+            webcam, or your phone after you scan a QR code, and compares it
+            with the photo you uploaded.
           </li>
           <li>
             <strong>Before you apply:</strong> read the current notice — UPSC can
@@ -108,12 +131,12 @@ export default function Page() {
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">Pixel dimensions</td>
             <td className="py-2 pr-3">No fixed size published</td>
-            <td className="py-2 pr-3">No fixed size published</td>
+            <td className="py-2 pr-3">350–500&nbsp;px</td>
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">Background</td>
             <td className="py-2 pr-3">Plain white</td>
-            <td className="py-2 pr-3">White paper, clean</td>
+            <td className="py-2 pr-3">Plain white paper, no lines</td>
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
@@ -130,12 +153,12 @@ export default function Page() {
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">Ink colour</td>
             <td className="py-2 pr-3">—</td>
-            <td className="py-2 pr-3">Black or blue</td>
+            <td className="py-2 pr-3">Black</td>
           </tr>
           <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">All-capitals</td>
+            <td className="py-2 pr-3 font-medium text-ink">Signatures in the file</td>
             <td className="py-2 pr-3">—</td>
-            <td className="py-2 pr-3">Rejected</td>
+            <td className="py-2 pr-3">Three, one below the other</td>
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">Recency</td>
@@ -161,6 +184,31 @@ export default function Page() {
           photo and signature size guide for all exams
         </Link>
         .
+      </p>
+
+      <h2>How does the NDA and CDS live photo work?</h2>
+      <p>
+        Uploading a photo file is no longer the whole job. UPSC now makes every
+        applicant, for every examination, capture a live photograph before the
+        application can be submitted. The portal offers two ways to take it:
+      </p>
+      <ul>
+        <li>
+          <strong>On a computer:</strong> allow the site to use the webcam of the
+          device you are applying on.
+        </li>
+        <li>
+          <strong>On a phone:</strong> scan the QR code shown on the screen and
+          take the picture with your mobile camera.
+        </li>
+      </ul>
+      <p>
+        Sit in good light with your whole face clearly visible. Once it is
+        captured, the &ldquo;View Photo&rdquo; option shows what was saved.
+        UPSC then compares this live picture with your uploaded photograph,
+        and if the two don&apos;t match, the application stops there. The
+        simplest protection is an uploaded photo that is recent and looks
+        like you do today.
       </p>
 
       <h2>
@@ -244,75 +292,70 @@ export default function Page() {
         .
       </p>
 
-      <h2>What background, dress code, and framing does UPSC require?</h2>
+      <h2>What background, clothing and framing does UPSC require?</h2>
       <p>
-        The UPSC OTR portal specifies a plain white background, formal attire,
-        and a face covering about 75% of the frame. These apply to both NDA and
-        CDS applications.
+        UPSC&apos;s instruction sheet lists what the uploaded photo must show
+        and what it refuses. The same list covers NDA and CDS.
       </p>
       <ul>
         <li>
-          <strong>Background:</strong> plain white only. Not off-white, cream,
-          or light grey. Off-white walls are a common cause of rejection.
+          <strong>Background:</strong> plain white, and no shadow falling across
+          your face or the wall. A dark background is not accepted.
         </li>
         <li>
-          <strong>Spectacles:</strong> if you wear glasses, check the specific
-          notification — some defence notices restrict them or require the eyes
-          to be clearly visible without glare.
+          <strong>Uniform:</strong> a photograph in uniform is not accepted.
+          Change out of any NCC or service uniform before you take it.
         </li>
         <li>
-          <strong>Headgear:</strong> allowed only for religious reasons (turban,
-          hijab) if worn consistently in your identity documents. Otherwise,
-          remove it.
+          <strong>Glasses:</strong> dark or coloured glasses that hide the eyes
+          are refused. Clear spectacles are allowed, provided the lenses
+          don&apos;t reflect the light.
         </li>
         <li>
-          <strong>Framing:</strong> head and shoulders, face at least 75% of
-          the frame. Don&apos;t stand too far from the camera — closer than a
-          standard passport portrait.
+          <strong>Framing:</strong> a colour photo, face from the front, head in
+          the centre, both ears visible, and the face filling three quarters of
+          the picture. Keep hair off your eyes.
         </li>
         <li>
-          <strong>Attire:</strong> formal. A dark, solid-colour shirt reads
-          cleanly against a white background. Avoid white tops; shoulder edges
-          blur into the background.
+          <strong>Expression:</strong> natural, eyes open. No grin, frown or
+          raised eyebrows.
         </li>
         <li>
-          <strong>Expression:</strong> neutral, mouth closed, both eyes fully
-          open, looking directly at the camera.
+          <strong>Unsigned:</strong> don&apos;t sign the photograph itself; the
+          signature goes in its own file.
         </li>
       </ul>
 
       <h2>How do I prepare my signature for NDA and CDS?</h2>
       <p>
-        Sign on plain white A4 paper in black or blue ink — black is strongly
-        preferred. Cursive or running hand only; all-capitals signatures are
-        rejected. The signature file size band is 20–100&nbsp;KB, more permissive
-        than SSC&apos;s 10–20&nbsp;KB range, so aggressive compression is not
-        needed here.
+        UPSC wants your signature three times in one picture, not once. Use
+        black ink and plain white paper, one signature below the other, with
+        clear space between them. UPSC says a signature file outside its
+        rules is rejected, so check each point before you upload:
       </p>
       <ul>
         <li>
-          <strong>Paper:</strong> plain white A4, no lines. Lined or coloured
-          notepaper makes the background hard to clean to true white.
+          <strong>Exactly three:</strong> two or four signatures fail, and so
+          do three written side by side.
         </li>
         <li>
-          <strong>Ink:</strong> black ballpoint strongly preferred; blue
-          accepted. Gel pens are fine at this file size.
+          <strong>Paper:</strong> plain white with no ruled lines and no
+          colour.
         </li>
         <li>
-          <strong>Style:</strong> cursive or connected running hand. If you
-          normally sign in block capitals, practise a simple flowing version.
-          The portal flags all-capitals patterns.
+          <strong>Ink:</strong> black. Blue ink is not what UPSC asks for.
         </li>
         <li>
-          <strong>Photography:</strong> lay the paper flat, hold your phone
-          directly above it, even light, no shadows across the signature.
+          <strong>Picture:</strong> lay the paper flat and shoot it in even
+          light so it comes out clear, sharp and upright, not dark, blurred,
+          sideways or upside down.
         </li>
         <li>
-          <strong>Resize and clean:</strong> run the image through the{" "}
-          <Link href="/exam-requirements/upsc/">UPSC signature resizer</Link>.
-          It removes the paper background, trims whitespace, and outputs a
-          clean JPG inside the 20–100&nbsp;KB band. Nothing leaves your
-          browser.
+          <strong>File:</strong> one JPG named <code>{spec.sigFileName}</code>,{" "}
+          sized 350–500 pixels and between 20 and 100&nbsp;KB. The{" "}
+          <Link href="/exam-requirements/upsc/">UPSC signature resizer</Link>{" "}
+          whitens the paper and brings the file into that range on your
+          device.
         </li>
       </ul>
 
@@ -370,10 +413,20 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
-              Spectacles visible
+              Tinted glasses, or glare on spectacles
             </td>
             <td className="py-2 pr-3">
-              Retake without glasses — prescription lenses are not exempt
+              Retake in clear spectacles angled away from the light, or
+              without them
+            </td>
+          </tr>
+          <tr className="border-b border-hairline/60">
+            <td className="py-2 pr-3 font-medium text-ink">
+              Live photo doesn&apos;t match the upload
+            </td>
+            <td className="py-2 pr-3">
+              Upload a recent photo of how you look now, then retake the live
+              photo in good light
             </td>
           </tr>
           <tr className="border-b border-hairline/60">
@@ -419,22 +472,17 @@ export default function Page() {
           the upload session.
         </li>
       </ol>
-      <p>For the signature, prepare offline before the application window opens:</p>
+      <p>
+        Prepare the three-signature sheet the same day, using the checklist
+        above. Then, on the form itself:
+      </p>
       <ol>
         <li>
-          <strong>Sign on white A4 paper</strong> in black ink, cursive hand.
+          <strong>Upload both files</strong> and check the preview of each.
         </li>
         <li>
-          <strong>Photograph flat</strong> in even light, no shadows across
-          the signature.
-        </li>
-        <li>
-          <strong>
-            Run through the{" "}
-            <Link href="/exam-requirements/upsc/">UPSC signature resizer</Link>
-          </strong>
-          . It cleans the background and outputs a JPG in the 20–100&nbsp;KB
-          band.
+          <strong>Take the live photo</strong> when the form asks, facing a
+          window or lamp so your face is evenly lit.
         </li>
       </ol>
       <p>
@@ -448,7 +496,7 @@ export default function Page() {
           items={[
             {
               q: "Is the NDA photo size the same as the CDS photo size?",
-              a: "Yes. Both NDA and CDS use the same UPSC OTR portal, and it matches UPSC CSE: a 20–200 KB JPG photo on a plain white background with about 75% face coverage, and a 20–100 KB signature. UPSC publishes no fixed pixel size, no square-crop rule, and no name/date strip.",
+              a: "Yes. Both NDA and CDS use the same UPSC OTR portal, and it matches UPSC CSE: a 20–200 KB JPG photo on a plain white background with about 75% face coverage, a live photo taken during the application, and one 350–500 pixel signature JPG of 20–100 KB holding three signatures. The photo has no fixed pixel size or square-crop rule.",
             },
             {
               q: "Does the NDA or CDS application photo need my name and date on it?",
@@ -456,7 +504,7 @@ export default function Page() {
             },
             {
               q: "Can I wear glasses in my NDA or CDS photograph?",
-              a: "It depends on the cycle — check the specific notification. Some defence notices restrict spectacles or require the eyes to be clearly visible without glare. When in doubt, a photo without glasses avoids the issue.",
+              a: "Clear spectacles are allowed if the lenses show no glare. UPSC refuses dark or coloured glasses that hide your eyes, and a photo in uniform. If you can't get rid of the reflection, take the photo without them.",
             },
             {
               q: "Why won't my IBPS PO photo work for NDA?",

@@ -130,7 +130,7 @@ export default function Page() {
             </g>
           ))}
         </svg>
-        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12.5px] text-muted-foreground">
+        <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
           The six most common passport photo rejection reasons — and what to do instead.
         </figcaption>
       </figure>
@@ -176,7 +176,7 @@ export default function Page() {
           ].map(([c, s, bg]) => (
             <tr key={c} className="border-b border-hairline/60">
               <td className="py-2 pr-3 font-medium text-ink">{c}</td>
-              <td className="py-2 pr-3 font-mono text-[13px]">{s}</td>
+              <td className="py-2 pr-3 font-mono text-[14px]">{s}</td>
               <td className="py-2">{bg}</td>
             </tr>
           ))}

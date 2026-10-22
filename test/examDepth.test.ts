@@ -10,7 +10,7 @@ const pageSource = fs.readFileSync(
 describe("high-demand exam depth", () => {
   it("keeps Army Agniveer guidance honest about unpublished upload figures", () => {
     const block = pageSource.match(
-      /\{exam === "army-agniveer"[\s\S]*?\{\/\* Stored-field checks/
+      /\{exam === "army-agniveer" && \([\s\S]*?\n      \)\}/
     )?.[0];
 
     expect(block).toBeTruthy();

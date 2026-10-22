@@ -18,6 +18,7 @@ import { getMakerContent } from "@/lib/makerContent";
 import { AcceptanceTips } from "@/components/site/AcceptanceTips";
 import { HeadSizeGuide } from "@/components/site/HeadSizeGuide";
 import { PhotoTool } from "@/components/tool/PhotoTool";
+import { SupportCard } from "@/components/site/SupportCard";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
   breadcrumbSchema,
@@ -72,11 +73,37 @@ export async function generateMetadata({
       : `${labelWithDoc(spec.label, doc)} photo, recorded at ${mm.width}×${mm.height}mm, ${background}. Confirm current requirements. Free, nothing uploaded.`,
   );
   return pageMetadata({
-    title: `${labelWithDoc(spec.label, doc, doc === "visa" ? "Visa" : "Passport")} Photo Size & Maker`,
+    title: PAGE_TITLE[spec.id] ?? `${labelWithDoc(pageLabel(spec), doc, doc === "visa" ? "Visa" : "Passport")} Photo Size & Maker`,
     description,
     path: `/${maker}/`,
   });
 }
+
+/**
+ * Page-only names, keyed by spec id, where searchers use a different name from
+ * the shared label (which also appears on country cards across the site).
+ * uae (owner, 15 Oct 2026): Indians search "dubai visa photo size" and "sharjah
+ * visa photo size"; this page covers GDRFA Dubai's channel.
+ */
+const PAGE_LABEL: Record<string, string> = {
+  uae: "UAE & Dubai",
+};
+const pageLabel = (spec: { id: string; label: string }) => PAGE_LABEL[spec.id] ?? spec.label;
+
+/**
+ * Whole-title and H1 overrides, keyed by spec id, where searchers' words don't
+ * fit the "<Country> Passport Photo Size & Maker" pattern. No unverified size
+ * goes in a title (CLAUDE.md §3).
+ * nepal (owner, 15 Oct 2026): "mrp size photo" (263), "mrp photo size" (72) and
+ * "mrp size" had 0 clicks at ~2–8 (GSC, 90 days); "MRP size" is Nepal's
+ * everyday name for the standard form photo.
+ */
+const PAGE_TITLE: Record<string, string> = {
+  nepal: "Nepal MRP Size Photo & Passport Photo Maker",
+};
+const PAGE_H1: Record<string, string> = {
+  nepal: "Nepal MRP Size Photo Maker",
+};
 
 /**
  * User-facing "Good to know" copy, keyed by spec id. Kept here (not in the spec
@@ -93,6 +120,8 @@ const GOOD_TO_KNOW: Record<string, string> = {
     "Australia accepts a plain white or light grey background. For a new passport, your guarantor signs the back of one printed photo to confirm it's a true likeness, so add that by hand after you print.",
   schengen:
     "Schengen follows the ICAO standard across all 29 member states. Light grey is the safe background everywhere. Some consulates (Switzerland in particular) reject pure white, so the tool defaults to grey.",
+  nepal:
+    "In Nepal, “MRP size photo” is the everyday name for the standard photo many forms ask for; the name comes from the older machine-readable passport. Guides agree on 35×45 mm on plain white, though the Department of Passports does not publish it, and this maker prepares exactly that: face straight to the camera, mouth closed. Guides also want a photo taken in the past six months; copies can go several to one 4×6 inch print sheet. Match it against the form in front of you.",
   "india-evisa":
     "The Indian e-Visa photo is square, not the 35×45mm passport shape, on a plain white or light background with no border. Keep it between 350×350 and 1000×1000 px and under about 300 KB for the upload.",
 };
@@ -101,7 +130,7 @@ function SpecRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-hairline py-2.5 text-sm last:border-0">
       <dt className="text-ink-soft">{label}</dt>
-      <dd className="text-right font-mono text-[13px] font-medium tabular-nums">
+      <dd className="text-right font-mono text-[14px] font-medium tabular-nums">
         {value}
       </dd>
     </div>
@@ -196,7 +225,7 @@ export default async function MakerPage({
   const crumbs: Crumb[] = [
     { name: "Home", path: "/" },
     { name: hub.name, path: hub.path },
-    { name: `${labelWithDoc(spec.label, doc)} photo`, path: `/${maker}/` },
+    { name: `${labelWithDoc(pageLabel(spec), doc)} photo`, path: `/${maker}/` },
   ];
 
   return (
@@ -205,7 +234,7 @@ export default async function MakerPage({
         schema={[
           breadcrumbSchema(crumbs),
           softwareApplicationSchema({
-            name: `${labelWithDoc(spec.label, doc, Doc)} Photo Maker`,
+            name: PAGE_H1[spec.id] ?? `${labelWithDoc(pageLabel(spec), doc, Doc)} Photo Maker`,
             description: `Prepare a ${labelWithDoc(spec.label, doc)} photo at the selected size and background in your browser, then confirm the current authority instructions.`,
             url: `/${maker}/`,
           }),
@@ -216,8 +245,8 @@ export default async function MakerPage({
 
       <header className="space-y-3 border-b border-hairline pb-7">
         <span className="eyebrow block text-brand">{Doc} photo bureau</span>
-        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[2.25rem]">
-          {labelWithDoc(spec.label, doc, Doc)} Photo Maker
+        <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
+          {PAGE_H1[spec.id] ?? <>{labelWithDoc(pageLabel(spec), doc, Doc)} Photo Maker</>}
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           {content?.intro ??
@@ -247,6 +276,7 @@ export default async function MakerPage({
 
       {/* Advisory scoping lives in specForDocumentKind so it can be tested. */}
       <PhotoTool spec={specForDocumentKind(spec, kind)} />
+      <SupportCard tool={maker} />
 
       {spec.applicationNotes && spec.applicationNotes.length > 0 && (
         <section className="mt-10 space-y-3 border-t border-hairline pt-8">
@@ -327,14 +357,14 @@ export default async function MakerPage({
             <Link
               key={kb}
               href={kbPath(kb)}
-              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
+              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
             >
               Resize to {kb} KB
             </Link>
           ))}
           <Link
             href="/tools/resize-kb/"
-            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[13px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
+            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
           >
             Custom size
           </Link>

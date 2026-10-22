@@ -228,7 +228,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                   onChange={(e) => setSearchVal(e.target.value)}
                   onKeyDown={handleSearch}
                   placeholder="Search any tool..."
-                  className="flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
+                  className="flex-1 bg-transparent text-[14px] text-foreground outline-none placeholder:text-muted-foreground"
                 />
                 <span className="shrink-0 rounded border border-hairline bg-paper px-1.5 py-0.5 text-xs font-semibold leading-tight text-muted-foreground">
                   ⌘K
@@ -276,7 +276,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <p className="text-[12.5px] font-bold leading-tight text-ink">{title}</p>
+                      <p className="text-[12px] font-bold leading-tight text-ink">{title}</p>
                       {badge && (
                         <span className="rounded-full bg-amber-100 dark:bg-amber-900/30 px-1.5 py-[1px] text-xs font-bold uppercase tracking-wide text-amber-700 dark:text-amber-400">
                           {badge}
@@ -303,7 +303,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                   >
                     <span className={cn("h-4 w-[3px] shrink-0 rounded-full", col.barCls)} />
                     <col.Icon className={cn("h-3.5 w-3.5 shrink-0", col.tileText)} strokeWidth={1.75} />
-                    <span className="text-[10.5px] font-bold uppercase tracking-[0.09em] text-ink">
+                    <span className="text-[12px] font-bold uppercase tracking-[0.09em] text-ink">
                       {col.label}
                     </span>
                   </Link>
@@ -330,7 +330,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                           <p className="text-[12px] font-semibold leading-tight text-ink">
                             {t.title}
                           </p>
-                          <p className="mt-0.5 text-[10.5px] leading-none text-muted-foreground">
+                          <p className="mt-0.5 text-[12px] leading-none text-muted-foreground">
                             {t.tag}
                           </p>
                         </div>
@@ -365,7 +365,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                       <Icon className="h-3.5 w-3.5" strokeWidth={1.75} />
                     </span>
                     <span>
-                      <p className="text-[11.5px] font-bold text-ink">{label}</p>
+                      <p className="text-[12px] font-bold text-ink">{label}</p>
                       <p className="hidden text-xs leading-tight text-muted-foreground xl:block">{sub}</p>
                     </span>
                   </span>

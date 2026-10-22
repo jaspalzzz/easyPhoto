@@ -45,10 +45,10 @@ export function StickyCtaBar({
         className="flex items-center justify-between gap-3 rounded-2xl bg-cta px-4 py-3 shadow-lg"
       >
         <div className="min-w-0">
-          <p className="truncate text-[13px] font-bold leading-tight text-cta-foreground">
+          <p className="truncate text-[14px] font-bold leading-tight text-cta-foreground">
             {label}
           </p>
-          <p className="mt-0.5 flex items-center gap-1 text-[10.5px] text-cta-foreground/70">
+          <p className="mt-0.5 flex items-center gap-1 text-[12px] text-cta-foreground/70">
             <ShieldCheck className="h-3 w-3 shrink-0" />
             {sublabel}
           </p>

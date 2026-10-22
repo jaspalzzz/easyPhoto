@@ -86,7 +86,7 @@ export function ToolsTabs() {
   return (
     <section className="border-t border-hairline bg-paper">
       <div className="container py-10 sm:py-12">
-        <h2 className="mb-7 text-[1.6rem] font-semibold tracking-tight text-ink">
+        <h2 className="mb-7 text-[24px] font-semibold tracking-tight text-ink">
           All tools at your fingertips
         </h2>
 
@@ -98,7 +98,7 @@ export function ToolsTabs() {
               type="button"
               onClick={() => setActive(t.id)}
               className={cn(
-                "flex shrink-0 items-center gap-2 px-4 py-3 text-[13px] font-semibold transition-colors",
+                "flex shrink-0 items-center gap-2 px-4 py-3 text-[14px] font-semibold transition-colors",
                 active === t.id
                   ? "border-b-2 border-cta text-ink"
                   : "border-b-2 border-transparent text-muted-foreground hover:text-ink"
@@ -128,10 +128,10 @@ export function ToolsTabs() {
                 <tool.Icon className="h-5 w-5 text-cta" strokeWidth={1.75} />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-[13px] font-semibold leading-tight text-ink">{tool.title}</p>
-                <p className="mt-1 text-[11.5px] leading-snug text-muted-foreground">{tool.desc}</p>
+                <p className="text-[14px] font-semibold leading-tight text-ink">{tool.title}</p>
+                <p className="mt-1 text-[12px] leading-snug text-muted-foreground">{tool.desc}</p>
               </div>
-              <span className="flex items-center gap-1 text-[11.5px] font-semibold text-brand">
+              <span className="flex items-center gap-1 text-[12px] font-semibold text-brand">
                 Open tool <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
               </span>
             </Link>
@@ -141,7 +141,7 @@ export function ToolsTabs() {
         <div className="mt-6 text-center">
           <Link
             href="/tools/"
-            className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand hover:underline"
+            className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-brand hover:underline"
           >
             View all {READY_TOOLS.length} tools <ArrowRight className="h-4 w-4" />
           </Link>

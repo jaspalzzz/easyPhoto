@@ -73,7 +73,7 @@ export function ExamSearchControls() {
             key={t}
             type="button"
             onClick={() => { setQuery(t); scrollToPicker(); }}
-            className="rounded-full border border-hairline bg-card px-2.5 py-1 text-[11.5px] font-medium text-ink transition-colors hover:bg-accent"
+            className="rounded-full border border-hairline bg-card px-2.5 py-1 text-[12px] font-medium text-ink transition-colors hover:bg-accent"
           >
             {t}
           </button>
@@ -87,7 +87,7 @@ export function ExamSearchControls() {
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-soft">
               <Icon className="h-3.5 w-3.5 text-brand" strokeWidth={2} />
             </span>
-            <span className="text-[12.5px] leading-snug text-ink">{text}</span>
+            <span className="text-[12px] leading-snug text-ink">{text}</span>
           </li>
         ))}
       </ul>

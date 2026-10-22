@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Trash2, Check, FileUp, PenTool } from "lucide-react";
+import { Loader2, Trash2, Check, FileUp, PenTool, Type } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   SIGNATURE_CLEAN_DEFAULTS,
@@ -17,8 +17,56 @@ interface SignaturePadProps {
   onCancel?: () => void;
 }
 
+type TypedSignatureComponent = typeof import("./TypedSignature").TypedSignature;
+
+const INKS = [
+  { id: "black", color: "#000000", title: "Black Ink" },
+  { id: "blue", color: "#0033CB", title: "Blue Ink" },
+] as const;
+
+function InkColors({ value, onChange }: { value: string; onChange: (color: string) => void }) {
+  return (
+    <div className="flex gap-2">
+      {INKS.map((ink) => (
+        <button
+          key={ink.id}
+          id={`sig-pad-color-${ink.id}`}
+          type="button"
+          onClick={() => onChange(ink.color)}
+          className={`h-6 w-6 rounded-full border-2 transition-all ${
+            value === ink.color ? "border-brand scale-110" : "border-hairline hover:scale-105"
+          }`}
+          style={{ backgroundColor: ink.color }}
+          title={ink.title}
+          aria-label={ink.title}
+          aria-pressed={value === ink.color}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) {
-  const [activeTab, setActiveTab] = React.useState<"draw" | "upload">("draw");
+  const [activeTab, setActiveTab] = React.useState<"draw" | "type" | "upload">("draw");
+  // The typed-signature panel and its handwriting fonts load only when the tab opens.
+  const [Typed, setTyped] = React.useState<TypedSignatureComponent | null>(null);
+  const [typedLoadError, setTypedLoadError] = React.useState(false);
+  React.useEffect(() => {
+    if (activeTab !== "type" || Typed) return;
+    let active = true;
+    setTypedLoadError(false);
+    import("./TypedSignature")
+      .then(({ TypedSignature }) => {
+        if (active) setTyped(() => TypedSignature);
+      })
+      .catch((err: unknown) => {
+        console.warn("[signature] could not load the typed-signature panel", err);
+        if (active) setTypedLoadError(true);
+      });
+    return () => {
+      active = false;
+    };
+  }, [activeTab, Typed]);
   
   // Drawing pad states
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -272,6 +320,18 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
           <PenTool className="h-3.5 w-3.5" /> Draw Signature
         </button>
         <button
+          id="sig-pad-tab-type"
+          type="button"
+          onClick={() => setActiveTab("type")}
+          className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider transition-colors -mb-[2px] ${
+            activeTab === "type"
+              ? "border-brand text-brand font-bold"
+              : "border-transparent text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Type className="h-3.5 w-3.5" /> Type Name
+        </button>
+        <button
           id="sig-pad-tab-upload"
           type="button"
           onClick={() => setActiveTab("upload")}
@@ -289,28 +349,7 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
       {activeTab === "draw" && (
         <div className="space-y-4 animate-fadeIn">
           <div className="flex items-center justify-between">
-            <div className="flex gap-2">
-              <button
-                id="sig-pad-color-black"
-                type="button"
-                onClick={() => setPenColor("#000000")}
-                className={`h-6 w-6 rounded-full border-2 transition-all ${
-                  penColor === "#000000" ? "border-brand scale-110" : "border-hairline hover:scale-105"
-                }`}
-                style={{ backgroundColor: "#000000" }}
-                title="Black Ink"
-              />
-              <button
-                id="sig-pad-color-blue"
-                type="button"
-                onClick={() => setPenColor("#0033CB")}
-                className={`h-6 w-6 rounded-full border-2 transition-all ${
-                  penColor === "#0033CB" ? "border-brand scale-110" : "border-hairline hover:scale-105"
-                }`}
-                style={{ backgroundColor: "#0033CB" }}
-                title="Blue Ink"
-              />
-            </div>
+            <InkColors value={penColor} onChange={setPenColor} />
             <Button
               id="sig-pad-clear-btn"
               variant="outline"
@@ -370,6 +409,22 @@ export function SignaturePad({ onSignatureReady, onCancel }: SignaturePadProps) 
               <Check className="h-4 w-4" /> Use Drawn Signature
             </Button>
           </div>
+        </div>
+      )}
+
+      {/* Type Mode Workspace */}
+      {activeTab === "type" && (
+        <div className="space-y-4">
+          <InkColors value={penColor} onChange={setPenColor} />
+          {Typed ? (
+            <Typed color={penColor} onSignatureReady={onSignatureReady} onCancel={onCancel} />
+          ) : typedLoadError ? (
+            <p role="alert" className="border-l-2 border-destructive bg-destructive/5 py-2 pl-3 pr-2 text-xs text-destructive">
+              Couldn&apos;t load the typing styles. Check your connection, or draw your signature instead.
+            </p>
+          ) : (
+            <Loader2 className="h-6 w-6 animate-spin text-brand" aria-label="Loading typing styles" />
+          )}
         </div>
       )}
 
