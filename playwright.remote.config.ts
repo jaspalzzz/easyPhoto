@@ -10,11 +10,24 @@ import { defineConfig, devices } from "@playwright/test";
  * ML specs download models from models.easyphoto.in, so they need that host
  * reachable; rerun a single failure once before calling it a bug.
  */
+const baseURL = process.env.E2E_BASE_URL || "https://easyphoto.in";
+
 export default defineConfig({
   testDir: "./e2e",
   workers: 2,
   timeout: 120_000,
   reporter: [["list"]],
-  use: { baseURL: process.env.E2E_BASE_URL || "https://easyphoto.in" },
+  use: {
+    baseURL,
+    // Deployed builds have the tip variables, so the "Help keep it free" dialog
+    // opens after the first download and blocks a test's next click. Mark it as
+    // tapped just now (lib/supportCard.ts keeps it away for 7 days).
+    storageState: {
+      cookies: [],
+      origins: [
+        { origin: new URL(baseURL).origin, localStorage: [{ name: "ep:support-tapped-at", value: String(Date.now()) }] },
+      ],
+    },
+  },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
 });
