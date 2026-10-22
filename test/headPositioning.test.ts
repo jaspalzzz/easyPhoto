@@ -6,7 +6,7 @@ import {
   computeCrop,
   type FaceMeasurements,
 } from "@/lib/headPositioning";
-import { COUNTRY_SPECS } from "@/lib/countrySpecs";
+import { COUNTRY_SPECS, renderSpec } from "@/lib/countrySpecs";
 import { codeReferences } from "./quality/codeReferences";
 
 const { us, uk, india } = COUNTRY_SPECS;
@@ -86,15 +86,22 @@ describe("computeCrop — warnings", () => {
       source: { width: 1200, height: 1200 },
     });
     expect(result.achieved.upscale).toBeGreaterThan(1.15);
-    expect(result.warnings.some((w) => /upscal/i.test(w))).toBe(true);
+    // Written for the applicant: no scale factor, no threshold, and no
+    // "request a photo" aimed at whoever runs the tool.
+    expect(result.warnings).toEqual([
+      "This photo is lower-resolution than ideal, so the result may look soft " +
+        "when printed. A higher-resolution photo will look sharper.",
+    ]);
   });
 
   it("warns and clamps when the ideal crop exceeds the photo edges", () => {
     const result = computeCrop(face(), us, {
       source: { width: 200, height: 200 },
     });
-    expect(result.warnings.some((w) => /past the photo edges/i.test(w))).toBe(
-      true
+    expect(result.warnings).toContain(
+      "The head is too close to the photo edges to leave the required margin, " +
+        "so it may not sit centred in the result. Retake from a bit further " +
+        "back so there's space above the head and around the shoulders."
     );
     // Clamped to stay inside the source.
     expect(result.crop.sx).toBeGreaterThanOrEqual(0);
@@ -167,9 +174,25 @@ describe("computeCrop — warnings", () => {
     const pct = result.achieved.headPercentOfFrame;
     expect(pct).toBeGreaterThanOrEqual(india.headPercentOfFrame!.min);
     expect(pct).toBeLessThanOrEqual(india.headPercentOfFrame!.max);
-    expect(result.warnings.some((w) => /Spec inconsistency/i.test(w))).toBe(
+    expect(result.warnings.some((w) => /head sizes that don't match/.test(w))).toBe(
       false
     );
+  });
+
+  it("no shipped size has head rules that contradict each other", () => {
+    // The conflicting-rules warning is a last resort for applicants; the place
+    // to catch a mistyped size is here, before it ships.
+    for (const [id, spec] of Object.entries(COUNTRY_SPECS)) {
+      for (const s of [spec, renderSpec(spec)]) {
+        const { warnings } = computeCrop(face(), s, {
+          source: { width: 4000, height: 4000 },
+        });
+        expect(
+          warnings.filter((w) => /head sizes that don't match/.test(w)),
+          id
+        ).toEqual([]);
+      }
+    }
   });
 
   it("still flags a genuinely inconsistent spec (head mm vs % band)", () => {
@@ -182,8 +205,12 @@ describe("computeCrop — warnings", () => {
     const result = computeCrop(face(), broken, {
       source: { width: 1200, height: 1200 },
     });
-    expect(result.warnings.some((w) => /Spec inconsistency/i.test(w))).toBe(
-      true
+    // Told to the applicant in plain words: no internal "spec", no numbers
+    // (the head-height check above the warning already shows them), and no
+    // instruction to re-verify our data.
+    expect(result.warnings).toContain(
+      "The official rules for this photo give two head sizes that don't " +
+        "match. We sized the head to the height in millimetres."
     );
   });
 
