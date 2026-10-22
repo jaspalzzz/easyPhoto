@@ -48,6 +48,13 @@ export interface ComputeCropOpts {
    * this changes resolution and not framing.
    */
   exactOutput?: { width: number; height: number };
+  /**
+   * User-facing sentence appended to the "smaller than the online-upload
+   * minimum" warning, naming the download in the calling tool that does meet
+   * it (e.g. the passport tool's "JPG for upload"). Tools that offer no
+   * upload-size file omit it and the warning says to print this file instead.
+   */
+  digitalUploadHint?: string;
 }
 
 export interface CropRect {
@@ -67,6 +74,13 @@ export interface CropResult {
   };
   warnings: string[];
 }
+
+const HEAD_NOT_MEASURED_MESSAGE =
+  "We couldn't measure the head in this photo. Use a clear, front-facing " +
+  "photo with your whole head and shoulders visible.";
+const SIZE_UNAVAILABLE_MESSAGE =
+  "We can't make a photo at this size right now. Choose a different size, " +
+  "or try again later.";
 
 export const mmToPx = (mm: number, dpi: number): number =>
   Math.round((mm / 25.4) * dpi);
@@ -122,18 +136,13 @@ export function computeCrop(
     : dpi;
 
   const srcHeadPx = face.chinY - face.crownY;
-  if (srcHeadPx <= 0)
-    throw new Error("crownY must sit above chinY (a smaller Y value).");
+  // These messages reach users verbatim (the photo tools show Error.message),
+  // so they describe what to do, not which field is wrong.
+  if (srcHeadPx <= 0) throw new Error(HEAD_NOT_MEASURED_MESSAGE);
 
   const tgtHeadPx = mmToPx(targetHeadMm(spec), geomDpi);
-  if (tgtHeadPx <= 0)
-    throw new Error(
-      "Spec head height resolves to 0 px — check headHeightMm values."
-    );
-  if (outH <= 0)
-    throw new Error(
-      "Spec print height resolves to 0 px — check spec.printMm.height."
-    );
+  // Zero head or print height is a data error in the size record itself.
+  if (tgtHeadPx <= 0 || outH <= 0) throw new Error(SIZE_UNAVAILABLE_MESSAGE);
 
   // Source-space crop height so the head fills the right fraction of OUTPUT.
   const cropH = (srcHeadPx * outH) / tgtHeadPx;
@@ -200,9 +209,10 @@ export function computeCrop(
     (outW < spec.digital.pxMin.width || outH < spec.digital.pxMin.height)
   )
     warnings.push(
-      `Output ${outW}x${outH}px is below the digital upload minimum ` +
-        `(${spec.digital.pxMin.width}x${spec.digital.pxMin.height}). Use ` +
-        `recommendedDigitalDpi() for the online-upload preset.`
+      `This print-size file (${outW}×${outH} px) is smaller than the ` +
+        `${spec.digital.pxMin.width}×${spec.digital.pxMin.height} px minimum ` +
+        `for online upload. ` +
+        (opts.digitalUploadHint ?? "Use it for printing only.")
     );
 
   return {

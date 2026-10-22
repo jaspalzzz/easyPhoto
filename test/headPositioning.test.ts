@@ -7,6 +7,7 @@ import {
   type FaceMeasurements,
 } from "@/lib/headPositioning";
 import { COUNTRY_SPECS } from "@/lib/countrySpecs";
+import { codeReferences } from "./quality/codeReferences";
 
 const { us, uk, india } = COUNTRY_SPECS;
 
@@ -100,23 +101,60 @@ describe("computeCrop — warnings", () => {
     expect(result.crop.sy).toBeGreaterThanOrEqual(0);
   });
 
-  it("warns when print-DPI output is below the digital upload minimum (UK)", () => {
+  it("warns in plain words when print-DPI output is below the online-upload minimum (UK)", () => {
     const result = computeCrop(face(), uk, {
       dpi: 300,
       source: { width: 1200, height: 1200 },
     });
-    expect(
-      result.warnings.some((w) => /digital upload minimum/i.test(w))
-    ).toBe(true);
+    const min = uk.digital!.pxMin!;
+    expect(result.warnings).toContain(
+      `This print-size file (413×531 px) is smaller than the ` +
+        `${min.width}×${min.height} px minimum for online upload. ` +
+        `Use it for printing only.`
+    );
   });
 
-  it("clears the digital-minimum warning at recommendedDigitalDpi (UK)", () => {
+  it("points to the calling tool's upload download when it offers one (resume photo, India)", () => {
+    // The live bug, 18 Oct 2026: a 480x600 upload on /tools/resume-photo/ at
+    // 390px showed "Use recommendedDigitalDpi() for the online-upload preset."
+    const hint = "For online portals, use the “JPG for upload” download.";
+    const result = computeCrop(face(), india, {
+      dpi: 300,
+      source: { width: 1200, height: 1200 },
+      digitalUploadHint: hint,
+    });
+    expect(result.warnings).toContain(
+      "This print-size file (413×531 px) is smaller than the 630×810 px " +
+        `minimum for online upload. ${hint}`
+    );
+  });
+
+  it("never names code in a user-facing warning", () => {
+    // Small source + print DPI: the upscale, edge and online-minimum warnings
+    // all fire, for both the default and the hinted wording.
+    for (const spec of [uk, india]) {
+      for (const digitalUploadHint of [undefined, "For online portals, use the “JPG for upload” download."]) {
+        const result = computeCrop(face({ chinY: 450, crownY: 300 }), spec, {
+          dpi: 300,
+          source: { width: 480, height: 600 },
+          digitalUploadHint,
+        });
+        expect(result.warnings.length).toBeGreaterThanOrEqual(3);
+        for (const w of result.warnings) {
+          expect(w).not.toMatch(/\w\(\)/);
+          expect(codeReferences(w)).toEqual([]);
+        }
+      }
+    }
+  });
+
+  it("clears the online-minimum warning at recommendedDigitalDpi (UK)", () => {
     const result = computeCrop(face(), uk, {
       dpi: recommendedDigitalDpi(uk),
       source: { width: 2000, height: 2000 },
     });
     expect(
-      result.warnings.some((w) => /digital upload minimum/i.test(w))
+      result.warnings.some((w) => /minimum for online upload/i.test(w))
     ).toBe(false);
   });
 
@@ -149,9 +187,38 @@ describe("computeCrop — warnings", () => {
     );
   });
 
-  it("throws when crownY is not above chinY", () => {
+  it("throws a plain-language error when the head can't be measured", () => {
     expect(() =>
       computeCrop(face({ chinY: 100, crownY: 300 }), us)
-    ).toThrow(/crownY/);
+    ).toThrow(/^We couldn't measure the head in this photo\./);
+  });
+
+  it("throws a plain-language error for a size with no print or head height", () => {
+    const noHead = { ...uk, headHeightMm: { min: 0, max: 0 } };
+    const noPrint = { ...uk, printMm: { width: 35, height: 0 } };
+    expect(() => computeCrop(face(), noHead)).toThrow(
+      /^We can't make a photo at this size right now\./
+    );
+    expect(() => computeCrop(face(), noPrint)).toThrow(
+      /^We can't make a photo at this size right now\./
+    );
+  });
+
+  it("never names code in a thrown message (the photo tools show it verbatim)", () => {
+    const cases = [
+      () => computeCrop(face({ chinY: 100, crownY: 300 }), us),
+      () => computeCrop(face(), { ...uk, headHeightMm: { min: 0, max: 0 } }),
+      () => computeCrop(face(), { ...uk, printMm: { width: 35, height: 0 } }),
+    ];
+    for (const run of cases) {
+      let message = "";
+      try {
+        run();
+      } catch (e) {
+        message = (e as Error).message;
+      }
+      expect(message).not.toBe("");
+      expect(codeReferences(message)).toEqual([]);
+    }
   });
 });

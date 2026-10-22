@@ -257,6 +257,14 @@ export async function pngUnderKb(
   return { ...smallest!, underCap: false };
 }
 
+/**
+ * Shown when canvas.toBlob yields null — in practice the browser ran out of
+ * memory for a large canvas (common on phones). Tools display it verbatim.
+ */
+export const CANVAS_ENCODE_FAILED_MESSAGE =
+  "Your browser couldn't create the image file, usually because it ran low " +
+  "on memory. Close other tabs or use a smaller photo, then try again.";
+
 /** Encode a canvas to a Blob (Promise wrapper around canvas.toBlob). */
 export function canvasToBlob(
   canvas: HTMLCanvasElement,
@@ -265,7 +273,7 @@ export function canvasToBlob(
 ): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(
-      (b) => (b ? resolve(b) : reject(new Error("canvas.toBlob returned null"))),
+      (b) => (b ? resolve(b) : reject(new Error(CANVAS_ENCODE_FAILED_MESSAGE))),
       type,
       quality
     );
