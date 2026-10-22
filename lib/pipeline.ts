@@ -14,6 +14,8 @@
 import type { CountrySpec } from "./countrySpecs";
 import {
   computeCrop,
+  DEFAULT_MAX_UPSCALE,
+  LOW_RESOLUTION_WARNING,
   mmToPx,
   type CropResult,
   type CropRect,
@@ -21,6 +23,7 @@ import {
   type ComputeCropOpts,
 } from "./headPositioning";
 import { fillBackground } from "./background";
+import { CANVAS_ENCODE_FAILED_MESSAGE } from "./imaging";
 
 export interface LoadedImage {
   image: HTMLImageElement;
@@ -66,7 +69,7 @@ export function canvasToObjectURL(canvas: HTMLCanvasElement): Promise<string> {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (!blob) {
-        reject(new Error("canvas.toBlob returned null"));
+        reject(new Error(CANVAS_ENCODE_FAILED_MESSAGE));
         return;
       }
       resolve(URL.createObjectURL(blob));
@@ -252,11 +255,7 @@ export async function buildPresetFromCrop(
   const headPct = crop.sh > 0 ? (srcHeadPx / crop.sh) * 100 : 0;
   const upscale = crop.sh > 0 ? output.height / crop.sh : 0;
 
-  if (upscale > 1.15)
-    warnings.push(
-      `Low source resolution: needs ${upscale.toFixed(2)}x upscaling (> 1.15). ` +
-        `Result may be soft. Request a higher-res photo.`
-    );
+  if (upscale > DEFAULT_MAX_UPSCALE) warnings.push(LOW_RESOLUTION_WARNING);
   if (
     spec.headPercentOfFrame &&
     (headPct > spec.headPercentOfFrame.max + 0.5 ||

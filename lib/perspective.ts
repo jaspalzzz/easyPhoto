@@ -187,7 +187,7 @@ export function warpQuadToCanvas(
 
   if (outWidth * outHeight > MAX_OUTPUT_PIXELS) {
     throw new Error(
-      `Requested output of ${outWidth}x${outHeight} is too large to process. Lower maxDimension.`
+      "This page is too large to process on this device. Use a smaller photo, then try again."
     );
   }
 

@@ -2,16 +2,19 @@
 
 import { CheckCircle2, AlertTriangle, Info, Camera } from "lucide-react";
 import type { CountrySpec } from "@/lib/countrySpecs";
-import type { CropResult } from "@/lib/headPositioning";
+import {
+  DEFAULT_MAX_UPSCALE,
+  LOW_RESOLUTION_WARNING,
+  PAST_EDGES_WARNING,
+  type CropResult,
+} from "@/lib/headPositioning";
 import { cn } from "@/lib/utils";
 
-/** Warnings serious enough that a fresh photo beats a hand-fix. */
-function retakeReason(result: CropResult): string | null {
-  if (result.achieved.upscale > 1.15)
-    return "This photo is lower-resolution than ideal, so the result may look soft when printed. A higher-resolution photo will look sharper.";
-  if (result.warnings.some((w) => /past the photo edges/i.test(w)))
-    return "The head is too close to the photo edges to leave the required margin. Retake from a bit further back so there's space above the head and around the shoulders.";
-  return null;
+/** Warnings serious enough that a fresh photo beats a hand-fix, most serious first. */
+const RETAKE_WARNINGS = [LOW_RESOLUTION_WARNING, PAST_EDGES_WARNING];
+
+function retakeReason(warnings: string[]): string | null {
+  return RETAKE_WARNINGS.find((w) => warnings.includes(w)) ?? null;
 }
 
 interface CompliancePanelProps {
@@ -31,7 +34,9 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
     !band ||
     (achieved.headPercentOfFrame >= band.min &&
       achieved.headPercentOfFrame <= band.max);
-  const retake = retakeReason(result);
+  const retake = retakeReason(warnings);
+  // The retake box already says this one; listing it again would repeat it.
+  const otherWarnings = warnings.filter((w) => w !== retake);
 
   return (
     <div className="space-y-3.5">
@@ -61,7 +66,7 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
           )}
         </CheckItem>
 
-        <CheckItem ok={achieved.upscale <= 1.15}>
+        <CheckItem ok={achieved.upscale <= DEFAULT_MAX_UPSCALE}>
           Source resolution{" "}
           <span className="text-muted-foreground">
             ({achieved.upscale <= 1 ? "downscaled" : `${achieved.upscale}× scale`})
@@ -87,16 +92,18 @@ export function CompliancePanel({ spec, result }: CompliancePanelProps) {
         </li>
       </ul>
 
-      {warnings.length > 0 ? (
+      {otherWarnings.length > 0 && (
         <div className="space-y-1.5 border-l-2 border-amber-400 bg-amber-50/60 py-2 pl-3 pr-2">
-          {warnings.map((w, i) => (
+          {otherWarnings.map((w, i) => (
             <p key={i} className="flex items-start gap-2 text-xs text-amber-900">
               <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
               <span>{w}</span>
             </p>
           ))}
         </div>
-      ) : (
+      )}
+
+      {warnings.length === 0 && (
         <p className="flex items-center gap-2 border-l-2 border-success bg-success-soft py-2 pl-3 pr-2 text-xs text-success">
           <CheckCircle2 className="h-3.5 w-3.5 shrink-0" />
           Head size, framing and resolution look good.

@@ -4,8 +4,10 @@ import {
   projectPoint,
   isConvexQuad,
   estimateOutputSize,
+  warpQuadToCanvas,
   type Quad,
 } from "@/lib/perspective";
+import { codeReferences } from "./quality/codeReferences";
 
 /**
  * The homography is the one piece of the document scanner that can be wrong
@@ -166,5 +168,21 @@ describe("estimateOutputSize", () => {
     const { width, height } = estimateOutputSize(flat);
     expect(width).toBeGreaterThanOrEqual(1);
     expect(height).toBeGreaterThanOrEqual(1);
+  });
+});
+
+describe("warpQuadToCanvas — oversized output", () => {
+  it("refuses with plain guidance, not a code reference", () => {
+    // The scanner shows this message as-is; the size check runs before any
+    // canvas work, so a stub source is enough.
+    const source = {} as HTMLCanvasElement;
+    let message = "";
+    try {
+      warpQuadToCanvas(source, RECT, { width: 10_000, height: 10_000 });
+    } catch (e) {
+      message = (e as Error).message;
+    }
+    expect(message).toMatch(/^This page is too large to process on this device\./);
+    expect(codeReferences(message)).toEqual([]);
   });
 });

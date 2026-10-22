@@ -16,6 +16,9 @@ const FACE_PHOTO = path.join(__dirname, "fixtures", "face-photo.jpg");
  */
 test("background-removal: a real transparent cutout without cross-origin isolation", async ({ page }) => {
   test.setTimeout(120_000);
+  // Deployed builds isolate this page on purpose (public/_headers); the
+  // unisolated case only exists on the local dev server.
+  test.skip(!!process.env.E2E_BASE_URL, "needs the local dev server's unisolated page");
   await page.goto("/tools/background-removal/");
   expect(await page.evaluate(() => self.crossOriginIsolated)).toBe(false);
 

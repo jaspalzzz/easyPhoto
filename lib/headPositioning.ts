@@ -48,6 +48,13 @@ export interface ComputeCropOpts {
    * this changes resolution and not framing.
    */
   exactOutput?: { width: number; height: number };
+  /**
+   * User-facing sentence appended to the "smaller than the online-upload
+   * minimum" warning, naming the download in the calling tool that does meet
+   * it (e.g. the passport tool's "JPG for upload"). Tools that offer no
+   * upload-size file omit it and the warning says to print this file instead.
+   */
+  digitalUploadHint?: string;
 }
 
 export interface CropRect {
@@ -67,6 +74,31 @@ export interface CropResult {
   };
   warnings: string[];
 }
+
+const HEAD_NOT_MEASURED_MESSAGE =
+  "We couldn't measure the head in this photo. Use a clear, front-facing " +
+  "photo with your whole head and shoulders visible.";
+const SIZE_UNAVAILABLE_MESSAGE =
+  "We can't make a photo at this size right now. Choose a different size, " +
+  "or try again later.";
+
+/** Scaling the source up past this factor makes the result visibly soft. */
+export const DEFAULT_MAX_UPSCALE = 1.15;
+
+// Crop warnings are shown to applicants verbatim. CompliancePanel lifts the
+// first two into its "Retake recommended" box, so each says the whole fact once.
+export const LOW_RESOLUTION_WARNING =
+  "This photo is lower-resolution than ideal, so the result may look soft " +
+  "when printed. A higher-resolution photo will look sharper.";
+export const PAST_EDGES_WARNING =
+  "The head is too close to the photo edges to leave the required margin, " +
+  "so it may not sit centred in the result. Retake from a bit further back " +
+  "so there's space above the head and around the shoulders.";
+// Fires only when a size's own head-height and head-percentage rules
+// disagree; test/headPositioning.test.ts keeps every shipped size clear of it.
+export const CONFLICTING_HEAD_RULES_WARNING =
+  "The official rules for this photo give two head sizes that don't match. " +
+  "We sized the head to the height in millimetres.";
 
 export const mmToPx = (mm: number, dpi: number): number =>
   Math.round((mm / 25.4) * dpi);
@@ -106,7 +138,7 @@ export function computeCrop(
 ): CropResult {
   const dpi = opts.dpi ?? spec.dpiMin ?? 300;
   const topMarginRatio = opts.topMarginRatio ?? 0.45;
-  const maxUpscale = opts.maxUpscale ?? 1.15;
+  const maxUpscale = opts.maxUpscale ?? DEFAULT_MAX_UPSCALE;
   const warnings: string[] = [];
 
   const outW = opts.exactOutput?.width ?? mmToPx(spec.printMm.width, dpi);
@@ -122,18 +154,13 @@ export function computeCrop(
     : dpi;
 
   const srcHeadPx = face.chinY - face.crownY;
-  if (srcHeadPx <= 0)
-    throw new Error("crownY must sit above chinY (a smaller Y value).");
+  // These messages reach users verbatim (the photo tools show Error.message),
+  // so they describe what to do, not which field is wrong.
+  if (srcHeadPx <= 0) throw new Error(HEAD_NOT_MEASURED_MESSAGE);
 
   const tgtHeadPx = mmToPx(targetHeadMm(spec), geomDpi);
-  if (tgtHeadPx <= 0)
-    throw new Error(
-      "Spec head height resolves to 0 px — check headHeightMm values."
-    );
-  if (outH <= 0)
-    throw new Error(
-      "Spec print height resolves to 0 px — check spec.printMm.height."
-    );
+  // Zero head or print height is a data error in the size record itself.
+  if (tgtHeadPx <= 0 || outH <= 0) throw new Error(SIZE_UNAVAILABLE_MESSAGE);
 
   // Source-space crop height so the head fills the right fraction of OUTPUT.
   const cropH = (srcHeadPx * outH) / tgtHeadPx;
@@ -158,11 +185,7 @@ export function computeCrop(
 
   // --- Quality / compliance checks -------------------------------------
   const upscale = outH / cropH;
-  if (upscale > maxUpscale)
-    warnings.push(
-      `Low source resolution: needs ${upscale.toFixed(2)}x upscaling ` +
-        `(> ${maxUpscale}). Result may be soft. Request a higher-res photo.`
-    );
+  if (upscale > maxUpscale) warnings.push(LOW_RESOLUTION_WARNING);
 
   // Cross-check the achieved head fraction against the percentage band.
   const headPct = (tgtHeadPx / outH) * 100;
@@ -171,12 +194,7 @@ export function computeCrop(
     (headPct > spec.headPercentOfFrame.max + 0.5 ||
       headPct < spec.headPercentOfFrame.min - 0.5)
   )
-    warnings.push(
-      `Spec inconsistency: head height (${targetHeadMm(spec)}mm) yields ` +
-        `${headPct.toFixed(1)}% of frame, outside the stated ` +
-        `${spec.headPercentOfFrame.min}-${spec.headPercentOfFrame.max}% band. ` +
-        `Verify this country's numbers against the primary source.`
-    );
+    warnings.push(CONFLICTING_HEAD_RULES_WARNING);
 
   const src = opts.source;
   if (src?.width && src?.height) {
@@ -186,10 +204,7 @@ export function computeCrop(
       cropLeftX + cropW > src.width ||
       cropTopY + cropH > src.height;
     if (outOfBounds) {
-      warnings.push(
-        "Ideal crop extends past the photo edges. Not enough space around " +
-          "the head. Clamped best-effort; recommend retaking with more margin."
-      );
+      warnings.push(PAST_EDGES_WARNING);
       cropLeftX = Math.max(0, Math.min(cropLeftX, src.width - cropW));
       cropTopY = Math.max(0, Math.min(cropTopY, src.height - cropH));
     }
@@ -200,9 +215,10 @@ export function computeCrop(
     (outW < spec.digital.pxMin.width || outH < spec.digital.pxMin.height)
   )
     warnings.push(
-      `Output ${outW}x${outH}px is below the digital upload minimum ` +
-        `(${spec.digital.pxMin.width}x${spec.digital.pxMin.height}). Use ` +
-        `recommendedDigitalDpi() for the online-upload preset.`
+      `This print-size file (${outW}×${outH} px) is smaller than the ` +
+        `${spec.digital.pxMin.width}×${spec.digital.pxMin.height} px minimum ` +
+        `for online upload. ` +
+        (opts.digitalUploadHint ?? "Use it for printing only.")
     );
 
   return {
