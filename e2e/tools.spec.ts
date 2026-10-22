@@ -16,7 +16,8 @@ test("resize-kb: compressing to a target actually binds to that target", async (
   // Two different targets must produce genuinely different output sizes —
   // this is the exact regression a prior session's maxQuality bug caused
   // (every target produced the same byte-identical file).
-  const targetInput = page.locator('input[type="text"], input[type="number"]').first();
+  // By label: the optional "Minimum (KB)" box (#131) now comes first on the page.
+  const targetInput = page.getByRole("textbox", { name: "Target size in KB" });
   const compressBtn = page.getByRole("button", { name: /compress to size/i });
 
   await targetInput.fill("20");
