@@ -13,7 +13,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Which Indian government portal has the strictest photo size limit?",
-    a: "Among the cited upload workflows, Sarathi publishes a 10–20 KB photo band and UTIITSL records a 30 KB ceiling for its PAN route. Voter ID sits at the other end, allowing files up to 2 MB. File size is only one requirement, so verify the selected portal.",
+    a: "Among the cited upload workflows, Sarathi publishes a 10–20 KB photo band, and the Protean PAN route also stops at 20 KB. Voter ID sits at the other end, allowing files up to 2 MB. File size is only one requirement, so verify the selected portal.",
   },
   {
     q: "What file format do Indian government ID applications need?",
@@ -21,7 +21,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can I use the same photo for my PAN card, voter ID and driving licence?",
-    a: "Use one clear source photo if convenient, but create a separate export for each workflow. The recorded crop, dimensions and file-size limits are not identical; for example, the UTIITSL PAN preset uses a square crop. Aadhaar is not an upload workflow because its photo is taken at a centre.",
+    a: "Use one clear source photo if convenient, but create a separate export for each workflow. The recorded crop, dimensions and file-size limits are not identical; for example, UTIITSL asks for a square PAN photo. Aadhaar is not an upload workflow because its photo is taken at a centre.",
   },
   {
     q: "Why do government ID photos get rejected online?",
@@ -70,8 +70,8 @@ export default function Page() {
           <strong>200×250&nbsp;px</strong> portrait, compressed to{" "}
           <strong>under 30&nbsp;KB</strong> as a starting export. Then match the crop,
           dimensions and live instructions for the <strong>voter ID, PAN or
-          driving-licence</strong> workflow you are using. UTIITSL PAN uses a square
-          213×213&nbsp;px crop in the recorded preset. Aadhaar is different — its photo
+          driving-licence</strong> workflow you are using. UTIITSL&apos;s PAN photo is a
+          square 213×213&nbsp;px. Aadhaar is different — its photo
           is captured in person at a centre, not uploaded (see below).
         </p>
       </div>
@@ -99,8 +99,8 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             ["Voter ID (Form 6)", "voters.eci.gov.in", "2 MB", "None set; print is 4.5×3.5 cm", "JPG / JPEG"],
-            ["PAN (NSDL / Protean)", "onlineservices.proteantech.in", "50 KB", "197×276 px", "JPEG"],
-            ["PAN (UTIITSL)", "myutiitsl.com", "30 KB", "213×213 px (square)", "JPEG"],
+            ["PAN (NSDL / Protean)", "onlineservices.proteantech.in", "20 KB", "197×276 px (approx.)", "JPEG"],
+            ["PAN (UTIITSL)", "myutiitsl.com", "Under 30 KB", "213×213 px (square)", "JPEG"],
             ["Driving Licence", "sarathi.parivahan.gov.in", "20 KB", "420×525 px preferred", "JPEG"],
             ["Aadhaar (photo)", "Aadhaar Seva Kendra — in person", "No online upload", "Captured at centre", "—"],
           ].map(([doc, portal, kb, px, fmt]) => (
@@ -162,27 +162,28 @@ export default function Page() {
         PAN is the one ID with <strong>two</strong> valid portals, and they disagree
         on the crop. Via{" "}
         <a
-          href="https://www.onlineservices.proteantech.in/paam/endUserRegisterContact.html"
+          href="https://tin.tin.proteantech.in/pan/InstructionDSC.html"
           target="_blank"
           rel="noopener noreferrer"
           className="text-brand underline"
         >
           <strong>NSDL / Protean</strong>
         </a>{" "}
-        the photo is a portrait
-        197×276&nbsp;px JPEG under <strong>50&nbsp;KB</strong>. Via{" "}
+        you need a colour JPEG, 3.5&nbsp;cm tall and 2.5&nbsp;cm across, set at
+        200&nbsp;DPI (roughly 197 by 276 pixels) and no larger than{" "}
+        <strong>20&nbsp;KB</strong>. Via{" "}
         <a
-          href="https://www.myutiitsl.com"
+          href="https://www.myutiitsl.com/panonlineservices/scanSpecification.html"
           target="_blank"
           rel="noopener noreferrer"
           className="text-brand underline"
         >
           <strong>UTIITSL</strong>
         </a>{" "}
-        it is a <em>square</em> 213×213&nbsp;px JPEG under a
-        tighter <strong>30&nbsp;KB</strong>. Both want a white background and a
-        forward-facing colour headshot. The square requirement is the one people
-        miss — a portrait crop is rejected by UTIITSL.
+        it is a <em>square</em> 213×213&nbsp;px colour JPEG at 300&nbsp;dpi that must
+        stay below <strong>30&nbsp;KB</strong>. Both pages were checked on
+        31&nbsp;Oct&nbsp;2026. The square shape is the difference to watch: a
+        portrait export made for Protean will not match UTIITSL.
       </p>
 
       <p>

@@ -1250,16 +1250,18 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoFormat: "JPEG",
     sigFormat: "JPEG",
     description:
-      `Online PAN application (Form 49A/49AA via Protean-NSDL or UTIITSL). Photo ${PAN_PHOTO_HEIGHT_CM}×${PAN_PHOTO_WIDTH_CM} cm (height×width) colour JPEG at ${PAN_SCAN_DPI} DPI, max 20 KB; signature 2×4.5 cm JPEG at ${PAN_SCAN_DPI} DPI, max 10 KB. Application methods can differ, so confirm the current instructions for the route you use.`,
+      `Online PAN application (Form 49A/49AA) through Protean (formerly NSDL e-Gov). Photo ${PAN_PHOTO_HEIGHT_CM}×${PAN_PHOTO_WIDTH_CM} cm (height×width) colour JPEG at ${PAN_SCAN_DPI} DPI, max 20 KB; signature 2×4.5 cm colour JPEG at ${PAN_SCAN_DPI} DPI, max 10 KB. UTIITSL publishes different figures, so use the instructions for the route you apply through.`,
     source: {
       url: "https://tin.tin.proteantech.in/pan/InstructionDSC.html",
       label: "Protean (NSDL e-Gov) PAN instructions",
     },
     verification: "official",
-    verifiedOn: "2026-06-11",
+    // Re-checked 2026-10-31 against tin.tin.proteantech.in/pan/InstructionDSC.html:
+    // photo 200 DPI colour JPEG max 20 KB 3.5x2.5 cm; signature 200 DPI colour JPEG max 10 KB 2x4.5 cm.
+    verifiedOn: "2026-10-31",
     dpi: PAN_SCAN_DPI, // officially mandated scan resolution
     context:
-      "A PAN card application (Form 49A or 49AA) can be filed through Protean (formerly NSDL e-Gov) or UTIITSL. This preset records the linked Protean instructions; confirm the current photo and signature fields on the application route you use.",
+      "A PAN card application (Form 49A or 49AA) can be filed through Protean (formerly NSDL e-Gov) or UTIITSL. The figures on this page are Protean's; UTIITSL's differ, so check the instructions on the route you use.",
     applicationNotes: [
       "PAN specifies a scan resolution rather than a pixel canvas: the photograph, signature and supporting documents are all to be scanned at 200 DPI. That is a property of how you digitise the original, so scan at that setting rather than upscaling a smaller file afterwards.",
       "Online submission through this route depends on holding a valid Digital Signature Certificate issued by an authorised Certifying Authority in India. Without one, the application follows a different path, and no photo preparation changes that.",

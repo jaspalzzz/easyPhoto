@@ -13,7 +13,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What DPI does NSDL PAN card require?",
-    a: "NSDL (Protean) requires a minimum 200 DPI photo, JPEG format, size between 20 KB and 50 KB, dimensions 3.5×2.5 cm. At 200 DPI that is 276×197 pixels. The DPI converter tool sets the DPI metadata to 200 DPI automatically when you select the PAN card preset.",
+    a: "NSDL (Protean) lists 200 DPI for the PAN photo: a colour JPEG of up to 20 KB measuring 3.5 × 2.5 cm, which is about 197 pixels wide and 276 tall. The signature is also 200 DPI. The DPI converter tool sets the DPI metadata to 200 DPI automatically when you select the PAN card preset.",
   },
   {
     q: "What is the best DPI for passport photos to print at home?",
@@ -50,8 +50,8 @@ export default function Page() {
       ctaLabel="Change image DPI free — no upload"
     >
       <p>
-        &ldquo;Change DPI to 200&rdquo; appears on NSDL, UTIITSL, and dozens of Indian
-        exam portals. Most tutorials tell you to open Photoshop or GIMP, navigate
+        &ldquo;Scan at 200 DPI&rdquo; appears in NSDL&apos;s PAN instructions, UTIITSL
+        asks for 300 or 600&nbsp;dpi, and many Indian exam portals name a DPI too. Most tutorials tell you to open Photoshop or GIMP, navigate
         to Image Size, and type a new number. What they rarely explain is that this
         operation is usually just a metadata edit — it does not change a single pixel,
         and does not affect how the image looks on screen or on most web upload forms.
@@ -140,8 +140,26 @@ export default function Page() {
         Many Indian government upload portals check file size and, where published,
         pixel dimensions. ECI&apos;s public Voter ID Form 6 guidance is different: it
         publishes a physical photo size but no digital KB, pixel, format or DPI rule.
-        NSDL (Protean) explicitly states a minimum of 200 DPI in its requirements.
-        UTIITSL similarly lists 200 DPI for PAN card photos.
+        NSDL (Protean) lists 200&nbsp;DPI for the PAN photo and signature in its{" "}
+        <a
+          href="https://tin.tin.proteantech.in/pan/InstructionDSC.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          PAN instructions
+        </a>
+        . UTIITSL&apos;s{" "}
+        <a
+          href="https://www.myutiitsl.com/panonlineservices/scanSpecification.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          scanning specifications
+        </a>{" "}
+        ask for 300&nbsp;dpi for the photo and 600&nbsp;dpi for the signature (both
+        pages as of 31&nbsp;October&nbsp;2026).
       </p>
 
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -154,8 +172,8 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["NSDL / Protean (PAN card)", "Yes — minimum 200 DPI", "File size (20–50 KB), pixel dims, DPI tag"],
-            ["UTIITSL (PAN card)", "Yes — 200 DPI", "File size (≤30 KB), DPI tag"],
+            ["NSDL / Protean (PAN card)", "Yes — 200 DPI", "File size (photo ≤20 KB, signature ≤10 KB), size in cm"],
+            ["UTIITSL (PAN card)", "Yes — 300 dpi photo, 600 dpi signature", "File size (photo under 30 KB, signature under 60 KB), 213×213 px photo"],
             ["Voters' Service Portal / ECI (Form 6)", "Not specified", "Digital KB, pixel and format fields are not published in public Form 6 guidance"],
             ["Sarathi (Driving Licence)", "Minimum 300 DPI scanning guidance", "File size (10–20 KB photo and signature), published pixel canvas"],
             ["UPSC / SSC / IBPS exam portals", "Not specified", "File size in KB and pixel dimensions"],
@@ -196,7 +214,7 @@ export default function Page() {
           <strong>Upload your photo:</strong> JPEG, PNG, and WebP are accepted.
         </li>
         <li>
-          <strong>Set the target DPI:</strong> type the value (e.g., 200 for NSDL/UTIITSL)
+          <strong>Set the target DPI:</strong> type the value (e.g., 200 for NSDL PAN, 300 for a UTIITSL PAN photo)
           or select the PAN card preset. For print use, 300 DPI is the standard.
         </li>
         <li>
@@ -251,7 +269,8 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["PAN card — NSDL / UTIITSL", "200 DPI minimum", "276×197 px at 3.5×2.5 cm"],
+            ["PAN card — NSDL (Protean)", "200 DPI", "Roughly 197×276 px at 3.5×2.5 cm"],
+            ["PAN card photo — UTIITSL", "300 dpi", "Square, 213×213 px"],
             ["Passport photo home print", "300 DPI standard", "413×531 px at 35×45 mm"],
             ["Magazine / press print", "300–350 DPI", "Depends on print size"],
             ["Exam portal upload (UPSC/SSC)", "Not specified; pixel count matters", "Typically 100–300 px per side"],
@@ -276,8 +295,8 @@ export default function Page() {
         <Link href="/exam-requirements/pan/" className="text-brand underline">
           PAN card resizer
         </Link>{" "}
-        handles the full NSDL/UTIITSL spec including DPI, dimensions, and file size
-        in one step.
+        handles Protean&apos;s (NSDL) PAN spec — DPI, dimensions and file size — in
+        one step.
       </p>
 
       <div className="mt-12">
