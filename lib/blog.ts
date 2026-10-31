@@ -392,9 +392,10 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "pan-card-photo-size",
     title: "PAN Card Photo Size: Exact Dimensions, KB Limit & Signature Spec (NSDL / UTIITSL)",
     description:
-      "PAN card photo is 25×35 mm, JPEG, max 50 KB for NSDL or 30 KB for UTIITSL. Signature specs differ too. Full portal-by-portal breakdown and a free resizer.",
+      "PAN card photo is 25×35 mm, JPEG, max 20 KB for Protean (NSDL) or under 30 KB for UTIITSL. Signature specs differ too. Official figures and a free resizer.",
     date: "June 23, 2026",
     dateISO: "2026-06-23",
+    updatedISO: "2026-10-31",
     excerpt:
       "Compare the recorded Protean and UTIITSL photo and signature requirements, why application routes can differ, and what to verify before uploading.",
     readMins: 7,
