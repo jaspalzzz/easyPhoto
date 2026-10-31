@@ -79,9 +79,9 @@ export default function Page() {
 
       <p>
         Government portal databases often pre-allocate fixed record sizes for each
-        application. An NSDL PAN card application database slot budgets 50&nbsp;KB
-        for the photo — files larger than this cause the form to reject with a
-        &ldquo;file size exceeds limit&rdquo; error. Files too small (below the
+        application, and each one publishes its own cap. Protean&apos;s PAN
+        instructions, for instance, allow a photo of at most 20&nbsp;KB and a
+        signature of at most 10&nbsp;KB. Files too small (below the
         minimum, typically 10–20&nbsp;KB) are rejected because the portal suspects
         the photo is too low resolution to be useful.
       </p>
@@ -96,8 +96,8 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["NSDL / Protean (PAN card)", "20–50 KB", "10–20 KB"],
-            ["UTIITSL (PAN card)", "≤30 KB", "≤20 KB"],
+            ["NSDL / Protean (PAN card)", "≤20 KB", "≤10 KB"],
+            ["UTIITSL (PAN card)", "Below 30 KB", "Below 60 KB"],
             ["Voters' Service Portal / ECI (Form 6)", "Not published in public Form 6 guidance", "—"],
             ["Sarathi (Driving Licence)", "10–20 KB", "10–20 KB"],
             ["UPSC CSE / IES / CMS", "10–40 KB", "4–30 KB"],
@@ -114,6 +114,28 @@ export default function Page() {
           ))}
         </tbody>
       </table>
+
+      <p>
+        PAN rows:{" "}
+        <a
+          href="https://tin.tin.proteantech.in/pan/InstructionDSC.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          Protean&apos;s PAN page
+        </a>{" "}
+        plus{" "}
+        <a
+          href="https://www.myutiitsl.com/panonlineservices/scanSpecification.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          UTIITSL&apos;s scan specification
+        </a>
+        , looked up on 31 October 2026.
+      </p>
 
       <h2>How much quality loss happens at 50 KB?</h2>
 
@@ -141,7 +163,7 @@ export default function Page() {
             { q: "Q95 (max)", kb: 180, note: "uncompressed export", color: "#a78bfa" },
             { q: "Q80", kb: 45, note: "ideal — sweet spot", color: "#22c55e" },
             { q: "Q70", kb: 30, note: "good for 40 KB portals", color: "#38bdf8" },
-            { q: "Q60", kb: 20, note: "NSDL minimum range", color: "#f97316" },
+            { q: "Q60", kb: 20, note: "near Protean's 20 KB cap", color: "#f97316" },
             { q: "Q50", kb: 15, note: "visible artefacts", color: "#a78bfa" },
           ].map(({ q, kb, note, color }, i) => {
             const y = 16 + i * 40;
@@ -212,7 +234,7 @@ export default function Page() {
             ['"File size too small"', "You compressed below the minimum — raise the target KB value"],
             ['"Invalid file format"', "Most portals require JPEG (.jpg) — check the output format; some tools output PNG by default"],
             ['"Image dimensions not acceptable"', "The pixel width or height is outside the portal's range — resize to the required dimensions first, then compress"],
-            ['"DPI too low"', "Usually only NSDL — change DPI to 200 using the DPI converter before resizing"],
+            ['"DPI too low"', "Check the DPI your portal names (200 for PAN via Protean) and set it with the DPI converter before resizing"],
             ['"Invalid image"', "The file may have been re-saved multiple times — start fresh from the original photo"],
           ].map(([msg, fix]) => (
             <tr key={msg} className="border-b border-hairline/60">
