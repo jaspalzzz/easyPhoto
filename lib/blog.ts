@@ -40,7 +40,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Compare the recorded PAN, voter ID and driving-licence photo requirements, why the workflows differ, and why one file should not be assumed suitable for every portal.",
     date: "July 10, 2026",
     dateISO: "2026-07-10",
-    updatedISO: "2026-10-13",
+    updatedISO: "2026-10-31",
     excerpt:
       "The three IDs may start from the same portrait, but their application workflows differ. Compare the recorded requirements and confirm the current route before submitting.",
     readMins: 7,
@@ -52,7 +52,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Compare the recorded photo requirements for PAN, voter ID, driving licence and Aadhaar applications, with source and verification context for each workflow.",
     date: "July 4, 2026",
     dateISO: "2026-07-04",
-    updatedISO: "2026-10-13",
+    updatedISO: "2026-10-31",
     excerpt:
       "PAN, voter ID, Aadhaar and driving-licence workflows do not publish one interchangeable photo specification. Compare the recorded requirements and source notes.",
     readMins: 8,
@@ -392,9 +392,10 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "pan-card-photo-size",
     title: "PAN Card Photo Size: Exact Dimensions, KB Limit & Signature Spec (NSDL / UTIITSL)",
     description:
-      "PAN card photo is 25×35 mm, JPEG, max 50 KB for NSDL or 30 KB for UTIITSL. Signature specs differ too. Full portal-by-portal breakdown and a free resizer.",
+      "PAN card photo is 25×35 mm, JPEG, max 20 KB for Protean (NSDL) or under 30 KB for UTIITSL. Signature specs differ too. Official figures and a free resizer.",
     date: "June 23, 2026",
     dateISO: "2026-06-23",
+    updatedISO: "2026-10-31",
     excerpt:
       "Compare the recorded Protean and UTIITSL photo and signature requirements, why application routes can differ, and what to verify before uploading.",
     readMins: 7,
@@ -406,6 +407,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Compress any photo to an exact KB target — 50 KB, 40 KB, 20 KB — free and on-device. Includes file size limits for UPSC, SSC, IBPS, NTA, NSDL, NVSP, and Sarathi portals in one table.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
+    updatedISO: "2026-10-31",
     excerpt:
       "Set the target KB and the tool adjusts JPEG quality automatically. Output size varies with the source image, so inspect the downloaded file and compare it with the current portal instructions.",
     readMins: 6,
@@ -417,6 +419,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "DPI is a print metadata tag — not a measure of visual quality. Changing it doesn't alter pixels. Here's when it matters (NSDL/UTIITSL require 200 DPI), when it doesn't, and how to change it without re-encoding.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
+    updatedISO: "2026-10-31",
     excerpt:
       "Most portals don't check DPI — they check file size and pixel dimensions. NSDL and UTIITSL are the main exceptions (200 DPI required). Changing the metadata tag in your browser takes seconds and doesn't re-encode the JPEG.",
     readMins: 6,
@@ -439,6 +442,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Remove any photo background in your browser — no server upload, no account, no watermark. AI runs on-device via WebGPU. White background for ID photos in one click.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
+    updatedISO: "2026-10-31",
     excerpt:
       "The AI model runs entirely in your browser — nothing is uploaded to a server. Desktop uses RMBG-1.4 at 2048 px for sharp hair edges. White background for ID photos in one click.",
     readMins: 6,

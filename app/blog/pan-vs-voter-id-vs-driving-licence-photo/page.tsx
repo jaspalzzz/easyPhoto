@@ -13,7 +13,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Which of the three has the strictest photo size limit?",
-    a: "The driving licence: Sarathi takes a photo of 10–20 KB. PAN's two routes allow a little more, and the Voter ID portal accepts up to 2 MB.",
+    a: "The driving licence and PAN via Protean: Sarathi takes a photo of 10–20 KB and Protean caps the PAN photo at 20 KB. UTIITSL allows up to 30 KB, and the Voter ID portal accepts up to 2 MB.",
   },
   {
     q: "Can I use one photo for my PAN card, voter ID and driving licence?",
@@ -21,7 +21,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Why is only the PAN photo square?",
-    a: "PAN via UTIITSL uses a square 213×213 px crop optimised for face-matching, while NSDL PAN, voter ID and driving licence all use a portrait rectangle. If you upload a portrait photo to UTIITSL without squaring it, the portal rejects it or crops your face off-centre — the single most common reason a PAN photo bounces.",
+    a: "UTIITSL's scanning page asks for a square 213×213 px PAN photo and gives no reason. Protean's PAN route, Voter ID and the driving licence all use portrait shapes, so the UTIITSL file is the only one you need to square.",
   },
   {
     q: "Do all three accept a phone photo?",
@@ -93,9 +93,9 @@ export default function Page() {
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["PAN (UTIITSL)", "myutiitsl.com", "30 KB", "213×213 px", "Square"],
+            ["PAN (UTIITSL)", "myutiitsl.com", "Below 30 KB", "213×213 px", "Square"],
             ["Driving Licence", "sarathi.parivahan.gov.in", "10–20 KB", "420×525 px preferred", "Portrait"],
-            ["PAN (NSDL / Protean)", "onlineservices.proteantech.in", "50 KB", "197×276 px", "Portrait"],
+            ["PAN (NSDL / Protean)", "onlineservices.proteantech.in", "20 KB max", "Roughly 197×276 px", "Portrait"],
             ["Voter ID (Form 6)", "voters.eci.gov.in", "2 MB", "No pixel rule (paper size 4.5×3.5 cm)", "Portrait"],
           ].map(([doc, portal, kb, px, crop]) => (
             <tr key={doc} className="border-b border-hairline/60">
@@ -140,7 +140,25 @@ export default function Page() {
       <div className="my-8 rounded-xl border border-hairline bg-paper p-5 text-sm leading-relaxed text-ink-soft">
         The Voter ID rules here (the 4.5&nbsp;×&nbsp;3.5&nbsp;cm white-background photo and
         the 2&nbsp;MB file) were read from the Election Commission&apos;s Form&nbsp;6 notes and
-        its online form on 13 Oct 2026.
+        its online form on 13 Oct 2026. The PAN figures were taken from{" "}
+        <a
+          href="https://tin.tin.proteantech.in/pan/InstructionDSC.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          Protean&apos;s application instructions
+        </a>{" "}
+        and the{" "}
+        <a
+          href="https://www.myutiitsl.com/panonlineservices/scanSpecification.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-brand underline"
+        >
+          UTIITSL scanning specification
+        </a>{" "}
+        on 31 October 2026.
       </div>
 
       <h2>Difference 2: only PAN (UTIITSL) is square</h2>
@@ -148,17 +166,16 @@ export default function Page() {
       <p>
         Form 6 and the Sarathi photo guidance use portrait physical proportions.
         PAN via UTIITSL is the outlier in this comparison: a{" "}
-        <strong>square 213×213&nbsp;px</strong> crop. Upload a portrait photo to
-        UTIITSL without squaring it and the portal either rejects it or crops your
-        face off-centre — the single most common reason a PAN photo bounces. If you
-        apply for PAN through NSDL instead, the portrait crop is fine.
+        <strong>square 213×213&nbsp;px</strong> crop. UTIITSL publishes the square
+        size without saying why, so square the photo before you upload it there. If
+        you apply for PAN through NSDL (Protean) instead, the portrait crop is fine.
       </p>
 
       <h2>Difference 3: the pixel minimums differ too</h2>
 
       <p>
-        The cited PAN routes publish their own pixel guidance, and Sarathi prefers
-        420×525&nbsp;px. Voter ID has no pixel rule of any kind.
+        UTIITSL gives 213×213&nbsp;px, Protean gives centimetres and 200&nbsp;DPI,
+        which works out near 197×276&nbsp;px, and Sarathi prefers 420×525&nbsp;px. Voter ID has no pixel rule of any kind.
       </p>
 
       <h2>So can one photo cover all three?</h2>

@@ -151,8 +151,8 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             ["Indian Passport (MEA / VFS)", "White or off-white plain background"],
-            ["PAN Card — NSDL / Protean", "White or light-coloured plain background"],
-            ["PAN Card — UTIITSL", "White background (strict)"],
+            ["PAN Card — NSDL / Protean", "Not stated in Protean's PAN instructions"],
+            ["PAN Card — UTIITSL", "Not stated on UTIITSL's scanning page"],
             ["Voter ID — NVSP / ECI", "Plain white or light-coloured background"],
             ["Driving Licence — Sarathi", "White or light background, no patterns"],
             ["Aadhaar update (in-person)", "Captured live at centre — white background used on-site"],
