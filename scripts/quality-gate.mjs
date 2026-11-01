@@ -9,7 +9,7 @@
  *   4. JSON-LD dateModified vs sitemap lastmod
  *   5. internal vocabulary in rendered copy
  *   6. unverified exam pages showing a stored KB figure as the requirement
- *   7. browsing links (header, nav, footer, hubs) to hidden or redirected pages
+ *   7. links from indexed pages to hidden or redirected pages
  *
  * Every check is a ratchet against test/fixtures/quality/*.json: it fails on a
  * new or worse violation AND when a recorded allowance is no longer used, so
@@ -204,7 +204,8 @@ const ceil4 = (value) => Math.ceil(value * 1e4) / 1e4;
 // menu and footer one click from 38 thin pages we had hidden from Search.
 // noindex hides a page from Google, not from a reviewer clicking around. So
 // on every indexed page the chrome (header, nav, footer), and on the hubs the
-// whole page, may link only to pages that are indexed and not redirected.
+// whole page, may link only to pages that are indexed and not redirected;
+// article and tool text may add only the short list of complete hidden tools.
 // Zero tolerance: there is no allowance to ratchet.
 {
   const repo = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
@@ -219,6 +220,10 @@ const ceil4 = (value) => Math.ceil(value * 1e4) / 1e4;
       .map((line) => line.trim().split(/\s+/)[0])
   );
   const HUBS = new Set(["/", "/tools/", "/exam-requirements/", "/exam-photo-size/", "/passport-photo/", "/visa-photo/"]);
+  // Hidden from Search but complete enough for a visitor, so article text may
+  // link it (never chrome or hubs): /tools/print-sheet/ is ~500 words of its
+  // own and is the tool the printing guide is about. Keep this list short.
+  const CONTENT_LINKABLE_HIDDEN = new Set(["/tools/print-sheet/"]);
   const target = (href) => {
     const p = href.split(/[?#]/)[0];
     if (!p.startsWith("/") || /\.\w{2,5}$/.test(p)) return null;
@@ -241,8 +246,21 @@ const ceil4 = (value) => Math.ceil(value * 1e4) / 1e4;
         problems.push(`NEW: ${route} links ${to} (${hidden.has(to) ? "hidden from the index" : "redirected"}) from its ${HUBS.has(route) ? "hub content" : "header, nav or footer"}`);
       }
     }
+    // Article and tool text: no redirected page, and no hidden page unless it
+    // is on the short list above. The crawler follows these links too.
+    const main = page.html.match(/<main\b[\s\S]*?<\/main>/i)?.[0] ?? "";
+    if (!HUBS.has(route)) {
+      for (const [, href] of main.matchAll(/href="([^"]+)"/g)) {
+        const to = target(href);
+        if (!to) continue;
+        checked += 1;
+        if (redirected.has(to) || (hidden.has(to) && !CONTENT_LINKABLE_HIDDEN.has(to))) {
+          problems.push(`NEW: ${route} links ${to} (${hidden.has(to) ? "hidden from the index" : "redirected"}) from its page content`);
+        }
+      }
+    }
   }
-  record("browsing links stay on indexed pages", [...new Set(problems)], `${checked} chrome/hub links point at indexed pages`);
+  record("links stay on indexed pages", [...new Set(problems)], `${checked} chrome, hub and content links checked`);
 }
 
 // ── Report ───────────────────────────────────────────────────────────────────
