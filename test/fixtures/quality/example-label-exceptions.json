@@ -6,8 +6,5 @@
     "components/site/ComplianceEngine.tsx — fixed '10/10 Checks Passed' card; not imported anywhere today. Label it before it is used, or delete it.",
     "Entries may only be removed. Once a file is labelled, the check fails until its entry is deleted. Never add an entry to make the check pass."
   ],
-  "unlabelledStaticPass": [
-    "components/site/ComplianceEngine.tsx",
-    "components/site/WhyRejected.tsx"
-  ]
+  "unlabelledStaticPass": []
 }

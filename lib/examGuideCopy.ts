@@ -120,7 +120,7 @@ export const EXAM_SIZE_GUIDE_FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "What format should I use — JPG or PNG?",
-    a: `Use the format named for the specific file: SSC lists ${ssc.sigFormat} for its separate signature, RRB lists ${rrb.sigFormat} for its separate signature, IBPS lists ${ibps.photoFormat}, SBI lists ${sbi.photoFormat}, UPSC lists ${upsc.photoFormat}, and the stored NTA source lists ${nta.photoFormat}. Convert HEIC or WebP only to a format named in the active instructions.`,
+    a: `Use the format named for the specific file: SSC lists ${ssc.sigFormat} for its separate signature, RRB lists ${rrb.sigFormat} for its separate signature, IBPS lists ${ibps.photoFormat}, SBI lists ${sbi.photoFormat}, UPSC lists ${upsc.photoFormat}, and the NTA source we cite lists ${nta.photoFormat}. Convert HEIC or WebP only to a format named in the active instructions.`,
   },
   {
     q: "Do specifications change between exam cycles?",

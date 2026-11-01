@@ -10,7 +10,7 @@ const post = getPost("best-free-exam-photo-resizer-india")!;
 const FAQ_ITEMS = [
   {
     q: "Does ExamMint cover SSC CGL photo and signature?",
-    a: "Its public page lists SSC CGL among its presets. Current SSC instructions capture the photograph live and publish a separate 10–20 KB JPG/JPEG signature upload, so a prepared-photo preset does not replace the live camera step.",
+    a: "Its public page lists SSC CGL among its exam options. Current SSC instructions capture the photograph live and publish a separate 10–20 KB JPG/JPEG signature upload, so a prepared-photo setting does not replace the live camera step.",
   },
   {
     q: "What is the SSC CGL photo size requirement?",
@@ -65,7 +65,7 @@ export default function Page() {
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
           src="/images/best-free-exam-photo-resizer-india.webp"
-          alt="easyPhoto exam application tool interface with an exam preset and measurable output checks"
+          alt="easyPhoto exam application tool with an exam picked and measurable output checks"
           width={1024}
           height={1024}
           className="w-full h-auto"
@@ -153,7 +153,7 @@ export default function Page() {
           {[
             {feat:"KB target resize",scores:[1,1,1,1,1]},
             {feat:"Pixel resize",scores:[1,1,1,1,1]},
-            {feat:"40+ exam presets",scores:[1,1,0,0,0]},
+            {feat:"40+ exam sizes built in",scores:[1,1,0,0,0]},
             {feat:"PDF / doc tools",scores:[1,0,1,0,0]},
             {feat:"No upload (private)",scores:[1,0,0,0,0]},
             {feat:"Signature resizer",scores:[1,1,1,1,0]},
@@ -263,7 +263,7 @@ export default function Page() {
       <h2>myexamphoto.in — pre-upload validator, PDF tools, smaller exam list</h2>
 
       <p>
-        myexamphoto.in covers around 13 named exam presets plus a custom dimension mode, along
+        myexamphoto.in covers around 13 named exams plus a custom dimension mode, along
         with photo and signature resize, a PDF compressor, a DPI converter (200/300 DPI for
         portals that require it), and a universal file converter (PDF, JPG, PNG, WebP). The tool
         claims on-device processing — &quot;photos never leave your device&quot; — though this
@@ -280,7 +280,7 @@ export default function Page() {
       </p>
 
       <p>
-        The exam coverage is narrower than ExamMint: confirmed presets include UPSC, SSC CGL,
+        The exam coverage is narrower than ExamMint: confirmed exams include UPSC, SSC CGL,
         IBPS, JEE Main, NEET UG, GATE, Kerala PSC, and RRB, among others. State PSCs beyond
         Kerala PSC are not listed.
       </p>

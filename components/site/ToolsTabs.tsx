@@ -22,7 +22,7 @@ const TABS: Tab[] = [
   {
     id: "document", label: "Document Photos", Icon: User,
     tools: [
-      { title: "Passport Photo Maker",  desc: "Country presets with published sources", href: "/passport-photo/",               Icon: CreditCard    },
+      { title: "Passport Photo Maker",  desc: "Country sizes with published sources", href: "/passport-photo/",               Icon: CreditCard    },
       { title: "Visa Photo Maker",      desc: "Visa photo sizes by country",           href: "/visa-photo/",                   Icon: Globe         },
       { title: "Baby Passport Photo",   desc: "Under-4 passport print rules",          href: "/baby-passport-photo/",          Icon: Baby          },
       { title: "Resume / CV Photo",     desc: "Job applications & CVs",                href: "/tools/resume-photo/",           Icon: FileText      },
@@ -33,7 +33,7 @@ const TABS: Tab[] = [
   {
     id: "exam", label: "Exam Tools", Icon: GraduationCap,
     tools: [
-      { title: "Exam Application Kit",  desc: "All exam presets in one flow",          href: "/tools/exam-package/",           Icon: Package       },
+      { title: "Exam Application Kit",  desc: "Every exam size in one flow",          href: "/tools/exam-package/",           Icon: Package       },
       { title: "SSC Photo Tool",        desc: "SSC MTS, CGL, CHSL",                   href: "/exam-requirements/ssc/",       Icon: GraduationCap },
       { title: "UPSC Photo Tool",       desc: "Civil Services Exam",                   href: "/exam-requirements/upsc/",      Icon: Award         },
       { title: "Railway Photo Tool",    desc: "RRB, NTPC, Group D",                   href: "/exam-requirements/rrb/",       Icon: Train         },

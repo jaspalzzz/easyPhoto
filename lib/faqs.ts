@@ -4,12 +4,7 @@
  * One set per page; never mix sets across URLs (schema must match the page).
  */
 import type { FaqItem } from "@/components/site/Faq";
-import {
-  acceptsDigitalUpload,
-  effectivePrintMm,
-  formatFileSizeKb,
-  type CountrySpec,
-} from "@/lib/countrySpecs";
+import type { CountrySpec } from "@/lib/countrySpecs";
 import type { PortalSpec } from "@/lib/portalPresets";
 import { mmToPx } from "@/lib/headPositioning";
 import { photoDimsPx, sigDimsPx } from "@/lib/specRegistry";
@@ -105,14 +100,14 @@ export function portalFaqItems(spec: PortalSpec): FaqItem[] {
     {
       q: `What is the photo size for the ${spec.name} application?`,
       a: spec.isLiveCapture
-        ? `The current stored instructions describe a live-photograph step rather than an ordinary prepared-photo upload. The ${photoKb}${photoDim} value shown by this tool is a compatibility target, not a current live-photo requirement. Follow the active form's capture instructions.`
-        : `The stored ${spec.name} target is ${photoKb}${photoDim}${photoFormat}. This tool resizes and compresses a prepared photo to that target; confirm the active form before submitting.`,
+        ? `The current instructions describe a live-photograph step rather than an ordinary prepared-photo upload. The ${photoKb}${photoDim} value shown by this tool is an easyPhoto default, not a current live-photo requirement. Follow the active form's capture instructions.`
+        : `The ${spec.name} photo size we use is ${photoKb}${photoDim}${photoFormat}. This tool resizes and compresses a prepared photo to that target; confirm the active form before submitting.`,
     },
   ];
   if (sigKb) {
     items.push({
       q: `What is the signature size for ${spec.name}?`,
-      a: `The stored signature target is ${sigKb}${sigDim}${sigFormat}. ${signaturePreparation}`,
+      a: `The signature size we use is ${sigKb}${sigDim}${sigFormat}. ${signaturePreparation}`,
     });
   }
   items.push(
@@ -170,7 +165,6 @@ export const PASSPORT_FAQ: FaqItem[] = [
 export const VISA_FAQ: FaqItem[] = [
   { q: "What size is a visa photo?", a: "The size depends on the destination and application route. Pick the destination to load its recorded dimensions, then compare them with the current embassy, consulate or application-centre instructions." },
   { q: "What size is a US visa photo for DS-160?", a: "2×2 inches (51×51mm), square, on a white background. It's the same spec as the US passport photo." },
-  { q: "What size is a Schengen visa photo?", a: "35×45mm, with the head taking up roughly 70–80% of the frame." },
   { q: "What background should a Schengen visa photo have?", a: "There is no single safe shade for every member-state workflow. This maker uses light grey by default, but destination instructions differ; compare the result with the mission handling your application." },
   { q: "What are the UK visa photo requirements?", a: "The requirement depends on the UK application route. For a route requesting a 35×45mm printed photo, use the linked UK guidance for its current background, expression and glasses rules rather than assuming another country's rules apply." },
   { q: "What size is a Canada visa photo?", a: "35×45mm for visitor visas and study or work permits. Permanent residence and Express Entry are a separate process specified in pixels rather than millimetres, and the printed Canadian passport booklet is different again at 50×70mm." },
@@ -322,21 +316,18 @@ export const SIGN_IMAGE_FAQ: FaqItem[] = [
   { q: "Do I need an app to sign on a photo?", a: "No. It works in the browser on your phone or computer, with nothing to install." },
   { q: "Can I overlay a transparent signature PNG?", a: "Yes. Upload a transparent signature and drop it onto the photo, or draw a new one directly." },
   { q: "Will the signature have a white box around it?", a: "No, if you use a transparent signature. Make one with the transparent signature tool first for a clean overlay." },
-  { q: "Is it free and private?", a: "Yes — free, no watermark, and the image is processed in your browser, never uploaded." },
 ];
 
 export const TRANSPARENT_SIGNATURE_FAQ: FaqItem[] = [
   { q: "How do I make a transparent signature PNG?", a: "Upload a scan or photo of your signature on white paper. The tool removes the paper background, trims to the ink, and exports a transparent PNG." },
   { q: "Why do I need a transparent signature?", a: "Forms and documents expect a signature with no white box around it, so it sits cleanly on the page. A transparent PNG does exactly that." },
   { q: "My scan has grey or shadowed paper — will it clean up?", a: "Yes. Increase the background-removal strength to push the paper fully transparent while keeping the ink crisp." },
-  { q: "Is it free and private?", a: "Yes — free, no watermark, and your signature is processed on your device and never uploaded." },
 ];
 
 export const SIGNATURE_BG_REMOVAL_FAQ: FaqItem[] = [
   { q: "How do I remove the background from a signature?", a: "Upload a photo or scan of your signature and the tool lifts the paper tone, keeping just the ink on a white or transparent background." },
   { q: "Does it keep the ink sharp?", a: "Yes. It targets the paper colour and leaves the ink intact; a strength control lets you push faint paper fully transparent." },
   { q: "What's the difference from the transparent signature tool?", a: "This focuses on background removal; the transparent signature tool also auto-trims and optimises the file. Use whichever fits, or chain them." },
-  { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser. Your signature is never uploaded." },
 ];
 
 export const SIGNATURE_CLEANER_FAQ: FaqItem[] = [
@@ -344,7 +335,6 @@ export const SIGNATURE_CLEANER_FAQ: FaqItem[] = [
   { q: "What does the signature cleaner do?", a: "It removes the paper background, auto-trims the empty space around the ink, and optimises the file size — turning a phone photo of your signature into a clean, form-ready image." },
   { q: "Will it keep a transparent background?", a: "Yes. The cleaned signature is exported as a transparent PNG so it sits cleanly on forms and documents." },
   { q: "Can it fix a faint or shadowed scan?", a: "Yes. Adjust the cleanup strength to lift faint paper and shadows while keeping the ink legible." },
-  { q: "Is it free and private?", a: "Yes — free, no watermark, and your signature is processed on your device only." },
 ];
 
 export const SIGNATURE_CROP_FAQ: FaqItem[] = [
@@ -352,7 +342,6 @@ export const SIGNATURE_CROP_FAQ: FaqItem[] = [
   { q: "Why crop a signature before uploading?", a: "Forms expect the signature to fill the frame, not float in a sea of white. A tight crop also helps it meet pixel-dimension limits." },
   { q: "How can I extract a signature from an image?", a: "Extracting means two things: cutting out just the signature, and dropping the paper behind it. Crop the signature here, then choose Transparent to keep only the ink, as a PNG you can place on other documents, or White for a clean JPG for forms." },
   { q: "Can I make a form signature from a phone photo?", a: "Yes. Write your signature in dark ink on blank paper, photograph it straight-on in good light, crop it here with the paper set to White, then fit it to your form's limit with the signature resizer. If the ink looks faint, the signature cleaner darkens the strokes as well." },
-  { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser." },
 ];
 
 export const FORMAT_CONVERTER_FAQ: FaqItem[] = [
@@ -368,14 +357,12 @@ export const RESIZE_DIMENSIONS_FAQ: FaqItem[] = [
   { q: "How do I keep the aspect ratio while resizing?", a: "Turn on the lock and the other dimension updates automatically as you type, so the image isn't stretched." },
   { q: "What's the difference between resizing by pixels and by KB?", a: "Pixels set the width and height; KB sets the file size for upload limits. Use the resize-to-KB tool when a form caps the file size." },
   { q: "Does resizing reduce quality?", a: "Shrinking is high quality. Enlarging beyond the original size can look soft, since there's no extra detail to add." },
-  { q: "Is it free and private?", a: "Yes — free, no watermark, and processed entirely in your browser." },
 ];
 
 export const PHOTO_NAME_DATE_FAQ: FaqItem[] = [
   { q: "How do I add my name and date to a passport size photo?", a: "Upload your photo, type your name and pick the date. The tool prints both in capitals, with the date as DD/MM/YYYY, on a white strip at the bottom of the photo. Set the KB limit your form gives, then download the JPG." },
   { q: "Should the date be the photo date or my date of birth?", a: "Forms that ask for a name-and-date strip almost always mean the date the photo was taken, often written DOP (date of photo). The date field accepts any date, so enter your date of birth only if your notice asks for it." },
   { q: "Can I change the date or text format?", a: "Yes. Enter the photography date and use the wording or date format stated by the current application instructions." },
-  { q: "Is it free and private?", a: "Yes — free, no watermark, and your photo is processed on your device only." },
 ];
 
 export const COMPLIANCE_CHECKER_FAQ: FaqItem[] = [
@@ -407,26 +394,18 @@ export const IMAGE_CROP_FAQ: FaqItem[] = [
  * Per-country passport FAQ — built from the verified spec so every country's
  * set is genuinely different (sizes, background, head height, rules all differ).
  */
+/**
+ * The one hand-written caveat a country maker page adds to its own FAQ (US DV
+ * Lottery, the UK background, the Australian guarantor…). The generic five —
+ * size, background, head size, glasses, "free and private" — were the same on
+ * 19 maker pages with the country swapped and restated the spec card above
+ * them, so they were dropped (1 Nov 2026, AdSense "low value content"), as the
+ * exam pages' template FAQ was before them.
+ */
 export function countryFaqItems(
   spec: CountrySpec,
   kind: "passport" | "visa" = "passport"
 ): FaqItem[] {
-  const doc = kind === "visa" ? "visa" : "passport";
-  const mm = effectivePrintMm(spec);
-  const size =
-    mm.width === 51 && mm.height === 51
-      ? "2×2 inches (51×51mm)"
-      : `${mm.width}×${mm.height}mm`;
-  const glasses =
-    typeof spec.glasses === "boolean"
-      ? spec.glasses
-        ? "Glasses are allowed if there's no glare and your eyes are clearly visible."
-        : "No, glasses are not allowed."
-      : `Glasses: ${spec.glasses}.`;
-  const fileSize = spec.digital.fileSizeKb
-    ? `Online uploads accept ${formatFileSizeKb(spec.digital.fileSizeKb)}, so compress your photo to fit if needed.`
-    : "The online file-size limit varies by portal, so check the limit on your form, then compress to fit.";
-
   const EXTRA: Record<string, FaqItem> = {
     us: {
       q: "Can I use this for a US visa or DV Lottery photo?",
@@ -454,25 +433,7 @@ export function countryFaqItems(
     },
   };
 
-  const items: FaqItem[] = [
-    { q: `What size is a ${doc} photo for ${spec.label}?`, a: `A ${doc} photo for ${spec.label} is ${size}. EasyPhoto sets this size automatically.` },
-    { q: `What background colour does a ${doc} photo for ${spec.label} need?`, a: `${spec.background.description}. The tool applies the recorded default; compare it with the linked current instructions before submitting.` },
-    { q: `What is the head size in a ${doc} photo for ${spec.label}?`, a: `Your head should measure ${spec.headHeightMm.min}–${spec.headHeightMm.max}mm from chin to crown. We size it to that band and flag it if it's off.` },
-    { q: `Can I wear glasses or smile in a ${doc} photo for ${spec.label}?`, a: `${glasses} Expression: ${spec.smileAllowed}.` },
-    { q: `Is the ${spec.label} ${doc} photo maker free and private?`, a: "Yes. It's free, with no watermark, and processed entirely in your browser. Your photo is never uploaded." },
-  ];
-  // Only ask about an upload where one exists. Some applications take printed
-  // photographs and nothing else — an Irish visa wants two prints with details
-  // written on the back — and generating "what file size does the online upload
-  // need?" for those contradicted the rest of the page.
-  if (acceptsDigitalUpload(spec)) {
-    items.splice(4, 0, {
-      q: `What file size does the ${spec.label} online ${doc} upload need?`,
-      a: fileSize,
-    });
-  }
   // Country caveats are passport-flavoured; visa pages get their specifics from
   // the per-page maker content instead.
-  if (kind === "passport" && EXTRA[spec.id]) items.push(EXTRA[spec.id]);
-  return items;
+  return kind === "passport" && EXTRA[spec.id] ? [EXTRA[spec.id]] : [];
 }

@@ -8,8 +8,8 @@ const post = getPost("schengen-europe-visa-photo-size")!;
 
 const FAQ_ITEMS = [
   {
-    q: "What size is a Schengen visa photo?",
-    a: "35 × 45 mm (the ICAO biometric standard), with the face filling 70–80% of the frame (about 32–36 mm chin to crown), a neutral expression, and taken within the last 6 months.",
+    q: "Do all 29 Schengen countries use the same photo size?",
+    a: "The print size is the same everywhere: 35 × 45 mm under the ICAO standard, taken within the last 6 months with a neutral expression. The face usually fills 70–80% of the frame (about 32–36 mm chin to crown), but a few missions set their own head size: the Netherlands asks for 26–30 mm. The background shade differs most, so check the mission handling your application.",
   },
   {
     q: "What background colour does a Schengen visa photo need?",

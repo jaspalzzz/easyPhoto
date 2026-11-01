@@ -62,7 +62,7 @@ const LANDING_UPDATED: Record<string, string> = {
   // 15 Oct 2026: "UAE & Dubai" in the title and H1; GDRFA named as Dubai's office.
   "/uae-visa-photo-maker/": "2026-11-01",
   // 15 Oct 2026: "MRP size photo" title and H1; visitor-facing Good to know.
-  "/nepal-passport-photo-maker/": "2026-10-15",
+  "/nepal-passport-photo-maker/": "2026-11-01",
   // 15 Oct 2026: homepage H1 in visitors' words.
   "/": "2026-11-01",
   // 15 Oct 2026: "Passport Size Photo Maker" title, intro and tool links
@@ -86,6 +86,15 @@ const LANDING_UPDATED: Record<string, string> = {
   "/france-visa-photo-maker/": "2026-11-01",
   "/italy-visa-photo-maker/": "2026-11-01",
   "/malaysia-visa-photo-maker/": "2026-11-01",
+  "/us-passport-photo-maker/": "2026-11-01",
+  "/australia-passport-photo-maker/": "2026-11-01",
+  "/canada-visa-photo-maker/": "2026-11-01",
+  "/germany-visa-photo-maker/": "2026-11-01",
+  "/netherlands-visa-photo-maker/": "2026-11-01",
+  "/ireland-visa-photo-maker/": "2026-11-01",
+  "/china-visa-photo-maker/": "2026-11-01",
+  "/new-zealand-visa-photo-maker/": "2026-11-01",
+  "/saudi-visa-photo-maker/": "2026-11-01",
 };
 /** Trust pages whose own text changed after TRUST_PAGES_UPDATED. */
 const TRUST_PAGE_UPDATED: Record<string, string> = {

@@ -130,6 +130,20 @@ const GOOD_TO_KNOW: Record<string, string> = {
     "Sources disagree on the size of an Oman visa photo. The Royal Oman Police eVisa is usually described as taking 35×45 mm, and that is the size this maker starts with, but widely shared guides also give 40×60 mm for applications made at a counter or consulate. We could not find a public ROP page that states a size, so take the figure from the application you are actually filling in before you print or upload.",
   france:
     "France-Visas follows the ICAO biometric standard: a 35×45 mm photo (France gives the width as 35–40 mm), with a 32–36 mm face, which is 70–80% of the height. It must be no older than six months, against a plain light-coloured background. France allows any width from 35 to 40 mm, so a standard 35×45 mm print fits. This maker picks light grey for the background; check the current France-Visas or consulate instructions before you submit.",
+  germany:
+    "Germany follows the ICAO biometric standard: a 35×45 mm photo with your face filling 70–80% of the height, about 32–36 mm from chin to crown. Its own background rule is about contrast: one plain, bright colour, ideally neutral grey, that stands out clearly from your face and hair. White is not ruled out. These points come from the sample-photo template the German missions publish with the Federal Foreign Office and the Bundesdruckerei.",
+  netherlands:
+    "The Dutch government portal asks for a 35×45 mm colour photo in which your face measures 26–30 mm from chin to crown (for anyone aged 11 or over) and 16–20 mm across, on a plain light grey, light blue or white background; the photo must be no more than six months old, and prints need at least 400 DPI. The Netherlands applies these national rules to Schengen visa applications made to it, and its visa checklist asks for a photo that meets them, so this maker sizes your head smaller than the German or French makers do. If you apply through an external service provider, they take a digital photo at your appointment.",
+  ireland:
+    "An Irish visa application, per Immigration Service Delivery, needs two identical colour prints on photographic paper, at least 35×45 mm and no larger than 38×50 mm, with your face filling 70–80% of the frame against a plain light grey, cream or white background, taken within half a year of applying. Write your name and your transaction number in block capitals on the back of each print. Because the application takes prints rather than an upload, no pixel size or file-size limit applies to it.",
+  china:
+    "China uses an unusual size: 33×48 mm rather than the common 35×45, on a white background, with your head 28–33 mm from chin to crown. For a digital upload through COVA or a consulate, guides give a JPEG of 354×472 to 420×560 pixels and 40–120 KB. The Chinese Visa Application Service Centre's FAQ confirms the 48×33 mm print; the pixel and KB ranges are consistent across reputable guides but do not appear on that page, so confirm them on the consulate or COVA portal before you submit.",
+  "new-zealand":
+    "For a New Zealand visa or NZeTA, a print is 35×45 mm on a plain light or neutral background such as light grey, off-white or cream. An online photo must be a portrait JPEG in a 3:4 ratio, from 900×1200 up to 2250×3000 pixels, and between 512 KB and 3.14 MB: Immigration New Zealand rejects a file that is too small as well as one that is too large. Your face should cover 70–80% of the frame, the picture must be recent (from within six months), and photos altered with AI editing tools are not accepted.",
+  malaysia:
+    "Malaysia uses a distinctive 35×50 mm photo on a plain white background (light grey or cream is sometimes accepted), with your head 30–35 mm tall, which fills 60–70% of the frame. A dark-coloured shirt is recommended so you stand out from the background. Published guides agree that the eVisa upload must be a JPEG of roughly 10 to 120 KB, a tight band, but no Immigration Department page states it, so check the limit shown on the eVisa form before you submit.",
+  "saudi-evisa":
+    "The official visa.visitsaudi.com photo page sets the eVisa photo exactly: 200×200 pixels, 5–100 KB, on a white background with no pattern or shadows. Your face should fill 70–80% of the photo, with your head square to the camera so both ears and cheeks show, and the photo must not be older than six months. Head coverings are allowed for religious reasons only. A paper application at the consulate uses a 4×6 cm print instead; this maker prepares the eVisa upload.",
   nepal:
     "In Nepal, “MRP size photo” is the everyday name for the standard photo many forms ask for; the name comes from the older machine-readable passport. Guides agree on 35×45 mm on plain white, though the Department of Passports does not publish it, and this maker prepares exactly that: face straight to the camera, mouth closed. Guides also want a photo taken in the past six months; copies can go several to one 4×6 inch print sheet. Match it against the form in front of you.",
   "india-evisa":
@@ -225,8 +239,8 @@ export default async function MakerPage({
   const hub = HUB[kind];
   const mm = effectivePrintMm(spec);
   const content = getMakerContent(maker);
-  // Page-specific FAQs first (unique per page), then the spec-driven set
-  // (kind-aware so passport and visa pages don't read as duplicates).
+  // Page-specific FAQs, then the country's one hand-written caveat. No
+  // generic spec questions: the spec card above already answers them.
   const faqItems = [
     ...(content?.faqs ?? []),
     ...countryFaqItems(spec, kind),
@@ -248,7 +262,7 @@ export default async function MakerPage({
             description: `Prepare a ${labelWithDoc(spec.label, doc)} photo at the selected size and background in your browser, then confirm the current authority instructions.`,
             url: `/${maker}/`,
           }),
-          faqSchema(faqItems),
+          faqItems.length > 0 ? faqSchema(faqItems) : null,
         ]}
       />
       <Breadcrumbs crumbs={crumbs} />
@@ -381,9 +395,11 @@ export default async function MakerPage({
         </div>
       </section>
 
-      <section>
-        <Faq items={faqItems} noSchema />
-      </section>
+      {faqItems.length > 0 && (
+        <section>
+          <Faq items={faqItems} noSchema />
+        </section>
+      )}
     </div>
   );
 }

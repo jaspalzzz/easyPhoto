@@ -5,15 +5,16 @@
  * them without a build.
  *
  * The composition here mirrors app/exam-requirements/[exam]/page.tsx
- * (`portalFaqItems(spec)`) and app/[maker]/page.tsx (page-specific FAQs, then
- * `countryFaqItems(spec, kind)`). If either page changes how it builds its FAQ,
+ * (`EXAM_GUIDES[id]?.faq ?? spec.faq ?? []`) and app/[maker]/page.tsx
+ * (page-specific FAQs, then `countryFaqItems(spec, kind)`). If either page changes how it builds its FAQ,
  * change it here too; scripts/quality-gate.mjs separately checks the rendered
  * JSON-LD against the visible page.
  */
 import sitemap from "@/app/sitemap";
 import type { FaqItem } from "@/components/site/Faq";
 import type { CountrySpec } from "@/lib/countrySpecs";
-import { countryFaqItems, portalFaqItems } from "@/lib/faqs";
+import { EXAM_GUIDES } from "@/components/site/exam";
+import { countryFaqItems } from "@/lib/faqs";
 import { getMakerContent } from "@/lib/makerContent";
 import { getMakerPage, labelWithDoc, makerSpec, type MakerKind } from "@/lib/makerPages";
 import { PORTAL_PRESETS, type PortalSpec } from "@/lib/portalPresets";
@@ -51,7 +52,7 @@ export function examTemplatePages(): ExamTemplatePage[] {
     if (!id || !spec) return [];
     const shortName = spec.name.split(" (")[0];
     const expansion = spec.name.match(/\(([^)]+)\)/)?.[1] ?? "";
-    return [{ route, id, spec, names: longestFirst([spec.name, shortName, expansion]), faqItems: portalFaqItems(spec) }];
+    return [{ route, id, spec, names: longestFirst([spec.name, shortName, expansion]), faqItems: EXAM_GUIDES[id]?.faq ?? spec.faq ?? [] }];
   });
 }
 

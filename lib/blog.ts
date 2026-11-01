@@ -103,7 +103,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Seven photo tools compared for India's below-four 35×45 mm print, overseas preparation and exam support, with the adult PSK/POPSK capture workflow explained.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
-    updatedISO: "2026-07-13",
+    updatedISO: "2026-11-01",
     excerpt:
       "Ordinary adults are photographed at the PSK/POPSK. For the below-four print and separate overseas workflows, here are five tools compared on cost, privacy and format support.",
     readMins: 6,
@@ -372,7 +372,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "PAN card photo is 25×35 mm, JPEG, max 20 KB for Protean (NSDL) or under 30 KB for UTIITSL. Signature specs differ too. Official figures and a free resizer.",
     date: "June 23, 2026",
     dateISO: "2026-06-23",
-    updatedISO: "2026-10-31",
+    updatedISO: "2026-11-01",
     excerpt:
       "Compare the recorded Protean and UTIITSL photo and signature requirements, why application routes can differ, and what to verify before uploading.",
     readMins: 7,
@@ -396,7 +396,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "DPI is a print metadata tag — not a measure of visual quality. Changing it doesn't alter pixels. Here's when it matters (NSDL/UTIITSL require 200 DPI), when it doesn't, and how to change it without re-encoding.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
-    updatedISO: "2026-10-31",
+    updatedISO: "2026-11-01",
     excerpt:
       "Most portals don't check DPI — they check file size and pixel dimensions. NSDL and UTIITSL are the main exceptions (200 DPI required). Changing the metadata tag in your browser takes seconds and doesn't re-encode the JPEG.",
     readMins: 6,
@@ -408,6 +408,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Tile 8 passport photos on a 4×6 inch sheet at 300 DPI — print at home for under ₹20. Step-by-step guide: paper, printer settings, cut lines, and why 'fit to page' ruins size.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
+    updatedISO: "2026-11-01",
     excerpt:
       "Home-printed passport photos cost ₹3–₹8 per print vs ₹50–₹150 at a studio. The key is disabling 'fit to page' scaling, using photo paper, and starting with a correctly cropped image.",
     readMins: 6,
@@ -443,6 +444,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Sarathi's scan guide lists 10–20 KB JPG photo and signature files, with preferred 420×525 and 256×64 px canvases. Confirm the selected state and service.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
+    updatedISO: "2026-11-01",
     excerpt:
       "Sarathi's scan guide lists 10–20 KB JPG photo and signature files, preferred pixel canvases and black-pen guidance, with a reminder to confirm the selected service.",
     readMins: 6,

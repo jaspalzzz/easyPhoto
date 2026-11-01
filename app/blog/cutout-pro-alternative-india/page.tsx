@@ -200,7 +200,7 @@ export default function Page() {
 
       <p>
         PassportSizePhoto.in is a free, India-native tool built on WebAssembly. It
-        offers a 630×810 px, 10–250 KB preset, but that must not be described as
+        offers a 630×810 px, 10–250 KB option, but that must not be described as
         the ordinary domestic Passport Seva upload specification. The official
         630×810 instruction applies to overseas mission guidance, and the 250 KB
         cap remains unverified. Processing

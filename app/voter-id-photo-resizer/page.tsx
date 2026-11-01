@@ -6,7 +6,7 @@ export const metadata = pageMetadata({
   titleAbsolute: true,
   description:
     "Prepare a Voter ID Form 6 photo to the published 4.5×3.5 cm physical proportion " +
-    "and a selected compatibility target. Confirm the current portal's digital fields.",
+    "and an easyPhoto default size. Confirm the current portal's digital fields.",
   path: "/voter-id-photo-resizer/",
 });
 
@@ -16,7 +16,7 @@ export default function Page() {
       portalId="voter-id"
       displayName="ECI Voter ID"
       slug="voter-id-photo-resizer"
-      intro="Prepare your new-voter (Form 6) photo to the stored compatibility target and published physical proportions. ECI's public Form 6 does not publish one universal digital KB limit, so confirm the current portal before submitting."
+      intro="Prepare your new-voter (Form 6) photo to an easyPhoto default size and the published physical proportions. ECI's public Form 6 does not publish one universal digital KB limit, so confirm the current portal before submitting."
       learnMoreHref="/blog/voter-id-photo-requirements-2026/"
       learnMoreLabel="Voter ID photo requirements & NVSP upload spec →"
     />

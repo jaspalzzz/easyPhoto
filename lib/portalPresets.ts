@@ -922,14 +922,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "WBPSC (West Bengal PSC)",
     photoLimitKb: 50,
     sigLimitKb: 50,
-    description: "West Bengal PSC uses One-Time Registration, but its current public OTR page does not publish photo or signature upload dimensions, formats or KB limits. The stored 50 KB targets are compatibility values only and can vary by recruitment; confirm the current application instructions before preparing files.",
+    description: "West Bengal PSC uses One-Time Registration, but its current public OTR page does not publish photo or signature upload dimensions, formats or KB limits. The 50 KB figures are easyPhoto defaults and can vary by recruitment; confirm the current application instructions before preparing files.",
     source: {
       url: "https://psc.wb.gov.in/candidateOTRegistration.jsp",
       label: "WBPSC — One-Time Registration portal",
     },
     verification: "needs-review",
     context:
-      "WBPSC's public One-Time Registration page confirms the OTR workflow but does not expose the file validation rules before the application flow. No current public first-party instruction was found for the stored numeric targets, so they must be checked against the current recruitment upload screen.",
+      "WBPSC's public One-Time Registration page confirms the OTR workflow but does not expose the file validation rules before the application flow. No current public first-party instruction was found for these numbers, so they must be checked against the current recruitment upload screen.",
     applicationNotes: [
       "The public WBPSC page supports One-Time Registration but exposes no current photograph or signature specification before the application flow. The two 50 KB ceilings are therefore compatibility settings, not figures verified from that page.",
       "Do not infer a minimum, pixel canvas, aspect ratio, format, background shade, signature ink or name-and-date requirement from the empty fields here. Each of those properties remains unknown until the active recruitment notice or upload widget states it.",
@@ -943,14 +943,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "GPSC (Gujarat PSC)",
     photoLimitKb: 15,
     sigLimitKb: 15,
-    description: "Gujarat PSC applications use Gujarat's OJAS service, but the current public portal does not establish whether photo/signature are uploaded or captured live and does not support the stored 15 KB targets or the former centimetre and ink claims. Treat the values as compatibility targets and confirm the current OJAS instructions.",
+    description: "Gujarat PSC applications use Gujarat's OJAS service, but the current public portal does not establish whether photo/signature are uploaded or captured live and does not support the 15 KB figures or the former centimetre and ink claims. Treat the values as easyPhoto defaults and confirm the current OJAS instructions.",
     source: {
       url: "https://ojas.gujarat.gov.in/",
       label: "Gujarat OJAS — live application portal",
     },
     verification: "needs-review",
     context:
-      "The live Gujarat OJAS portal does not publicly expose GPSC's current photograph/signature workflow or validation rules before the active application flow. Confirm whether the recruitment requests file uploads or capture and verify its limits before relying on the compatibility targets.",
+      "The live Gujarat OJAS portal does not publicly expose GPSC's current photograph/signature workflow or validation rules before the active application flow. Confirm whether the recruitment requests file uploads or capture and verify its limits before relying on these defaults.",
     applicationNotes: [
       "The first-party evidence available here establishes that GPSC applications use Gujarat OJAS. It does not establish whether the current recruitment uploads a prepared photograph and signature or captures either asset inside the form, so settle the workflow before opening a resizer.",
       "The 15 KB ceilings displayed by this preset are compatibility values without current public support. They should not be described as official GPSC limits, and a different number shown by the active OJAS field must replace them for that application.",

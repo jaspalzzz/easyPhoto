@@ -315,7 +315,10 @@ export default async function Page({
                 </dl>
               ) : (
               <dl>
-                <Row label="File size" value={photoKb(spec)} />
+                <Row
+                  label="File size"
+                  value={prov.verified ? photoKb(spec) : `${photoKb(spec)} (easyPhoto default, not an official limit)`}
+                />
                 <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? spec.photoDimsNote ?? "—"} />
                 {spec.photoAspectRatio && (
                   <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
@@ -332,7 +335,7 @@ export default async function Page({
               <h2 className="eyebrow">Signature requirement</h2>
               {sig ? (
                 <dl>
-                  <Row label="File size" value={sig} />
+                  <Row label="File size" value={prov.verified ? sig : `${sig} (easyPhoto default, not an official limit)`} />
                   <Row label="Dimensions" value={sigDimsPx(spec, " px") ?? "—"} />
                   {spec.sigFormat && <Row label="Format" value={spec.sigFormat} />}
                   <Row label="Ink" value={spec.signatureInk ?? "Confirm current notice"} />
@@ -574,8 +577,8 @@ export default async function Page({
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               The Bihar PSC manual describes live webcam capture rather than a
               prepared photograph upload. Before opening the form, arrange even
-              front lighting, a clear background and a stable camera. The stored
-              photo target remains compatibility-only and is not a BPSC upload
+              front lighting, a clear background and a stable camera. The photo
+              size in our tool is an easyPhoto default, not a BPSC upload
               specification.
             </p>
           </div>

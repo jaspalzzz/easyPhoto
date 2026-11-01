@@ -27,7 +27,11 @@ export const FAMILIES = {
 
 /** Internal vocabulary counted in rendered copy (CLAUDE.md §3). */
 export const RENDERED_JARGON = {
-  stored: /\bstored\b/gi,
+  // Our internal sense ("the stored target", "stored record"), not a privacy
+  // promise ("never stored", "uploaded or stored", "No data stored"), a quote of
+  // another service's terms ("are stored on their servers") or a file fact
+  // ("a number stored in the file"). Those read naturally to an applicant.
+  stored: /(?<!\b(?:never|not|or|no data|be|are)\s)\bstored\b(?!\s+(?:on|in)\s+(?:their|its|the|any|our)\b)(?!\s+after processing)/gi,
   "stored … target": /\bstored\s+(?:[\p{L}\p{N}×–-]+\s+){0,3}?targets?\b/giu,
   "selected stored": /\bselected\s+stored\b/gi,
   "selected target": /\bselected\s+target\b/gi,

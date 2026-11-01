@@ -291,7 +291,7 @@ export default function Page() {
           dimensions you enter, and compresses the output to a target KB limit.
           Handles fixed rectangular canvases such as IBPS and RRB, plus custom
           dimensions for other document workflows. UPSC&apos;s current requirement
-          is a vertical image containing three signatures, not a square preset.
+          is a vertical image containing three signatures, not a square format.
         </li>
         <li>
           <Link href="/tools/signature-background-removal/">
