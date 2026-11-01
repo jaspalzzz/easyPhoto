@@ -157,8 +157,8 @@ export default function Page() {
       <ol className="mt-4 list-decimal space-y-2 pl-5">
         <li>
           Make a clean signature using the{" "}
-          <Link href="/tools/transparent-signature/">
-            transparent signature tool
+          <Link href="/tools/signature-background-removal/">
+            signature background remover
           </Link>
           .
         </li>

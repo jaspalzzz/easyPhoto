@@ -74,7 +74,7 @@ export default function HowPhotoCheckingWorksPage() {
           A practical checking sequence
         </h2>
         <ol className="list-decimal space-y-2 pl-5">
-          <li>Select the preset for the application workflow you are actually using.</li>
+          <li>Pick the exam or document you are actually applying for.</li>
           <li>Start from the uncropped camera image so there is room to adjust framing.</li>
           <li>Resolve visible blur, glare, shadows, or obstruction by retaking where possible.</li>
           <li>Download and reopen the result to confirm its format, dimensions, and file size.</li>

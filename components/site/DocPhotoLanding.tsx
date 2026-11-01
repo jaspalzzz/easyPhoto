@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ShieldCheck, Lock, Gift, ArrowRight } from "lucide-react";
 import { effectivePrintMm } from "@/lib/countrySpecs";
 import { hubCountries } from "@/lib/makerPages";
+import { isDeindexed } from "@/lib/deindexed";
 import { HeroStarter } from "@/components/site/HeroStarter";
 import { BeforeAfterSlider } from "@/components/site/BeforeAfterSlider";
 import { Flag } from "@/components/site/Flag";
@@ -46,8 +47,10 @@ export function DocPhotoLanding({
 }) {
   const doc = kind === "passport" ? "passport" : "visa";
   // Same single source as the picker (hubCountries) → the two sections cannot
-  // disagree on which countries are shown.
-  const sizeByCountry = hubCountries(kind).map((c) => ({
+  // disagree on which countries are shown. The picker keeps every country (it
+  // only sets the tool's size); the link grid skips makers taken out of the
+  // index, so the hub never sends a visitor to a page we hid as thin.
+  const sizeByCountry = hubCountries(kind).filter((c) => !isDeindexed(c.path)).map((c) => ({
     key: c.key,
     flag: c.flag,
     label: c.label,

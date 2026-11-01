@@ -189,8 +189,8 @@ export default function Page() {
         It also supports exam workflows that Cutout.pro does not cover. Current SSC
         applications capture the photograph live, IBPS PO publishes a 20–50 KB,
         200×230 px prepared photo, and UPSC publishes 20–200 KB with no fixed photo pixels.
-        The tool follows the stored workflow and applies published dimensions where available for{" "}
-        <Link href="/exam-requirements/" className="text-brand underline">40+ Indian exam portals</Link>{" "}
+        The tool follows each exam&apos;s own workflow and applies published dimensions where available for{" "}
+        <Link href="/tools/exam-package/" className="text-brand underline">40+ Indian exam portals</Link>{" "}
         — see the{" "}
         <Link href="/blog/exam-photo-signature-size-guide/" className="text-brand underline">exam requirement guide</Link>{" "}
         for the full list.

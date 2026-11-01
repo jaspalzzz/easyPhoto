@@ -28,7 +28,7 @@ export default function Page() {
   return (
     <BlogPostLayout
       slug={post.slug}
-      ctaHref="/tools/transparent-signature/"
+      ctaHref="/tools/signature-background-removal/"
       ctaLabel="Make my exam signature"
     >
       <p>
@@ -206,11 +206,12 @@ export default function Page() {
       </p>
       <p>
         The{" "}
-        <Link href="/tools/transparent-signature/">
-          transparent signature tool
+        <Link href="/tools/signature-background-removal/">
+          signature background remover
         </Link>{" "}
         removes the white background from your scanned signature in one step and
-        exports a PNG for document placement. It runs
+        exports a transparent PNG for document placement, or a white-background JPG
+        for portals that refuse PNG. It runs
         entirely in your browser, so the signature image is never uploaded
         anywhere.
       </p>
@@ -293,8 +294,8 @@ export default function Page() {
           is a vertical image containing three signatures, not a square preset.
         </li>
         <li>
-          <Link href="/tools/transparent-signature/">
-            Transparent signature tool
+          <Link href="/tools/signature-background-removal/">
+            Signature background remover
           </Link>: removes the white background from a scanned signature and
           exports a transparent PNG for placement on documents. For an exam
           upload, move to its portal-specific resizer and use the recorded format.
@@ -315,7 +316,7 @@ export default function Page() {
       </p>
 
       <p>
-        For a registry-driven comparison of published and unpublished pixel and
+        For a side-by-side comparison of published and unpublished pixel and
         KB fields across these exams, including photo workflows, see the{" "}
         <Link href="/blog/exam-photo-signature-size-guide/">
           exam photo &amp; signature size guide

@@ -171,13 +171,13 @@ export const VISA_FAQ: FaqItem[] = [
   { q: "What size is a visa photo?", a: "The size depends on the destination and application route. Pick the destination to load its recorded dimensions, then compare them with the current embassy, consulate or application-centre instructions." },
   { q: "What size is a US visa photo for DS-160?", a: "2×2 inches (51×51mm), square, on a white background. It's the same spec as the US passport photo." },
   { q: "What size is a Schengen visa photo?", a: "35×45mm, with the head taking up roughly 70–80% of the frame." },
-  { q: "What background should a Schengen visa photo have?", a: "There is no single safe shade for every member-state workflow. The generic preset uses light grey, but destination instructions differ; compare the result with the mission handling your application." },
-  { q: "What are the UK visa photo requirements?", a: "The requirement depends on the UK application route. For a route requesting a 35×45mm printed photo, use the linked UK guidance for its current background, expression and glasses rules rather than assuming another country's preset applies." },
+  { q: "What background should a Schengen visa photo have?", a: "There is no single safe shade for every member-state workflow. This maker uses light grey by default, but destination instructions differ; compare the result with the mission handling your application." },
+  { q: "What are the UK visa photo requirements?", a: "The requirement depends on the UK application route. For a route requesting a 35×45mm printed photo, use the linked UK guidance for its current background, expression and glasses rules rather than assuming another country's rules apply." },
   { q: "What size is a Canada visa photo?", a: "35×45mm for visitor visas and study or work permits. Permanent residence and Express Entry are a separate process specified in pixels rather than millimetres, and the printed Canadian passport booklet is different again at 50×70mm." },
   { q: "What size is an Australia visa photo?", a: "35–40mm wide by 45–50mm high on a plain light background. We use 35×45mm." },
   { q: "Can I use the same photo for my passport and visa?", a: "Check the visa's own rules before assuming so. Matching size and background is not always enough — the UK, for one, states the photo you submit must not be the one already in your passport or identity document. Where that applies, take a second photo to the same specification rather than reusing the print." },
   { q: "Can I smile or wear glasses in a visa photo?", a: "Expression and glasses rules vary by destination. A neutral, unobstructed face is a conservative starting point, but follow the current instruction for the application you are making." },
-  { q: "How do I upload a visa photo to VFS Global online?", a: "Generate the destination preset, then compare its encoded format, pixel dimensions and KB size with the exact values shown on your current VFS upload screen. Resize only the fields that screen actually specifies." },
+  { q: "How do I upload a visa photo to VFS Global online?", a: "Make the photo for your destination country, then compare its encoded format, pixel dimensions and KB size with the exact values shown on your current VFS upload screen. Resize only the fields that screen actually specifies." },
   { q: "Do I need a printed or digital visa photo?", a: "It depends on the consulate, so you get both a print-ready and an upload-ready file." },
   { q: "Is the visa photo maker free?", a: "Yes, completely free with no watermark." },
   { q: "Is my photo uploaded when I make a visa photo?", a: "No, it's processed entirely on your device." },
@@ -269,9 +269,9 @@ export const WHITE_BACKGROUND_FAQ: FaqItem[] = [
 ];
 
 export const EXAM_PACKAGE_FAQ: FaqItem[] = [
-  { q: "What is the Exam Application Kit?", a: "It is a guided flow that prepares photo and signature files to the selected stored preset, then bundles them for download. Confirm the preset against the current form before submitting." },
-  { q: "Which exams does it support?", a: "It includes stored presets for SSC, UPSC, IBPS, SBI, Railway (RRB), NTA, RBI, CTET and state PSCs. Each page shows whether its source is dated official evidence or still needs review." },
-  { q: "What photo and signature size do exam forms need?", a: "It varies by exam and workflow. Some portals publish prepared-file KB bands and dimensions; some use live capture; some presets still need review. Select the exam and verify its current source." },
+  { q: "What is the Exam Application Kit?", a: "It is a guided flow: pick your exam, and it prepares the photo and signature to that exam's size and KB limits, then bundles them for download. Check the sizes against the current form before submitting." },
+  { q: "Which exams does it support?", a: "It has settings for SSC, UPSC, IBPS, SBI, Railway (RRB), NTA, RBI, CTET and state PSCs. Each page shows whether its source is dated official evidence or still needs review." },
+  { q: "What photo and signature size do exam forms need?", a: "It varies by exam and workflow. Some portals publish prepared-file KB bands and dimensions; some use live capture; for some, our figures still need checking. Select the exam and verify its current source." },
   { q: "Do I need to resize the photo and signature separately?", a: "No. The kit handles both in one flow — it sizes the photo, cleans and sizes the signature, and gives you files that fit the form's limits." },
   { q: "Is the Exam Application Kit free and private?", a: "Yes. It's free, with no watermark and no sign-up, and everything runs in your browser — your photo and signature are never uploaded to any server." },
   { q: "Should I still check the official exam notification?", a: "Yes. Requirements can change between notification cycles, so confirm the current photo and signature limits in the official notification before you submit." },
@@ -450,7 +450,7 @@ export function countryFaqItems(
     },
     schengen: {
       q: "Is the background the same for every Schengen country?",
-      a: "No. This generic preset uses light grey, but member-state missions publish their own accepted background examples. Check the current photo sheet for the consulate handling your application before submitting.",
+      a: "No. Light grey is only this maker's starting shade; member-state missions publish their own accepted background examples. Check the current photo sheet for the consulate handling your application before submitting.",
     },
   };
 

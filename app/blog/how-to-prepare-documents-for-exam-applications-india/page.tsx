@@ -57,8 +57,8 @@ export default function Page() {
       <p>
         Current workflows differ. IBPS publishes a 20–50&nbsp;KB prepared photo;
         UPSC (and NDA/CDS on the same portal) publishes 20&#8211;200&nbsp;KB and no
-        fixed photo pixels, while the current SSC and RRB notices cited in the
-        registry use live capture. These workflows should not be compared with an
+        fixed photo pixels, while the current SSC and RRB notices we cite use live
+        capture. These workflows should not be compared with an
         ordinary adult Passport Seva application: the adult&apos;s photograph is
         captured at the PSK/POPSK, while the 630&#215;810&nbsp;px guidance belongs
         to the overseas mission workflow.
@@ -66,9 +66,9 @@ export default function Page() {
       <p>
         The safest approach: use the{" "}
         <Link href="/tools/exam-package/">exam document package tool</Link>, which
-        applies the stored KB and pixel target for the selected preset. Check its
-        source and verification status first; a needs-review entry must be
-        confirmed in the current form. For a
+        applies the KB and pixel limits for the exam you pick. Check its source and
+        when we last checked it first; if the page says a figure still needs
+        checking, confirm it in the current form. For a
         detailed breakdown of photo specs by exam, see the{" "}
         <Link href="/exam-requirements/">exam requirements directory</Link>.
       </p>
@@ -122,8 +122,8 @@ export default function Page() {
         Use a transparent signature only when the destination accepts PNG or the
         image is being overlaid on a document. When a portal requires JPG/JPEG,
         export a white-background JPG instead. The{" "}
-        <Link href="/tools/transparent-signature/">transparent signature tool</Link>{" "}
-        does this in one click. For a broader walkthrough of portal
+        <Link href="/tools/signature-background-removal/">signature background remover</Link>{" "}
+        gives you either file in one click. For a broader walkthrough of portal
         signature rule, read{" "}
         <Link href="/blog/how-to-sign-exam-application-forms-india/">
           how to sign an exam application form in India
@@ -134,14 +134,14 @@ export default function Page() {
         If your signature is the right content but the wrong dimensions or KB, use
         the{" "}
         <Link href="/tools/signature-resize/">signature resize tool</Link> to hit
-        the selected target without redoing the whole process. It keeps your aspect
+        the exact size the form asks for without redoing the whole process. It keeps your aspect
         ratio intact so the signature doesn&apos;t look squashed.
       </p>
 
       <h2>How do you compress certificate PDFs for exam portals?</h2>
       <p>
-        Certificate limits are set by the active form and are not stored in the
-        photo/signature registry. Read the document field&apos;s size and format
+        Certificate limits are set by the form you are filling in, and our exam
+        pages cover only photos and signatures, not certificates. Read the document field&apos;s size and format
         instructions before compressing; do not apply a generic 50 or 100&nbsp;KB
         target to every certificate.
       </p>
@@ -243,7 +243,7 @@ export default function Page() {
           <strong>Step 1 - Photo.</strong> Take or select a recent photo on a
           white background. Use the{" "}
           <Link href="/tools/exam-package/">exam package tool</Link> to resize it
-          to the stored KB target and published pixel dimensions where available.
+          to the exam&apos;s KB limit and its published pixel dimensions where they exist.
           Confirm the current exam notification before submitting.
         </li>
         <li>
@@ -300,7 +300,7 @@ export default function Page() {
             [
               "Photo outside the current field's stated band",
               "Prepared uploads may enforce both a minimum and a maximum",
-              "Use the selected stored target, then compare it with the live form",
+              "Use the size for your exam, then compare it with the live form",
             ],
             [
               "Signature with grey background",

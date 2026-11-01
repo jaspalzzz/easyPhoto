@@ -25,7 +25,7 @@ export default function Page() {
       afterIntro={
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           Then{" "}
-          <Link href="/tools/print-sheet/" className="font-medium text-brand hover:underline">
+          <Link href="/blog/how-to-print-passport-photos-at-home/" className="font-medium text-brand hover:underline">
             print several on one sheet
           </Link>
           ,{" "}

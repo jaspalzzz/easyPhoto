@@ -71,7 +71,7 @@ export default function Page() {
           className="w-full h-auto"
         />
         <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
-          easyPhoto&apos;s exam workflow shows the selected registry target and measurable output checks; applicants should confirm the current notice.
+          easyPhoto&apos;s exam workflow shows the target for the exam you pick and measurable output checks; applicants should confirm the current notice.
         </figcaption>
       </figure>
 
@@ -120,13 +120,13 @@ export default function Page() {
               <td className="px-4 py-3 font-medium text-ink">Railway RRB</td>
               <td className="px-4 py-3 text-muted-foreground">Live capture in current notice</td>
               <td className="px-4 py-3 text-muted-foreground">Confirm current cycle</td>
-              <td className="px-4 py-3 text-muted-foreground">Stored target needs review</td>
+              <td className="px-4 py-3 text-muted-foreground">Figure still needs checking</td>
               <td className="px-4 py-3 text-muted-foreground">Confirm current cycle</td>
             </tr>
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
-          Registry snapshot: dated official sources are distinguished from entries that still need review.
+          Snapshot of our records: figures checked against a dated official source are marked apart from those that still need checking.
         </p>
       </div>
 
@@ -293,9 +293,9 @@ export default function Page() {
 
       <p>
         easyPhoto covers{" "}
-        <Link href="/exam-requirements/" className="text-brand underline">40+ exam portals</Link>: less than ExamMint&apos;s ~120, more than
+        <Link href="/tools/exam-package/" className="text-brand underline">40+ exam portals</Link>: less than ExamMint&apos;s ~120, more than
         myexamphoto.in&apos;s ~13. Specification pages show a linked source where available,
-        plus either a verification date or a needs-review notice.
+        plus either the date we checked it or a note that it still needs checking.
       </p>
 
       <p>
@@ -377,7 +377,7 @@ export default function Page() {
         </li>
         <li>
           <strong>You want to review the recorded spec source:</strong> easyPhoto shows the
-          named source where available and distinguishes dated verification from needs-review entries.
+          named source where available and says whether a figure was checked on a known date or still needs checking.
         </li>
       </ul>
 

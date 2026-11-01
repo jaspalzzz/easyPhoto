@@ -58,7 +58,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "Can I reuse this photo for OCI or an Indian e-Visa?",
-        a: "Use the dedicated OCI or e-Visa preset instead. Both are square digital-photo workflows with specifications that differ from the under-four passport print.",
+        a: "Use the dedicated OCI or e-Visa photo option instead. Both are square digital-photo workflows with specifications that differ from the under-four passport print.",
       },
     ],
   },
@@ -203,7 +203,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "What background does a UK visa photo need?",
-        a: "A plain light-coloured background, the same as the passport photo. This preset applies light grey or cream; avoid patterns and shadows, then confirm the current UKVI instructions before uploading.",
+        a: "A plain light-coloured background, the same as the passport photo. This maker applies light grey or cream; avoid patterns and shadows, then confirm the current UKVI instructions before uploading.",
       },
     ],
   },

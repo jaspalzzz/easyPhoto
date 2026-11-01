@@ -91,7 +91,7 @@ export default function EditorialPolicyPage() {
           workflow, that every displayed number is present in the recorded source,
           and that examples do not turn a preferred value into a universal rule.
           Links, visible disclosures, tool labels, and dependent guidance are also
-          compared so a corrected registry value is not contradicted elsewhere.
+          compared so a corrected figure is not contradicted elsewhere on the site.
         </p>
         <p>
           Copy is written to describe deterministic behaviour rather than personal

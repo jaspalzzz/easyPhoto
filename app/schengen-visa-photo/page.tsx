@@ -172,7 +172,7 @@ export default function Page() {
             <Link href="/india-passport-photo-maker/" className="text-brand hover:underline">
               India passport maker
             </Link>{" "}
-            only when the Indian mission&apos;s instructions call for that preset.
+            only when the Indian mission&apos;s instructions call for that size.
           </p>
         </div>
 

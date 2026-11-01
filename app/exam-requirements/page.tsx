@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import {
-  allPortalSpecs,
+  listedPortalSpecs,
   portalCategory,
   PORTAL_CATEGORY_LABEL,
   type PortalCategory,
@@ -15,7 +15,7 @@ export const metadata = pageMetadata({
   title: "Exam Photo & Signature Size Requirements 2026 — India",
   titleAbsolute: true,
   description:
-    "Photo and signature size, dimensions and file-size limits for 30+ Indian exam and recruitment forms. See each named source and its verification status, then confirm the active form before resizing.",
+    "Photo and signature size, dimensions and file-size limits for 20+ Indian exam and recruitment forms. See each named source and when it was checked, then confirm the form you are filling in before resizing.",
   path: "/exam-requirements/",
 });
 
@@ -34,7 +34,7 @@ const CATEGORY_ORDER: PortalCategory[] = [
 ];
 
 export default function Page() {
-  const specs = allPortalSpecs();
+  const specs = listedPortalSpecs();
   const grouped = CATEGORY_ORDER.map((cat) => ({
     cat,
     label: PORTAL_CATEGORY_LABEL[cat],
@@ -54,7 +54,7 @@ export default function Page() {
           collectionPageSchema({
             name: "Exam Photo & Signature Size Requirements 2026",
             description:
-              "Photo and signature size, dimensions and file-size limits for 30+ Indian exam and recruitment forms, with a named source and verification status for each entry.",
+              "Photo and signature size, dimensions and file-size limits for 20+ Indian exam and recruitment forms, with a named source for each exam.",
             url: "/exam-requirements/",
           }),
         ]}
@@ -103,12 +103,12 @@ export default function Page() {
             are cycle-specific, and an authority can replace its upload rules.
           </p>
           <p>
-            A needs-review page is deliberately narrower. It identifies which
-            workflow the public source confirms and which stored values remain
-            compatibility defaults because the current limits appear only after
-            sign-in, inside an image-only notice, or on an unavailable document.
-            Read that warning before opening the resizer; the active form wins when
-            it disagrees with a compatibility value.
+            A page marked as needing review says less on purpose. It tells you
+            what the public source confirms and which figures are easyPhoto
+            defaults, because the current limits appear only after sign-in, inside
+            an image-only notice, or on a document we could not open. Read that
+            warning before opening the resizer; the form you are filling in wins
+            when it disagrees with a default.
           </p>
           <p>
             Treat KB, pixels, physical dimensions and encoded format as separate

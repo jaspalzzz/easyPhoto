@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { PORTAL_KEYS } from "@/lib/portalPresets";
 import { LAUNCH_ORDER } from "@/lib/countrySpecs";
-import { READY_TOOLS } from "@/lib/toolsCatalog";
+import { LISTED_TOOLS } from "@/lib/toolsCatalog";
 import { TrackedLink } from "@/components/site/TrackedLink";
 import type { HomepagePath } from "@/lib/analytics";
 
@@ -29,7 +29,7 @@ import type { HomepagePath } from "@/lib/analytics";
 
 const EXAM_COUNT = PORTAL_KEYS.length;
 const COUNTRY_COUNT = LAUNCH_ORDER.length;
-const TOOL_COUNT = READY_TOOLS.length;
+const TOOL_COUNT = LISTED_TOOLS.length;
 
 interface Path {
   analyticsPath: HomepagePath;
@@ -102,11 +102,11 @@ const PATHS: Path[] = [
     href: "/tools/",
     cta: "Open all tools",
     chips: [
-      { label: "Compress PDF", href: "/tools/pdf-compress/" },
-      { label: "Sign", href: "/tools/signature/" },
+      { label: "Scan a photo", href: "/tools/document-scanner/" },
+      { label: "Sign", href: "/tools/sign-image/" },
       { label: "Resize to KB", href: "/tools/resize-kb/" },
       { label: "Remove BG", href: "/tools/background-removal/" },
-      { label: "Read ID (OCR)", href: "/tools/ocr/" },
+      { label: "Read Aadhaar (OCR)", href: "/tools/aadhaar-ocr/" },
     ],
     iconBg: "bg-violet-50 dark:bg-violet-900/20",
     iconText: "text-violet-600 dark:text-violet-400",

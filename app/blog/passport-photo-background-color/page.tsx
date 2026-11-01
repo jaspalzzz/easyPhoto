@@ -55,7 +55,7 @@ export default function Page() {
 
       <PhotoComplianceDiagram
         cases={BACKGROUND_CASES}
-        caption="Background examples drawn from the India and UK registry colours. These are illustrative; confirm the current colour and framing rules on the relevant official source."
+        caption="Background examples drawn from the India and UK background colours we use. These are illustrative; confirm the current colour and framing rules on the relevant official source."
       />
 
       <h2>Before and after: what actually changes</h2>

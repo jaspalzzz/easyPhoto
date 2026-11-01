@@ -36,7 +36,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What can the photo maker be used for?",
-    a: "It can prepare the 45 × 35 mm white-background print needed for a child below four, and separate presets can help prepare OCI, e-Visa and other-country photos. It is not a mandatory photo-upload step for an ordinary adult Indian passport application.",
+    a: "It can prepare the 45 × 35 mm white-background print needed for a child below four, and separate photo options can help prepare OCI, e-Visa and other-country photos. It is not a mandatory photo-upload step for an ordinary adult Indian passport application.",
   },
 ];
 
@@ -200,8 +200,8 @@ export default function Page() {
         </a>{" "}
         also requires a digital square JPEG, but its live instructions set a
         10 KB–1 MB file range and allow a plain light-coloured or white
-        background. OCI and e-Visa presets must therefore stay separate from the
-        Indian passport preset.
+        background. OCI and e-Visa photos must therefore be made separately from the
+        Indian passport photo.
       </p>
 
       <h2>Where the photo maker is useful</h2>
@@ -218,7 +218,7 @@ export default function Page() {
       <p>
         For an OCI or e-Visa application, select the dedicated specification for
         that service instead of reusing the passport crop. For another country,
-        choose that country&apos;s current passport or visa preset and confirm the
+        choose that country&apos;s passport or visa photo maker and confirm the
         issuing authority&apos;s instructions before submitting.
       </p>
 

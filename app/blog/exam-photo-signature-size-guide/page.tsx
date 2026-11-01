@@ -175,7 +175,7 @@ export default function Page() {
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
-          Values follow the cited registry sources; verify the active notification because workflows can change between cycles.
+          Values follow the cited official sources; verify the active notification because workflows can change between cycles.
         </p>
       </div>
 
@@ -312,7 +312,7 @@ export default function Page() {
 
       <h2>NTA exams: NEET and JEE (Main)</h2>
       <p>
-        The stored NTA source lists a <strong>JPG photo between 10&nbsp;KB and
+        The NTA source we cite lists a <strong>JPG photo between 10&nbsp;KB and
         200&nbsp;KB</strong> and a <strong>JPG signature between 10&nbsp;KB and
         100&nbsp;KB</strong>. A clear phone photo may fit that KB range, but the current notice&apos;s
         other photo instructions still need to be checked before submission.
@@ -321,7 +321,7 @@ export default function Page() {
         NTA does not require live portal capture — you upload a saved file. The
         photo should be on a plain white or off-white background, front-facing,
         taken within the last six months. The common mistake for NTA applications
-        is format confusion: the stored source lists JPG, while some
+        is format confusion: that source lists JPG, while some
         candidates upload WebP or HEIC (common default formats on recent iPhones
         and Android phones) — those are rejected. Convert to JPG before uploading
         if you&apos;re not sure of your phone&apos;s output format.
@@ -335,8 +335,7 @@ export default function Page() {
       <p>
         State Public Service Commissions — BPSC, UPPSC, MPSC, TNPSC, KPSC, WBCS
         and others — each set their own photo and signature specs per notification.
-        The registry records different KB bands and pixel canvases across these
-        boards, while several current sources publish no fixed photo pixels at all.
+        These boards set different KB bands and pixel sizes, while several current sources publish no fixed photo pixels at all.
         Always download the notification for the specific state exam and use only
         the figures it lists. If the state portal publishes a fixed canvas, use the{" "}
         <Link href="/tools/resize-kb/">custom KB resizer</Link>{" "}
@@ -367,7 +366,7 @@ export default function Page() {
           <strong>Crop tightly.</strong> Crop the image close to the ink — a small
           white margin on each side is fine, but the signature should fill at
           least 70% of the crop frame. Large white margins cause the signature to
-          appear tiny and thin when the portal resizes to its stored dimensions.
+          appear tiny and thin when the portal resizes it to its own dimensions.
         </li>
         <li>
           <strong>Clean the background.</strong> Upload to the{" "}
@@ -460,7 +459,7 @@ export default function Page() {
         <li>
           <strong>Wrong pixel dimensions:</strong> the photo or signature does not
           match the portal&apos;s required width × height. Use the exam-specific
-          resizer to apply the published pixel preset where the authority provides one.
+          resizer to apply the published pixel size where the authority provides one.
         </li>
         <li>
           <strong>Signature background grey or cream:</strong> use the signature
@@ -494,8 +493,8 @@ export default function Page() {
       <p>
         Pick your exam in the{" "}
         <Link href="/tools/exam-package/">Exam Application Kit</Link> to see whether
-        the registry records live capture or prepared files, then apply its stored
-        KB targets and published dimensions where available. Confirm the active notice.
+        it asks for a live photo or a prepared file, then apply its KB limits and
+        published dimensions where they exist. Confirm the active notice.
       </p>
       <p>To prepare each file separately:</p>
       <ul>

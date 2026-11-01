@@ -44,13 +44,13 @@ export function ExamSpecTable({
   // this sentence hands them a clean, citable answer with the recorded numbers —
   // worded the way people ask ("what is the SSC photo size?").
   const photoSentence =
-    `The registry lists the ${label} photo target as ${kbRange(spec.photoMinKb, spec.photoLimitKb)}` +
+    `Our figure for the ${label} photo is ${kbRange(spec.photoMinKb, spec.photoLimitKb)}` +
     (spec.photoFormat ? ` in ${spec.photoFormat} format` : "") +
     (photoDim ? ` at ${photoDim}` : "") +
     (spec.dpi ? ` (${spec.dpi} DPI)` : "") +
     ".";
   const sigSentence = hasSig
-    ? ` It lists the signature target as ${kbRange(spec.sigMinKb, spec.sigLimitKb!)}` +
+    ? ` For the signature it is ${kbRange(spec.sigMinKb, spec.sigLimitKb!)}` +
       (spec.sigFormat ? ` in ${spec.sigFormat} format` : "") +
       (sigDim ? ` at ${sigDim}` : "") +
       "."

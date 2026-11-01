@@ -36,7 +36,7 @@ const POPULAR_SEARCHES = [
   { label: "Canada Visa Photo",     href: visaPath("canada")                  },
   { label: "UK Passport Photo",     href: passportPath("uk")                  },
   { label: "UPSC Photo Resize",     href: "/exam-requirements/upsc/"              },
-  { label: "Transparent Signature", href: "/tools/transparent-signature/"     },
+  { label: "Signature PNG",         href: "/tools/signature-background-removal/" },
   { label: "Railway Exam Photo",    href: "/exam-requirements/rrb/"           },
   { label: "Banking Exam Photo",    href: "/exam-requirements/ibps/"              },
   { label: "Signature Resize",      href: "/tools/signature-resize/"          },

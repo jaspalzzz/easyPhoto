@@ -507,7 +507,7 @@ export default async function Page({
           <div className="space-y-2">
             <h2 className="text-lg font-semibold">Use the joint CSIR-UGC NET application record</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              This preset is scoped to the NTA science and research eligibility
+              These figures cover the NTA science and research eligibility
               examination. Do not select the general UGC-NET entry merely because
               the current file-size bands look the same: confirm the joint
               CSIR-UGC NET bulletin, keep the signature in running hand, and check
@@ -807,8 +807,8 @@ export default async function Page({
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               Open the current CEE application first and note the file types and limits
               printed beside each upload control. Use this resizer only when those
-              displayed figures match the stored compatibility targets. If they differ,
-              follow the live portal rather than forcing the file into this preset.
+              displayed figures match the defaults set here. If they differ,
+              follow the live portal rather than forcing the file into these settings.
             </p>
           </div>
           <div className="space-y-2">

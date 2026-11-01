@@ -55,7 +55,7 @@
         "/australia-passport-photo-maker/": 575,
         "/canada-visa-photo-maker/": 501,
         "/china-visa-photo-maker/": 289,
-        "/france-visa-photo-maker/": 255,
+        "/france-visa-photo-maker/": 289,
         "/germany-visa-photo-maker/": 302,
         "/india-passport-photo-maker/": 511,
         "/ireland-visa-photo-maker/": 592,
@@ -87,7 +87,7 @@
       }
     },
     "tools": {
-      "maxJaccard": 0.1949,
+      "maxJaccard": 0.1727,
       "maxPair": [
         "/tools/signature-background-removal/",
         "/tools/signature-cleaner/"

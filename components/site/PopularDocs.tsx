@@ -4,7 +4,8 @@ import { Flag } from "@/components/site/Flag";
 import { COUNTRY_SPECS, LAUNCH_ORDER } from "@/lib/countrySpecs";
 import { MAKER_PAGES, primaryMakerPath } from "@/lib/makerPages";
 import { PORTAL_KEYS } from "@/lib/portalPresets";
-import { READY_TOOLS } from "@/lib/toolsCatalog";
+import { LISTED_TOOLS } from "@/lib/toolsCatalog";
+import { isDeindexed } from "@/lib/deindexed";
 
 /* ── Popular Countries ─────────────────────────────────────────────────
    4 headline markets get large hero cards; every other launch country is
@@ -29,8 +30,9 @@ const HERO_IDS = new Set(HERO_COUNTRIES.map((c) => c.id));
 const MAKER_COUNTRY_IDS = new Set(MAKER_PAGES.map((m) => m.countryId));
 
 // Remaining launch countries → compact flag chips (long-tail discovery + SEO).
+// Makers taken out of the index stay off the homepage, like the footer.
 const MORE_COUNTRIES = LAUNCH_ORDER.filter(
-  (id) => !HERO_IDS.has(id) && MAKER_COUNTRY_IDS.has(id)
+  (id) => !HERO_IDS.has(id) && MAKER_COUNTRY_IDS.has(id) && !isDeindexed(primaryMakerPath(id))
 )
   .map((id) => ({
     id,
@@ -54,8 +56,8 @@ const POPULAR_EXAMS = [
   { label: "Railway RRB",   sub: "NTPC, Group D",        href: "/exam-requirements/rrb/"          },
   { label: "IBPS Banking",  sub: "PO, Clerk, SO",        href: "/exam-requirements/ibps/"             },
   { label: "SBI PO",        sub: "Probationary Officer", href: "/exam-requirements/sbi/"           },
-  { label: "NEET / JEE",    sub: "NTA Exams",            href: "/exam-requirements/nta/"         },
-  { label: "NDA / CDS",     sub: "Defence Exams",        href: "/exam-requirements/nda/"         },
+  { label: "CUET",          sub: "NTA admissions",       href: "/exam-requirements/cuet/"        },
+  { label: "Agniveer",      sub: "Army recruitment",     href: "/exam-requirements/army-agniveer/" },
   { label: "CTET",          sub: "Teacher Eligibility",  href: "/exam-requirements/ctet/"        },
 ];
 
@@ -63,7 +65,7 @@ const STATS = [
   { Icon: Globe,       value: `${LAUNCH_ORDER.length}+`, label: "Countries Supported",       sub: "Requirements from named authorities"},
   { Icon: BookOpen,    value: `${PORTAL_KEYS.length}+`,  label: "Exam Specifications",       sub: "SSC, UPSC, Railway, Banking & more"},
   { Icon: ShieldCheck, value: "Linked",                  label: "Spec Sources",              sub: "Official source where available"   },
-  { Icon: Wrench,      value: `${READY_TOOLS.length}+`,  label: "Free Tools",                sub: "Photo, PDF, signature & more"      },
+  { Icon: Wrench,      value: `${LISTED_TOOLS.length}+`,  label: "Free Tools",                sub: "Photo, PDF, signature & more"      },
   { Icon: Lock,        value: "0",                       label: "Uploads to any server",     sub: "Everything runs in your browser"   },
 ];
 

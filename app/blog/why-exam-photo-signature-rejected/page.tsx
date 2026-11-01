@@ -42,7 +42,7 @@ export default function Page() {
     <BlogPostLayout
       slug={post.slug}
       ctaHref="/tools/exam-package/"
-      ctaLabel="Check a stored exam target"
+      ctaLabel="Check my photo for an exam"
       faqItems={FAQ_ITEMS}
     >
       <p className="text-sm text-ink-soft">Last reviewed: 18 July 2026</p>
@@ -85,7 +85,7 @@ export default function Page() {
               <td className="px-4 py-3 font-medium text-ink">IBPS</td>
               <td className="px-4 py-3">{ibps.photoMinKb}–{ibps.photoLimitKb} KB JPG/JPEG at 200×230 px</td>
               <td className="px-4 py-3">{ibps.sigMinKb}–{ibps.sigLimitKb} KB at 140×60 px</td>
-              <td className="px-4 py-3">Prepare both stored frames and KB bands</td>
+              <td className="px-4 py-3">Prepare both sizes and KB bands</td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">UPSC</td>
@@ -165,8 +165,8 @@ export default function Page() {
       </ul>
       <p>
         The <Link href="/exam-requirements/">exam requirements directory</Link>{" "}
-        shows each registry entry&apos;s source and verification status. Entries marked
-        needs review should be confirmed in the live form before use.
+        shows each exam&apos;s source and when we checked it. Where a page says a
+        figure still needs checking, confirm it in the live form before use.
       </p>
 
       <div className="mt-12">

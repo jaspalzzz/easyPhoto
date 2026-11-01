@@ -185,3 +185,29 @@
 # and the shareable result card. Consolidated onto the superset.
 /tools/photo-validator/ /tools/compliance-checker/ 301
 /tools/photo-rejection-check/ /tools/compliance-checker/ 301
+
+# AdSense low-value remediation, round 3 (owner-approved 1 Nov 2026, after the
+# 1 Nov "low value content" rejection). A crawl of every page reachable by
+# clicking from the homepage found these stubs and duplicates one click from
+# every page: exam stubs of 135–182 words, category hubs that only repeat the
+# /tools/ catalogue, country makers 31–39% their own text (Spain and Portugal
+# restate the EU Visa Code figures of the Schengen page; Kuwait, Qatar and
+# Bahrain have disputed or unsourced sizes), and the SSC name/date route that
+# duplicates the SSC page. noindex hid them from Search but not from a
+# reviewer. Each 301 lands on the indexed page that answers the same need.
+/exam-requirements/nabard/ /exam-requirements/ 301
+/exam-requirements/irdai/ /exam-requirements/ 301
+/exam-requirements/appsc/ /exam-requirements/ 301
+/exam-requirements/cisf/ /exam-requirements/ 301
+/exam-requirements/dsssb/ /exam-requirements/ 301
+/tools/photo/ /tools/ 301
+/tools/pdf/ /tools/ 301
+/tools/document/ /tools/ 301
+/tools/signature/ /tools/ 301
+/tools/ocr/ /tools/ 301
+/spain-visa-photo-maker/ /schengen-visa-photo-maker/ 301
+/portugal-visa-photo-maker/ /schengen-visa-photo-maker/ 301
+/kuwait-visa-photo-maker/ /visa-photo/ 301
+/qatar-visa-photo-maker/ /visa-photo/ 301
+/bahrain-visa-photo-maker/ /visa-photo/ 301
+/ssc-photo-with-name-date/ /exam-requirements/ssc/ 301

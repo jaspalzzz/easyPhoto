@@ -68,7 +68,7 @@ export default function Page() {
             ["IBPS photo", "20–50 KB — official IBPS source"],
             ["SSC photo", "Live capture — no prepared-photo KB upload in the cited current notice"],
             ["OCI online photo", "Square 200–900 px JPEG/JPG, up to 200 KB — official OCI source"],
-            ["Schengen portal upload", "No shared cap in the registry; confirm on the consulate/VFS form"],
+            ["Schengen portal upload", "No shared cap published; confirm on the consulate/VFS form"],
           ].map(([type, limit]) => (
             <tr key={type} className="border-b border-hairline/60">
               <td className="py-2 pr-3 font-medium text-ink">{type}</td>
@@ -119,7 +119,7 @@ export default function Page() {
         Enter the portal&apos;s stated target in the{" "}
         <Link href="/tools/resize-kb/">custom KB resizer</Link>. Do not choose a
         smaller number merely because it is available; a minimum is part of the
-        requirement when the registry records one.
+        requirement whenever the form states one.
       </p>
       <p>
         Need to fit an exact width and height too? Use{" "}

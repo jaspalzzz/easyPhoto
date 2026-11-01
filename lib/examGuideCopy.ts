@@ -124,7 +124,7 @@ export const EXAM_SIZE_GUIDE_FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "Do specifications change between exam cycles?",
-    a: "Yes. File-size bands, formats, dimensions and capture workflows can change between notifications. This guide reads from the site's cited registry; always open the source linked for the exam and confirm the active cycle before submitting.",
+    a: "Yes. File-size bands, formats, dimensions and capture workflows can change between notifications. This guide uses the official sources cited on each exam page; always open the source linked for the exam and confirm the active cycle before submitting.",
   },
 ];
 
