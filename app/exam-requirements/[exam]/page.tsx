@@ -315,7 +315,10 @@ export default async function Page({
                 </dl>
               ) : (
               <dl>
-                <Row label="File size" value={photoKb(spec)} />
+                <Row
+                  label="File size"
+                  value={prov.verified ? photoKb(spec) : `${photoKb(spec)} (easyPhoto default, not an official limit)`}
+                />
                 <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? spec.photoDimsNote ?? "—"} />
                 {spec.photoAspectRatio && (
                   <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
@@ -332,7 +335,7 @@ export default async function Page({
               <h2 className="eyebrow">Signature requirement</h2>
               {sig ? (
                 <dl>
-                  <Row label="File size" value={sig} />
+                  <Row label="File size" value={prov.verified ? sig : `${sig} (easyPhoto default, not an official limit)`} />
                   <Row label="Dimensions" value={sigDimsPx(spec, " px") ?? "—"} />
                   {spec.sigFormat && <Row label="Format" value={spec.sigFormat} />}
                   <Row label="Ink" value={spec.signatureInk ?? "Confirm current notice"} />
@@ -507,7 +510,7 @@ export default async function Page({
           <div className="space-y-2">
             <h2 className="text-lg font-semibold">Use the joint CSIR-UGC NET application record</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              This preset is scoped to the NTA science and research eligibility
+              These figures cover the NTA science and research eligibility
               examination. Do not select the general UGC-NET entry merely because
               the current file-size bands look the same: confirm the joint
               CSIR-UGC NET bulletin, keep the signature in running hand, and check
@@ -574,8 +577,8 @@ export default async function Page({
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               The Bihar PSC manual describes live webcam capture rather than a
               prepared photograph upload. Before opening the form, arrange even
-              front lighting, a clear background and a stable camera. The stored
-              photo target remains compatibility-only and is not a BPSC upload
+              front lighting, a clear background and a stable camera. The photo
+              size in our tool is an easyPhoto default, not a BPSC upload
               specification.
             </p>
           </div>
@@ -807,8 +810,8 @@ export default async function Page({
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               Open the current CEE application first and note the file types and limits
               printed beside each upload control. Use this resizer only when those
-              displayed figures match the stored compatibility targets. If they differ,
-              follow the live portal rather than forcing the file into this preset.
+              displayed figures match the defaults set here. If they differ,
+              follow the live portal rather than forcing the file into these settings.
             </p>
           </div>
           <div className="space-y-2">

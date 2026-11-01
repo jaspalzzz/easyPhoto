@@ -24,8 +24,10 @@ describe("passport size photo maker page", () => {
     expect(PASSPORT_FAQ.some((f) => /PSK\/POPSK/.test(f.a))).toBe(true);
   });
 
-  it("links the print sheet, KB and name & date tools", () => {
-    for (const href of ["/tools/print-sheet/", "/tools/resize-kb/", "/tools/photo-with-name-date/"]) {
+  it("links the printing guide, KB and name & date tools", () => {
+    // The print-sheet tool is out of the index (lib/deindexed.ts), so the hub
+    // points at the indexed printing guide instead (AdSense review, 1 Nov 2026).
+    for (const href of ["/blog/how-to-print-passport-photos-at-home/", "/tools/resize-kb/", "/tools/photo-with-name-date/"]) {
       expect(page).toContain(`href="${href}"`);
     }
   });

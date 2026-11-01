@@ -15,7 +15,7 @@ describe("live-capture exam resizer flow", () => {
     expect(html).toContain("Photo is captured in the application");
     expect(html).toContain("Step 1 — Signature file");
     expect(html).not.toContain("Step 1 — Photo");
-    expect(html).toContain("Optional compatibility photo tool — not a current portal requirement");
+    expect(html).toContain("Optional photo tool — not a current portal requirement");
     expect(html).toContain("Drop a photo, or click to browse");
   });
 

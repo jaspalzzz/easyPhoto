@@ -37,7 +37,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         A baby can&apos;t sit up on command, hold a neutral expression or look at
         a lens. Yet the photo still has to meet the same compliance rules as an
@@ -58,10 +58,10 @@ export default function Page() {
 
       <h2>Concrete output example</h2>
       <p>
-        A wide phone photo of a baby lying on a sheet can be cropped to the selected
-        preset without stretching the face. With the verified US preset, the output
-        is a 51×51&nbsp;mm square and keeps the chin-to-crown height inside the
-        registry&apos;s 25–35&nbsp;mm band. The official U.S. guidance also states that
+        A wide phone photo of a baby lying on a sheet is trimmed to the frame your
+        destination country uses, and the face is never stretched to fit. If you
+        choose the United States, the output is a 51×51&nbsp;mm square and keeps the chin-to-crown height inside the
+        25–35&nbsp;mm band. The official U.S. guidance also states that
         an infant&apos;s eyes do not have to be fully open. Always select the actual
         destination country because its dimensions and infant exceptions may differ.
       </p>

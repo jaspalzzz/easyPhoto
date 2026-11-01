@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowRight, AlertTriangle, ShieldCheck, EyeOff, LockOpen } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -106,39 +105,43 @@ export default function AadhaarPhotoPage() {
           What you can do with Aadhaar online — safely, here
         </h2>
         <p className="text-sm text-muted-foreground">
-          Both run entirely in your browser. Your Aadhaar is never uploaded.
+          Both use UIDAI&apos;s own e-Aadhaar download, so your Aadhaar never passes
+          through any other website.
         </p>
         <div className="grid gap-3 sm:grid-cols-2">
-          <Link href="/tools/mask-aadhaar/" className="ep-card support group flex items-start gap-3 p-4">
+          <a
+            href="https://myaadhaar.uidai.gov.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ep-card support group flex items-start gap-3 p-4"
+          >
             <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(142_55%_34%/0.12)] text-[hsl(142_55%_30%)] dark:bg-[hsl(142_55%_34%/0.20)] dark:text-[hsl(142_55%_60%)]">
               <EyeOff className="h-5 w-5" strokeWidth={1.75} />
             </span>
             <span className="min-w-0">
               <span className="flex items-center gap-1 font-semibold text-ink">
-                Mask Aadhaar number
+                Download a masked Aadhaar
                 <ArrowRight className="h-3.5 w-3.5 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" strokeWidth={1.75} />
               </span>
               <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
-                Hide the first 8 digits before sharing a copy — UIDAI&apos;s own
-                recommendation.
+                When you download e-Aadhaar on myAadhaar, choose the masked
+                version: it hides the first 8 digits before you share a copy,
+                which is UIDAI&apos;s own recommendation.
               </span>
             </span>
-          </Link>
-          <Link href="/unlock-aadhaar-pdf/" className="ep-card support group flex items-start gap-3 p-4">
+          </a>
+          <div className="ep-card support flex items-start gap-3 p-4">
             <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[hsl(215_70%_50%/0.12)] text-[hsl(215_70%_45%)] dark:bg-[hsl(215_70%_50%/0.20)] dark:text-[hsl(215_70%_70%)]">
               <LockOpen className="h-5 w-5" strokeWidth={1.75} />
             </span>
             <span className="min-w-0">
-              <span className="flex items-center gap-1 font-semibold text-ink">
-                Open e-Aadhaar PDF
-                <ArrowRight className="h-3.5 w-3.5 -translate-x-1 text-ink-faint opacity-0 transition-all group-hover:translate-x-0 group-hover:text-brand group-hover:opacity-100" strokeWidth={1.75} />
-              </span>
+              <span className="font-semibold text-ink">Open e-Aadhaar PDF</span>
               <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
-                Remove the password from the official e-Aadhaar PDF to view or
-                print it.
+                The password is the first four letters of your name in capitals
+                followed by your year of birth, for example RAVI1998.
               </span>
             </span>
-          </Link>
+          </div>
         </div>
       </section>
 

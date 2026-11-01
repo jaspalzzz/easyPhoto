@@ -50,7 +50,7 @@ export function DocPhotoResizerPage({
           breadcrumbSchema(crumbs),
           softwareApplicationSchema({
             name: `${displayName} Photo & Signature Resizer`,
-            description: `Prepare a ${displayName} photo and signature to the selected stored size and KB target in your browser; verify the current application before use.`,
+            description: `Prepare a ${displayName} photo and signature to the required size and KB limit in your browser; verify the current application before use.`,
             url: path,
           }),
           faqSchema(portalFaqItems(spec)),

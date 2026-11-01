@@ -8,8 +8,8 @@ const post = getPost("schengen-europe-visa-photo-size")!;
 
 const FAQ_ITEMS = [
   {
-    q: "What size is a Schengen visa photo?",
-    a: "35 × 45 mm (the ICAO biometric standard), with the face filling 70–80% of the frame (about 32–36 mm chin to crown), a neutral expression, and taken within the last 6 months.",
+    q: "Do all 29 Schengen countries use the same photo size?",
+    a: "The print size is the same everywhere: 35 × 45 mm under the ICAO standard, taken within the last 6 months with a neutral expression. The face usually fills 70–80% of the frame (about 32–36 mm chin to crown), but a few missions set their own head size: the Netherlands asks for 26–30 mm. The background shade differs most, so check the mission handling your application.",
   },
   {
     q: "What background colour does a Schengen visa photo need?",
@@ -36,7 +36,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         If you&apos;re applying for a Schengen visa or a European student/work
         visa, start with the shared 35 × 45 mm format, then check the mission that
@@ -56,8 +56,8 @@ export default function Page() {
 
       <h2>Concrete output example</h2>
       <p>
-        The Schengen preset produces a 35×45&nbsp;mm JPG. At the registry&apos;s
-        300&nbsp;DPI reference, that corresponds to approximately 413×531&nbsp;px;
+        The Schengen photo maker produces a 35×45&nbsp;mm JPG. At a 300&nbsp;DPI
+        print reference, that corresponds to approximately 413×531&nbsp;px;
         an input portrait of any larger dimensions is cropped to that aspect ratio
         rather than stretched. The file-size limit is deliberately not stated as a
         single number because <code>countrySpecs.ts</code> records it as varying by
@@ -118,7 +118,7 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             ["Portal rejects the file before preview", "Check the portal's current JPG and KB rules; there is no EU-wide upload cap."],
-            ["Head is cropped or too small", "Return to the 35×45 mm preset and keep chin-to-crown height within the registry's 32–36 mm band."],
+            ["Head is cropped or too small", "Return to the 35×45 mm size and keep chin-to-crown height within the 32–36 mm band."],
             ["Background does not match the instruction", "Use the destination country's published colour and contrast rule; Germany calls neutral grey ideal but frames the rule around brightness and contrast."],
             ["Face looks stretched", "Crop to the 35:45 aspect ratio; do not force independent width and height scaling."],
           ].map(([failure, fix]) => <tr key={failure} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{failure}</td><td className="py-2">{fix}</td></tr>)}

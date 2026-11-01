@@ -8,7 +8,7 @@ import {
   FileText,
   ImageIcon,
 } from "lucide-react";
-import { READY_TOOLS } from "@/lib/toolsCatalog";
+import { LISTED_TOOLS } from "@/lib/toolsCatalog";
 
 /* ── data ─────────────────────────────────────────────────────────────── */
 
@@ -59,7 +59,7 @@ const BOTTOM_CARDS: Card[] = [
     outcome:
       "Turn a paper signature into a clean, transparent PNG that's ready to drop into any form.",
     includes: ["Transparent PNG", "Remove background", "Crop & resize"],
-    href: "/tools/signature/",
+    href: "/tools/#signature",
     cta: "Prepare a signature",
     iconBg: "bg-violet-50 dark:bg-violet-900/20",
     chipBg: "bg-violet-50 dark:bg-violet-900/20",
@@ -70,8 +70,8 @@ const BOTTOM_CARDS: Card[] = [
     icon: <ImageIcon className="h-5 w-5 text-sky-600" strokeWidth={1.75} />,
     title: "Image Processing",
     outcome:
-      "Resize, compress or convert a photo to a selected KB or pixel target.",
-    includes: ["Resize to KB", "Resize dimensions", "JPG to PDF"],
+      "Compress a photo under a KB limit, give it a plain white background or change its DPI.",
+    includes: ["Resize to KB", "White background", "Change DPI"],
     href: "/tools/",
     cta: "Open image tools",
     iconBg: "bg-sky-50 dark:bg-sky-900/20",
@@ -81,12 +81,12 @@ const BOTTOM_CARDS: Card[] = [
   },
   {
     icon: <FileText className="h-5 w-5 text-emerald-600 dark:text-emerald-400" strokeWidth={1.75} />,
-    title: "PDF Tools",
+    title: "ID & Documents",
     outcome:
-      "Compress, merge, split, sign and unlock PDFs to fit any portal upload limit — every file stays on your device.",
-    includes: ["Compress to KB", "Merge & split", "Sign", "Unlock password"],
-    href: "/tools/pdf/",
-    cta: "Open PDF tools",
+      "Turn a phone photo into a clean scanned copy, or read the details off an Aadhaar or PAN card. Every file stays on your device.",
+    includes: ["Scan a photo", "Aadhaar OCR", "PAN OCR"],
+    href: "/tools/#document",
+    cta: "Open document tools",
     iconBg: "bg-emerald-50 dark:bg-emerald-900/20",
     chipBg: "bg-emerald-50 dark:bg-emerald-900/20",
     chipText: "text-emerald-600 dark:text-emerald-400",
@@ -151,7 +151,7 @@ export function FeaturedTools() {
             href="/tools/"
             className="hidden shrink-0 items-center gap-1.5 text-[14px] font-semibold text-brand hover:underline sm:flex"
           >
-            View all {READY_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
+            View all {LISTED_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
@@ -216,7 +216,7 @@ export function FeaturedTools() {
         {/* mobile "view all" */}
         <div className="mt-6 sm:hidden">
           <Link href="/tools/" className="flex items-center gap-1 text-[14px] font-semibold text-brand hover:underline">
-            View all {READY_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
+            View all {LISTED_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 

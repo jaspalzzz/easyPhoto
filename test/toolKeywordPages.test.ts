@@ -11,9 +11,12 @@ const read = (slug: string) => fs.readFileSync(path.join("app", "tools", slug, "
 
 describe("aadhaar-ocr", () => {
   const page = read("aadhaar-ocr");
-  it("answers the photo / JPG searches with the existing tools, in order", () => {
+  it("answers the photo / JPG searches step by step, without hidden tools", () => {
+    // The three tools it used to link are out of the index; indexed pages don't
+    // link them (AdSense, 1 Nov 2026). The steps work with any phone.
     expect(page).toContain("Need the photo from your Aadhaar card, or the card as a JPG?");
-    expect(page).toMatch(/\/unlock-aadhaar-pdf\/[\s\S]*\/tools\/pdf-to-jpg\/[\s\S]*\/tools\/image-crop\//);
+    expect(page).toMatch(/first four letters of your name[\s\S]*screenshot[\s\S]*Crop the picture/);
+    expect(page).not.toMatch(/\/unlock-aadhaar-pdf\/|\/tools\/pdf-to-jpg\/|\/tools\/image-crop\//);
   });
 });
 

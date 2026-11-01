@@ -207,7 +207,7 @@ export function WhyRejected() {
                 <div>
                   <p className="text-[36px] font-black leading-none tracking-tight text-ink">6/6</p>
                   <p className="text-[12px] font-bold text-ink">Checks Passed</p>
-                  <p className="text-xs text-muted-foreground">No detectable issues found</p>
+                  <p className="text-xs text-muted-foreground">Example result for the sample photo above</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-x-3 gap-y-2">

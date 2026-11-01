@@ -5,7 +5,7 @@ import { Globe, FileCheck2, Wrench, Landmark } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { LAUNCH_ORDER } from "@/lib/countrySpecs";
 import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
-import { READY_TOOLS } from "@/lib/toolsCatalog";
+import { LISTED_TOOLS } from "@/lib/toolsCatalog";
 
 /**
  * StatsBand — factual credibility strip with count-up animation.
@@ -24,7 +24,7 @@ interface Stat {
 const STATS: Stat[] = [
   { Icon: Globe,      num: LAUNCH_ORDER.length, suffix: "+", label: "Countries supported", sub: "Passport & visa specs"           },
   { Icon: FileCheck2, num: PORTAL_KEYS.length,  suffix: "+", label: "Exam & form specs",   sub: "SSC, UPSC, Railway & more"       },
-  { Icon: Wrench,     num: READY_TOOLS.length,  suffix: "+", label: "Free tools",          sub: "Photo, PDF & signature"          },
+  { Icon: Wrench,     num: LISTED_TOOLS.length, suffix: "+", label: "Free tools",          sub: "Photo, ID & signature"          },
   {
     Icon: Landmark,
     num: Object.values(PORTAL_PRESETS).filter(

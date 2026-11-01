@@ -47,7 +47,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         A passport photo from a shop isn&apos;t magic. It&apos;s really just
         three things: a plain background, even light, and a precise crop. You can
@@ -73,10 +73,10 @@ export default function Page() {
 
       <h2>Concrete output example</h2>
       <p>
-        A landscape phone image can be cropped without stretching into the selected
-        country preset. Choosing the verified US preset produces a square 51×51&nbsp;mm
-        frame with a 25–35&nbsp;mm chin-to-crown band; choosing the verified UK preset
-        produces 35×45&nbsp;mm with a 29–34&nbsp;mm head band. Sources: the{" "}
+        A landscape phone image is trimmed to the frame of whichever country you
+        pick, and neither you nor the background is stretched. Choosing the
+        United States produces a square 51×51&nbsp;mm frame with a 25–35&nbsp;mm
+        chin-to-crown band; choosing the United Kingdom produces 35×45&nbsp;mm with a 29–34&nbsp;mm head band. Sources: the{" "}
         <a href="https://travel.state.gov/en/passports/apply/help/photos.html" target="_blank" rel="noopener noreferrer">U.S. State Department</a>{" "}
         and <a href="https://www.gov.uk/photos-for-passports" target="_blank" rel="noopener noreferrer">GOV.UK</a>.
       </p>
@@ -141,7 +141,7 @@ export default function Page() {
 
       <h2>3. Skip the things that get photos rejected</h2>
       <ul>
-        <li>Follow the selected country&apos;s glasses rule; the US registry says no glasses, while Canada permits them if there is no glare and the eyes remain visible.</li>
+        <li>Follow the selected country&apos;s glasses rule; the US State Department&apos;s rules say no glasses, while Canada permits them if there is no glare and the eyes remain visible.</li>
         <li>No smiling, no raised eyebrows; neutral only.</li>
         <li>No hats or head coverings except for religious or medical reasons.</li>
         <li>No shadows on your face or behind your head.</li>

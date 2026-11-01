@@ -67,7 +67,7 @@ export default function SourceMethodologyPage() {
         </h2>
         <p>
           <strong className="text-ink">Verified date · source</strong> means a
-          person compared the stored record with the linked source on that date.
+          person compared our figures with the linked source on that date.
           <strong className="text-ink"> Source needs review</strong> means the
           record lacks a dated primary-source confirmation. Neither label predicts
           what an application portal will do later.
@@ -85,8 +85,8 @@ export default function SourceMethodologyPage() {
           Changes and conflicting sources
         </h2>
         <p>
-          When a portal changes, the registry is updated first so pages and tools
-          that read that record receive the same value. Where two current official
+          When a portal changes, we correct the figure in one place, so every page
+          and tool that uses it shows the same value. Where two current official
           sources conflict, we disclose the conflict and direct users to the
           application flow they are actually using. We do not invent a compromise
           value.

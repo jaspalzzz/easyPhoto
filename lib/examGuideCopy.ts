@@ -120,11 +120,11 @@ export const EXAM_SIZE_GUIDE_FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "What format should I use — JPG or PNG?",
-    a: `Use the format named for the specific file: SSC lists ${ssc.sigFormat} for its separate signature, RRB lists ${rrb.sigFormat} for its separate signature, IBPS lists ${ibps.photoFormat}, SBI lists ${sbi.photoFormat}, UPSC lists ${upsc.photoFormat}, and the stored NTA source lists ${nta.photoFormat}. Convert HEIC or WebP only to a format named in the active instructions.`,
+    a: `Use the format named for the specific file: SSC lists ${ssc.sigFormat} for its separate signature, RRB lists ${rrb.sigFormat} for its separate signature, IBPS lists ${ibps.photoFormat}, SBI lists ${sbi.photoFormat}, UPSC lists ${upsc.photoFormat}, and the NTA source we cite lists ${nta.photoFormat}. Convert HEIC or WebP only to a format named in the active instructions.`,
   },
   {
     q: "Do specifications change between exam cycles?",
-    a: "Yes. File-size bands, formats, dimensions and capture workflows can change between notifications. This guide reads from the site's cited registry; always open the source linked for the exam and confirm the active cycle before submitting.",
+    a: "Yes. File-size bands, formats, dimensions and capture workflows can change between notifications. This guide uses the official sources cited on each exam page; always open the source linked for the exam and confirm the active cycle before submitting.",
   },
 ];
 

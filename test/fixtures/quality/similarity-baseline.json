@@ -46,31 +46,31 @@
       }
     },
     "country-makers": {
-      "maxJaccard": 0.3907,
+      "maxJaccard": 0.2891,
       "maxPair": [
         "/new-zealand-visa-photo-maker/",
         "/saudi-visa-photo-maker/"
       ],
       "minUnsharedWords": {
-        "/australia-passport-photo-maker/": 575,
-        "/canada-visa-photo-maker/": 501,
+        "/australia-passport-photo-maker/": 569,
+        "/canada-visa-photo-maker/": 492,
         "/china-visa-photo-maker/": 289,
-        "/france-visa-photo-maker/": 255,
-        "/germany-visa-photo-maker/": 302,
-        "/india-passport-photo-maker/": 511,
-        "/ireland-visa-photo-maker/": 592,
+        "/france-visa-photo-maker/": 280,
+        "/germany-visa-photo-maker/": 296,
+        "/india-passport-photo-maker/": 501,
+        "/ireland-visa-photo-maker/": 584,
         "/italy-visa-photo-maker/": 237,
-        "/malaysia-visa-photo-maker/": 354,
+        "/malaysia-visa-photo-maker/": 351,
         "/nepal-passport-photo-maker/": 351,
         "/netherlands-visa-photo-maker/": 311,
         "/new-zealand-visa-photo-maker/": 244,
         "/oman-visa-photo-maker/": 294,
         "/pakistan-passport-photo-maker/": 339,
         "/saudi-visa-photo-maker/": 199,
-        "/schengen-visa-photo-maker/": 369,
+        "/schengen-visa-photo-maker/": 324,
         "/uae-visa-photo-maker/": 398,
-        "/uk-passport-photo-maker/": 864,
-        "/us-passport-photo-maker/": 542
+        "/uk-passport-photo-maker/": 846,
+        "/us-passport-photo-maker/": 536
       }
     },
     "country-guides": {
@@ -87,7 +87,7 @@
       }
     },
     "tools": {
-      "maxJaccard": 0.1949,
+      "maxJaccard": 0.1719,
       "maxPair": [
         "/tools/signature-background-removal/",
         "/tools/signature-cleaner/"
@@ -107,7 +107,7 @@
         "/tools/resume-photo/": 448,
         "/tools/sign-image/": 752,
         "/tools/signature-background-removal/": 302,
-        "/tools/signature-cleaner/": 303,
+        "/tools/signature-cleaner/": 302,
         "/tools/signature-crop/": 471,
         "/tools/signature-resize/": 422,
         "/tools/white-background/": 391
@@ -127,20 +127,17 @@
         "/blog/cutout-pro-alternative-india/": 1135,
         "/blog/driving-licence-photo-size-sarathi/": 682,
         "/blog/exam-photo-signature-size-guide/": 2406,
-        "/blog/how-to-compress-pdf/": 966,
         "/blog/how-to-compress-photo-to-50kb/": 898,
-        "/blog/how-to-mask-aadhaar-before-sharing/": 610,
-        "/blog/how-to-merge-pdf-free/": 708,
-        "/blog/how-to-prepare-documents-for-exam-applications-india/": 1358,
+        "/blog/how-to-mask-aadhaar-before-sharing/": 707,
+        "/blog/how-to-prepare-documents-for-exam-applications-india/": 1421,
         "/blog/how-to-print-passport-photos-at-home/": 949,
-        "/blog/how-to-reduce-passport-photo-size-for-online-forms/": 691,
+        "/blog/how-to-reduce-passport-photo-size-for-online-forms/": 723,
         "/blog/how-to-remove-background-from-photo-free/": 1112,
         "/blog/how-to-sign-exam-application-forms-india/": 1577,
-        "/blog/how-to-sign-on-image-online/": 1271,
+        "/blog/how-to-sign-on-image-online/": 1310,
         "/blog/how-to-take-a-passport-photo-at-home/": 815,
         "/blog/ibps-po-2026-photo-signature-checklist/": 552,
-        "/blog/image-to-text-online-free-ocr/": 899,
-        "/blog/indian-government-id-photo-requirements/": 1252,
+        "/blog/indian-government-id-photo-requirements/": 1282,
         "/blog/indian-passport-photo-requirements/": 920,
         "/blog/linkedin-profile-photo-size-and-tips/": 622,
         "/blog/nda-cds-photo-signature-guide-2026/": 1135,
@@ -149,7 +146,7 @@
         "/blog/passport-photo-background-color/": 701,
         "/blog/passport-photo-size-by-country/": 571,
         "/blog/resume-photo-size-and-rules/": 614,
-        "/blog/schengen-europe-visa-photo-size/": 647,
+        "/blog/schengen-europe-visa-photo-size/": 690,
         "/blog/sir-enumeration-form-photo-2026/": 790,
         "/blog/ssc-cgl-chsl-photo-signature-guide-2026/": 545,
         "/blog/upsc-cse-ias-photo-signature-guide-2026/": 1022,

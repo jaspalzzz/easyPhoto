@@ -265,18 +265,18 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoHeightPx: 810,
     photoAspectRatio: 3.5 / 4.5,
     description:
-      "Conditional compatibility preset, not an ordinary domestic Passport Seva upload requirement. The 630x810 px photo format is confirmed for the overseas Indian-mission ICAO workflow; the stored KB and signature limits have no published support in that photo guide. Confirm the current mission workflow before using those compatibility limits.",
+      "Not an ordinary domestic Passport Seva upload requirement. The 630x810 px photo format is confirmed for overseas Indian-mission applications that follow ICAO guidance; the KB and signature limits here are easyPhoto defaults, not published in that photo guide. Confirm the mission's current instructions before relying on them, since each mission runs its own upload screen.",
     source: {
       url: "https://portal4.passportindia.gov.in/Online/pdf/Guidelines_for_ICAO_Compliant_Photographs_for_Passport_Applications.pdf",
       label: "Passport Seva overseas portal — ICAO photograph guidance",
     },
     verification: "needs-review",
     context:
-      "For ordinary adult fresh/reissue applications in India, Passport Seva captures the photograph and biometrics at the PSK/POPSK; applicants do not upload or carry a photo. Children below four carry a 45x35 mm white-background print. Use this digital preset only when a separate overseas workflow requests it, and confirm the current mission instructions before relying on the stored KB or signature limits.",
+      "For ordinary adult fresh/reissue applications in India, Passport Seva captures the photograph and biometrics at the PSK/POPSK; applicants do not upload or carry a photo. Children below four carry a 45x35 mm white-background print. Use this digital size only when a separate overseas application asks for it, and confirm the current mission instructions before relying on the KB or signature limits, which are easyPhoto defaults.",
     applicationNotes: [
       "For an ordinary adult fresh or reissue application inside India, the PSK or POPSK captures the photograph and biometrics. There is no ordinary prepared-photo upload to optimise, so this resizer should not be inserted into that domestic appointment workflow.",
       "The below-four exception is a physical 45 x 35 mm colour photograph on a white background. It is distinct from the 630 x 810 pixel format documented for Indian embassies and consulates abroad; choose the route first rather than treating the print and overseas digital figures as interchangeable.",
-      "The linked ICAO guide supports the overseas photograph geometry, but it does not publish the stored 10 to 250 KB photo band or 10 to 100 KB signature band shown as compatibility settings here. The mission's current upload screen is the authority for those digital limits.",
+      "The linked ICAO guide supports the overseas photograph geometry, but it does not publish the 10 to 250 KB photo band or 10 to 100 KB signature band used here as easyPhoto defaults. The mission's current upload screen is the authority for those digital limits.",
       "A 630 x 810 canvas has the same 3.5:4.5 shape as the recorded print, so cropping can be shared across those two representations. That ratio match does not establish the file-size ceiling or prove that a particular mission asks for an upload.",
     ],
   },
@@ -513,7 +513,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "CTET publishes physical dimensions as well as file sizes. The photograph is 3.5 cm wide by 4.5 cm high and the signature 3.5 cm by 1.5 cm, so the shape matters and not only the KB figure.",
       "The signature band is unusually tight at 3 to 30 KB against 10 to 100 KB for the photograph. Scan or crop only the signed area on plain paper; a phone photograph of the whole page includes background that spends bytes without improving the signature.",
       "The notice states the uploaded photograph is matched against the candidate who appears at the centre, so a current likeness matters more than a flattering one.",
-      "The stored pixels preserve the physical proportions but are not interchangeable: 350 x 450 for the portrait and 280 x 120 for the signature. Check width and height in that order; swapping them rotates the required orientation even though the same two numbers are present.",
+      "The pixel sizes keep the physical proportions but are not interchangeable: 350 x 450 for the portrait and 280 x 120 for the signature. Check width and height in that order; swapping them rotates the required orientation even though the same two numbers are present.",
       "Both assets are JPG, yet their lower bounds differ sharply. The signature may be as small as 3 KB while the photograph begins at 10 KB, so compress each against its own published band and inspect the result instead of applying one quality setting to both files.",
       "The September 2026 bulletin is the scope of this record. Keep the generated files, but compare them with the bulletin and preview belonging to the CTET session you are actually submitting if CBSE opens a later examination cycle.",
     ]
@@ -922,14 +922,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "WBPSC (West Bengal PSC)",
     photoLimitKb: 50,
     sigLimitKb: 50,
-    description: "West Bengal PSC uses One-Time Registration, but its current public OTR page does not publish photo or signature upload dimensions, formats or KB limits. The stored 50 KB targets are compatibility values only and can vary by recruitment; confirm the current application instructions before preparing files.",
+    description: "West Bengal PSC uses One-Time Registration, but its current public OTR page does not publish photo or signature upload dimensions, formats or KB limits. The 50 KB figures are easyPhoto defaults and can vary by recruitment; confirm the current application instructions before preparing files.",
     source: {
       url: "https://psc.wb.gov.in/candidateOTRegistration.jsp",
       label: "WBPSC — One-Time Registration portal",
     },
     verification: "needs-review",
     context:
-      "WBPSC's public One-Time Registration page confirms the OTR workflow but does not expose the file validation rules before the application flow. No current public first-party instruction was found for the stored numeric targets, so they must be checked against the current recruitment upload screen.",
+      "WBPSC's public One-Time Registration page confirms the OTR workflow but does not expose the file validation rules before the application flow. No current public first-party instruction was found for these numbers, so they must be checked against the current recruitment upload screen.",
     applicationNotes: [
       "The public WBPSC page supports One-Time Registration but exposes no current photograph or signature specification before the application flow. The two 50 KB ceilings are therefore compatibility settings, not figures verified from that page.",
       "Do not infer a minimum, pixel canvas, aspect ratio, format, background shade, signature ink or name-and-date requirement from the empty fields here. Each of those properties remains unknown until the active recruitment notice or upload widget states it.",
@@ -943,14 +943,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     name: "GPSC (Gujarat PSC)",
     photoLimitKb: 15,
     sigLimitKb: 15,
-    description: "Gujarat PSC applications use Gujarat's OJAS service, but the current public portal does not establish whether photo/signature are uploaded or captured live and does not support the stored 15 KB targets or the former centimetre and ink claims. Treat the values as compatibility targets and confirm the current OJAS instructions.",
+    description: "Gujarat PSC applications use Gujarat's OJAS service, but the current public portal does not establish whether photo/signature are uploaded or captured live and does not support the 15 KB figures or the former centimetre and ink claims. Treat the values as easyPhoto defaults and confirm the current OJAS instructions.",
     source: {
       url: "https://ojas.gujarat.gov.in/",
       label: "Gujarat OJAS — live application portal",
     },
     verification: "needs-review",
     context:
-      "The live Gujarat OJAS portal does not publicly expose GPSC's current photograph/signature workflow or validation rules before the active application flow. Confirm whether the recruitment requests file uploads or capture and verify its limits before relying on the compatibility targets.",
+      "The live Gujarat OJAS portal does not publicly expose GPSC's current photograph/signature workflow or validation rules before the active application flow. Confirm whether the recruitment requests file uploads or capture and verify its limits before relying on these defaults.",
     applicationNotes: [
       "The first-party evidence available here establishes that GPSC applications use Gujarat OJAS. It does not establish whether the current recruitment uploads a prepared photograph and signature or captures either asset inside the form, so settle the workflow before opening a resizer.",
       "The 15 KB ceilings displayed by this preset are compatibility values without current public support. They should not be described as official GPSC limits, and a different number shown by the active OJAS field must replace them for that application.",
@@ -1081,7 +1081,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "A signature written in CAPITAL LETTERS will not be accepted. This sits separately from the file-size rule, so a signature comfortably inside the band can still be refused for how it was written.",
       "Caps, hats and dark glasses are not acceptable in the photograph. Religious headwear is allowed provided it does not cover the face. A live photograph is also captured during the process, in addition to the file you upload.",
       "The file geometry is asymmetric: a 200 x 230 portrait photograph and a 140 x 60 landscape signature. Crop each from its own source rather than resizing one generic canvas, and keep the photograph within 20 to 50 KB while the signature stays within 10 to 20 KB.",
-      "This preset is scoped to the Administrative Officer 2025 advertisement and its pages 11 to 12. An Assistant application or a later AO advertisement needs its own check even if the interface is hosted on the same IBPS application platform.",
+      "These figures come from the Administrative Officer 2025 advertisement, pages 11 to 12. An Assistant application or a later AO advertisement needs its own check even if the interface is hosted on the same IBPS application platform.",
       "The live capture and four prepared document images form five separate inputs in the cited workflow. Completing one does not populate the others, so review the upload labels before assigning files with similar thumbnails.",
       "Keep the declaration text exactly as supplied by the advertisement when preparing that separate scan. This resizer does not generate, edit or validate the declaration wording; its photo and signature outputs cover only two of the five inputs.",
     ]
@@ -1151,7 +1151,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigMinKb: 10,
     photoBackground: "Plain",
     description:
-      "Compatibility preset for the CLAT application. The public CLAT 2027 instructions confirm a front-facing recent passport-size photograph with a plain background and a candidate signature, but publish no KB, pixel, aspect-ratio, DPI, file-format or ink limits. The stored 20-50 KB photo and 10-20 KB signature bands remain unconfirmed; check the current application screen before use.",
+      "A starting point for the CLAT application. The public CLAT 2027 instructions confirm a front-facing recent passport-size photograph with a plain background and a candidate signature, but publish no KB, pixel, aspect-ratio, DPI, file-format or ink limits. The 20-50 KB photo and 10-20 KB signature bands are easyPhoto defaults, not official limits; check the current application screen before use.",
     source: {
       url: "https://consortiumofnlus.ac.in/clat-2027/ug-instructions.html",
       label: "CLAT 2027 UG application instructions",
@@ -1161,7 +1161,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       "CLAT is run by the Consortium of National Law Universities. Its public 2027 instructions identify the photo and signature uploads but do not expose their digital validation limits, so confirm the current application screen before preparing either file.",
     applicationNotes: [
       "The Consortium's instructions describe what the photograph must SHOW — recent, front-facing, plain background, with a separate signature — but do not publish numeric file-size or pixel limits the way most Indian applications do. Any site quoting you an exact KB figure for CLAT is supplying one the Consortium has not.",
-      "Because no published limit governs, prepare a clean, correctly framed photograph and take the binding constraint from whatever the upload screen enforces at the time you apply. The figures stored here exist so the tool has a sensible default, not because the Consortium states them.",
+      "Because no published limit governs, prepare a clean, correctly framed photograph and take the binding constraint from whatever the upload screen enforces at the time you apply. The figures used here are easyPhoto defaults that give the tool a sensible starting point; the Consortium does not state them.",
       "Because the Consortium publishes no numeric limits, the practical test is whether the upload screen accepts your file. Prepare a clean, well-lit, front-facing photograph at a sensible size and keep the original to hand, so you can re-export at a different size if the form objects.",
       "The Consortium's instructions cover the photograph and signature upload and nothing beyond it, so treat anything you read elsewhere about where that image is reused later as unverified. Prepare a clean current photograph and keep the original file.",
     ]
@@ -1174,7 +1174,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigLimitKb: 20,
     sigMinKb: 10,
     description:
-      "Compatibility preset for Indian Army Agniveer registration. The recruiting-year 2027 notice confirms that a recent photograph is uploaded on joinindianarmy.nic.in, but publishes no photo/signature KB band, pixel dimensions, aspect ratio, format or name/date rule. The stored 20-50 KB photo and 10-20 KB signature bands remain unconfirmed; check the current candidate portal before use.",
+      "A starting point for Indian Army Agniveer registration. The recruiting-year 2027 notice confirms that a recent photograph is uploaded on joinindianarmy.nic.in, but publishes no photo/signature KB band, pixel dimensions, aspect ratio, format or name/date rule. The 20-50 KB photo and 10-20 KB signature bands are easyPhoto defaults, not official limits; check the current candidate portal before use.",
     source: {
       url: "https://www.telangana.gov.in/wp-content/uploads/2026/02/Recruitment-Notification-for-AGNIVEER-2027.pdf",
       label: "Indian Army Agniveer RY 2027 notice (government-hosted copy)",
@@ -1581,7 +1581,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigLimitKb: 20,
     sigMinKb: 10,
     description:
-      "Compatibility preset for ITBP online recruitment. The reachable ITBP career page links to its recruitment portal but publishes no photo or signature KB, pixel, aspect-ratio, format or background rule. The stored 20-50 KB photo and 10-20 KB signature bands remain unconfirmed; check the current post-specific recruitment application before use.",
+      "A starting point for ITBP online recruitment. The reachable ITBP career page links to its recruitment portal but publishes no photo or signature KB, pixel, aspect-ratio, format or background rule. The stored 20-50 KB photo and 10-20 KB signature bands remain unconfirmed; check the current post-specific recruitment application before use.",
     source: {
       url: "https://www.itbpolice.nic.in/Home/Career/1000",
       label: "ITBP official career page linking to the recruitment portal",

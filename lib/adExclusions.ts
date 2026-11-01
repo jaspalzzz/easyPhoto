@@ -1,3 +1,4 @@
+import { isDeindexed } from "@/lib/deindexed";
 import { HINGLISH_SLUGS } from "@/lib/hinglishPages";
 import { MAKER_PAGES } from "@/lib/makerPages";
 
@@ -13,8 +14,11 @@ import { MAKER_PAGES } from "@/lib/makerPages";
  * 2. ISOLATED pages: the AI pages that run the multi-threaded background model
  *    and so send Cross-Origin-Embedder-Policy (public/_headers). Ad frames
  *    cannot load under COEP. test/adExclusions.test.ts keeps the two in sync.
- * 3. LOW-VALUE pages: noindexed duplicates and embeddable widgets, which
- *    AdSense reviewers count against a site.
+ * 3. LOW-VALUE pages: every page taken out of the search index
+ *    (lib/deindexed.ts), noindexed duplicates and embeddable widgets, which
+ *    AdSense reviewers count against a site. An ad request is how Google's ad
+ *    crawler finds a page, so a page hidden from search must never make one
+ *    (1 Nov 2026 "low value content" review).
  */
 
 /** Tools that handle ID documents, PDFs or extracted text: never any ad script. */
@@ -96,6 +100,7 @@ export function isAdSenseExcludedPath(pathname: string): boolean {
     PRIVATE_PATHS.has(normalized) ||
     ISOLATED.has(normalized) ||
     LOW_VALUE_PATHS.has(normalized) ||
+    isDeindexed(normalized) ||
     LOW_VALUE_PREFIXES.some((prefix) => normalized.startsWith(prefix))
   );
 }

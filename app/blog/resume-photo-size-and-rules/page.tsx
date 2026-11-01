@@ -182,9 +182,8 @@ export default function Page() {
         <Link href="/tools/resume-photo/">resume / CV photo maker</Link>. It crops
         to the standard passport size with a clean white background, ready to
         print or paste — and nothing is uploaded to a server. Building an online
-        profile too? Make a square{" "}
-        <Link href="/tools/linkedin-photo/">LinkedIn photo</Link> from the same
-        headshot — see the{" "}
+        profile too? Crop the same headshot to a square with your face in the
+        centre — see the{" "}
         <Link href="/blog/linkedin-profile-photo-size-and-tips/">LinkedIn photo size guide</Link>{" "}
         for size, circle-crop tips, and what looks professional.
       </p>

@@ -36,7 +36,7 @@ const POPULAR_SEARCHES = [
   { label: "Canada Visa Photo",     href: visaPath("canada")                  },
   { label: "UK Passport Photo",     href: passportPath("uk")                  },
   { label: "UPSC Photo Resize",     href: "/exam-requirements/upsc/"              },
-  { label: "Transparent Signature", href: "/tools/transparent-signature/"     },
+  { label: "Signature PNG",         href: "/tools/signature-background-removal/" },
   { label: "Railway Exam Photo",    href: "/exam-requirements/rrb/"           },
   { label: "Banking Exam Photo",    href: "/exam-requirements/ibps/"              },
   { label: "Signature Resize",      href: "/tools/signature-resize/"          },
@@ -57,7 +57,7 @@ export default function HomePage() {
               "Free tools for Indian passport photos, visa photos, exam form resizing and government document images. Everything runs in your browser, nothing is uploaded.",
             url: "/",
             category: "UtilitiesApplication",
-            dateModified: "2026-10-15",
+            dateModified: "2026-11-01",
           }),
           faqSchema(HOME_FAQ),
         ]}

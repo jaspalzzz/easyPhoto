@@ -69,7 +69,7 @@ describe("portal background and format presentation", () => {
 
     expect(html).not.toContain(">Format<");
     expect(html).not.toContain(">Background<");
-    expect(html).toContain("Compatibility target · confirm current form");
+    expect(html).toContain("easyPhoto default · confirm current form");
   });
 
   it("omits unsupported-format warnings when no format is recorded", () => {

@@ -38,7 +38,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         A phone photo can be much larger than an application portal permits.
         When your upload fails with &quot;file too large,&quot; the fix is
@@ -68,7 +68,7 @@ export default function Page() {
             ["IBPS photo", "20–50 KB — official IBPS source"],
             ["SSC photo", "Live capture — no prepared-photo KB upload in the cited current notice"],
             ["OCI online photo", "Square 200–900 px JPEG/JPG, up to 200 KB — official OCI source"],
-            ["Schengen portal upload", "No shared cap in the registry; confirm on the consulate/VFS form"],
+            ["Schengen portal upload", "No shared cap published; confirm on the consulate/VFS form"],
           ].map(([type, limit]) => (
             <tr key={type} className="border-b border-hairline/60">
               <td className="py-2 pr-3 font-medium text-ink">{type}</td>
@@ -119,12 +119,12 @@ export default function Page() {
         Enter the portal&apos;s stated target in the{" "}
         <Link href="/tools/resize-kb/">custom KB resizer</Link>. Do not choose a
         smaller number merely because it is available; a minimum is part of the
-        requirement when the registry records one.
+        requirement whenever the form states one.
       </p>
       <p>
-        Need to fit an exact width and height too? Use{" "}
-        <Link href="/tools/resize-dimensions/">resize dimensions</Link> first,
-        then compress. For a signature upload, the{" "}
+        Need to fit an exact width and height too? Make the photo with the{" "}
+        <Link href="/passport-photo/">passport size photo maker</Link> for your
+        country first, which sets the frame, then compress. For a signature upload, the{" "}
         <Link href="/tools/signature-resize/?target=20">signature resizer</Link> does the
         same job while matching the portal&apos;s stated format and size.
       </p>

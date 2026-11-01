@@ -54,7 +54,7 @@ export function ExamResizerSteps({
         <section className="rounded-xl border border-brand/20 bg-brand-soft/20 p-5">
           <p className="eyebrow mb-2 text-brand">Photo is captured in the application</p>
           <p className="max-w-2xl text-sm leading-relaxed text-ink-soft">
-            The current stored instructions use a live photograph instead of a
+            The current instructions use a live photograph instead of a
             prepared-photo upload. Before opening the form, use a working camera,
             clear front lighting, and follow the on-screen framing instructions.
             This page cannot perform or validate the authority&apos;s live capture.
@@ -75,12 +75,11 @@ export function ExamResizerSteps({
 
         <details className="rounded-xl border border-hairline bg-card p-5">
           <summary className="cursor-pointer text-sm font-semibold text-ink">
-            Optional compatibility photo tool — not a current portal requirement
+            Optional photo tool — not a current portal requirement
           </summary>
           <p className="mb-4 mt-3 max-w-2xl text-sm leading-relaxed text-ink-soft">
-            The stored {spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}
-            {spec.photoLimitKb} KB compatibility target remains available for general
-            preparation. It does not replace the live-photo step in the current form.
+            An easyPhoto default of {spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}
+            {spec.photoLimitKb} KB is available here for general preparation. It does not replace the live-photo step in the current form.
           </p>
           {photo}
         </details>

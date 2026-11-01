@@ -203,7 +203,7 @@ export default function Page() {
         <Link href="/tools/signature-resize/?target=20" className="text-brand underline">
           signature resize to 20&nbsp;KB
         </Link>{" "}
-        tool is preset to the Sarathi limit.
+        tool is already set to the Sarathi limit.
       </p>
 
       <p>

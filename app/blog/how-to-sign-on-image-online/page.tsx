@@ -50,7 +50,7 @@ export default function Page() {
       ctaLabel="Sign an image now"
     >
       <div className="mb-5 text-sm text-muted-foreground">
-        Last reviewed 12 July 2026 · Tested with the current easyPhoto Sign Image tool
+        Last updated 1 November 2026 · Tested with the easyPhoto Sign Image tool on 12 July 2026
       </div>
       <p>
         If a form, certificate, scanned JPG or photo needs your signature on top
@@ -78,11 +78,7 @@ export default function Page() {
             signed image.
           </li>
           <li>
-            Use{" "}
-            <Link href="/tools/sign-pdf/">
-              Sign PDF
-            </Link>{" "}
-            instead when the file is a PDF.
+            For a PDF, use your PDF reader&apos;s Fill &amp; Sign option instead.
           </li>
         </ul>
       </div>
@@ -139,12 +135,9 @@ export default function Page() {
         PNG.
       </p>
       <p>
-        Use the{" "}
-        <Link href="/tools/sign-pdf/">
-          PDF signer
-        </Link>{" "}
-        when the original file is a PDF. PDF pages need different handling so
-        text and page quality are preserved.
+        When the original file is a PDF, sign it in a PDF reader with a Fill
+        &amp; Sign option, such as the free Adobe Acrobat Reader. PDF pages need
+        different handling so text and page quality are preserved.
       </p>
 
       <h2>Best workflow to add a signature to a photo</h2>
@@ -157,8 +150,8 @@ export default function Page() {
       <ol className="mt-4 list-decimal space-y-2 pl-5">
         <li>
           Make a clean signature using the{" "}
-          <Link href="/tools/transparent-signature/">
-            transparent signature tool
+          <Link href="/tools/signature-background-removal/">
+            signature background remover
           </Link>
           .
         </li>

@@ -57,7 +57,7 @@ export default function Page() {
       faqItems={FAQ_ITEMS}
     >
       <div className="mb-5 text-sm text-muted-foreground">
-        Last reviewed 16 July 2026 · Checked against the linked authority instructions
+        Last updated 1 November 2026 · Checked against the linked authority instructions on 16 July 2026
       </div>
       <p>
         A digital name-and-date strip is needed only when the application
@@ -223,18 +223,16 @@ export default function Page() {
       <p>
         The tool runs in the browser, so the photo, name and date are not sent to
         the site&apos;s server. The{" "}
-        <Link href="/ssc-photo-with-name-date/">
-          SSC photo with name and date page
-        </Link>{" "}
+        <Link href="/exam-requirements/ssc/">SSC requirements page</Link>{" "}
         explains why current SSC applications do not use this strip.
       </p>
 
       <h2>Then check the relevant file limits</h2>
       <p>
-        After adding a strip for a supported workflow, compare the finished file
-        with the registry-backed guidance for{" "}
-        <Link href="/exam-requirements/appsc/">APPSC</Link> or{" "}
-        <Link href="/exam-requirements/kerala-psc/">Kerala PSC</Link>. For UPSC,
+        After adding a strip, compare the finished file with the limits printed
+        on the form you are filling in. The{" "}
+        <Link href="/tools/photo-with-name-date/">name and date tool</Link> lists
+        which 2026 exams ask for a strip and which ask for none. For UPSC,
         use the <Link href="/exam-requirements/upsc/">UPSC requirements page</Link>{" "}
         and its linked instruction PDF instead of adding text.
       </p>

@@ -16,7 +16,7 @@ export default function Page() {
       portalId="driving-licence"
       displayName="Driving Licence"
       slug="driving-licence-photo-resizer"
-      intro="Prepare your driving licence / learner's licence photo and signature to the stored Sarathi targets. Limits can vary by state, so confirm the fields shown by your current portal before submitting. Processing stays in your browser."
+      intro="Prepare your driving licence / learner's licence photo and signature to the Sarathi sizes. Limits can vary by state, so confirm the fields shown by your current portal before submitting. Processing stays in your browser."
       learnMoreHref="/blog/driving-licence-photo-size-sarathi/"
       learnMoreLabel="Sarathi photo & signature requirements guide →"
     />

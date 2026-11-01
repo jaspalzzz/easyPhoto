@@ -18,10 +18,8 @@
 /blog/cutout-pro-alternative-india/
 /blog/driving-licence-photo-size-sarathi/
 /blog/exam-photo-signature-size-guide/
-/blog/how-to-compress-pdf/
 /blog/how-to-compress-photo-to-50kb/
 /blog/how-to-mask-aadhaar-before-sharing/
-/blog/how-to-merge-pdf-free/
 /blog/how-to-prepare-documents-for-exam-applications-india/
 /blog/how-to-print-passport-photos-at-home/
 /blog/how-to-reduce-passport-photo-size-for-online-forms/
@@ -30,7 +28,6 @@
 /blog/how-to-sign-on-image-online/
 /blog/how-to-take-a-passport-photo-at-home/
 /blog/ibps-po-2026-photo-signature-checklist/
-/blog/image-to-text-online-free-ocr/
 /blog/indian-government-id-photo-requirements/
 /blog/indian-passport-photo-requirements/
 /blog/linkedin-profile-photo-size-and-tips/

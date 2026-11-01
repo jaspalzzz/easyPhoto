@@ -71,8 +71,8 @@ export default async function Page({
       path={`/tools/form-resizer/${portal}/`}
       blurb={
         hasSignature
-          ? `Prepare your photo and signature to the selected stored ${spec.name} targets — both documents in one place. Confirm the current form before use.`
-          : `Prepare your photo to the selected stored ${spec.name} target. Confirm the current form before use.`
+          ? `Prepare your photo and signature to the ${spec.name} sizes — both documents in one place. Confirm the current form before use.`
+          : `Prepare your photo to the ${spec.name} size. Confirm the current form before use.`
       }
       faqItems={portalFaqItems(spec)}
     >

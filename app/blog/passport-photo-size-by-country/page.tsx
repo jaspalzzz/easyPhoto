@@ -36,7 +36,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         There is no single &quot;passport photo size.&quot; Each country sets its
         own dimensions <em>and</em> its own rule for how much of the frame your
@@ -56,8 +56,9 @@ export default function Page() {
       <h2>Concrete output example</h2>
       <p>
         The same original portrait produces different deterministic frames when the
-        country changes. The verified US preset downloads as a 51×51&nbsp;mm square
-        with a 25–35&nbsp;mm head band; the verified UK preset downloads as
+        country changes. A photo made for the United States downloads as a
+        51×51&nbsp;mm square with a 25–35&nbsp;mm head band; one made for the United
+        Kingdom downloads as
         35×45&nbsp;mm with a 29–34&nbsp;mm band. The tool crops around the face for
         the selected proportions instead of stretching one country&apos;s result into
         another country&apos;s dimensions.
