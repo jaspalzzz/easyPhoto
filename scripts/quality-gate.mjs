@@ -9,6 +9,7 @@
  *   4. JSON-LD dateModified vs sitemap lastmod
  *   5. internal vocabulary in rendered copy
  *   6. unverified exam pages showing a stored KB figure as the requirement
+ *   7. browsing links (header, nav, footer, hubs) to hidden or redirected pages
  *
  * Every check is a ratchet against test/fixtures/quality/*.json: it fails on a
  * new or worse violation AND when a recorded allowance is no longer used, so
@@ -196,6 +197,52 @@ const ceil4 = (value) => Math.ceil(value * 1e4) / 1e4;
     }),
     `${current.length} recorded card(s)`
   );
+}
+
+// ── 7. Browsing never leads to a hidden or redirected page ───────────────────
+// AdSense rejected the site for "low value content" on 1 Nov 2026 with the
+// menu and footer one click from 38 thin pages we had hidden from Search.
+// noindex hides a page from Google, not from a reviewer clicking around. So
+// on every indexed page the chrome (header, nav, footer), and on the hubs the
+// whole page, may link only to pages that are indexed and not redirected.
+// Zero tolerance: there is no allowance to ratchet.
+{
+  const repo = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+  const hidden = new Set(
+    [...fs.readFileSync(path.join(repo, "lib/deindexed.ts"), "utf8").matchAll(/^\s*"(\/[^"]+)"/gm)].map((m) => m[1])
+  );
+  const redirected = new Set(
+    fs
+      .readFileSync(path.join(repo, "public/_redirects"), "utf8")
+      .split("\n")
+      .filter((line) => line.trim() && !line.startsWith("#"))
+      .map((line) => line.trim().split(/\s+/)[0])
+  );
+  const HUBS = new Set(["/", "/tools/", "/exam-requirements/", "/exam-photo-size/", "/passport-photo/", "/visa-photo/"]);
+  const target = (href) => {
+    const p = href.split(/[?#]/)[0];
+    if (!p.startsWith("/") || /\.\w{2,5}$/.test(p)) return null;
+    return p.endsWith("/") ? p : `${p}/`;
+  };
+  const problems = [];
+  let checked = 0;
+  for (const [route, page] of site.pages) {
+    // Site chrome is the header, nav and footer outside <main>; a <header>
+    // inside an article is page content, like any other in-text link.
+    const outsideMain = page.html.replace(/<main\b[\s\S]*?<\/main>/i, "");
+    const scope = HUBS.has(route)
+      ? page.html
+      : [...outsideMain.matchAll(/<(header|nav|footer)\b[\s\S]*?<\/\1>/gi)].map((m) => m[0]).join("\n");
+    for (const [, href] of scope.matchAll(/href="([^"]+)"/g)) {
+      const to = target(href);
+      if (!to) continue;
+      checked += 1;
+      if (hidden.has(to) || redirected.has(to)) {
+        problems.push(`NEW: ${route} links ${to} (${hidden.has(to) ? "hidden from the index" : "redirected"}) from its ${HUBS.has(route) ? "hub content" : "header, nav or footer"}`);
+      }
+    }
+  }
+  record("browsing links stay on indexed pages", [...new Set(problems)], `${checked} chrome/hub links point at indexed pages`);
 }
 
 // ── Report ───────────────────────────────────────────────────────────────────
