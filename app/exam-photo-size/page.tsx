@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { PortalSpec } from "@/lib/portalPresets";
 import {
-  allPortalSpecs,
+  listedPortalSpecs,
   photoDimsPx,
   portalCategory,
   PORTAL_CATEGORY_LABEL,
@@ -19,7 +19,7 @@ export const metadata = pageMetadata({
   title: "Exam Photo & Signature Size 2026 — Full List for Indian Exams",
   titleAbsolute: true,
   description:
-    "Compare recorded photo and signature requirements for 30+ Indian exam and recruitment forms — SSC, UPSC, IBPS, SBI, RRB, GATE, NDA, NTA, RBI, NABARD, LIC and State PSCs — with source and verification context.",
+    "Compare photo and signature requirements for 20+ Indian exam and recruitment forms — SSC, UPSC, IBPS, SBI, RRB, CUET, CTET, Agniveer and state PSCs — with the official source for each.",
   path: "/exam-photo-size/",
 });
 
@@ -57,16 +57,16 @@ const FAQS: FaqItem[] = [
   },
   {
     q: "How do I resize my photo to the listed requirements?",
-    a: "Pick your exam below to open its page, then use the in-browser resizer for its stored KB target and published dimensions where available. Confirm the current notification. It runs entirely on your device — nothing is uploaded — and it is free with no watermark.",
+    a: "Pick your exam below to open its page, then use the in-browser resizer, which is already set to that exam's KB limit and its published dimensions where they exist. Confirm the current notification. It runs entirely on your device — nothing is uploaded — and it is free with no watermark.",
   },
   {
     q: "How are these sizes sourced?",
-    a: "Each exam page shows the named source where available and its verification status. Some presets are marked needs-review. Requirements can change between notification cycles, so confirm on the current portal before submitting.",
+    a: "Each exam page names its source where one exists and says whether we have checked it. Some pages say a figure still needs checking. Requirements can change between notification cycles, so confirm on the current portal before submitting.",
   },
 ];
 
 export default function Page() {
-  const specs = allPortalSpecs();
+  const specs = listedPortalSpecs();
   const grouped = CATEGORY_ORDER.map((cat) => ({
     cat,
     label: PORTAL_CATEGORY_LABEL[cat],

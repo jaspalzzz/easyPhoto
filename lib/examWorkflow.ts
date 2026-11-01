@@ -22,7 +22,7 @@ export function examPhotoNextAction(
     return {
       slug: "photo-with-name-date",
       label: "Add the required name & date",
-      hint: "The prepared photo will carry into the registry-backed strip tool",
+      hint: "The prepared photo carries straight into the name and date tool",
     };
   }
 

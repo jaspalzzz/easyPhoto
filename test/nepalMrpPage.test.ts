@@ -25,9 +25,10 @@ describe("Nepal MRP size photo page", () => {
     expect(entry).not.toMatch(/⚠|SCOPE|this record/i);
   });
 
-  it("moves only the Nepal maker's date", () => {
+  it("dates the Nepal maker by its own last text change", () => {
+    // 1 Nov 2026: every maker's templated FAQ was removed (AdSense review), so
+    // each maker's lastmod moved to that date with its text.
     const dates = Object.fromEntries(sitemap().map((e) => [e.url.replace(/^https:\/\/[^/]+/, ""), String(e.lastModified)]));
-    expect(dates["/nepal-passport-photo-maker/"]).toBe("2026-10-15");
-    expect(dates["/pakistan-passport-photo-maker/"]).not.toBe("2026-10-15");
+    expect(dates["/nepal-passport-photo-maker/"]).toBe("2026-11-01");
   });
 });

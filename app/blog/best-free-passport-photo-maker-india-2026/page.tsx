@@ -192,7 +192,7 @@ export default function Page() {
         <Link href="/exam-requirements/">40+ Indian exam
         portals</Link> (SSC, IBPS, UPSC, SBI, RRB, NTA and more), and handles PDF compression, signature
         resize, and format conversion. Nothing is uploaded: every operation runs in your browser
-        using WebAssembly. Each preset shows its named source and verification status; confirm
+        using WebAssembly. Each country and exam shows its named source and whether it has been checked; confirm
         the current portal instructions before submitting.
       </p>
 
@@ -209,7 +209,7 @@ export default function Page() {
         PassportSizePhoto.in is a free, India-native passport photo tool built on WebAssembly with
         a verifiable &quot;zero-data-transfer&quot; privacy model: processing runs entirely in
         the browser and photos are never sent to a server. It offers a 630×810 px,
-        10–250 KB preset, but the official 630×810 instruction we found applies to
+        10–250 KB option, but the official 630×810 instruction we found applies to
         overseas Indian-mission ICAO guidance; the 250 KB cap is not confirmed as
         an ordinary Passport Seva requirement. The tool claims DPDPA (India&apos;s Digital Personal Data Protection Act)
         compliance alongside GDPR, and a Hindi-language version is available.
@@ -242,7 +242,7 @@ export default function Page() {
       </p>
 
       <p>
-        There&apos;s also no KB-target output control and no exam portal presets. The tool
+        There&apos;s also no KB-target output control and no exam portal sizes. The tool
         generates a cropped, background-removed photo, but you can&apos;t tell it &quot;give me
         this under 50 KB at 275×354 px.&quot; A general resize step is still needed after.
       </p>
@@ -272,7 +272,7 @@ export default function Page() {
         current fee and service scope for a Schengen visa rather than assuming the
         same value for an SSC CGL registration. It
         also uploads your photo to a remote server for processing, which is the same privacy
-        trade-off as other server-based tools. There are no exam photo presets.
+        trade-off as other server-based tools. There are no exam photo sizes.
       </p>
 
       <h2>What about AI passport photo apps?</h2>
@@ -343,7 +343,7 @@ export default function Page() {
         <li>
           <strong>Under-four passport print:</strong> <Link href="/india-passport-photo-maker/">easyPhoto</Link> or
           PassportSizePhoto.in can prepare a 35×45 mm crop without uploading your
-          source image. Use a dedicated square preset for OCI.
+          source image. Use the dedicated square OCI size.
         </li>
         <li>
           <strong>SSC, IBPS, UPSC, SBI, RRB, NTA exam form:</strong> <Link href="/exam-requirements/">easyPhoto</Link>, the only tool

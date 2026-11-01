@@ -23,7 +23,7 @@ export const metadata = pageMetadata({
 const FAQ: FaqItem[] = [
   {
     q: "What size photo should I use on a resume?",
-    a: `Use the dimensions requested by the employer or application. This preset produces a ${mm.width}×${mm.height}mm (3.5×4.5cm) portrait for a CV or bio-data that asks for a passport-style photograph; it is not a universal resume rule.`,
+    a: `Use the dimensions requested by the employer or application. This tool produces a ${mm.width}×${mm.height}mm (3.5×4.5cm) portrait for a CV or bio-data that asks for a passport-style photograph; it is not a universal resume rule.`,
   },
   {
     q: "Should I smile in a resume photo?",
@@ -66,11 +66,9 @@ export default function Page() {
           <li>Keep a calm, confident expression — a slight smile works well.</li>
         </ul>
         <p className="text-sm text-muted-foreground">
-          Building an online profile too? Make a square{" "}
-          <Link href="/tools/linkedin-photo/" className="text-brand hover:underline">
-            LinkedIn profile photo
-          </Link>{" "}
-          from the same headshot.
+          Building an online profile too? Most profile sites show a square or round
+          picture, so crop the same headshot to a square with your face in the
+          centre rather than reusing the 35×45 mm print.
         </p>
       </div>
 
@@ -106,9 +104,9 @@ export default function Page() {
           Decide the destination before choosing the crop
         </h2>
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          This page uses the India passport-style 35×45 mm canvas as a practical
-          CV and bio-data preset; no recruitment authority or employer is cited as
-          making that size universal. If a job portal publishes pixels, a square
+          This page uses the India passport-style 35×45 mm size as a practical
+          default for a CV or bio-data form; no recruitment authority or employer makes
+          that size universal. If a job portal publishes pixels, a square
           profile image, an aspect ratio or a KB ceiling, use those fields instead.
           Keep your original headshot so you can make each required crop without
           stretching an already-exported file.

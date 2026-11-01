@@ -5,47 +5,6 @@
     "dateModifiedVsLastmod (scripts/quality-gate.mjs): indexed pages whose JSON-LD dateModified differs from their sitemap lastmod, with both dates.",
     "An entry may only be deleted: a changed date is a new disagreement and fails; a resolved one fails until its entry is deleted. Fix the dates only when the content really changed (never fake freshness)."
   ],
-  "blogDates": {
-    "schengen-europe-visa-photo-size": {
-      "visible": "2026-07-12",
-      "dateModified": "2026-06-10",
-      "lastmod": "2026-06-10"
-    },
-    "how-to-sign-on-image-online": {
-      "visible": "2026-07-12",
-      "dateModified": "2026-07-08",
-      "lastmod": "2026-07-08"
-    },
-    "how-to-compress-pdf": {
-      "visible": "2026-07-12",
-      "dateModified": "2026-06-10",
-      "lastmod": "2026-06-10"
-    },
-    "how-to-merge-pdf-free": {
-      "visible": "2026-07-12",
-      "dateModified": "2026-06-10",
-      "lastmod": "2026-06-10"
-    },
-    "how-to-take-a-passport-photo-at-home": {
-      "visible": "2026-07-12",
-      "dateModified": "2026-06-06",
-      "lastmod": "2026-06-06"
-    },
-    "how-to-reduce-passport-photo-size-for-online-forms": {
-      "visible": "2026-07-12",
-      "dateModified": "2026-06-04",
-      "lastmod": "2026-06-04"
-    },
-    "baby-and-infant-passport-photo-guide": {
-      "visible": "2026-07-12",
-      "dateModified": "2026-06-03",
-      "lastmod": "2026-06-03"
-    }
-  },
-  "dateModifiedVsLastmod": {
-    "/visa-photo/": {
-      "dateModified": "2026-06-11",
-      "lastmod": "2026-08-02"
-    }
-  }
+  "blogDates": {},
+  "dateModifiedVsLastmod": {}
 }

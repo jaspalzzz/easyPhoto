@@ -32,8 +32,14 @@ const PAGE_UPDATED: Record<string, string> = {
   "airforce-agniveer": "2026-10-15",
   pan: "2026-10-14",
   oci: "2026-10-14",
-  "passport-seva": "2026-10-14",
+  "passport-seva": "2026-11-01",
   ds160: "2026-10-14",
+  // 1 Nov 2026: AdSense remediation (plain-language copy, links to indexed pages only).
+  ctet: "2026-11-01",
+  "csir-net": "2026-11-01",
+  niacl: "2026-11-01",
+  clat: "2026-11-01",
+  "army-agniveer": "2026-11-01",
 };
 
 export function examPageLastModified(examId: string): string {

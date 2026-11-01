@@ -160,9 +160,9 @@ export default function AboutPage() {
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               We compare the recorded dimensions, file-size limits, format and
-              background instructions with the cited source. Where our registry has
-              a confirmed review date, specification pages display that
-              last-reviewed date. Undated or secondary records remain identified as
+              background instructions with the cited source. Where we have
+              confirmed a figure on a known date, the specification page shows
+              that date. Undated or secondary records remain identified as
               needing stronger verification rather than receiving a made-up date.
             </p>
           </div>
@@ -191,8 +191,8 @@ export default function AboutPage() {
               <Link href="/contact/" className="font-medium text-brand hover:underline">
                 contact page
               </Link>
-              . We check the cited evidence, update the registry and review date when
-              warranted, and retain uncertainty when the available sources conflict.
+              . We check the cited evidence, correct the figure and its review date
+              when warranted, and retain uncertainty when the available sources conflict.
             </p>
           </div>
         </div>

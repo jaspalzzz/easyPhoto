@@ -21,7 +21,7 @@ export default function Page() {
     <ToolPage
       title="Scan a Photo or JPG Online"
       slug={tool.slug}
-      blurb={tool.blurb}
+      blurb="Photograph a page or open a JPG and get a flat, evenly lit scanned copy as a PDF or JPG. The perspective is straightened and shadows are removed on your device, so photos of an Aadhaar card, PAN card or marksheet never leave your phone."
       faqItems={[
         {
           q: "Are my documents uploaded anywhere?",

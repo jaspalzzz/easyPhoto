@@ -5,13 +5,13 @@ import Link from "next/link";
 import { ArrowRight, User, GraduationCap, Aperture, FileText, PenLine } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { READY_TOOLS } from "@/lib/toolsCatalog";
+import { LISTED_TOOLS } from "@/lib/toolsCatalog";
 
 import {
-  CreditCard, UserCircle, Printer, ScanLine, Camera,
+  CreditCard, UserCircle, ScanLine, Globe, Baby,
   Package, Award, Train, Landmark,
-  Eraser, Maximize2, FileDown, Gauge, RefreshCw,
-  Files, Scissors, FileImage, FilePlus, FileSignature,
+  Eraser, Maximize2, FileDown, Gauge, RefreshCw, CalendarDays, Crosshair,
+  Files,
   ImageOff, Maximize, Crop, Wand2,
 } from "lucide-react";
 
@@ -22,18 +22,18 @@ const TABS: Tab[] = [
   {
     id: "document", label: "Document Photos", Icon: User,
     tools: [
-      { title: "Passport Photo Maker",  desc: "Country presets with published sources", href: "/passport-photo/",               Icon: CreditCard    },
-      { title: "LinkedIn Photo Maker",  desc: "Professional headshots",                href: "/tools/linkedin-photo/",         Icon: UserCircle    },
+      { title: "Passport Photo Maker",  desc: "Country sizes with published sources", href: "/passport-photo/",               Icon: CreditCard    },
+      { title: "Visa Photo Maker",      desc: "Visa photo sizes by country",           href: "/visa-photo/",                   Icon: Globe         },
+      { title: "Baby Passport Photo",   desc: "Under-4 passport print rules",          href: "/baby-passport-photo/",          Icon: Baby          },
       { title: "Resume / CV Photo",     desc: "Job applications & CVs",                href: "/tools/resume-photo/",           Icon: FileText      },
-      { title: "Photo Print Sheet",     desc: "4×6 inch, A4 & more sizes",            href: "/tools/print-sheet/",            Icon: Printer       },
       { title: "Pre-submission Check",  desc: "Check photo + signature before you submit", href: "/tools/compliance-checker/", Icon: ScanLine      },
-      { title: "Camera Capture",        desc: "Take photo directly in browser",        href: "/tools/camera-capture/",         Icon: Camera        },
+      { title: "Aadhaar Photo",         desc: "Photo for Aadhaar update or enrolment", href: "/aadhaar-photo/",                Icon: UserCircle    },
     ],
   },
   {
     id: "exam", label: "Exam Tools", Icon: GraduationCap,
     tools: [
-      { title: "Exam Application Kit",  desc: "All exam presets in one flow",          href: "/tools/exam-package/",           Icon: Package       },
+      { title: "Exam Application Kit",  desc: "Every exam size in one flow",          href: "/tools/exam-package/",           Icon: Package       },
       { title: "SSC Photo Tool",        desc: "SSC MTS, CGL, CHSL",                   href: "/exam-requirements/ssc/",       Icon: GraduationCap },
       { title: "UPSC Photo Tool",       desc: "Civil Services Exam",                   href: "/exam-requirements/upsc/",      Icon: Award         },
       { title: "Railway Photo Tool",    desc: "RRB, NTPC, Group D",                   href: "/exam-requirements/rrb/",       Icon: Train         },
@@ -45,28 +45,26 @@ const TABS: Tab[] = [
     id: "image", label: "Image Tools", Icon: Aperture,
     tools: [
       { title: "Background Remover",    desc: "Remove background from any photo",      href: "/tools/background-removal/",     Icon: Eraser        },
-      { title: "Resize Image",          desc: "By pixels, mm or cm",                  href: "/tools/resize-dimensions/",      Icon: Maximize2     },
       { title: "Compress Image to KB",  desc: "Shrink to exact file size",            href: "/tools/resize-kb/",              Icon: FileDown      },
+      { title: "White Background",      desc: "Plain white backdrop for forms",        href: "/tools/white-background/",       Icon: Maximize2     },
       { title: "Change Image DPI",      desc: "Set to 200, 300 or custom DPI",        href: "/tools/dpi-converter/",          Icon: Gauge         },
-      { title: "Image Format Converter",desc: "JPG, PNG, WEBP and more",              href: "/tools/format-converter/",       Icon: RefreshCw     },
-      { title: "Red-Eye Removal",       desc: "Fix red eye in photos instantly",       href: "/tools/red-eye-removal/",        Icon: Eraser        },
+      { title: "Photo with Name & Date",desc: "Name and date strip under the photo",  href: "/tools/photo-with-name-date/",    Icon: CalendarDays  },
+      { title: "Face Centering",        desc: "Centre and straighten the face",        href: "/tools/face-centering/",         Icon: Crosshair     },
     ],
   },
   {
-    id: "pdf", label: "PDF Tools", Icon: FileText,
+    id: "documents", label: "ID & Documents", Icon: FileText,
     tools: [
-      { title: "Compress PDF",          desc: "Reduce PDF size to target KB",         href: "/tools/pdf-compress/",           Icon: FileDown      },
-      { title: "Merge PDF",             desc: "Combine multiple PDFs into one",        href: "/tools/pdf-merge/",              Icon: Files         },
-      { title: "Split PDF",             desc: "Extract specific pages",                href: "/tools/pdf-split/",              Icon: Scissors      },
-      { title: "PDF to JPG",            desc: "Convert PDF pages to images",           href: "/tools/pdf-to-jpg/",             Icon: FileImage     },
-      { title: "JPG to PDF",            desc: "Combine images into a PDF",             href: "/tools/jpg-to-pdf/",             Icon: FilePlus      },
-      { title: "Sign PDF",              desc: "Add signature to PDF document",         href: "/tools/sign-pdf/",               Icon: FileSignature },
+      { title: "Scan Photo Online",     desc: "Turn a JPG into a scanned copy",        href: "/tools/document-scanner/",       Icon: ScanLine      },
+      { title: "Aadhaar Card OCR",      desc: "Read number, name and DOB",             href: "/tools/aadhaar-ocr/",            Icon: FileText      },
+      { title: "PAN Card OCR",          desc: "Read PAN number and name",              href: "/tools/pan-card-ocr/",           Icon: CreditCard    },
+      { title: "Convert Image Format",  desc: "HEIC, WEBP or PNG to JPG",              href: "/convert/",                      Icon: RefreshCw     },
     ],
   },
   {
     id: "signature", label: "Signature Tools", Icon: PenLine,
     tools: [
-      { title: "Transparent Signature", desc: "PNG with no background",                href: "/tools/transparent-signature/",  Icon: ImageOff      },
+      { title: "Signature Background Remover", desc: "PNG with no background",         href: "/tools/signature-background-removal/", Icon: ImageOff },
       { title: "Signature Resize",      desc: "Resize to any pixel or KB size",        href: "/tools/signature-resize/",       Icon: Maximize      },
       { title: "Signature Crop",        desc: "Crop signature to content",             href: "/tools/signature-crop/",         Icon: Crop          },
       { title: "Signature Cleaner",     desc: "Remove background from signature",      href: "/tools/signature-cleaner/",      Icon: Wand2         },
@@ -143,7 +141,7 @@ export function ToolsTabs() {
             href="/tools/"
             className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-brand hover:underline"
           >
-            View all {READY_TOOLS.length} tools <ArrowRight className="h-4 w-4" />
+            View all {LISTED_TOOLS.length} tools <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>

@@ -32,7 +32,7 @@ export default function Page() {
   return (
     <BlogPostLayout slug="visafoto-alternative-india-free" faqItems={FAQ_ITEMS}>
       <p>
-        Visafoto supports a 35×45 mm India preset and backs its output with a
+        Visafoto supports a 35×45 mm India size and backs its output with a
         money-back guarantee. It is a paid, server-processed service and uploads
         your biometric photo for processing. Its{" "}
         <a
@@ -79,7 +79,7 @@ export default function Page() {
       </p>
 
       <p>
-        What it doesn&apos;t cover: there are no Indian exam photo presets.{" "}
+        What it doesn&apos;t cover: there are no Indian exam photo sizes.{" "}
         <Link href="/blog/exam-photo-signature-size-guide/" className="text-brand underline">SSC, IBPS, UPSC, SBI PO, and RRB</Link>{" "}
         each have their own KB and pixel limits that a passport photo tool never
         needs to know. If you&apos;re filling out an exam application form, Visafoto won&apos;t
@@ -163,9 +163,9 @@ export default function Page() {
       <p>
         The other reason to use easyPhoto over Visafoto for Indian applicants: it also handles
         exam workflows. If you&apos;re applying for SSC CGL, IBPS PO, UPSC CSE, SBI PO, or another{" "}
-        <Link href="/exam-requirements/" className="text-brand underline">listed exam</Link>, the tool distinguishes live capture from prepared files and applies stored KB targets
-        and published pixel dimensions where available. Confirm the current board notification before submitting. Visafoto has no exam
-        portal presets at all.
+        <Link href="/exam-requirements/" className="text-brand underline">listed exam</Link>, the tool tells live capture apart from prepared files and applies each exam&apos;s KB
+        limits and published pixel dimensions where they exist. Confirm the current board notification before submitting. Visafoto has no exam
+        portal sizes at all.
       </p>
 
       <h2>PassportSizePhoto.in — another free India-native option</h2>
@@ -213,7 +213,7 @@ export default function Page() {
       <p>
         For the under-four passport print or an exam portal photo with published
         dimensions and file-size rules, a free preparation tool may be sufficient.
-        An ordinary adult renewal uses centre capture, while OCI needs its own square preset.
+        An ordinary adult renewal uses centre capture, while OCI needs its own square size.
         See the{" "}
         <Link href="/blog/best-free-passport-photo-maker-india-2026/" className="text-brand underline">best free Indian passport photo maker guide</Link>{" "}
         for a full comparison of all free options.

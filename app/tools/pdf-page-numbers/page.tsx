@@ -29,10 +29,6 @@ const FAQS: FaqItem[] = [
     q: "Can I start numbering from a specific number, or skip a cover page?",
     a: "Yes. Set the 'start numbering at' value to any number. To effectively skip a cover page's visible number, you can start at 0 or adjust the start value to suit your document.",
   },
-  {
-    q: "Is it free and private?",
-    a: "Completely free, no sign-up, no watermark. Your PDF is processed entirely on your device and never uploaded — the original page content stays intact and text remains selectable.",
-  },
 ];
 
 export default function Page() {

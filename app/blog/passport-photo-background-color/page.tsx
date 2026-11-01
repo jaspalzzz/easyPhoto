@@ -33,7 +33,7 @@ export default function Page() {
   return (
     <BlogPostLayout slug={post.slug}>
       <div className="mb-5 text-sm text-muted-foreground">
-        Last reviewed 12 July 2026 · Checked against the cited official passport guidance
+        Last updated 1 November 2026 · Checked against the cited official passport guidance on 12 July 2026
       </div>
       <p>
         &quot;Just use a white wall&quot; is the most common piece of bad
@@ -55,7 +55,7 @@ export default function Page() {
 
       <PhotoComplianceDiagram
         cases={BACKGROUND_CASES}
-        caption="Background examples drawn from the India and UK registry colours. These are illustrative; confirm the current colour and framing rules on the relevant official source."
+        caption="Background examples drawn from the India and UK background colours we use. These are illustrative; confirm the current colour and framing rules on the relevant official source."
       />
 
       <h2>Before and after: what actually changes</h2>

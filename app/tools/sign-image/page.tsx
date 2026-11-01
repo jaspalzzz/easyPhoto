@@ -130,11 +130,9 @@ export default function Page() {
             Drop your photo into the tool above, then draw your signature, type
             your name, or upload a signature image and put it on top. Drag it to
             position, resize it, and download the combined image — the signature
-            sits over the photo, not beside it. Signing a PDF instead? Use{" "}
-            <Link href="/tools/sign-pdf/" className="font-medium text-brand hover:underline">
-              Sign PDF
-            </Link>
-            .
+            sits over the photo, not beside it. Signing a PDF instead? Most PDF
+            readers, including the free Adobe Acrobat Reader, have a Fill &amp; Sign
+            option that places the same signature image on the page.
           </p>
         </div>
         <div className="space-y-2">

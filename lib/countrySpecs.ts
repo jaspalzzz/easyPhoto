@@ -241,7 +241,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "Ordinary adults are photographed at the PSK/POPSK; do not upload or carry " +
       "a photo unless your specific workflow says otherwise. The 45×35mm white " +
       "print applies to children below four. The 630×810px export is for overseas " +
-      "ICAO guidance; the stored 10–250 KB band is unverified.",
+      "ICAO guidance; the 10–250 KB band is an easyPhoto default, not a published limit.",
     source:
       "https://www.passportindia.gov.in/AppOnlineProject/pdf/GUIDELINES%20FOR%20CAPTURING%20PHOTOGRAPHS%20FOR%20MINORS_v2.1.pdf",
     verified: "conditional",
@@ -300,7 +300,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     headPercentOfFrame: { min: 70, max: 80 },
     background: {
       description:
-        "Plain and light-coloured. This generic preset uses light grey, but the " +
+        "Plain and light-coloured. Light grey is what this Schengen maker applies by default, but the " +
         "accepted shade is set by the member-state mission handling the application.",
       hex: "#DCDCDC", // tool default, not an EU-wide mandated shade
       acceptableHex: ["#DCDCDC", "#C8C8C8", "#FFFFFF"],
@@ -542,14 +542,14 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     notes:
       "ICAO biometric photo per France-Visas: 35x45mm (official width given as " +
       "35-40mm), face 32-36mm (70-80% of height), max 6 months old, plain " +
-      "light-coloured background. This preset uses light grey; confirm the " +
+      "light-coloured background. This maker uses light grey; confirm the " +
       "current France-Visas or mission instruction before submitting.",
     source:
       "https://france-visas.gouv.fr/documents/d/france-visas/iso_iec_fv_visa_photograph_requirements_en",
     verified: "gov",
     applicationNotes: [
       "France's own guidance points at the ISO/IEC photograph standard rather than publishing a separate French rule, so the framing is the common Schengen one: 35x45mm, head 32-36mm chin to crown, neutral expression, no glasses glare.",
-      "France describes a plain light-coloured background rather than prescribing the neutral-grey contrast examples in Germany's sheet. This preset uses light grey as its recorded default, but that tool choice is not evidence that the same shade is required by every Schengen mission.",
+      "France describes a plain light-coloured background rather than prescribing the neutral-grey contrast examples in Germany's sheet. This maker uses light grey by default, but that choice does not mean every Schengen mission requires the same shade.",
       "A long-stay VLS-TS application uses the same photograph specification as the short-stay Schengen visa, so the two do not need different images.",
       "The 32 to 36 mm head band occupies about 71 to 80 percent of a 45 mm frame. Measure chin to crown, not chin to the top edge of styled hair, and keep clear space above the crown inside the finished 35 x 45 mm crop.",
       "The source specifies print geometry but no universal digital KB ceiling for France visa portals. The 413 x 531 display is a 300 DPI reference generated from millimetres; if an application screen asks for pixels or bytes, its current figures govern the upload.",
@@ -923,7 +923,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "read directly, so treat this as a starting size and take the figure from " +
       "the application you are actually filling in.",
     advisory:
-      "Sources disagree on Oman's visa photo size: this preset records 35×45 mm " +
+      "Sources disagree on Oman's visa photo size: this maker uses 35×45 mm " +
       "for the ROP eVisa, while 40×60 mm is cited for consular applications. " +
       "Check the size on your own application form before printing or " +
       "uploading — we could not confirm either against a Royal Oman Police page.",
@@ -1324,9 +1324,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     applicationNotes: [
       "Malaysia's 35 x 50 mm is unusual — taller than the 35 x 45 mm used almost everywhere else — so a standard passport crop is the wrong proportion and stretching it to fit distorts the face.",
       "Published guides agree the eVisa upload must be JPEG between roughly 10 and 120 KB, which is a tight band. No Immigration Department page states it, so check the limit shown on the eVisa form itself before submitting.",
-      "The recorded head-height band is 30 to 35 mm inside a 50 mm frame, which works out to 60 to 70 percent. That is a looser crop than the 70 to 80 percent framing recorded for the Schengen presets, so begin again from the original portrait rather than trimming an existing visa crop.",
+      "The head-height band is 30 to 35 mm inside a 50 mm frame, which works out to 60 to 70 percent. That is a looser crop than the 70 to 80 percent framing used for Schengen photos, so begin again from the original portrait rather than trimming an existing visa crop.",
       "At a 300 DPI print reference, 35 x 50 mm converts to about 413 x 591 pixels. That calculated pair is useful for printing but is not a published Malaysia eVisa canvas; take any binding pixel requirement from the active malaysiavisa.imi.gov.my field.",
-      "White is the preset background. The record notes that light grey or cream appears in published guides, but no readable Immigration Department page was found to confirm those alternatives. Use the active form and its sample image to settle the shade for the route you are filing.",
+      "This maker uses a plain white background, the shade the published guides all agree on. Some of them also mention light grey or cream, but we found no readable Immigration Department page that confirms those alternatives. Use the active form and its sample image to settle the shade for the route you are filing.",
       "The 10 to 120 KB JPEG band also comes from published guides rather than the linked government landing page. The needs-review status is therefore substantive: it tells the reader which figures require an on-screen check instead of presenting every displayed value as first-party verified.",
       "A 35 x 45 file has a width-to-height ratio of about 0.78; Malaysia's 35 x 50 is 0.70. Resizing one directly to the taller canvas would narrow the face. Crop with added vertical room from the original image and inspect the result without stretching.",
     ]

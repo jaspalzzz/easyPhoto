@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, Globe, GraduationCap, FileText, Aperture, PenLine } from "lucide-react";
-import { TOOLS_CATALOG, POPULAR_TOOLS } from "@/lib/toolsCatalog";
+import { Globe, GraduationCap, FileText, Aperture, PenLine } from "lucide-react";
+import { LISTED_CATALOG, POPULAR_TOOLS } from "@/lib/toolsCatalog";
 import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
 import { ToolCard } from "@/components/site/ToolCard";
 import { TrustPills } from "@/components/site/TrustStrip";
@@ -11,10 +11,10 @@ import { ToolSearch } from "@/components/site/ToolSearch";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
-  title: "Free Image, PDF & Signature Tools",
+  title: "Free Photo, Signature & ID Document Tools",
   description:
-    "Free in-browser tools: background remover, compress image to KB, resize " +
-    "photos, JPG to PDF, PDF to JPG and signature tools. Nothing is uploaded.",
+    "Free in-browser tools: background remover, compress a photo to a KB size, " +
+    "white background, signature tools, a document scanner and Aadhaar/PAN OCR. Nothing is uploaded.",
   path: "/tools/",
 });
 
@@ -30,9 +30,9 @@ export default function ToolsHubPage() {
         schema={[
           breadcrumbSchema(crumbs),
           collectionPageSchema({
-            name: "Free Image, PDF & Signature Tools",
+            name: "Free Photo, Signature & ID Document Tools",
             description:
-              "Free in-browser tools: background remover, compress image to KB, resize photos, JPG to PDF, PDF to JPG and signature tools. Nothing is uploaded.",
+              "Free in-browser tools: background remover, compress a photo to a KB size, white background, signature tools, a document scanner and Aadhaar/PAN OCR. Nothing is uploaded.",
             url: "/tools/",
           }),
         ]}
@@ -43,7 +43,7 @@ export default function ToolsHubPage() {
           Free, private tools
         </h1>
         <p className="mx-auto max-w-2xl text-muted-foreground">
-          Everyday image, PDF and signature utilities that run entirely in your
+          Everyday photo, signature and document utilities that run entirely in your
           browser. No sign-up, no watermark, and your files never leave your
           device.
         </p>
@@ -60,9 +60,9 @@ export default function ToolsHubPage() {
         {[
           { title: "Passport & Visa",  sub: "All countries",          href: "/passport-photo/",     Icon: Globe,         iconBg: "bg-amber-100 dark:bg-amber-900/30",   iconText: "text-amber-600 dark:text-amber-400",   span: "" },
           { title: "Exam Tools",       sub: "SSC, UPSC, Banking",     href: "/tools/exam-package/", Icon: GraduationCap, iconBg: "bg-blue-100 dark:bg-blue-900/30",     iconText: "text-blue-600 dark:text-blue-400",     span: "" },
-          { title: "Image Tools",      sub: "Resize, convert, BG",    href: "/tools/photo/",        Icon: Aperture,      iconBg: "bg-emerald-100 dark:bg-emerald-900/30",iconText: "text-emerald-600 dark:text-emerald-400",span: "" },
-          { title: "PDF Tools",        sub: "Compress, merge, split", href: "/tools/pdf/",          Icon: FileText,      iconBg: "bg-violet-100 dark:bg-violet-900/30", iconText: "text-violet-600 dark:text-violet-400",  span: "" },
-          { title: "Signature Tools",  sub: "PNG, crop, cleaner",     href: "/tools/signature/",    Icon: PenLine,       iconBg: "bg-rose-100 dark:bg-rose-900/30",     iconText: "text-rose-600 dark:text-rose-400",     span: "col-span-2 sm:col-span-1" },
+          { title: "Image Tools",      sub: "Resize, KB, background", href: "#photo",              Icon: Aperture,      iconBg: "bg-emerald-100 dark:bg-emerald-900/30",iconText: "text-emerald-600 dark:text-emerald-400",span: "" },
+          { title: "ID & Documents",   sub: "Scan, Aadhaar, PAN",     href: "#document",           Icon: FileText,      iconBg: "bg-violet-100 dark:bg-violet-900/30", iconText: "text-violet-600 dark:text-violet-400",  span: "" },
+          { title: "Signature Tools",  sub: "PNG, crop, cleaner",     href: "#signature",          Icon: PenLine,       iconBg: "bg-rose-100 dark:bg-rose-900/30",     iconText: "text-rose-600 dark:text-rose-400",     span: "col-span-2 sm:col-span-1" },
         ].map(({ title, sub, href, Icon, iconBg, iconText, span }) => (
           <Link
             key={href}
@@ -144,13 +144,6 @@ export default function ToolsHubPage() {
             <span className="text-muted-foreground leading-normal">Compress to under 20 KB</span>
           </Link>
           <Link
-            href="/ssc-photo-with-name-date/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">SSC Name &amp; Date Photo</span>
-            <span className="text-muted-foreground leading-normal">Add DOP strip + resize</span>
-          </Link>
-          <Link
             href="/exam-requirements/upsc/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
@@ -186,89 +179,31 @@ export default function ToolsHubPage() {
             <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
           </Link>
           <Link
-            href="/exam-requirements/nda/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">NDA Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">50–100 KB for upsconline</span>
-          </Link>
-          <Link
             href="/exam-requirements/ctet/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">CTET Photo Resizer</span>
             <span className="text-muted-foreground leading-normal">10–100 KB for ctet.nic.in</span>
           </Link>
-          <Link
-            href="/exam-requirements/nta/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">NEET / JEE Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">10–200 KB for NTA portal</span>
-          </Link>
-          <Link
-            href="/exam-requirements/gate/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">GATE Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">5–600 KB for GATE 2026</span>
-          </Link>
-          <Link
-            href="/exam-requirements/rbi/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">RBI Grade B Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">20–50 KB, 200×230px</span>
-          </Link>
-          <Link
-            href="/exam-requirements/lic/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">LIC AAO Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">20–50 KB for LIC portal</span>
-          </Link>
-          <Link
-            href="/exam-requirements/nabard/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">NABARD Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">20–50 KB, 200×230px</span>
-          </Link>
-          <Link
-            href="/exam-requirements/tnpsc/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">TNPSC Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">Under 50 KB for tnpsc.gov.in</span>
-          </Link>
         </div>
       </section>
 
-      {/* Full catalog by category */}
-      {TOOLS_CATALOG.map((group) => (
-        <section key={group.group} className="mt-12">
-          <Link
-            href={`/tools/${group.slug}/`}
-            className="mb-4 inline-flex items-center gap-1 text-lg font-semibold hover:text-brand"
-          >
-            {group.group}
-            <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
-          </Link>
+      {/* Full catalog by category. Listed tools only: a "Coming soon" card
+          reads as a site under construction, and a tool hidden from the index
+          is a thin page we don't send visitors to. */}
+      {LISTED_CATALOG.map((group) => (
+        <section key={group.group} id={group.slug} className="mt-12 scroll-mt-24">
+          <h2 className="mb-4 text-lg font-semibold">{group.group}</h2>
           <div className="ep-card-grid sm:!grid-cols-2 lg:!grid-cols-3">
-            {/* Only live tools: an unfinished one has no page yet (its route
-                redirects), and a "Coming soon" card reads as a site under
-                construction. */}
-            {group.tools
-              .filter((tool) => tool.ready)
-              .map((tool) => (
-                <ToolCard
-                  key={tool.slug}
-                  slug={tool.slug}
-                  title={tool.title}
-                  blurb={tool.blurb}
-                  icon={tool.icon}
-                />
-              ))}
+            {group.tools.map((tool) => (
+              <ToolCard
+                key={tool.slug}
+                slug={tool.slug}
+                title={tool.title}
+                blurb={tool.blurb}
+                icon={tool.icon}
+              />
+            ))}
           </div>
         </section>
       ))}
@@ -374,10 +309,10 @@ export default function ToolsHubPage() {
           <div>
             <h3 className="text-sm font-semibold text-ink mb-1">How are the KB and pixel targets set?</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              File-size and dimension targets come from the source recorded for each preset.
-              Specification pages identify entries verified against an official recruitment
-              portal or notification, show the recorded review date, and flag presets that still
-              need source review. Confirm the current application instructions before submitting.
+              File-size and dimension targets come from the official source named for each exam
+              or document. Each specification page says whether the figures were checked against
+              an official recruitment portal or notification, shows the date we checked, and says
+              plainly when a figure still needs checking. Confirm the current application instructions before submitting.
             </p>
           </div>
         </div>

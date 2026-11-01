@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 /**
  * Guards which country pages answer "what file size does the upload need?".
  *
@@ -42,14 +44,16 @@ describe("digital upload detection", () => {
     expect(qs.some((q) => UPLOAD_Q.test(q))).toBe(false);
   });
 
-  it("asks the upload question on every country that accepts one", () => {
-    for (const [key, spec] of Object.entries(COUNTRY_SPECS)) {
+  it("states the upload limit on the page itself, not in a templated FAQ", () => {
+    // The generic "What file size does the {country} upload need?" question was
+    // the same on 16 maker pages (AdSense "low value content", 1 Nov 2026). The
+    // limit is shown once, in the spec card and the upload sentence.
+    const page = fs.readFileSync(path.join(process.cwd(), "app/[maker]/page.tsx"), "utf8");
+    expect(page).toContain('<SpecRow label="File size" value={kb} />');
+    expect(page).toContain("uploads accept ${formatFileSizeKb(spec.digital.fileSizeKb)}");
+    for (const spec of Object.values(COUNTRY_SPECS)) {
       if (!acceptsDigitalUpload(spec)) continue;
-      const qs = countryFaqItems(spec, "visa").map((f) => f.q);
-      expect(
-        qs.some((q) => UPLOAD_Q.test(q)),
-        `${key} accepts an upload but its FAQ never mentions one`,
-      ).toBe(true);
+      expect(countryFaqItems(spec, "visa").some((f) => UPLOAD_Q.test(f.q))).toBe(false);
     }
   });
 

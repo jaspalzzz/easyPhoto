@@ -58,7 +58,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "Can I reuse this photo for OCI or an Indian e-Visa?",
-        a: "Use the dedicated OCI or e-Visa preset instead. Both are square digital-photo workflows with specifications that differ from the under-four passport print.",
+        a: "Use the dedicated OCI or e-Visa photo option instead. Both are square digital-photo workflows with specifications that differ from the under-four passport print.",
       },
     ],
   },
@@ -203,7 +203,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         q: "What background does a UK visa photo need?",
-        a: "A plain light-coloured background, the same as the passport photo. This preset applies light grey or cream; avoid patterns and shadows, then confirm the current UKVI instructions before uploading.",
+        a: "A plain light-coloured background, the same as the passport photo. This maker applies light grey or cream; avoid patterns and shadows, then confirm the current UKVI instructions before uploading.",
       },
     ],
   },
@@ -314,10 +314,6 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
     ],
     faqs: [
-      {
-        q: "What size is a Schengen visa photo?",
-        a: "35×45mm, following the ICAO biometric standard, with the head 32–36mm from chin to crown and the face filling about 70–80% of the frame.",
-      },
       {
         q: "What background colour should a Schengen visa photo have?",
         a: "Light grey is the safest choice. Some states accept white (e.g. France), but Switzerland requires grey and rejects white, so the tool defaults to light grey, which meets the requirement across the Schengen states. Confirm your consulate's current guidance before submitting.",

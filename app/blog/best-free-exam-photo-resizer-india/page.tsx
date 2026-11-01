@@ -10,7 +10,7 @@ const post = getPost("best-free-exam-photo-resizer-india")!;
 const FAQ_ITEMS = [
   {
     q: "Does ExamMint cover SSC CGL photo and signature?",
-    a: "Its public page lists SSC CGL among its presets. Current SSC instructions capture the photograph live and publish a separate 10–20 KB JPG/JPEG signature upload, so a prepared-photo preset does not replace the live camera step.",
+    a: "Its public page lists SSC CGL among its exam options. Current SSC instructions capture the photograph live and publish a separate 10–20 KB JPG/JPEG signature upload, so a prepared-photo setting does not replace the live camera step.",
   },
   {
     q: "What is the SSC CGL photo size requirement?",
@@ -65,13 +65,13 @@ export default function Page() {
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
         <Image
           src="/images/best-free-exam-photo-resizer-india.webp"
-          alt="easyPhoto exam application tool interface with an exam preset and measurable output checks"
+          alt="easyPhoto exam application tool with an exam picked and measurable output checks"
           width={1024}
           height={1024}
           className="w-full h-auto"
         />
         <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
-          easyPhoto&apos;s exam workflow shows the selected registry target and measurable output checks; applicants should confirm the current notice.
+          easyPhoto&apos;s exam workflow shows the target for the exam you pick and measurable output checks; applicants should confirm the current notice.
         </figcaption>
       </figure>
 
@@ -120,13 +120,13 @@ export default function Page() {
               <td className="px-4 py-3 font-medium text-ink">Railway RRB</td>
               <td className="px-4 py-3 text-muted-foreground">Live capture in current notice</td>
               <td className="px-4 py-3 text-muted-foreground">Confirm current cycle</td>
-              <td className="px-4 py-3 text-muted-foreground">Stored target needs review</td>
+              <td className="px-4 py-3 text-muted-foreground">Figure still needs checking</td>
               <td className="px-4 py-3 text-muted-foreground">Confirm current cycle</td>
             </tr>
           </tbody>
         </table>
         <p className="border-t border-hairline px-4 py-2 text-xs text-muted-foreground">
-          Registry snapshot: dated official sources are distinguished from entries that still need review.
+          Snapshot of our records: figures checked against a dated official source are marked apart from those that still need checking.
         </p>
       </div>
 
@@ -153,7 +153,7 @@ export default function Page() {
           {[
             {feat:"KB target resize",scores:[1,1,1,1,1]},
             {feat:"Pixel resize",scores:[1,1,1,1,1]},
-            {feat:"40+ exam presets",scores:[1,1,0,0,0]},
+            {feat:"40+ exam sizes built in",scores:[1,1,0,0,0]},
             {feat:"PDF / doc tools",scores:[1,0,1,0,0]},
             {feat:"No upload (private)",scores:[1,0,0,0,0]},
             {feat:"Signature resizer",scores:[1,1,1,1,0]},
@@ -263,7 +263,7 @@ export default function Page() {
       <h2>myexamphoto.in — pre-upload validator, PDF tools, smaller exam list</h2>
 
       <p>
-        myexamphoto.in covers around 13 named exam presets plus a custom dimension mode, along
+        myexamphoto.in covers around 13 named exams plus a custom dimension mode, along
         with photo and signature resize, a PDF compressor, a DPI converter (200/300 DPI for
         portals that require it), and a universal file converter (PDF, JPG, PNG, WebP). The tool
         claims on-device processing — &quot;photos never leave your device&quot; — though this
@@ -280,7 +280,7 @@ export default function Page() {
       </p>
 
       <p>
-        The exam coverage is narrower than ExamMint: confirmed presets include UPSC, SSC CGL,
+        The exam coverage is narrower than ExamMint: confirmed exams include UPSC, SSC CGL,
         IBPS, JEE Main, NEET UG, GATE, Kerala PSC, and RRB, among others. State PSCs beyond
         Kerala PSC are not listed.
       </p>
@@ -293,9 +293,9 @@ export default function Page() {
 
       <p>
         easyPhoto covers{" "}
-        <Link href="/exam-requirements/" className="text-brand underline">40+ exam portals</Link>: less than ExamMint&apos;s ~120, more than
+        <Link href="/tools/exam-package/" className="text-brand underline">40+ exam portals</Link>: less than ExamMint&apos;s ~120, more than
         myexamphoto.in&apos;s ~13. Specification pages show a linked source where available,
-        plus either a verification date or a needs-review notice.
+        plus either the date we checked it or a note that it still needs checking.
       </p>
 
       <p>
@@ -377,7 +377,7 @@ export default function Page() {
         </li>
         <li>
           <strong>You want to review the recorded spec source:</strong> easyPhoto shows the
-          named source where available and distinguishes dated verification from needs-review entries.
+          named source where available and says whether a figure was checked on a known date or still needs checking.
         </li>
       </ul>
 

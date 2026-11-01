@@ -191,7 +191,7 @@ export function PortalResizer({
                 <p className="text-xs text-muted-foreground">
                   {spec.isLiveCapture
                     ? `This stored ${spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}${spec.photoLimitKb} KB target is not a current portal requirement and does not replace the live-photo step.`
-                    : `Upload a prepared photograph to apply the selected stored ${spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}${spec.photoLimitKb} KB target.`}
+                    : `Upload a prepared photograph and it is brought to ${spec.photoMinKb ? `${spec.photoMinKb}–` : "under "}${spec.photoLimitKb} KB.`}
                 </p>
               </div>
             )}

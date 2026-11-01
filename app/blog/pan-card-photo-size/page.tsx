@@ -285,7 +285,7 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             ["File over the KB limit", "Compress below the cap for your route before uploading"],
-            ["Wrong pixel dimensions", "Export at the portal-specific size, not a generic 'small' preset"],
+            ["Wrong pixel dimensions", "Export at the portal-specific size, not a generic 'small' setting"],
             ["Portrait photo for UTIITSL", "Square-crop to 213×213 px before upload"],
             ["Coloured or patterned background", "Shoot against a plain white wall; use background removal if needed"],
             ["Black-and-white photo", "Both routes ask for a colour photograph — rescan or re-export it in colour"],
@@ -330,7 +330,7 @@ export default function Page() {
       </ol>
 
       <p>
-        If you only need to hit a specific KB target without the portal preset, use
+        If you only need to hit a specific KB target without the portal&apos;s settings, use
         the{" "}
         <Link href="/tools/resize-kb/" className="text-brand underline">
           resize image to exact KB
@@ -339,7 +339,7 @@ export default function Page() {
         <Link href="/tools/signature-resize/?target=20" className="text-brand underline">
           signature resize to 20&nbsp;KB
         </Link>{" "}
-        tool is preset to the most common Indian exam portal limit.
+        tool is already set to the most common Indian exam portal limit.
       </p>
 
       <p>

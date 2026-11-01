@@ -28,6 +28,17 @@ export function allPortalSpecs(): PortalSpec[] {
   return PORTAL_KEYS.map((k) => PORTAL_PRESETS[k]);
 }
 
+/**
+ * Specs whose exam page is in the search index — what directories, hubs and
+ * counts list. A hidden exam page still works by direct link, but browsing must
+ * not lead a visitor or AdSense reviewer to the thin pages taken out of the
+ * index (same rule as relatedPortals below). Tools that need every preset
+ * (the checker, the exam kit) keep using allPortalSpecs().
+ */
+export function listedPortalSpecs(): PortalSpec[] {
+  return allPortalSpecs().filter((s) => !isDeindexed(`/exam-requirements/${s.id}/`));
+}
+
 /** Topical grouping — drives "related exams" interlinking (cluster the matrix). */
 export type PortalCategory =
   | "national"

@@ -6,6 +6,7 @@
  * featured row, and in internal links. `popular` flags the headline tools.
  * `icon` is a lucide icon name resolved in the UI.
  */
+import { isDeindexed } from "@/lib/deindexed";
 
 export interface ToolEntry {
   slug: string;
@@ -170,7 +171,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       {
         slug: "face-centering",
         title: "Face Centering AI",
-        blurb: "Upload a passport photo and get a visual overlay showing whether your face is horizontally centred. Also checks head tilt.",
+        blurb: "Check that your face sits in the middle of the frame and your head is level, with an on-device overlay.",
         ready: true,
         popular: true,
         icon: "Crosshair",
@@ -308,7 +309,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       {
         slug: "sign-image",
         title: "Sign Image / Photo",
-        blurb: "Draw or overlay a transparent signature on any photo or image.",
+        blurb: "Draw, type or upload a signature and place it on a photo.",
         ready: true,
         popular: true,
         icon: "PenLine",
@@ -425,7 +426,24 @@ export const TOOLS_CATALOG: ToolGroup[] = [
 const ALL = TOOLS_CATALOG.flatMap((g) => g.tools);
 
 export const READY_TOOLS = ALL.filter((t) => t.ready);
-export const POPULAR_TOOLS = ALL.filter((t) => t.popular && t.ready);
+
+/**
+ * Ready tools whose pages are in the search index. Every browsing surface
+ * (menus, footer, hubs, related-tool rows, tool counts) lists only these. A
+ * hidden tool still works for anyone holding its link, but a visitor or an
+ * AdSense reviewer browsing the site must not land on the thin pages the July
+ * 2026 recovery took out of the index (1 Nov 2026 "low value content" review).
+ */
+export const LISTED_TOOLS = READY_TOOLS.filter((t) => !isDeindexed(`/tools/${t.slug}/`));
+const LISTED = new Set(LISTED_TOOLS);
+
+export const POPULAR_TOOLS = LISTED_TOOLS.filter((t) => t.popular);
+
+/** The catalog with only listed tools; a group left with none is dropped. */
+export const LISTED_CATALOG: ToolGroup[] = TOOLS_CATALOG.map((g) => ({
+  ...g,
+  tools: g.tools.filter((t) => LISTED.has(t)),
+})).filter((g) => g.tools.length > 0);
 
 export function getTool(slug: string): ToolEntry | undefined {
   return ALL.find((t) => t.slug === slug);
@@ -472,10 +490,10 @@ export function toolColorCategory(toolSlug: string): ToolColorCategory {
   return "photo";
 }
 
-/** Other ready tools from the same group — for on-page "related" cross-links. */
+/** Other listed tools from the same group — for on-page "related" cross-links. */
 export function relatedTools(slug: string, limit = 3): ToolEntry[] {
   const group = TOOLS_CATALOG.find((g) => g.tools.some((t) => t.slug === slug));
-  const pool = (group?.tools ?? []).filter((t) => t.ready && t.slug !== slug);
+  const pool = (group?.tools ?? []).filter((t) => LISTED.has(t) && t.slug !== slug);
   if (pool.length >= limit) return pool.slice(0, limit);
   // Top up from other popular tools to keep the cross-link row full.
   const extra = POPULAR_TOOLS.filter(

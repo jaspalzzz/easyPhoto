@@ -6,16 +6,21 @@ import {
 } from "lucide-react";
 import { COUNTRY_SPECS, LAUNCH_ORDER } from "@/lib/countrySpecs";
 import { MAKER_PAGES, PASSPORT_COUNTRIES, primaryMakerPath } from "@/lib/makerPages";
-import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
+import { LISTED_CATALOG } from "@/lib/toolsCatalog";
+import { isDeindexed } from "@/lib/deindexed";
 import { Wordmark } from "@/components/site/Wordmark";
 import { LogoMark } from "@/components/site/LogoMark";
 import { cn } from "@/lib/utils";
 
 /* Only link countries that have a generated maker page (MAKER_PAGES drives
    generateStaticParams). Some launch countries have spec data but no page yet,
-   so linking them straight from LAUNCH_ORDER would produce 404s. */
+   so linking them straight from LAUNCH_ORDER would produce 404s. Makers taken
+   out of the index are left out too: the footer is on every page, so it must
+   not lead a visitor or reviewer to a page we hid as thin. */
 const MAKER_COUNTRY_IDS = new Set(MAKER_PAGES.map((m) => m.countryId));
-const FOOTER_COUNTRY_IDS = LAUNCH_ORDER.filter((id) => MAKER_COUNTRY_IDS.has(id));
+const FOOTER_COUNTRY_IDS = LAUNCH_ORDER.filter(
+  (id) => MAKER_COUNTRY_IDS.has(id) && !isDeindexed(primaryMakerPath(id))
+);
 
 /* ── Link groups ──────────────────────────────────────────────────────────
    The footer is a crawlable internal-link sitemap (every country + every ready
@@ -29,7 +34,7 @@ interface FooterLink { href: string; label: string }
 interface LinkGroup {
   label: string;
   Icon: LucideIcon;
-  /** Category landing page (already exists; adds an internal link, none removed). */
+  /** Where "View all" goes: the group's section on /tools/. */
   viewAllHref: string;
   viewAllLabel: string;
   barCls: string;   /* accent bar colour (pops on navy) */
@@ -65,20 +70,18 @@ const LINK_GROUPS: LinkGroup[] = [
       ...COUNTRY_LINKS,
     ],
   },
-  ...TOOLS_CATALOG.map((group): LinkGroup => {
+  ...LISTED_CATALOG.map((group): LinkGroup => {
     const style = TOOL_GROUP_STYLE[group.slug] ?? {
       Icon: Wrench, barCls: "bg-white/40", iconCls: "text-white/60",
     };
     return {
       label: group.group,
       Icon: style.Icon,
-      viewAllHref: `/tools/${group.slug}/`,
+      viewAllHref: `/tools/#${group.slug}`,
       viewAllLabel: "View all",
       barCls: style.barCls,
       iconCls: style.iconCls,
-      links: group.tools
-        .filter((t) => t.ready)
-        .map((t) => ({ href: `/tools/${t.slug}/`, label: t.title })),
+      links: group.tools.map((t) => ({ href: `/tools/${t.slug}/`, label: t.title })),
     };
   }),
 ];
@@ -109,8 +112,8 @@ export function Footer() {
             <Wordmark className="text-[20px]" tone="light" />
           </Link>
           <p className="max-w-xs text-sm leading-relaxed text-white/70">
-            Free, private passport &amp; visa photos and everyday image &amp; PDF
-            tools, made entirely in your browser.
+            Free, private passport &amp; visa photos and everyday photo, signature
+            &amp; document tools, made entirely in your browser.
           </p>
         </div>
 

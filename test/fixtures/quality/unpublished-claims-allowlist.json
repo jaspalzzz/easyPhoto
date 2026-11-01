@@ -6,20 +6,6 @@
     "renderedFields (scripts/quality-gate.mjs): the same rule on the built page's 'Photo requirement' card.",
     "Entries may only be removed. A fixed field fails the check until its entry is deleted. Never add an entry to make a check pass."
   ],
-  "sourceFields": [
-    "passport-seva: faq \"What is the photo size for the {name} application?\" answer",
-    "passport-seva: faq \"How do I resize my photo to #–# KB for {name}?\" question",
-    "passport-seva: faq \"What should I check before submitting {name} files?\" answer",
-    "clat: faq \"What is the photo size for the {name} application?\" answer",
-    "clat: faq \"How do I resize my photo to #–# KB for {name}?\" question",
-    "clat: faq \"What should I check before submitting {name} files?\" answer",
-    "army-agniveer: faq \"What is the photo size for the {name} application?\" answer",
-    "army-agniveer: faq \"How do I resize my photo to #–# KB for {name}?\" question",
-    "army-agniveer: faq \"What should I check before submitting {name} files?\" answer"
-  ],
-  "renderedFields": [
-    "passport-seva: requirementCard",
-    "clat: requirementCard",
-    "army-agniveer: requirementCard"
-  ]
+  "sourceFields": [],
+  "renderedFields": []
 }

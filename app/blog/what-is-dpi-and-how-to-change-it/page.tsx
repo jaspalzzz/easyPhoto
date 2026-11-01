@@ -13,7 +13,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What DPI does NSDL PAN card require?",
-    a: "NSDL (Protean) lists 200 DPI for the PAN photo: a colour JPEG of up to 20 KB measuring 3.5 × 2.5 cm, which is about 197 pixels wide and 276 tall. The signature is also 200 DPI. The DPI converter tool sets the DPI metadata to 200 DPI automatically when you select the PAN card preset.",
+    a: "NSDL (Protean) lists 200 DPI for the PAN photo: a colour JPEG of up to 20 KB measuring 3.5 × 2.5 cm, which is about 197 pixels wide and 276 tall. The signature is also 200 DPI. The DPI converter tool sets the DPI metadata to 200 DPI automatically when you pick PAN card in the tool.",
   },
   {
     q: "What is the best DPI for passport photos to print at home?",
@@ -215,7 +215,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Set the target DPI:</strong> type the value (e.g., 200 for NSDL PAN, 300 for a UTIITSL PAN photo)
-          or select the PAN card preset. For print use, 300 DPI is the standard.
+          or pick PAN card in the tool. For print use, 300 DPI is the standard.
         </li>
         <li>
           <strong>Download the file:</strong> the output has the updated DPI tag and

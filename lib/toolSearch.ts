@@ -13,6 +13,7 @@ import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { MAKER_PAGES } from "@/lib/makerPages";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
+import { isDeindexed } from "@/lib/deindexed";
 
 export interface SearchItem {
   title: string;
@@ -33,9 +34,13 @@ export const SIGNATURE_KB_PRESETS = [10, 20, 50, 100] as const;
 export function buildSearchIndex(): SearchItem[] {
   const items: SearchItem[] = [];
 
+  // Exam and maker pages taken out of the index are left out, like every other
+  // browsing surface: several are now redirects, and the rest are thin
+  // template pages (AdSense "low value content", 1 Nov 2026). Their sizes stay
+  // available inside the Exam Application Kit and the photo makers.
   MAKER_PAGES.forEach((maker) => {
     const spec = COUNTRY_SPECS[maker.countryId];
-    if (!spec) return;
+    if (!spec || isDeindexed(`/${maker.slug}/`)) return;
     const docType = maker.kind === "visa" ? "Visa" : "Passport";
     items.push({
       title: `${spec.label} ${docType} Photo Maker`,
@@ -61,6 +66,7 @@ export function buildSearchIndex(): SearchItem[] {
   // embedded. The old /tools/form-resizer/<key>/ routes are host redirects —
   // several of them to the generic hub, which loses the exam the user asked for.
   Object.entries(PORTAL_PRESETS).forEach(([key, spec]) => {
+    if (isDeindexed(`/exam-requirements/${key}/`)) return;
     items.push({
       title: `${spec.name} Form Resizer`,
       category: "Government Portals",

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { pageMetadata } from "@/lib/seo";
 import { ToolPage } from "@/components/tools/ToolPage";
 import { FaceCenteringTool } from "@/components/tools/FaceCenteringTool";
@@ -38,11 +37,8 @@ export default function Page() {
           <li>Move closer until your face fills the frame or circle the form draws, with your whole head inside it.</li>
           <li>Face a window or a plain light wall so the light falls evenly on both sides of your face.</li>
           <li>
-            For a photo you already have, check it here, then move your face to the middle with{" "}
-            <Link href="/tools/image-crop/" className="font-medium text-brand hover:underline">
-              Image Crop
-            </Link>
-            .
+            For a photo you already have, check it here, re-crop it in your phone&apos;s
+            photo editor so your face sits in the middle, then run the check here again.
           </li>
         </ul>
       </section>

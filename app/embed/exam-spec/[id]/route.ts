@@ -70,7 +70,7 @@ function renderEmbed(spec: PortalSpec): string {
 <body>
 <div class="card">
   <div class="hd">
-    <p class="ey">${prov.verified ? "Source-backed requirement" : "Compatibility target · confirm current form"}</p>
+    <p class="ey">${prov.verified ? "Source-backed requirement" : "easyPhoto default · confirm current form"}</p>
     <h1>${esc(short)} photo${hasSig ? " &amp; signature" : ""} size</h1>
   </div>
   <div class="bd">

@@ -71,7 +71,7 @@ export function ComplianceEngine() {
           {/* Right — check results */}
           <div className="ep-card flex flex-col items-center justify-center p-6 text-center">
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
-              Checks Passed
+              Example: Checks Passed
             </p>
             <div className="mb-3 text-[56px] font-black leading-none text-[#00c853]"
               style={{ fontFamily: "var(--font-outfit, sans-serif)" }}>
