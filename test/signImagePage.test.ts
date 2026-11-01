@@ -27,7 +27,9 @@ describe("sign on photo / image page", () => {
     );
   });
 
-  it("points PDF signers to Sign PDF", () => {
-    expect(page).toContain('href="/tools/sign-pdf/"');
+  it("points PDF signers to a PDF reader's Fill & Sign, not the hidden Sign PDF tool", () => {
+    // /tools/sign-pdf/ is out of the index; indexed pages don't link it (AdSense, 1 Nov 2026).
+    expect(page).toContain("Fill &amp; Sign");
+    expect(page).not.toContain('href="/tools/sign-pdf/"');
   });
 });

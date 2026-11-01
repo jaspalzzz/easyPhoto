@@ -47,7 +47,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         A passport photo from a shop isn&apos;t magic. It&apos;s really just
         three things: a plain background, even light, and a precise crop. You can

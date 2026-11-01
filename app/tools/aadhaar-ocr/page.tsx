@@ -34,25 +34,16 @@ export default function Page() {
         </p>
         <ol className="max-w-2xl list-decimal space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
           <li>
-            Remove the PDF&apos;s password with{" "}
-            <Link href="/unlock-aadhaar-pdf/" className="font-medium text-brand hover:underline">
-              Unlock e-Aadhaar PDF
-            </Link>
-            , which also explains what the password is.
+            Open the PDF with its password: the first four letters of your name in
+            capitals followed by your year of birth, for example RAVI1998.
           </li>
           <li>
-            Turn the page into a JPG with{" "}
-            <Link href="/tools/pdf-to-jpg/" className="font-medium text-brand hover:underline">
-              PDF to JPG
-            </Link>
-            .
+            Zoom in on the card and take a screenshot, or use your PDF viewer&apos;s
+            export or print-to-image option to save the page as a picture.
           </li>
           <li>
-            Cut out the photo, or keep the whole card, with{" "}
-            <Link href="/tools/image-crop/" className="font-medium text-brand hover:underline">
-              Image Crop
-            </Link>
-            .
+            Crop the picture to the photo, or keep the whole card, in your phone&apos;s
+            photo editor.
           </li>
         </ol>
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">

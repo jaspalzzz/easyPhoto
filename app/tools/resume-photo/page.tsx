@@ -66,11 +66,9 @@ export default function Page() {
           <li>Keep a calm, confident expression — a slight smile works well.</li>
         </ul>
         <p className="text-sm text-muted-foreground">
-          Building an online profile too? Make a square{" "}
-          <Link href="/tools/linkedin-photo/" className="text-brand hover:underline">
-            LinkedIn profile photo
-          </Link>{" "}
-          from the same headshot.
+          Building an online profile too? Most profile sites show a square or round
+          picture, so crop the same headshot to a square with your face in the
+          centre rather than reusing the 35×45 mm print.
         </p>
       </div>
 

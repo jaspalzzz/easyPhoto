@@ -57,7 +57,7 @@ export default function Page() {
       faqItems={FAQ_ITEMS}
     >
       <div className="mb-5 text-sm text-muted-foreground">
-        Last reviewed 16 July 2026 · Checked against the linked authority instructions
+        Last updated 1 November 2026 · Checked against the linked authority instructions on 16 July 2026
       </div>
       <p>
         A digital name-and-date strip is needed only when the application

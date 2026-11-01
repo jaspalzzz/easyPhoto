@@ -30,9 +30,9 @@ export default function Page() {
         <ul className="!mt-2 text-[15px]">
           <li>A <strong>masked Aadhaar</strong> hides the first 8 digits and shows only the last 4.</li>
           <li>Share it anywhere the full number isn&apos;t legally required — hotels, landlords, coaching/admission desks.</li>
-          <li>Mask any copy free with the{" "}
-            <Link href="/tools/mask-aadhaar/">Aadhaar masking tool</Link> — the
-            black box is burned into the image and nothing is uploaded.</li>
+          <li>Get one free from UIDAI: on myAadhaar, choose the masked version when
+            you download e-Aadhaar. For a photo of the card you already have, cover
+            the first 8 digits with a solid box, then keep that edited copy.</li>
         </ul>
       </div>
 
@@ -86,31 +86,30 @@ export default function Page() {
 
       <h2>How to mask your Aadhaar yourself (free, private)</h2>
       <p>
-        You don&apos;t need to wait for the UIDAI download — you can mask any copy
-        you already have in seconds:
+        The simplest route is UIDAI&apos;s own: sign in to{" "}
+        <a href="https://myaadhaar.uidai.gov.in/" target="_blank" rel="noopener noreferrer">myAadhaar</a>,
+        choose to download e-Aadhaar and tick the masked option. For a photo or
+        scan of the card you already have, you can mask it yourself on your phone:
       </p>
       <ul>
-        <li>
-          Open the{" "}
-          <Link href="/tools/mask-aadhaar/">Aadhaar masking tool</Link> and upload
-          your Aadhaar image.
-        </li>
-        <li>Drag a black box over the first 8 digits of the number (and anything else you want hidden).</li>
-        <li>Download the masked copy.</li>
+        <li>Open the image in your phone&apos;s photo editor and pick the markup or draw tool.</li>
+        <li>Draw a solid, fully opaque box over the first 8 digits of the number (and anything else you want hidden).</li>
+        <li>Keep the edited version as a separate picture and share that copy, never the original.</li>
       </ul>
       <p>
-        Two things make this safe: the black box is <strong>burned into the image
-        pixels</strong> — it can&apos;t be peeled off or recovered — and the whole
-        thing runs <strong>in your browser</strong>, so your Aadhaar is never
-        uploaded to any server. That matters for a document this sensitive.
+        Two things make this safe: the box must be <strong>solid and saved into
+        the image</strong> — a highlighter, a semi-transparent shape or a box
+        drawn on top of a PDF can sometimes be removed — and the editing should
+        happen <strong>on your own device</strong>, not on an upload site you
+        don&apos;t know. That matters for a document this sensitive.
       </p>
 
       <h2>A few extra precautions</h2>
       <ul>
         <li>Mask the QR code too if you don&apos;t want it scanned — it encodes your details.</li>
         <li>Share over secure channels; avoid public/unknown upload sites.</li>
-        <li>If a PDF is password-protected (like e-Aadhaar), open it with the <Link href="/unlock-aadhaar-pdf/">e-Aadhaar password</Link> first, then mask a screenshot.</li>
-        <li>If the form caps the upload size, see <Link href="/blog/how-to-compress-pdf/">how to compress a PDF to an exact KB target</Link> after masking — the file stays on your device throughout.</li>
+        <li>e-Aadhaar PDFs are password-protected: the password is the first four letters of your name in capitals followed by your year of birth (for example RAVI1998). Open it, then mask a screenshot.</li>
+        <li>If the form caps the upload size, see the <Link href="/blog/how-to-prepare-documents-for-exam-applications-india/">exam documents guide</Link> for keeping a scan under the limit.</li>
         <li>Need to extract details from your Aadhaar card? The <Link href="/tools/aadhaar-ocr/">Aadhaar OCR tool</Link> reads the number, name, DOB and address from a card photo — entirely in your browser, nothing uploaded.</li>
       </ul>
 

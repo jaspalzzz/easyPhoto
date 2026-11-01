@@ -33,7 +33,7 @@ export default function Page() {
   return (
     <BlogPostLayout slug={post.slug}>
       <div className="mb-5 text-sm text-muted-foreground">
-        Last reviewed 12 July 2026 · Checked against the cited official passport guidance
+        Last updated 1 November 2026 · Checked against the cited official passport guidance on 12 July 2026
       </div>
       <p>
         &quot;Just use a white wall&quot; is the most common piece of bad

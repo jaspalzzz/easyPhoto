@@ -58,24 +58,13 @@ export const BLOG_POSTS: BlogPost[] = [
     readMins: 8,
   },
   {
-    slug: "image-to-text-online-free-ocr",
-    title: "Image to Text Online Free — Extract Text from Any Photo (OCR)",
-    description:
-      "Upload a JPG, PNG, screenshot or scanned document and copy the text out in seconds — free OCR that runs in your browser, nothing uploaded. Supports English and Hindi.",
-    date: "June 24, 2026",
-    dateISO: "2026-06-24",
-    excerpt:
-      "A scanned certificate, a screenshot of a notice, a photo of a printed form — all have text locked inside a picture. Free in-browser OCR unlocks it in under 10 seconds without uploading anything.",
-    readMins: 5,
-  },
-  {
     slug: "indian-passport-photo-requirements",
     title: "Indian Passport Photo Rules 2026: Adults vs Children Under 4",
     description:
       "Indian passport photo workflow explained: adults are photographed at PSK/POPSK, children below four need a 35×45 mm print, and overseas, OCI and e-Visa rules differ.",
     date: "June 24, 2026",
     dateISO: "2026-06-24",
-    updatedISO: "2026-07-13",
+    updatedISO: "2026-11-01",
     excerpt:
       "Ordinary adults do not upload or carry a passport photo to a PSK/POPSK: it is captured at the centre. The 35×45 mm white-background print is the below-four exception.",
     readMins: 6,
@@ -87,6 +76,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Cutout.pro's passport photo feature costs 2 credits — free credits run out fast, then it's ₹246.50/month or more. Three free, on-device alternatives.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
+    updatedISO: "2026-11-01",
     excerpt:
       "Cutout.pro starts free but caps you at 5 credits — a passport photo costs 2. Once they're gone, it's a monthly subscription. Here are three tools that are free permanently, don't upload to a server, and work for India.",
     readMins: 5,
@@ -101,7 +91,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "ExamMint Resizer and four other free exam photo and signature resizers compared on exam coverage, privacy and passport photos. ExamMint re-checked 15 Oct 2026.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
-    updatedISO: "2026-10-15",
+    updatedISO: "2026-11-01",
     excerpt:
       "Exam workflows differ: SSC and RRB use live photo capture, while IBPS and UPSC publish prepared-file requirements. Five free tools compared on coverage, privacy, and breadth.",
     readMins: 7,
@@ -125,7 +115,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Four browser-based alternatives for India's below-four 35×45 mm passport print and exam photos, with the ordinary adult PSK/POPSK capture workflow explained.",
     date: "June 18, 2026",
     dateISO: "2026-06-18",
-    updatedISO: "2026-07-13",
+    updatedISO: "2026-11-01",
     excerpt:
       "Ordinary adult passport applicants do not upload a prepared photo. For the below-four print, overseas preparation or exam photos, here are four tool alternatives.",
     readMins: 5,
@@ -179,7 +169,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Common photo and signature problems across upload and live-capture exam workflows, with bounded fixes and links to current requirements.",
     date: "June 13, 2026",
     dateISO: "2026-06-13",
-    updatedISO: "2026-07-18",
+    updatedISO: "2026-11-01",
     excerpt:
       "“Photo not as per specification.” “Invalid signature.” Exam portals reject for a handful of predictable reasons — here's every one, and the quick fix for each.",
     readMins: 6,
@@ -191,7 +181,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Use a digital name-and-date strip only when the current notice asks for one. Compare APPSC and Kerala PSC with UPSC, SSC, IBPS and slate-photo workflows.",
     date: "June 13, 2026",
     dateISO: "2026-06-13",
-    updatedISO: "2026-07-16",
+    updatedISO: "2026-11-01",
     excerpt:
       "APPSC and Kerala PSC use a digital name-and-date treatment; UPSC, SSC and IBPS do not, while Navy and Airforce Agniveer notices use a physical slate.",
     readMins: 5,
@@ -214,6 +204,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Schengen visa photos are 35×45 mm and ICAO-biometric. Background rules differ by country — Germany grey, Italy white. Get the exact spec and make one free.",
     date: "June 10, 2026",
     dateISO: "2026-06-10",
+    updatedISO: "2026-11-01",
     excerpt:
       "Every Schengen visa photo is 35×45 mm and ICAO-biometric — but the background rule differs by country. Here's the exact spec for Germany, France, Italy and more, and how to make one free.",
     readMins: 5,
@@ -225,6 +216,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "UIDAI recommends sharing a masked Aadhaar hiding the first 8 digits. Here's when it's accepted and how to mask yours free, entirely on your device.",
     date: "June 10, 2026",
     dateISO: "2026-06-10",
+    updatedISO: "2026-11-01",
     excerpt:
       "Sharing your full Aadhaar number is risky. UIDAI says to share a masked copy showing only the last 4 digits. Here's how to do it safely and free, entirely on your device.",
     readMins: 4,
@@ -236,6 +228,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Compare the recorded signature workflows for SSC, UPSC, IBPS, RRB and Army Agniveer, including published KB bands, formats and unconfirmed fields.",
     date: "June 21, 2026",
     dateISO: "2026-06-21",
+    updatedISO: "2026-11-01",
     excerpt:
       "Signature rules differ by portal: compare published KB bands and formats, omitted pixel fields, UPSC's three-signature image and Army's unconfirmed public limits.",
     readMins: 8,
@@ -247,6 +240,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Add a signature to a photo or image online: draw, upload a transparent signature PNG, place it, resize it and download the signed image in your browser.",
     date: "July 8, 2026",
     dateISO: "2026-07-08",
+    updatedISO: "2026-11-01",
     excerpt:
       "Need to sign on an image, add a sign in photo, or place a signature on a JPG? Here is the clean workflow: make a transparent signature, place it on the image, and export privately.",
     readMins: 5,
@@ -258,31 +252,10 @@ export const BLOG_POSTS: BlogPost[] = [
       "Prepare photos, signatures and document scans for SSC, UPSC, IBPS and Railway workflows, with current source checks instead of one universal size.",
     date: "June 21, 2026",
     dateISO: "2026-06-21",
+    updatedISO: "2026-11-01",
     excerpt:
       "Prepare photos, signatures, certificates and masked Aadhaar for online forms while checking the workflow and limits shown by the selected portal.",
     readMins: 10,
-  },
-  {
-    slug: "how-to-compress-pdf",
-    title: "How to Compress a PDF to 50, 100 or 200 KB (Free)",
-    description:
-      "Exam portals cap documents at 50–200 KB. How to compress a PDF to any KB target — marksheets, certificates, Aadhaar — free, without uploads.",
-    date: "June 10, 2026",
-    dateISO: "2026-06-10",
-    excerpt:
-      "Many portals reject PDFs that are too large. Here's the fastest way to hit exactly 50, 100 or 200 KB, what happens to quality, and the one thing to avoid.",
-    readMins: 5,
-  },
-  {
-    slug: "how-to-merge-pdf-free",
-    title: "How to Merge PDF Files Free (No Sign-Up, No Upload)",
-    description:
-      "Merge PDF files into one, free. No sign-up, no upload, no watermark — everything runs in your browser. Covers marksheets, certificates and forms.",
-    date: "June 10, 2026",
-    dateISO: "2026-06-10",
-    excerpt:
-      "Need one PDF from many? Drop your files, reorder if needed, and download the merged result in seconds. Nothing leaves your device.",
-    readMins: 4,
   },
   {
     slug: "exam-photo-signature-size-guide",
@@ -292,7 +265,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "June 8, 2026",
     dateISO: "2026-06-08",
     // UPSC signature pixels and live photo corrected, SBI link fixed (15 Oct 2026).
-    updatedISO: "2026-10-15",
+    updatedISO: "2026-11-01",
     excerpt:
       "Wrong KB, wrong published dimensions and an unsuitable signature background are common measurable upload problems. Compare the recorded requirements and practical fixes.",
     readMins: 10,
@@ -304,6 +277,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "LinkedIn photos must be square, at least 400×400 px, under 8 MB. Here's why it displays as a circle, what looks professional, and how to crop one free.",
     date: "June 8, 2026",
     dateISO: "2026-06-08",
+    updatedISO: "2026-11-01",
     excerpt:
       "Square, at least 400×400, face centred for the circle crop. Here's the exact LinkedIn photo size and the tips that make a headshot look professional.",
     readMins: 5,
@@ -315,7 +289,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "In India a resume photo is passport-size (35×45 mm). The US, UK and Canada omit it to avoid bias claims — rules by region, exact size, and a free maker.",
     date: "June 7, 2026",
     dateISO: "2026-06-07",
-    updatedISO: "2026-06-21",
+    updatedISO: "2026-11-01",
     excerpt:
       "In India a resume photo is usually passport-size on a plain background. Here's when to include one, the exact size, and how to make it look professional.",
     readMins: 5,
@@ -327,6 +301,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "How to take a compliant passport photo at home: plain wall, good light, correct background colour, and the six common mistakes that get photos rejected.",
     date: "June 6, 2026",
     dateISO: "2026-06-06",
+    updatedISO: "2026-11-01",
     excerpt:
       "You don't need a studio. With a phone, a window and a plain wall, you can take a passport photo that passes. Here's exactly how.",
     readMins: 5,
@@ -349,7 +324,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Passport photo sizes vary by country: 35×45 mm for most, 2×2 in for the US, 50×70 mm for Canada. Head height matters too. Get the exact spec per country.",
     date: "June 5, 2026",
     dateISO: "2026-06-05",
-    updatedISO: "2026-07-12",
+    updatedISO: "2026-11-01",
     excerpt:
       "2×2 inch, 35×45mm, 50×70mm: passport photo size isn't universal. Here's every major country's spec and how to hit it exactly.",
     readMins: 6,
@@ -361,6 +336,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Passport, visa and exam portals cap file size, often at 10–100 KB. Here's how to compress your photo to an exact KB target without making it blurry.",
     date: "June 4, 2026",
     dateISO: "2026-06-04",
+    updatedISO: "2026-11-01",
     excerpt:
       "Portals reject photos that are too large. Here's how to hit an exact KB limit, whether that's 20, 50 or 100 KB, while keeping your photo sharp.",
     readMins: 5,
@@ -372,6 +348,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Passport photos for babies must still comply. How to photograph an infant at home — white background, eyes open, no hands or toys — and get it accepted.",
     date: "June 3, 2026",
     dateISO: "2026-06-03",
+    updatedISO: "2026-11-01",
     excerpt:
       "No studio, no posing, no tears. How to take a compliant baby passport photo on a plain sheet with your phone.",
     readMins: 5,
@@ -383,7 +360,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "White isn't universal. The UK requires grey or cream, Schengen prefers grey, the US wants white. The correct background per country and how to set it.",
     date: "June 2, 2026",
     dateISO: "2026-06-02",
-    updatedISO: "2026-07-12",
+    updatedISO: "2026-11-01",
     excerpt:
       "Using the wrong background shade is a top reason photos bounce. Here's the right color for each country, and how to apply it.",
     readMins: 5,
@@ -523,10 +500,7 @@ const CLUSTERS: Record<string, string[]> = {
     "passport-photo-background-color",
   ],
   pdf: [
-    "how-to-compress-pdf",
-    "how-to-merge-pdf-free",
     "how-to-mask-aadhaar-before-sharing",
-    "image-to-text-online-free-ocr",
   ],
   professional: [
     "linkedin-profile-photo-size-and-tips",

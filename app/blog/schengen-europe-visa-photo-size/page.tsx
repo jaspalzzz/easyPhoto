@@ -36,7 +36,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         If you&apos;re applying for a Schengen visa or a European student/work
         visa, start with the shared 35 × 45 mm format, then check the mission that

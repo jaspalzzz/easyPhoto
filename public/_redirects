@@ -15,15 +15,16 @@
 /signature-resize-to-20kb/ /tools/signature-resize/?target=20 301
 /signature-resize-to-50kb/ /tools/signature-resize/?target=50 301
 /signature-resize-to-100kb/ /tools/signature-resize/?target=100 301
-# ⚠ These four point at the GUIDE, not /tools/pdf-compress/, because that tool
-# is noindexed. A 301 is a canonicalisation signal, so aiming it at a page
+# ⚠ These four point at an indexed GUIDE, not /tools/pdf-compress/, because that
+# tool is noindexed. A 301 is a canonicalisation signal, so aiming it at a page
 # Google may not index asks it to consolidate onto something it cannot show.
-# The guide is 1,272 words, indexed, and links onward to the tool with the
-# matching ?target= preset for all four sizes, so the reader still lands on it.
-/compress-pdf-to-50kb/ /blog/how-to-compress-pdf/ 301
-/compress-pdf-to-100kb/ /blog/how-to-compress-pdf/ 301
-/compress-pdf-to-200kb/ /blog/how-to-compress-pdf/ 301
-/compress-pdf-to-500kb/ /blog/how-to-compress-pdf/ 301
+# They pointed at /blog/how-to-compress-pdf/ until that post was retired on
+# 1 Nov 2026 (see the end of this file); they now go straight to the exam
+# documents guide, which covers PDF size limits, so there is no redirect chain.
+/compress-pdf-to-50kb/ /blog/how-to-prepare-documents-for-exam-applications-india/ 301
+/compress-pdf-to-100kb/ /blog/how-to-prepare-documents-for-exam-applications-india/ 301
+/compress-pdf-to-200kb/ /blog/how-to-prepare-documents-for-exam-applications-india/ 301
+/compress-pdf-to-500kb/ /blog/how-to-prepare-documents-for-exam-applications-india/ 301
 
 # Legacy dedicated resizer URLs → the indexed canonical spec page per portal.
 #
@@ -211,3 +212,12 @@
 /qatar-visa-photo-maker/ /visa-photo/ 301
 /bahrain-visa-photo-maker/ /visa-photo/ 301
 /ssc-photo-with-name-date/ /exam-requirements/ssc/ 301
+
+# AdSense low-value remediation, round 4 (1 Nov 2026; owner delegated the call
+# in chat: "Don't ask me take best decision"). Three off-niche posts that exist
+# only to walk through a tool hidden from the index, with almost no search
+# demand in GSC 25 Sep – 30 Oct 2026 (0, 5 and 2 impressions). Each lands on
+# the indexed page that best answers the same need. The sitemap goes 123 → 120.
+/blog/how-to-merge-pdf-free/ /blog/how-to-prepare-documents-for-exam-applications-india/ 301
+/blog/how-to-compress-pdf/ /blog/how-to-prepare-documents-for-exam-applications-india/ 301
+/blog/image-to-text-online-free-ocr/ /tools/aadhaar-ocr/ 301

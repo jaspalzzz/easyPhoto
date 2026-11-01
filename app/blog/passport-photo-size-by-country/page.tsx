@@ -36,7 +36,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         There is no single &quot;passport photo size.&quot; Each country sets its
         own dimensions <em>and</em> its own rule for how much of the frame your

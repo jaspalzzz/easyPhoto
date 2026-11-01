@@ -104,11 +104,12 @@ export default function Page() {
 
       <h2>How to make your LinkedIn photo (free, private)</h2>
       <p>
-        You don&apos;t need a designer. Upload any clear, front-facing photo to the{" "}
-        <Link href="/tools/linkedin-photo/">LinkedIn photo maker</Link> and it
-        detects your face, crops a perfect square centred on you, and exports
-        400×400, 800×800 or 1000×1000. Everything runs in your browser — your
-        photo is never uploaded to a server.
+        You don&apos;t need a designer. Take a clear, front-facing photo, crop it
+        to a square with your face in the middle in your phone&apos;s photo editor,
+        and save it at 400×400 pixels or larger. Want a plain backdrop? Run it
+        through the{" "}
+        <Link href="/tools/background-removal/">background remover</Link> first;
+        it works in your browser, so the photo is never uploaded to a server.
       </p>
       <p>
         Want a distraction-free backdrop first? Run the photo through the{" "}

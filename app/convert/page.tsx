@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { TrustPills } from "@/components/site/TrustStrip";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { pageMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { FormatConverterTool } from "@/components/tools/FormatConverterTool";
 
 export const metadata = pageMetadata({
   title: "Image Format Converter — HEIC, WebP, PNG & JPG Explained",
@@ -114,18 +114,18 @@ export default function ConvertHubPage() {
           Four formats cover almost everything you will meet: HEIC, JPG, PNG and
           WebP. Each is good at something different, and converting between them
           always costs you something — file size, transparency or a little
-          detail. Here is what each one does and when it is worth swapping.
+          detail. Convert a file below, then read what each format does and when
+          it is worth swapping.
         </p>
         <TrustPills />
-        <div>
-          <Link
-            href="/tools/format-converter/"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-cta px-4 py-2.5 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
-          >
-            Open the converter <ArrowRight className="h-4 w-4" strokeWidth={2} />
-          </Link>
-        </div>
       </header>
+
+      {/* The converter itself lives on this page: the standalone
+          /tools/format-converter/ route is out of the index, and an indexed
+          page whose only action leads to a hidden one reads as a doorway. */}
+      <section aria-label="Convert an image" className="mt-8">
+        <FormatConverterTool />
+      </section>
 
       <section className="mt-10">
         <h2 className="text-lg font-semibold text-ink">At a glance</h2>

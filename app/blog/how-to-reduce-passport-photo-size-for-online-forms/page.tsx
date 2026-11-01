@@ -38,7 +38,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         A phone photo can be much larger than an application portal permits.
         When your upload fails with &quot;file too large,&quot; the fix is
@@ -122,9 +122,9 @@ export default function Page() {
         requirement whenever the form states one.
       </p>
       <p>
-        Need to fit an exact width and height too? Use{" "}
-        <Link href="/tools/resize-dimensions/">resize dimensions</Link> first,
-        then compress. For a signature upload, the{" "}
+        Need to fit an exact width and height too? Make the photo with the{" "}
+        <Link href="/passport-photo/">passport size photo maker</Link> for your
+        country first, which sets the frame, then compress. For a signature upload, the{" "}
         <Link href="/tools/signature-resize/?target=20">signature resizer</Link> does the
         same job while matching the portal&apos;s stated format and size.
       </p>

@@ -45,7 +45,7 @@ export default function Page() {
       ctaLabel="Check my photo for an exam"
       faqItems={FAQ_ITEMS}
     >
-      <p className="text-sm text-ink-soft">Last reviewed: 18 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         A photo or signature can fail for different reasons depending on the
         portal. The first distinction is whether the form accepts a prepared

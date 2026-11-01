@@ -57,7 +57,7 @@ export default function HomePage() {
               "Free tools for Indian passport photos, visa photos, exam form resizing and government document images. Everything runs in your browser, nothing is uploaded.",
             url: "/",
             category: "UtilitiesApplication",
-            dateModified: "2026-10-15",
+            dateModified: "2026-11-01",
           }),
           faqSchema(HOME_FAQ),
         ]}

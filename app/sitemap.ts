@@ -29,27 +29,30 @@ const TOOLS_UPDATED = "2026-09-08";
  */
 const TOOL_UPDATED: Record<string, string> = {
   // 15 Oct 2026: "Scan Photo Online" title and steps; exam kit description without internal words.
-  "document-scanner": "2026-10-15",
-  "exam-package": "2026-10-15",
+  "document-scanner": "2026-11-01",
+  "exam-package": "2026-11-01",
   // 15 Oct 2026: keyword map (docs/keyword-map-2026-10.md) for the next four tool pages.
-  "aadhaar-ocr": "2026-10-15",
-  "resume-photo": "2026-10-15",
-  "face-centering": "2026-10-15",
-  "signature-resize": "2026-10-15",
+  "aadhaar-ocr": "2026-11-01",
+  "resume-photo": "2026-11-01",
+  "face-centering": "2026-11-01",
+  "signature-resize": "2026-11-01",
   // 15 Oct 2026: background and signature pages, each with its own job.
-  "background-removal": "2026-10-15",
-  "signature-background-removal": "2026-10-15",
-  "signature-cleaner": "2026-10-15",
+  "background-removal": "2026-11-01",
+  "signature-background-removal": "2026-11-01",
+  "signature-cleaner": "2026-11-01",
   // 15 Oct 2026: title and "Which exams need a photo with name and date?".
-  "photo-with-name-date": "2026-10-15",
-  "photo-signature-merge": "2026-10-13",
+  "photo-with-name-date": "2026-11-01",
+  "photo-signature-merge": "2026-11-01",
   // 15 Oct 2026: "Sign on Photo or Image" title, type-your-name signature, PNG stays PNG.
-  "sign-image": "2026-10-15",
-  "dpi-converter": "2026-10-13",
-  "signature-crop": "2026-10-14",
-  "white-background": "2026-10-14",
+  "sign-image": "2026-11-01",
+  "dpi-converter": "2026-11-01",
+  "signature-crop": "2026-11-01",
+  "white-background": "2026-11-01",
   // 15 Oct 2026: optional minimum, for forms that give a KB range.
-  "resize-kb": "2026-10-15",
+  "resize-kb": "2026-11-01",
+  // 1 Nov 2026: AdSense remediation (plain-language copy, links to indexed pages only).
+  "compliance-checker": "2026-11-01",
+  "pan-card-ocr": "2026-11-01",
 };
 /**
  * Landing pages whose own copy changed after LAST_UPDATED. The page's
@@ -57,14 +60,39 @@ const TOOL_UPDATED: Record<string, string> = {
  */
 const LANDING_UPDATED: Record<string, string> = {
   // 15 Oct 2026: "UAE & Dubai" in the title and H1; GDRFA named as Dubai's office.
-  "/uae-visa-photo-maker/": "2026-10-15",
+  "/uae-visa-photo-maker/": "2026-11-01",
   // 15 Oct 2026: "MRP size photo" title and H1; visitor-facing Good to know.
   "/nepal-passport-photo-maker/": "2026-10-15",
   // 15 Oct 2026: homepage H1 in visitors' words.
-  "/": "2026-10-15",
+  "/": "2026-11-01",
   // 15 Oct 2026: "Passport Size Photo Maker" title, intro and tool links
   // (14 Oct: passport size in cm and in pixels at 300 DPI).
-  "/passport-photo/": "2026-10-15",
+  "/passport-photo/": "2026-11-01",
+  // 1 Nov 2026: AdSense remediation (plain-language copy, links to indexed pages only).
+  "/uk-passport-photo/": "2026-11-01",
+  "/schengen-visa-photo/": "2026-11-01",
+  "/blog/": "2026-11-01",
+  "/about/": "2026-11-01",
+  "/contact/": "2026-11-01",
+  "/aadhaar-photo/": "2026-11-01",
+  "/convert/": "2026-11-01",
+  "/baby-passport-photo/": "2026-11-01",
+  "/visa-photo/": "2026-11-01",
+  "/india-passport-photo-maker/": "2026-11-01",
+  "/uk-passport-photo-maker/": "2026-11-01",
+  "/pakistan-passport-photo-maker/": "2026-11-01",
+  "/schengen-visa-photo-maker/": "2026-11-01",
+  "/oman-visa-photo-maker/": "2026-11-01",
+  "/france-visa-photo-maker/": "2026-11-01",
+  "/italy-visa-photo-maker/": "2026-11-01",
+  "/malaysia-visa-photo-maker/": "2026-11-01",
+};
+/** Trust pages whose own text changed after TRUST_PAGES_UPDATED. */
+const TRUST_PAGE_UPDATED: Record<string, string> = {
+  // 1 Nov 2026: AdSense remediation (plain-language copy, links to indexed pages only).
+  "/editorial-policy/": "2026-11-01",
+  "/source-methodology/": "2026-11-01",
+  "/how-photo-checking-works/": "2026-11-01",
 };
 const TRUST_PAGES_UPDATED = "2026-07-13";
 /** /terms/ — moves only when the terms text changes (7 Oct 2026: support-payment refunds). */
@@ -72,14 +100,14 @@ const TERMS_UPDATED = "2026-10-07";
 /** /privacy/ — moves only when the policy text changes (8 Oct 2026: ad-cookie disclosure, tips; 14 Oct 2026: where ads run). */
 const PRIVACY_UPDATED = "2026-10-14";
 /** /tools/ index — moves only when its own content changes (8 Oct 2026: unfinished-tool cards removed). */
-const TOOLS_INDEX_UPDATED = "2026-10-08";
+const TOOLS_INDEX_UPDATED = "2026-11-01";
 /**
  * /exam-requirements/ and /exam-photo-size/ — the overview list and table of
  * every exam. Move when an exam's row or card changes (8 Oct 2026: SSC live
  * photo and signature; 10 Oct 2026: UP Police live photo and signature;
  * 13 Oct 2026: Voter ID photo 2000 KB and the exam-page corrections).
  */
-const EXAM_OVERVIEW_UPDATED = "2026-10-13";
+const EXAM_OVERVIEW_UPDATED = "2026-11-01";
 /** /exam-calendar/ — moves only when its own content changes (13 Oct 2026: made date-free, links each board's calendar). */
 const EXAM_CALENDAR_UPDATED = "2026-10-13";
 
@@ -163,7 +191,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // ── Indexable trust and methodology pages ───────────────────────────────
     ...trustRoutes.map((path) => ({
       url: `${SITE_URL}${path}`,
-      lastModified: TRUST_PAGES_UPDATED,
+      lastModified: TRUST_PAGE_UPDATED[path] ?? TRUST_PAGES_UPDATED,
     })),
 
     // ── Landing pages with OG images ─────────────────────────────────────────

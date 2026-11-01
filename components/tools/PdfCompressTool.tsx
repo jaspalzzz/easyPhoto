@@ -22,7 +22,7 @@ export function PdfCompressTool({
   targetFromUrl = false,
 }: {
   defaultKb?: number;
-  /** Honour a `?target=<kb>` preset (the /blog/how-to-compress-pdf/ links use it). */
+  /** Honour a `?target=<kb>` preset (the retired /compress-pdf-to-*kb/ links used it). */
   targetFromUrl?: boolean;
 } = {}) {
   const [file, setFile] = React.useState<File | null>(null);

@@ -19,7 +19,7 @@ export default function Page() {
       h1="Free Visa Photo Maker"
       intro="Prepare a visa photo online for free. Pick the destination country and drop a photo, and we'll apply the selected size and background. Confirm the current destination instructions before submitting; nothing is uploaded."
       faqItems={VISA_FAQ}
-      dateModified="2026-06-11"
+      dateModified="2026-11-01"
     />
   );
 }

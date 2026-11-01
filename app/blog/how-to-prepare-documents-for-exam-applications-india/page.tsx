@@ -150,9 +150,9 @@ export default function Page() {
       </p>
       <ul>
         <li>
-          <strong>10th and 12th marksheets</strong> — extract only the pages the
-          form requests using
-          the <Link href="/tools/pdf-split/">PDF split tool</Link>, then compress.
+          <strong>10th and 12th marksheets</strong> — keep only the pages the form
+          requests (most PDF readers can save selected pages as a new PDF), then
+          compress.
         </li>
         <li>
           <strong>Degree or diploma certificate</strong> — keep the required page
@@ -168,10 +168,10 @@ export default function Page() {
         </li>
       </ul>
       <p>
-        Enter the exact limit shown by the active field in the{" "}
-        <Link href="/tools/pdf-compress/">custom PDF compress tool</Link>. The full compression guide at{" "}
-        <Link href="/blog/how-to-compress-pdf/">how to compress a PDF</Link>{" "}
-        explains what to do when a document won&apos;t go below a certain size.
+        Compress each file to the exact limit shown by the active field. If a scan
+        will not go below the cap, scan it again in black and white or at 150 to
+        200 DPI instead of squeezing a full-colour scan further: text stays sharp
+        and the file shrinks far more.
       </p>
 
       <h2>Why must you mask your Aadhaar before uploading?</h2>
@@ -259,25 +259,20 @@ export default function Page() {
         </li>
         <li>
           <strong>Step 4 - Extract required pages.</strong> If a marksheet PDF has
-          8 pages but the portal only needs the final results page, use{" "}
-          <Link href="/tools/pdf-split/">PDF split</Link> to extract it before
-          compressing. Fewer pages means a much smaller output.
+          8 pages but the portal only needs the final results page, save just that
+          page as its own PDF (most readers offer this under Print or Export)
+          before compressing. Fewer pages means a much smaller output.
         </li>
         <li>
           <strong>Step 5 - Compress each document.</strong> Hit the portal&apos;s
-          KB cap per document using{" "}
-          <Link href="/tools/pdf-compress/">PDF compress</Link>. If you need to
-          combine multiple documents first, merge them, then compress the result.
-          See{" "}
-          <Link href="/blog/how-to-merge-pdf-free/">
-            how to merge PDF files free
-          </Link>{" "}
-          for that step.
+          KB cap per document. If the form wants several documents in one file,
+          combine them first, then compress the result, because merging adds the
+          sizes together.
         </li>
         <li>
-          <strong>Step 6 - Mask your Aadhaar.</strong> Open the masking tool,
-          cover the first 8 digits, download the masked copy, then compress it if
-          needed.
+          <strong>Step 6 - Mask your Aadhaar.</strong> Download the masked
+          e-Aadhaar from UIDAI&apos;s myAadhaar site, which hides the first 8
+          digits for you, then compress it if needed.
         </li>
         <li>
           <strong>Step 7 - Upload.</strong> Keep all files in one folder named

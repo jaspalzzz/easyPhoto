@@ -25,7 +25,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare your exam photo" faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 15 October 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         Exam application workflows differ: some accept prepared photo files, while
         current SSC and RRB instructions capture the photograph live and ask for a

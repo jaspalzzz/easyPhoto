@@ -37,7 +37,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last reviewed: 12 July 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
       <p>
         A baby can&apos;t sit up on command, hold a neutral expression or look at
         a lens. Yet the photo still has to meet the same compliance rules as an
