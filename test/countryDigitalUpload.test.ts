@@ -92,6 +92,14 @@ describe("exact upload sizes reach the export", () => {
     expect(withoutExact.output).not.toEqual({ width: 400, height: 514 });
   });
 
+  it("exports Pakistan's online renewal photo at exactly 350x467", () => {
+    // DGI&P's e-services page gives 350x467 px; the DPI path exported 413x531,
+    // a 35x45 print shape the page never asks for.
+    const spec = COUNTRY_SPECS.pakistan!;
+    const out = computeCrop(face, spec, { source, exactOutput: spec.digital.px });
+    expect(out.output).toEqual({ width: 350, height: 467 });
+  });
+
   it("exports the Saudi eVisa at exactly 200x200", () => {
     const spec = COUNTRY_SPECS["saudi-evisa"]!;
     const px = spec.digital.px!;
@@ -103,7 +111,7 @@ describe("exact upload sizes reach the export", () => {
     // The first version of exactOutput overrode only the canvas size. Head and
     // eye targets stayed at 300 DPI, so Saudi asked for a ~455px head inside a
     // 200px frame (227%) and the crop cut through the face.
-    for (const key of ["singapore", "saudi-evisa"] as const) {
+    for (const key of ["singapore", "saudi-evisa", "pakistan"] as const) {
       const spec = COUNTRY_SPECS[key]!;
       const out = computeCrop(face, spec, {
         source,

@@ -956,6 +956,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       // px, JPEG/JPG and a 3 MB cap. Older or differently scoped DGI&P material
       // carries other figures; do not merge those routes into this preset.
       pxMin: { width: 350, height: 467 },
+      // Exact, not a floor: the e-services page gives one pixel size, and its
+      // shape (0.749) is narrower than a 35x45 print (0.778), so the DPI path
+      // exported 413x531, which is neither. Pinning it makes the upload file
+      // match the page.
+      px: { width: 350, height: 467 },
       fileSizeKb: { max: 3072 },
       formats: ["jpg"],
     },
