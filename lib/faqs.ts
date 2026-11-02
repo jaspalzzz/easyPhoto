@@ -145,88 +145,63 @@ export const PASSPORT_FAQ: FaqItem[] = [
   { q: "How do I make a passport photo at home for free?", a: "Upload a clear, front-facing photo, choose your country, and download the prepared result. Check it against the linked current requirements before submitting. No app, no payment, no watermark." },
   { q: "Can I take a passport photo on my phone?", a: "Yes. Any recent phone photo in even lighting works, and the tool crops and sizes it for you." },
   { q: "What background colour should a passport photo have?", a: "White for the US and India. The UK accepts any plain light colour, white included, and some Schengen consulates ask for light grey specifically. EasyPhoto applies a colour that suits each country and you can adjust it." },
-  { q: "What is the correct head size in a passport photo?", a: "It depends on the country. The US lists 25–35mm chin-to-crown, for instance, while other workflows differ. The tool sizes the head to the selected recorded band; inspect the result and confirm the current instructions before submitting." },
+  { q: "What is the correct head size in a passport photo?", a: "It depends on the country. The US asks for 25–35mm from chin to crown and the UK for 29–34mm. The tool sizes the head for the country you pick; check the result and the current instructions before submitting." },
   { q: "Can I smile in a passport photo?", a: "No. Keep a neutral expression with your mouth closed, which is what most countries require for biometric matching." },
-  { q: "Can I wear glasses in a passport photo?", a: "Generally no. The US has banned glasses since 2016 and most countries discourage them, so it's safest to take them off." },
+  { q: "Can I wear glasses in a passport photo?", a: "Often not. The US has not allowed glasses since 2016, and the UK asks you not to wear them unless you have to. Taking them off is the safest choice wherever you apply." },
   { q: "How many passport photos do I need?", a: "Usually two for a printed application. The 4×6 inch print sheet gives you several copies on one sheet." },
   { q: "How do I make a baby or infant passport photo?", a: "Lay the baby on a plain white sheet, take a top-down photo with the eyes open if you can, and upload it. The same sizing rules apply." },
-  { q: "What can EasyPhoto check before I submit?", a: "It prepares the selected dimensions and background, then reviews measurable image properties. It cannot predict acceptance; use the linked source and confirm the current application instructions before submitting." },
+  { q: "What can EasyPhoto check before I submit?", a: "It sizes the photo and sets the background for your country, then checks what it can measure, such as head size and resolution. It cannot predict whether an office will take the photo; use the linked source and confirm the current application instructions before submitting." },
   { q: "Can I wear a head covering in a passport photo?", a: "Only for religious or medical reasons, and your full face from chin to forehead must be clearly visible." },
   { q: "Is this passport photo maker really free with no watermark?", a: "Yes. You get a full-quality download with no sign-up and no watermark." },
   { q: "Does my passport photo get uploaded or stored?", a: "No. Everything is processed in your browser and discarded when you close the tab." },
-  { q: "Can I make a US DV Lottery or green card photo?", a: "The DV Lottery uses a stricter square spec (600×600, JPEG, under 240KB). Use the US page, then the resize tool to meet the file-size limit." },
-  { q: "How do I print my passport photo?", a: "Download the 4×6 inch PDF sheet and print it at any photo kiosk or chemist, then cut out the copies." },
+  { q: "Can I make a US DV Lottery or green card photo?", a: "Yes. The DV Lottery takes the US 2×2 inch photo as a square JPEG from 600×600 to 1200×1200 pixels, 240 KB or less. Use the US page, then the resize tool to fit the file-size limit." },
+  { q: "How do I print my passport photo?", a: "Download the 4×6 inch print sheet and print it at any photo kiosk or chemist, then cut out the copies." },
   { q: "What's the difference between a passport photo and a visa photo?", a: "The size is often similar, but background rules and exact specs differ, so use the visa photo maker for visa applications." },
   { q: "Do I upload a photo with an ordinary Passport Seva application?", a: "No. For ordinary adult fresh/reissue applications in India, Passport Seva captures the photograph and biometrics at the PSK/POPSK. A child below four carries a recent 45×35 mm white-background print." },
-  { q: "Where does India's 630×810 px passport-photo format apply?", a: "The current ICAO guidance for Indian embassies and consulates abroad specifies 630×810 px for photograph capture or upload. It is not the ordinary domestic adult PSK/POPSK upload size. Follow the selected mission's instructions." },
-  { q: "Can I use a phone photo for an Indian passport application?", a: "An ordinary adult applicant is photographed at the PSK/POPSK. A phone image can be prepared for the below-four printed-photo exception or a separate overseas workflow, but it must follow that workflow's current composition and submission instructions." },
+  { q: "Where does India's 630×810 px passport-photo format apply?", a: "The current ICAO guidance for Indian embassies and consulates abroad specifies 630×810 px for photograph capture or upload. Follow the instructions of the mission handling your application." },
 ];
 
 export const VISA_FAQ: FaqItem[] = [
-  { q: "What size is a visa photo?", a: "The size depends on the destination and application route. Pick the destination to load its recorded dimensions, then compare them with the current embassy, consulate or application-centre instructions." },
-  { q: "What size is a US visa photo for DS-160?", a: "2×2 inches (51×51mm), square, on a white background. It's the same spec as the US passport photo." },
-  { q: "What background should a Schengen visa photo have?", a: "There is no single safe shade for every member-state workflow. This maker uses light grey by default, but destination instructions differ; compare the result with the mission handling your application." },
-  { q: "What are the UK visa photo requirements?", a: "The requirement depends on the UK application route. For a route requesting a 35×45mm printed photo, use the linked UK guidance for its current background, expression and glasses rules rather than assuming another country's rules apply." },
-  { q: "What size is a Canada visa photo?", a: "35×45mm for visitor visas and study or work permits. Permanent residence and Express Entry are a separate process specified in pixels rather than millimetres, and the printed Canadian passport booklet is different again at 50×70mm." },
-  { q: "What size is an Australia visa photo?", a: "35–40mm wide by 45–50mm high on a plain light background. We use 35×45mm." },
-  { q: "Can I use the same photo for my passport and visa?", a: "Check the visa's own rules before assuming so. Matching size and background is not always enough — the UK, for one, states the photo you submit must not be the one already in your passport or identity document. Where that applies, take a second photo to the same specification rather than reusing the print." },
-  { q: "Can I smile or wear glasses in a visa photo?", a: "Expression and glasses rules vary by destination. A neutral, unobstructed face is a conservative starting point, but follow the current instruction for the application you are making." },
-  { q: "How do I upload a visa photo to VFS Global online?", a: "Make the photo for your destination country, then compare its encoded format, pixel dimensions and KB size with the exact values shown on your current VFS upload screen. Resize only the fields that screen actually specifies." },
+  { q: "What size is a visa photo?", a: "It depends on the destination. Canada and the UK use 35×45mm, the US 2×2 inches, and UAE typing centres 43×55mm. Pick the destination to load its size, then compare it with the current embassy, consulate or application-centre instructions." },
+  { q: "What size is a US visa photo for DS-160?", a: "2×2 inches (51×51mm), square, on a white background — the same photo as the US passport. The DS-160 takes it as an upload: a square JPEG from 600×600 to 1200×1200 pixels, 240 KB or less." },
+  { q: "What background should a Schengen visa photo have?", a: "A plain light background, but the shade is set by each member state's mission: Germany asks for a bright colour that contrasts with your hair, ideally neutral grey, while the Netherlands accepts light grey, light blue or white. This maker starts with light grey; compare the result with the mission handling your application." },
+  { q: "What are the UK visa photo requirements?", a: "UK Visas and Immigration uses the same 35×45mm frame and plain light background as the UK passport photo, but the photo must not be the one already in your passport or identity card. The application is digital, so check its upload limits on screen." },
+  { q: "What size is a Canada visa photo?", a: "At least 35×45mm for visitor visas and study or work permits, with the head 31–36mm from chin to crown. Permanent residence and Express Entry are a separate process specified in pixels rather than millimetres, and the printed Canadian passport booklet is different again at 50×70mm." },
+  { q: "What size is an Australia visa photo?", a: "It depends on the visa subclass. Home Affairs sets the photo rules for each visa, and some subclasses collect your photo at a biometrics collection centre instead. Check the requirements for your subclass in ImmiAccount." },
+  { q: "Can I use the same photo for my passport and visa?", a: "Check the visa's own rules first. A matching size and background is not always enough: an Irish visa needs two printed copies with your details on the back, for example. Where a route asks for a new photo, take a second one to the same specification." },
+  { q: "Can I smile or wear glasses in a visa photo?", a: "Keep a neutral expression with your mouth closed. Glasses rules differ: the US does not allow them, while Canada allows non-tinted prescription glasses if your eyes are clearly visible. Taking them off avoids glare problems." },
+  { q: "How do I upload a visa photo to VFS Global online?", a: "Make the photo for your destination country, then compare its file format, pixel size and KB size with the values shown on your VFS upload screen. Change only what that screen asks for." },
   { q: "Do I need a printed or digital visa photo?", a: "It depends on the consulate, so you get both a print-ready and an upload-ready file." },
   { q: "Is the visa photo maker free?", a: "Yes, completely free with no watermark." },
   { q: "Is my photo uploaded when I make a visa photo?", a: "No, it's processed entirely on your device." },
-  { q: "How recent does a visa photo need to be?", a: "Recency windows vary. Check the destination's current instruction and use a photo that still represents your appearance." },
-  { q: "What file format and size do online visa portals want?", a: "Use the encoded format and KB or pixel limits displayed by the active portal. If it publishes a cap, the resize tools can target that value without inventing an unstated limit." },
-  { q: "Why was my visa photo rejected?", a: "Compare the actual file with the portal's stated dimensions, encoded format, KB band, background, expression and recency rules. Automated checks can inspect measurable properties but cannot predict an authority's decision." },
+  { q: "How recent does a visa photo need to be?", a: "Canada, the US and France ask for a photo taken within the last six months. For another destination, check its current instructions, and use a photo that still shows how you look." },
+  { q: "What file format and size do online visa portals want?", a: "Use the format and limits the portal states. If it gives a KB cap, the resize tool can bring your photo under it." },
+  { q: "Why was my visa photo rejected?", a: "Check the head size, shadows, background shade and expression, and whether the file is within the portal's pixel and KB limits. The tool can measure size and framing, but it cannot predict an authority's decision." },
 ];
 
 export const PHOTO_RESIZE_FAQ: FaqItem[] = [
-  { q: "How do I resize a photo online for free?", a: "Upload it, set a target file size in KB or exact pixel dimensions, and download. No watermark and nothing gets uploaded." },
-  { q: "How do I resize a photo without losing quality?", a: "We lower JPEG quality only as much as needed and shrink dimensions last, so the photo stays as sharp as the target allows." },
-  { q: "How do I resize a photo for SSC, UPSC or government forms?", a: "Select the limit stated in the current notification, compress to that target, and confirm the downloaded file before uploading." },
-  { q: "Can I resize a photo on my phone?", a: "Yes, it works the same in a mobile browser." },
-  { q: "What's the difference between resizing by KB and by pixels?", a: "KB controls the file size for upload limits, while pixels control the width and height. There's a separate tool for each." },
-  { q: "How do I resize an image to exact pixel dimensions?", a: "Use the resize-by-dimensions tool, with an optional aspect-ratio lock." },
-  { q: "Does compressing an image reduce its quality?", a: "A little, but we always keep the highest quality that still fits your target size." },
-  { q: "What image formats can I resize?", a: "JPG, PNG, WebP and iPhone HEIC files." },
-  { q: "Is the photo resizer free and watermark-free?", a: "Yes. It's free, with no sign-up and no watermark." },
-  { q: "Is my photo uploaded when I resize it?", a: "No, compression happens entirely in your browser." },
-  { q: "How do I resize a passport photo for online upload?", a: "Make the passport photo first, then compress it here to the portal's KB limit." },
-  { q: "Why does my form reject my photo for size?", a: "It's over the file-size cap. Compress it under the stated limit and re-upload." },
-  { q: "How small can I make an image?", a: "Down to around 10KB while keeping a face recognisable. Below that, detail starts to suffer." },
-  { q: "Can I make a photo bigger in KB?", a: "Yes, when a form refuses small files. Type the form's lower limit in the Minimum box and the file is raised to it. The picture itself does not change: the extra bytes are blank data that every image viewer ignores." },
+  { q: "How do I resize a photo without losing quality?", a: "The tool lowers JPEG quality only as far as the limit needs and shrinks the pixel size only as a last step, so you keep the sharpest photo that fits. A small loss is unavoidable at tight limits such as 20 KB, so start from the original photo rather than a copy that was already compressed." },
+  { q: "How do I resize a photo for UPSC or other government forms?", a: "Type the KB limit from the current notice, compress, then open the downloaded file and check its size before uploading. Some forms, such as SSC and RRB, take the photo live through the camera, so they need no photo file at all." },
+  { q: "What's the difference between resizing by KB and by pixels?", a: "KB is the file size that an upload limit counts; pixels are the width and height. This tool works to a KB limit. When a form also states a pixel size, use the Exam Application Kit or your exam's page, which set both." },
+  { q: "How do I resize a passport photo for online upload?", a: "Make the passport photo first so it is cropped to the right size, then compress it here to the portal's KB limit." },
+  { q: "How small can I make an image?", a: "Down to around 10 KB while a face stays recognisable. Below that, detail starts to break up." },
 ];
 
 export const SIGNATURE_FAQ: FaqItem[] = [
-  { q: "How do I resize my signature for an online form?", a: "Upload a scan or photo of your signature, set the size, and download. The paper background is removed and transparency is kept." },
-  { q: "What size should a signature be for a form?", a: "It varies by authority and cycle. Check the current form for its format, KB band and any published dimensions before resizing." },
+  { q: "What size should a signature be for a form?", a: "It varies by authority and by year. Check the current form for its format, KB range and any published pixel or centimetre size before resizing." },
   { q: "How do I resize a signature for UPSC or SSC?", a: "Current UPSC instructions request one 20–100 KB JPG containing three signatures vertically. The cited SSC notice requests a separate 10–20 KB JPG/JPEG signature at about 6.0×2.0 cm. Confirm your exam notice before use." },
-  { q: "What are the signature dimensions in pixels for forms?", a: "Use pixel dimensions only when the current authority source publishes them. Several portals publish a KB band or physical size but no fixed pixels." },
-  { q: "How do I get a transparent signature?", a: "The tool lifts the paper background and exports a transparent PNG so it sits cleanly on documents." },
-  { q: "How do I scan my signature for a form?", a: "Sign on plain white paper, photograph or scan it in good light, then upload, and we clean it up." },
-  { q: "Can I resize my signature on my phone?", a: "Yes, photograph your signature and process it directly in the mobile browser." },
-  { q: "Why won't my signature upload?", a: "Compare the actual encoded format, KB band and any published dimensions with the current field. A transparent PNG will not satisfy a field that requests JPG/JPEG." },
-  { q: "What format should a signature be, PNG or JPG?", a: "Use the format requested by the destination. PNG preserves transparency for overlays; many exam portals instead request JPG/JPEG on a white field." },
-  { q: "Is the signature resizer free?", a: "Yes, free with no watermark." },
-  { q: "Is my signature uploaded anywhere?", a: "No, it's processed on your device only." },
-  { q: "How do I make my signature clearer or darker?", a: "Increase the background-removal strength to lift the paper and sharpen the ink." },
-  { q: "Can I resize a signature without losing quality?", a: "Yes. For ink on paper, trimming and light compression keep it crisp." },
+  { q: "What are the signature dimensions in pixels for forms?", a: "Use pixel dimensions only when the current authority source publishes them. Several portals publish a KB range or a size in centimetres but no fixed pixels." },
+  { q: "Why won't my signature upload?", a: "Compare the file's format, KB size and any published dimensions with what the field asks for. A see-through PNG will not satisfy a field that asks for JPG/JPEG." },
+  { q: "What format should a signature be, PNG or JPG?", a: "Use the format the form asks for. A PNG keeps a see-through background for placing on documents; most exam portals ask for a JPG on white." },
+  { q: "Can I resize a signature without losing quality?", a: "Mostly. Dark ink on white paper survives compression well. At a very tight limit such as 10 KB thin strokes can soften, so look at the result at full size before you upload it." },
 ];
 
 export const BACKGROUND_REMOVER_FAQ: FaqItem[] = [
-  { q: "How do I make a transparent PNG?", a: "Remove the background and save. The result is a PNG with a transparent background." },
-  { q: "Is this background remover really free with no watermark?", a: "Yes. You get a full-resolution download with no paywall and no watermark." },
-  { q: "Does the background remover upload my photo?", a: "No. The AI model runs in your browser, so your image never leaves your device." },
-  { q: "Can I remove the background from a product photo?", a: "Yes, it's well suited to product shots for listings and catalogues." },
-  { q: "Does it work on hair and fine edges?", a: "Yes, the model handles hair and detailed edges reasonably well." },
-  { q: "Can I remove a background on my phone?", a: "Yes, it runs in mobile browsers, and the first run downloads the AI model." },
-  { q: "What file formats are supported?", a: "JPG, PNG, WebP and HEIC inputs." },
-  { q: "What format is the output?", a: "A transparent PNG at full resolution." },
-  { q: "How do I remove a background for a passport photo?", a: "Use the country passport page, which removes the background and applies the correct passport colour automatically." },
-  { q: "Why does my cut-out have rough edges?", a: "Busy or low-contrast backgrounds are harder. A plainer background gives cleaner edges." },
-  { q: "Can I change the background colour after removing it?", a: "Yes, pair it with the white-background tool to set any solid colour." },
-  { q: "Is there a limit on image size or number of images?", a: "No hard limit, though very large images use more memory on your device." },
-  { q: "How accurate is the AI background removal?", a: "It's good for people and products. Results depend on the contrast between the subject and the background." },
+  { q: "What file do I get?", a: "A PNG at full resolution with a see-through background. It accepts JPG, PNG, WebP and iPhone HEIC photos." },
+  { q: "Does it work on hair and fine edges?", a: "Usually, when the hair stands out from what is behind it. Wispy hair against a busy or similar-coloured background can leave a halo or a patchy edge, so zoom in on the preview before you download." },
+  { q: "Can I remove the background from a product photo?", a: "Yes. A product on a plain surface with a clear outline gives the cleanest result for a listing or catalogue." },
+  { q: "Can I remove a background on my phone?", a: "Yes, in the phone's browser. The first time, it downloads the cut-out software, so use Wi-Fi if your data is slow." },
+  { q: "Is there a limit on image size?", a: "No fixed limit, but a very large photo needs more memory and can be slow on an older phone." },
 ];
 
 export const JPG_TO_PDF_FAQ: FaqItem[] = [
@@ -252,23 +227,16 @@ export const PDF_TO_JPG_FAQ: FaqItem[] = [
 ];
 
 export const WHITE_BACKGROUND_FAQ: FaqItem[] = [
-  { q: "How do I add a white background to a photo?", a: "Upload your photo and the tool removes the existing background and places the subject on white. You can change the colour too." },
-  { q: "Can I use a colour other than white?", a: "Yes, pick any solid colour, including light grey and cream for passport or visa photos." },
-  { q: "Is the white background tool free with no watermark?", a: "Yes, free with no sign-up and no watermark." },
-  { q: "Is my photo uploaded?", a: "No. Background removal and compositing run in your browser, so your image never leaves your device." },
-  { q: "How do I make a white background for a passport photo?", a: "For passports, use the country page instead. It applies the exact required background colour and size automatically." },
-  { q: "Does it remove the old background automatically?", a: "Yes, the AI removes the original background, then drops in the colour you choose." },
-  { q: "What format is the output?", a: "A full-resolution PNG or JPG, your choice." },
-  { q: "Does it handle hair and fine edges?", a: "Yes, the model keeps hair and detailed edges reasonably clean." },
+  { q: "How do I add a white background to a photo?", a: "Upload your photo. The AI separates you from the old background and places you on white, then you download a PNG or JPG at full resolution." },
+  { q: "Can I use a colour other than white?", a: "Yes, any solid colour, including light grey and cream. Pick the shade your form or country names; white is not right everywhere." },
+  { q: "Should I use this for a passport photo?", a: "Use the passport photo maker instead: it sets the background and also crops to your country's size and head height, which this tool does not do." },
 ];
 
 export const EXAM_PACKAGE_FAQ: FaqItem[] = [
-  { q: "What is the Exam Application Kit?", a: "It is a guided flow: pick your exam, and it prepares the photo and signature to that exam's size and KB limits, then bundles them for download. Check the sizes against the current form before submitting." },
-  { q: "Which exams does it support?", a: "It has settings for SSC, UPSC, IBPS, SBI, Railway (RRB), NTA, RBI, CTET and state PSCs. Each page shows whether its source is dated official evidence or still needs review." },
-  { q: "What photo and signature size do exam forms need?", a: "It varies by exam and workflow. Some portals publish prepared-file KB bands and dimensions; some use live capture; for some, our figures still need checking. Select the exam and verify its current source." },
-  { q: "Do I need to resize the photo and signature separately?", a: "No. The kit handles both in one flow — it sizes the photo, cleans and sizes the signature, and gives you files that fit the form's limits." },
-  { q: "Is the Exam Application Kit free and private?", a: "Yes. It's free, with no watermark and no sign-up, and everything runs in your browser — your photo and signature are never uploaded to any server." },
-  { q: "Should I still check the official exam notification?", a: "Yes. Requirements can change between notification cycles, so confirm the current photo and signature limits in the official notification before you submit." },
+  { q: "What is the Exam Application Kit?", a: "A guided flow: pick your exam, and it prepares the photo and the signature to that exam's KB limits and any published pixel size, then gives you both files to download. Exams that take the photo live in the form, such as SSC and RRB, need only the signature file." },
+  { q: "Which exams does it cover?", a: "Central recruitment (SSC, UPSC, RRB and others), banking and insurance, state public service commissions, national entrance tests, defence recruitment and some ID documents. Each exam shows whether its figures come from a dated official notice or still need a check." },
+  { q: "Do I upload the photo and signature as one file?", a: "Usually not. Most portals have two upload fields with separate limits, so the kit gives you two files. Merge them only when your form asks for one combined image." },
+  { q: "Should I still check the official exam notification?", a: "Yes. Limits can change between notification cycles, so compare both files with the current notice before you submit." },
 ];
 
 export const PDF_COMPRESS_FAQ: FaqItem[] = [
@@ -314,8 +282,6 @@ export const SIGN_IMAGE_FAQ: FaqItem[] = [
   { q: "Is this a digital signature?", a: "No. It places a picture of your signature on the image, like signing a printout. A legally valid digital signature on a document needs a digital signature certificate (DSC) or Aadhaar eSign." },
   { q: "Will my image stay a PNG?", a: "Yes. A PNG is saved as a PNG and keeps any transparent background; other images are saved as JPG. If you set a KB limit, the file is saved as JPG so it can be compressed." },
   { q: "Do I need an app to sign on a photo?", a: "No. It works in the browser on your phone or computer, with nothing to install." },
-  { q: "Can I overlay a transparent signature PNG?", a: "Yes. Upload a transparent signature and drop it onto the photo, or draw a new one directly." },
-  { q: "Will the signature have a white box around it?", a: "No, if you use a transparent signature. Make one with the transparent signature tool first for a clean overlay." },
 ];
 
 export const TRANSPARENT_SIGNATURE_FAQ: FaqItem[] = [
@@ -326,15 +292,12 @@ export const TRANSPARENT_SIGNATURE_FAQ: FaqItem[] = [
 
 export const SIGNATURE_BG_REMOVAL_FAQ: FaqItem[] = [
   { q: "How do I remove the background from a signature?", a: "Upload a photo or scan of your signature and the tool lifts the paper tone, keeping just the ink on a white or transparent background." },
-  { q: "Does it keep the ink sharp?", a: "Yes. It targets the paper colour and leaves the ink intact; a strength control lets you push faint paper fully transparent." },
-  { q: "What's the difference from the transparent signature tool?", a: "This focuses on background removal; the transparent signature tool also auto-trims and optimises the file. Use whichever fits, or chain them." },
+  { q: "How is this different from the Signature Cleaner?", a: "This page starts with automatic trimming switched off, so it focuses on removing the paper. The Signature Cleaner trims the empty margin automatically and starts at a 20 KB limit, a common size cap on exam forms." },
 ];
 
 export const SIGNATURE_CLEANER_FAQ: FaqItem[] = [
-  { q: "How do I turn a photo of my signature into a signature image?", a: "Sign on plain white paper, take a clear photo or scan, and upload it here. The tool removes the paper background, trims tightly to the ink, and converts the photo into a clean signature image you can drop onto any form — exported as a white-background JPG or a transparent PNG." },
-  { q: "What does the signature cleaner do?", a: "It removes the paper background, auto-trims the empty space around the ink, and optimises the file size — turning a phone photo of your signature into a clean, form-ready image." },
-  { q: "Will it keep a transparent background?", a: "Yes. The cleaned signature is exported as a transparent PNG so it sits cleanly on forms and documents." },
-  { q: "Can it fix a faint or shadowed scan?", a: "Yes. Adjust the cleanup strength to lift faint paper and shadows while keeping the ink legible." },
+  { q: "How do I turn a photo of my signature into a signature image?", a: "Sign on plain white paper, take a clear photo or scan, and upload it here. The tool removes the paper tone, trims to the ink and brings the file under your form's KB limit, as a JPG on white or a PNG with a see-through background." },
+  { q: "Can it fix a faint or shadowed scan?", a: "A faint scan, often. Raising the cleanup strength lifts grey paper and makes light ink easier to read. A heavy shadow or a blurred photo is different: pushing the strength far enough to remove it also removes real strokes, so retake the photo in even light." },
 ];
 
 export const SIGNATURE_CROP_FAQ: FaqItem[] = [
@@ -360,17 +323,15 @@ export const RESIZE_DIMENSIONS_FAQ: FaqItem[] = [
 ];
 
 export const PHOTO_NAME_DATE_FAQ: FaqItem[] = [
-  { q: "How do I add my name and date to a passport size photo?", a: "Upload your photo, type your name and pick the date. The tool prints both in capitals, with the date as DD/MM/YYYY, on a white strip at the bottom of the photo. Set the KB limit your form gives, then download the JPG." },
+  { q: "How do I add my name and date to a passport size photo?", a: "Upload your photo, type your name and pick the date. The tool prints them in capitals on a white strip at the bottom of the photo. Set the KB limit your form gives, then download the JPG." },
   { q: "Should the date be the photo date or my date of birth?", a: "Forms that ask for a name-and-date strip almost always mean the date the photo was taken, often written DOP (date of photo). The date field accepts any date, so enter your date of birth only if your notice asks for it." },
-  { q: "Can I change the date or text format?", a: "Yes. Enter the photography date and use the wording or date format stated by the current application instructions." },
+  { q: "Can I change the date or text format?", a: "Partly. The date can be printed as DD/MM/YYYY, DD-MM-YYYY or DD.MM.YYYY, and you can print the name, the date or both. The name is always in capitals. If your notice asks for different wording, compare the strip with it before you upload." },
 ];
 
 export const COMPLIANCE_CHECKER_FAQ: FaqItem[] = [
-  { q: "What does the photo & signature checker do?", a: "Pick your exam, choose photo or signature, and upload your file. It compares file size (KB), pixel dimensions, aspect, format and a white-background guide with the selected published requirements, then reports measurable issues before you upload." },
-  { q: "What can the checker confirm?", a: "It can compare measurable file properties with the selected listing. Background and face-position results are guides, and it cannot predict acceptance. Confirm the current application instructions on the named authority's portal before submitting." },
-  { q: "Does it upload my photo or signature?", a: "No. The file is read and checked entirely in your browser — nothing is uploaded to any server." },
-  { q: "Why does a portal reject my upload?", a: "Usually the file is over the KB limit, the pixel dimensions/aspect are wrong, it isn't a JPG, or the background isn't plain white. The checker flags each of these so you know exactly what to fix." },
-  { q: "How do I fix a failing check?", a: "When something fails, the result links straight to the resizer for your exam, which compresses and resizes your file to the exact required spec." },
+  { q: "What does the photo & signature checker do?", a: "Pick your exam, choose photo or signature, and add the file you plan to upload. It measures the file size, pixel size, shape and format against that exam's published figures, estimates the background and face position, and lists anything that looks wrong before you upload." },
+  { q: "Why does a portal reject my upload?", a: "Usually the file is over or under the KB range, the pixel size or shape is wrong, or it is not a JPG. Those are measured exactly. A background or face-position problem is only estimated, so the checker can warn about it but not confirm it." },
+  { q: "How do I fix a failing check?", a: "When a measured check fails, the result links to the resizer for your exam, which brings the file to the published KB range and pixel size. For a background, lighting or framing warning, retaking the photo usually works better than editing it." },
 ];
 
 export const UNLOCK_PDF_FAQ: FaqItem[] = [
@@ -406,32 +367,11 @@ export function countryFaqItems(
   spec: CountrySpec,
   kind: "passport" | "visa" = "passport"
 ): FaqItem[] {
-  const EXTRA: Record<string, FaqItem> = {
-    us: {
-      q: "Can I use this for a US visa or DV Lottery photo?",
-      a: "The 2×2 inch spec also covers US visa (DS-160) photos. The DV Lottery is stricter (600×600, JPEG, under 240KB), so use the resize tool to meet it.",
-    },
-    india: {
-      q: "Is a home-printed Indian passport photo accepted?",
-      a: "Ordinary adult applicants do not carry a print to the PSK/POPSK. For a child below four, Passport Seva requires a recent 45×35 mm white-background print; use the official minor-photo guidance and confirm the current application instructions.",
-    },
-    canada: {
-      q: "Can I use this for a Canadian passport photo?",
-      a: "Use it for Canada visa, PR/Express Entry and online renewal (35×45mm). The printed Canadian passport photo needs a commercial photographer's certification, which a DIY tool can't provide.",
-    },
-    uk: {
-      q: "Does a UK passport photo have to avoid a white background?",
-      a: "No. HM Passport Office accepts a plain background in any light colour and gives shades of white, cream, ivory and light grey as its own examples. Light grey is applied here because it also suits Schengen consulates that do ask for grey, and because it keeps your outline visible if you are wearing something pale.",
-    },
-    australia: {
-      q: "Does the Australian passport photo need a guarantor?",
-      a: "Yes, your guarantor must sign the back of the printed photo. This tool prepares the recorded image dimensions and background; the signature is added after printing.",
-    },
-    schengen: {
-      q: "Is the background the same for every Schengen country?",
-      a: "No. Light grey is only this maker's starting shade; member-state missions publish their own accepted background examples. Check the current photo sheet for the consulate handling your application before submitting.",
-    },
-  };
+  // Each caveat that used to live here (US DV Lottery, UK background,
+  // Australian guarantor, Indian print, Canadian booklet, Schengen shade) is now
+  // stated once in that page's own copy, so repeating it as an FAQ broke the
+  // "never state the same fact twice on one page" rule (2 Nov 2026).
+  const EXTRA: Record<string, FaqItem> = {};
 
   // Country caveats are passport-flavoured; visa pages get their specifics from
   // the per-page maker content instead.

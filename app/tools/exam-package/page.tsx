@@ -9,9 +9,9 @@ import { EXAM_PACKAGE_FAQ } from "@/lib/faqs";
 const tool = getTool("exam-package")!;
 
 export const metadata = pageMetadata({
-  title: "Exam Photo & Signature Resizer — SSC UPSC IBPS NEET All-in-One",
+  title: "Exam Photo & Signature Resizer — SSC UPSC IBPS RRB All-in-One",
   description:
-    "Prepare your exam photo and signature together for SSC, UPSC, IBPS, SBI, RRB, NEET/JEE and more, " +
+    "Prepare your exam photo and signature together for SSC, UPSC, IBPS, RRB, state PSCs and more, " +
     "each to its form's size. Check the notice before uploading.",
   path: `/tools/${tool.slug}/`,
 });
@@ -24,7 +24,6 @@ export default function Page() {
         slug={tool.slug}
         blurb={tool.blurb}
         faqItems={EXAM_PACKAGE_FAQ}
-        footnote="Photo and signature are processed entirely in your browser — nothing is uploaded."
         hero={
           <BeforeAfterSlider
             beforeSrc="/images/sample4_before_384.webp"

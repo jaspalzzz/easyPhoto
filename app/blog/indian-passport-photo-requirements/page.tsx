@@ -20,23 +20,11 @@ const EVISA_GUIDANCE = "https://indianvisaonline.gov.in/evisa/tvoa.html";
 const FAQ_ITEMS = [
   {
     q: "Do ordinary adult applicants upload or carry a passport photo to a PSK or POPSK?",
-    a: "No. Passport Seva says applicants attend the PSK or POPSK so their photograph and biometrics can be obtained there, and its visit guidance says a photograph is not required. This applies to the ordinary domestic fresh/reissue workflow.",
+    a: "No. Passport Seva says applicants attend the PSK or POPSK so their photograph and biometrics can be taken there, and its visit guidance says a photograph is not required. This covers fresh and reissue applications made in India.",
   },
   {
-    q: "When is a printed photo required for an ordinary Indian passport application?",
-    a: "For a child below four years, Passport Seva instructs the applicant to carry a recent 4.5 × 3.5 cm (45 × 35 mm) photograph with a white background. The ordinary adult domestic workflow does not require a print.",
-  },
-  {
-    q: "Is 630 × 810 px the ordinary Passport Seva upload size?",
-    a: "No current official source was found for a 630 × 810 px, under-250 KB upload in the ordinary domestic PSK/POPSK workflow. The current 630 × 810 px instruction is published for ICAO-compliant passport photographs submitted through Indian embassies and consulates abroad. Follow the instructions for the workflow and mission handling your application.",
-  },
-  {
-    q: "Do OCI and Indian e-Visa applications use the passport workflow?",
-    a: "No. OCI and e-Visa are separate online services with their own photo uploads and specifications. OCI uses a square photograph on a plain light-coloured, non-white background; the Indian e-Visa also uses a square digital photograph but permits a plain light-coloured or white background.",
-  },
-  {
-    q: "What can the photo maker be used for?",
-    a: "It can prepare the 45 × 35 mm white-background print needed for a child below four, and separate photo options can help prepare OCI, e-Visa and other-country photos. It is not a mandatory photo-upload step for an ordinary adult Indian passport application.",
+    q: "Is 630 × 810 px the Passport Seva upload size?",
+    a: "Not for an application made in India, where there is no photo upload. 630 × 810 px is the size in the ICAO photograph guidance for passport applications made through Indian embassies and consulates abroad.",
   },
 ];
 
@@ -52,25 +40,30 @@ export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
       <p>
-        The ordinary Indian passport workflow depends on the applicant and where
-        the application is processed. For an adult applying for a fresh or
-        reissued ordinary passport in India, the photograph and biometrics are
-        captured at the Passport Seva Kendra (PSK) or Post Office Passport Seva
-        Kendra (POPSK). The applicant does not upload a passport photograph with
-        the online form and does not need to carry printed photographs.
+        Whether you need a passport photo at all depends on who is applying and
+        where. For an adult applying for a fresh or reissued ordinary passport
+        in India, the photograph and biometrics are taken at the Passport Seva
+        Kendra (PSK) or Post Office Passport Seva Kendra (POPSK). You don&apos;t
+        upload a photo with the online form and you don&apos;t carry prints.
       </p>
 
       <p>
-        Passport Seva states this in two places: its{" "}
+        Passport Seva says so in two places: its{" "}
         <a href={PASSPORT_SEVA_GETTING_STARTED} target="_blank" rel="noopener noreferrer">
           Getting Started guidance
         </a>{" "}
         says applicants attend the centre so their photographs and biometrics can
-        be obtained there, and the PSK/POPSK visit section says{" "}
-        <q>Photograph is not required.</q>
+        be taken there, and the PSK/POPSK visit section says{" "}
+        <q>Photograph is not required.</q> The online part is for filling in the
+        form, paying and booking an appointment, for normal and Tatkaal
+        applications alike. Check the{" "}
+        <a href={PASSPORT_SEVA_APPLY} target="_blank" rel="noopener noreferrer">
+          fresh and reissue instructions
+        </a>{" "}
+        and the Document Advisor for the papers to bring.
       </p>
 
-      <h2>Which Indian passport photo workflow applies?</h2>
+      <h2>Which photo step applies to you?</h2>
 
       <div className="my-6 overflow-x-auto rounded-xl border border-hairline text-sm">
         <table className="w-full border-collapse">
@@ -78,154 +71,85 @@ export default function Page() {
             <tr className="border-b border-hairline bg-accent/30">
               <th className="px-4 py-3 text-left font-semibold text-ink">Application</th>
               <th className="px-4 py-3 text-left font-semibold text-ink">Photo step</th>
-              <th className="px-4 py-3 text-left font-semibold text-ink">What to follow</th>
             </tr>
           </thead>
           <tbody>
             <tr className="border-b border-hairline">
-              <td className="px-4 py-3 font-medium text-ink">Adult fresh/reissue in India</td>
-              <td className="px-4 py-3 text-ink-soft">Photo and biometrics captured at PSK/POPSK</td>
-              <td className="px-4 py-3 text-ink-soft">No photo upload or print required</td>
+              <td className="px-4 py-3 font-medium text-ink">Adult fresh or reissue, in India</td>
+              <td className="px-4 py-3 text-ink-soft">Taken at the PSK/POPSK; nothing to prepare</td>
             </tr>
             <tr className="border-b border-hairline">
               <td className="px-4 py-3 font-medium text-ink">Child below four</td>
-              <td className="px-4 py-3 text-ink-soft">Carry one recent printed photograph</td>
-              <td className="px-4 py-3 text-ink-soft">45 × 35 mm, white background</td>
+              <td className="px-4 py-3 text-ink-soft">One recent print, 35 mm wide × 45 mm high, white background</td>
             </tr>
             <tr className="border-b border-hairline">
-              <td className="px-4 py-3 font-medium text-ink">Indian mission or consulate abroad</td>
-              <td className="px-4 py-3 text-ink-soft">Mission-specific capture or upload process</td>
-              <td className="px-4 py-3 text-ink-soft">Overseas portal and local mission instructions</td>
-            </tr>
-            <tr className="border-b border-hairline">
-              <td className="px-4 py-3 font-medium text-ink">OCI</td>
-              <td className="px-4 py-3 text-ink-soft">Square photograph uploaded online</td>
-              <td className="px-4 py-3 text-ink-soft">OCI Services photo specification</td>
+              <td className="px-4 py-3 font-medium text-ink">Through an Indian mission abroad</td>
+              <td className="px-4 py-3 text-ink-soft">630 × 810 px ICAO photo; the mission sets how it is handed in</td>
             </tr>
             <tr>
-              <td className="px-4 py-3 font-medium text-ink">Indian e-Visa</td>
-              <td className="px-4 py-3 text-ink-soft">Square photograph uploaded online</td>
-              <td className="px-4 py-3 text-ink-soft">Indian Visa Online e-Visa guidance</td>
+              <td className="px-4 py-3 font-medium text-ink">OCI or Indian e-Visa</td>
+              <td className="px-4 py-3 text-ink-soft">Square photo uploaded online, with its own rules</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <h2>Ordinary adult fresh and reissue applications in India</h2>
+      <h2>Children below four: a printed photo</h2>
 
       <p>
-        The online portion is used to complete the application, pay and book an
-        appointment. It is not a passport-photo upload step. The applicant then
-        attends the PSK or POPSK with the required original documents and copies;
-        staff capture the photograph and biometrics at the centre. The same core
-        process applies to normal and Tatkaal appointments and to fresh and
-        reissue applications.
-      </p>
-
-      <p>
-        Before attending, use the{" "}
-        <a href={PASSPORT_SEVA_APPLY} target="_blank" rel="noopener noreferrer">
-          current Passport Seva fresh/reissue instructions
-        </a>{" "}
-        and Document Advisor for the documents relevant to your case. Do not add
-        a digital photo or printed-photo task unless those instructions identify
-        a specific exception.
-      </p>
-
-      <h2>Children below four: keep the 35 × 45 mm print</h2>
-
-      <p>
-        Passport Seva makes a specific exception for minor applicants below four
-        years: carry a recent passport-size colour photograph measuring{" "}
-        <strong>4.5 × 3.5 cm (45 × 35 mm)</strong> with a{" "}
-        <strong>white background</strong>. This confirmed printed dimension remains
-        valid and should not be presented as a requirement for every applicant. The{" "}
-        <Link href="/india-passport-photo-maker/">India passport photo maker</Link>{" "}
-        crops to this exact print size on-device.
-      </p>
-
-      <p>
-        The official{" "}
+        Passport Seva makes one exception: for an applicant below four years,
+        carry a recent passport-size colour photograph measuring{" "}
+        <strong>4.5 × 3.5 cm</strong> (45&nbsp;mm high, 35&nbsp;mm wide) with a{" "}
+        <strong>white background</strong>. The official{" "}
         <a href={MINOR_PHOTO_GUIDELINES} target="_blank" rel="noopener noreferrer">
           photograph guidelines for children below four
         </a>{" "}
-        also specify a frontal, centred colour image, open eyes, even lighting,
-        no background shadow and face coverage of 80–85% of the photograph.
-        These points describe the under-four printed-photo exception.
+        add a frontal, centred colour image, open eyes, even lighting, no
+        shadow on the background and the face covering 80–85% of the photo. The{" "}
+        <Link href="/india-passport-photo-maker/">India passport photo maker</Link>{" "}
+        crops to that print size in your browser.
       </p>
 
-      <h2>Overseas applications are a separate workflow</h2>
+      <h2>Applying through an Indian mission abroad</h2>
 
       <p>
-        Passport services for Indians living abroad are handled through Indian
-        missions and posts. The{" "}
+        Indians living abroad apply through Indian missions and posts. The{" "}
         <a href={OVERSEAS_PASSPORT_PORTAL} target="_blank" rel="noopener noreferrer">
           Passport Seva at Indian Embassies and Consulates portal
         </a>{" "}
         asks you to pick your country or region first, because the filing steps
-        differ by mission. ICAO-compliant photographs have been required for
-        passport applications made through those missions since 1 September
-        2025 — the photograph rules below come from the guidance linked next,
-        not from any one mission&apos;s page.
-      </p>
-
-      <p>
-        The linked{" "}
+        differ by mission. Since 1 September 2025, those applications need
+        ICAO-compliant photographs: the{" "}
         <a href={OVERSEAS_PHOTO_GUIDELINES} target="_blank" rel="noopener noreferrer">
           overseas ICAO photograph guidance
         </a>{" "}
-        specifies a colour image of <strong>630 × 810 pixels</strong>, white
-        background and 80–85% face coverage for photograph capture or upload.
-        It does not establish a 250 KB limit for the ordinary domestic workflow.
-        Check the selected mission&apos;s current filing instructions because the
-        hand-off and submission method can vary by location.
+        asks for a colour image of <strong>630 × 810 pixels</strong>, a white
+        background and 80–85% face coverage. Check your mission&apos;s page for
+        whether it takes the photo there or wants you to bring or upload one.
       </p>
 
-      <h2>OCI and e-Visa photos are not Indian passport photos</h2>
+      <h2>OCI and e-Visa photos are different again</h2>
 
       <p>
         The{" "}
         <a href={OCI_FAQ} target="_blank" rel="noopener noreferrer">
           official OCI FAQ
         </a>{" "}
-        requires an uploaded square photograph: at least 51 × 51 mm, equal height
-        and width, 200–900 pixels, JPEG/JPG, no more than 200 KB, with a plain
-        light-coloured background that is not white.
-      </p>
-
-      <p>
-        The{" "}
+        asks for an uploaded square photograph: at least 51 × 51 mm, 200–900
+        pixels on each side, JPEG/JPG, no more than 200 KB, on a plain
+        light-coloured background that is not white. The{" "}
         <a href={EVISA_GUIDANCE} target="_blank" rel="noopener noreferrer">
-          official Indian e-Visa guidance
+          Indian e-Visa guidance
         </a>{" "}
-        also requires a digital square JPEG, but its live instructions set a
-        10 KB–1 MB file range and allow a plain light-coloured or white
-        background. OCI and e-Visa photos must therefore be made separately from the
-        Indian passport photo.
-      </p>
-
-      <h2>Where the photo maker is useful</h2>
-
-      <p>
-        The{" "}
-        <Link href="/india-passport-photo-maker/">India passport photo maker</Link>{" "}
-        can prepare the 45 × 35 mm white-background print for a child below four.
-        It can also provide a visual preparation reference, but an ordinary adult
-        domestic applicant&apos;s actual passport photograph is captured at the
-        PSK/POPSK.
+        also wants a square JPEG, but between 10 KB and 1 MB, and allows a white
+        background. Make each from your original photo rather than reusing the
+        passport crop; the photo maker has a separate option for each.
       </p>
 
       <p>
-        For an OCI or e-Visa application, select the dedicated specification for
-        that service instead of reusing the passport crop. For another country,
-        choose that country&apos;s passport or visa photo maker and confirm the
-        issuing authority&apos;s instructions before submitting.
-      </p>
-
-      <p>
-        This site is not a government service. It can prepare measurable image
-        properties, but it cannot confirm identity, documents, eligibility or an
-        application decision.
+        easyPhoto is not a government service. It can set a photo&apos;s size,
+        crop and background, but it cannot confirm your documents, eligibility
+        or the decision on your application.
       </p>
       <div className="mt-12">
         <Faq items={FAQ_ITEMS} noSchema />

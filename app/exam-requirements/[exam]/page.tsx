@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Fragment } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, ArrowDown } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { PORTAL_KEYS, type PortalSpec } from "@/lib/portalPresets";
 import {
   getPortalSpec,
@@ -11,6 +11,8 @@ import {
   portalCategory,
   photoDimsPx,
   sigDimsPx,
+  photoSizeLabel,
+  sigSizeLabel,
   PORTAL_CATEGORY_LABEL,
 } from "@/lib/specRegistry";
 import { RESIZER_YEAR } from "@/lib/subExamResizers";
@@ -36,8 +38,10 @@ export function generateStaticParams() {
 }
 export const dynamicParams = false;
 
+/** 2000 KB reads as the portal's own "2 MB". */
+const kb = (n: number) => (n >= 1000 && n % 1000 === 0 ? `${n / 1000} MB` : `${n} KB`);
 const photoKb = (s: PortalSpec) =>
-  s.photoMinKb ? `${s.photoMinKb}–${s.photoLimitKb} KB` : `under ${s.photoLimitKb} KB`;
+  s.photoMinKb ? `${s.photoMinKb}–${s.photoLimitKb} KB` : `under ${kb(s.photoLimitKb)}`;
 const sigKb = (s: PortalSpec) =>
   s.sigLimitKb ? (s.sigMinKb ? `${s.sigMinKb}–${s.sigLimitKb} KB` : `under ${s.sigLimitKb} KB`) : null;
 /** " (200 × 230 px)" — or nothing at all, for prose and meta descriptions. */
@@ -52,6 +56,11 @@ function aspectLabel(r: number): string {
     [20 / 23, "20 : 23"],
   ];
   for (const [v, label] of KNOWN) if (Math.abs(r - v) < 0.01) return label;
+  // Otherwise the smallest whole-number ratio that matches (5 / 6 → "5 : 6").
+  for (let h = 1; h <= 12; h++) {
+    const w = Math.round(r * h);
+    if (w > 0 && Math.abs(w / h - r) < 0.005) return `${w} : ${h}`;
+  }
   return `${r.toFixed(2)} : 1`;
 }
 
@@ -105,7 +114,12 @@ const EXAM_REQUIREMENTS_H1_OVERRIDES: Record<string, string> = {
 // - driving-licence: it ranks 2–4 for "driving licence photo and signature
 //   size" with almost no clicks (GSC 25 Sep – 12 Oct 2026); this states
 //   Sarathi's figures plainly.
+// - pan: Protean publishes centimetres and a scan DPI, not pixels, so the
+//   template's pixel clause would present our conversion as the rule.
 const EXAM_REQUIREMENTS_DESCRIPTION_OVERRIDES: Record<string, string> = {
+  pan:
+    "PAN card photo and signature size for Protean's online form: photo 3.5 × 2.5 cm, " +
+    "max 20 KB; signature 2 × 4.5 cm, max 10 KB; colour JPEG scanned at 200 DPI.",
   "voter-id":
     "Voter ID Form 6 photo: 4.5 × 3.5 cm, colour, white background, unsigned. " +
     "The Voters' Service Portal accepts JPG or JPEG up to 2 MB. Resize yours here.",
@@ -175,18 +189,6 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-// Sub-exams that share the parent's ONE common photo/signature spec (e.g. SSC's
-// One-Time-Registration). Listing them captures the long-tail "ssc cgl photo
-// size" / "upsc nda photo size" queries on this verified page — no separate
-// pages, no fabricated specs (they inherit the parent's exact numbers).
-const SUB_EXAMS: Record<string, string[]> = {
-  upsc: ["UPSC CSE (IAS/IPS)", "UPSC NDA", "UPSC CDS", "UPSC CAPF", "UPSC IFS", "UPSC EPFO", "UPSC CMS"],
-  ibps: ["IBPS PO", "IBPS Clerk", "IBPS SO", "IBPS RRB"],
-  sbi: ["SBI PO", "SBI Clerk", "SBI SO"],
-  rrb: ["RRB NTPC", "RRB Group D", "RRB ALP", "RRB JE"],
-  nta: ["NEET UG", "JEE Main"],
-};
-
 export default async function Page({
   params,
 }: {
@@ -231,7 +233,7 @@ export default async function Page({
           // have a structured signal a tool exists on this page, not only prose.
           softwareApplicationSchema({
             name: `${spec.name.split(" (")[0]} Photo${sig ? " & Signature" : ""} Resizer`,
-            description: `Free browser-based resizer for the ${spec.name.split(" (")[0]} photo${sig ? " and signature" : ""} target.`,
+            description: `Free browser-based resizer for the ${spec.name.split(" (")[0]} photo${sig ? " and signature" : ""}.`,
             url: path,
             dateModified: examPageLastModified(exam),
           }),
@@ -267,7 +269,7 @@ export default async function Page({
             >
               {AUTHOR.name}
             </Link>
-            , {AUTHOR.title}
+            , {AUTHOR.byline}
           </p>
         </div>
         {/* Provenance / trust signal */}
@@ -319,7 +321,7 @@ export default async function Page({
                   label="File size"
                   value={prov.verified ? photoKb(spec) : `${photoKb(spec)} (easyPhoto default, not an official limit)`}
                 />
-                <Row label="Dimensions" value={photoDimsPx(spec, " px") ?? spec.photoDimsNote ?? "—"} />
+                {photoSizeLabel(spec, false) && <Row label="Dimensions" value={photoSizeLabel(spec, false)} />}
                 {spec.photoAspectRatio && (
                   <Row label="Aspect" value={aspectLabel(spec.photoAspectRatio)} />
                 )}
@@ -336,9 +338,9 @@ export default async function Page({
               {sig ? (
                 <dl>
                   <Row label="File size" value={prov.verified ? sig : `${sig} (easyPhoto default, not an official limit)`} />
-                  <Row label="Dimensions" value={sigDimsPx(spec, " px") ?? "—"} />
+                  {sigSizeLabel(spec, false) && <Row label="Dimensions" value={sigSizeLabel(spec, false)} />}
                   {spec.sigFormat && <Row label="Format" value={spec.sigFormat} />}
-                  <Row label="Ink" value={spec.signatureInk ?? "Confirm current notice"} />
+                  {spec.signatureInk && <Row label="Ink" value={spec.signatureInk} />}
                 </dl>
               ) : (
                 <p className="text-sm text-muted-foreground">
@@ -372,11 +374,6 @@ export default async function Page({
                 being repeated on every exam page (AdSense "low value content":
                 the same boilerplate on 20 pages read as a templated site). */}
             <PortalResizer portalId={exam} hideDescription compact />
-            <p className="text-xs text-muted-foreground">
-              <Link href="/how-photo-checking-works/" className="font-medium text-brand hover:underline">
-                What this resizer checks
-              </Link>
-            </p>
 
             {/* Read-next guides. This used to be hardcoded for voter-id alone,
                 which left 48 exam pages with no route to the longer explanation.
@@ -448,7 +445,7 @@ export default async function Page({
       {!guide && spec.applicationNotes && spec.applicationNotes.length > 0 && (
         <section className="space-y-3 border-t border-hairline pt-8">
           <h2 className="text-lg font-semibold">
-            Application-specific notes for {spec.name.split(" (")[0]}
+            What the {spec.name.split(" (")[0].replace(/ Exams$/, "")} instructions also say
           </h2>
           <ul className="max-w-2xl space-y-3 text-sm leading-relaxed text-muted-foreground">
             {spec.applicationNotes.map((note) => (
@@ -490,31 +487,6 @@ export default async function Page({
               file bands match the joint CSIR-UGC NET record, use the UGC-NET
               bulletin and application session named on this page. Matching KB
               values do not make the two registrations interchangeable.
-            </p>
-          </div>
-        </section>
-      )}
-
-      {exam === "csir-net" && (
-        <section className="space-y-5 border-t border-hairline pt-8">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">CSIR-NET specifies how the signature is written</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The joint CSIR-UGC NET record uses a {photoKb(spec)} photograph and
-              a {sig} signature in {spec.sigFormat}. Its bulletin asks for a
-              running-hand signature rather than capital letters, written in blue
-              or black ink on white paper. No fixed pixel canvas is published for
-              either file.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Use the joint CSIR-UGC NET application record</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              These figures cover the NTA science and research eligibility
-              examination. Do not select the general UGC-NET entry merely because
-              the current file-size bands look the same: confirm the joint
-              CSIR-UGC NET bulletin, keep the signature in running hand, and check
-              the preview shown inside that application before submission.
             </p>
           </div>
         </section>
@@ -615,236 +587,6 @@ export default async function Page({
               this preset remains marked for review.
             </p>
           </div>
-        </section>
-      )}
-
-      {!guide && SUB_EXAMS[exam] && (
-        <section className="space-y-3">
-          <h2 className="eyebrow">Covers these {spec.name.split(" (")[0]} exams</h2>
-          <p className="text-sm text-muted-foreground">
-            {spec.name.split(" (")[0]} uses one common photo &amp; signature specification
-            across its exams, so the same sizes apply to:
-          </p>
-          {/* Plain labels, not links. The per-sub-exam resizer pages were
-              retired into this page, so linking them sent the reader through a
-              redirect back to the page they were already on. The resizer for
-              every exam listed here is the one above. */}
-          <div className="flex flex-wrap gap-1.5">
-            {SUB_EXAMS[exam].map((e) => (
-              <span
-                key={e}
-                className="rounded-md border border-hairline bg-card px-3 py-1.5 text-[14px] font-medium text-foreground"
-              >
-                {e}
-              </span>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {exam === "sbi" && (
-        <section className="space-y-6 border-t border-hairline pt-8">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">SBI uses separate photo and signature upload targets</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The SBI PO record sets the photograph at {photoKb(spec)}, with a
-              preferred {photoDimsPx(spec, " px")} canvas. The
-              signature uses its own {sig} band and preferred
-              {" "}{sigDimsPx(spec, " px")} canvas. The advertisement
-              specifies {spec.photoFormat} photographs and {spec.sigFormat} signatures,
-              a minimum {spec.dpi} DPI scan setting,
-              and a signature written in {spec.signatureInk?.toLowerCase()}.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">The live photograph is a separate registration step</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              After preparing the scanned photograph, SBI&apos;s registration flow
-              also captures and uploads a live image through a webcam or mobile
-              phone. This record is scoped to SBI&apos;s 2026 Probationary Officer
-              advertisement and its SBI Careers application link, not an IBPS CRP
-              application. For Clerk or Specialist Officer recruitment, confirm the
-              matching role-specific SBI Careers notice instead of carrying these PO
-              values across.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">What can block an SBI upload</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The advertisement says the form displays an error when a file&apos;s size
-              or format is outside the prescribed values. It also tells candidates
-              to re-upload an unclear or smudged image, so keep the photo and
-              signature as separate files in their published formats and check each preview before
-              submitting.
-            </p>
-          </div>
-          {spec.source && (
-            <a
-              href={spec.source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-            >
-              Check the SBI PO 2026 advertisement <ExternalLink className="h-3.5 w-3.5" />
-            </a>
-          )}
-        </section>
-      )}
-
-      {exam === "driving-licence" && (
-        <section className="space-y-6 border-t border-hairline pt-8">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Sarathi checks two separately prepared files</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The Sarathi record sets the colour photo at {photoKb(spec)}, with
-              {" "}a preferred {photoDimsPx(spec, " px")} canvas.
-              The black-pen signature uses its own {sig} band and preferred
-              {" "}{sigDimsPx(spec, " px")} canvas. Confirm the accepted file
-              format in the current Sarathi upload screen.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">The scan guide is shared through Sarathi</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Driving-licence and learner&apos;s-licence applications use the Sarathi
-              upload workflow even though the issuing RTO is administered by the
-              state. This page follows the national Sarathi scan guide rather than
-              inferring different image numbers for each state; confirm the current
-              instructions shown for your selected state and service. The existing{" "}
-              <Link
-                href="/blog/driving-licence-photo-size-sarathi/"
-                className="font-medium text-brand hover:underline"
-              >
-                Sarathi photo-size guide
-              </Link>{" "}
-              explains where these two uploads appear in the application journey.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">What can block the Sarathi upload</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Sarathi displays an error when a file is outside the prescribed
-              values. Its guide also warns that an unclear face or
-              signature can require a re-upload, so crop each image to its edges and
-              keep the photograph and signature as separate files.
-            </p>
-          </div>
-          {spec.source && (
-            <a
-              href={spec.source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-            >
-              Check the Sarathi photo and signature guide <ExternalLink className="h-3.5 w-3.5" />
-            </a>
-          )}
-        </section>
-      )}
-
-      {exam === "airforce-agniveer" && (
-        <section className="space-y-6 border-t border-hairline pt-8">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">The current IAF notice uses separate upload bands</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The Agniveervayu Intake 01/2027 record sets the recent colour photo at
-              {" "}{photoKb(spec)} and the candidate&apos;s signature at {sig}. Both
-              files use {spec.photoFormat} and {spec.sigFormat}, respectively. The notice publishes no fixed pixel
-              dimensions, so this page does not prescribe a pixel canvas.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">The name and date belong on a black slate</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The candidate must be photographed holding a black slate at chest level,
-              with their name and the photography date written clearly in white chalk
-              while looking straight at the camera. This is part of the photographed
-              scene, not a digital name-and-date strip added afterward.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">What to check before the IAF upload</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              A photo or signature outside its recorded KB band, a file outside the published format,
-              missing slate details, or a signature scan that includes the whole sheet
-              can prevent a clean submission. The registration flow also captures a
-              live image, so use a current portrait that represents your appearance and
-              confirm the current intake notice before submitting. Before starting the
-              form, use the{" "}
-              <Link
-                href="/blog/how-to-prepare-documents-for-exam-applications-india/"
-                className="font-medium text-brand hover:underline"
-              >
-                exam document-preparation checklist
-              </Link>{" "}
-              to keep the photo and signature as separate files.
-            </p>
-          </div>
-          {spec.source && (
-            <a
-              href={spec.source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-            >
-              Check the IAF Agniveervayu Intake 01/2027 notice <ExternalLink className="h-3.5 w-3.5" />
-            </a>
-          )}
-        </section>
-      )}
-
-      {exam === "army-agniveer" && (
-        <section className="space-y-6 border-t border-hairline pt-8">
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">What the current Army notice actually confirms</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              The recruiting-year 2027 notice tells applicants to upload a recent
-              photograph through joinindianarmy.nic.in. It does not publish a photo or
-              signature KB band, pixel canvas, aspect ratio, file format, or name/date
-              rule. The figures shown in this compatibility tool therefore remain
-              unconfirmed until the active candidate portal displays its upload fields.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Prepare from the live upload screen, not a guessed template</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Open the current CEE application first and note the file types and limits
-              printed beside each upload control. Use this resizer only when those
-              displayed figures match the defaults set here. If they differ,
-              follow the live portal rather than forcing the file into these settings.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Keep each application file separate</h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Start with the recent photograph requested by the notice, then add only
-              the other documents named by the active form. The{" "}
-              <Link
-                href="/tools/exam-package/"
-                className="font-medium text-brand hover:underline"
-              >
-                Exam Application Kit
-              </Link>{" "}
-              keeps separately prepared photo and signature files together, while the{" "}
-              <Link
-                href="/blog/how-to-prepare-documents-for-exam-applications-india/"
-                className="font-medium text-brand hover:underline"
-              >
-                document-preparation guide
-              </Link>{" "}
-              provides a pre-upload checklist without adding Army-specific numbers.
-            </p>
-          </div>
-          {spec.source && (
-            <a
-              href={spec.source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline"
-            >
-              Check the Indian Army Agniveer RY 2027 notice <ExternalLink className="h-3.5 w-3.5" />
-            </a>
-          )}
         </section>
       )}
 

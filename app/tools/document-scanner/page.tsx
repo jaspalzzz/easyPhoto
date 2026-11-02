@@ -21,18 +21,14 @@ export default function Page() {
     <ToolPage
       title="Scan a Photo or JPG Online"
       slug={tool.slug}
-      blurb="Photograph a page or open a JPG and get a flat, evenly lit scanned copy as a PDF or JPG. The perspective is straightened and shadows are removed on your device, so photos of an Aadhaar card, PAN card or marksheet never leave your phone."
+      blurb="Photograph a page or open a JPG and get a flat, evenly lit scanned copy as a PDF or JPG. The perspective is straightened and shadows are removed, which suits marksheets, certificates and ID cards."
       faqItems={[
         {
-          q: "Are my documents uploaded anywhere?",
-          a: "No. The photograph is opened, straightened, enhanced and turned into a PDF entirely inside your browser — the file never leaves your device and there is no account to create. That matters here more than on most tools, because the pages people scan are usually Aadhaar cards, PAN cards, marksheets and bank documents.",
-        },
-        {
           q: "Why do I place the corners myself instead of it detecting them?",
-          a: "Automatic edge detection is unreliable on the surfaces people actually use — patterned desks, dark tabletops, a page with one corner in shadow. When it guesses wrong you have to undo it and correct it anyway, which is slower than simply dragging four handles. Placing them yourself takes a few seconds and works every time.",
+          a: "Automatic edge detection is unreliable on the surfaces people actually use — patterned desks, dark tabletops, a page with one corner in shadow. When it guesses wrong you have to undo it and correct it anyway, which is slower than simply dragging four handles. Placing them yourself takes a few seconds.",
         },
         {
-          q: "What do the four enhancement modes do?",
+          q: "What do the enhancement modes do?",
           a: "Colour flattens the lighting but keeps the page's colours, which suits letterheads, stamps and certificates. Greyscale converts to neutral grey. Black & white uses a local threshold for the crispest text and the smallest file, and is usually the right choice for printed forms. Original applies no enhancement at all.",
         },
         {
@@ -49,7 +45,7 @@ export default function Page() {
         },
         {
           q: "My scan needs to be under a size limit for an online form. What now?",
-          a: "Export the PDF, then use the Compress PDF tool to bring it under the portal's exact KB limit. The scanner hands the file straight across, so you do not have to download and re-upload it.",
+          a: "Choose Black & white, which gives the smallest file for a printed page, and save just the page you need as a JPG. A JPG can then be brought under the form's KB limit with Compress Image to KB.",
         },
       ]}
     >
@@ -59,7 +55,7 @@ export default function Page() {
         <h2 className="text-lg font-semibold text-ink">Turn a photo into a scanned copy</h2>
         <ol className="max-w-2xl list-decimal space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
           <li>Add the picture of the page, from your phone camera roll or a JPG on your computer.</li>
-          <li>Drag the four corners onto the edges of the paper, then pick Colour, Greyscale or Black &amp; white.</li>
+          <li>Drag the four corners onto the edges of the paper, then pick Colour, Greyscale, Black &amp; white or Original.</li>
           <li>Save every page as one PDF, or just the page you are on as a JPG.</li>
         </ol>
       </section>

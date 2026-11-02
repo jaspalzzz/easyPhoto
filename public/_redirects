@@ -35,7 +35,7 @@
 # /exam-requirements/{exam}/ is the indexable authority page for each portal (it
 # shows the full photo + signature spec AND links straight to the resizer tool),
 # so it's the correct target to inherit the legacy URLs' equity.
-/ctet-photo-resizer/ /exam-requirements/ctet/ 301
+/ctet-photo-resizer/ /exam-requirements/ 301
 /driving-licence-photo-resizer/ /exam-requirements/driving-licence/ 301
 /gate-photo-resizer/ /exam-requirements/ 301
 /ibps-photo-resizer/ /exam-requirements/ibps/ 301
@@ -46,7 +46,7 @@
 /pan-card-photo-resizer/ /exam-requirements/pan/ 301
 /railway-photo-resizer/ /exam-requirements/rrb/ 301
 /rbi-photo-resizer/ /exam-requirements/ 301
-/sbi-po-photo-resizer/ /exam-requirements/sbi/ 301
+/sbi-po-photo-resizer/ /exam-requirements/ibps/ 301
 /ssc-photo-resizer/ /exam-requirements/ssc/ 301
 /ssc-signature-resizer/ /exam-requirements/ssc/ 301
 /tnpsc-photo-resizer/ /exam-requirements/ 301
@@ -79,15 +79,15 @@
 /tools/form-resizer/ssc/ /exam-requirements/ssc/ 301
 /tools/form-resizer/upsc/ /exam-requirements/upsc/ 301
 /tools/form-resizer/ds160/ /exam-requirements/ 301
-/tools/form-resizer/passport-seva/ /exam-requirements/passport-seva/ 301
+/tools/form-resizer/passport-seva/ /exam-requirements/ 301
 /tools/form-resizer/oci/ /exam-requirements/oci/ 301
 /tools/form-resizer/rrb/ /exam-requirements/rrb/ 301
 /tools/form-resizer/ibps/ /exam-requirements/ibps/ 301
-/tools/form-resizer/sbi/ /exam-requirements/sbi/ 301
+/tools/form-resizer/sbi/ /exam-requirements/ibps/ 301
 /tools/form-resizer/nta/ /exam-requirements/ 301
 /tools/form-resizer/rbi/ /exam-requirements/ 301
-/tools/form-resizer/ctet/ /exam-requirements/ctet/ 301
-/tools/form-resizer/uppsc/ /exam-requirements/uppsc/ 301
+/tools/form-resizer/ctet/ /exam-requirements/ 301
+/tools/form-resizer/uppsc/ /exam-requirements/ 301
 /tools/form-resizer/bpsc/ /exam-requirements/ 301
 /tools/form-resizer/mpsc/ /exam-requirements/ 301
 /tools/form-resizer/gate/ /exam-requirements/ 301
@@ -95,12 +95,12 @@
 /tools/form-resizer/csir-net/ /exam-requirements/csir-net/ 301
 /tools/form-resizer/nda/ /exam-requirements/ 301
 /tools/form-resizer/cds/ /exam-requirements/ 301
-/tools/form-resizer/afcat/ /exam-requirements/afcat/ 301
+/tools/form-resizer/afcat/ /exam-requirements/ 301
 /tools/form-resizer/rpsc/ /exam-requirements/ 301
 /tools/form-resizer/tnpsc/ /exam-requirements/ 301
 /tools/form-resizer/kpsc/ /exam-requirements/ 301
 /tools/form-resizer/appsc/ /exam-requirements/ 301
-/tools/form-resizer/tgpsc/ /exam-requirements/tgpsc/ 301
+/tools/form-resizer/tgpsc/ /exam-requirements/ 301
 /tools/form-resizer/wbpsc/ /exam-requirements/ 301
 /tools/form-resizer/gpsc/ /exam-requirements/ 301
 /tools/form-resizer/hpsc/ /exam-requirements/ 301
@@ -108,22 +108,22 @@
 /tools/form-resizer/nabard/ /exam-requirements/ 301
 /tools/form-resizer/niacl/ /exam-requirements/niacl/ 301
 /tools/form-resizer/irdai/ /exam-requirements/ 301
-/tools/form-resizer/cat/ /exam-requirements/cat/ 301
-/tools/form-resizer/clat/ /exam-requirements/clat/ 301
-/tools/form-resizer/army-agniveer/ /exam-requirements/army-agniveer/ 301
-/tools/form-resizer/airforce-agniveer/ /exam-requirements/airforce-agniveer/ 301
+/tools/form-resizer/cat/ /exam-requirements/ 301
+/tools/form-resizer/clat/ /exam-requirements/ 301
+/tools/form-resizer/army-agniveer/ /exam-requirements/ 301
+/tools/form-resizer/airforce-agniveer/ /exam-requirements/ 301
 /tools/form-resizer/up-police/ /exam-requirements/up-police/ 301
 /tools/form-resizer/pan/ /exam-requirements/pan/ 301
 /tools/form-resizer/driving-licence/ /exam-requirements/driving-licence/ 301
 /tools/form-resizer/voter-id/ /exam-requirements/voter-id/ 301
-/tools/form-resizer/cuet/ /exam-requirements/cuet/ 301
+/tools/form-resizer/cuet/ /exam-requirements/ 301
 /tools/form-resizer/kerala-psc/ /exam-requirements/ 301
 /tools/form-resizer/dsssb/ /exam-requirements/ 301
 /tools/form-resizer/upsssc/ /exam-requirements/ 301
 /tools/form-resizer/bsf/ /exam-requirements/ 301
 /tools/form-resizer/crpf/ /exam-requirements/ 301
 /tools/form-resizer/itbp/ /exam-requirements/ 301
-/tools/form-resizer/navy-agniveer/ /exam-requirements/navy-agniveer/ 301
+/tools/form-resizer/navy-agniveer/ /exam-requirements/ 301
 /tools/form-resizer/epfo/ /exam-requirements/ 301
 /tools/form-resizer/fci/ /exam-requirements/ 301
 /exam-resizer/ssc-cgl/ /exam-requirements/ssc/ 301
@@ -137,8 +137,8 @@
 /exam-resizer/ibps-clerk/ /exam-requirements/ibps/ 301
 /exam-resizer/ibps-so/ /exam-requirements/ibps/ 301
 /exam-resizer/ibps-rrb/ /exam-requirements/ibps/ 301
-/exam-resizer/sbi-po/ /exam-requirements/sbi/ 301
-/exam-resizer/sbi-clerk/ /exam-requirements/sbi/ 301
+/exam-resizer/sbi-po/ /exam-requirements/ibps/ 301
+/exam-resizer/sbi-clerk/ /exam-requirements/ibps/ 301
 /exam-resizer/rrb-ntpc/ /exam-requirements/rrb/ 301
 /exam-resizer/rrb-group-d/ /exam-requirements/rrb/ 301
 /exam-resizer/rrb-alp/ /exam-requirements/rrb/ 301
@@ -147,7 +147,7 @@
 /exam-resizer/upsc-cds/ /exam-requirements/upsc/ 301
 /exam-resizer/neet/ /exam-requirements/ 301
 /exam-resizer/jee-main/ /exam-requirements/ 301
-/exam-resizer/cuet/ /exam-requirements/cuet/ 301
+/exam-resizer/cuet/ /exam-requirements/ 301
 /tools/form-resizer/ /exam-requirements/ 301
 /exam-resizer/ /exam-requirements/ 301
 
@@ -163,7 +163,7 @@
 /us-visa-photo-maker/ /us-passport-photo-maker/ 301
 /uk-visa-photo-maker/ /uk-passport-photo-maker/ 301
 /australia-visa-photo-maker/ /australia-passport-photo-maker/ 301
-/canada-passport-photo-maker/ /canada-visa-photo-maker/ 301
+/canada-passport-photo-maker/ /canada-passport-photo/ 301
 
 # Nine per-pair converter landing pages, retired into /convert/. Each wrapped
 # the same tool in ~450 words and they earned no clicks between them in 90
@@ -206,8 +206,8 @@
 /tools/document/ /tools/ 301
 /tools/signature/ /tools/ 301
 /tools/ocr/ /tools/ 301
-/spain-visa-photo-maker/ /schengen-visa-photo-maker/ 301
-/portugal-visa-photo-maker/ /schengen-visa-photo-maker/ 301
+/spain-visa-photo-maker/ /schengen-visa-photo/ 301
+/portugal-visa-photo-maker/ /schengen-visa-photo/ 301
 /kuwait-visa-photo-maker/ /visa-photo/ 301
 /qatar-visa-photo-maker/ /visa-photo/ 301
 /bahrain-visa-photo-maker/ /visa-photo/ 301
@@ -221,3 +221,42 @@
 /blog/how-to-merge-pdf-free/ /blog/how-to-prepare-documents-for-exam-applications-india/ 301
 /blog/how-to-compress-pdf/ /blog/how-to-prepare-documents-for-exam-applications-india/ 301
 /blog/image-to-text-online-free-ocr/ /tools/aadhaar-ocr/ 301
+
+# AdSense low-value remediation, round 5 (1 Nov 2026; owner in chat: "Our
+# website should not leave any reason for the rejection"). Independent reviewer
+# pass: these exam pages and country makers still read as one template with the
+# name swapped; the posts duplicate a stronger post or were dated to a past exam
+# cycle. Together ~35 Google clicks a month (GSC, 90 days to 31 Oct 2026). Each
+# lands on the indexed page that answers the same need. Sitemap 120 -> 90.
+/exam-requirements/army-agniveer/ /exam-requirements/ 301
+/exam-requirements/airforce-agniveer/ /exam-requirements/ 301
+/exam-requirements/navy-agniveer/ /exam-requirements/ 301
+/exam-requirements/afcat/ /exam-requirements/ 301
+/exam-requirements/clat/ /exam-requirements/ 301
+/exam-requirements/cat/ /exam-requirements/ 301
+/exam-requirements/cuet/ /exam-requirements/ 301
+/exam-requirements/ctet/ /exam-requirements/ 301
+/exam-requirements/uppsc/ /exam-requirements/ 301
+/exam-requirements/tgpsc/ /exam-requirements/ 301
+/exam-requirements/sbi/ /exam-requirements/ibps/ 301
+/exam-requirements/passport-seva/ /exam-requirements/ 301
+/exam-calendar/ /exam-requirements/ 301
+/schengen-visa-photo-maker/ /schengen-visa-photo/ 301
+/france-visa-photo-maker/ /schengen-visa-photo/ 301
+/germany-visa-photo-maker/ /schengen-visa-photo/ 301
+/italy-visa-photo-maker/ /schengen-visa-photo/ 301
+/netherlands-visa-photo-maker/ /schengen-visa-photo/ 301
+/oman-visa-photo-maker/ /visa-photo/ 301
+/saudi-visa-photo-maker/ /visa-photo/ 301
+/china-visa-photo-maker/ /visa-photo/ 301
+/new-zealand-visa-photo-maker/ /visa-photo/ 301
+/malaysia-visa-photo-maker/ /visa-photo/ 301
+/blog/nda-cds-photo-signature-guide-2026/ /blog/upsc-cse-ias-photo-signature-guide-2026/ 301
+/blog/pan-vs-voter-id-vs-driving-licence-photo/ /blog/indian-government-id-photo-requirements/ 301
+/blog/cutout-pro-alternative-india/ /blog/best-free-passport-photo-maker-india-2026/ 301
+/blog/visafoto-alternative-india-free/ /blog/best-free-passport-photo-maker-india-2026/ 301
+/blog/best-free-exam-photo-resizer-india/ /blog/exam-photo-signature-size-guide/ 301
+/blog/ibps-po-2026-photo-signature-checklist/ /exam-requirements/ibps/ 301
+/blog/how-to-compress-photo-to-50kb/ /blog/how-to-reduce-passport-photo-size-for-online-forms/ 301
+/canada-visa-photo-maker/ /canada-passport-photo/ 301
+/ireland-visa-photo-maker/ /visa-photo/ 301

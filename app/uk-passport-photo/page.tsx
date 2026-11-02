@@ -20,36 +20,16 @@ export const metadata = pageMetadata({
 
 const FAQ_ITEMS: FaqItem[] = [
   {
-    q: "What size is a UK passport photo?",
-    a: "35×45mm, with the head measuring 29–34mm from chin to crown. The photo must be in colour, taken within the last month, and correctly lit with no shadows.",
+    q: "Can I wear glasses in a UK passport photo?",
+    a: "gov.uk says not to wear glasses unless you have to. If you do wear them, they cannot be sunglasses or tinted glasses, and both eyes must stay clearly visible.",
   },
   {
-    q: "What background colour does a UK passport photo need?",
-    a: "Any plain light colour. HM Passport Office's published standard gives \"different shades of white (cream, ivory or vanilla) and light grey\" as examples, so a white background is acceptable. Many photo sites state the opposite; the published standard does not support them. What matters is that the background is plain, light and free of texture or pattern."
-  },
-  {
-    q: "Does a UK passport photo have to be grey rather than white?",
-    a: "No. HM Passport Office accepts any plain light-coloured background and names shades of white alongside light grey. A mid or dark grey would fail, and so would a patterned or textured wall, but choosing white is not itself a reason for rejection. A slightly off-white or light grey wall can still be the easier choice in practice, because it keeps your outline visible if you are wearing a pale top.",
-  },
-  {
-    q: "Can I take a UK passport photo at home?",
-    a: "Yes. Stand against a plain light-coloured wall (or use a light grey sheet) in good, even lighting, take a front-facing photo, then use this maker to set the correct 35×45mm size and background.",
-  },
-  {
-    q: "Can I upload a digital photo for my UK passport online?",
-    a: "Yes. The gov.uk online application accepts a digital photo: at least 600×750 pixels, between 50 KB and 10 MB, saved as JPEG. The photo code you receive is entered during the application.",
-  },
-  {
-    q: "Are glasses allowed in a UK passport photo?",
-    a: "Yes, if both eyes stay clearly visible. HM Passport Office allows frames over the eye socket or eyelids as long as they do not hide the white or pupil of the eye, and glare or reflection that stops the checks locating your eyes means you must take them off. The blanket \"no glasses\" rule belongs to the US, not the UK — but removing them is still the simplest way to avoid a glare problem.",
-  },
-  {
-    q: "Does a UK passport photo need to be recent?",
-    a: "Yes. It must have been taken within the last month and show your current appearance. For children, the photo is typically valid for 5 years; for adults, 10 years.",
+    q: "Do children under one need their eyes open?",
+    a: "No. gov.uk says children under one do not have to have their eyes open. You can support a baby's head with your hand, as long as your hand does not show in the photo.",
   },
   {
     q: "Can I use the same photo for a UK visa (UKVI)?",
-    a: "No — take a fresh one. UK Visas and Immigration works to the same 35×45mm light-background specification, but it also states that the photo you submit must not be the one already used in your passport or identity document. Make a second photo to the same rules rather than reusing the print. The visa route is digital, so it also has to meet the upload limits shown on the application screen.",
+    a: "No — take a fresh one. UK Visas and Immigration uses the same 35×45mm light-background frame, but it states that the photo you submit must not be the one already used in your passport or identity document. The visa route is digital, so also check the upload limits shown on the application screen.",
   },
 ];
 
@@ -83,10 +63,9 @@ export default function Page() {
           UK Passport Photo Requirements 2026
         </h1>
         <p className="text-base leading-relaxed text-muted-foreground max-w-2xl">
-          HM Passport Office requires a <strong>35×45mm photo on a plain light-coloured background</strong>.
-          Its published standard names &ldquo;different shades of white (cream, ivory or vanilla) and light
-          grey&rdquo; as acceptable, so white is fine — despite how often the opposite is repeated. The head must
-          measure 29–34mm chin to crown, with a neutral expression.
+          HM Passport Office requires a <strong>35×45mm photo on a plain light-coloured background</strong>,
+          taken within the last month. The head must measure 29–34mm chin to crown, with a neutral
+          expression.
         </p>
       </header>
 
@@ -96,7 +75,7 @@ export default function Page() {
           <p className="font-semibold text-sm">Make your UK passport photo free</p>
           <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" />
-            GDPR-safe — your photo is never uploaded. No sign-up.
+            Processed on your device — your photo is never uploaded. No sign-up.
           </p>
         </div>
         <Link
@@ -109,7 +88,7 @@ export default function Page() {
 
       {/* Spec table */}
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Official UK passport photo specification</h2>
+        <h2 className="text-lg font-semibold">UK passport photo requirements</h2>
         <dl className="divide-y divide-hairline rounded-lg border border-hairline">
           {[
             ["Size", "35 × 45 mm"],
@@ -117,9 +96,8 @@ export default function Page() {
             ["Head fill", "65–75% of the photo frame"],
             ["Background", "Any plain light colour (white, cream, ivory, light grey)"],
             ["Expression", "Neutral, mouth closed, eyes open"],
-            ["Glasses", "Allowed if both eyes stay clearly visible, no glare"],
+            ["Glasses", "Only if you have to; never tinted"],
             ["Digital size (online)", "Min 600 × 750 px, 50 KB – 10 MB, JPEG"],
-            ["Recency", "Taken within the last month"],
             ["Min DPI (print)", "300 DPI"],
           ].map(([label, value]) => (
             <div key={label} className="flex items-baseline justify-between gap-4 px-4 py-3 text-sm">
@@ -136,9 +114,8 @@ export default function Page() {
         <div className="space-y-2">
           <h2 className="text-lg font-semibold">The background rule, and a myth about it</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            A great many photo sites — including, until recently, this one — tell you the UK will
-            turn down a white background and insists on grey. The published photographic standard
-            says the opposite: a photo may be taken{" "}
+            Many photo sites say the UK turns down a white background and insists on grey. The
+            published photographic standard says the opposite: a photo may be taken{" "}
             <strong>against any plain background that is any light colour</strong>, and the examples
             it gives are &ldquo;different shades of white (cream, ivory or vanilla) and light grey&rdquo;.
             White is acceptable. What fails is a background that is dark, coloured, patterned or
@@ -169,25 +146,23 @@ export default function Page() {
             Use a plain light-coloured wall in good, even indoor lighting. Natural daylight from a
             window to one side works well — avoid direct flash which creates shadows behind your
             head. Stand about 50 cm from the wall so your shadow does not fall on the background.
-            Take the photo straight on at eye level. Glasses are allowed if both eyes stay clearly
-            visible without glare, though removing them is the easy way to avoid that. Use this maker to apply the
-            correct background, crop to 35×45mm, and size the head to the 29–34mm band.
+            gov.uk says you need someone to help you take it, straight on at eye level. Then use
+            this maker to apply the background, crop to 35×45mm and size the head.
           </p>
         </div>
 
         <div className="space-y-2">
           <h2 className="text-lg font-semibold">Online vs. printed UK passport photo</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            When applying online at gov.uk you can upload a digital photo directly and receive a
-            photo code to enter in the application. The digital photo needs to be at least 600×750
-            pixels and between 50 KB and 10 MB as a JPEG. For a printed photo (e.g. when using a
+            When applying online at gov.uk you can upload a digital photo directly, or enter a photo
+            code from a booth or shop. The digital photo sizes are in the table above. For a printed photo (e.g. when using a
             countersignatory), the photo is 35×45mm printed on photo paper. The maker creates a
             correctly sized digital file you can upload directly or print at a pharmacy.
           </p>
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold">Privacy — GDPR-safe, no uploads</h2>
+          <h2 className="text-lg font-semibold">Privacy — nothing is uploaded</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
             All photo processing happens entirely in your browser. Your photo is never sent to any
             server and is not stored. This is especially important for passport and identity document
@@ -197,25 +172,6 @@ export default function Page() {
           </p>
         </div>
 
-        <div className="space-y-2">
-          <h2 className="text-lg font-semibold">UK passport photo for Indians in the UK</h2>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            If you are an Indian national living in the UK and need to renew your Indian passport
-            through an Indian mission or its service provider, use that mission&apos;s
-            current filing instructions. The overseas Indian passport workflow is
-            separate from the UK passport specification and currently links to
-            630×810 px ICAO photograph guidance. Do not reuse the UK crop without
-            checking the mission&apos;s requested submission method. The{" "}
-            <Link href="/uk-passport-photo-maker/" className="text-brand hover:underline">
-              UK maker
-            </Link>{" "}
-            and{" "}
-            <Link href="/india-passport-photo-maker/" className="text-brand hover:underline">
-              Indian passport maker
-            </Link>{" "}
-            prepare the two different sizes.
-          </p>
-        </div>
       </section>
 
       <section>
@@ -226,7 +182,7 @@ export default function Page() {
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-sm">Ready to make your photo?</p>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Free, instant, 100% in-browser. Light grey background applied automatically.
+            Free and in your browser. A light background is applied for you.
           </p>
         </div>
         <Link

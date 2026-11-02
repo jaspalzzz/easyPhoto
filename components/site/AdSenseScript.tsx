@@ -3,8 +3,9 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
 import { isAdSenseExcludedPath, isPrivateAdFreePath } from "@/lib/adExclusions";
+import { ADSENSE_CLIENT } from "@/lib/site";
 
-export const ADSENSE_CLIENT = "ca-pub-8825078307302402";
+export { ADSENSE_CLIENT };
 const CMP_PUBLISHER = "pub-8825078307302402";
 
 export function adsEnabled(): boolean {

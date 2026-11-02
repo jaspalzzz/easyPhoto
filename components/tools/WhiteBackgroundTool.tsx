@@ -86,7 +86,7 @@ function Body({ source }: { source: ToolSource }) {
     return (
       <ScanProgress
         label="Removing background…"
-        hint="First run sets up the AI — a few seconds. Your photo never leaves your device."
+        hint="The first run downloads the cut-out software — a few seconds."
         thumbnailUrl={source.thumbUrl || source.url}
       />
     );
@@ -188,5 +188,12 @@ export function WhiteBackgroundTool() {
   React.useEffect(() => {
     track({ name: "tool_view", tool: TOOL });
   }, []);
-  return <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}>{(source) => <Body source={source} />}</ImageToolShell>;
+  return (
+    <ImageToolShell
+      acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}
+      uploaderHint="A head-and-shoulders photo in even light gives the cleanest edge around the hair"
+    >
+      {(source) => <Body source={source} />}
+    </ImageToolShell>
+  );
 }

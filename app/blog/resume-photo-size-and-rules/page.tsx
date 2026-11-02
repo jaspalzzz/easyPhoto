@@ -13,7 +13,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Should I include a photo on my resume if I'm applying abroad?",
-    a: "It depends on the country. Omit the photo for applications to the US, UK, Canada and Australia, where many applicant-tracking systems reject CVs with photos to avoid unconscious bias. For India, Europe (most countries) and the Middle East, a photo is standard and expected.",
+    a: "It depends on the country. Leave it off for the US, UK, Canada and Australia, where employers usually prefer CVs without photos to avoid any suggestion of bias. In India and the Middle East a photo is common, and in Europe it varies by country, so check what employers there expect.",
   },
   {
     q: "What background colour works best for a resume photo?",
@@ -21,7 +21,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can I use the same photo for my resume and LinkedIn?",
-    a: "Yes, if it is a clear, front-facing headshot with a clean background. Use the resume photo maker for the 35×45 mm crop and the LinkedIn photo maker for the square 400×400 px crop — both tools work from the same original image.",
+    a: "Yes, if it is a clear, front-facing headshot with a clean background. Use the resume photo maker for the 35×45 mm crop, and crop a square copy of the same photo, at least 400×400 px, for LinkedIn.",
   },
 ];
 
@@ -35,11 +35,11 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS} ctaHref="/tools/resume-photo/" ctaLabel="Make a resume photo">
       <p>
         Should you put a photo on your resume? It depends entirely on where
-        you&apos;re applying. In India and much of Asia, Europe and the Middle
-        East, a photo on a CV or bio-data is common and often expected. In the
+        you&apos;re applying. In India, much of Asia, the Middle East and parts of
+        Europe, a photo on a CV or bio-data is common and often expected. In the
         US, UK, Canada and Australia, it&apos;s usually left off. Here are the
         rules, the standard size, and how to make a clean resume photo for free.
       </p>
@@ -48,7 +48,7 @@ export default function Page() {
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>In India and most of Asia, use a <strong>35×45&nbsp;mm passport-size photo</strong> — there is no separate &ldquo;resume size.&rdquo;</li>
-          <li>In the US, UK, Canada and Australia, leave the photo off entirely — many systems discard applications with photos to avoid bias.</li>
+          <li>In the US, UK, Canada and Australia, leave the photo off; employers there usually prefer CVs without one.</li>
           <li>For digital uploads, check the portal&apos;s KB limit and compress accordingly.</li>
         </ul>
       </div>
@@ -134,8 +134,8 @@ export default function Page() {
             <td className="py-2 pr-3">35×45&nbsp;mm (passport size)</td>
           </tr>
           <tr className="border-b border-hairline/60">
-            <td className="py-2 pr-3 font-medium text-ink">Middle East, most of Europe</td>
-            <td className="py-2 pr-3">Common</td>
+            <td className="py-2 pr-3 font-medium text-ink">Middle East, parts of Europe</td>
+            <td className="py-2 pr-3">Common; varies by country</td>
             <td className="py-2 pr-3">35×45&nbsp;mm or similar</td>
           </tr>
           <tr className="border-b border-hairline/60">
@@ -150,10 +150,10 @@ export default function Page() {
         <a href="https://www.gov.uk/guidance/equality-act-2010-guidance" className="text-brand underline" target="_blank" rel="noopener noreferrer">UK Equality Act 2010</a>{" "}
         and equivalent US EEOC frameworks, a hiring manager who sees a photo
         before reading qualifications may unconsciously filter on protected
-        characteristics such as age, race or gender — creating legal liability.
-        Most Western companies now actively filter out CVs with photos for this
-        reason. In India and most of Asia, no equivalent legal pressure exists,
-        so a passport-size photo on a CV remains the norm.
+        characteristics such as age, race or gender, which can expose the employer
+        to a discrimination claim. That is why employers there usually prefer CVs
+        without a photo. In India a passport-size photo on a CV or bio-data
+        remains common.
       </p>
 
       <h2>What size is a resume photo?</h2>

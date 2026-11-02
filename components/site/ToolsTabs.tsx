@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, User, GraduationCap, Aperture, FileText, PenLine } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { LISTED_TOOLS } from "@/lib/toolsCatalog";
+import { SITE_COUNTS } from "@/components/site/siteCounts";
 
 import {
   CreditCard, UserCircle, ScanLine, Globe, Baby,
@@ -33,12 +33,12 @@ const TABS: Tab[] = [
   {
     id: "exam", label: "Exam Tools", Icon: GraduationCap,
     tools: [
-      { title: "Exam Application Kit",  desc: "Every exam size in one flow",          href: "/tools/exam-package/",           Icon: Package       },
+      { title: "Exam Application Kit",  desc: "Photo and signature for one exam",     href: "/tools/exam-package/",           Icon: Package       },
       { title: "SSC Photo Tool",        desc: "SSC MTS, CGL, CHSL",                   href: "/exam-requirements/ssc/",       Icon: GraduationCap },
       { title: "UPSC Photo Tool",       desc: "Civil Services Exam",                   href: "/exam-requirements/upsc/",      Icon: Award         },
       { title: "Railway Photo Tool",    desc: "RRB, NTPC, Group D",                   href: "/exam-requirements/rrb/",       Icon: Train         },
       { title: "Banking Photo Tool",    desc: "IBPS, SBI, RBI, PO",                   href: "/exam-requirements/ibps/",      Icon: Landmark      },
-      { title: "Photo + Signature Kit", desc: "Both in correct size together",         href: "/tools/photo-signature-merge/",  Icon: Package       },
+      { title: "Photo + Signature Merge", desc: "Both on one image, if a form asks",   href: "/tools/photo-signature-merge/",  Icon: Package       },
     ],
   },
   {
@@ -67,7 +67,7 @@ const TABS: Tab[] = [
       { title: "Signature Background Remover", desc: "PNG with no background",         href: "/tools/signature-background-removal/", Icon: ImageOff },
       { title: "Signature Resize",      desc: "Resize to any pixel or KB size",        href: "/tools/signature-resize/",       Icon: Maximize      },
       { title: "Signature Crop",        desc: "Crop signature to content",             href: "/tools/signature-crop/",         Icon: Crop          },
-      { title: "Signature Cleaner",     desc: "Remove background from signature",      href: "/tools/signature-cleaner/",      Icon: Wand2         },
+      { title: "Signature Cleaner",     desc: "Clean, trim and shrink a signature",    href: "/tools/signature-cleaner/",      Icon: Wand2         },
       { title: "Sign Image / Photo",    desc: "Add signature to any image",            href: "/tools/sign-image/",             Icon: PenLine       },
       { title: "Photo + Signature Merge",desc: "Merge photo & signature side by side", href: "/tools/photo-signature-merge/",  Icon: Files         },
     ],
@@ -141,7 +141,7 @@ export function ToolsTabs() {
             href="/tools/"
             className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-brand hover:underline"
           >
-            View all {LISTED_TOOLS.length} tools <ArrowRight className="h-4 w-4" />
+            View all {SITE_COUNTS.tools} tools <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>

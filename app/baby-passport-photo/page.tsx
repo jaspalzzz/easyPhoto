@@ -1,12 +1,10 @@
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
 import { COUNTRY_SPECS, effectivePrintMm } from "@/lib/countrySpecs";
 import { PhotoTool } from "@/components/tool/PhotoTool";
 import { SupportCard } from "@/components/site/SupportCard";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, softwareApplicationSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
-import { kbPath } from "@/lib/kbTargets";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
@@ -20,7 +18,9 @@ import { Breadcrumbs } from "@/components/site/Breadcrumbs";
  * Other countries link out to their own maker pages (same engine).
  */
 
-const spec = COUNTRY_SPECS["india"];
+// India's print for a child below four. Its advisory is about adult capture and
+// the overseas upload file, neither of which applies to a baby's print.
+const spec = { ...COUNTRY_SPECS["india"], advisory: undefined };
 const mm = effectivePrintMm(spec);
 
 export const metadata = pageMetadata({
@@ -35,7 +35,6 @@ export const metadata = pageMetadata({
 const OTHER_COUNTRIES: { label: string; href: string }[] = [
   { label: "United States", href: "/us-passport-photo-maker/" },
   { label: "United Kingdom", href: "/uk-passport-photo-maker/" },
-  { label: "Canada", href: "/canada-visa-photo-maker/" },
   { label: "Australia", href: "/australia-passport-photo-maker/" },
 ];
 
@@ -49,31 +48,23 @@ const STEPS: { h: string; p: string }[] = [
     p: "Hold the camera straight over the baby's face, not at an angle, so the photo looks like a normal front-facing portrait. Use soft, even daylight and avoid harsh shadows or wrinkles in the sheet.",
   },
   {
-    h: "3. Catch open eyes and a calm face",
-    p: "Eyes should be open and looking towards the camera, with a neutral, closed-mouth expression. Newborns are tricky — take lots of shots and pick the best one. No hands, arms, toys, pacifiers or straps may be visible.",
+    h: "3. Take lots of shots",
+    p: "Newborns are tricky, so take many photos and pick the one with the calmest face, looking towards the camera. Whether the eyes must be open depends on the country (see the questions below). No hands, toys or pacifiers should be visible.",
   },
   {
     h: "4. Upload and let the tool finish it",
-    p: `Drop your chosen photo here. We crop to the selected ${mm.width}×${mm.height}mm frame and apply a clean white background. Inspect the result and confirm the current minor-photo guidance before use.`,
+    p: `Drop your chosen photo here. We crop to ${mm.width}×${mm.height}mm and apply a clean white background. Check the result against Passport Seva's minor-photo guidance before you print.`,
   },
 ];
 
 const BABY_FAQS: FaqItem[] = [
   {
-    q: "What size is a baby's passport photo?",
-    a: `A baby's passport photo is the same size as an adult's — for India it's ${mm.width}×${mm.height}mm on a plain white background. There is no separate "baby size". This tool crops to the exact dimensions for you.`,
-  },
-  {
-    q: "Can my baby's eyes be closed?",
-    a: "No. Like adults, infants must have their eyes open and visible, looking towards the camera. For newborns this is the hardest part — take many photos and pick the one with open eyes and a calm expression.",
+    q: "Do my baby's eyes need to be open?",
+    a: "It depends on the country. Passport Seva's minor-photo guidance for India asks for open eyes. gov.uk says children under one do not have to have their eyes open for a UK passport photo. For any other country, check its passport office's photo rules.",
   },
   {
     q: "Can I hold my baby for the photo?",
-    a: "No hands, arms, fingers or supports may appear in the frame. The easiest way is to lay the baby on their back on a plain white sheet and photograph from directly above, so no one needs to hold them in shot.",
-  },
-  {
-    q: "Does my baby need to have a neutral expression?",
-    a: "A neutral, closed-mouth expression is ideal. Authorities are more lenient with very young infants, but avoid a wide-open mouth, and there should be no pacifier, toys or other people in the photo.",
+    a: "Your hand must not show in the photo. gov.uk lets you support a baby's head as long as your hand stays out of shot. Laying the baby on a white sheet and shooting from above avoids the problem.",
   },
   {
     q: "Is this baby passport photo tool free and private?",
@@ -96,7 +87,7 @@ export default function BabyPassportPhotoPage() {
           softwareApplicationSchema({
             name: "Baby & Infant Passport Photo Maker",
             description:
-              "Prepare a baby or infant passport photo at the selected size and white background in your browser, then confirm the current minor-photo guidance.",
+              "Prepare a baby's passport photo at India's 35×45mm white-background size in your browser, then confirm the current minor-photo guidance.",
             url: "/baby-passport-photo/",
           }),
           faqSchema(BABY_FAQS),
@@ -112,8 +103,8 @@ export default function BabyPassportPhotoPage() {
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           A baby can&apos;t pose on command — so take the photo the easy way. Lay
           your little one on a plain white sheet, snap from above, and this tool
-          crops to the exact passport size and cleans up the background. Free,
-          and fully in your browser.
+          crops it to India&apos;s 35×45mm white-background print, which Passport
+          Seva asks a child below four to bring. Free, and fully in your browser.
         </p>
         <div className="spec flex flex-wrap items-center gap-x-3 gap-y-1 pt-0.5">
           <span>
@@ -122,7 +113,7 @@ export default function BabyPassportPhotoPage() {
           <span className="text-ink-faint">/</span>
           <span>Plain white background</span>
           <span className="text-ink-faint">/</span>
-          <span>Eyes open, no hands in frame</span>
+          <span>No hands in frame</span>
         </div>
       </header>
 
@@ -160,8 +151,8 @@ export default function BabyPassportPhotoPage() {
       <section className="space-y-3">
         <h2 className="eyebrow">Baby passport photo for another country</h2>
         <p className="text-sm text-muted-foreground">
-          This page uses the India 35×45mm specification. Making a baby passport
-          photo elsewhere? The same steps apply — pick your country:
+          Making a baby passport photo for another country? The same steps
+          apply — pick your country:
         </p>
         <div className="flex flex-wrap gap-1.5">
           {OTHER_COUNTRIES.map((c) => (
@@ -173,34 +164,6 @@ export default function BabyPassportPhotoPage() {
               {c.label}
             </Link>
           ))}
-        </div>
-      </section>
-
-      {/* File-size help — interlink the KB resize tools */}
-      <section className="rounded-lg border border-hairline bg-paper p-5 sm:p-6">
-        <h2 className="text-base font-semibold tracking-tight">
-          Need the photo under a file-size limit?
-        </h2>
-        <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          If the application portal caps the upload size, compress the finished
-          photo to an exact KB target. Your image stays in your browser.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {[20, 50, 100].map((kb) => (
-            <Link
-              key={kb}
-              href={kbPath(kb)}
-              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
-            >
-              Resize to {kb} KB
-            </Link>
-          ))}
-          <Link
-            href="/tools/resize-kb/"
-            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
-          >
-            Custom size
-          </Link>
         </div>
       </section>
 

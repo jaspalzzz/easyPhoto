@@ -21,7 +21,7 @@ export const metadata = pageMetadata({
 const BLURB =
   "Signed on paper and only have your phone? Snap the signature, upload the picture here, and the tool " +
   "wipes away the paper tone, trims the empty margin around the ink and shrinks the file under the cap " +
-  "your application sets, ready for PAN, passport or exam uploads.";
+  "your application sets, ready for PAN or exam uploads.";
 
 export default function Page() {
   return (

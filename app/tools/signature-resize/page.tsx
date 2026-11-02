@@ -22,7 +22,7 @@ export default function Page() {
       slug={tool.slug}
       blurb={tool.blurb}
       faqItems={SIGNATURE_FAQ}
-      footnote="Transparency is preserved in PNG output. Your file never leaves your device."
+      footnote="A PNG keeps its see-through background when resized."
     >
       <SignatureWorkflowTool
         defaultTab="resize"

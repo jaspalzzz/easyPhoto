@@ -270,7 +270,12 @@ export function ComplianceCheckerTool() {
           This form doesn&apos;t specify a separate signature upload. Pick another exam or check the photo.
         </p>
       ) : (
-        <Uploader onFile={onFile} disabled={busy} />
+        <Uploader
+          onFile={onFile}
+          disabled={busy}
+          title="Drop the file you plan to upload, or click to browse"
+          hint="Use the exact photo or signature file, after any resizing"
+        />
       )}
 
       {busy && (

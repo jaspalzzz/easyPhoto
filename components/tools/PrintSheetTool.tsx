@@ -45,7 +45,7 @@ const PAPER_SIZES = Object.keys(PAPER) as PaperSize[];
  * old fill-the-grid behaviour for anyone who wants larger prints.
  */
 const PHOTO_SIZES: Record<PhotoSize, { label: string; hint: string; mm: { width: number; height: number } | null }> = {
-  "35x45": { label: "35 × 45 mm", hint: "Indian passport, exam & most visa forms", mm: { width: 35, height: 45 } },
+  "35x45": { label: "35 × 45 mm", hint: "India, UK, Schengen & many visas", mm: { width: 35, height: 45 } },
   "51x51": { label: "2 × 2 inch", hint: "US passport & visa (50.8 × 50.8 mm)", mm: { width: 50.8, height: 50.8 } },
   fit:     { label: "Fill the grid", hint: "No fixed size — photos fill the paper", mm: null },
 };
@@ -629,7 +629,11 @@ function Body({ source, reset }: { source: import("./ImageToolShell").ToolSource
 
 export function PrintSheetTool() {
   return (
-    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_PHOTO_KINDS} uploaderTitle="passport photo" uploaderHint="Upload any photo — we'll tile it">
+    <ImageToolShell
+      acceptedWorkflowKinds={WORKFLOW_PHOTO_KINDS}
+      uploaderTitle="Drop your passport photo, or click to browse"
+      uploaderHint="Use a photo already cropped to the size you will print"
+    >
       {(source, reset) => <Body source={source} reset={reset} />}
     </ImageToolShell>
   );

@@ -129,8 +129,12 @@ describe("unpublished numbers are never presented as the requirement", () => {
     expect(hasUnpublishedKb({ ...voterId, verification: "official", description: "Photo 20–50 KB, JPG." })).toBe(false);
   });
 
-  it("the guard is live: at least one indexed exam page is unverified", () => {
-    expect(examTemplatePages().filter((page) => hasUnpublishedKb(page.spec)).length).toBeGreaterThan(0);
+  // Every indexed exam page with an unverified figure (Army Agniveer, CLAT,
+  // Passport Seva overseas…) was retired on 1 Nov 2026, so the live pages may
+  // now all be verified. The guard still runs over every indexed page: the
+  // synthetic cases above prove it fires, and this proves it has pages to check.
+  it("the guard runs over the indexed exam pages", () => {
+    expect(examTemplatePages().length).toBeGreaterThan(0);
   });
 
   it("no new title, meta, lead or FAQ presents a stored KB value as published", async () => {

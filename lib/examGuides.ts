@@ -27,9 +27,9 @@ export interface ExamGuideLink {
 const SPECIFIC_GUIDES: Record<string, ExamGuideLink[]> = {
   ssc: [{ slug: "ssc-cgl-chsl-photo-signature-guide-2026", label: "SSC CGL and CHSL photo and signature guide" }],
   upsc: [{ slug: "upsc-cse-ias-photo-signature-guide-2026", label: "UPSC CSE photo and signature guide" }],
-  nda: [{ slug: "nda-cds-photo-signature-guide-2026", label: "NDA and CDS photo and signature guide" }],
-  cds: [{ slug: "nda-cds-photo-signature-guide-2026", label: "NDA and CDS photo and signature guide" }],
-  ibps: [{ slug: "ibps-po-2026-photo-signature-checklist", label: "IBPS PO photo and signature checklist" }],
+  // NDA and CDS use UPSC's portal rules; their own guide was retired into UPSC's.
+  nda: [{ slug: "upsc-cse-ias-photo-signature-guide-2026", label: "UPSC photo and signature guide" }],
+  cds: [{ slug: "upsc-cse-ias-photo-signature-guide-2026", label: "UPSC photo and signature guide" }],
   pan: [
     { slug: "pan-card-photo-size", label: "PAN card photo size guide" },
     { slug: "indian-government-id-photo-requirements", label: "photo limits across Indian government IDs" },

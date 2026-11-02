@@ -763,7 +763,11 @@ export function NameDatePhotoTool({ defaultPresetId }: { defaultPresetId?: strin
   const resolvedPresetId = defaultPresetId ?? workflowPresetId;
 
   return (
-    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_PHOTO_KINDS} allowCamera>
+    <ImageToolShell
+      acceptedWorkflowKinds={WORKFLOW_PHOTO_KINDS}
+      allowCamera
+      uploaderHint="A recent passport-style photo; your name and the date go in a strip at the bottom"
+    >
       {(source) => (
         <Body
           key={resolvedPresetId ?? "default"}

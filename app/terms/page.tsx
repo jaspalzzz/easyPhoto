@@ -29,7 +29,7 @@ export default function TermsPage() {
             description:
               "Terms of use for easyPhoto — a free, in-browser passport/visa photo and image tool provided as-is. Always verify against official requirements.",
             url: "/terms/",
-            dateModified: "2026-10-07",
+            dateModified: "2026-11-02",
           }),
         ]}
       />
@@ -40,7 +40,7 @@ export default function TermsPage() {
         <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
           Terms of Use
         </h1>
-        <p className="text-sm text-muted-foreground">Last updated: October 7, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: November 2, 2026</p>
       </header>
 
       {/* The one that matters most, surfaced up top */}
@@ -49,21 +49,22 @@ export default function TermsPage() {
         <p className="text-[15px] leading-relaxed text-ink">
           <strong className="font-semibold">Always check your final photo against the current
           official requirements before you submit.</strong>{" "}
-          We follow each country&apos;s published spec, but rules change and can vary by office —
+          We use each authority&apos;s published requirements, but rules change and can vary by office —
           so the last check is yours.
         </p>
       </div>
 
       <article className="mt-2 divide-y divide-hairline [&>section]:py-8">
         <Section title="The service">
-          easyPhoto is a free tool that helps you prepare passport, visa, and
-          general-purpose photos and documents in your browser. By using it, you
-          agree to these terms.
+          easyPhoto is a free set of tools, run by Jaspal Kumar, that helps you
+          prepare passport, visa, exam and general-purpose photos, signatures and
+          documents in your browser. By using it, you agree to these terms.
         </Section>
 
         <Section title="Verify against official requirements">
-          We size photos and set backgrounds using the recorded country
-          specifications and link the named published source where available.
+          We size photos and set backgrounds using each country&apos;s or
+          authority&apos;s published requirements and link that source where one
+          is available.
           However, requirements change and can vary by
           office or consulate.{" "}
           <strong className="text-foreground">
@@ -74,7 +75,7 @@ export default function TermsPage() {
           liable for rejected applications, fees, or delays. Some flows carry
           extra conditions shown in-app (for example, India&apos;s printed form
           requires a professional photo-lab print, and printed Canadian passport
-          photos require a certified photographer — both are noted in the tool).
+          photos must be taken by a commercial photographer — both are noted in the tool).
         </Section>
 
         <Section title="No affiliation">

@@ -16,19 +16,19 @@ const SIGNALS = [
   {
     icon: Landmark,
     title: "Published requirement sources",
-    body: "Specification pages link the named source where available and show when an entry needs review.",
+    body: "Each page links the source of its figures and says when a figure is not from the official source.",
     tile: "bg-[hsl(174_72%_30%/0.14)] text-[hsl(174_72%_28%)]",
   },
   {
     icon: BadgeCheck,
-    title: "Automated photo checks",
-    body: "Head size, framing and resolution are checked against the spec before you download.",
+    title: "Prepared to the published size",
+    body: "Your photo is cropped and sized to the published requirement. Head size and framing are estimates, shown as warnings.",
     tile: "bg-[hsl(212_88%_48%/0.14)] text-[hsl(212_90%_44%)]",
   },
   {
     icon: Gift,
     title: "Free, no watermark",
-    body: "No sign-up, no payment, no watermark on your photo. Ever.",
+    body: "No sign-up and no watermark on your photo. Optional tips help pay for the site, which will also carry ads.",
     tile: "bg-[hsl(22_89%_50%/0.14)] text-[hsl(22_89%_46%)]",
   },
 ];

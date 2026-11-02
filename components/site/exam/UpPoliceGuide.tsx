@@ -15,7 +15,7 @@ import { buttonVariants } from "@/components/ui/button";
 export const UP_POLICE_FAQ: FaqItem[] = [
   {
     q: "My signature file is only a few KB. Will the form refuse it?",
-    a: "Yes. The notice sets a 30 KB minimum, and a 140 × 60 signature is naturally only a few KB. Our tool brings the file up to 30 KB without changing the picture.",
+    a: "Yes. The notice sets a 30 KB minimum, and a 140 × 60 signature is naturally only a few KB. If your file saves below 30 KB, the resizer adds a comment block that image viewers ignore, so the file reaches 30 KB while the signature image stays exactly the same.",
   },
   {
     q: "I'm a government employee. Do I upload anything else?",

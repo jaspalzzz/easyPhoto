@@ -95,16 +95,13 @@ export const EXAM_GUIDE_ROWS: ExamGuideRow[] = [
 
 const ssc = PORTAL_PRESETS.ssc;
 const ibps = PORTAL_PRESETS.ibps;
-const sbi = PORTAL_PRESETS.sbi;
 const upsc = PORTAL_PRESETS.upsc;
-const rrb = PORTAL_PRESETS.rrb;
-const nta = PORTAL_PRESETS.nta;
 const upscSigSide = upsc.sigSidePx ? ` measuring ${upsc.sigSidePx.min}–${upsc.sigSidePx.max} pixels` : "";
 
 export const EXAM_SIZE_GUIDE_FAQ_ITEMS: FaqItem[] = [
   {
     q: "Can I use the same photo for SSC, IBPS and SBI in the same cycle?",
-    a: `Current SSC applications capture the photograph live and publish no prepared-photo pixel size. IBPS and SBI use separate prepared uploads and list ${photoDimsPx(ibps, " px")} and ${photoDimsPx(sbi, " px")} as preferred dimensions. Follow each active form instead of reusing one export automatically.`,
+    a: `Current SSC applications capture the photograph live and publish no prepared-photo pixel size. IBPS and SBI each take a prepared photo file at a preferred ${photoDimsPx(ibps, " px")}, so one file can serve both when their current notices still agree. Prepare it from a fresh photo rather than an old export.`,
   },
   {
     q: "Why do exam portals set a minimum file size as well as a maximum?",
@@ -120,11 +117,11 @@ export const EXAM_SIZE_GUIDE_FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "What format should I use — JPG or PNG?",
-    a: `Use the format named for the specific file: SSC lists ${ssc.sigFormat} for its separate signature, RRB lists ${rrb.sigFormat} for its separate signature, IBPS lists ${ibps.photoFormat}, SBI lists ${sbi.photoFormat}, UPSC lists ${upsc.photoFormat}, and the NTA source we cite lists ${nta.photoFormat}. Convert HEIC or WebP only to a format named in the active instructions.`,
+    a: "JPG. Every exam in this guide lists JPG (JPEG) for its photo and signature files. Convert a PNG, WebP or HEIC file before uploading it; renaming the file to .jpg does not convert it.",
   },
   {
     q: "Do specifications change between exam cycles?",
-    a: "Yes. File-size bands, formats, dimensions and capture workflows can change between notifications. This guide uses the official sources cited on each exam page; always open the source linked for the exam and confirm the active cycle before submitting.",
+    a: "Yes. File-size bands, formats, dimensions and the way the photo is taken can change between notifications. This guide uses the official sources cited on each exam page; always open the source linked for the exam and confirm the active cycle before submitting.",
   },
 ];
 
@@ -134,7 +131,6 @@ export const SIGNATURE_GUIDE_ROWS: ExamGuideRow[] = [
   examGuideRow("ibps", "IBPS (PO, Clerk, SO)"),
   examGuideRow("sbi", "SBI (PO, Clerk)"),
   examGuideRow("rrb", "RRB (NTPC, Group D)"),
-  examGuideRow("army-agniveer", "Army Agniveer"),
 ];
 
 export const SIGNATURE_GUIDE_FAQ_ITEMS: FaqItem[] = [
@@ -152,6 +148,6 @@ export const SIGNATURE_GUIDE_FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: "What if the portal keeps saying my signature file is too large?",
-    a: "Confirm the current KB band and encoded format first; renaming a PNG file to .jpg does not convert it. Re-export in the listed format and reduce quality gradually while checking that the result remains legible and does not fall below a published minimum.",
+    a: "Check the current KB band and the file type first; a PNG renamed to .jpg is still a PNG inside. Re-export in the listed format and reduce quality gradually while checking that the result remains legible and does not fall below a published minimum.",
   },
 ];

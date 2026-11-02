@@ -83,10 +83,10 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
   "pan-card-ocr": {
     heading: "Use PAN OCR as a transcription aid",
     paragraphs: [
-      "The reader looks for printed fields on a PAN card image and presents candidate text for copying. It does not contact the Income Tax Department, verify that a PAN is active, or confirm a person's identity. Check every field it reads against the card before placing it into a tax, banking or KYC form.",
+      "The reader picks out the printed details on a photo of your PAN card and shows them as text you can copy. It does not contact the Income Tax Department, verify that a PAN is active, or confirm a person's identity. Check every field it reads against the card before placing it into a tax, banking or KYC form.",
       "For better recognition, use a straight, glare-free image with all four card edges visible. Reflections across the laminated surface and compression from messaging apps can turn letters into similar-looking characters. Avoid sharing the source image unnecessarily; once you have checked the transcription, clear it from the browser session.",
       "A PAN is always ten characters in one fixed pattern: five letters, four digits, then a single check letter. The fourth letter encodes the holder type \u2014 P for an individual, C for a company, H for a Hindu Undivided Family \u2014 and the fifth is normally the first letter of the surname. Knowing the shape is the fastest way to catch a bad read, because a result with six letters before the digits, or a digit where the tenth character should be, is wrong no matter how confident it looks.",
-      "Photograph the card itself rather than a photocopy where you can. Laminate reflections, a folded corner over the number, or a print-of-a-print all cost accuracy, and the embossed lettering on some older cards reads poorly at an angle. If the text comes back mangled in one attempt, changing the angle to kill the reflection usually helps more than raising the resolution.",
+      "Photograph the card itself rather than a photocopy where you can. Laminate reflections, a folded corner over the number, or a print-of-a-print all cost accuracy, and small print photographed at an angle reads poorly. If the text comes back mangled in one attempt, changing the angle to kill the reflection usually helps more than raising the resolution.",
     ],
     checklist: [
       "Pay special attention to zero/O and one/I substitutions.",
@@ -98,7 +98,7 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
   "aadhaar-ocr": {
     heading: "Read locally, then verify against the card",
     paragraphs: [
-      "Aadhaar OCR converts visible printed characters into editable text on your device. It does not query UIDAI, authenticate the holder or validate whether a number is current. Use it to reduce retyping, then compare each result with the original before entering it into any official or financial workflow.",
+      "Aadhaar OCR converts visible printed characters into editable text on your device. It does not query UIDAI, authenticate the holder or validate whether a number is current. Use it to reduce retyping, then compare each result with the card before typing it into any official or banking form.",
       "Use a sharp, square-on image without glare over the number or name. Aadhaar documents can mix English, Hindi and regional text, so recognition quality varies by side and print quality. Mask or avoid copying fields that the recipient does not need, and close or refresh the page after finishing.",
       "An Aadhaar number is twelve digits and carries a checksum in its final digit, so a single mistyped or misread digit almost always produces an invalid number rather than a different valid one. That makes the check useful as a proofreading aid, but it proves only that the digits are internally consistent \u2014 not that the number exists, belongs to the person shown, or matches UIDAI's records. Only UIDAI can confirm that.",
       "Think about what you actually need before extracting anything. Some recipients ask only for the last four digits, and UIDAI publishes a masked download that hides the first eight for exactly that purpose \u2014 though what any particular form requires is set by that form, not by UIDAI. Pulling the full number into a text box and pasting it somewhere it is not required is the more common privacy mistake, and it is easier to avoid at this step than to undo later.",
@@ -113,7 +113,7 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
   "compliance-checker": {
     heading: "What each check measures, and where the number comes from",
     paragraphs: [
-      "The check runs in two halves. The first compares the file itself against the figures we hold for the exam you picked \u2014 file size against the published KB band, pixel dimensions and aspect ratio against published figures, and the file format against the list the portal accepts. Where a portal publishes no figure, that row is left out rather than filled with a plausible default, so an absent check means the authority published nothing, not that your file passed.",
+      "The check runs in two halves. The first compares the file itself against the published figures for the exam you picked \u2014 file size against the published KB band, pixel dimensions and aspect ratio against published figures, and the file format against the list the portal accepts. Where a portal publishes no figure, that row is left out rather than filled with a guess, so an absent check means the authority published nothing, not that your file passed.",
       "The second half measures the photograph itself from facial landmarks, and the thresholds are fixed rather than judged. Head height is the chin-to-crown distance as a share of the frame, and passes between 45 and 92 percent \u2014 below that the head is usually too small to crop to a passport frame, above it the crop has already cut into the margin. Head tilt passes within 5 degrees of level, warns between 5 and 10, and fails beyond 10, because a tilted eye line is one of the few rejection causes that is unambiguous to measure. Horizontal centring allows the face to sit within 12 percent of the frame's midpoint, and the eye line is expected in the upper-middle band, between 30 and 55 percent of the height from the top.",
       "Background and lighting are deliberately weaker signals and can only ever warn, never fail. The background reading samples a strip across the top of the image and reports whether it is plain and light; the lighting reading compares the left and right thirds of that same strip and flags a difference wide enough to suggest a shadow. Both are averages over a small region, so a dark hairline or a patterned wall can move them. They are there to prompt a second look, not to decide anything.",
       "One measurement deserves a caveat rather than a footnote. The crown of the head is not directly visible to landmark detection \u2014 landmarks stop at the hairline and cannot see through hair \u2014 so crown position is extrapolated. Head-height percentage is therefore a close estimate, not a measured value, and a tall or voluminous hairstyle is where it drifts furthest. Treat a borderline head-size result as a reason to compare against the printed frame rather than as a verdict.",
@@ -121,7 +121,7 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
     ],
     checklist: [
       "Retake blur, glare and strong facial shadows rather than editing them out.",
-      "Use the background your authority publishes, not a generic white default.",
+      "Use the background your authority publishes; plain white is not always the one.",
       "Re-read the current notice \u2014 a new notification can change the figures before we do.",
     ],
   },
@@ -197,7 +197,7 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
     heading: "Crop tightly without clipping the signature",
     paragraphs: [
       "A good signature crop removes empty paper while leaving a narrow, even margin around every stroke. Include long underlines, dots and the tallest loop; clipping any of them changes the visible mark. Auto-crop estimates the ink boundary, while manual adjustment is useful for ruled paper or nearby marks.",
-      "Cropping changes the canvas, not the receiving portal's size or format requirement. After the crop, use a signature resizer if the form publishes pixels or a KB band. Check the final background and file type before uploading.",
+      "Cropping only trims the edges; it does not meet the form's size or format rule on its own. After the crop, use a signature resizer if the form publishes pixels or a KB band. Check the final background and file type before uploading.",
       "Portals differ on how much white space they expect around the strokes. Some publish an exact pixel size, some a KB range, and some only say the signature must be clearly visible. Crop close enough that the signature fills the frame without touching the edges, keeping a thin even margin on all four sides. Stretching a crop to hit a stated aspect ratio distorts the handwriting, which is the one thing a checker compares against your other documents.",
     ],
     checklist: ["Include every pen stroke.", "Avoid large blank margins.", "Keep the signature level rather than stretching it."],
@@ -205,7 +205,7 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
   "sign-image": {
     heading: "Place a signature on an image with control",
     paragraphs: [
-      "This workflow layers your signature over a local image and lets you position it visually. Use it for documents that explicitly allow an inserted signature image; it does not replace a digital certificate, e-sign service or witnessed signature when those are required.",
+      "This tool layers your signature over an image on your device and lets you position it visually. Use it for documents that explicitly allow an inserted signature image; it does not replace a digital certificate, e-sign service or witnessed signature when those are required.",
       "Keep the mark readable without covering printed text, dates or seals. Review the final image at full resolution, because a placement that looks clear in the small editor can overlap content after download.",
       "A signature saved with a transparent background sits on the document without a white box around it, which matters when you are placing it over a form that already has printed lines or shading. Save as PNG when transparency is needed; JPEG has no transparency and will always paint a solid rectangle. If the receiving form only accepts JPEG, place the signature over a matching white area rather than over ruled or coloured content.",
       "Everything here happens in your browser, so the signature file is never uploaded. That is worth keeping in mind for the opposite reason too: because nothing is transmitted, nothing is timestamped, logged or witnessed. Where a process needs proof of who signed and when \u2014 a contract, an affidavit, anything with legal consequence \u2014 an inserted image carries none of that context, and the body receiving it will state which e-signature method it accepts.",
@@ -217,7 +217,7 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
     paragraphs: [
       "The Indian recruitment portals covered here take the photograph and the signature as separate files with separate limits, and the signature limit is generally the tighter of the two \u2014 often a 10 to 50 KB band against 10 to 200 KB for the photo. Check your own form rather than assuming that split. Preparing them together helps because the two are judged against the same application, but they are still two files, and a package that merges them is wrong unless the portal explicitly asks for one image.",
       "Order matters more than most candidates expect. Sign on plain white paper in the ink the notice specifies, photograph or scan it square-on, and crop before resizing \u2014 resizing first locks in whatever margin you had. Do the photo separately against a plain background at the head size the exam publishes. Only then check both files against the KB limits, because cropping and adding any name or date strip both change the file size after the fact.",
-      "One thing no tool can do for you is confirm the figures. Boards revise their notices between cycles, some publish pixel dimensions and some only a KB range, and a few state nothing beyond \"recent passport-size photograph\". Each exam page here records the figure we found and names the source it came from, so you can open that source and check it. Where a source is marked as needing review, treat the numbers as a starting point and take the binding version from your own notification.",
+      "One thing no tool can do for you is confirm the figures. Boards revise their notices between cycles, some publish pixel dimensions and some only a KB range, and a few state nothing beyond \"recent passport-size photograph\". Each exam page here shows the figure we found and links the source it came from, so you can open that source and check it. Where a source is marked as needing review, treat the numbers as a starting point and take the binding version from your own notification.",
     ],
     checklist: [
       "Prepare photo and signature as separate files unless told otherwise.",
@@ -229,11 +229,11 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
     heading: "Why a replaced background is not the same as a plain wall",
     paragraphs: [
       "Background replacement separates you from whatever was behind you and fills the rest with a flat colour. It works best when the edge between hair and background is already visible in the original \u2014 even lighting, no strong shadow on the wall behind you, and no clothing the same shade as the backdrop. Fine or wispy hair against a dark or busy background is the hardest case, and the result may show a halo or a chewed edge that a person checking the photo will notice.",
-      "Which shade of light background you need is set by the authority, not by the tool. Indian exam portals and passport guidance generally ask for plain white, while Schengen states such as Switzerland ask for light grey. The UK is often cited as rejecting white; it does not — HM Passport Office accepts any plain light colour and names shades of white among its examples. Setting a background here does not make a photo compliant on its own: pose, expression, head size, recency and lighting are all judged separately. If the cut-out edge looks wrong at full size, retaking the photo against a plain wall in soft daylight will beat any amount of editing.",
+      "Which shade of light background you need is set by the authority, not by the tool. Indian exam portals and passport guidance generally ask for plain white, while for a Schengen visa the consulate handling the application sets the shade. HM Passport Office accepts any plain light background for a UK passport and names shades of white among its examples. A new background does not fix anything else: pose, expression, head size, recency and lighting are all judged separately. If the cut-out edge looks wrong at full size, retaking the photo against a plain wall in soft daylight will beat any amount of editing.",
+      "For a passport or visa photo, check whether the service accepts an edited photo at all. The UK online passport service asks for an unedited photo, and Immigration New Zealand says it does not accept photos altered by AI editing tools. Where that applies, take a new photo against a plain light wall instead of replacing the background here. It is better suited to exam forms, ID cards and resumes, where a plain backdrop is usually all that is asked.",
     ],
     checklist: [
       "Check the required shade on your own application before choosing white.",
-      "Check whether the service wants an unedited capture — the UK online one says so, though its examiner standard is more permissive about backgrounds.",
       "Inspect the hair edge at 100% zoom, not in the small preview.",
       "Avoid wearing a top that matches the background you are replacing.",
     ],
@@ -253,7 +253,7 @@ const TOOL_DEPTH: Record<string, ToolDepthCopy> = {
   "dpi-converter": {
     heading: "DPI is a label; pixels are the photograph",
     paragraphs: [
-      "DPI is a number stored in the file that says how large the image should print. Changing it alone does not add detail, sharpen anything, or make a small photo acceptable \u2014 a 300 by 300 pixel image tagged at 300 DPI simply says print me one inch wide. When a form asks for 300 DPI alongside a print size, what it needs in practice is enough pixels to print at that size. Some portals do read the DPI field itself, so check whether yours states a pixel requirement as well.",
+      "DPI is a number saved in the file that says how large the image should print. Changing it alone does not add detail, sharpen anything, or make a small photo acceptable \u2014 a 300 by 300 pixel image tagged at 300 DPI simply says print me one inch wide. When a form asks for 300 DPI alongside a print size, what it needs in practice is enough pixels to print at that size. Some portals do read the DPI field itself, so check whether yours states a pixel requirement as well.",
       "The relationship is arithmetic: millimetres divided by 25.4, multiplied by DPI, gives pixels. A 35 by 45mm photo at 300 DPI is about 413 by 531 pixels. If your source is smaller than that, raising the DPI tag will satisfy a checker that only reads metadata but will still print soft, because the detail was never captured. Re-tagging is useful when a portal validates the DPI field; it is not a substitute for photographing at a higher resolution.",
     ],
     checklist: [

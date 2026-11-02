@@ -17,15 +17,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is signing an image the same as signing a PDF?",
-    a: "No. Use Sign Image when your base file is JPG, PNG or WebP. Use Sign PDF when the document is a PDF and you need to place the signature on a PDF page.",
-  },
-  {
-    q: "Is my signature uploaded?",
-    a: "No. The image and signature are processed locally in your browser; they are not uploaded to a server.",
-  },
-  {
-    q: "What file size should a signed image be for a portal upload?",
-    a: "It depends on the portal — most Indian exam and government portals want JPEG and cap the file between 20 KB and 200 KB. Signing adds slightly to the file, so if the signed image goes over the limit, compress it back to the target with a resize-to-KB tool before submitting.",
+    a: "No. Use Sign Image when your file is a JPG, PNG or WebP. For a PDF, use your PDF reader's Fill & Sign option, which keeps the page's text sharp.",
   },
   {
     q: "Will signing reduce my photo's quality?",
@@ -50,7 +42,7 @@ export default function Page() {
       ctaLabel="Sign an image now"
     >
       <div className="mb-5 text-sm text-muted-foreground">
-        Last updated 1 November 2026 · Tested with the easyPhoto Sign Image tool on 12 July 2026
+        Last updated 2 November 2026 · Tested with the easyPhoto Sign Image tool on 12 July 2026
       </div>
       <p>
         If a form, certificate, scanned JPG or photo needs your signature on top
@@ -83,21 +75,20 @@ export default function Page() {
         </ul>
       </div>
 
-      <h2>Before and after: what actually changes</h2>
+      <h2>Your image keeps its size</h2>
       <p>
         The <Link href="/tools/sign-image/">Sign Image tool</Link> preserves your
         document&apos;s dimensions. An 800 × 500 px upload downloads as an 800 × 500 px
         JPG—placing the signature changes the pixels <em>inside</em> the image, but
         it does not crop or resize the document. That is the key check before
         uploading: open the download and confirm both the signature position and
-        the unchanged canvas dimensions.
+        that the image is still the same pixel size.
       </p>
 
       <h2>When do you actually need to sign on an image?</h2>
       <p>
-        More often than you&apos;d expect. Because so many forms are now shared and
-        submitted as pictures rather than editable PDFs, the situations where you
-        need a signature <em>on an image</em> are common:
+        Many forms are now shared and sent back as pictures rather than editable
+        PDFs. Common cases:
       </p>
       <ul className="my-4 list-disc space-y-1.5 pl-5 text-[15px]">
         <li>
@@ -140,7 +131,7 @@ export default function Page() {
         different handling so text and page quality are preserved.
       </p>
 
-      <h2>Best workflow to add a signature to a photo</h2>
+      <h2>The best way to add a signature to a photo</h2>
       <p>
         The cleanest result comes from preparing the signature first. Sign on
         plain white paper with dark ink, photograph or scan it, then convert it
@@ -209,7 +200,7 @@ export default function Page() {
       <p>
         The white box appears when the signature image still contains the paper
         background. Convert the signature to transparent PNG first, or use a
-        very clean white-background signature only when the target image itself
+        very clean white-background signature only when the image you are signing
         has a white background.
       </p>
       <p>
@@ -252,26 +243,21 @@ export default function Page() {
 
       <h2>What file size and format do portals accept for a signed image?</h2>
       <p>
-        There is no single answer — it depends on where you upload the signed
-        image. Exam and government portals each set their own limit, and signing
-        adds a little to the file, so it&apos;s worth checking before you submit.
-        Do not rely on a universal limit: the permitted format and size belong to
-        the specific form. Check its current upload instructions before signing,
-        then use the exact limit shown there.
+        There is no single answer: each form sets its own format and size, so
+        read the instructions next to the upload box. Signing adds a little to
+        the file, so check the size again after you export.
       </p>
       <p>
-        If your signed image is over the limit, resize it to the exact target with
-        the{" "}
+        If the signed image is over the limit, bring it under with the{" "}
         <Link href="/tools/resize-kb/">
           compress-to-KB tool
-        </Link>{" "}
-        — it brings a JPG or PNG under a chosen KB size in your browser. For the
-        exact photo and signature limits of specific documents (PAN, Voter ID,
-        Driving Licence, Aadhaar), the{" "}
+        </Link>
+        , in your browser. The photo and signature limits for PAN, voter ID and
+        driving-licence forms are in the{" "}
         <Link href="/blog/indian-government-id-photo-requirements/">
-          Indian government ID photo requirements guide
-        </Link>{" "}
-        lists each portal&apos;s cap.
+          government ID photo guide
+        </Link>
+        .
       </p>
 
       <h2>Privacy: does the image upload anywhere?</h2>

@@ -25,7 +25,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} ctaHref="/exam-requirements/upsc/" ctaLabel="Resize your UPSC photo">
-      <p className="text-sm text-ink-soft">Last reviewed: 15 October 2026</p>
+      <p className="text-sm text-ink-soft">Last reviewed: 2 November 2026</p>
       <p>
         UPSC CSE, NDA and CDS all upload through the same UPSC OTR (One-Time
         Registration) portal, so they share one set of file rules. The part that
@@ -272,22 +272,20 @@ export default function Page() {
         </figcaption>
       </figure>
 
-      <h2>How does UPSC CSE compare to NDA and CDS for photo requirements?</h2>
+      <h2>Does anything change for NDA and CDS?</h2>
       <p>
-        They follow one instruction sheet on the same OTR portal, so nothing
-        above changes for NDA or CDS: the two KB bands, the three black-ink
-        signatures at 350–500 pixels and the live photo all apply as written.
-        What can differ is the notification for a cycle, which may add a rule
-        of its own, such as how recent the photo must be.
+        No. NDA and CDS follow the same instruction sheet on the same OTR
+        portal, so the two KB bands, the three black-ink signatures at
+        350–500 pixels and the live photo all apply as written. What can differ
+        is the notification for a cycle, which may add a rule of its own, such
+        as how recent the photo must be.
       </p>
       <p>
-        The safe habit for a cross-applicant is to take a fresh photo for each
-        application rather than reuse an old file; a current photo also passes
-        the live-photo match more easily. For the full NDA and CDS photo guide, see the{" "}
-        <Link href="/blog/nda-cds-photo-signature-guide-2026/">
-          NDA &amp; CDS photo and signature guide
-        </Link>
-        .
+        Two lines on UPSC&apos;s sheet matter most to defence applicants: a
+        photograph in uniform is not accepted, so change out of any NCC or
+        service uniform first, and dark or coloured glasses are refused. Take a
+        fresh photo for each application rather than reusing an old file; a
+        current photo also matches the live photo more easily.
       </p>
 
       <h2>What are the most common UPSC CSE photo rejection reasons?</h2>
@@ -369,7 +367,7 @@ export default function Page() {
       </p>
 
       <h2>
-        How to prepare your UPSC CSE photo and signature — complete workflow
+        How to prepare your UPSC CSE photo and signature, step by step
       </h2>
       <p>For the photo, in this order:</p>
       <ol>

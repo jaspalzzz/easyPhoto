@@ -17,20 +17,17 @@ export default function Page() {
   return (
     <BlogPostLayout slug="best-free-passport-photo-maker-india-2026">
       <p>
-        Most online passport photo tools have at least one of three problems: they require payment
-        photo, they upload your biometric face photo to a remote server, or they use the US 2×2 inch
-        spec without explaining that India&apos;s 35×45 mm print applies to children below four,
-        while ordinary adults are photographed at the PSK/POPSK. If you&apos;re preparing a
-        passport, OCI card, or a government exam form, none of those is acceptable. Here are seven
-        tools compared on the criteria that matter: cost, privacy, and whether they actually know
-        the India spec.
+        Most online passport photo tools have at least one of three problems: they charge for the
+        download, they upload your face photo to a remote server, or they default to the US
+        2×2 inch size when India&apos;s print is 35×45 mm. Here are the main options compared on
+        what matters for an Indian applicant: cost, privacy, and whether they cover India&apos;s
+        sizes and exam forms.
       </p>
 
       <p>
-        <strong>Transparency:</strong> We built easyPhoto, so we&apos;re not neutral. Every feature
-        claim below is based on publicly verifiable information: pricing sourced directly from each
-        tool&apos;s website, upload behaviour from their terms of service. Where a competitor does
-        something better, we say so.
+        <strong>Transparency:</strong> We built easyPhoto, so we&apos;re not neutral. What we say
+        about other tools comes from their own websites, pricing pages and terms of service, which
+        can change; check them before you pay. Where another tool does something better, we say so.
       </p>
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
@@ -38,15 +35,15 @@ export default function Page() {
           viewBox="0 0 760 300"
           style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif", display: "block" }}
           role="img"
-          aria-label="Comparison chart: paid studio vs free online passport photo makers — cost, privacy, India spec accuracy"
+          aria-label="Comparison chart: paid or server-based online photo tools vs a free on-device tool — cost, privacy, India sizes"
         >
-          <title>Passport photo maker comparison — paid studio photo vs free on-device tools</title>
+          <title>Passport photo maker comparison — paid or server-based tools vs a free on-device tool</title>
           <rect width="760" height="300" fill="#f9f8f6" />
           {/* Left: Paid/Studio */}
           <rect x="20" y="20" width="330" height="260" rx="8" fill="white" stroke="#e5e7eb" strokeWidth="1.5" />
           <rect x="20" y="20" width="330" height="44" rx="8" fill="#6b7280" />
           <rect x="20" y="50" width="330" height="14" fill="#6b7280" />
-          <text x="185" y="47" textAnchor="middle" fontSize="13" fontWeight="700" fill="white">Physical Studio / Generic Online Tool</text>
+          <text x="185" y="47" textAnchor="middle" fontSize="13" fontWeight="700" fill="white">Paid or server-based online tool</text>
           {/* Studio photo icon */}
           <rect x="60" y="78" width="54" height="70" rx="4" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="1" />
           <circle cx="87" cy="103" r="14" fill="#d1d5db" />
@@ -54,11 +51,11 @@ export default function Page() {
           <text x="87" y="165" textAnchor="middle" fontSize="10" fill="#6b7280">35×45 mm</text>
           {/* Cons list */}
           {[
-            ["✗ Price varies by provider", "#dc2626"],
+            ["✗ Often paid after a free allowance", "#dc2626"],
             ["✗ Uploads your photo to a server", "#dc2626"],
-            ["✗ Often uses US spec, not India's", "#dc2626"],
-            ["✗ No exam portal presets (KB/px)", "#dc2626"],
-            ["✗ Retry = another fee", "#dc2626"],
+            ["✗ May default to the US 2×2 size", "#dc2626"],
+            ["✗ No exam KB sizes", "#dc2626"],
+            ["✗ A redo can cost again", "#dc2626"],
           ].map(([text, color], i) => (
             <text key={i} x="130" y={90 + i * 34} fontSize="12" fill={color} fontWeight="500">{text}</text>
           ))}
@@ -77,7 +74,7 @@ export default function Page() {
             ["✓ Completely free, no sign-up", "#15803d"],
             ["✓ On-device — nothing uploaded", "#15803d"],
             ["✓ 35×45 mm under-four print", "#15803d"],
-            ["✓ SSC / IBPS / UPSC KB presets", "#15803d"],
+            ["✓ KB sizes for SSC, IBPS, UPSC", "#15803d"],
             ["✓ Instant re-crop, any time", "#15803d"],
           ].map(([text, color], i) => (
             <text key={i} x="520" y={90 + i * 34} fontSize="12" fill={color} fontWeight="500">{text}</text>
@@ -87,28 +84,20 @@ export default function Page() {
           <text x="380" y="155" textAnchor="middle" fontSize="14" fontWeight="800" fill="#163A6B">VS</text>
         </svg>
         <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
-          Paid studio vs free on-device passport photo maker — cost, privacy and India spec accuracy compared.
+          Paid or server-based online tools compared with a free on-device maker on cost, privacy and India sizes.
         </figcaption>
       </figure>
 
-      <h2>What the India passport photo spec actually requires</h2>
+      <h2>Do you need a photo tool at all?</h2>
 
       <p>
-        Passport Seva says an ordinary adult fresh/reissue applicant is photographed
-        and fingerprinted at the PSK/POPSK, so no passport photo is uploaded or
-        carried. A child below four must carry a{" "}
-        <strong>35×45 mm colour print on a white background</strong>. Indian
-        missions abroad use separate ICAO guidance, and OCI and e-Visa have their
-        own square-photo uploads. Exam portals also use separate dimensions and KB
-        bands set by each board&apos;s notification.
-      </p>
-
-      <p>
-        This is a quick summary; for the complete, regularly-verified Passport Seva
-        workflows — domestic centre capture, the below-four exception, overseas
-        guidance, OCI and e-Visa differences — see our{" "}
+        For an adult applying for an Indian passport in India, no: the photo is
+        taken at the passport centre. A photo tool matters for a child below four,
+        who needs a <strong>35×45 mm colour print on white</strong>, for OCI and
+        e-Visa uploads, for applications through a mission abroad, and for exam
+        forms. The{" "}
         <Link href="/blog/indian-passport-photo-requirements/">Indian passport photo rules</Link>{" "}
-        guide, the canonical reference we keep updated.
+        explain which case is yours.
       </p>
 
       <div className="my-8 overflow-x-auto rounded-xl border border-hairline text-sm">
@@ -128,7 +117,7 @@ export default function Page() {
               <td className="px-4 py-3 text-muted-foreground">Free</td>
               <td className="px-4 py-3 font-medium text-emerald-700">No — on-device</td>
               <td className="px-4 py-3 text-muted-foreground">✓ Seva spec</td>
-              <td className="px-4 py-3 text-muted-foreground">✓ 40+ portals</td>
+              <td className="px-4 py-3 text-muted-foreground">✓ Exam photo and signature sizes</td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">PassportSizePhoto.in</td>
@@ -152,24 +141,17 @@ export default function Page() {
               <td className="px-4 py-3 text-muted-foreground">None</td>
             </tr>
             <tr>
-              <td className="px-4 py-3 font-medium text-ink">AI passport photo apps</td>
-              <td className="px-4 py-3 text-muted-foreground">Paid · varies by app</td>
-              <td className="px-4 py-3 font-medium text-amber-700">Yes — cloud AI</td>
-              <td className="px-4 py-3 text-muted-foreground">Often wrong spec</td>
-              <td className="px-4 py-3 text-muted-foreground">None</td>
-            </tr>
-            <tr>
               <td className="px-4 py-3 font-medium text-ink">PhotoGov</td>
               <td className="px-4 py-3 text-muted-foreground">Limited free use + paid options</td>
               <td className="px-4 py-3 font-medium text-amber-700">Yes — server + email required</td>
-              <td className="px-4 py-3 text-muted-foreground">⚠ Generic India page shows US spec</td>
+              <td className="px-4 py-3 text-muted-foreground">✓ On its 35×45 mm India page</td>
               <td className="px-4 py-3 text-muted-foreground">None</td>
             </tr>
             <tr>
               <td className="px-4 py-3 font-medium text-ink">Cutout.pro</td>
               <td className="px-4 py-3 text-muted-foreground">5 free credits, then paid credits</td>
               <td className="px-4 py-3 font-medium text-amber-700">Yes — AWS server</td>
-              <td className="px-4 py-3 text-muted-foreground">India listed (spec unconfirmed)</td>
+              <td className="px-4 py-3 text-muted-foreground">India listed</td>
               <td className="px-4 py-3 text-muted-foreground">None</td>
             </tr>
           </tbody>
@@ -183,45 +165,40 @@ export default function Page() {
       <h2>easyPhoto — free, on-device, built around Indian documents</h2>
 
       <p>
-        <em>This is our product. Read the section above for the independent comparison.</em>
+        <em>This is our product.</em>
       </p>
 
       <p>
-        easyPhoto prepares the <Link href="/india-passport-photo-maker/">India 35×45 mm under-four print</Link> and passport photos for the US, UK, Canada, Schengen and 20+
-        other countries), resizes exam photos to selected KB targets and published pixel dimensions where available for the{" "}
-        <Link href="/exam-requirements/">40+ Indian exam
-        portals</Link> (SSC, IBPS, UPSC, SBI, RRB, NTA and more), and handles PDF compression, signature
-        resize, and format conversion. Nothing is uploaded: every operation runs in your browser
-        using WebAssembly. Each country and exam shows its named source and whether it has been checked; confirm
-        the current portal instructions before submitting.
+        easyPhoto prepares the <Link href="/india-passport-photo-maker/">India 35×45 mm under-four print</Link> and passport
+        and visa photos for the US, UK, Canada, Schengen and many other countries. For{" "}
+        <Link href="/exam-requirements/">Indian exam forms</Link> (SSC, IBPS, UPSC, SBI, RRB, NTA and
+        more) it sizes the photo and signature to the KB band and pixel size each notice publishes,
+        and it also resizes signatures and converts formats. Nothing is uploaded: everything runs in
+        your browser. Each country and exam page links the official source it follows.
       </p>
 
       <p>
-        The reason we built it specifically for India is that general photo tools do not usually
-        include per-exam KB targets or published dimensions. Some current workflows use live
-        capture or do not publish fixed pixels, so the tool also surfaces provenance and review
-        caveats. It is free with no account required.
+        We built it for India because general photo tools rarely know an exam&apos;s KB band. Some
+        exams, such as SSC, now take the photo live in the form, and the tool says so rather than
+        making a file you can&apos;t use. It is free, with no account.
       </p>
 
       <h2>PassportSizePhoto.in — free, WebAssembly, India-first</h2>
 
       <p>
         PassportSizePhoto.in is a free, India-native passport photo tool built on WebAssembly with
-        a verifiable &quot;zero-data-transfer&quot; privacy model: processing runs entirely in
-        the browser and photos are never sent to a server. It offers a 630×810 px,
-        10–250 KB option, but the official 630×810 instruction we found applies to
-        overseas Indian-mission ICAO guidance; the 250 KB cap is not confirmed as
-        an ordinary Passport Seva requirement. The tool claims DPDPA (India&apos;s Digital Personal Data Protection Act)
-        compliance alongside GDPR, and a Hindi-language version is available.
+        a &quot;zero-data-transfer&quot; privacy model: it says processing runs entirely in the
+        browser and photos are never sent to a server. Alongside 35×45 mm it offers a
+        630×810 px option, which matches the size Indian missions abroad ask for. It states
+        compliance with DPDPA (India&apos;s Digital Personal Data Protection Act) and GDPR, and
+        has a Hindi version.
       </p>
 
       <p>
         The feature set goes beyond a basic crop: a print layout selector lets you output 1, 4, 6,
         or 8 photos per 4R sheet for physical printing; background colour options include white,
-        off-white, light blue, and light grey; and a guided three-step flow walks through upload,
-        settings, and download clearly. The workflow steps are visually structured on their
-        how-to-use page: upload with drag-and-drop or camera, choose document type and layout,
-        then download a print-ready sheet.
+        off-white, light blue, and light grey; and a three-step flow takes you from upload, by
+        drag-and-drop or camera, to a print-ready sheet.
       </p>
 
       <p>
@@ -242,17 +219,17 @@ export default function Page() {
       </p>
 
       <p>
-        There&apos;s also no KB-target output control and no exam portal sizes. The tool
+        There&apos;s also no way to set a KB size and no exam sizes. The tool
         generates a cropped, background-removed photo, but you can&apos;t tell it &quot;give me
         this under 50 KB at 275×354 px.&quot; A general resize step is still needed after.
       </p>
 
-      <h2>Visafoto — the paid option with an accuracy guarantee</h2>
+      <h2>Visafoto — the paid option with a refund promise</h2>
 
       <p>
-        Visafoto charges a localised one-time fee — ₹600 per photo for India — and
-        publishes a 99.7% pass rate with replacement, correction or refund terms
-        if officials reject the photo. Its{" "}
+        Visafoto charges a one-time fee per photo and, on its own pricing page, claims a 99.7%
+        acceptance rate and offers a replacement, correction or refund if officials reject the
+        photo. That backstop is something a free browser tool can&apos;t offer. Its{" "}
         <a
           href="https://visafoto.com/visafoto-prices"
           target="_blank"
@@ -261,50 +238,36 @@ export default function Page() {
         >
           public price page
         </a>{" "}
-        can display different currencies, so
-        verify the current checkout amount before ordering. A human second opinion
-        can be useful for a foreign-visa workflow with detailed photo rules.
+        shows the fee in your local currency, so check the checkout amount before ordering. A human
+        second opinion can be worth paying for on a foreign visa with detailed photo rules.
       </p>
 
       <p>
-        For most Indian passport or exam photo use cases — where the official portal simply checks
-        dimensions and file size — a paid review may be unnecessary. Compare the
-        current fee and service scope for a Schengen visa rather than assuming the
-        same value for an SSC CGL registration. It
-        also uploads your photo to a remote server for processing, which is the same privacy
-        trade-off as other server-based tools. There are no exam photo sizes.
+        For an under-four print or an exam form, where the form checks size and file limits, a
+        paid review is usually more than you need. Visafoto also processes your photo on its
+        server and has no Indian exam sizes.
       </p>
 
-      <h2>What about AI passport photo apps?</h2>
+      <h2>What about paid AI photo apps?</h2>
 
       <p>
-        Several paid photo apps — including Passport Photo Online, AIPassportPhoto, and others —
-        use machine learning to adjust background, lighting, and expression automatically. They
-        generally require server upload and payment before you can download the result.
-        AIPassportPhoto&apos;s India page (as of June 2026) lists the spec as 2×2 inches,
-        the US size, not the 35×45 mm print Passport Seva requires for a child
-        below four. Ordinary adults are photographed at the PSK/POPSK.
+        Paid apps such as Passport Photo Online adjust the background and lighting for you. They
+        generally process the photo on their servers and charge before the full download. If you
+        use one for an Indian print, check that it gives 35×45 mm and not the US 2×2 inch size.
       </p>
 
       <h2>PhotoGov — check which India page you land on</h2>
 
       <p>
-        PhotoGov (photogov.net) serves 1.8 million users across 200 countries and 900+ document
-        types. It is a large, well-established tool. An India 35×45 mm crop exists
-        on their dedicated page (/documents/in-passport-35x45mm-photo/). However, their generic
-        India passport page (/documents/in-passport-photo/) showed 2×2 inches (51×51 mm) — the
-        US specification — with a light grey background rather than the India-mandated white. This
-        is a verifiable content discrepancy on their site (confirmed June 2026). If you use
-        PhotoGov for the below-four print, navigate to the specific 35×45 mm page,
-        not the generic India page.
+        PhotoGov (photogov.net) covers a long list of countries and document types. It has a
+        dedicated India 35×45 mm page; if you use it for the under-four print, start from that
+        page and check that the result is 35×45 mm on white before you print.
       </p>
 
       <p>
-        Other caveats: PhotoGov requires an email address and uploads your photo to their server
-        for processing. The free tier is location-dependent; Indian users may face a paywall;
-        paid options may be offered. There is also a human expert-review add-on;
-        check the live checkout for its current availability and price. No exam
-        portal support of any kind.
+        PhotoGov asks for an email address and processes your photo on its server. What is free
+        depends on where you are, and it sells paid options, including a human review; check the
+        checkout before you rely on it. It has no exam sizes.
       </p>
 
       <h2>Cutout.pro — AI background removal, but credit-gated for passport photos</h2>
@@ -321,20 +284,15 @@ export default function Page() {
         >
           current pricing page
         </a>
-        . Free previews are watermarked. Photos are
-        uploaded to Amazon Web Services and retained for 24–48 hours. Public reports (Cybernews
-        2023; Trustpilot references to a BreachForums posting in February 2024) document past
-        data security incidents.
+        . Free previews are watermarked. Its privacy policy says photos are processed on Amazon
+        Web Services and kept for 24–48 hours after your last edit.
       </p>
 
       <p>
         Cutout.pro is genuinely strong at AI background removal for complex subjects: product
         photography, hair, transparent objects. For a one-off Indian passport photo, that
-        capability is not needed and the credit pricing is poor value. See the dedicated{" "}
-        <Link href="/blog/cutout-pro-alternative-india/" className="text-brand underline">
-          Cutout.pro alternatives post
-        </Link>{" "}
-        for a full comparison including PassportMaker and PassportSizePhoto.in.
+        capability is not needed, and buying credits for one photo costs more than a free tool.
+        It makes more sense for bulk product photos or video backgrounds.
       </p>
 
       <h2>Which should you use?</h2>
@@ -343,30 +301,28 @@ export default function Page() {
         <li>
           <strong>Under-four passport print:</strong> <Link href="/india-passport-photo-maker/">easyPhoto</Link> or
           PassportSizePhoto.in can prepare a 35×45 mm crop without uploading your
-          source image. Use the dedicated square OCI size.
+          source image. For OCI, use the square OCI size instead.
         </li>
         <li>
-          <strong>SSC, IBPS, UPSC, SBI, RRB, NTA exam form:</strong> <Link href="/exam-requirements/">easyPhoto</Link>, the only tool
-          with verified KB and pixel targets per portal.
+          <strong>SSC, IBPS, UPSC, SBI, RRB, NTA exam form:</strong> <Link href="/exam-requirements/">easyPhoto</Link>, the
+          only tool here with each exam&apos;s KB band and pixel size, linked to its notice.
         </li>
         <li>
-          <strong>Visa for a foreign country with strict embassy standards:</strong> Visafoto or
-          Passport Photo Online are worth the cost for the compliance guarantee.
+          <strong>A foreign visa where a rejection would be costly:</strong> a paid service such
+          as Visafoto, if its refund or replacement terms are worth the fee to you.
         </li>
         <li>
           <strong>Privacy is a hard requirement:</strong> easyPhoto or PassportSizePhoto.in.
-          Both use on-device WebAssembly processing; easyPhoto&apos;s model is verifiable via
-          the browser network tab (zero image upload requests sent).
+          Both say they process photos in the browser. You can check easyPhoto yourself: open
+          the browser&apos;s network tab while it works and no image upload is sent.
         </li>
         <li>
-          <strong>You found PhotoGov and want to use it:</strong> Navigate specifically to their
-          India 35×45 mm page for the below-four print. Their generic India passport page shows the US spec. Or use a
-          free on-device tool and skip the server upload entirely.
+          <strong>You found PhotoGov and want to use it:</strong> start from its India
+          35×45 mm page, or use a free on-device tool and skip the server upload.
         </li>
         <li>
-          <strong>You are considering Cutout.pro:</strong> It runs out of free credits after two
-          passport photos, then requires a subscription. For one-off document photos, the free
-          on-device tools are better value. Cutout.pro is strong for bulk product photography.
+          <strong>You are considering Cutout.pro:</strong> its free credits cover two passport
+          photos. For a one-off document photo a free on-device tool costs nothing.
         </li>
       </ul>
 
@@ -376,20 +332,8 @@ export default function Page() {
         <strong>Is the India passport photo size 35×45 mm or 2×2 inches?</strong>
       </p>
       <p>
-        Passport Seva requires a 35×45 mm white-background print for a child below
-        four. An ordinary adult domestic applicant supplies neither size because
-        the photo is captured at the PSK/POPSK. A 2×2 inch square belongs to
-        separate workflows such as OCI.
-      </p>
-
-      <p>
-        <strong>Can I use a phone photo for my Indian passport application?</strong>
-      </p>
-      <p>
-        For an ordinary adult domestic application, no: Passport Seva captures the
-        photograph at the PSK/POPSK. A phone image can be prepared for the
-        below-four print or an overseas workflow only when that workflow&apos;s
-        current instructions ask for one.
+        35×45 mm, for the print a child below four needs. The 2×2 inch size is the US one; India&apos;s
+        OCI photo is also square, at least 51×51 mm, but it is a separate upload.
       </p>
 
       <p>
@@ -398,7 +342,7 @@ export default function Page() {
       <p>
         easyPhoto, PassportSizePhoto.in, and IDPhoto4You do not add a watermark; downloads are
         fully free. Cutout.pro&apos;s free tier produces watermarked previews; a watermark-free
-        full-resolution download requires credits (confirmed by independent reviews). Visafoto
+        full-resolution download requires credits. Visafoto
         and Passport Photo Online are paid tools; there is no free download tier.
       </p>
     </BlogPostLayout>

@@ -30,7 +30,7 @@ export default function Page() {
       ctaHref="/exam-requirements/ssc/"
       ctaLabel="Prepare the separate SSC signature"
     >
-      <p className="text-sm text-ink-soft">Last reviewed: 15 October 2026</p>
+      <p className="text-sm text-ink-soft">Last reviewed: 2 November 2026</p>
       <p>
         SSC doesn&apos;t take a photo file. In its 2026 applications (CGL, CHSL, CPO, GD, JE, Steno
         and the rest) the form takes your photo live, through your phone or computer camera, while
@@ -113,8 +113,7 @@ export default function Page() {
         picture of the paper. Candidates with visual disability (PwD-VH) may use a thumb
         impression instead under the CGL, Hindi Translators and Selection Post notices. The{" "}
         <Link href="/exam-requirements/ssc/">SSC signature page</Link> cleans the paper, brings the
-        file to {spec.sigMinKb}–{spec.sigLimitKb}&nbsp;KB and lists every 2026 SSC notice it is
-        checked against.
+        file to {spec.sigMinKb}–{spec.sigLimitKb}&nbsp;KB, and links each 2026 SSC notice.
       </p>
 
       <h2>Applying with Aadhaar authentication</h2>

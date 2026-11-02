@@ -12,6 +12,7 @@
  * pages rather than duplicates.
  */
 import { COUNTRY_SPECS, LAUNCH_ORDER, type CountrySpec } from "./countrySpecs";
+import { isDeindexed } from "./deindexed";
 
 export type MakerKind = "passport" | "visa";
 
@@ -196,20 +197,43 @@ export interface HubCountry {
  * homepage picker — read from this, so the two sections can never drift apart
  * again. The visa hub lists visa maker pages; the passport hub and homepage
  * list every launch country routed to its primary maker (a bespoke passport
- * page where one exists, otherwise the visa maker — same photo frame).
+ * page where one exists, otherwise the visa maker — same photo frame). Only
+ * pages that are still indexed are listed (see hubDestination).
  */
+/**
+ * Where a hub sends a country whose own maker page has been retired. The
+ * Schengen and Canada makers 301 to their guides, which carry the same tool; any
+ * other retired maker has no replacement page, so it leaves the pickers.
+ */
+const RETIRED_MAKER_REPLACEMENT: Record<string, string> = {
+  "/schengen-visa-photo-maker/": "/schengen-visa-photo/",
+  // The Canada visa maker 301s to the Canada guide, which now carries the tool.
+  "/canada-visa-photo-maker/": "/canada-passport-photo/",
+};
+
+function hubDestination(path: string): string | undefined {
+  if (!isDeindexed(path)) return path;
+  return RETIRED_MAKER_REPLACEMENT[path];
+}
+
 export function hubCountries(kind: MakerKind): HubCountry[] {
-  if (kind === "visa") {
-    return makerPagesByKind("visa").map((m) => {
-      const spec = COUNTRY_SPECS[m.countryId];
-      return { key: m.slug, flag: m.flag, label: spec.label, path: `/${m.slug}/`, spec };
-    });
-  }
-  return LAUNCH_ORDER.map((id) => ({
-    key: id,
-    flag: id,
-    label: COUNTRY_SPECS[id].label,
-    path: primaryMakerPath(id),
-    spec: COUNTRY_SPECS[id],
-  }));
+  const all: HubCountry[] =
+    kind === "visa"
+      ? makerPagesByKind("visa").map((m) => {
+          const spec = COUNTRY_SPECS[m.countryId];
+          return { key: m.slug, flag: m.flag, label: spec.label, path: `/${m.slug}/`, spec };
+        })
+      : LAUNCH_ORDER.map((id) => ({
+          key: id,
+          flag: id,
+          label: COUNTRY_SPECS[id].label,
+          path: primaryMakerPath(id),
+          spec: COUNTRY_SPECS[id],
+        }));
+  // A picker that lands on a redirect or a page hidden from search sends the
+  // visitor (and a reviewer) somewhere the site no longer stands behind.
+  return all.flatMap((c) => {
+    const path = hubDestination(c.path);
+    return path ? [{ ...c, path }] : [];
+  });
 }

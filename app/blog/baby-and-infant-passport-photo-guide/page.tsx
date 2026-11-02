@@ -18,7 +18,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What if the white sheet has shadows behind the baby's head?",
-    a: "Shadows are the main reason DIY baby photos fail. Use soft, diffuse daylight from the side and shoot in a well-lit room rather than under a ceiling light. If light shadows remain, the white background tool can often clean them without affecting the face.",
+    a: "Shadows are a common problem with home baby photos. Use soft, diffuse daylight from the side and shoot in a well-lit room rather than under a ceiling light. If light shadows remain, the white background tool can often clean them without affecting the face.",
   },
   {
     q: "How do I get a baby to look at the camera?",
@@ -37,12 +37,12 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 2 November 2026</p>
       <p>
         A baby can&apos;t sit up on command, hold a neutral expression or look at
-        a lens. Yet the photo still has to meet the same compliance rules as an
-        adult&apos;s. The good news is that countries relax a few rules for
-        infants, and a plain white sheet plus a phone is all you need.
+        a lens. The photo still has to meet the size and background rules, but
+        countries relax a few others for infants, and a plain white sheet plus
+        a phone is all you need.
         Here&apos;s how to do it without a studio.
       </p>
 
@@ -50,20 +50,19 @@ export default function Page() {
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>Lay the baby on a plain white sheet and photograph straight down — the sheet doubles as the background.</li>
-          <li>Eyes should be open; a calm, closed-mouth face is ideal but slight expressions are usually accepted for very young babies.</li>
+          <li>Aim for open eyes and a calm face; the US, for one, accepts a newborn&apos;s eyes not fully open.</li>
           <li>No hands, toys, pacifiers or straps can be visible in the frame.</li>
           <li>Upload to the <Link href="/baby-passport-photo/" className="text-brand underline">baby passport photo maker</Link> to crop automatically to the correct size and background.</li>
         </ul>
       </div>
 
-      <h2>Concrete output example</h2>
+      <h2>What the crop does with your photo</h2>
       <p>
         A wide phone photo of a baby lying on a sheet is trimmed to the frame your
         destination country uses, and the face is never stretched to fit. If you
-        choose the United States, the output is a 51×51&nbsp;mm square and keeps the chin-to-crown height inside the
-        25–35&nbsp;mm band. The official U.S. guidance also states that
-        an infant&apos;s eyes do not have to be fully open. Always select the actual
-        destination country because its dimensions and infant exceptions may differ.
+        choose the United States, the output is a 51×51&nbsp;mm square with the
+        chin-to-crown height inside the 25–35&nbsp;mm band. Select the actual
+        destination country, because sizes and infant exceptions differ.
       </p>
 
       <h2>What&apos;s relaxed for babies — and what isn&apos;t</h2>
@@ -101,7 +100,7 @@ export default function Page() {
       <p>
         The{" "}
         <a
-          href="https://travel.state.gov/content/travel/en/passports/photos.html"
+          href="https://travel.state.gov/en/passports/apply/help/photos.html"
           className="text-brand underline"
           target="_blank"
           rel="noopener noreferrer"
@@ -146,7 +145,7 @@ export default function Page() {
         to their eye level and snap when they look toward the lens.
       </p>
 
-      <h2>Troubleshooting baby passport photos</h2>
+      <h2>When the baby photo goes wrong</h2>
       <table className="my-5 w-full border-collapse text-[14px]"><thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead><tbody className="text-ink-soft">{[
         ["Hands or a support are visible", "Lay the baby flat and keep support beneath the sheet and outside the frame."],
         ["Sheet creates grey shadows", "Use diffuse daylight, smooth the sheet and move the light so it falls evenly."],
@@ -159,9 +158,9 @@ export default function Page() {
         Babies move, so you&apos;ll rarely frame it perfectly in-camera. Upload
         your best shot to the{" "}
         <Link href="/baby-passport-photo/">baby passport photo maker</Link>, and
-        it crops to the correct head size and sets the right background. See the
-        exact rules on your country page, such as{" "}
-        <Link href="/us-passport-photo-maker/">the US requirement page</Link>. If a stray shadow or
+        it crops to the correct head size and sets the right background. Each
+        country&apos;s maker page, such as the{" "}
+        <Link href="/us-passport-photo-maker/">US passport photo maker</Link>, lists its rules. If a stray shadow or
         off-white sheet shows, the{" "}
         <Link href="/tools/white-background/">white background tool</Link>{" "}
         cleans it up.

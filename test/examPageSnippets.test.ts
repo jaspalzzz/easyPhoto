@@ -49,9 +49,11 @@ describe("Voter ID", () => {
 });
 
 describe("dates", () => {
-  it("move for the four changed pages", () => {
-    for (const id of ["ssc", "upsc", "voter-id", "airforce-agniveer"]) {
-      expect(examPageLastModified(id)).toBe("2026-10-15");
+  it("move for the pages whose text changed", () => {
+    // Rewritten again on 2 Nov 2026 (AdSense round 5). Agniveervayu, the
+    // fourth page in the 15 Oct set, has since left the index.
+    for (const id of ["ssc", "upsc", "voter-id"]) {
+      expect(examPageLastModified(id)).toBe("2026-11-02");
     }
   });
 });

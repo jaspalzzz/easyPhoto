@@ -47,6 +47,7 @@ import {
   SITE_NAME,
   GOOGLE_SITE_VERIFICATION,
   BING_SITE_VERIFICATION,
+  ADSENSE_CLIENT,
 } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -75,6 +76,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
+  other: { "google-adsense-account": ADSENSE_CLIENT },
   // Rendered only when the env vars are set (see lib/site.ts) — paste your
   // Search Console / Bing codes post-deploy to verify ownership.
   ...(GOOGLE_SITE_VERIFICATION || BING_SITE_VERIFICATION

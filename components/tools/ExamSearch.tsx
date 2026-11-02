@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Search, X, Landmark, Lock, Gift } from "lucide-react";
+import { Search, X, Landmark, Gift } from "lucide-react";
+import { SITE_COUNTS } from "@/components/site/siteCounts";
 
 /**
  * Shared exam-search state. The search box lives in the hero (ExamSearchControls)
@@ -22,12 +23,14 @@ export function ExamSearchProvider({ children }: { children: React.ReactNode }) 
   return <Ctx.Provider value={{ query, setQuery }}>{children}</Ctx.Provider>;
 }
 
-const POPULAR = ["SSC", "UPSC", "IBPS", "Railway", "NEET", "PAN"];
+const POPULAR = ["SSC", "UPSC", "IBPS", "Railway", "PAN"];
 
 const TRUST = [
-  { Icon: Landmark, text: "52+ exam specs, each with a published source" },
-  { Icon: Lock,     text: "100% private — nothing is uploaded" },
-  { Icon: Gift,     text: "Free, with no sign-up required" },
+  {
+    Icon: Landmark,
+    text: `${SITE_COUNTS.examForms} exams and forms; ${SITE_COUNTS.examFormsWithOfficialDate} checked against the official notice, with the date`,
+  },
+  { Icon: Gift, text: "Free, with no sign-up" },
 ];
 
 const scrollToPicker = () =>
@@ -49,7 +52,7 @@ export function ExamSearchControls() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && scrollToPicker()}
-          placeholder="Search your exam (e.g. SSC, UPSC, IBPS, NEET)…"
+          placeholder="Search your exam (e.g. SSC, UPSC, IBPS, RRB)…"
           aria-label="Search exams"
           className="h-11 w-full rounded-xl border border-hairline bg-card pl-10 pr-9 text-[14px] text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-brand/40 focus:ring-1 focus:ring-brand/20"
         />

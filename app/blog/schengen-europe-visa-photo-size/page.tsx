@@ -12,16 +12,8 @@ const FAQ_ITEMS = [
     a: "The print size is the same everywhere: 35 × 45 mm under the ICAO standard, taken within the last 6 months with a neutral expression. The face usually fills 70–80% of the frame (about 32–36 mm chin to crown), but a few missions set their own head size: the Netherlands asks for 26–30 mm. The background shade differs most, so check the mission handling your application.",
   },
   {
-    q: "What background colour does a Schengen visa photo need?",
-    a: "It varies by destination. Germany's sample sheet asks for a one-colour bright background, ideally neutral grey, with contrast against the face and hair. France asks for a plain light-coloured background, while the Netherlands lists light grey, light blue or white. Check the mission handling your application rather than treating one shade as universal.",
-  },
-  {
     q: "What does Germany's photo sheet say about the background?",
-    a: "It asks for a one-colour bright background, ideally neutral grey, with enough contrast against the face and hair. The cited sheet does not state a blanket ban on white, so use its contrast test and check the mission's current instructions.",
-  },
-  {
-    q: "Is the Schengen photo the same for every country?",
-    a: "The shared template is 35 × 45 mm with a 70–80% face band, but member-state instructions can differ on background colour and submission details. Confirm the destination mission's current page before submitting.",
+    a: "It asks for a one-colour bright background, ideally neutral grey, with enough contrast against your face and hair. It does not ban white: the shade that works depends on your hair, so pick one that clearly separates from it.",
   },
 ];
 
@@ -36,7 +28,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 2 November 2026</p>
       <p>
         If you&apos;re applying for a Schengen visa or a European student/work
         visa, start with the shared 35 × 45 mm format, then check the mission that
@@ -54,14 +46,14 @@ export default function Page() {
         </ul>
       </div>
 
-      <h2>Concrete output example</h2>
+      <h2>What the photo maker gives you</h2>
       <p>
-        The Schengen photo maker produces a 35×45&nbsp;mm JPG. At a 300&nbsp;DPI
-        print reference, that corresponds to approximately 413×531&nbsp;px;
-        an input portrait of any larger dimensions is cropped to that aspect ratio
-        rather than stretched. The file-size limit is deliberately not stated as a
-        single number because <code>countrySpecs.ts</code> records it as varying by
-        consulate or VFS portal. Confirm the current upload limit before compressing.
+        The{" "}
+        <Link href="/schengen-visa-photo/">Schengen visa photo maker</Link>{" "}
+        produces a 35×45&nbsp;mm JPG, about 413×531&nbsp;px at 300&nbsp;DPI. A
+        larger photo is cropped to that shape rather than stretched. There is no
+        EU-wide file-size limit: each consulate or VFS portal sets its own, so
+        check yours before compressing.
       </p>
 
       <h2>The standard Schengen photo size</h2>
@@ -76,43 +68,40 @@ export default function Page() {
       <h2>Compare the destination&apos;s background instruction</h2>
       <p>
         All Schengen states follow ICAO, but they interpret the background
-        differently. The table below records what each linked instruction says;
-        it is not a substitute for the mission&apos;s current application page:
+        differently. The table below sums up what each linked instruction says;
+        your mission&apos;s current application page still has the final word:
       </p>
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
           <tr className="border-b border-hairline text-left">
             <th className="py-2 pr-3 font-semibold text-ink">Country</th>
             <th className="py-2 pr-3 font-semibold text-ink">Background</th>
-            <th className="py-2 font-semibold text-ink">Make · source</th>
+            <th className="py-2 font-semibold text-ink">Source</th>
           </tr>
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["Germany", "One-colour bright; neutral grey ideal; contrast required", "/germany-visa-photo-maker/", "https://www.germany.info/resource/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf"],
-            ["France", "Plain light-coloured", "/france-visa-photo-maker/", "https://france-visas.gouv.fr/documents/d/france-visas/iso_iec_fv_visa_photograph_requirements_en"],
-            ["Italy", "White", "/italy-visa-photo-maker/", "https://italyvms.com/photo-requirements/"],
-            ["Netherlands", "Light grey, light blue or white", "/netherlands-visa-photo-maker/", "https://www.netherlandsworldwide.nl/passport-id-card/photo-requirements"],
-          ].map(([c, bg, maker, href]) => (
+            ["Germany", "One-colour bright; neutral grey ideal; contrast required", "https://www.germany.info/resource/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf"],
+            ["France", "Plain light-coloured", "https://france-visas.gouv.fr/documents/d/france-visas/iso_iec_fv_visa_photograph_requirements_en"],
+            ["Italy", "White", "https://italyvms.com/photo-requirements/"],
+            ["Netherlands", "Light grey, light blue or white", "https://www.netherlandsworldwide.nl/passport-id-card/photo-requirements"],
+          ].map(([c, bg, href]) => (
             <tr key={c} className="border-b border-hairline/60">
               <td className="py-2 pr-3 font-medium text-ink">{c}</td>
               <td className="py-2 pr-3">{bg}</td>
               <td className="py-2">
-                <Link href={maker}>Make&nbsp;→</Link>{" "}·{" "}
-                <a href={href} target="_blank" rel="noopener noreferrer">source</a>
+                <a href={href} target="_blank" rel="noopener noreferrer">{c} instruction</a>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <p>
-        If you&apos;re unsure, do not rely on a universal background colour. Check the
-        current embassy, consulate or application-centre instruction for your destination.
-        For EU Schengen visa requirements, see the{" "}
+        For the visa rules that apply across the Schengen area, see the{" "}
         <a href="https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en" className="text-brand underline" target="_blank" rel="noopener noreferrer">European Commission Schengen visa guidance</a>.
       </p>
 
-      <h2>Troubleshooting rejected Schengen photos</h2>
+      <h2>Why Schengen photos get refused</h2>
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead>
         <tbody className="text-ink-soft">
@@ -127,19 +116,16 @@ export default function Page() {
 
       <h2>How to make one free, without uploading your photo</h2>
       <p>
-        Pick your country on the{" "}
-        <Link href="/visa-photo/">visa photo maker</Link> (or use a country link
-        above), drop in a clear front-facing photo, and it crops to 35×45 mm with
-        the correct background applied automatically and a compliance check before
-        you download. Everything runs in your browser — your photo is never
-        uploaded.
+        Drop a clear front-facing photo into the Schengen visa photo maker and it
+        crops to 35×45 mm on light grey, its starting shade; switch the shade if
+        your mission names another, such as Italy&apos;s white. Everything runs in your browser,
+        so your photo is never uploaded.
       </p>
       <p>
         Need to hit a specific upload size too? If the current consulate or VFS
         page publishes a KB cap, use the{" "}
         <Link href="/tools/resize-kb/">compress-to-KB tool</Link> on the finished
-        photo. Always confirm the exact requirement on your consulate or VFS portal
-        before submitting. For photo dimensions across all passport and visa types,
+        photo. For photo sizes in other countries,
         see{" "}
         <Link href="/blog/passport-photo-size-by-country/">passport photo size by country</Link>.
       </p>

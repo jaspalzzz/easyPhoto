@@ -18,8 +18,7 @@ export default function Page() {
     <ToolPage
       title="Center Your Face in the Photo"
       slug="face-centering"
-      blurb="Upload a passport or ID photo and get a visual overlay showing whether your face is horizontally centred — with a bounding box, centre crosshair, and centering score. Also checks head tilt. Face detection runs entirely on your device."
-      footnote="Uses MediaPipe FaceLandmarker running as WebAssembly in your browser."
+      blurb="Upload a passport or ID photo and get a visual overlay showing whether your face is horizontally centred — with a bounding box, centre crosshair, and centering score. Also checks head tilt."
     >
       <FaceCenteringTool />
 

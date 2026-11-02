@@ -3,10 +3,11 @@ import { ArrowRight } from "lucide-react";
 import type { PortalSpec } from "@/lib/portalPresets";
 import {
   listedPortalSpecs,
-  photoDimsPx,
+  photoSizeLabel,
   portalCategory,
   PORTAL_CATEGORY_LABEL,
-  sigDimsPx,
+  sigSizeLabel,
+  specProvenance,
   type PortalCategory,
 } from "@/lib/specRegistry";
 import { pageMetadata } from "@/lib/seo";
@@ -19,23 +20,35 @@ export const metadata = pageMetadata({
   title: "Exam Photo & Signature Size 2026 — Full List for Indian Exams",
   titleAbsolute: true,
   description:
-    "Compare photo and signature requirements for 20+ Indian exam and recruitment forms — SSC, UPSC, IBPS, SBI, RRB, CUET, CTET, Agniveer and state PSCs — with the official source for each.",
+    "Compare photo and signature sizes for SSC, UPSC, RRB, IBPS, UP Police, CSIR-NET, PAN, OCI, voter ID and driving licence forms, with the official source for each.",
   path: "/exam-photo-size/",
 });
 
+// CLAUDE.md §3: a figure the source doesn't publish (an easyPhoto default) is
+// never listed as the requirement.
+const NO_LIMIT = "No published limit";
 const photoKb = (s: PortalSpec) =>
   // SSC takes no photo file — the form captures it live.
   s.noPhotoUpload
     ? "Live capture"
-    : s.photoMinKb
-      ? `${s.photoMinKb}–${s.photoLimitKb} KB`
-      : `≤ ${s.photoLimitKb} KB`;
+    : !specProvenance(s).verified
+      ? NO_LIMIT
+      : s.photoMinKb
+        ? `${s.photoMinKb}–${s.photoLimitKb} KB`
+        : `≤ ${kbText(s.photoLimitKb)}`;
 const sigKb = (s: PortalSpec) =>
-  s.sigLimitKb
-    ? s.sigMinKb
-      ? `${s.sigMinKb}–${s.sigLimitKb} KB`
-      : `≤ ${s.sigLimitKb} KB`
-    : "—";
+  !s.sigLimitKb
+    ? "No signature upload"
+    : !specProvenance(s).verified
+      ? NO_LIMIT
+      : s.sigMinKb
+        ? `${s.sigMinKb}–${s.sigLimitKb} KB`
+        : `≤ ${s.sigLimitKb} KB`;
+const shortName = (s: PortalSpec) => s.name.split(" (")[0];
+/** 2000 KB reads as the portal's own "2 MB". */
+const kbText = (kb: number) => (kb >= 1000 && kb % 1000 === 0 ? `${kb / 1000} MB` : `${kb} KB`);
+const joinAnd = (items: string[]) =>
+  items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 const CATEGORY_ORDER: PortalCategory[] = [
   "central",
   "banking",
@@ -46,27 +59,44 @@ const CATEGORY_ORDER: PortalCategory[] = [
   "visa",
 ];
 
-const FAQS: FaqItem[] = [
-  {
-    q: "What is the standard photo size for Indian exam forms?",
-    a: "Most Indian exam portals want the photo at 20–50 KB and the signature at 10–20 KB, usually around 3.5×4.5 cm. But it varies by exam — UPSC allows up to 200 KB, GATE up to 600 KB, and some State PSCs differ — so always match the exact exam, which is what this table is for.",
-  },
-  {
-    q: "Why do the listed size requirements matter?",
-    a: "A portal can flag an upload that exceeds its file-size cap or does not match published dimensions. Prepare the file to the listed requirements and confirm the current notification before submitting.",
-  },
-  {
-    q: "How do I resize my photo to the listed requirements?",
-    a: "Pick your exam below to open its page, then use the in-browser resizer, which is already set to that exam's KB limit and its published dimensions where they exist. Confirm the current notification. It runs entirely on your device — nothing is uploaded — and it is free with no watermark.",
-  },
-  {
-    q: "How are these sizes sourced?",
-    a: "Each exam page names its source where one exists and says whether we have checked it. Some pages say a figure still needs checking. Requirements can change between notification cycles, so confirm on the current portal before submitting.",
-  },
-];
+/** "There is no standard size" — answered from the table's own rows. */
+function standardSizeAnswer(specs: PortalSpec[]): string {
+  const uploads = specs.filter((s) => !s.noPhotoUpload && specProvenance(s).verified);
+  const live = specs.filter((s) => s.noPhotoUpload).map(shortName);
+  if (uploads.length < 2) {
+    return "There isn't one: each form sets its own limits, so open your form's page.";
+  }
+  const byCap = [...uploads].sort((a, b) => a.photoLimitKb - b.photoLimitKb);
+  const smallest = byCap[0];
+  const largest = byCap[byCap.length - 1];
+  const liveText = live.length
+    ? ` ${joinAnd(live)} take${live.length === 1 ? "s" : ""} no photo file at all: the form captures your photo live.`
+    : "";
+  return (
+    `There isn't one. In this table the largest photo file allowed runs from ` +
+    `${kbText(smallest.photoLimitKb)} (${shortName(smallest)}) to ${kbText(largest.photoLimitKb)} (${shortName(largest)}).` +
+    liveText +
+    " Match the limits of the exact form you are filling in."
+  );
+}
+
+function faqs(specs: PortalSpec[]): FaqItem[] {
+  return [
+    { q: "Is there a standard photo size for Indian exam forms?", a: standardSizeAnswer(specs) },
+    {
+      q: "How do I resize my photo to these sizes?",
+      a: "Open your form's page from the table and use its resizer, which is set to that form's KB band and, where the notice gives one, its pixel size. It runs on your device, so nothing is uploaded, and it's free with no watermark.",
+    },
+    {
+      q: "Where do these sizes come from?",
+      a: "Each form's page links to the official notice or portal the sizes come from, with the date we last checked it. A new notice can change them, so check the form you are filling in before you submit.",
+    },
+  ];
+}
 
 export default function Page() {
   const specs = listedPortalSpecs();
+  const FAQS = faqs(specs);
   const grouped = CATEGORY_ORDER.map((cat) => ({
     cat,
     label: PORTAL_CATEGORY_LABEL[cat],
@@ -94,12 +124,10 @@ export default function Page() {
           Exam Photo &amp; Signature Size — Full List
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          Every recorded figure in one table: the KB limits and pixel dimensions
-          for {specs.length} Indian exam and recruitment forms, side by
-          side so you can compare them without opening a page each. Where a
-          portal publishes no pixel size we say so rather than filling the cell.
-          Each row links through to that exam&apos;s own page for the source and
-          the resizer.
+          The photo and signature limits for {specs.length} Indian exam,
+          recruitment and ID forms in one table, so you can compare them without
+          opening each page. Where a notice gives no pixel size, the table says
+          so. Each row links to that form&apos;s page, with its source and a resizer.
         </p>
       </header>
 
@@ -111,10 +139,10 @@ export default function Page() {
               <thead>
                 <tr className="border-b border-hairline bg-paper text-left">
                   <th className="px-3 py-2.5 font-semibold">Exam / form</th>
-                  <th className="px-3 py-2.5 font-semibold">Photo</th>
-                  <th className="px-3 py-2.5 font-semibold">Photo px</th>
-                  <th className="px-3 py-2.5 font-semibold">Signature</th>
-                  <th className="px-3 py-2.5 font-semibold">Sig px</th>
+                  <th className="px-3 py-2.5 font-semibold">Photo file</th>
+                  <th className="px-3 py-2.5 font-semibold">Photo size</th>
+                  <th className="px-3 py-2.5 font-semibold">Signature file</th>
+                  <th className="px-3 py-2.5 font-semibold">Signature size</th>
                 </tr>
               </thead>
               <tbody>
@@ -125,13 +153,13 @@ export default function Page() {
                         href={`/exam-requirements/${s.id}/`}
                         className="font-medium text-foreground hover:text-brand hover:underline"
                       >
-                        {s.name.split(" (")[0]}
+                        {shortName(s)}
                       </Link>
                     </td>
                     <td className="px-3 py-2.5 font-mono text-[14px] text-ink-soft">{photoKb(s)}</td>
-                    <td className="px-3 py-2.5 font-mono text-[14px] text-ink-soft">{photoDimsPx(s, "") ?? "Not published"}</td>
+                    <td className="px-3 py-2.5 font-mono text-[14px] text-ink-soft">{s.noPhotoUpload ? "—" : (photoSizeLabel(s) ?? "Not published")}</td>
                     <td className="px-3 py-2.5 font-mono text-[14px] text-ink-soft">{sigKb(s)}</td>
-                    <td className="px-3 py-2.5 font-mono text-[14px] text-ink-soft">{sigDimsPx(s, "") ?? "Not published"}</td>
+                    <td className="px-3 py-2.5 font-mono text-[14px] text-ink-soft">{!s.sigLimitKb ? "—" : (sigSizeLabel(s) ?? "Not published")}</td>
                   </tr>
                 ))}
               </tbody>
@@ -141,11 +169,10 @@ export default function Page() {
       ))}
 
       <section className="rounded-lg border border-hairline bg-paper p-5 sm:p-6">
-        <h2 className="text-base font-semibold tracking-tight">Resize to the selected requirements — free</h2>
+        <h2 className="text-base font-semibold tracking-tight">Resize your photo and signature</h2>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Found your exam? Open its page for the full spec and the in-browser
-          resizer, or jump straight to a tool. Everything runs on your device —
-          nothing is uploaded.
+          Open your exam&apos;s page for all its rules and its resizer, or go
+          straight to a tool.
         </p>
         <div className="mt-4 flex flex-wrap gap-1.5">
           <Link href="/exam-requirements/" className="inline-flex items-center gap-1 rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-brand transition-colors hover:bg-brand-soft/50">
@@ -159,12 +186,6 @@ export default function Page() {
           </Link>
         </div>
       </section>
-
-      <p className="text-xs text-muted-foreground">
-        Specs can change between notification cycles — each exam page links to its
-        named source and shows its review status. Always verify on the current
-        authority portal before submitting.
-      </p>
 
       <section>
         <Faq items={FAQS} noSchema />

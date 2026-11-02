@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BLOG_POSTS } from "@/lib/blog";
+import { isDeindexed } from "@/lib/deindexed";
 
 /**
  * Latest written guides, surfaced on the homepage.
@@ -15,7 +16,7 @@ import { BLOG_POSTS } from "@/lib/blog";
  * published guide surfaces without anyone having to reorder the registry.
  */
 export function LatestGuides() {
-  const posts = [...BLOG_POSTS]
+  const posts = BLOG_POSTS.filter((post) => !isDeindexed(`/blog/${post.slug}/`))
     .sort((a, b) => (b.updatedISO ?? b.dateISO).localeCompare(a.updatedISO ?? a.dateISO))
     .slice(0, 6);
 

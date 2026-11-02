@@ -7,27 +7,14 @@ const pageSource = fs.readFileSync(
   "utf8"
 );
 
-describe("high-demand exam depth", () => {
-  it("keeps Army Agniveer guidance honest about unpublished upload figures", () => {
-    const block = pageSource.match(
-      /\{exam === "army-agniveer" && \([\s\S]*?\n      \)\}/
-    )?.[0];
-
-    expect(block).toBeTruthy();
-    expect(block).toContain("does not publish a photo or");
-    expect(block).toContain("figures shown in this compatibility tool therefore remain");
-    expect(block).toContain("follow the live portal rather than forcing the file");
-    expect(block).toContain('href="/tools/exam-package/"');
-    expect(block).toContain(
-      'href="/blog/how-to-prepare-documents-for-exam-applications-india/"'
-    );
-    expect(block).not.toMatch(/\b(?:130|170|200|230|413|531)\s*(?:px|KB)\b/i);
-  });
-
-  it("keeps contextual guide links on the two already-rich workflow pages", () => {
-    expect(pageSource).toContain('href="/blog/driving-licence-photo-size-sarathi/"');
-    expect(pageSource).toContain(
-      'href="/blog/how-to-prepare-documents-for-exam-applications-india/"'
-    );
+describe("exam page template", () => {
+  // The bespoke Sarathi / IAF / Army / SBI blocks only repeated the requirement
+  // cards (1 Nov 2026 review) and were removed. The Sarathi guide is still
+  // linked from the driving-licence page through examGuideLinks().
+  it("removes the bespoke blocks that restated the requirement cards", () => {
+    for (const exam of ["sbi", "driving-licence", "airforce-agniveer", "army-agniveer", "csir-net"]) {
+      expect(pageSource).not.toContain(`{exam === "${exam}" && (`);
+    }
+    expect(pageSource).not.toMatch(/record sets|upload targets|compatibility tool/);
   });
 });

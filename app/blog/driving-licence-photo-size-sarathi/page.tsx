@@ -13,15 +13,15 @@ const FAQ_ITEMS = [
   },
   {
     q: "What is the signature size for a driving licence on Sarathi?",
-    a: "Sarathi's scan guide specifies a JPG signature between 10 KB and 20 KB, with a preferred 256×64 px canvas. The applicant must sign on white paper with a black pen.",
+    a: "Sarathi's scan guide specifies a JPG signature between 10 KB and 20 KB, at a preferred 256×64 px. Sign on white paper with a black pen. If you can't sign, Sarathi takes a thumb impression instead: the right thumb for women and the left for men.",
   },
   {
     q: "Why is my photo being rejected on the Sarathi driving licence portal?",
-    a: "The Sarathi guide says the upload shows an error when file size or format is not prescribed, and warns that an unclear photo or signature may be rejected. Prepare JPG files within 10–20 KB, use the published canvas, and check the preview before saving.",
+    a: "The Sarathi guide says the upload shows an error when file size or format is not prescribed, and warns that an unclear photo or signature may be rejected. Prepare JPG files within 10–20 KB at the preferred pixel sizes, and check the preview before saving.",
   },
   {
     q: "Do I need separate photos for LL and DL applications?",
-    a: "Sarathi publishes one photo-and-signature scan guide, but the service shown after you select a state can control the current workflow. Use the published guide as preparation and confirm the instructions displayed for the LL or DL service you choose.",
+    a: "Sarathi publishes one photo-and-signature scan guide, and the same sizes apply to learner's and driving licence applications. The screen shown after you pick your state and service has the final word, so check it before uploading.",
   },
   {
     q: "Can I use an Aadhaar or PAN card photo for my driving licence?",
@@ -56,9 +56,9 @@ export default function Page() {
           Sarathi photo and signature scan guide
         </a>{" "}
         for preparing both files before the relevant online application. It specifies
-        10–20&nbsp;KB JPG files for both photo and signature, along
-        with preferred pixel canvases. Confirm the instructions displayed after you
-        select your state and service.
+        10–20&nbsp;KB JPG files for both photo and signature, each at a preferred
+        pixel size. The screen shown after you pick your state and service has the
+        final word.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
@@ -73,8 +73,7 @@ export default function Page() {
             black ink on white paper
           </li>
           <li>
-            <strong>Scan resolution:</strong> minimum approximately 300&nbsp;DPI;
-            confirm the current state/service screen
+            <strong>Scan resolution:</strong> about 300&nbsp;DPI or more
           </li>
         </ul>
       </div>
@@ -99,7 +98,7 @@ export default function Page() {
           {[
             ["File format", "JPEG / JPG", "JPEG / JPG"],
             ["File-size band", "10–20 KB", "10–20 KB"],
-            ["Published canvas", "420×525 px preferred", "256×64 px preferred"],
+            ["Pixel size", "420×525 px preferred", "256×64 px preferred"],
             ["Scan resolution", "Minimum approximately 300 DPI", "Minimum approximately 300 DPI"],
             ["Background", "White or light-coloured, plain", "White paper"],
             ["Orientation", "Portrait", "Landscape"],
@@ -120,9 +119,8 @@ export default function Page() {
         <Link href="/exam-requirements/driving-licence/" className="text-brand underline">
           driving licence photo resizer
         </Link>{" "}
-        prepares the photo and signature inside the 10–20&nbsp;KB band and applies
-        their published preferred canvases — all in your browser with nothing sent to
-        a server. Confirm the current state/service screen before submitting.
+        makes both files inside the 10–20&nbsp;KB band at the preferred pixel sizes,
+        in your browser with nothing sent to a server.
       </p>
 
       <h2>Which Sarathi service does this scan guide cover?</h2>
@@ -148,10 +146,10 @@ export default function Page() {
             ["File outside 10–20 KB", "Prepare each JPG inside the published band"],
             ["PNG, PDF, or HEIC format", "Convert to JPEG before uploading"],
             ["Coloured or patterned background", "Shoot against white; or use background removal tool"],
-            ["Black-and-white photo", "Portal requires colour even though DL prints are monochrome"],
+            ["Black-and-white photo", "The guide asks for a colour photo; rescan or retake it in colour"],
             ["Blurry or unclear image", "Use a clear source and check the upload preview"],
             ["Glasses with reflections", "Avoid reflections so the eyes remain clearly visible"],
-            ["Signature on ruled / tinted paper", "White unlined paper only — ruled lines cause rejection"],
+            ["Signature on ruled or tinted paper", "Sign on plain white paper, as the guide asks"],
             ["Signature uses another ink colour", "Use the black pen specified by the guide"],
           ].map(([reason, fix]) => (
             <tr key={reason} className="border-b border-hairline/60">
@@ -162,11 +160,11 @@ export default function Page() {
         </tbody>
       </table>
 
-      <div className="my-8 rounded-xl border border-hairline bg-paper p-5 text-sm leading-relaxed text-ink-soft">
-        Sarathi source note: the published scan guide specifies 10–20&nbsp;KB for
-        both files, a preferred 420×525&nbsp;px photo and 256×64&nbsp;px signature.
-        Other ID workflows are not used as substitutes for these values.
-      </div>
+      <p>
+        If a file is over 20&nbsp;KB, Sarathi&apos;s own advice is to lower the scan
+        resolution or crop closer, rather than squeezing the quality until the face
+        blurs.
+      </p>
 
       <h2>How to prepare your Sarathi photo and signature in three steps</h2>
 
@@ -174,8 +172,9 @@ export default function Page() {
         <li>
           <strong>Take the photo:</strong> Stand against a plain white or light wall
           in good natural light. Face the camera directly, neutral expression, no
-          glasses if they reflect light. Use the published 420×525&nbsp;px portrait
-          canvas and check that both eyes remain clearly visible.
+          glasses if they reflect light. Leave room around your head and shoulders
+          for the 420×525&nbsp;px portrait crop, and check that both eyes are
+          clearly visible.
         </li>
         <li>
           <strong>Take the signature:</strong> Sign your name on a blank white A4

@@ -3,14 +3,12 @@
 import * as React from "react";
 import { Globe, FileCheck2, Wrench, Landmark } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { LAUNCH_ORDER } from "@/lib/countrySpecs";
-import { PORTAL_KEYS, PORTAL_PRESETS } from "@/lib/portalPresets";
-import { LISTED_TOOLS } from "@/lib/toolsCatalog";
+import { SITE_COUNTS } from "@/components/site/siteCounts";
 
 /**
  * StatsBand — factual credibility strip with count-up animation.
  * Numbers animate from 0 → target when the band scrolls into view (once per session).
- * Every value is derived from real catalog data at build time so it can never drift.
+ * Every value comes from SITE_COUNTS, the same numbers every other page prints.
  */
 
 interface Stat {
@@ -22,17 +20,15 @@ interface Stat {
 }
 
 const STATS: Stat[] = [
-  { Icon: Globe,      num: LAUNCH_ORDER.length, suffix: "+", label: "Countries supported", sub: "Passport & visa specs"           },
-  { Icon: FileCheck2, num: PORTAL_KEYS.length,  suffix: "+", label: "Exam & form specs",   sub: "SSC, UPSC, Railway & more"       },
-  { Icon: Wrench,     num: LISTED_TOOLS.length, suffix: "+", label: "Free tools",          sub: "Photo, ID & signature"          },
+  { Icon: Globe,      num: SITE_COUNTS.countries, suffix: "", label: "Countries",         sub: "Passport & visa photo sizes"  },
+  { Icon: FileCheck2, num: SITE_COUNTS.examForms, suffix: "", label: "Exams & forms",     sub: "SSC, UPSC, Railway & more"    },
+  { Icon: Wrench,     num: SITE_COUNTS.tools,     suffix: "", label: "Free tools",        sub: "Photo, ID & signature"        },
   {
     Icon: Landmark,
-    num: Object.values(PORTAL_PRESETS).filter(
-      (spec) => spec.verification === "official" && Boolean(spec.verifiedOn),
-    ).length,
+    num: SITE_COUNTS.examFormsWithOfficialDate,
     suffix: "",
-    label: "Source-verified specs",
-    sub: "Official source and date recorded",
+    label: "Checked at the source",
+    sub: "Exams & forms with a dated official source",
   },
 ];
 
@@ -93,7 +89,7 @@ export function StatsBand() {
   return (
     <div className="pt-8 sm:pt-10">
       <p className="mb-5 text-[12px] font-bold uppercase tracking-widest text-muted-foreground">
-        Built on documented, published specifications — not opinions
+        Sizes taken from what each authority publishes
       </p>
       <div
         ref={statsRef}

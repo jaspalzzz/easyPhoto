@@ -7,28 +7,24 @@ export interface FaqItem {
 
 export const HOME_FAQ: FaqItem[] = [
   {
-    q: "Is my photo uploaded to a server?",
-    a: "No. Every step (face detection, cropping, background replacement and file compression) runs entirely in your browser. Your image is never sent to or stored on any server.",
-  },
-  {
     q: "Is it really free? Is there a watermark?",
-    a: "Yes, it's completely free with no watermark, no sign-up and no payment. You download the full-quality photo.",
+    a: "Yes, it is free, with no watermark and no sign-up. You download the full-quality file. Optional tips help pay for the site, which will also carry ads.",
   },
   {
     q: "What can the photo checks confirm?",
-    a: "The tool can size the head, apply the selected background and review measurable image properties before download. It cannot predict acceptance. Check the linked source and the current application instructions before submitting.",
+    a: "Pixel size, file size and format are measured exactly. Head size, face position, background and lighting are estimates that can warn you about a likely problem. Neither kind of check can tell you whether the authority will accept the photo, so compare the result with the current application instructions before submitting.",
   },
   {
-    q: "Why is the background light grey rather than white for the UK and Schengen?",
-    a: "For Schengen, because some consulates — Switzerland in particular — do ask for grey. For the UK it is a preference, not a rule: HM Passport Office accepts any plain light colour and names shades of white among its examples. Light grey is used as one setting that suits both, and you can change it.",
+    q: "Why isn't the background plain white for the UK and Schengen?",
+    a: "For a Schengen visa the shade is set by the consulate handling your application, so easyPhoto starts with light grey and you can change it. For a UK passport, HM Passport Office accepts any plain light background and names cream, ivory, vanilla and light grey among its examples; easyPhoto starts with a light cream. In both cases the starting shade is easyPhoto's choice, not a rule.",
   },
   {
     q: "What photo should I use?",
-    a: "A clear, front-facing photo in good, even lighting with a neutral expression and your whole head and the top of your shoulders visible. Higher-resolution photos give sharper results that are easier to inspect.",
+    a: "A recent photo taken from about two metres away, facing the camera, in even light, with a neutral expression and your whole head and the top of your shoulders in the frame. Arm's-length selfies distort the face and leave too little room to crop.",
   },
   {
-    q: "Can I use this for both printing and online upload?",
-    a: "Yes. You get a print-ready file at the correct millimetre size and DPI, and a separate upload-ready file compressed under the portal's file-size limit.",
+    q: "Can I use one photo for printing and for an online form?",
+    a: "Usually, yes. The passport and visa makers give a file at the printed millimetre size for a photo lab, and the resize tools bring a copy under a form's KB limit. Some applications, such as an adult Indian passport at a PSK, take the photo at the counter, so check what yours asks for first.",
   },
 ];
 

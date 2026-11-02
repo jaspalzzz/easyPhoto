@@ -10,10 +10,10 @@ import { EXAM_SIZE_GUIDE_FAQ_ITEMS } from "@/lib/examGuideCopy";
  * with the upload, and one signature image of 350–500 pixels holding three
  * signatures in black ink. Before this check the NDA/CDS post said the
  * signature had no pixel size and took blue ink, and neither UPSC post
- * mentioned the live photo.
+ * mentioned the live photo. The NDA/CDS post was later merged into the UPSC
+ * post (1 Nov 2026), which now carries the defence-applicant notes.
  */
 const POSTS = [
-  "app/blog/nda-cds-photo-signature-guide-2026/page.tsx",
   "app/blog/upsc-cse-ias-photo-signature-guide-2026/page.tsx",
   "app/blog/exam-photo-signature-size-guide/page.tsx",
 ];
@@ -43,7 +43,7 @@ describe("UPSC blog posts match UPSC's upload instructions", () => {
     expect(text).not.toMatch(/all-capitals (?:signatures )?(?:are )?rejected|<td[^>]*>Rejected</i);
   });
 
-  it("the NDA/CDS signature row gives UPSC's pixel range", () => {
+  it("the UPSC post's signature row gives UPSC's pixel range", () => {
     const row = read(POSTS[0]).match(/Pixel dimensions<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>/);
     expect(row?.[1]).toBe("No fixed size published");
     expect(row?.[2]).toBe("350–500&nbsp;px");
@@ -56,7 +56,7 @@ describe("UPSC blog posts match UPSC's upload instructions", () => {
   });
 
   it("links SBI careers at its current address", () => {
-    const text = read(POSTS[2]);
+    const text = read(POSTS[1]);
     expect(text).not.toContain("sbi.co.in/careers");
     expect(text).toContain("https://sbi.bank.in/web/careers");
   });

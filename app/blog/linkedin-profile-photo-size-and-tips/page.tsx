@@ -9,11 +9,11 @@ const post = getPost("linkedin-profile-photo-size-and-tips")!;
 const FAQ_ITEMS = [
   {
     q: "What is the best size for a LinkedIn profile photo?",
-    a: "800×800 px is the practical sweet spot — it looks sharp on high-DPI laptop and phone screens and stays well under the 8 MB file limit. The minimum is 400×400 px, but this can appear slightly soft on modern retina displays.",
+    a: "800×800 px or larger looks sharp on high-resolution laptop and phone screens and stays well under the 8 MB file limit. 400×400 px is the minimum, and it can look slightly soft on those screens.",
   },
   {
     q: "Why does LinkedIn crop my photo into a circle and cut off my head?",
-    a: "LinkedIn stores your square image and displays it in a circular frame. If your head is near the top edge of the square, the circular crop clips it. To fix this, re-crop the photo with more space above your head — the LinkedIn photo maker centres your face automatically.",
+    a: "LinkedIn stores your square image and displays it in a circular frame. If your head is near the top edge of the square, the circular crop clips it. To fix this, re-crop the photo square with your face in the middle and more space above your head.",
   },
   {
     q: "Should I use a JPG or PNG for my LinkedIn photo?",
@@ -21,7 +21,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can I use the same photo for LinkedIn and my resume?",
-    a: "Yes, from the same original shot. Use the LinkedIn photo maker for the square 800×800 px crop (circular display) and the resume photo maker for the 35×45 mm passport-size crop. Both tools work from the same source image in your browser.",
+    a: "Yes, from the same original shot. Crop one copy square for LinkedIn, and make a 35×45 mm passport-size copy with the resume photo maker for your CV.",
   },
 ];
 
@@ -35,7 +35,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
+    <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS} ctaHref="/tools/background-removal/" ctaLabel="Remove the background">
       <p>
         Your LinkedIn photo is the first thing recruiters and connections see, and
         the platform has specific size rules. Get the dimensions wrong and your
@@ -47,9 +47,9 @@ export default function Page() {
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
-          <li>LinkedIn requires a <strong>square</strong> image, minimum <strong>400×400&nbsp;px</strong>.</li>
+          <li>Use a <strong>square</strong> image of at least <strong>400×400&nbsp;px</strong>; LinkedIn shows it as a circle.</li>
           <li>Recommended: <strong>800×800&nbsp;px</strong> or larger for crisp display on high-DPI screens.</li>
-          <li>JPG or PNG, under <strong>8&nbsp;MB</strong>. LinkedIn crops it into a circle — keep your face centred with headroom.</li>
+          <li>JPG or PNG, under <strong>8&nbsp;MB</strong>. Keep your face centred with room above your head.</li>
         </ul>
       </div>
 
@@ -66,7 +66,6 @@ export default function Page() {
             ["Shape", "Square (1:1 ratio)"],
             ["Minimum size", "400×400 px"],
             ["Recommended size", "800×800 px or larger"],
-            ["Maximum size", "7680×7680 px"],
             ["File format", "JPG or PNG"],
             ["File size limit", "Under 8 MB"],
             ["Display shape", "Circular (corners clipped)"],
@@ -106,16 +105,14 @@ export default function Page() {
       <p>
         You don&apos;t need a designer. Take a clear, front-facing photo, crop it
         to a square with your face in the middle in your phone&apos;s photo editor,
-        and save it at 400×400 pixels or larger. Want a plain backdrop? Run it
-        through the{" "}
-        <Link href="/tools/background-removal/">background remover</Link> first;
-        it works in your browser, so the photo is never uploaded to a server.
+        and save it at 400×400 pixels or larger. Want a plain backdrop? Run the
+        photo through the{" "}
+        <Link href="/tools/background-removal/">background remover</Link> or the{" "}
+        <Link href="/tools/white-background/">white background maker</Link> before
+        you crop; both work in your browser, so the photo is never uploaded.
       </p>
       <p>
-        Want a distraction-free backdrop first? Run the photo through the{" "}
-        <Link href="/tools/background-removal/">background remover</Link> or the{" "}
-        <Link href="/tools/white-background/">white background maker</Link>, then
-        crop it. And if you&apos;re job-hunting, make a matching passport-size{" "}
+        If you&apos;re job-hunting, make a matching passport-size{" "}
         <Link href="/tools/resume-photo/">resume photo</Link> from the same
         headshot — see{" "}
         <Link href="/blog/resume-photo-size-and-rules/">resume photo size and rules</Link>{" "}

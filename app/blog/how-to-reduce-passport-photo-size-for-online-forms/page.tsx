@@ -11,19 +11,15 @@ const ibps = PORTAL_PRESETS.ibps;
 const FAQ_ITEMS = [
   {
     q: "Why is my photo rejected even though it's under the file-size cap?",
-    a: "Some upload portals set a band, not just a ceiling. IBPS publishes a 20–50 KB prepared-photo band, while UPSC publishes 20–200 KB. Current SSC applications instead capture the photograph live, so no prepared-photo band applies there.",
-  },
-  {
-    q: "Can I compress a photo without losing face clarity?",
-    a: "Compression can preserve usable clarity when the source is sharp, but a tighter target requires more information to be discarded. Use the portal's published minimum as the floor instead of choosing the smallest possible file.",
+    a: "Some forms set a band, not just a ceiling. IBPS wants a photo of 20–50 KB and UPSC 20–200 KB, so a file below the minimum is refused too. SSC takes no photo file at all: its form photographs you live.",
   },
   {
     q: "Should I compress first or crop to the right dimensions first?",
-    a: "Crop first. Start with the passport photo maker to get the correct head ratio and background, then run the result through a KB-target tool. Compressing before cropping wastes file budget on areas that will be cut away.",
+    a: "Crop first. Get the head size and background right with the passport photo maker, then compress the result. Compressing first spends the file size on parts of the picture that will be cut away.",
   },
   {
     q: "How do I handle a signature with a separate size limit?",
-    a: "Prepare it against the signature dimensions, format and KB band published by that portal. A clean, tightly cropped signature generally needs fewer encoded bytes than a scan containing a large grey paper margin.",
+    a: "Size it to the signature's own band and pixel size from the same notice. A tightly cropped signature on clean white paper needs far fewer kilobytes than a scan with a wide grey margin.",
   },
 ];
 
@@ -38,37 +34,37 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 2 November 2026</p>
       <p>
-        A phone photo can be much larger than an application portal permits.
-        When your upload fails with &quot;file too large,&quot; the fix is
-        compression. You don&apos;t need to retake the photo. Here&apos;s how to
-        hit an exact KB target without turning your face into mush.
+        A phone photo is usually several megabytes, far more than an online form
+        allows. When the upload fails with &quot;file too large,&quot; you
+        don&apos;t need to retake the photo: compress it to the limit the form
+        shows, without turning your face into mush.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
-          <li>Use the exact minimum, maximum, dimensions and format shown by the specific application portal; there is no universal government-form limit.</li>
-          <li>For example, IBPS publishes a 20–50&nbsp;KB prepared-photo band, while OCI uses a square 200–900&nbsp;px JPEG/JPG up to 200&nbsp;KB.</li>
-          <li>Use a target-KB tool that finds the right compression automatically — never guess a manual quality slider.</li>
+          <li>There is no universal limit. Use the minimum, maximum, pixel size and format shown on your form.</li>
+          <li>Crop first, then compress to a number inside the band, not to the smallest file you can make.</li>
+          <li>Use a tool that hits a KB figure for you rather than guessing with a quality slider.</li>
         </ul>
       </div>
 
-      <h2>Verified examples, not generic portal ranges</h2>
+      <h2>How different the limits are</h2>
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
           <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-3 font-semibold text-ink">Portal type</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Typical photo limit</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Form</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Photo limit</th>
           </tr>
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ["IBPS photo", "20–50 KB — official IBPS source"],
-            ["SSC photo", "Live capture — no prepared-photo KB upload in the cited current notice"],
-            ["OCI online photo", "Square 200–900 px JPEG/JPG, up to 200 KB — official OCI source"],
-            ["Schengen portal upload", "No shared cap published; confirm on the consulate/VFS form"],
+            ["IBPS photo", "20–50 KB, at a preferred 200×230 px"],
+            ["SSC photo", "No file: the form takes the photo live"],
+            ["OCI online photo", "Square, 200–900 px, JPEG/JPG, up to 200 KB"],
+            ["Schengen visa upload", "No EU-wide cap; set by each consulate or VFS form"],
           ].map(([type, limit]) => (
             <tr key={type} className="border-b border-hairline/60">
               <td className="py-2 pr-3 font-medium text-ink">{type}</td>
@@ -78,73 +74,57 @@ export default function Page() {
         </tbody>
       </table>
       <p>
-        Always read the form&apos;s instructions. Limits vary, and some portals
-        set a minimum as well as a maximum. Official sources:{" "}
-        <a href={PORTAL_PRESETS.ssc.source!.url} className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC current notice</a>,{" "}
+        Sources:{" "}
+        <a href={PORTAL_PRESETS.ssc.source!.url} className="text-brand underline" target="_blank" rel="noopener noreferrer">SSC notice</a>,{" "}
         <a href={ibps.source!.url} className="text-brand underline" target="_blank" rel="noopener noreferrer">IBPS recruitment instructions</a>, and the{" "}
         <a href="https://ociservices.gov.in/onlineOCI/onlineOCI/faq" className="text-brand underline" target="_blank" rel="noopener noreferrer">OCI Services FAQ</a>.
-      </p>
-
-      <h2>Concrete output example</h2>
-      <p>
-        If an OCI application requires its published photo format, prepare a
-        square JPEG/JPG between 200×200 and 900×900&nbsp;px and keep it at or
-        below 200&nbsp;KB. Compression changes JPEG encoding quality, not the
-        square canvas. For an IBPS upload, target its published 20–50&nbsp;KB band.
-        For current SSC applications, follow the live photograph interface rather
-        than preparing a photo file.
+        PAN, voter ID and driving-licence limits are in the{" "}
+        <Link href="/blog/indian-government-id-photo-requirements/">government ID photo guide</Link>,
+        and exam limits in the{" "}
+        <Link href="/blog/exam-photo-signature-size-guide/">exam photo size guide</Link>.
       </p>
 
       <h2>How to compress without losing sharpness</h2>
       <p>
-        Two things control a JPEG&apos;s file size: its pixel dimensions and its
-        quality setting. The trick is to reduce both just enough to slip under
-        the cap while retaining as much face detail as the target permits. A lower
-        target necessarily discards more JPEG information, so do not compress below
-        the portal&apos;s published minimum.
+        Two things set a JPEG&apos;s file size: its pixel size and its quality
+        setting. Reduce them only as far as the limit needs, because every step
+        down throws away face detail.
       </p>
       <ul>
-        <li>Start from the properly cropped passport photo, not the raw selfie.</li>
-        <li>Lower quality first; only shrink dimensions if you must.</li>
-        <li>Keep it a JPEG. PNGs are far larger for photos.</li>
-        <li>Don&apos;t over-compress below the portal&apos;s minimum, if it has one.</li>
+        <li>Start from the cropped passport photo, not the raw selfie.</li>
+        <li>Lower the quality first; shrink the pixel size only if the form allows it.</li>
+        <li>Keep it a JPEG when the form allows one. A PNG of the same photo is far larger.</li>
+        <li>Stay above the form&apos;s minimum, if it has one.</li>
       </ul>
 
-      <h2>The fast way: target an exact KB</h2>
+      <h2>The fast way: enter the KB figure</h2>
       <p>
-        Instead of guessing quality sliders, use a tool that searches for the
-        exact target automatically:
+        Type the limit from your form into the{" "}
+        <Link href="/tools/resize-kb/">KB resizer</Link> and it finds the
+        quality setting that lands there. Aim a few KB under the maximum, so a
+        50&nbsp;KB cap becomes 45–48&nbsp;KB, and never below the minimum.
       </p>
       <p>
-        Enter the portal&apos;s stated target in the{" "}
-        <Link href="/tools/resize-kb/">custom KB resizer</Link>. Do not choose a
-        smaller number merely because it is available; a minimum is part of the
-        requirement whenever the form states one.
-      </p>
-      <p>
-        Need to fit an exact width and height too? Make the photo with the{" "}
+        If the form also gives a width and height, make the photo with the{" "}
         <Link href="/passport-photo/">passport size photo maker</Link> for your
-        country first, which sets the frame, then compress. For a signature upload, the{" "}
+        country first, which sets the frame, then compress. For a signature
+        upload, the{" "}
         <Link href="/tools/signature-resize/?target=20">signature resizer</Link> does the
-        same job while matching the portal&apos;s stated format and size.
+        same job. Everything runs in your browser, so your photo is never
+        uploaded to a server.
       </p>
-
-      <h2>Get the photo right first</h2>
       <p>
-        Compression can&apos;t fix a non-compliant photo. Crop and set the
-        correct background with the{" "}
-        <Link href="/passport-photo/">passport photo maker</Link> first, then
-        compress the result. For recorded KB bands and published pixel dimensions by exam, see the{" "}
-        <Link href="/exam-requirements/ssc/">SSC requirement page</Link>. Everything runs in your browser, so your photo is
-        never uploaded to a server.
+        After downloading, check the real size: right-click the file and choose
+        Get Info (Mac) or Properties (Windows), and confirm it sits inside the
+        band.
       </p>
 
-      <h2>Troubleshooting upload failures</h2>
+      <h2>When the upload still fails</h2>
       <table className="my-5 w-full border-collapse text-[14px]"><thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead><tbody className="text-ink-soft">{[
-        ["File is below the maximum but still rejected", "Check whether the portal also sets a minimum, plus published pixel and format rules."],
-        ["Correct KB, wrong dimensions", "Set the required width and height first, then compress without resizing the canvas again."],
-        ["PNG remains too large", "Use JPG only when the published requirement allows JPG; do not silently change a mandated format."],
-        ["Text says file is too small", "Increase the target into the published band instead of lowering quality further."],
+        ["File is under the maximum but still refused", "Check whether the form also sets a minimum, a pixel size or a format."],
+        ["Right KB, wrong pixel size", "Set the width and height first, then compress without resizing again."],
+        ["PNG still too large", "Save it as a JPG if the form accepts JPG; don't switch format if the form names PNG."],
+        ["The form says the file is too small", "Enter a higher KB figure inside the band instead of lowering quality further."],
       ].map(([failure, fix]) => <tr key={failure} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{failure}</td><td className="py-2">{fix}</td></tr>)}</tbody></table>
 
       <div className="mt-12">
