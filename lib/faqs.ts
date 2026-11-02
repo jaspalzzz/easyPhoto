@@ -278,7 +278,7 @@ export const SIGN_PDF_FAQ: FaqItem[] = [
 ];
 
 export const SIGN_IMAGE_FAQ: FaqItem[] = [
-  { q: "How do I add a signature to a photo or image?", a: "Upload your image, then draw your signature, type your name in a handwriting style, or upload a signature image. Drag it into place, resize it and download the signed image." },
+  { q: "How do I add a signature to a photo or image?", a: "Upload your image, then draw your signature or add a scan of your handwritten one. Drag it into place, resize it and download the signed image." },
   { q: "Is this a digital signature?", a: "No. It places a picture of your signature on the image, like signing a printout. A legally valid digital signature on a document needs a digital signature certificate (DSC) or Aadhaar eSign." },
   { q: "Will my image stay a PNG?", a: "Yes. A PNG is saved as a PNG and keeps any transparent background; other images are saved as JPG. If you set a KB limit, the file is saved as JPG so it can be compressed." },
   { q: "Do I need an app to sign on a photo?", a: "No. It works in the browser on your phone or computer, with nothing to install." },

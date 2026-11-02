@@ -309,7 +309,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       {
         slug: "sign-image",
         title: "Sign Image / Photo",
-        blurb: "Draw, type or upload a signature and place it on a photo.",
+        blurb: "Draw your signature or upload a photo of it, then place it on a photo.",
         ready: true,
         popular: true,
         icon: "PenLine",
