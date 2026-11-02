@@ -8,24 +8,23 @@ import { PORTAL_PRESETS } from "@/lib/portalPresets";
 const post = getPost("why-exam-photo-signature-rejected")!;
 const ssc = PORTAL_PRESETS.ssc;
 const ibps = PORTAL_PRESETS.ibps;
-const upsc = PORTAL_PRESETS.upsc;
 
 const FAQ_ITEMS = [
   {
     q: "Why does an exam portal show a generic photo or signature error?",
-    a: "A generic validation message may cover file size, format, dimensions or a visual capture problem. First identify whether the current form uses a prepared upload or live capture, then compare only the published requirements for that workflow.",
+    a: "Most portals use one message for several faults: the file size, the format, the pixel size, or a photo the camera step could not use. Work through the six causes on this page in order; the first three can be checked from the file's details before you upload again.",
   },
   {
     q: "Does every exam photo need to be 20–50 KB?",
-    a: "No. IBPS publishes a 20–50 KB prepared photo, UPSC publishes 20–200 KB with no fixed photo pixels, and current SSC applications capture the photograph live rather than accepting a prepared photo file.",
+    a: "No. 20–50 KB is the IBPS and SBI photo band. UPSC accepts 20–200 KB, and SSC takes no photo file at all because the form photographs you live.",
   },
   {
     q: "Should I add my name and date to an exam photo?",
-    a: "Only when the current notice asks for it. TNPSC, APPSC and Kerala PSC record a digital treatment. Current UPSC, SSC and IBPS instructions do not. Airforce and Navy Agniveer use a physical slate workflow, which a digital strip cannot replace.",
+    a: "Only when your notice asks for it. TNPSC, APPSC and Kerala PSC ask for the name and photo date printed on the photo; UPSC, SSC and IBPS do not. The Air Force Agniveervayu notice wants a chalk slate held in the photo, which a printed strip cannot replace.",
   },
   {
     q: "Can a photo checker guarantee that my application will accept the file?",
-    a: "No. A checker can inspect measurable properties such as encoded dimensions, file size and format. It cannot reproduce every portal validator, assess identity or guarantee the authority's decision.",
+    a: "No. A checker can measure the file: its pixel size, file size and format. It cannot see every check a portal runs, judge whether the photo looks like you, or decide for the authority.",
   },
 ];
 
@@ -45,128 +44,86 @@ export default function Page() {
       ctaLabel="Check my photo for an exam"
       faqItems={FAQ_ITEMS}
     >
-      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 2 November 2026</p>
       <p>
-        A photo or signature can fail for different reasons depending on the
-        portal. The first distinction is whether the form accepts a prepared
-        file or captures the photograph live. A KB resizer helps with a file
-        upload; it cannot replace a camera step controlled by the authority.
+        &ldquo;Photo not as per specification&rdquo; usually means one of six
+        things. Before changing the photo, check which kind of form you are
+        filling in: SSC and RRB photograph you live in the form, while IBPS,
+        SBI and UPSC take a prepared photo file and also take a live photo. A
+        KB resizer can fix a file; it cannot do the camera step for you.
       </p>
-
-      <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
-        <p className="!mt-0 text-sm font-semibold text-ink">Start here</p>
-        <ul className="!mt-2 text-[15px]">
-          <li>Open the current notice for the exact exam and cycle.</li>
-          <li>Separate live photograph capture from prepared photo/signature uploads.</li>
-          <li>Check measurable requirements: format, KB band and published dimensions.</li>
-          <li>Then check the source image: visibility, lighting, background and framing stated by that notice.</li>
-        </ul>
-      </div>
-
-      <h2>Three workflows that should not be mixed</h2>
-      <div className="my-5 overflow-x-auto rounded-xl border border-hairline">
-        <table className="min-w-[720px] w-full border-collapse text-[14px]">
-          <thead>
-            <tr className="border-b border-hairline text-left">
-              <th className="px-4 py-3 font-semibold text-ink">Example</th>
-              <th className="px-4 py-3 font-semibold text-ink">Photograph workflow</th>
-              <th className="px-4 py-3 font-semibold text-ink">Separate signature</th>
-              <th className="px-4 py-3 font-semibold text-ink">What a tool can help with</th>
-            </tr>
-          </thead>
-          <tbody className="text-ink-soft">
-            <tr className="border-b border-hairline/60">
-              <td className="px-4 py-3 font-medium text-ink">SSC</td>
-              <td className="px-4 py-3">Live capture; no prepared photo upload in the cited notice</td>
-              <td className="px-4 py-3">{ssc.sigMinKb}–{ssc.sigLimitKb} KB JPG/JPEG, about 6.0×2.0 cm</td>
-              <td className="px-4 py-3">Prepare the separate signature; follow the camera interface for the photo</td>
-            </tr>
-            <tr className="border-b border-hairline/60">
-              <td className="px-4 py-3 font-medium text-ink">IBPS</td>
-              <td className="px-4 py-3">{ibps.photoMinKb}–{ibps.photoLimitKb} KB JPG/JPEG at 200×230 px</td>
-              <td className="px-4 py-3">{ibps.sigMinKb}–{ibps.sigLimitKb} KB at 140×60 px</td>
-              <td className="px-4 py-3">Prepare both sizes and KB bands</td>
-            </tr>
-            <tr>
-              <td className="px-4 py-3 font-medium text-ink">UPSC</td>
-              <td className="px-4 py-3">{upsc.photoMinKb}–{upsc.photoLimitKb} KB prepared JPG plus mandatory live photograph</td>
-              <td className="px-4 py-3">One {upsc.sigMinKb}–{upsc.sigLimitKb} KB JPG containing three signatures vertically</td>
-              <td className="px-4 py-3">Prepare the upload files; the live capture still happens in the portal</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p className="text-[14px] text-ink-soft">
-        Sources: <a href={ssc.source!.url} target="_blank" rel="noopener noreferrer" className="text-brand underline">SSC 2026 notice</a>,{" "}
-        <a href={ibps.source!.url} target="_blank" rel="noopener noreferrer" className="text-brand underline">IBPS notification</a>, and{" "}
-        <a href={upsc.source!.url} target="_blank" rel="noopener noreferrer" className="text-brand underline">UPSC upload instructions</a>.
-      </p>
-
-      <h2>1. The file is outside the published KB band</h2>
       <p>
-        A prepared upload can have both a minimum and a maximum. For example,
-        IBPS records {ibps.photoMinKb}–{ibps.photoLimitKb}&nbsp;KB for the photo
-        and {ibps.sigMinKb}–{ibps.sigLimitKb}&nbsp;KB for the signature. Compressing
-        below the minimum does not satisfy that band. SSC&apos;s current live
-        photograph has no prepared-photo band, so do not apply the IBPS number to it.
+        The sizes each exam publishes are side by side in the{" "}
+        <Link href="/blog/exam-photo-signature-size-guide/">exam photo and signature size guide</Link>.
+        This page is about what goes wrong and how to fix it.
       </p>
 
-      <h2>2. Published dimensions do not match</h2>
+      <h2>1. The file is outside the KB band</h2>
       <p>
-        Some upload fields publish a final pixel frame. IBPS records 200×230&nbsp;px
-        for the photo and 140×60&nbsp;px for the signature. Other sources, including
-        current UPSC photo instructions and the current SSC live-photo workflow,
-        publish no fixed photo pixels. When no dimensions are published, do not
-        invent them or copy them from another exam.
+        A band has a floor as well as a ceiling. IBPS asks for a{" "}
+        {ibps.photoMinKb}–{ibps.photoLimitKb}&nbsp;KB photo, so a 12&nbsp;KB file
+        is refused just like a 2&nbsp;MB one. Compress to a number inside the
+        band, not as small as possible. SSC takes no photo file, so its form
+        has no photo band to meet; only the {ssc.sigMinKb}–{ssc.sigLimitKb}&nbsp;KB
+        signature has one.
       </p>
 
-      <h2>3. The encoded format is different</h2>
+      <h2>2. The pixel size doesn&apos;t match</h2>
       <p>
-        A file named <code>.jpg</code> should contain JPEG bytes when the field
-        asks for JPG/JPEG. Renaming a PNG or HEIC file does not convert it. Use a
-        portal-specific workflow or the <Link href="/convert/">format converter</Link>,
-        then open the downloaded file once before uploading it.
+        Where a notice gives a pixel size, such as IBPS&apos;s 200×230&nbsp;px
+        photo and 140×60&nbsp;px signature, the file should be that size. UPSC
+        gives no fixed photo pixels, so don&apos;t force a size copied from
+        another exam onto a UPSC photo.
       </p>
 
-      <h2>4. The signature crop or paper field is unclear</h2>
+      <h2>3. The file is not really a JPG</h2>
       <p>
-        A large paper margin, shadow, faint stroke or clipped signature can make
-        the prepared image hard to read. The <Link href="/tools/signature-resize/">signature tool</Link>{" "}
-        can clean and crop the image, choose ink presentation and prepare a KB
-        target. Use the ink colour and background stated by the selected notice;
-        there is no universal black-or-blue rule.
+        Renaming a PNG or an iPhone HEIC photo to <code>.jpg</code> does not
+        change what is inside it, and the form can tell. Convert it with the{" "}
+        <Link href="/convert/">format converter</Link>, then open the downloaded
+        file once before uploading it.
       </p>
 
-      <h2>5. The wrong name/date treatment is used</h2>
+      <h2>4. The signature is hard to read</h2>
       <p>
-        A digital strip is recorded for TNPSC, APPSC and Kerala PSC. Current
-        UPSC, SSC and IBPS instructions do not list one. Airforce and Navy
-        Agniveer notices instead describe a physical black slate held when the
-        photograph is taken. The <Link href="/tools/photo-with-name-date/">digital name/date tool</Link>{" "}
-        should be used only for a notice that requests the digital treatment.
+        A wide paper margin, a shadow, a faint stroke or a clipped letter makes
+        the signature hard to read once it is shrunk to a few KB. The{" "}
+        <Link href="/tools/signature-resize/">signature tool</Link> whitens the
+        paper, crops to the ink and saves the file inside the KB band you enter.
+        Use the ink colour your notice names: IBPS, SBI, RRB and UPSC ask for
+        black, while TNPSC accepts blue or black.
       </p>
 
-      <h2>6. The live capture or source image is unclear</h2>
+      <h2>5. The name and date are handled the wrong way</h2>
       <p>
-        For a live camera step, follow the on-screen framing, lighting and
-        background instructions. For a prepared file, start with a clear source
-        that shows everything the current notice requests. Compression can change
-        bytes and dimensions; it cannot restore missing detail, prove identity or
-        reproduce the authority&apos;s final review.
+        TNPSC, APPSC and Kerala PSC want your name and the photo date printed
+        on the photo; UPSC, SSC and IBPS do not. The Air Force Agniveervayu
+        notice works differently again: you hold a black slate with your name
+        and the date in chalk while the photo is taken. The{" "}
+        <Link href="/tools/photo-with-name-date/">name and date tool</Link> is
+        only for notices that ask for printed text; see{" "}
+        <Link href="/blog/add-name-date-on-exam-photo/">how to add a name and date</Link>{" "}
+        for which is which.
       </p>
 
-      <h2>A practical pre-submission check</h2>
+      <h2>6. The live photo or the source photo is unclear</h2>
+      <p>
+        For a live photo, sit facing a window or lamp, in front of a plain
+        wall, and follow the outline on screen. For a prepared file, start from
+        a sharp, well-lit photo: compression can make a file smaller, but it
+        cannot put back detail that was never there.
+      </p>
+
+      <h2>Before you press submit</h2>
       <ul>
-        <li>Confirm the exam, year and notice URL.</li>
-        <li>Confirm whether the photograph is live capture, prepared upload, or both.</li>
-        <li>For each prepared file, check encoded format, KB band and published dimensions.</li>
-        <li>Follow only the ink, background, name/date and composition rules stated for that workflow.</li>
-        <li>Preview the result in the portal before final submission.</li>
+        <li>Open the current notice for your exam and year.</li>
+        <li>Check whether the form takes a photo file, a live photo, or both.</li>
+        <li>For each file, check the format, the KB band and any pixel size.</li>
+        <li>Preview the uploaded files in the form before final submission.</li>
       </ul>
       <p>
         The <Link href="/exam-requirements/">exam requirements directory</Link>{" "}
-        shows each exam&apos;s source and when we checked it. Where a page says a
-        figure still needs checking, confirm it in the live form before use.
+        links each exam&apos;s notice and the date we last checked it.
       </p>
 
       <div className="mt-12">

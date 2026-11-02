@@ -9,6 +9,33 @@ import { breadcrumbSchema, collectionPageSchema, type Crumb } from "@/lib/schema
 import { pageMetadata } from "@/lib/seo";
 import { ToolSearch } from "@/components/site/ToolSearch";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { PORTAL_PRESETS, type PortalSpec } from "@/lib/portalPresets";
+
+/*
+ * Exam shortcuts. The line under each name is built from the exam's own
+ * settings in lib/portalPresets.ts, so it can never disagree with the exam
+ * page: an exam that takes the photo live in the form says so instead of
+ * offering a photo "resizer" it cannot use (SSC, RRB).
+ */
+const EXAM_SHORTCUTS = [
+  { key: "ssc", label: "SSC" },
+  { key: "upsc", label: "UPSC" },
+  { key: "rrb", label: "Railway (RRB)" },
+  { key: "ibps", label: "IBPS banking" },
+] as const;
+
+function kbBand(min: number | undefined, max: number): string {
+  return min ? `${min}–${max} KB` : `up to ${max} KB`;
+}
+
+function examShortcutLine(spec: PortalSpec): string {
+  const photo = spec.isLiveCapture || spec.noPhotoUpload
+    ? "photo taken live in the form"
+    : `photo ${kbBand(spec.photoMinKb, spec.photoLimitKb)}`;
+  const signature = spec.sigLimitKb ? `signature ${kbBand(spec.sigMinKb, spec.sigLimitKb)}` : null;
+  const parts = [photo, signature].filter(Boolean).join(", ");
+  return parts.charAt(0).toUpperCase() + parts.slice(1);
+}
 
 export const metadata = pageMetadata({
   title: "Free Photo, Signature & ID Document Tools",
@@ -43,9 +70,8 @@ export default function ToolsHubPage() {
           Free, private tools
         </h1>
         <p className="mx-auto max-w-2xl text-muted-foreground">
-          Everyday photo, signature and document utilities that run entirely in your
-          browser. No sign-up, no watermark, and your files never leave your
-          device.
+          Photo, signature and document tools for Indian application forms. They run in
+          your browser, so your files stay on your device.
         </p>
         <div className="pt-1">
           <TrustPills />
@@ -126,65 +152,19 @@ export default function ToolsHubPage() {
       {/* Exam & Job Application Resizers */}
       <section className="mt-12">
         <h2 className="eyebrow mb-4">
-          Exam &amp; Job Application Resizers
+          Exam application sizes
         </h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4">
-          <Link
-            href="/exam-requirements/ssc/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">SSC Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
-          </Link>
-          <Link
-            href="/exam-requirements/ssc/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">SSC Signature Resizer</span>
-            <span className="text-muted-foreground leading-normal">Compress to under 20 KB</span>
-          </Link>
-          <Link
-            href="/exam-requirements/upsc/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">UPSC Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">Compress photo to 20–200 KB</span>
-          </Link>
-          <Link
-            href="/exam-requirements/upsc/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">UPSC Signature Resizer</span>
-            <span className="text-muted-foreground leading-normal">Compress to under 100 KB</span>
-          </Link>
-          <Link
-            href="/exam-requirements/rrb/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">Railway Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">RRB live-photo and signature guidance</span>
-          </Link>
-          <Link
-            href="/exam-requirements/ibps/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">IBPS Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
-          </Link>
-          <Link
-            href="/exam-requirements/sbi/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">SBI PO Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">Compress to under 50 KB</span>
-          </Link>
-          <Link
-            href="/exam-requirements/ctet/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">CTET Photo Resizer</span>
-            <span className="text-muted-foreground leading-normal">10–100 KB for ctet.nic.in</span>
-          </Link>
+          {EXAM_SHORTCUTS.map(({ key, label }) => (
+            <Link
+              key={key}
+              href={`/exam-requirements/${key}/`}
+              className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
+            >
+              <span className="font-semibold block text-foreground mb-0.5">{label} photo &amp; signature</span>
+              <span className="text-muted-foreground leading-normal">{examShortcutLine(PORTAL_PRESETS[key])}</span>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -219,7 +199,7 @@ export default function ToolsHubPage() {
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">🇺🇸 US Passport Photo</span>
-            <span className="text-muted-foreground leading-normal">2×2 inch, white bg, no glasses</span>
+            <span className="text-muted-foreground leading-normal">2×2 inch, white background, no glasses</span>
           </Link>
           <Link
             href="/uk-passport-photo/"
@@ -240,7 +220,7 @@ export default function ToolsHubPage() {
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">🇪🇺 Schengen Visa Photo</span>
-            <span className="text-muted-foreground leading-normal">35×45mm, light grey, all 29 countries</span>
+            <span className="text-muted-foreground leading-normal">35×45mm, plain light background</span>
           </Link>
           <Link
             href="/us-passport-photo-maker/"
@@ -254,21 +234,14 @@ export default function ToolsHubPage() {
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">🇬🇧 UK Passport Maker</span>
-            <span className="text-muted-foreground leading-normal">Grey bg auto-applied</span>
+            <span className="text-muted-foreground leading-normal">Starts with a light cream background</span>
           </Link>
           <Link
             href="/australia-passport-photo-maker/"
             className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
           >
             <span className="font-semibold block text-foreground mb-0.5">🇦🇺 Australia Passport</span>
-            <span className="text-muted-foreground leading-normal">35×45mm, white/light grey bg</span>
-          </Link>
-          <Link
-            href="/schengen-visa-photo-maker/"
-            className="rounded-md border border-hairline p-3.5 text-xs bg-card transition-colors hover:border-brand/40 hover:bg-accent/40"
-          >
-            <span className="font-semibold block text-foreground mb-0.5">🇪🇺 Schengen Maker</span>
-            <span className="text-muted-foreground leading-normal">Country-aware size and background</span>
+            <span className="text-muted-foreground leading-normal">35×45mm, white or light grey background</span>
           </Link>
         </div>
       </section>
@@ -280,39 +253,27 @@ export default function ToolsHubPage() {
           <div>
             <h3 className="text-sm font-semibold text-ink mb-1">Are all these tools really free?</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Yes — every tool on this page is completely free with no credits, no sign-up, and no
-              hidden charges. Processing happens in your browser using your device&apos;s CPU and memory,
-              so the only resource used is your own hardware. easyPhoto earns nothing from the tools
-              themselves; the service is free as a matter of principle.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-ink mb-1">Why do my files never leave my device?</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              All image processing, PDF operations, and signature cropping run locally using
-              browser APIs — there is no server upload step. Your photos, documents, and signatures
-              are processed in-memory on your device and the result is served back to you as a
-              download. This is different from most online tools, which send files to a server for
-              processing and may store them for days or weeks.
+              Yes. There are no credits, no sign-up and no watermark. The work happens on your own
+              phone or computer, so there is no per-file cost to pass on. easyPhoto is free; optional
+              tips help pay for it, and it will also carry ads.
             </p>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-ink mb-1">What file formats do the tools accept?</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Image tools accept JPEG, PNG, and WebP. PDF tools handle both single-page and
-              multi-page PDFs up to the browser&apos;s memory limit (typically 50–100 MB depending on
-              the device). Output format matches the tool — passport and exam photos are saved as
-              JPEG, signatures as PNG, and PDFs remain in PDF format. No conversion happens
-              unless the tool specifically offers it.
+              The photo and signature tools take JPG, PNG, WebP and iPhone HEIC files. Passport and
+              exam photos are saved as JPG, because that is what most forms ask for; a signature can
+              be saved as a JPG on white or a PNG with a see-through background. The document scanner
+              saves a PDF or a JPG.
             </p>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-ink mb-1">How are the KB and pixel targets set?</h3>
+            <h3 className="text-sm font-semibold text-ink mb-1">Where do the KB and pixel sizes come from?</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              File-size and dimension targets come from the official source named for each exam
-              or document. Each specification page says whether the figures were checked against
-              an official recruitment portal or notification, shows the date we checked, and says
-              plainly when a figure still needs checking. Confirm the current application instructions before submitting.
+              From the exam&apos;s or authority&apos;s own notice where one is published. Where it is not, the
+              page names the secondary source it relies on and marks the figure as still needing a
+              check. Each exam page links its source and shows the date we checked it. Confirm the
+              current application instructions before submitting.
             </p>
           </div>
         </div>
@@ -322,8 +283,8 @@ export default function ToolsHubPage() {
       <section className="mt-12 rounded-lg border border-hairline bg-card p-6">
         <h2 className="text-lg font-semibold">Passport &amp; visa photos</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Need to prepare an ID photo? Use the country-aware makers for the selected size,
-          selected background and a pre-submission photo check.
+          Need a passport or visa photo? The makers crop it to the size and background your
+          country asks for and check it before you download.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link

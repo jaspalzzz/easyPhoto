@@ -8,6 +8,7 @@ import {
   setWorkflowPayload,
   type WorkflowAssetKind,
 } from "@/lib/workflowHandoff";
+import { isDeindexed } from "@/lib/deindexed";
 
 export interface NextStepDef {
   slug: string;
@@ -34,11 +35,14 @@ interface Props {
 export function WorkflowNextSteps({
   getBlob,
   filename,
-  steps,
+  steps: allSteps,
   assetKind,
   rememberForExamKit,
   examId,
 }: Props) {
+  // Never send a visitor on to a tool that has been taken out of the index
+  // (e.g. the PDF tools after the scanner): it is a page we no longer list.
+  const steps = allSteps.filter((step) => !isDeindexed(`/tools/${step.slug}/`));
   const router = useRouter();
   const [loading, setLoading] = React.useState<string | null>(null);
 
@@ -65,6 +69,7 @@ export function WorkflowNextSteps({
       {/* Sits right under the tool's Download button: the tip offer stays here
           after a save for anyone who closed or missed the pop-up. */}
       <SupportInline className="mt-5" />
+      {steps.length > 0 && (
       <div className="mt-5 border-t border-hairline pt-5">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
           Continue editing
@@ -101,6 +106,7 @@ export function WorkflowNextSteps({
           })}
         </div>
       </div>
+      )}
     </>
   );
 }

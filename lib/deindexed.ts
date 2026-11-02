@@ -135,6 +135,39 @@ export const DEINDEXED_PATHS: readonly string[] = [
   "/india-visa-photo-maker/",
   "/japan-visa-photo-maker/",
   "/singapore-visa-photo-maker/",
+  // AdSense remediation round 5 (1 Nov 2026; owner in chat: "Our website
+  // should not leave any reason for the rejection"). An independent reviewer
+  // pass found these exam pages and country makers still read as one template
+  // with the name swapped, with 40-150 words of their own; together they drew
+  // about 29 Google clicks a month (GSC, 90 days to 31 Oct 2026). Each 301s to
+  // the indexed page that answers the same need (public/_redirects).
+  "/exam-requirements/army-agniveer/",
+  "/exam-requirements/airforce-agniveer/",
+  "/exam-requirements/navy-agniveer/",
+  "/exam-requirements/afcat/",
+  "/exam-requirements/clat/",
+  "/exam-requirements/cat/",
+  "/exam-requirements/cuet/",
+  "/exam-requirements/ctet/",
+  "/exam-requirements/uppsc/",
+  "/exam-requirements/tgpsc/",
+  "/exam-requirements/sbi/",
+  "/exam-requirements/passport-seva/",
+  "/exam-calendar/",
+  "/schengen-visa-photo-maker/",
+  "/france-visa-photo-maker/",
+  "/germany-visa-photo-maker/",
+  "/italy-visa-photo-maker/",
+  "/netherlands-visa-photo-maker/",
+  "/oman-visa-photo-maker/",
+  "/saudi-visa-photo-maker/",
+  "/china-visa-photo-maker/",
+  "/new-zealand-visa-photo-maker/",
+  "/malaysia-visa-photo-maker/",
+  // After the copy that repeated the template came out, these two had under
+  // 210 words of their own and one Google click each in 90 days.
+  "/canada-visa-photo-maker/",
+  "/ireland-visa-photo-maker/",
 ] as const;
 
 const DEINDEXED = new Set(DEINDEXED_PATHS);

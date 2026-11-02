@@ -6,23 +6,23 @@ interface Item { Icon: LucideIcon; title: string; sub: string; }
 const ITEMS: Item[] = [
   {
     Icon: Cpu,
-    title: "100% Browser Processing",
-    sub: "Every edit runs on your own device. Your photo is never sent to a server.",
-  },
-  {
-    Icon: CloudOff,
-    title: "No Upload Required",
-    sub: "Files stay local. Nothing leaves your phone or laptop — not even temporarily.",
-  },
-  {
-    Icon: UserX,
-    title: "No Account Needed",
-    sub: "No sign-up, no email, no login. Open a tool and start in one tap.",
+    title: "Edited on your device",
+    sub: "Cropping, background removal and compression run in your browser. Your photo is not sent to a server.",
   },
   {
     Icon: ServerOff,
-    title: "No Data Stored",
-    sub: "We keep nothing. Close the tab and every trace of your photo is gone.",
+    title: "Gone when you close the tab",
+    sub: "Your photo is held only in the open tab. Closing or refreshing it clears the photo.",
+  },
+  {
+    Icon: UserX,
+    title: "No account",
+    sub: "No sign-up, email or login. Open a tool and start.",
+  },
+  {
+    Icon: CloudOff,
+    title: "Counts, not content",
+    sub: "We count page visits and tool use without cookies. The counts never include your photo or anything you type.",
   },
 ];
 
@@ -61,7 +61,7 @@ export function DarkTrustStrip() {
           </p>
         </div>
 
-        {/* ── 4 privacy guarantees ── */}
+        {/* ── 4 privacy points ── */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {ITEMS.map(({ Icon, title, sub }) => (
             <div

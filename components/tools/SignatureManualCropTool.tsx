@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { WORKFLOW_SIGNATURE_KINDS } from "@/lib/workflowHandoff";
-import { Download, Wand2, Maximize, ShieldCheck } from "lucide-react";
+import { Download, Wand2, Maximize } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ImageToolShell, PreviewFrame, type ToolSource } from "./ImageToolShell";
 import { imageToCanvas, canvasToBlob } from "@/lib/imaging";
@@ -427,10 +427,6 @@ function Body({ source }: { source: ToolSource }) {
 
       <SupportInline />
 
-      <p className="flex items-start gap-2 text-xs text-muted-foreground">
-        <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
-        Cropping runs entirely in your browser — your signature is never uploaded.
-      </p>
     </div>
   );
 }

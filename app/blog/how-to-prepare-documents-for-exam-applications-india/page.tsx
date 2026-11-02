@@ -19,12 +19,11 @@ export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} ctaHref="/tools/exam-package/" ctaLabel="Prepare my exam documents">
       <p>
-        Online exam portals reject documents for predictable, preventable reasons.
-        The photo is too large. The signature has a grey background. The marksheet
-        PDF exceeds the limit displayed by the portal. The Aadhaar shows
-        all 12 digits when the form wanted a masked copy. None of these take more
-        than a few minutes to fix — if you know what each portal expects before you
-        start filling the form.
+        Online exam forms refuse documents for a few avoidable reasons. The
+        photo is too large. The signature has a grey background. The marksheet
+        PDF is over the limit shown next to the upload box. The Aadhaar shows all
+        12 digits. Each takes a few minutes to fix if you prepare the files
+        before you open the form.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-[hsl(220_50%_18%)] p-5 text-white">
@@ -32,50 +31,47 @@ export default function Page() {
         <ul className="!mt-2 list-none space-y-1.5 pl-0 text-[15px]">
           <li>
             <span className="mr-2 text-green-400">&#10003;</span>
-            <strong>Photo</strong> — follow the selected portal&apos;s workflow;
-            some request a prepared JPG while current SSC and RRB notices use live capture
+            <strong>Photo</strong> — a JPG file for IBPS, SBI and UPSC; no file
+            at all for SSC and RRB, which photograph you live in the form
           </li>
           <li>
             <span className="mr-2 text-green-400">&#10003;</span>
-            <strong>Signature</strong> — follow the current format, ink, dimensions
-            and KB instructions; these differ by portal
+            <strong>Signature</strong> — black ink on white paper, saved as a JPG
+            inside the exam&apos;s KB band
           </li>
           <li>
             <span className="mr-2 text-green-400">&#10003;</span>
-            <strong>Certificate PDFs</strong> — marksheets, degree certificate and
-            category proof compressed only to the limit shown by the current form
+            <strong>Certificate PDFs</strong> — only the pages the form asks for,
+            compressed to the limit shown next to each upload box
           </li>
           <li>
             <span className="mr-2 text-green-400">&#10003;</span>
-            <strong>Aadhaar</strong> — masked copy with only the last 4 digits
-            visible, compressed to the portal&apos;s document limit
+            <strong>Aadhaar</strong> — a masked copy with only the last 4 digits
+            visible, unless the form asks for the full number
           </li>
         </ul>
       </div>
 
-      <h2>What do exam portals actually need for your photo?</h2>
+      <h2>The photo and the signature</h2>
       <p>
-        Current workflows differ. IBPS publishes a 20–50&nbsp;KB prepared photo;
-        UPSC (and NDA/CDS on the same portal) publishes 20&#8211;200&nbsp;KB and no
-        fixed photo pixels, while the current SSC and RRB notices we cite use live
-        capture. These workflows should not be compared with an
-        ordinary adult Passport Seva application: the adult&apos;s photograph is
-        captured at the PSK/POPSK, while the 630&#215;810&nbsp;px guidance belongs
-        to the overseas mission workflow.
+        Exams don&apos;t share one photo size. IBPS and SBI want a 20–50&nbsp;KB
+        photo at 200&#215;230&nbsp;px, UPSC accepts 20–200&nbsp;KB with no fixed
+        pixel size, and SSC and RRB take the photo live through your camera.
+        Signatures differ too, and UPSC wants three signatures in one image. The
+        bands for each exam are in the{" "}
+        <Link href="/blog/exam-photo-signature-size-guide/">exam photo and signature size guide</Link>,
+        and the signing steps are in{" "}
+        <Link href="/blog/how-to-sign-exam-application-forms-india/">
+          how to sign an exam application form
+        </Link>
+        .
       </p>
       <p>
-        The safest approach: use the{" "}
-        <Link href="/tools/exam-package/">exam document package tool</Link>, which
-        applies the KB and pixel limits for the exam you pick. Check its source and
-        when we last checked it first; if the page says a figure still needs
-        checking, confirm it in the current form. For a
-        detailed breakdown of photo specs by exam, see the{" "}
-        <Link href="/exam-requirements/">exam requirements directory</Link>.
-      </p>
-      <p>
-        Visual rules are also portal-specific. Follow the current notice for
-        glasses, background, recency, expression and framing rather than assuming
-        that one passport-photo checklist applies to every exam.
+        The{" "}
+        <Link href="/tools/exam-package/">Exam Application Kit</Link> makes both
+        files for the exam you pick, at the sizes its notice gives. Where a
+        figure on an exam page is marked as not yet confirmed, check it against
+        the live form before you upload.
       </p>
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
@@ -86,7 +82,7 @@ export default function Page() {
             </span>
             <Image
               src="/images/sample2_before_400.webp"
-              alt="Input selfie before automated photo preparation"
+              alt="Input selfie before photo preparation"
               width={400}
               height={400}
               className="h-48 w-full object-cover object-top"
@@ -106,250 +102,93 @@ export default function Page() {
           </div>
         </div>
         <figcaption className="bg-accent/30 px-4 py-2.5 text-center text-[12px] text-muted-foreground">
-          Illustration of a source photo and a prepared white-background version. The selected portal&apos;s current instructions still control submission.
+          Example: a phone selfie and the same photo on a white background with the head re-framed.
         </figcaption>
       </figure>
 
-      <h2>How do you prepare a digital signature for exam forms?</h2>
+      <h2>Certificate PDFs</h2>
       <p>
-        Follow the current notice&apos;s ink, paper, format, dimensions and KB band.
-        Take a clear photo or scan in even light and keep the complete signature
-        visible. SSC, IBPS and SBI record 10–20&nbsp;KB prepared signatures;
-        UPSC instead records one 20–100&nbsp;KB image containing three signatures
-        vertically. These are not interchangeable workflows.
-      </p>
-      <p>
-        Use a transparent signature only when the destination accepts PNG or the
-        image is being overlaid on a document. When a portal requires JPG/JPEG,
-        export a white-background JPG instead. The{" "}
-        <Link href="/tools/signature-background-removal/">signature background remover</Link>{" "}
-        gives you either file in one click. For a broader walkthrough of portal
-        signature rule, read{" "}
-        <Link href="/blog/how-to-sign-exam-application-forms-india/">
-          how to sign an exam application form in India
-        </Link>
-        .
-      </p>
-      <p>
-        If your signature is the right content but the wrong dimensions or KB, use
-        the{" "}
-        <Link href="/tools/signature-resize/">signature resize tool</Link> to hit
-        the exact size the form asks for without redoing the whole process. It keeps your aspect
-        ratio intact so the signature doesn&apos;t look squashed.
-      </p>
-
-      <h2>How do you compress certificate PDFs for exam portals?</h2>
-      <p>
-        Certificate limits are set by the form you are filling in, and our exam
-        pages cover only photos and signatures, not certificates. Read the document field&apos;s size and format
-        instructions before compressing; do not apply a generic 50 or 100&nbsp;KB
-        target to every certificate.
-      </p>
-      <p>
-        A safer document workflow:
+        Certificate limits are set by each upload box, so read the size and
+        format printed beside it before compressing; there is no common
+        50 or 100&nbsp;KB figure. Then:
       </p>
       <ul>
         <li>
           <strong>10th and 12th marksheets</strong> — keep only the pages the form
-          requests (most PDF readers can save selected pages as a new PDF), then
+          asks for (most PDF readers can save selected pages as a new PDF), then
           compress.
         </li>
         <li>
-          <strong>Degree or diploma certificate</strong> — keep the required page
-          legible and compress to the limit displayed by the current field.
+          <strong>Degree or diploma certificate</strong> — keep the required
+          page readable at the size the box allows.
         </li>
         <li>
           <strong>Caste, category, income or domicile certificate</strong> — include
-          the complete requested certificate and preserve readable seals and text.
+          the whole certificate and keep seals and text readable.
         </li>
         <li>
           <strong>Experience letter or NOC</strong> — combine only the pages the
-          form requests, in the stated order and format.
+          form asks for, in the stated order. Combine first and compress the
+          combined file, because merging adds the sizes together.
         </li>
       </ul>
       <p>
-        Compress each file to the exact limit shown by the active field. If a scan
-        will not go below the cap, scan it again in black and white or at 150 to
-        200 DPI instead of squeezing a full-colour scan further: text stays sharp
-        and the file shrinks far more.
+        If a scan will not come under the limit, scan it again at 150 to
+        200&nbsp;DPI, or in black and white for a text-only page, rather than
+        squeezing a full-colour scan harder. Keep colour where a seal or stamp
+        needs it, and check every page after compressing.
       </p>
 
-      <h2>Why must you mask your Aadhaar before uploading?</h2>
+      <h2>A masked Aadhaar</h2>
       <p>
-        UIDAI recommends sharing a masked Aadhaar — one with only the last 4
-        digits of the 12-digit number visible — whenever the full number
-        isn&apos;t legally required. Most exam portal identity proofs fall into
-        that category. Masking hides the first 8 digits under a black box that is
-        burned into the image pixels and cannot be removed.
-      </p>
-      <p>
-        The black box must be burned into the image, not just overlaid. Some PDF
-        editors let you add a black rectangle but also let anyone delete it. A
-        proper masking tool converts the mark into pixels so the original digits
-        are gone. Read the full guide on{" "}
+        UIDAI recommends sharing a masked Aadhaar, with only the last 4 of the
+        12 digits visible, wherever the full number isn&apos;t legally required.
+        The simplest way is UIDAI&apos;s own: on myAadhaar, choose the masked
+        version when you download e-Aadhaar. If you mask a copy yourself, the
+        box must be solid and saved into the image; a box drawn on top of a PDF
+        can often be deleted. The{" "}
         <Link href="/blog/how-to-mask-aadhaar-before-sharing/">
-          how to mask your Aadhaar before sharing it
+          Aadhaar masking guide
         </Link>{" "}
-        to see which approaches are secure and which aren&apos;t.
-      </p>
-      <p>
-        After masking, compress the resulting image or PDF to the portal&apos;s
-        document limit. Masked Aadhaar is typically a single page and compresses
-        easily to under 100&nbsp;KB.
+        covers both routes. If the form asks for the full number, follow the
+        form.
       </p>
 
-      <h2>Document size limits by portal</h2>
-      <table className="my-5 w-full border-collapse text-[14px]">
-        <thead>
-          <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-3 font-semibold text-ink">Portal</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Photo limit</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Signature limit</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Document PDF limit</th>
-          </tr>
-        </thead>
-        <tbody className="text-ink-soft">
-          {[
-            ["SSC (CGL, CHSL, MTS)", "Live capture", "10–20 KB", "Confirm the current notice"],
-            ["UPSC (CSE, NDA, CDS)", "20–200 KB", "20–100 KB", "Confirm the current notice"],
-            ["IBPS (PO, Clerk, SO)", "20–50 KB", "10–20 KB", "Confirm the current notice"],
-            ["Railway (RRB NTPC, Group D)", "Live capture in the cited notice", "Current figures need review", "Confirm the current notice"],
-            ["NTA (NEET, JEE)", "10–200 KB", "4–30 KB", "Confirm the current notice"],
-            ["SBI PO / Clerk", "20–50 KB", "10–20 KB", "Confirm the current notice"],
-          ].map(([portal, photo, sig, pdf]) => (
-            <tr key={portal} className="border-b border-hairline/60">
-              <td className="py-2 pr-3 font-medium text-ink">{portal}</td>
-              <td className="py-2 pr-3">{photo}</td>
-              <td className="py-2 pr-3">{sig}</td>
-              <td className="py-2 pr-3">{pdf}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <p>
-        Always verify against the official notification for your specific cycle.
-        The{" "}
-        <Link href="/exam-requirements/">exam requirements directory</Link> links
-        directly to each portal&apos;s current instructions.
-      </p>
-
-      <h2>The complete document preparation workflow</h2>
-      <p>
-        Preparing all four document types in the right order saves time and avoids
-        having to redo steps. Here is the sequence that works:
-      </p>
-      <ul>
+      <h2>An order that saves redoing work</h2>
+      <ol>
         <li>
-          <strong>Step 1 - Photo.</strong> Take or select a recent photo on a
-          white background. Use the{" "}
-          <Link href="/tools/exam-package/">exam package tool</Link> to resize it
-          to the exam&apos;s KB limit and its published pixel dimensions where they exist.
-          Confirm the current exam notification before submitting.
+          <strong>Photo.</strong> For forms that take a file, take a fresh photo
+          on a plain white background and prepare it for your exam.
         </li>
         <li>
-          <strong>Step 2 - Signature.</strong> Sign on white paper, photograph it,
-          crop to the signature area. Remove the background if the portal requires
-          transparent PNG. Resize to the KB target.
+          <strong>Signature.</strong> Sign on white paper, photograph it, crop to
+          the ink and size it to the exam&apos;s KB band.
         </li>
         <li>
-          <strong>Step 3 - Scan certificates.</strong> Scan in greyscale at
-          200&nbsp;DPI. Colour scanning triples the file size for documents that
-          are black-on-white. If you don&apos;t have a scanner, photograph each
-          page flat against a neutral surface in good daylight.
+          <strong>Certificates.</strong> Scan each page flat in good light, keep
+          only the requested pages, then compress each file to its box&apos;s limit.
         </li>
         <li>
-          <strong>Step 4 - Extract required pages.</strong> If a marksheet PDF has
-          8 pages but the portal only needs the final results page, save just that
-          page as its own PDF (most readers offer this under Print or Export)
-          before compressing. Fewer pages means a much smaller output.
+          <strong>Aadhaar.</strong> Download the masked e-Aadhaar and compress it
+          if the box needs a smaller file.
         </li>
         <li>
-          <strong>Step 5 - Compress each document.</strong> Hit the portal&apos;s
-          KB cap per document. If the form wants several documents in one file,
-          combine them first, then compress the result, because merging adds the
-          sizes together.
+          <strong>Upload.</strong> Keep every file in one folder named after the
+          exam and year, so a timed-out session doesn&apos;t send you hunting for
+          them.
         </li>
-        <li>
-          <strong>Step 6 - Mask your Aadhaar.</strong> Download the masked
-          e-Aadhaar from UIDAI&apos;s myAadhaar site, which hides the first 8
-          digits for you, then compress it if needed.
-        </li>
-        <li>
-          <strong>Step 7 - Upload.</strong> Keep all files in one folder named
-          after the exam and cycle. That way, if the portal times out mid-upload,
-          you can find every file immediately.
-        </li>
-      </ul>
-
-      <h2>Common mistakes and how to fix them</h2>
-      <table className="my-5 w-full border-collapse text-[14px]">
-        <thead>
-          <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-3 font-semibold text-ink">Mistake</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Why it fails</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Fix</th>
-          </tr>
-        </thead>
-        <tbody className="text-ink-soft">
-          {[
-            [
-              "Photo outside the current field's stated band",
-              "Prepared uploads may enforce both a minimum and a maximum",
-              "Use the size for your exam, then compare it with the live form",
-            ],
-            [
-              "Signature with grey background",
-              "Phone photos in poor light pick up shadow tone",
-              "Scan in good light or remove background with transparent signature tool",
-            ],
-            [
-              "Certificate exceeds the displayed PDF limit",
-              "Document limits vary by form and field",
-              "Compress to the displayed limit while checking that text and seals remain readable",
-            ],
-            [
-              "Full Aadhaar (all 12 digits visible)",
-              "Some portals flag full Aadhaar uploads; also a privacy risk",
-              "Mask to show only last 4 digits before uploading",
-            ],
-            [
-              "Wrong photo dimensions for the portal's stated spec",
-              "Some portals publish a required width × height; a mismatch is rejected",
-              "Check the requirements page for your exam and match its stated size",
-            ],
-            [
-              "PDF contains pages the form did not request",
-              "Extra pages consume the file budget and may make the upload unclear",
-              "Extract only the explicitly requested pages, then compress",
-            ],
-          ].map(([mistake, reason, fix]) => (
-            <tr key={mistake} className="border-b border-hairline/60 align-top">
-              <td className="py-2 pr-3 font-medium text-ink">{mistake}</td>
-              <td className="py-2 pr-3">{reason}</td>
-              <td className="py-2 pr-3">{fix}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      </ol>
 
       <div className="mt-12">
         <Faq
           items={[
             {
-              q: "What file size should my exam photo be?",
-              a: "There is no universal exam-photo size. IBPS publishes a 20–50 KB prepared photo, UPSC publishes 20–200 KB, and current SSC applications capture the photograph live. Check the current notice for your exact exam and cycle.",
-            },
-            {
               q: "Can I upload a colour scan of my marksheet, or does it need to be greyscale?",
-              a: "Use the colour mode requested by the form. Greyscale can reduce file size for text-only pages, but it may remove colour information from seals, stamps or annotations, so preview the result before submitting.",
-            },
-            {
-              q: "Does my Aadhaar need to be masked for exam applications?",
-              a: "Most exam portals accept masked Aadhaar for identity proof. UIDAI recommends sharing a masked copy (only the last 4 digits visible) whenever the full number isn't legally required. Check your portal's instruction; if it doesn't specifically ask for the full number, share the masked version.",
+              a: "Use the colour mode the form asks for. Greyscale makes a text-only page smaller, but it can wash out coloured seals, stamps or signatures, so preview the result before submitting.",
             },
             {
               q: "How far can I compress a certificate PDF?",
-              a: "Compress only to the limit shown by the active form and inspect every page afterward. Very tight targets can make text, stamps, signatures or QR codes unreadable; extract unneeded pages before reducing quality further.",
+              a: "Only to the limit shown by the upload box, and check every page afterward. Very small files can make text, stamps, signatures or QR codes unreadable, so remove pages the form didn't ask for before lowering the quality.",
             },
           ]}
         />

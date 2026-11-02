@@ -20,36 +20,8 @@ export const metadata = pageMetadata({
 
 const FAQ_ITEMS: FaqItem[] = [
   {
-    q: "What size is a US passport photo?",
-    a: "Exactly 2×2 inches (51×51mm), square, in colour, taken within the last six months. The head must measure between 1 and 1⅜ inches (25–35mm) from chin to the top of the head.",
-  },
-  {
-    q: "What background colour does a US passport photo need?",
-    a: "A plain white or off-white background with no shadows, patterns or objects behind you. A blue, grey or off-colour background does not meet the listed background requirement.",
-  },
-  {
-    q: "Are glasses allowed in a US passport photo?",
-    a: "No. The US Department of State stopped accepting glasses in passport photos in November 2016. Remove glasses for your photo, even if you wear them daily.",
-  },
-  {
-    q: "Can I take a US passport photo at home?",
-    a: "Yes. Use a white wall or sheet as your background, take the photo in natural light (no harsh shadows), then use this tool to crop and size it to the exact 2×2 inch spec for free.",
-  },
-  {
-    q: "How much does a US passport photo cost at Walgreens or CVS?",
-    a: "Walgreens and CVS charge $16.99–$17.99 for two 2×2 inch prints. Taking your own and printing at home or a pharmacy kiosk from a file costs $0.25–$0.50 per print.",
-  },
-  {
     q: "Can I print a US passport photo at home?",
-    a: "Yes. The State Department accepts home-printed photos on photo paper. Download the 4×6 print sheet from the maker, print on gloss photo paper, and cut to 2×2 inches.",
-  },
-  {
-    q: "What is the file size for a US passport online renewal photo?",
-    a: "The online renewal uploader accepts JPEG (and PNG/HEIC) images between 54 KB and 10 MB, at least 600×600 pixels and no larger than 1200×1200 pixels.",
-  },
-  {
-    q: "Can I use a US passport photo for the DS-160 visa application?",
-    a: "Yes. The DS-160 uses the same 2×2 inch square composition on a white background. The digital upload requires a JPEG under 240 KB and at least 600×600 pixels.",
+    a: "Yes. Download the 4×6 print sheet from the maker, print it on photo paper, and cut out the 2×2 inch copies.",
   },
 ];
 
@@ -84,8 +56,7 @@ export default function Page() {
         </h1>
         <p className="text-base leading-relaxed text-muted-foreground max-w-2xl">
           The US Department of State requires a <strong>2×2 inch (51×51mm) square photo</strong> on
-          a plain white or off-white background, taken within six months. No glasses. Your head
-          must fill 50–69% of the frame.
+          a plain white or off-white background. The full list is below.
         </p>
       </header>
 
@@ -108,7 +79,7 @@ export default function Page() {
 
       {/* Spec table */}
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Official US passport photo specification</h2>
+        <h2 className="text-lg font-semibold">US passport photo requirements</h2>
         <dl className="divide-y divide-hairline rounded-lg border border-hairline">
           {[
             ["Size", "51 × 51 mm (2 × 2 inches) — square"],
@@ -119,7 +90,7 @@ export default function Page() {
             ["Expression", "Neutral, mouth closed"],
             ["Glasses", "Not permitted (since Nov 2016)"],
             ["Digital size (renewal)", "600–1200 px square, 54 KB–10 MB, JPEG/PNG/HEIC"],
-            ["DS-160 digital upload", "Square, min 600 × 600 px, JPEG, under 240 KB"],
+            ["DS-160 digital upload", "600–1200 px square, JPEG, 240 KB or less"],
             ["Recency", "Taken within the last 6 months"],
             ["Min DPI (print)", "300 DPI"],
           ].map(([label, value]) => (
@@ -180,25 +151,21 @@ export default function Page() {
           <p className="text-sm leading-relaxed text-muted-foreground">
             The State Department rejects photos for: shadows on the face or background; head too
             large (over 69% of the frame) or too small (under 50%); wearing glasses; a non-neutral
-            expression; background that is not plain white; the photo being older than six months or
-            taken when your appearance has significantly changed; and photo paper that is visibly
-            glossy and creased. The free maker automatically corrects the two most common issues —
-            head size and background colour — so you can focus on the remaining checklist items.
+            expression; a background that is not plain white; and a photo older than six months or
+            taken before your appearance changed significantly. The maker sizes the head and sets
+            the background; check the rest yourself before you print.
           </p>
         </div>
 
         <div className="space-y-2">
           <h2 className="text-lg font-semibold">US passport photo for online renewal</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            The online passport renewal portal (available to most adults renewing since 2002) accepts
-            a digital photo upload instead of a printed photo. You will need a JPEG, PNG, or HEIC
-            image that is at least 600×600 pixels and no larger than 1200×1200 pixels, between 54 KB
-            and 10 MB. The maker produces a correctly sized file. If the portal needs a smaller file,
-            use the{" "}
+            Online renewal takes a digital photo instead of a print, at the renewal sizes in the
+            table above. If your file is over 10 MB, use the{" "}
             <Link href="/tools/resize-kb/" className="text-brand hover:underline">
               compress to KB tool
             </Link>{" "}
-            to bring it under the cap without visible quality loss.
+            to bring it under the limit.
           </p>
         </div>
 
@@ -222,7 +189,7 @@ export default function Page() {
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-sm">Ready to make your photo?</p>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Free, instant, 100% on-device. Saves as 2×2 inch JPEG and a 4×6 print sheet.
+            Free and on your device. Saves a 2×2 inch JPEG and a 4×6 print sheet.
           </p>
         </div>
         <Link

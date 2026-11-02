@@ -71,6 +71,18 @@ export function formatFileSizeKb(band: FileSizeKb): string {
     : `${band.min}–${band.max} KB`;
 }
 
+/**
+ * The same band for readers: whole megabytes where the figure is one (10240 KB
+ * reads as "10 MB"), so a page never prints a KB count nobody would type.
+ */
+export function formatFileSize(band: FileSizeKb): string {
+  const unit = (kb: number) =>
+    kb >= 1024 && kb % 1024 === 0 ? `${kb / 1024} MB` : `${kb} KB`;
+  return band.min === undefined
+    ? `up to ${unit(band.max)}`
+    : `${unit(band.min)} – ${unit(band.max)}`;
+}
+
 export function acceptsDigitalUpload(spec: CountrySpec): boolean {
   const d = spec.digital;
   return Boolean(
@@ -238,10 +250,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "that export band is conditional and retained only for compatibility. OCI " +
       "and Indian e-Visa use separate square-photo specifications.",
     advisory:
-      "Ordinary adults are photographed at the PSK/POPSK; do not upload or carry " +
-      "a photo unless your specific workflow says otherwise. The 45×35mm white " +
-      "print applies to children below four. The 630×810px export is for overseas " +
-      "ICAO guidance; the 10–250 KB band is an easyPhoto default, not a published limit.",
+      "The 630 × 810 px file follows the photo guidance for Indian missions " +
+      "abroad. Its 10–250 KB file size is an easyPhoto default, not an official limit.",
     source:
       "https://www.passportindia.gov.in/AppOnlineProject/pdf/GUIDELINES%20FOR%20CAPTURING%20PHOTOGRAPHS%20FOR%20MINORS_v2.1.pdf",
     verified: "conditional",
@@ -333,7 +343,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   uk: {
     id: "uk",
     label: "United Kingdom",
-    documents: ["Passport (HMPO)", "Most UK visas"],
+    // A UK visa uses the same rules but must be a NEW photo (UKVI), so it is
+    // described on the page rather than listed as covered by this one.
+    documents: ["UK passport (HMPO)"],
     printMm: { width: 35, height: 45 }, // printed often quoted as 45x35
     headHeightMm: { min: 29, max: 34 }, // chin to crown
     headPercentOfFrame: { min: 65, max: 75 }, // head + top of shoulders
@@ -352,9 +364,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       formats: ["jpg"],
     },
     dpiMin: 300,
-    // HMPO allows frames over the eye socket provided both eyes stay visible;
-    // "not permitted / medical exemption" is the US rule, not the UK's.
-    glasses: "allowed if both eyes stay clearly visible and free of glare",
+    // gov.uk/photos-for-passports (checked 2 Nov 2026): "Do not wear glasses in
+    // your photo unless you have to"; if worn, not sunglasses or tinted.
+    glasses: "only if you have to; never tinted, eyes clearly visible",
     smileAllowed: "neutral only (biometric)",
     notes:
       "⚠ CORRECTION: this record previously said white was rejected. HM Passport " +
@@ -405,7 +417,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       formats: ["jpg"],
     },
     dpiMin: 300,
-    glasses: "allowed if no glare and eyes clearly visible",
+    // canada.ca TRV specification: "non-tinted prescription glasses as long as
+    // your eyes are clearly visible"; sunglasses are not acceptable.
+    glasses: "allowed if non-tinted and eyes clearly visible",
     smileAllowed: "neutral only",
     notes:
       "⚠ DO NOT advertise this for the PRINTED Canadian PASSPORT. canada.ca " +
@@ -435,7 +449,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   australia: {
     id: "australia",
     label: "Australia",
-    documents: ["Passport (APO)", "Australian visa"],
+    // Visas are not listed: Home Affairs sets visa photo rules per subclass and
+    // this record carries only the Passport Office specification.
+    documents: ["Australian passport"],
     // Official AU passport photo is a RANGE: 35-40mm wide x 45-50mm high.
     // We target the common lower bound (35x45mm), within spec.
     printMm: { width: 35, height: 45 },
@@ -470,8 +486,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     advisory:
       "For the printed Australian passport, your guarantor must endorse the back " +
       "of one photo in black pen — “This is a true photo of [full name]” — " +
-      "and also sign section 11 of the form. This tool prepares the selected " +
-      "image dimensions and background; the endorsement is added by hand after printing.",
+      "and also sign section 11 of the form. Add the endorsement by hand after printing.",
   },
 
   // ─────────────────────────────────────────────────────────────
@@ -679,9 +694,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source: "https://www.irishimmigration.ie/photograph-rules-for-visa-applications/",
     verified: "gov",
     applicationNotes: [
-      "An Irish visa application takes TWO IDENTICAL PRINTED photographs, not an upload. There is no pixel size or file-size limit to meet because nothing is submitted digitally on this route.",
-      "Your name and the visa transaction number must be written in block letters on the BACK of each photograph. That step is part of the requirement, not an optional extra, and it is done by hand after printing.",
-      "Immigration Service Delivery describes prints on photographic paper between 35 x 45 mm and 38 x 50 mm. Prepare and print at that size rather than preparing a file to a KB target.",
+      "An Irish visa application takes two identical colour prints on photographic paper, taken within the last six months. Nothing is uploaded, so there is no pixel size or file-size limit to meet.",
+      "Write your name and your visa transaction number in block letters on the back of each photograph. Do this by hand after printing.",
+      "Immigration Service Delivery accepts prints from 35 × 45 mm up to 38 × 50 mm. This maker crops to 35 × 45 mm; if you want a larger print, ask the photo shop to print the file at that size.",
     ]
   },
 
@@ -693,7 +708,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     // size (GDRFA Dubai and typing centres). We do NOT assert a size for
     // Emirates ID: the ICP guide gives a width range of 35-40mm and no fixed
     // height, so "Emirates ID is 35x45" would be inventing a figure.
-    documents: ["UAE visa via a typing-centre / GDRFA channel (confirm before use)"],
+    documents: ["UAE visa through a typing-centre or GDRFA Dubai channel"],
     printMm: { width: 43, height: 55 },
     // ICP's official ICAO guide mandates face = 70–80% of the photo; for the
     // 43×55 visa print that band is ≈39–44mm chin to crown.
@@ -728,20 +743,14 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       "Emirates ID or other ICP application is a separate specification we do " +
       "not reproduce here. Confirm with your typing centre or portal first.",
     advisory:
-      "43×55mm is recorded here only for UAE visa applications through " +
-      "typing centres and GDRFA channels — confirm it against the channel you " +
-      "are actually applying through, because ICP services state other " +
-      "dimensions in places. An Emirates ID or other ICP Smart Services " +
-      "application uses a different specification, which we do not publish " +
-      "because ICP's guide gives only a width range and no fixed height — check " +
-      "ICP directly rather than reusing this crop. File limits also differ by " +
-      "channel (ICP, GDRFA, typing centre), so check the one you are using.",
+      "Not for an Emirates ID or other ICP Smart Services application: those use " +
+      "a different specification, so check ICP directly rather than reusing this crop.",
     source: "https://icp.gov.ae/wp-content/uploads/2021/11/icao_english.pdf",
     verified: "aggregator",
     applicationNotes: [
-      "43 x 55 mm is recorded here only for UAE visa applications through typing centres and GDRFA, the residency and visa office for Dubai. We have not found an ICP page establishing it across every visit, employment and residence route, and ICP's own services state other dimensions in places, so confirm against the channel you are applying through. It is not the Emirates ID size.",
-      "The ICP guide linked here is the ICAO standard document. It supports the framing, background and quality rules — face covering 70-80%, no tint or glare on glasses, head covering for religious reasons only with the full face visible — but it does not itself state the 43 x 55 mm print size, which is the channel convention.",
-      "File limits differ by channel (ICP, GDRFA, or a typing centre), so check the one you are actually submitting through.",
+      "43 × 55 mm is the size used at typing centres and GDRFA, the residency and visa office for Dubai. ICP's own services state other sizes in places, and we found no ICP page that sets 43 × 55 mm for every visit, employment and residence route, so confirm it with the channel you are applying through.",
+      "ICP's photo guide follows the ICAO standard: your face covers 70–80% of the photo, the photo is no more than six months old, the background is plain and light, glasses have no tint or glare, and a head covering is worn only for religious reasons with your whole face visible. The guide gives a 35–40 mm width and no fixed height, so it does not set the print size.",
+      "The same guide asks for a sharp, high-quality image in natural colour with appropriate brightness and contrast, printed on photo-quality paper with no ink marks or creases, showing you alone and facing square on to the camera with both edges of your face clearly visible. Its examples of photos to avoid include a blurred, pixelated, too dark or washed-out picture, eyes closed or hair across them, a tilted head or one looking over the shoulder, a busy background, flash reflection or red eye, shadows behind the head, a hat or cap, and a chair back, toy or another person in shot. If you wear glasses, it suggests lighter frames that leave your eyes uncovered.",
     ]
   },
 
@@ -941,7 +950,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   pakistan: {
     id: "pakistan",
     label: "Pakistan",
-    documents: ["Pakistani passport (DGIP online renewal)", "NICOP / POC (NADRA)"],
+    documents: ["Pakistani passport (DGIP online renewal)"],
     printMm: { width: 35, height: 45 },
     headHeightMm: { min: 32, max: 36 },
     headPercentOfFrame: { min: 70, max: 80 },
@@ -956,6 +965,11 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
       // px, JPEG/JPG and a 3 MB cap. Older or differently scoped DGI&P material
       // carries other figures; do not merge those routes into this preset.
       pxMin: { width: 350, height: 467 },
+      // Exact, not a floor: the e-services page gives one pixel size, and its
+      // shape (0.749) is narrower than a 35x45 print (0.778), so the DPI path
+      // exported 413x531, which is neither. Pinning it makes the upload file
+      // match the page.
+      px: { width: 350, height: 467 },
       fileSizeKb: { max: 3072 },
       formats: ["jpg"],
     },
@@ -976,11 +990,9 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source: "https://dgip.gov.pk/eServices/online-passport.php/1000",
     verified: "aggregator",
     applicationNotes: [
-      "The DGI&P e-services page for the online application gives 350 x 467 pixels, JPEG or JPG, with a maximum of 3 MB, and those are the figures used here. Other DGI&P material states 45 mm by 35 mm, a 5 MB ceiling or 600 DPI scan guidance; those describe different routes or older processes rather than competing versions of this one, so prepare to the e-services figures and confirm on the screen you are actually uploading through.",
-      "This route serves online renewals. A first-time application inside Pakistan captures the photograph and biometrics at the office instead, so a prepared file is not what that process needs at all.",
-      "350 x 467 pixels is close to the 3:4 proportion rather than the 35:45 of a standard passport print, so a passport crop needs re-framing rather than resizing. Crop to the stated pixel shape from your original.",
-      "Three megabytes is a ceiling, not a target quality level. Keep a clear JPEG below it; adding metadata or reducing compression merely to approach the maximum does not improve the 350 x 467 canvas that the online route records.",
-      "The online-renewal source and the in-country live-capture process answer different questions. Confirm that you are eligible for the e-services route before preparing the file, and do not present its pixel rule as a first-time office application requirement.",
+      "Older DGI&P material gives 45 × 35 mm, a 5 MB ceiling or 600 DPI scanning advice. That belongs to other routes, so use the e-services figures and check the screen you are uploading through.",
+      "The online route is for renewals. A first-time application inside Pakistan takes your photo and biometrics at the passport office, so there is nothing to upload.",
+      "350 × 467 pixels is a slightly narrower shape than a 35 × 45 mm print, so the upload file is cropped to that shape from your original photo rather than stretched from a print-sized one.",
     ]
   },
 
@@ -988,7 +1000,7 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
   nepal: {
     id: "nepal",
     label: "Nepal",
-    documents: ["Nepali passport (MRP/e-passport form photo)", "Government forms"],
+    documents: ["Nepali passport (child under five)", "Forms that ask for an MRP size photo"],
     printMm: { width: 35, height: 45 },
     headHeightMm: { min: 31, max: 36 },
     headPercentOfFrame: { min: 70, max: 80 },
@@ -1018,12 +1030,8 @@ export const COUNTRY_SPECS: Record<string, CountrySpec> = {
     source: "https://nepalpassport.gov.np/process/process-47",
     verified: "aggregator",
     applicationNotes: [
-      "⚠ For a Nepali ePassport you do NOT bring a photograph. The Department of Passports answers this directly: staff photograph you during live enrollment at the enrollment centre, so an applicant does not need to carry one. Any guide telling you to bring two prints is describing the older machine-readable workflow, not the current ePassport process.",
-      "The exception is a child under five. The Department states that a photograph IS required for children too young to sit still for the live capture, so that is the one case where preparing a print is the right thing to do.",
-      "Because the photograph is normally taken for you, what matters at the centre is your appearance rather than a file: the enrollment photo is the one that goes in the passport. A tool like this is useful for the under-five exception or for checking framing before you go.",
-      "The 35x45mm figures recorded here come from published guides rather than a Department page stating them, and are marked as needing confirmation. Confirm against the enrollment centre or mission handling your application.",
-      "No digital KB or pixel limit is displayed because the ordinary ePassport route captures the image at enrollment. Inventing an upload cap for a process with no applicant upload would turn a compatibility tool into a false application step.",
-      "For the under-five exception, ask the enrollment centre or mission whether it wants a print and what current dimensions apply before producing copies. The Department source confirms the exception but does not establish every numeric field recorded from secondary guides here.",
+      "For a Nepali ePassport you do not bring a photograph: the Department of Passports takes it at enrolment, as described below. Guides telling you to bring two prints describe the older machine-readable passport, not the ePassport.",
+      "The exception is a child under five. The Department says a photograph is required for children too young to sit still for the live capture. Ask the enrollment centre or mission what size it wants before printing copies.",
     ],
   },
 

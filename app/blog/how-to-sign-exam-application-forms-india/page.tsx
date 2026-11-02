@@ -14,7 +14,6 @@ const post = getPost("how-to-sign-exam-application-forms-india")!;
 const ssc = PORTAL_PRESETS.ssc;
 const upsc = PORTAL_PRESETS.upsc;
 const rrb = PORTAL_PRESETS.rrb;
-const ibps = PORTAL_PRESETS.ibps;
 
 export const metadata = pageMetadata({
   title: post.title,
@@ -33,85 +32,50 @@ export default function Page() {
     >
       <p>
         When an exam notification says &#8220;upload your signature,&#8221; it
-        means an image of your handwritten signature rather than a typed name.
-        The file rules are not universal: current SSC and RRB notices list one
-        prepared signature, UPSC uses three signatures arranged vertically in
-        one JPG, and the cited Army Agniveer notice does not publish numeric
-        signature limits. Follow the current notice for the selected portal.
+        means a picture of your handwritten signature, not a typed name. SSC,
+        IBPS, SBI and RRB each want one signature in a JPG with their own KB
+        band; UPSC wants three signatures stacked in one image. This guide shows
+        how to sign, photograph and size the file for each.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>
-            Use the paper and ink stated by the selected portal. Do not infer an
-            ink rule where the current source publishes none.
+            Sign in black ink on plain white paper; IBPS, SBI, RRB and UPSC all
+            ask for black.
           </li>
           <li>
-            Photograph or scan the signature, crop tightly around it, and save
-            as a <strong>JPG (JPEG)</strong> file.
+            Photograph or scan the signature, crop close to the ink, and save it
+            as a <strong>JPG (JPEG)</strong>.
           </li>
           <li>
-            Match both ends of the portal&apos;s KB band. SSC and IBPS list{" "}
-            {kbBand(ssc.sigMinKb, ssc.sigLimitKb)} and{" "}
-            {kbBand(ibps.sigMinKb, ibps.sigLimitKb)}, RRB lists{" "}
-            {kbBand(rrb.sigMinKb, rrb.sigLimitKb)}, and UPSC lists{" "}
-            {kbBand(upsc.sigMinKb, upsc.sigLimitKb)} for its three-signature image.
+            Land inside both ends of the KB band: {kbBand(ssc.sigMinKb, ssc.sigLimitKb)}{" "}
+            for SSC, IBPS and SBI, {kbBand(rrb.sigMinKb, rrb.sigLimitKb)} for
+            RRB, and {kbBand(upsc.sigMinKb, upsc.sigLimitKb)} for UPSC&apos;s
+            three-signature image.
           </li>
           <li>
-            Use a transparent PNG for placing a signature onto a document only.
-            The cited NDA instructions list JPG, while the cited Army notice does
-            not publish a signature format; confirm the active form.
+            Sign the way you will sign in the exam hall. Your signature is
+            compared with the one you upload.
           </li>
         </ul>
       </div>
 
-      <h2>What does &#8220;sign the application form&#8221; actually mean?</h2>
+      <h2>Signature sizes by exam</h2>
       <p>
-        The cited SSC, UPSC, IBPS, SBI and RRB workflows use an uploaded image of
-        a handwritten signature rather than a typed name. Follow the active form
-        if its capture method differs; the cited Army notice does not publish a
-        signature-upload requirement.
-      </p>
-      <p>
-        This matters for one practical reason: your uploaded signature must look
-        like the signature you write in the exam hall. Candidates who upload a
-        rushed or non-standard version, and then sign differently on exam day,
-        risk getting flagged during verification.
-      </p>
-
-      <h2>Why do exam signature formats differ?</h2>
-      <p>
-        The sources recorded for SSC, UPSC, IBPS, SBI and RRB list a signature
-        on plain or white paper in JPG/JPEG. They do not all share the same KB
-        band or geometry: UPSC requires three signatures in one vertical image,
-        while IBPS and SBI publish a wide rectangular preferred canvas. The
-        current public Army Agniveer notice confirms an application workflow but
-        does not publish a signature format or numeric target.
-      </p>
-      <p>
-        A transparent PNG is useful when placing a signature over a document in
-        an editor, but it is not a substitute for the JPG/JPEG file named by an
-        exam notice. Prepare the reusable transparent asset separately, then
-        flatten it onto white and export the portal-specific file when required.
-      </p>
-
-      <h2>Portal-by-portal signature specifications</h2>
-      <p>
-        The table below compares fields from the cited sources and says when a
-        public value is not published. Always cross-check the current notification
-        before you apply, as portals can revise limits between recruitment cycles.
-        The{" "}
-        <Link href="/exam-requirements/">exam requirements directory</Link> links
-        each portal&apos;s official notification directly.
+        Each row comes from the notice linked on that exam&apos;s page in the{" "}
+        <Link href="/exam-requirements/">exam requirements directory</Link>.
+        Notices can change between recruitment cycles, so check the current one
+        before you apply.
       </p>
 
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
           <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-3 font-semibold text-ink">Portal</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Exam</th>
             <th className="py-2 pr-3 font-semibold text-ink">File size</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Dimensions</th>
+            <th className="py-2 pr-3 font-semibold text-ink">Pixel size</th>
             <th className="py-2 pr-3 font-semibold text-ink">Format</th>
           </tr>
         </thead>
@@ -134,196 +98,101 @@ export default function Page() {
       </table>
 
       <p>
-        UPSC is different in kind: it wants a single image holding <em>three</em>{" "}
-        signatures arranged vertically. SSC lists one JPEG/JPG signature but no
-        fixed pixel canvas; IBPS lists a preferred 140&#215;60&nbsp;px canvas.
-        Prepare each portal&apos;s file from its own recorded row rather than reusing
-        one export automatically.
+        Two rules sit outside the table. IBPS states that a signature written in
+        capital letters will not be accepted, and RRB lists block or capital
+        letters among its rejection reasons, so sign in your ordinary running
+        hand. SSC gives a physical size instead of pixels: sign inside a box
+        about 6&nbsp;cm wide and 2&nbsp;cm high.
       </p>
 
-      <h2>How do you prepare a compliant digital signature?</h2>
+      <h2>How to prepare the signature, step by step</h2>
+
+      <h3>Step 1 - write it</h3>
       <p>
-        The process has five steps. Each one affects whether the portal accepts
-        your upload.
+        Use a clean sheet of plain white paper with no lines. Sign in the
+        centre with a black ballpoint or gel pen, leaving a wide border; avoid
+        felt tips, which bleed at the edges. If the first attempt looks rushed or
+        small, sign again below it and use the better one. For UPSC, sign three
+        times, one below the other, with space between them.
       </p>
 
-      <h3>Step 1 - write the signature</h3>
+      <h3>Step 2 - photograph it</h3>
       <p>
-        Use a clean sheet of white A4 or letter paper. Sign in the centre of
-        the page, leaving a border of at least 2 cm on all sides. Use a black
-        or dark blue ballpoint pen. Gel and rollerball pens work, but avoid felt
-        tips, which bleed at the edges and scan poorly. Sign once. If the result
-        looks rushed or too small, sign again below and use that crop.
+        Lay the paper flat near a window, out of direct sunlight, which washes
+        out ink. Hold the phone directly above the paper, tap the signature to
+        focus, and shoot. A scan app such as Adobe Scan or Microsoft Lens
+        straightens the page if your phone has to shoot at an angle.
       </p>
 
-      <h3>Step 2 - capture it</h3>
+      <h3>Step 3 - crop</h3>
       <p>
-        Place the paper flat on a table near a window. Use your phone camera in
-        good natural light. Avoid direct sunlight, which creates hot spots that
-        wash out ink. Hold the phone directly above the paper, parallel to the
-        surface. Tap the screen on the signature to focus, then shoot. Scan apps
-        like Adobe Scan or Microsoft Lens flatten the perspective and increase
-        contrast automatically, which is worth using if your phone shoots at an
-        angle.
+        Crop close to the ink with a thin white margin on every side. Don&apos;t
+        clip the top of tall letters or the tail of a descender: a cut-off
+        signature can be refused even when the file size is right.
       </p>
 
-      <h3>Step 3 - crop tightly</h3>
+      <h3>Step 4 - set the pixel size, where one is published</h3>
       <p>
-        Open the image in any photo editor or the{" "}
-        <Link href="/tools/signature-resize/">signature resize tool</Link>. Crop
-        to leave roughly 8&#8211;10 px of white space on all four sides of the
-        signature strokes. Do not crop so tight that the ascenders or descenders
-        of letters touch the edge. The portal will reject a clipped signature.
+        IBPS and SBI give a preferred 140&#215;60 px, RRB asks for at least
+        140&#215;60 px, and UPSC asks for 350–500 px.
+        SSC publishes no pixel size. In the{" "}
+        <Link href="/tools/signature-resize/">signature resize tool</Link>,
+        enter the pixel size and KB band from the table.
       </p>
 
-      <h3>Step 4 - resize to the portal&apos;s pixel dimensions</h3>
+      <h3>Step 5 - check the file size</h3>
       <p>
-        Apply a pixel canvas only when the current source publishes one. IBPS
-        lists a preferred 140&#215;60 px rectangle, and RRB lists at least
-        140&#215;60 px. SSC publishes no fixed signature pixels. UPSC instead
-        describes a vertical three-signature image in a 350–500 px range. The{" "}
-        <Link href="/tools/signature-resize/">signature resize tool</Link> lets
-        you enter the target dimensions and outputs the correctly sized image.
-      </p>
-
-      <h3>Step 5 - compress to the KB limit</h3>
-      <p>
-        Save in the format named by the notice and check both ends of its KB band.
-        The recorded limits differ substantially: SSC and IBPS list{" "}
-        {kbBand(ssc.sigMinKb, ssc.sigLimitKb)} and{" "}
-        {kbBand(ibps.sigMinKb, ibps.sigLimitKb)}, RRB lists{" "}
-        {kbBand(rrb.sigMinKb, rrb.sigLimitKb)}, and UPSC lists{" "}
-        {kbBand(upsc.sigMinKb, upsc.sigLimitKb)}. Reduce JPG quality gradually
-        when a file is over the ceiling, but do not compress it below a published minimum.
+        Open the saved file&apos;s details and confirm the size sits inside the
+        band, not just under the top of it. If it is slightly over, lower the
+        JPG quality a little rather than shrinking the image again.
       </p>
 
       <h2>When is a transparent signature useful?</h2>
       <p>
-        A transparent signature is useful for placing handwritten ink over a
-        declaration, image or locally edited PDF without a white rectangle. That
-        is a document-editing workflow, not evidence that an exam upload accepts
-        PNG transparency.
-      </p>
-      <p>
-        The{" "}
+        A transparent PNG signature is for placing your ink over a declaration,
+        a scanned form or another image without a white box around it. Exam
+        uploads in the table want a JPG on white, so it is not the file to
+        upload there. The{" "}
         <Link href="/tools/signature-background-removal/">
           signature background remover
         </Link>{" "}
-        removes the white background from your scanned signature in one step and
-        exports a transparent PNG for document placement, or a white-background JPG
-        for portals that refuse PNG. It runs
-        entirely in your browser, so the signature image is never uploaded
-        anywhere.
-      </p>
-      <p>
-        The cited SSC, UPSC, IBPS, SBI and RRB sources list JPG/JPEG signature
-        files. The cited Army Agniveer notice does not publish a signature format.
-        For any exam upload, flatten the signature onto the listed paper colour
-        and export only the format named by the current notice.
+        makes either version from one scan: a transparent PNG for documents, or
+        a white-background JPG for a portal. To place a signature on an image,
+        use the <Link href="/tools/sign-image/">sign image tool</Link>.
       </p>
 
-      <h2>What are the most common reasons exam signatures get rejected?</h2>
-      <p>
-        Signature rejections follow a short, predictable list. If your upload
-        fails, one of the following is almost certainly the cause.
-      </p>
-
+      <h2>Why signature uploads are refused</h2>
       <ul>
         <li>
-          <strong>Ink too light.</strong> Light pencil or faded ballpoint
-          creates a grey trace that portals sometimes interpret as a blank field.
-          Use a fresh black or dark blue pen with confident pressure.
+          <strong>Ink too light.</strong> Pencil or a fading pen leaves a faint
+          grey line that can be hard to read once compressed. Use a fresh black
+          pen with firm pressure.
         </li>
         <li>
-          <strong>Signature cut off at the edge.</strong> Cropping too tightly
-          clips the top of tall letters or the tail of a descender. The portal
-          rejects cropped signatures during its automated check.
+          <strong>Grey or tinted background.</strong> A wooden table, a coloured
+          desk or warm lamplight tints the paper. Shoot white paper in daylight,
+          or clean the tone with the signature tools above.
         </li>
         <li>
-          <strong>White background treated as blank.</strong> Some portals use
-          contrast detection to verify a signature is present. If the ink is
-          very light against white, the algorithm reads the field as empty.
-          Increase pen pressure or use a scanner set to high contrast.
+          <strong>File outside the band.</strong> Even 1&nbsp;KB over the limit
+          is refused, and so is a file under the minimum.
         </li>
         <li>
-          <strong>File exceeds the KB limit.</strong> Even a 1 KB overage causes
-          an immediate rejection. Check the file size before uploading. Reduce
-          JPG quality by 5&#8211;10% if the file is just over the cap.
-        </li>
-        <li>
-          <strong>Wrong file format.</strong> Uploading a PNG to a JPG-only
-          portal, or a JPEG with a .jpg extension that was actually saved as PNG
-          internally, fails the format check. Always re-export from your editor
-          rather than renaming the extension.
-        </li>
-        <li>
-          <strong>Grey or coloured background.</strong> Shooting against a
-          wooden table, a light-blue desk, or in warm lamplight gives the
-          background a tint. Use daylight and a clean white sheet.
-        </li>
-        <li>
-          <strong>Dimensions outside a published canvas.</strong> IBPS lists a
-          preferred 140&#215;60 px signature and RRB lists at least 140&#215;60 px;
-          SSC publishes no fixed signature pixels. Apply dimensions only where
-          the selected source records them.
+          <strong>Wrong format.</strong> Renaming a PNG to .jpg does not convert
+          it. Re-export it as a JPG.
         </li>
       </ul>
-
       <p>
-        For a broader look at what causes upload failures across photos and
-        signatures, see{" "}
+        Photo problems and other upload faults are covered in{" "}
         <Link href="/blog/why-exam-photo-signature-rejected/">
           why exam photos &amp; signatures get rejected
         </Link>
-        .
-      </p>
-
-      <h2>Which tools make the process faster?</h2>
-      <p>
-        Three tools cover the full workflow without requiring any account or
-        upload.
-      </p>
-
-      <ul>
-        <li>
-          <Link href="/tools/signature-resize/">Signature resize tool</Link>:
-          takes your cropped signature image, resizes it to the exact pixel
-          dimensions you enter, and compresses the output to a target KB limit.
-          Handles fixed rectangular canvases such as IBPS and RRB, plus custom
-          dimensions for other document workflows. UPSC&apos;s current requirement
-          is a vertical image containing three signatures, not a square format.
-        </li>
-        <li>
-          <Link href="/tools/signature-background-removal/">
-            Signature background remover
-          </Link>: removes the white background from a scanned signature and
-          exports a transparent PNG for placement on documents. For an exam
-          upload, move to its portal-specific resizer and use the recorded format.
-        </li>
-        <li>
-          <Link href="/tools/sign-image/">Sign image tool</Link>: for the
-          different case where the signature goes <em>onto</em> an image — a
-          declaration photo, a scanned form page, or any document image that
-          must carry your signature. Draw it directly or place a transparent
-          signature PNG, position it, and download the signed image.
-        </li>
-      </ul>
-
-      <p>
-        Both tools process your image on your device. No image data leaves your
-        browser. This matters when your signature is attached to a government
-        application: you should not send it to an unknown third-party server.
-      </p>
-
-      <p>
-        For a side-by-side comparison of published and unpublished pixel and
-        KB fields across these exams, including photo workflows, see the{" "}
+        , and the photo sizes for the same exams are in the{" "}
         <Link href="/blog/exam-photo-signature-size-guide/">
           exam photo &amp; signature size guide
         </Link>
-        . For individual portals, the{" "}
-        <Link href="/exam-requirements/">exam requirements directory</Link>{" "}
-        links each official notification so you can verify before you apply.
+        . The signature tools run in your browser, so your signature is never
+        sent to a server.
       </p>
 
       <div className="mt-12">

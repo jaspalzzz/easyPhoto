@@ -1,7 +1,6 @@
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { relatedTools, getTool, categoryOf, toolColorCategory } from "@/lib/toolsCatalog";
 import { ToolIconTile } from "@/components/site/ToolIcon";
-import { ExploreTools } from "@/components/site/ExploreTools";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Faq, type FaqItem } from "@/components/site/Faq";
@@ -11,6 +10,7 @@ import { TrackedLink } from "@/components/site/TrackedLink";
 import { ToolDepth } from "@/components/tools/ToolDepth";
 import { SupportCard } from "@/components/site/SupportCard";
 import { AdSlot } from "@/components/site/AdSlot";
+import { AUTHOR } from "@/lib/author";
 
 /** Shared chrome for a tool page: breadcrumb, heading, body, related links. */
 export function ToolPage({
@@ -108,7 +108,7 @@ export function ToolPage({
           {dateModified && (
             <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-[12px] font-bold text-brand">JK</span>
-              <span>Jaspal Kumar · easyPhoto developer &amp; document-spec researcher</span>
+              <span>{AUTHOR.name}, {AUTHOR.byline}</span>
             </p>
           )}
         </div>
@@ -167,11 +167,11 @@ export function ToolPage({
 
       <ToolDepth slug={slug} />
 
-      <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
-        <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
-        {footnote ??
-          "This tool runs entirely in your browser. Your file is never uploaded to a server."}
-      </p>
+      {/* The privacy promise is made once, in the header. A footnote is only
+          for a page-specific note (e.g. a first-run download). */}
+      {footnote && (
+        <p className="mt-4 text-xs text-muted-foreground">{footnote}</p>
+      )}
 
       {related.length > 0 && (
         <section className="mt-12">
@@ -201,14 +201,9 @@ export function ToolPage({
         </section>
       )}
 
-      {/* Never a dead end: surface the wider toolkit after the page's own
-          content (related = same category; this = breadth). */}
-      <ExploreTools
-        className="mt-12 border-t border-hairline pt-10"
-        heading="More free tools"
-        subtitle="All on-device — nothing you open here is uploaded."
-        excludeSlug={slug}
-      />
+      {/* No site-wide "more tools" card block here: the same six cards on every
+          tool page were the most repeated text on the site (1 Nov 2026 review).
+          Related tools above and the header menu cover onward navigation. */}
     </div>
   );
 }

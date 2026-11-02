@@ -24,7 +24,6 @@ export default function Page() {
       slug={tool.slug}
       blurb={tool.blurb}
       faqItems={WHITE_BACKGROUND_FAQ}
-      footnote="Background removal runs locally in your browser; your image never leaves your device."
     >
       <WhiteBackgroundTool />
     </ToolPage>

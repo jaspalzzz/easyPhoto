@@ -50,7 +50,6 @@ export default function Page() {
       slug={tool.slug}
       blurb="Add your name and the date the photo was taken in a strip under your photo. Ready settings for TNPSC, APPSC and Kerala PSC, or set your own size for another form that asks for one."
       faqItems={PHOTO_NAME_DATE_FAQ}
-      footnote="All processing runs entirely on your device. Your photo data, name, and date are never uploaded."
     >
       <NameDatePhotoTool />
       <p className="mt-6 text-sm text-muted-foreground">

@@ -8,7 +8,7 @@ import {
   FileText,
   ImageIcon,
 } from "lucide-react";
-import { LISTED_TOOLS } from "@/lib/toolsCatalog";
+import { SITE_COUNTS } from "@/components/site/siteCounts";
 
 /* ── data ─────────────────────────────────────────────────────────────── */
 
@@ -17,7 +17,7 @@ const PASSPORT = {
   cta: "Make a passport photo",
   includes: ["All countries", "Take with camera", "Print sheet", "Name & date strip"],
   outcome:
-    "Turn any selfie into a photo prepared to the published spec for your country, exam or ID — auto-cropped, sized and background-corrected.",
+    "Start from a clear front-facing photo taken from a little distance. The maker crops it to your country's size and head height and sets a plain background, then you check it before downloading.",
 };
 
 interface Card {
@@ -44,8 +44,8 @@ const BOTTOM_CARDS: Card[] = [
     icon: <GraduationCap className="h-5 w-5 text-amber-600" strokeWidth={1.75} />,
     title: "Exam Application Kit",
     outcome:
-      "Follow the selected exam portal's photo workflow and prepare the separate files it lists — SSC, UPSC, Railway, Banking and more.",
-    includes: ["Photo + signature", "Photo issue checker", "50+ exam specs"],
+      "Pick your exam and prepare each file its form asks for — SSC, UPSC, Railway, Banking and more.",
+    includes: ["Photo + signature", "Photo issue checker", `${SITE_COUNTS.examForms} exams & forms`],
     href: "/tools/exam-package/",
     cta: "Build your exam kit",
     iconBg: "bg-amber-50 dark:bg-amber-900/20",
@@ -140,7 +140,7 @@ export function FeaturedTools() {
         <div className="mb-8 flex items-end justify-between gap-4">
           <div>
             <p className="mb-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              Popular Workflows
+              Popular tasks
             </p>
             <h2 className="text-[30px] font-bold tracking-tight text-ink sm:text-[30px]">
               What do you need to{" "}
@@ -151,7 +151,7 @@ export function FeaturedTools() {
             href="/tools/"
             className="hidden shrink-0 items-center gap-1.5 text-[14px] font-semibold text-brand hover:underline sm:flex"
           >
-            View all {LISTED_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
+            View all {SITE_COUNTS.tools} tools <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
@@ -216,7 +216,7 @@ export function FeaturedTools() {
         {/* mobile "view all" */}
         <div className="mt-6 sm:hidden">
           <Link href="/tools/" className="flex items-center gap-1 text-[14px] font-semibold text-brand hover:underline">
-            View all {LISTED_TOOLS.length} tools <ArrowRight className="h-3.5 w-3.5" />
+            View all {SITE_COUNTS.tools} tools <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 

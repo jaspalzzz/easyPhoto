@@ -26,3 +26,10 @@ export const GOOGLE_SITE_VERIFICATION =
   process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim() || "";
 export const BING_SITE_VERIFICATION =
   process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION?.trim() || "";
+
+/**
+ * AdSense publisher id. Also rendered as the `google-adsense-account` meta tag
+ * on every page, Google's script-free way to tie the site to the account, so
+ * the reviewer sees the link even while ads are switched off.
+ */
+export const ADSENSE_CLIENT = "ca-pub-8825078307302402";

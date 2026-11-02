@@ -41,8 +41,10 @@ describe("resize-kb page", () => {
     expect(page).toContain("When your form gives a range, such as 20 KB to 50 KB");
   });
 
-  it("answers making a photo bigger in KB, honestly", () => {
-    const faq = PHOTO_RESIZE_FAQ.find((f) => f.q === "Can I make a photo bigger in KB?");
-    expect(faq?.a).toContain("The picture itself does not change");
+  it("answers making a photo bigger in KB, honestly, once on the page", () => {
+    // The range section explains the minimum; repeating it as a FAQ stated the
+    // same fact twice on one page (1 Nov 2026 review).
+    expect(page).toContain("The picture itself does not change");
+    expect(PHOTO_RESIZE_FAQ.find((f) => f.q === "Can I make a photo bigger in KB?")).toBeUndefined();
   });
 });

@@ -15,9 +15,8 @@ export default function Page() {
     <ToolPage
       title="Exam Photo & Signature Checker"
       slug="compliance-checker"
-      blurb="Compare your photo or signature with the selected exam's published requirements for file size, dimensions, format and background. It reports measurable issues; it cannot predict the portal's decision. Nothing is uploaded."
+      blurb="Compare your photo or signature with the selected exam's published requirements for file size, dimensions, format and background. It reports measurable issues; it cannot predict the portal's decision."
       faqItems={COMPLIANCE_CHECKER_FAQ}
-      footnote="Your file is checked entirely in your browser and is never uploaded."
     >
       <ComplianceCheckerTool />
     </ToolPage>

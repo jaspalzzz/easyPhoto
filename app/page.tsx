@@ -9,7 +9,6 @@ import { AiShowcase } from "@/components/site/AiShowcase";
 import { PopularDocs } from "@/components/site/PopularDocs";
 import { ToolsTabs } from "@/components/site/ToolsTabs";
 import { WhyRejected } from "@/components/site/WhyRejected";
-import { ComparisonTable } from "@/components/site/ComparisonTable";
 import { DarkTrustStrip } from "@/components/site/DarkTrustStrip";
 import { Faq, HOME_FAQ } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -33,7 +32,7 @@ const POPULAR_SEARCHES = [
   { label: "Indian Passport Photo", href: "/passport-photo/"                  },
   { label: "Voter ID Photo Resizer",href: "/exam-requirements/voter-id/"      },
   { label: "Sign on Image",         href: "/tools/sign-image/"                },
-  { label: "Canada Visa Photo",     href: visaPath("canada")                  },
+  { label: "Canada Passport Photo", href: "/canada-passport-photo/"           },
   { label: "UK Passport Photo",     href: passportPath("uk")                  },
   { label: "UPSC Photo Resize",     href: "/exam-requirements/upsc/"              },
   { label: "Signature PNG",         href: "/tools/signature-background-removal/" },
@@ -57,7 +56,7 @@ export default function HomePage() {
               "Free tools for Indian passport photos, visa photos, exam form resizing and government document images. Everything runs in your browser, nothing is uploaded.",
             url: "/",
             category: "UtilitiesApplication",
-            dateModified: "2026-11-01",
+            dateModified: "2026-11-02",
           }),
           faqSchema(HOME_FAQ),
         ]}
@@ -77,15 +76,15 @@ export default function HomePage() {
                 upload-first hero. */}
             <div className="hero-enter order-last max-w-xl lg:order-first">
               <span className="eyebrow">
-                Passport · Visa · ID Card · Exam — prepared to selected dimensions
+                Passport · Visa · ID Card · Exam
               </span>
               <h1 className="mt-4 text-balance text-[36px] font-semibold leading-[1.04] tracking-tightest sm:text-[48px]">
                 Passport, exam and document photos,{" "}
                 <span className="mark-gold"><span>ready for Indian forms</span></span>
               </h1>
               <p className="mt-4 max-w-lg text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-                100% free tools. No uploads. No data stored.
-                Drop a photo to resize it to an exact size, or pick your exam.
+                Free tools that work inside your browser.
+                Drop a photo to bring it under a form&apos;s KB limit, or pick your exam.
               </p>
 
               {/* Search moved below the value prop — discovery, not the primary
@@ -119,9 +118,6 @@ export default function HomePage() {
 
       {/* ── AI SHOWCASE — 3-panel before/AI/after + 4-step strip ─────── */}
       <AiShowcase />
-
-      {/* ── COMPARISON — easyPhoto vs Photo Studio ───────────────────── */}
-      <ComparisonTable />
 
       {/* ── POPULAR DOCS + EXAMS + STATS ─────────────────────────────── */}
       <PopularDocs />

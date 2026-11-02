@@ -29,6 +29,6 @@ describe("Nepal MRP size photo page", () => {
     // 1 Nov 2026: every maker's templated FAQ was removed (AdSense review), so
     // each maker's lastmod moved to that date with its text.
     const dates = Object.fromEntries(sitemap().map((e) => [e.url.replace(/^https:\/\/[^/]+/, ""), String(e.lastModified)]));
-    expect(dates["/nepal-passport-photo-maker/"]).toBe("2026-11-01");
+    expect(dates["/nepal-passport-photo-maker/"]).toBe("2026-11-02");
   });
 });

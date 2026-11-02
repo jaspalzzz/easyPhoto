@@ -1131,7 +1131,11 @@ export function SignatureWorkflowTool({
   const urlKb = useUrlKbTarget(targetFromUrl, minKb ? minCapKbForFloor(minKb) : 5, SIGNATURE_MAX_KB);
 
   return (
-    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_SIGNATURE_KINDS}>
+    <ImageToolShell
+      acceptedWorkflowKinds={WORKFLOW_SIGNATURE_KINDS}
+      uploaderTitle="Drop your signature, or click to browse"
+      uploaderHint="Sign in dark ink on plain white paper, then photograph or scan it straight on"
+    >
       {(source) => (
         <Body
           source={source}

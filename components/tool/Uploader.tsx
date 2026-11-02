@@ -115,7 +115,7 @@ export function Uploader({
           <p className="mt-0.5 text-sm text-muted-foreground">{hint}</p>
         </div>
         <p className="spec mt-1 normal-case tracking-[0.04em]">
-          JPG · PNG · HEIC &nbsp;·&nbsp; processed on your device, never uploaded
+          JPG · PNG · WebP · HEIC
         </p>
         <input
           ref={inputRef}

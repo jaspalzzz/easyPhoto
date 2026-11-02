@@ -112,7 +112,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       {
         slug: "photo-with-name-date",
         title: "Photo with Name and Date",
-        blurb: "Add a custom name and date text strip at the bottom of your passport photo.",
+        blurb: "Add your name and the photo date in a strip at the bottom of an exam photo.",
         ready: true,
         popular: true,
         icon: "Calendar",
@@ -120,7 +120,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       {
         slug: "print-sheet",
         title: "Passport Photo Print Sheet",
-        blurb: "Tile 4, 6 or 8 passport photos on an A4 or 4×6 inch sheet — download for printing at any studio.",
+        blurb: "Tile 4, 6 or 8 passport photos on an A4, A5 or photo-paper sheet, ready for a print shop.",
         ready: true,
         popular: true,
         icon: "Printer",
@@ -301,7 +301,7 @@ export const TOOLS_CATALOG: ToolGroup[] = [
       {
         slug: "signature-cleaner",
         title: "Signature Cleaner",
-        blurb: "Clean scan background, crop tightly, and optimize file size.",
+        blurb: "Clean the paper from a signature scan, trim it and fit it under a KB limit.",
         ready: true,
         popular: true,
         icon: "PenLine",

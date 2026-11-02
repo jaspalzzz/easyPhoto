@@ -5,7 +5,7 @@ import { TrustPageLayout } from "@/components/site/TrustPageLayout";
 export const metadata = pageMetadata({
   title: "Editorial Policy",
   description:
-    "How easyPhoto uses AI-assisted drafting, human source verification, review dates, and corrections when publishing document-photo guidance.",
+    "How easyPhoto uses AI tools for drafts, who checks each guide against its source, what the dates on a page mean, and how corrections work.",
   path: "/editorial-policy/",
 });
 
@@ -13,91 +13,90 @@ export default function EditorialPolicyPage() {
   return (
     <TrustPageLayout
       eyebrow="Editorial standards"
-      title="How we create and verify content"
-      intro="Our pages are working guides built from cited requirements. This policy explains where automation helps, where a person checks the work, and what readers should verify before submitting an application."
+      title="How the guides are written and checked"
+      intro="Every guide on easyPhoto is written to help you get a form right. This page explains where an AI tool is used, who checks the result, and what you should still check yourself."
     >
       <section className="space-y-3">
         <h2 className="text-xl font-semibold tracking-tight text-ink">
-          AI-assisted drafts, human-verified claims
+          AI helps with drafts; a person checks the facts
         </h2>
         <p>
-          We may use AI assistance to organize research notes, outline a page, or
-          produce an early draft. AI output is not treated as evidence. Before
-          publication, a person reviews substantive requirements against the
-          source recorded for that specification and removes claims the cited
-          material does not support.
+          An AI tool may be used to sort research notes, plan a page or write a first
+          draft. Nothing it writes is treated as a source. Before a guide is
+          published, 
+          <Link href="/authors/jaspal-kumar/" className="font-medium text-brand underline">
+            Jaspal Kumar
+          </Link>
+          , who runs easyPhoto, checks every size, limit and rule in it against the
+          linked source and removes anything the source does not say.
         </p>
         <p>
-          Human verification reduces errors; it does not make a page an official
-          instruction or an acceptance guarantee. Application rules can also
-          change after a review.
+          That check cuts mistakes, but it does not turn a guide into official
+          instructions or say what an authority will decide. Rules can also change
+          after the check.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold tracking-tight text-ink">
-          What verification means
+          Which sources count
         </h2>
         <p>
-          We prefer the responsible government department, embassy, exam board,
-          or application portal. A specification marked as verified includes the
-          review date and a link to the source used. When only secondary guidance
-          is available, the page should say that the source needs review instead
-          of presenting it as government-confirmed.
+          The first choice is always the department, embassy, exam board or
+          application portal responsible for the form. When a figure has been
+          checked against that source, the page shows the date and links the source.
+          When only other guidance is available, the page says so and marks the
+          figure as still needing a check, instead of presenting it as the
+          government&apos;s.
         </p>
         <p>
-          The implementation details are documented in our{" "}
+          The 
           <Link href="/source-methodology/" className="font-medium text-brand underline">
             source methodology
-          </Link>
-          .
+          </Link> 
+          explains how dates and these labels work.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Publishing standards
+          Rules every page follows
         </h2>
         <ul className="list-disc space-y-2 pl-5">
-          <li>Use primary official sources where they are available.</li>
-          <li>Do not describe easyPhoto as a government service or official tool.</li>
-          <li>Do not promise a favourable application decision for a prepared file.</li>
-          <li>Separate measurable image properties from visual estimates.</li>
+          <li>Use the authority&apos;s own instructions wherever they exist.</li>
+          <li>Never describe easyPhoto as a government service or official tool.</li>
+          <li>Never promise what an authority will decide about a prepared file.</li>
+          <li>Keep exact measurements, such as file size, apart from estimates, such as head position.</li>
           <li>Tell readers to confirm the current application instructions.</li>
+          <li>Avoid urgency, fake deadlines and claims of endorsement.</li>
         </ul>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-xl font-semibold tracking-tight text-ink">
+          What a check covers
+        </h2>
+        <p>
+          The check confirms that the page describes the right application, that each
+          number on it appears in the linked source, and that an example is not
+          presented as a rule for every form. When a figure is corrected, the tool,
+          the exam page and any guide that repeats it are corrected together, so the
+          site does not contradict itself.
+        </p>
       </section>
 
       <section className="rounded-xl border border-hairline bg-card p-6">
         <h2 className="text-lg font-semibold tracking-tight text-ink">
-          Updates and accountability
+          Dates and corrections
         </h2>
         <p className="mt-2">
-          A displayed review date records when the cited requirement was last
-          compared with its source; it is not a promise that the authority has
-          made no later change. If something looks wrong, use our{" "}
+          A date on a page shows when its figures were last compared with the source.
+          It does not mean the authority has made no change since. If something looks
+          wrong, the 
           <Link href="/corrections-policy/" className="font-medium text-brand underline">
             corrections policy
-          </Link>{" "}
-          to report it.
-        </p>
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">
-          What a content review covers
-        </h2>
-        <p>
-          A reviewer checks that the page identifies the correct application
-          workflow, that every displayed number is present in the recorded source,
-          and that examples do not turn a preferred value into a universal rule.
-          Links, visible disclosures, tool labels, and dependent guidance are also
-          compared so a corrected figure is not contradicted elsewhere on the site.
-        </p>
-        <p>
-          Copy is written to describe deterministic behaviour rather than personal
-          testing or approval experience. We distinguish a tool measurement from
-          an authority decision and avoid urgency, endorsement, or guaranteed-outcome
-          language.
+          </Link> 
+          explains how to report it.
         </p>
       </section>
     </TrustPageLayout>

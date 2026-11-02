@@ -61,14 +61,14 @@ export default function DisclaimerPage() {
           <strong className="font-semibold">Always confirm the current photo,
           signature and document requirements on the official portal before you
           submit.</strong>{" "}
-          easyPhoto follows each authority&apos;s published specification, but
-          rules change between cycles and can vary by office.
+          easyPhoto uses each authority&apos;s published requirements where they
+          exist, but rules change between cycles and can vary by office.
         </p>
       </div>
 
       <article className="mt-2 divide-y divide-hairline [&>section]:py-8">
         <Section title="Independent, unaffiliated tool">
-          easyPhoto is an independent service. We are{" "}
+          easyPhoto is an independent service run by Jaspal Kumar. We are{" "}
           <strong className="text-foreground">
             not affiliated with, authorised by, or endorsed by
           </strong>{" "}
@@ -79,21 +79,24 @@ export default function DisclaimerPage() {
         </Section>
 
         <Section title="Accuracy of specifications">
-          We take accuracy seriously — each country and exam specification is
-          drawn from its official source and dated on the page. However,
-          requirements are updated between notification cycles and may differ by
-          office or consulate. We do not warrant that any specification is
-          current or complete, and the responsibility for matching your final
-          file to the live official requirement rests with you.
+          Each figure on the site comes from the authority&apos;s own published
+          instructions where they exist. Where they do not, the page names the
+          other source it relies on and marks the figure as still needing a check.
+          A figure compared with an official source shows the date of that check.
+          Requirements change between notification cycles and may differ by
+          office or consulate, so we do not warrant that any figure is current or
+          complete. Matching your final file to the live official requirement is
+          your responsibility.
         </Section>
 
         <Section title="No guarantee of acceptance">
           Our tools size, compress and check photos, signatures and documents to
           help them meet published requirements. We{" "}
           <strong className="text-foreground">
-            cannot predict or guarantee an application authority&apos;s decision
-          </strong>{" "}
-          by a portal, officer or authority, and we are not liable for rejected
+            cannot predict or guarantee that a portal, officer or authority will
+            accept your application
+          </strong>
+          , and we are not liable for rejected
           applications, missed deadlines, fees, or any other loss arising from
           use of the site. Automated checks cannot catch every issue (expression,
           glasses glare, shadows, lighting) — review your result before submitting.

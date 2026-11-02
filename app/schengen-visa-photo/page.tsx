@@ -1,55 +1,30 @@
-import Link from "next/link";
-import { ArrowRight, ShieldCheck } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, softwareApplicationSchema, faqSchema, type Crumb } from "@/lib/schema";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { COUNTRY_SPECS } from "@/lib/countrySpecs";
 import { StickyCtaBar } from "@/components/site/StickyCtaBar";
+import { PhotoTool } from "@/components/tool/PhotoTool";
 import { CountrySpecificationProvenance } from "@/components/site/SpecificationProvenance";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 const spec = COUNTRY_SPECS["schengen"]!;
 
 export const metadata = pageMetadata({
-  title: "Schengen Visa Photo Requirements 2026 — Free Maker (All 29 Countries)",
+  title: "Schengen Visa Photo Requirements 2026 — Free Maker",
   description:
-    "Schengen visa photo requirements: 35×45mm, light grey background, ICAO standard — the common format for all 29 Schengen countries. Free, nothing uploaded.",
+    "Schengen visa photo requirements: 35×45mm, ICAO standard, and where Germany, France, the Netherlands and Italy differ on background and head size. Free, nothing uploaded.",
   path: "/schengen-visa-photo/",
 });
 
 const FAQ_ITEMS: FaqItem[] = [
   {
-    q: "What size is a Schengen visa photo?",
-    a: "35×45mm, following the ICAO biometric standard, with the face (chin to crown) measuring 32–36mm and filling roughly 70–80% of the frame.",
-  },
-  {
-    q: "What background does a Schengen visa photo need?",
-    a: "A plain light grey background is the safest choice. Some states accept white (e.g. France), but Switzerland requires grey and rejects white, so light grey meets the requirement across all 29 Schengen countries.",
-  },
-  {
-    q: "Does the same photo work for all Schengen countries?",
-    a: "The ICAO photo standard is shared across all 29 Schengen member states (including Bulgaria and Romania, which joined in 2025), so a 35×45mm light-grey photo meets the common format for all of them. Individual consulates can still apply their own checks, so confirm your consulate's current guidance before submitting.",
-  },
-  {
-    q: "Are glasses allowed in a Schengen visa photo?",
-    a: "No. The ICAO biometric standard requires glasses to be removed. Both eyes must be clearly visible, open, and looking directly at the camera.",
-  },
-  {
-    q: "How recent does a Schengen visa photo need to be?",
-    a: "Most Schengen consulates require the photo to have been taken within the last 6 months and to reflect your current appearance.",
-  },
-  {
-    q: "Can I take a Schengen visa photo at home?",
-    a: "Yes. Stand against a plain light-grey wall (or a white sheet) in even lighting, take a frontal photo with a neutral expression, and use this maker to apply the correct background, crop to 35×45mm, and size the head to the 32–36mm range.",
+    q: "Does the same photo work for every Schengen country?",
+    a: "Not always. The 35×45mm frame is shared, but the Netherlands asks for a smaller head and missions differ on the background shade, so a photo made for one country can need redoing for another. Check the sheet for the mission handling your application.",
   },
   {
     q: "Is a Schengen visa photo the same as a passport photo?",
-    a: "The 35×45mm ICAO biometric standard is used for both Schengen visa photos and most EU national passport photos, so the same photo often works for both. Confirm the specific consulate's requirements, as some EU countries have minor variations for their national passports.",
-  },
-  {
-    q: "Which countries are in the Schengen area in 2026?",
-    a: "29 countries: Austria, Belgium, Bulgaria, Croatia, Czechia, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Netherlands, Norway, Poland, Portugal, Romania, Slovakia, Slovenia, Spain, Sweden, Switzerland. Bulgaria and Romania joined in January 2025.",
+    a: "Many EU countries also use 35×45mm for national passports, but each sets its own passport rules. Check them separately rather than reusing a visa photo.",
   },
 ];
 
@@ -68,7 +43,7 @@ export default function Page() {
           softwareApplicationSchema({
             name: "Schengen Visa Photo Maker",
             description:
-              "Prepare a Schengen visa photo at the selected 35×45mm frame and light grey background; confirm the destination consulate's current instructions.",
+              "Prepare a Schengen visa photo at 35×45mm in your browser; confirm the destination consulate's current instructions.",
             url: "/schengen-visa-photo/",
           }),
           faqSchema(FAQ_ITEMS),
@@ -83,43 +58,29 @@ export default function Page() {
           Schengen Visa Photo Requirements 2026
         </h1>
         <p className="text-base leading-relaxed text-muted-foreground max-w-2xl">
-          The Schengen visa uses the <strong>ICAO biometric standard: 35×45mm, light grey
-          background</strong>, face filling 70–80% of the frame. This single standard applies to all
-          29 member states, so one photo built to it meets the common format for Germany, France,
-          Italy, Spain, Switzerland and the rest — confirm your consulate&apos;s current guidance
-          before you submit.
+          Schengen visa photos follow the <strong>ICAO biometric standard: 35×45mm</strong>, with the
+          face filling 70–80% of the frame, as the EU Visa Code requires. Each member state&apos;s
+          mission publishes its own background and framing details, so check the sheet for the
+          consulate handling your application.
         </p>
       </header>
 
-      {/* CTA block */}
-      <div className="rounded-xl border border-brand/20 bg-brand-soft/20 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-sm">Make your Schengen visa photo free</p>
-          <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1.5">
-            <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-brand" />
-            GDPR-safe — your photo is never uploaded. Built to the ICAO standard for all 29 Schengen countries.
-          </p>
-        </div>
-        <Link
-          href="/schengen-visa-photo-maker/"
-          className="inline-flex items-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand/90 transition-colors shrink-0"
-        >
-          Open maker <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
+      {/* The Schengen maker URL now redirects here, so the tool lives on this page. */}
+      <section id="maker" className="scroll-mt-20">
+        <PhotoTool spec={spec} />
+      </section>
 
       {/* Spec table */}
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Official Schengen visa photo specification</h2>
+        <h2 className="text-lg font-semibold">Schengen visa photo requirements</h2>
         <dl className="divide-y divide-hairline rounded-lg border border-hairline">
           {[
             ["Size", "35 × 45 mm"],
             ["Head height", "32–36 mm chin to crown"],
             ["Head fill", "70–80% of the photo frame"],
-            ["Background", "Plain light grey (universally safe; white rejected by some states)"],
+            ["Background", "Plain and light; the shade is set by each mission"],
             ["Expression", "Neutral, mouth closed, eyes open"],
-            ["Glasses", "Not permitted (ICAO standard)"],
-            ["Digital (approx. @300 DPI)", "~413 × 531 px"],
+            ["Glasses", "Best removed; Germany allows them only for medical reasons"],
             ["Standard", "ICAO Doc 9303 (EU Visa Code Art. 13(4))"],
             ["Recency", "Within the last 6 months"],
             ["Min DPI (print)", "300 DPI"],
@@ -136,14 +97,20 @@ export default function Page() {
       {/* Sections */}
       <section className="space-y-8">
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold">Why light grey — not white — background</h2>
+          <h2 className="text-lg font-semibold">Where member states differ</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
-            The Schengen area adopts the ICAO biometric standard, which specifies a plain, light
-            background. Most consulates recommend or require light grey. The key exception is
-            Switzerland, which explicitly requires a grey background and{" "}
-            <strong>rejects pure white</strong>. France technically accepts white but recommends
-            grey. Since one photo should work across all 29 member states, using light grey is the
-            universally safe approach. This maker applies light grey by default.
+            Germany&apos;s sample sheet sets a contrast rule: one bright colour, ideally neutral grey,
+            that stands out from your face and hair. It does not rule out white. France asks for a
+            plain light-coloured background and allows a width from 35 to 40 mm. The Netherlands
+            applies its own national rules to visa applications: for anyone aged 11 or over the head is
+            26–30 mm from chin to crown, smaller than the 32–36 mm used elsewhere, on light grey, light blue or white.
+            Italy&apos;s visa centre operator asks for a white background and accepts 30×40 or
+            35×45 mm.
+          </p>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            The maker&apos;s Schengen setting starts with light grey and sizes the head to 32–36 mm.
+            Change the background if your mission&apos;s sheet asks for another shade; for a Dutch
+            application the head size is too large, so follow the Dutch rules instead.
           </p>
         </div>
 
@@ -153,26 +120,8 @@ export default function Page() {
             Find a plain light-coloured wall (or use a white or grey sheet) in good, even light.
             Natural daylight from a window works well — avoid harsh direct flash that creates a
             shadow behind your head. Stand a few feet from the wall, take the photo at eye level
-            with a neutral expression, and remove glasses. Use the maker to apply the correct light
-            grey background, crop to 35×45mm, and automatically size your head to the required
-            32–36mm chin-to-crown range.
-          </p>
-        </div>
-
-        <div className="space-y-2">
-          <h2 className="text-lg font-semibold">Schengen photo for Indian visa applicants</h2>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            Indian nationals applying for a Schengen visa — whether for tourism, business, or
-            study — need the Schengen photo requested by the destination authority.
-            An Indian passport renewal abroad follows separate Indian-mission
-            instructions; the current umbrella ICAO guidance specifies a 630×810
-            px white-background photograph with 80–85% face coverage. If you are
-            handling both applications, do not reuse one output without checking
-            both authorities. Use this maker for the Schengen photo and the{" "}
-            <Link href="/india-passport-photo-maker/" className="text-brand hover:underline">
-              India passport maker
-            </Link>{" "}
-            only when the Indian mission&apos;s instructions call for that size.
+            with a neutral expression, and remove glasses. Then use the maker to set the background,
+            crop to 35×45mm and size your head.
           </p>
         </div>
 
@@ -183,18 +132,15 @@ export default function Page() {
             Croatia, Czechia, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland,
             Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Netherlands, Norway, Poland,
             Portugal, Romania, Slovakia, Slovenia, Spain, Sweden, and Switzerland. Bulgaria and
-            Romania joined in January 2025. The same ICAO photo standard applies in every state.
+            Romania joined in January 2025.
           </p>
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold">Privacy — no upload, GDPR-safe</h2>
+          <h2 className="text-lg font-semibold">Privacy — nothing is uploaded</h2>
           <p className="text-sm leading-relaxed text-muted-foreground">
             All processing runs in your browser. Your photo is never sent to any server, never
-            stored, and never shared. This is important for visa photos, which contain biometric
-            data. Under GDPR, processing personal biometric data on a server requires explicit
-            consent and data-handling safeguards — this tool avoids the issue entirely by keeping
-            all processing on your device.
+            stored, and never shared, which matters for a visa photo of your face.
           </p>
         </div>
       </section>
@@ -203,22 +149,8 @@ export default function Page() {
         <Faq items={FAQ_ITEMS} noSchema />
       </section>
 
-      <div className="rounded-lg border border-hairline bg-paper p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-sm">Ready to make your photo?</p>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Free, instant, 100% in-browser. Light grey background applied — the ICAO format for all 29 Schengen countries.
-          </p>
-        </div>
-        <Link
-          href="/schengen-visa-photo-maker/"
-          className="inline-flex items-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand/90 transition-colors shrink-0"
-        >
-          Open maker <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
       <StickyCtaBar
-        href="/schengen-visa-photo-maker/"
+        href="#maker"
         label="Make your Schengen visa photo free"
         sublabel="100% on-device · never uploaded"
       />

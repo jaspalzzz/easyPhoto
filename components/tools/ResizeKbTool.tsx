@@ -585,7 +585,11 @@ export function ResizeKbTool({
   const urlKb = useUrlKbTarget(targetFromUrl, minKb ? minCapKbForFloor(minKb) : 5, MAX_URL_TARGET_KB);
 
   return (
-    <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS} allowCamera={allowCamera}>
+    <ImageToolShell
+      acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}
+      allowCamera={allowCamera}
+      uploaderHint="Start from the original photo, not a copy that was already compressed"
+    >
       {(source) => (
         <Body
           source={source}

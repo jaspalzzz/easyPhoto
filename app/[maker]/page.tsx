@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { Check, X } from "lucide-react";
 import {
+  acceptsDigitalUpload,
   effectivePrintMm,
-  formatFileSizeKb,
+  formatFileSize,
   specForDocumentKind,
   type CountrySpec,
 } from "@/lib/countrySpecs";
@@ -15,7 +17,6 @@ import {
   type MakerKind,
 } from "@/lib/makerPages";
 import { getMakerContent } from "@/lib/makerContent";
-import { AcceptanceTips } from "@/components/site/AcceptanceTips";
 import { HeadSizeGuide } from "@/components/site/HeadSizeGuide";
 import { PhotoTool } from "@/components/tool/PhotoTool";
 import { SupportCard } from "@/components/site/SupportCard";
@@ -27,7 +28,7 @@ import {
   type Crumb,
 } from "@/lib/schema";
 import { clampDescription, firstSentence, pageMetadata } from "@/lib/seo";
-import { kbPath } from "@/lib/kbTargets";
+import { KB_TARGETS, kbPath } from "@/lib/kbTargets";
 import { Faq } from "@/components/site/Faq";
 import { countryFaqItems } from "@/lib/faqs";
 import { CountrySpecificationProvenance } from "@/components/site/SpecificationProvenance";
@@ -70,7 +71,7 @@ export async function generateMetadata({
   const description = clampDescription(
     fromGovernment
       ? `Exact ${labelWithDoc(spec.label, doc)} photo requirements: ${mm.width}×${mm.height}mm, ${background}. Free, nothing uploaded.`
-      : `${labelWithDoc(spec.label, doc)} photo, recorded at ${mm.width}×${mm.height}mm, ${background}. Confirm current requirements. Free, nothing uploaded.`,
+      : `${labelWithDoc(spec.label, doc)} photo at ${mm.width}×${mm.height}mm, ${background}. Confirm current requirements. Free, nothing uploaded.`,
   );
   return pageMetadata({
     title: PAGE_TITLE[spec.id] ?? `${labelWithDoc(pageLabel(spec), doc, doc === "visa" ? "Visa" : "Passport")} Photo Size & Maker`,
@@ -108,24 +109,12 @@ const PAGE_H1: Record<string, string> = {
 /**
  * User-facing "Good to know" copy, keyed by spec id. Kept here (not in the spec
  * DB) so the internal `spec.notes` developer documentation never reaches users.
+ * A page without an entry shows no Good to know text: every point it used to
+ * carry is now said once, in the intro, the notes or the page sections.
  */
 const GOOD_TO_KNOW: Record<string, string> = {
-  india:
-    "Ordinary adult fresh/reissue applicants in India are photographed at the PSK/POPSK and do not upload or carry a photo. The 35×45mm white-background print is for a child below four; overseas missions, OCI and Indian e-Visa use separate workflows.",
-  us: "The US wants a plain white or off-white background and no glasses. Use a photo from the last six months, and leave a little space above your head so there's room to crop.",
-  canada:
-    "This covers Canada's 35×45mm temporary-resident photo — visitor visas, study permits and work permits. Permanent residence and Express Entry are a separate process with their own pixel-based upload requirements, and the printed passport booklet is different again: 50×70mm, needing a commercial photographer's certification and a guarantor signature that a self-serve tool cannot provide. Check what your own application asks for rather than assuming the visitor figure carries across.",
-  uk: "HM Passport Office accepts any plain light-coloured background, and its own examples include shades of white, cream, ivory and light grey — white is not a rejection reason. Light grey is applied here because it also suits Schengen states that do reject white. Note the two rules do not read alike: the gov.uk online service tells customers the photo must be unedited, while the examiner standard allows a digitally edited background as long as the edit does not affect your own image. Neither automatic acceptance nor automatic rejection follows, but photographing yourself against a suitable wall is the safer route for the online photo code. Glasses are allowed if both eyes stay clearly visible and glare does not hide them.",
-  australia:
-    "Australia accepts a plain white or light grey background. For a new passport, your guarantor signs the back of one printed photo to confirm it's a true likeness, so add that by hand after you print.",
-  schengen:
-    "Schengen follows the ICAO standard across all 29 member states. Light grey is the safe background everywhere. Some consulates (Switzerland in particular) reject pure white, so the tool defaults to grey.",
-  uae:
-    "Typing centres and GDRFA channels usually ask for a 43×55 mm photo on a plain white background, and this maker prepares that size. It is a common convention, not one size for every UAE application: ICP's own services state other dimensions in places, and no ICP page we could read sets 43×55 mm for every visit, employment and residence route. ICP's photo guide follows the ICAO standard: your face should fill 70–80% of the photo, it should be taken within the past half-year, the background plain and light-coloured and your expression neutral. Glasses are allowed only without tint or glare, and a head covering worn for religious reasons is fine if your whole face stays visible. That guide gives a 35–40 mm width and no fixed height, so it fixes the framing rather than the print size: a 43×55 mm print and a narrower one can both meet it, and what decides is the size your channel asks for. An Emirates ID or other ICP application has its own specification, which this page does not cover. Confirm the size with your typing centre or portal before you print or upload.",
   italy:
     "Italy's visa application centres are run by the Italy Visa Management Service, an outsourced operator rather than an Italian government office. It asks for a colour photo of 30×40 mm or 35×45 mm (this maker uses 35×45 mm), with your face filling 70–80% of the frame, on a white background with no border, taken in the last six months. Italy is a Schengen state, so the EU Visa Code is the rule that binds; check with the consulate handling your application before you submit.",
-  pakistan:
-    "For the online passport application, the DGI&P e-services page asks for a photo of 350×467 pixels, JPEG or JPG, up to 3 MB, and this maker prepares that file. You may also find older DGI&P material giving 45×35 mm, a 5 MB limit and 600 DPI scanning advice; that belongs to a different route, not the online application, so don't mix the two. Use a plain white background with your head filling 70–80% of the frame. For this route the pixel size matters more than any print size, because the file goes through the website and is never handed over on paper. If you are applying for the first time inside Pakistan, the passport office takes your photo and biometrics during your visit, so there is nothing to upload.",
   oman:
     "Sources disagree on the size of an Oman visa photo. The Royal Oman Police eVisa is usually described as taking 35×45 mm, and that is the size this maker starts with, but widely shared guides also give 40×60 mm for applications made at a counter or consulate. We could not find a public ROP page that states a size, so take the figure from the application you are actually filling in before you print or upload.",
   france:
@@ -134,8 +123,6 @@ const GOOD_TO_KNOW: Record<string, string> = {
     "Germany follows the ICAO biometric standard: a 35×45 mm photo with your face filling 70–80% of the height, about 32–36 mm from chin to crown. Its own background rule is about contrast: one plain, bright colour, ideally neutral grey, that stands out clearly from your face and hair. White is not ruled out. These points come from the sample-photo template the German missions publish with the Federal Foreign Office and the Bundesdruckerei.",
   netherlands:
     "The Dutch government portal asks for a 35×45 mm colour photo in which your face measures 26–30 mm from chin to crown (for anyone aged 11 or over) and 16–20 mm across, on a plain light grey, light blue or white background; the photo must be no more than six months old, and prints need at least 400 DPI. The Netherlands applies these national rules to Schengen visa applications made to it, and its visa checklist asks for a photo that meets them, so this maker sizes your head smaller than the German or French makers do. If you apply through an external service provider, they take a digital photo at your appointment.",
-  ireland:
-    "An Irish visa application, per Immigration Service Delivery, needs two identical colour prints on photographic paper, at least 35×45 mm and no larger than 38×50 mm, with your face filling 70–80% of the frame against a plain light grey, cream or white background, taken within half a year of applying. Write your name and your transaction number in block capitals on the back of each print. Because the application takes prints rather than an upload, no pixel size or file-size limit applies to it.",
   china:
     "China uses an unusual size: 33×48 mm rather than the common 35×45, on a white background, with your head 28–33 mm from chin to crown. For a digital upload through COVA or a consulate, guides give a JPEG of 354×472 to 420×560 pixels and 40–120 KB. The Chinese Visa Application Service Centre's FAQ confirms the 48×33 mm print; the pixel and KB ranges are consistent across reputable guides but do not appear on that page, so confirm them on the consulate or COVA portal before you submit.",
   "new-zealand":
@@ -145,10 +132,154 @@ const GOOD_TO_KNOW: Record<string, string> = {
   "saudi-evisa":
     "The official visa.visitsaudi.com photo page sets the eVisa photo exactly: 200×200 pixels, 5–100 KB, on a white background with no pattern or shadows. Your face should fill 70–80% of the photo, with your head square to the camera so both ears and cheeks show, and the photo must not be older than six months. Head coverings are allowed for religious reasons only. A paper application at the consulate uses a 4×6 cm print instead; this maker prepares the eVisa upload.",
   nepal:
-    "In Nepal, “MRP size photo” is the everyday name for the standard photo many forms ask for; the name comes from the older machine-readable passport. Guides agree on 35×45 mm on plain white, though the Department of Passports does not publish it, and this maker prepares exactly that: face straight to the camera, mouth closed. Guides also want a photo taken in the past six months; copies can go several to one 4×6 inch print sheet. Match it against the form in front of you.",
+    "In Nepal, “MRP size photo” is the everyday name for the standard photo many forms ask for. Guides agree on 35×45 mm on plain white, though the Department of Passports does not publish it, and want a photo taken in the past six months. Several copies fit on one 4×6 inch print sheet; match the size against the form in front of you.",
   "india-evisa":
     "The Indian e-Visa photo is square, not the 35×45mm passport shape, on a plain white or light background with no border. Keep it between 350×350 and 1000×1000 px and under about 300 KB for the upload.",
 };
+
+/**
+ * What each staying maker page's application actually involves, keyed by spec
+ * id. The shared frame used to show every block on every page — a KB resize
+ * strip on print-only routes, a "required band" placeholder where no head
+ * percentage is published — and those empty blocks read as a template.
+ *
+ * - `noUpload`: the route takes prints or a live capture, so no file-size help.
+ * - `kbUnpublished`: a file is uploaded but its KB figure is our own default.
+ * - `uploadNote`: the page's own sentence about the upload limit.
+ * - `printed: false`: nothing is printed, so print rows are hidden.
+ * - `digitalSize` / `heroSize`: the published file size where the registry's
+ *   fields would describe it less exactly (Pakistan states one exact size).
+ * - `notesHeading`: the heading over this application's own notes.
+ */
+interface RouteFacts {
+  noUpload?: boolean;
+  kbUnpublished?: boolean;
+  uploadNote?: string;
+  printed?: boolean;
+  digitalSize?: string;
+  heroSize?: string;
+  notesHeading?: string;
+}
+
+const ROUTE: Record<string, RouteFacts> = {
+  us: { uploadNote: "Both sizes below fit online renewal and the DS-160 limit." },
+  india: {
+    kbUnpublished: true,
+    uploadNote:
+      "No file-size limit is published for this photo. If the screen you upload to states one, compress the finished photo to it.",
+  },
+  pakistan: {
+    printed: false,
+    digitalSize: "350 × 467 px",
+    heroSize: "350 × 467 px",
+    notesHeading: "Which Pakistani route this file is for",
+  },
+  uae: {
+    uploadNote:
+      "Typing centres, GDRFA and ICP each set their own file limit. Compress the finished photo to the one shown where you submit it.",
+    notesHeading: "Which UAE applications this size is for",
+  },
+  nepal: { noUpload: true, notesHeading: "When you need to bring a photo" },
+  ireland: { noUpload: true, notesHeading: "Two prints, with writing on the back" },
+  australia: { noUpload: true },
+  canada: { noUpload: true },
+};
+
+/** Passport pages where a baby's printed photo is a real case. */
+const BABY_GUIDE = new Set(["india", "us", "uk", "australia", "nepal"]);
+
+/** The background rule, without the trailing "no shadows" clause. */
+function backgroundLabel(spec: CountrySpec): string {
+  return spec.background.description
+    .split(/\s\(|;/)[0]
+    .replace(/,\s*(?:uniform|no\s).*$/i, "")
+    .trim();
+}
+
+/** "a"/"an" for a country label in running prose. */
+const article = (word: string) => (/^[AEIOU]/i.test(word) ? "an" : "a");
+
+/** The published pixel figures, or null when only a print conversion exists. */
+function digitalSize(spec: CountrySpec): string | null {
+  const route = ROUTE[spec.id];
+  if (route?.digitalSize) return route.digitalSize;
+  const d = spec.digital;
+  if (d.px) return `${d.px.width} × ${d.px.height} px`;
+  if (d.pxMin && d.pxMax) {
+    return `${d.pxMin.width} × ${d.pxMin.height} to ${d.pxMax.width} × ${d.pxMax.height} px`;
+  }
+  if (d.pxMin) return `at least ${d.pxMin.width} × ${d.pxMin.height} px`;
+  return null;
+}
+
+function hasUpload(spec: CountrySpec): boolean {
+  return !ROUTE[spec.id]?.noUpload && acceptsDigitalUpload(spec);
+}
+
+/** Up to three resize sizes that sit inside the published KB range. */
+function kbChoices(spec: CountrySpec): number[] {
+  const band = spec.digital.fileSizeKb;
+  if (!band || ROUTE[spec.id]?.kbUnpublished) return [];
+  const inside = KB_TARGETS.filter(
+    (kb) => kb >= (band.min ?? 0) && kb <= band.max && (spec.id !== "us" || kb <= 240),
+  );
+  return inside.slice(-3);
+}
+
+/** The glasses line for the photo checklist, from the country's own rule. */
+function glassesToAvoid(glasses: CountrySpec["glasses"]): string {
+  if (glasses === true) return "Glare or tint on glasses";
+  if (glasses === false) return "Glasses";
+  if (/medical/i.test(glasses)) return "Glasses, unless you need them for a medical reason";
+  if (/only if you have to/i.test(glasses)) return "Glasses you could take off, and any tint or glare";
+  if (/^allowed/i.test(glasses)) return "Glare or tint on glasses";
+  if (/discouraged|if possible|avoid/i.test(glasses)) return "Glasses, if you can take them off";
+  return "Glasses";
+}
+
+function PhotoChecklist({ spec }: { spec: CountrySpec }) {
+  const dos = [
+    "A plain, evenly lit wall behind you",
+    "Face the camera straight on, head level",
+    "A neutral expression, mouth closed, eyes open",
+    "A recent photo that shows how you look now",
+  ];
+  const avoid = [
+    "Shadows on your face or the wall behind you",
+    glassesToAvoid(spec.glasses),
+    "Hair across the eyes, hats or caps",
+    "Filters, beauty smoothing, or a crop from a group photo",
+  ];
+  return (
+    <section className="rounded-xl border border-hairline bg-card p-5">
+      <h2 className="text-sm font-semibold tracking-tight text-ink">Before you take the photo</h2>
+      <div className="mt-2.5 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+        <div>
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Do</h3>
+          <ul className="mt-1.5 space-y-1.5">
+            {dos.map((d) => (
+              <li key={d} className="flex items-start gap-2 text-sm text-ink-soft">
+                <Check aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-[hsl(142_55%_34%)]" strokeWidth={2.25} />
+                {d}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Avoid</h3>
+          <ul className="mt-1.5 space-y-1.5">
+            {avoid.map((d) => (
+              <li key={d} className="flex items-start gap-2 text-sm text-ink-soft">
+                <X aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-[hsl(0_70%_50%)]" strokeWidth={2.25} />
+                {d}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function SpecRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -162,53 +293,43 @@ function SpecRow({ label, value }: { label: string; value: React.ReactNode }) {
 }
 
 function SpecSheet({ spec }: { spec: CountrySpec }) {
-  const d = spec.digital;
-  const px = d.pxMin
-    ? `min ${d.pxMin.width}×${d.pxMin.height}px`
-    : d.px
-      ? `${d.px.width}×${d.px.height}px`
-      : d.pxApprox300dpi
-        ? `~${d.pxApprox300dpi.width}×${d.pxApprox300dpi.height}px @300dpi`
-        : "—";
-  const kb = d.fileSizeKb ? formatFileSizeKb(d.fileSizeKb) : "varies by portal";
+  const route = ROUTE[spec.id];
+  const printed = route?.printed !== false;
+  const mm = effectivePrintMm(spec);
+  const upload = hasUpload(spec);
+  const px = upload ? digitalSize(spec) : null;
+  const band = spec.digital.fileSizeKb;
+  const kb = !upload
+    ? null
+    : band && !route?.kbUnpublished
+      ? formatFileSize(band)
+      : route?.kbUnpublished
+        ? "none published"
+        : "set by each portal";
 
   return (
     <dl>
-      <SpecRow
-        label="Print size"
-        value={`${spec.printMm.width} × ${spec.printMm.height} mm`}
-      />
-      {spec.visaPrintMm && (
-        <SpecRow
-          label="Visa/permit print size"
-          value={`${spec.visaPrintMm.width} × ${spec.visaPrintMm.height} mm`}
-        />
-      )}
+      {printed && <SpecRow label="Print size" value={`${mm.width} × ${mm.height} mm`} />}
       <SpecRow
         label="Head height"
         value={`${spec.headHeightMm.min}–${spec.headHeightMm.max} mm (chin to crown)`}
       />
-      {spec.headPercentOfFrame && (
-        <SpecRow
-          label="Head % of frame"
-          value={`${spec.headPercentOfFrame.min}–${spec.headPercentOfFrame.max}%`}
-        />
-      )}
       <SpecRow
         label="Background"
         value={
           <span className="inline-flex items-center gap-2">
             <span
-              className="inline-block h-3.5 w-3.5 rounded-[2px] border border-hairline-strong"
+              aria-hidden
+              className="inline-block h-3.5 w-3.5 shrink-0 rounded-[2px] border border-hairline-strong"
               style={{ backgroundColor: spec.background.hex }}
             />
-            {spec.background.hex}
+            {backgroundLabel(spec)}
           </span>
         }
       />
-      <SpecRow label="Digital size" value={px} />
-      <SpecRow label="File size" value={kb} />
-      <SpecRow label="Min DPI" value={spec.dpiMin} />
+      {px && <SpecRow label="Digital size" value={px} />}
+      {kb && <SpecRow label="File size" value={kb} />}
+      {printed && <SpecRow label="Print resolution" value={`at least ${spec.dpiMin} DPI`} />}
       <SpecRow
         label="Glasses"
         value={
@@ -238,9 +359,14 @@ export default async function MakerPage({
   const Doc = kind === "visa" ? "Visa" : "Passport";
   const hub = HUB[kind];
   const mm = effectivePrintMm(spec);
+  const route = ROUTE[spec.id];
   const content = getMakerContent(maker);
-  // Page-specific FAQs, then the country's one hand-written caveat. No
-  // generic spec questions: the spec card above already answers them.
+  const goodToKnow = GOOD_TO_KNOW[spec.id];
+  const upload = hasUpload(spec);
+  const kbSizes = kbChoices(spec);
+  const docLabel = labelWithDoc(spec.label, doc);
+  // Page-specific FAQs, then any country caveat. No generic spec questions:
+  // the spec card already answers them.
   const faqItems = [
     ...(content?.faqs ?? []),
     ...countryFaqItems(spec, kind),
@@ -259,7 +385,7 @@ export default async function MakerPage({
           breadcrumbSchema(crumbs),
           softwareApplicationSchema({
             name: PAGE_H1[spec.id] ?? `${labelWithDoc(pageLabel(spec), doc, Doc)} Photo Maker`,
-            description: `Prepare a ${labelWithDoc(spec.label, doc)} photo at the selected size and background in your browser, then confirm the current authority instructions.`,
+            description: `Prepare ${article(docLabel)} ${docLabel} photo in your browser, then confirm the current instructions for your application.`,
             url: `/${maker}/`,
           }),
           faqItems.length > 0 ? faqSchema(faqItems) : null,
@@ -268,31 +394,33 @@ export default async function MakerPage({
       <Breadcrumbs crumbs={crumbs} />
 
       <header className="space-y-3 border-b border-hairline pb-7">
-        <span className="eyebrow block text-brand">{Doc} photo bureau</span>
         <h1 className="text-3xl font-semibold tracking-tightest sm:text-[36px]">
           {PAGE_H1[spec.id] ?? <>{labelWithDoc(pageLabel(spec), doc, Doc)} Photo Maker</>}
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           {content?.intro ??
-            `Prepare a ${labelWithDoc(spec.label, doc)} photo at ${mm.width}×${mm.height}mm with the selected background. Confirm the current authority instructions before submitting.`}
+            `Prepare ${article(docLabel)} ${docLabel} photo at ${mm.width}×${mm.height}mm. Confirm the current instructions for your application before submitting.`}
         </p>
         <div className="spec flex flex-wrap items-center gap-x-3 gap-y-1 pt-0.5">
-          <span>
-            {mm.width}×{mm.height}mm
-          </span>
+          <span>{route?.heroSize ?? `${mm.width}×${mm.height}mm`}</span>
           <span className="text-ink-faint">/</span>
-          <span>{spec.background.description.split("(")[0].split(",")[0].trim()}</span>
-          <span className="text-ink-faint">/</span>
-          <span>{spec.dpiMin} dpi min</span>
+          <span>{backgroundLabel(spec)}</span>
+          {route?.printed !== false && (
+            <>
+              <span className="text-ink-faint">/</span>
+              <span>{spec.dpiMin} dpi min</span>
+            </>
+          )}
         </div>
         <p className="text-xs text-ink-faint">
           {spec.verified === "gov" ? (
             <>Prepared for the published requirements of: {spec.documents.join(", ")}.</>
+          ) : spec.verified === "conditional" ? (
+            <>Covers: {spec.documents.join(", ")}.</>
           ) : (
             <>
-              Set up for: {spec.documents.join(", ")}. These figures come from a
-              published guide rather than the issuing authority — confirm them on
-              your application before you submit.
+              Covers: {spec.documents.join(", ")}. Not every figure here is stated on
+              an official page, so confirm them on your application before you submit.
             </>
           )}
         </p>
@@ -305,7 +433,7 @@ export default async function MakerPage({
       {spec.applicationNotes && spec.applicationNotes.length > 0 && (
         <section className="mt-10 space-y-3 border-t border-hairline pt-8">
           <h2 className="text-lg font-semibold">
-            What the {spec.label} application actually asks for
+            {route?.notesHeading ?? `About the ${spec.label} application`}
           </h2>
           <ul className="max-w-2xl space-y-3 text-sm leading-relaxed text-muted-foreground">
             {spec.applicationNotes.map((note) => (
@@ -318,13 +446,13 @@ export default async function MakerPage({
         </section>
       )}
 
-      {/* Spec-aware do/don't — self-check against the real rules before submitting. */}
-      <AcceptanceTips spec={spec} />
+      <PhotoChecklist spec={spec} />
 
-      {/* Visual head-size guide — diagram cards (correct vs too small/too close). */}
-      <HeadSizeGuide spec={spec} />
+      {/* The diagram states the head percentage, so it only appears where one
+          is published (Canada publishes millimetres only). */}
+      {spec.headPercentOfFrame && <HeadSizeGuide spec={spec} />}
 
-      {kind === "passport" && (
+      {BABY_GUIDE.has(spec.id) && (
         <p className="text-sm text-muted-foreground">
           Making a passport photo for a baby or infant?{" "}
           <Link href="/baby-passport-photo/" className="text-brand hover:underline">
@@ -336,21 +464,19 @@ export default async function MakerPage({
 
       <section className="grid gap-8 md:grid-cols-2">
         <div className="space-y-3">
-          <h2 className="eyebrow">
-            {labelWithDoc(spec.label, doc)} photo specification
-          </h2>
+          <h2 className="eyebrow">{docLabel} photo requirements</h2>
           <SpecSheet spec={spec} />
-        </div>
-        <div className="space-y-3">
-          <h2 className="eyebrow">Good to know</h2>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {GOOD_TO_KNOW[spec.id] ?? spec.notes}
-          </p>
           <CountrySpecificationProvenance spec={spec} />
         </div>
+        {goodToKnow && (
+          <div className="space-y-3">
+            <h2 className="eyebrow">Good to know</h2>
+            <p className="text-sm leading-relaxed text-muted-foreground">{goodToKnow}</p>
+          </div>
+        )}
       </section>
 
-      {/* Unique editorial content — country/kind-specific, for ranking depth */}
+      {/* Unique editorial content — country/kind-specific */}
       {content && content.sections.length > 0 && (
         <section className="space-y-6">
           {content.sections.map((s) => (
@@ -364,36 +490,39 @@ export default async function MakerPage({
         </section>
       )}
 
-      {/* File-size help — interlinks to the KB resize tools */}
-      <section className="rounded-lg border border-hairline bg-paper p-5 sm:p-6">
-        <h2 className="text-base font-semibold tracking-tight">
-          Meeting the {spec.label} upload file-size limit
-        </h2>
-        <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          {spec.digital.fileSizeKb
-            ? `Online ${spec.label} uploads accept ${formatFileSizeKb(spec.digital.fileSizeKb)}. `
-            : ""}
-          If your portal needs a smaller file, compress the finished photo to an
-          exact size. Your image stays in your browser.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {[20, 50, 100].map((kb) => (
+      {/* File-size help, only where a file is uploaded. Sizes offered sit
+          inside the published range; with no range, only the custom tool. */}
+      {upload && (
+        <section className="rounded-lg border border-hairline bg-paper p-5 sm:p-6">
+          <h2 className="text-base font-semibold tracking-tight">Fitting the upload limit</h2>
+          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            {route?.uploadNote ??
+              (spec.digital.fileSizeKb && kbSizes.length > 0
+                ? "These sizes sit inside the published limit."
+                : spec.digital.fileSizeKb
+                  ? `The published limit is ${formatFileSize(spec.digital.fileSizeKb)}.`
+                  : "Compress the finished photo to the limit shown where you upload it.")}{" "}
+            Your image stays in your browser.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {kbSizes.map((kb) => (
+              <Link
+                key={kb}
+                href={kbPath(kb)}
+                className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
+              >
+                Resize to {kb} KB
+              </Link>
+            ))}
             <Link
-              key={kb}
-              href={kbPath(kb)}
-              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/50"
+              href="/tools/resize-kb/"
+              className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
             >
-              Resize to {kb} KB
+              {kbSizes.length > 0 ? "Custom size" : "Compress to a KB size"}
             </Link>
-          ))}
-          <Link
-            href="/tools/resize-kb/"
-            className="rounded-md border border-hairline-strong bg-card px-3 py-1.5 text-[14px] font-medium text-brand transition-colors hover:bg-brand-soft/50"
-          >
-            Custom size
-          </Link>
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       {faqItems.length > 0 && (
         <section>

@@ -69,6 +69,9 @@ export const ISOLATED_PATHS: readonly string[] = [
   "/passport-photo/",
   "/visa-photo/",
   "/baby-passport-photo/",
+  // Carry the photo maker since their makers 301 here (1 Nov 2026).
+  "/schengen-visa-photo/",
+  "/canada-passport-photo/",
   "/tools/background-removal/",
   "/tools/white-background/",
   "/tools/resume-photo/",

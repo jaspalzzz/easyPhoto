@@ -55,6 +55,21 @@ export interface PortalSpec {
   photoSidePx?: { min: number; max: number };
   /** Shown in place of the pixel size when the authority sets none (e.g. ECI). */
   photoDimsNote?: string;
+  /**
+   * How the authority words its pixel size, when it is not an exact rule:
+   * "preferred" (IBPS, Sarathi) or "minimum" (RRB). Shown after the size.
+   */
+  photoDimsQualifier?: "preferred" | "minimum";
+  sigDimsQualifier?: "preferred" | "minimum";
+  /**
+   * The published size in centimetres, when the authority gives centimetres and
+   * a scan DPI instead of pixels (PAN). With `pixelsConverted`, pages show this
+   * first and the pixel figures only as our conversion.
+   */
+  photoDimsCm?: string;
+  sigDimsCm?: string;
+  /** The pixel fields are our conversion of the cm size at `dpi`, not published. */
+  pixelsConverted?: boolean;
   /** The form takes no signature upload at all (ECI Form 6): hide the signature card. */
   noSignatureUpload?: boolean;
   /**
@@ -297,12 +312,15 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-07-18",
+    // OCI Services FAQ 6, 7, 9, 10 and 12, re-read 1 Nov 2026.
     context:
-      "OCI registration uses separate photograph and signature uploads. The official photograph guide specifies a square 51x51 mm colour photograph on a plain light-coloured background, while the online FAQ publishes a 200x200 to 900x900 px square range and a 200 KB maximum. The FAQ confirms a signature upload but publishes no signature geometry, so no fixed signature pixels are applied.",
+      "OCI registration is applied for only online, on ociservices.gov.in. Along with the photograph and signature you upload supporting documents, which always include a copy of your current passport with at least six months' validity left.",
     applicationNotes: [
-      "The OCI photograph is SQUARE and its background must be plain light colour but NOT white, which is unlike most Indian document photographs and easy to get wrong if you reuse one. It is at least 51x51 mm with about 80% face coverage, no border, head and shoulders centred.",
-      "Height and width must be equal, between 200x200 and 900x900 pixels, in JPEG or JPG up to 200 KB. A 35x45 mm passport crop cannot simply be reused: it is the wrong shape and, if it is on white, the wrong background.",
-      "An OCI photograph is uploaded rather than pasted, and the square shape means a standard passport print cannot be trimmed to fit — the head sits proportionally too large once you crop a 35x45mm image into a square. Start from the original photograph and crop square from it instead.",
+      "The photograph is square and at least 51 × 51 mm, with your face covering about 80% of it, head and shoulders seen from the front and the full face in the middle. The background must be plain and light-coloured but not white, and the photo must have no border.",
+      "Don't trim a 35 × 45 mm passport photo to fit. It is the wrong shape, and squaring it off leaves the head too large in the frame; if it was taken on white, the background is wrong too. Crop square from the original photograph instead.",
+      "The FAQ warns that a photograph outside these standards can be rejected and can delay processing.",
+      "Once the application, documents, photograph and signature are submitted online, you don't need to bring printouts of the application or photocopies of the uploaded documents.",
+      "If something you uploaded has a problem, you are told by email. You then send the corrected document or photograph to the Indian Mission, Post or FRRO handling your application, and they upload it for you.",
     ]
   },
   rrb: {
@@ -321,6 +339,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigWidthPx: 140,
     sigHeightPx: 60,
     sigAspectRatio: 14 / 6,
+    sigDimsQualifier: "minimum",
     sigFormat: "JPG / JPEG",
     signatureInk: "Black ink on white paper",
     description: "RRB applications capture your photograph live inside the form, by webcam or the phone's front camera, so you never upload a photo file. The signature is the one image you prepare: JPG/JPEG, 30–49 KB, at least 140 × 60 pixels, scanned at 100 DPI or more.",
@@ -345,11 +364,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     applicationNotes: [
       "Follow the capture screen's own instructions for lighting and framing; nothing prepared in advance substitutes for the live photo. RRB asks for a pure plain white background with no scenery or pictures behind you, and dark, non-white clothes that cover your shoulders and chest, so you stand out from the wall.",
       "Taking the live photo of a printed or digital copy of an old photo is not allowed; RRB summarily rejects such applications.",
-      "The signature's size band is narrow — only 19 KB wide — so compress deliberately rather than aiming for the smallest file you can make.",
+      "The 30 KB minimum is high for a small signature image, so don't squeeze the file as far as it will go: a file under 30 KB is outside RRB's band just as one over 49 KB is.",
       "Sign in running handwriting (joined letters) with a black ink pen on white paper — not in block, capital or separated letters — and keep the signature centred in a 35 × 20 mm box, then scan just that box.",
       "RRB lists the signature faults that get an application rejected at any stage: someone else's signature, a non-white background, non-black ink, block or capital letters, a blurred or partly hidden signature, an image that isn't a signature, a blank, or a thumb impression in place of a signature.",
       "Because the photograph is captured live and only the signature is uploaded, the usual advice to prepare both files in advance does not apply here. Spend the preparation time on the signature — it is the only file you control and the only one that can be rejected for a size fault.",
-      "The signature canvas of 140 x 60 pixels is close to 7:3. Keep the signature centred and use the available width without touching the edges, so the crop does not leave excessive empty margins or clip a stroke.",
+      "The 35 × 20 mm box is a taller shape than the 140 × 60 pixel file, so sign across the middle of the box and keep clear of its top and bottom edges. Then no stroke is lost when the scan is fitted to 140 × 60.",
     ],
   },
   ibps: {
@@ -363,6 +382,8 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoHeightPx: 230,
     sigWidthPx: 140,
     sigHeightPx: 60,
+    photoDimsQualifier: "preferred",
+    sigDimsQualifier: "preferred",
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     dpi: 200,
@@ -370,20 +391,25 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigFormat: "JPG / JPEG",
     signatureInk: "Black ink on white paper",
     description:
-      "IBPS CRP-XVI photo 20–50 KB at a preferred 200×230 px and signature 10–20 KB at a preferred 140×60 px, JPG/JPEG, with a minimum 200 DPI scan setting. The signature is written in black ink on white paper; registration also includes a separately captured live photograph.",
+      "IBPS's Specialist Officers notice (CRP SPL-XVI) asks for a recent colour photo of 20–50 KB, 200 × 230 pixels preferred, and a 10–20 KB signature, 140 × 60 pixels preferred, both JPG/JPEG and scanned at 200 DPI or more. You also upload a left thumb impression and a hand-written declaration, and take a live photo in the form.",
     source: {
       url: "https://www.ibps.in/wp-content/uploads/Detailed-Notification-CRP-SPL-XVI_Final_V1_30.06.2026.pdf",
       label: "IBPS CRP Specialist Officers XVI notice, Annexure III",
     },
     verification: "official",
     verifiedOn: "2026-07-16",
+    // Annexure III (pages 40–45) and the call-letter section, re-read 1 Nov 2026.
     context:
-      "IBPS CRP registration uploads a passport-style photograph and signature and also captures a separate live photograph by webcam or mobile phone. The pixel dimensions in the current notice are preferred dimensions; confirm the current CRP notice for the recruitment cycle being used.",
+      "IBPS runs common recruitment processes (CRPs) for its participating banks. The figures on this page are from Annexure III of the Specialist Officers notice, CRP SPL-XVI. PO, Clerk and Regional Rural Bank recruitments each have their own notice, so check the scanning annexure in the one you are applying under.",
     applicationNotes: [
-      "The photograph you upload is not only checked at upload. IBPS captures your photograph and biometric data at stages of the selection process and matches the captured photo against the one in your application, and the notification tells candidates not to change their appearance from that photo. A picture taken years earlier, or one that no longer looks like you, becomes a problem at the centre rather than at the form.",
-      "Your uploaded photograph is printed on the call letter, and you are asked to bring one additional photograph identical to it. The notification is explicit that candidates arriving without the photograph pasted on the call letter, or without that spare copy, will not be allowed to sit the examination. Print at least two copies of the same image you upload rather than a different sitting.",
-      "A signature written in capital letters will not be accepted. This is stated separately from the file-size rule, so a signature file that is technically within the band can still be refused for how it is written. Sign in your ordinary running hand.",
-      "IBPS runs the common recruitment process for several participating banks at once, so one correctly prepared photograph and signature normally serve every bank inside that cycle. What changes between banks is the eligibility and the post, not the upload specification.",
+      "Annexure III heads the photo section \"4.5cm × 3.5cm\" but gives 200 × 230 pixels as the preferred size, which is a slightly different shape. The resizer makes the 200 × 230 pixel file the notice prefers.",
+      "The form won't let you move to the next step until the photo and signature meet these limits. After uploading, check the preview: if an image is unclear or smudged, you can re-upload it before you submit.",
+      "The left thumb impression goes on white paper in black or blue ink: JPG or JPEG, 20–50 KB, 240 × 240 pixels at 200 DPI (3 × 3 cm) preferred. If you have no left thumb, the notice lists which finger to use instead, and you name it in the uploaded image.",
+      "The hand-written declaration is written in English, in your own handwriting, in black ink on white paper, and not in capital letters: JPG or JPEG, 50–100 KB, 800 × 400 pixels at 200 DPI (10 × 5 cm) preferred. The notice gives the exact wording to copy out.",
+      "Your 10th-standard (SSC/SSLC) certificate is uploaded as an A4 PDF of up to 500 KB.",
+      "For the live photo, \"Capture Photo\" uses your webcam, and \"Click here to Scan\" shows a QR code that opens the camera on your phone. Sit against a light-coloured, preferably white, background in good light, without a cap, sunglasses or a mask.",
+      "At the exam you bring one extra copy of the uploaded photo along with the call letter, which must have the same photo pasted on it; without both you are not allowed to sit the exam. The notice suggests keeping about 8 copies of that photo for later stages.",
+      "Sign in your normal running hand, not in capitals. If the signature you sign on the attendance sheet or call letter at the exam doesn't match the one you uploaded, the notice says you will be disqualified.",
     ],
   },
   sbi: {
@@ -670,11 +696,15 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     },
     verification: "official",
     verifiedOn: "2026-10-13",
-    context: "The joint CSIR-UGC NET is conducted by NTA for eligibility in science and research fields; the December 2026 application window opened on 7 October 2026. Like UGC-NET, NTA specifies file size and format but no fixed pixel dimensions for the photo or signature.",
+    // December 2026 bulletin, schedule table and Step-2 upload section, re-read 1 Nov 2026.
+    context: "NTA runs the joint CSIR-UGC NET for Junior Research Fellowship and Lectureship in the sciences. For December 2026 you apply on csirnet.nta.nic.in from 7 October to 5 November 2026 (with a late fee until 9 November), and corrections to a submitted form are open from 10 to 12 November 2026.",
     applicationNotes: [
-      "You upload a scanned photograph and also take a live photo while filling in the form, through your webcam or by scanning a QR code with your phone. The uploaded photo needs 80% of the frame to be your face, ears included and no mask, against a white background; for the live photo, sit against a light-coloured background in good light.",
+      "The uploaded photo is a recent colour passport-size picture in which your face, ears included and without a mask, fills 80% of the frame, against a white background.",
+      "For the live photo, switch on your camera or webcam; if your device has none, scan the QR code on the screen with a phone or tablet. Sit against a light-coloured background in good light, with your ears showing and no mask.",
       "Bring two extra passport-size photographs to the exam, the same as the one uploaded on the form: one is pasted on the admit card and one on the attendance sheet in the exam hall. Print copies of the same image rather than a different sitting.",
-      "Both files are JPG or JPEG and must be clearly legible: the photograph between 10 and 200 KB, the signature between 10 and 50 KB. If you apply without Aadhaar or DigiLocker, you also upload an identity proof (JPG/JPEG, 10–200 KB).",
+      "Other uploads have their own limits. If you verify your identity without Aadhaar or DigiLocker, you upload an identity proof as a JPG or JPEG of 10–200 KB. A disability or UDID certificate, a Result Awaited Attestation Form and a category certificate are PDFs of 50–300 KB.",
+      "During the correction window you can change only the fields NTA opens for correction, and nothing can be changed after it closes. If your photo or signature looks wrong on the admit card, call the NTA helpline straight away.",
+      "Upload only your own photograph and signature. The bulletin treats using someone else's as unfair means, at any later stage it comes to light.",
     ],
   },
 
@@ -1051,7 +1081,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
   },
   niacl: {
     id: "niacl",
-    name: "NIACL (AO / Assistant)",
+    name: "NIACL (Administrative Officer)",
     photoLimitKb: 50,
     photoMinKb: 20,
     sigLimitKb: 20,
@@ -1060,14 +1090,16 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoHeightPx: 230,
     sigWidthPx: 140,
     sigHeightPx: 60,
+    photoDimsQualifier: "preferred",
+    sigDimsQualifier: "preferred",
     photoAspectRatio: 20 / 23,
     sigAspectRatio: 14 / 6,
     dpi: 200,
     photoFormat: "JPG / JPEG",
     sigFormat: "JPG / JPEG",
-    signatureInk: "Black",
+    signatureInk: "Black ink",
     description:
-      "NIACL Administrative Officer 2025 requires separate JPG/JPEG photograph and signature uploads, plus an additional live photograph captured by webcam or mobile phone. The published upload values are shown in the requirement table; confirm the applicable notice for an Assistant or later cycle.",
+      "NIACL's Administrative Officer 2025 advertisement asks for four scanned uploads — photograph, signature, left thumb impression and a hand-written declaration — and a live photo taken by webcam or phone while you apply. The photo is 20–50 KB and the signature 10–20 KB, both JPG/JPEG.",
     source: {
       url: "https://www.newindia.co.in/assets/docs/recruitment/RECRUITMENT%20OF%20ADMINISTRATIVE%20OFFICERS%202025/RECRUITMENT%20OF%20_5_50%20ADMINISTRATIVE%20OFFICERS%20(GENERALISTS%20%26%20SPECIALISTS)%20(SCALE-I)%20202_5.pdf",
       label: "NIACL Administrative Officers 2025 advertisement — pages 11–12",
@@ -1075,15 +1107,15 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verification: "official",
     verifiedOn: "2026-07-18",
     context:
-      "NIACL's 2025 Administrative Officer advertisement links to the NIACL application on ibpsonline.ibps.in and documents both a prepared photograph upload and a separate live-photo capture. The source does not establish the same values for every NIACL role.",
+      "The New India Assurance Company (NIACL) runs its own recruitments; the 2025 AO application was hosted on ibpsonline.ibps.in. The figures here are from that advertisement, so an Assistant recruitment, or a later AO one, needs its own check.",
     applicationNotes: [
-      "Four uploads, not two: photograph at 4.5cm x 3.5cm, signature in black ink, a LEFT THUMB IMPRESSION on white paper in black or blue ink, and a HAND-WRITTEN DECLARATION. The notice supplies the declaration text to copy out and requires it in your own handwriting, in English, and not in capitals. The notice covers the case where a candidate has no left thumb — the right thumb, or a finger of the left hand starting from the forefinger, is used instead — and it asks specifically that the impression is not smudged.",
-      "A signature written in CAPITAL LETTERS will not be accepted. This sits separately from the file-size rule, so a signature comfortably inside the band can still be refused for how it was written.",
-      "Caps, hats and dark glasses are not acceptable in the photograph. Religious headwear is allowed provided it does not cover the face. A live photograph is also captured during the process, in addition to the file you upload.",
-      "The file geometry is asymmetric: a 200 x 230 portrait photograph and a 140 x 60 landscape signature. Crop each from its own source rather than resizing one generic canvas, and keep the photograph within 20 to 50 KB while the signature stays within 10 to 20 KB.",
-      "These figures come from the Administrative Officer 2025 advertisement, pages 11 to 12. An Assistant application or a later AO advertisement needs its own check even if the interface is hosted on the same IBPS application platform.",
-      "The live capture and four prepared document images form five separate inputs in the cited workflow. Completing one does not populate the others, so review the upload labels before assigning files with similar thumbnails.",
-      "Keep the declaration text exactly as supplied by the advertisement when preparing that separate scan. This resizer does not generate, edit or validate the declaration wording; its photo and signature outputs cover only two of the five inputs.",
+      "The declaration text is printed in the advertisement for you to copy out in your own handwriting, in English. Neither the declaration nor the signature may be written in capital letters.",
+      "The thumb impression is your left thumb, on white paper, in black or blue ink, and must not be smudged. A candidate with no left thumb uses the right thumb, or a finger of the left hand starting from the forefinger.",
+      "Caps, hats and dark glasses are not acceptable in the photograph. Religious headwear is allowed provided it does not cover the face.",
+      "The advertisement gives the declaration's ink as black in one place and as black or blue in another. Writing it in black ink meets both.",
+      "Sizes for the other two scans: thumb impression 20–50 KB, declaration 50–100 KB. The advertisement prefers 240 × 240 and 800 × 400 pixels respectively, scanned at 200 DPI.",
+      "Your uploaded signature is printed on the call letter. Sign the attendance sheet and call letter at the exam the same way, because a signature that doesn't match the upload leads to disqualification.",
+      "Click \"Complete Registration\" only after checking that the uploaded photograph and signature, and the details you typed, are correct.",
     ]
   },
   irdai: {
@@ -1247,10 +1279,14 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     sigHeightPx: 157,
     photoAspectRatio: 2.5 / 3.5,
     sigAspectRatio: 4.5 / 2,
+    // Protean publishes centimetres and a scan DPI; the pixel fields are our conversion.
+    photoDimsCm: "3.5 × 2.5 cm (height × width)",
+    sigDimsCm: "2 × 4.5 cm (height × width)",
+    pixelsConverted: true,
     photoFormat: "JPEG",
     sigFormat: "JPEG",
     description:
-      `Online PAN application (Form 49A/49AA) through Protean (formerly NSDL e-Gov). Photo ${PAN_PHOTO_HEIGHT_CM}×${PAN_PHOTO_WIDTH_CM} cm (height×width) colour JPEG at ${PAN_SCAN_DPI} DPI, max 20 KB; signature 2×4.5 cm colour JPEG at ${PAN_SCAN_DPI} DPI, max 10 KB. UTIITSL publishes different figures, so use the instructions for the route you apply through.`,
+      `Online PAN application (Form 49A/49AA) through Protean (formerly NSDL e-Gov). Photo ${PAN_PHOTO_HEIGHT_CM}×${PAN_PHOTO_WIDTH_CM} cm (height×width) colour JPEG at ${PAN_SCAN_DPI} DPI, max 20 KB; signature 2×4.5 cm colour JPEG at ${PAN_SCAN_DPI} DPI, max 10 KB. These are Protean's instructions for applying with a Digital Signature Certificate (DSC).`,
     source: {
       url: "https://tin.tin.proteantech.in/pan/InstructionDSC.html",
       label: "Protean (NSDL e-Gov) PAN instructions",
@@ -1261,11 +1297,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     verifiedOn: "2026-10-31",
     dpi: PAN_SCAN_DPI, // officially mandated scan resolution
     context:
-      "A PAN card application (Form 49A or 49AA) can be filed through Protean (formerly NSDL e-Gov) or UTIITSL. The figures on this page are Protean's; UTIITSL's differ, so check the instructions on the route you use.",
+      "A PAN application (Form 49A, or 49AA for foreign citizens) can be made through Protean (formerly NSDL e-Gov) or UTIITSL. This page follows Protean's instructions for applications signed with a DSC; if you apply through UTIITSL, or another Protean option, follow the instructions shown for that route.",
     applicationNotes: [
-      "PAN specifies a scan resolution rather than a pixel canvas: the photograph, signature and supporting documents are all to be scanned at 200 DPI. That is a property of how you digitise the original, so scan at that setting rather than upscaling a smaller file afterwards.",
-      "Online submission through this route depends on holding a valid Digital Signature Certificate issued by an authorised Certifying Authority in India. Without one, the application follows a different path, and no photo preparation changes that.",
-      "A PAN application submitted on paper takes printed photographs affixed to the form rather than an upload, and the two routes are not interchangeable. Decide which you are using before preparing anything: a file scanned at 200 DPI for the online route is not the same artefact as a print you paste on a form.",
+      "To use this route you need a valid Class II or Class III Digital Signature Certificate issued by an authorised Certifying Authority in India, in the name written on the form. For a minor, the DSC of the parent or guardian named as Representative Assessee signs the application.",
+      "Supporting documents are scanned at the same 200 DPI but in black and white, as PDF/A or JPEG, at most 300 KB a page. Only the photograph and signature are scanned in colour.",
+      "The fee is paid online by credit card, debit card or net banking.",
       `${PAN_SCAN_DPI} DPI is a scanning setting rather than a property you can add afterwards. Scanning the published ${PAN_PHOTO_HEIGHT_CM} cm-high x ${PAN_PHOTO_WIDTH_CM} cm-wide photograph at ${PAN_SCAN_DPI} DPI produces roughly ${PAN_PHOTO_WIDTH_PX} x ${PAN_PHOTO_HEIGHT_PX} pixels (width x height); re-tagging a smaller file to ${PAN_SCAN_DPI} DPI leaves it the same file with a different label.`,
     ]
   },
@@ -1280,19 +1316,23 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     photoHeightPx: 525,
     sigWidthPx: 256,
     sigHeightPx: 64,
+    photoDimsQualifier: "preferred",
+    sigDimsQualifier: "preferred",
     sigAspectRatio: 256 / 64,
     // "The image file should be JPG format" — both files (Sarathi PhotoSign.pdf, re-checked 2026-10-06).
     photoFormat: "JPG",
     sigFormat: "JPG",
     signatureInk: "Black pen on white paper",
     description:
-      "Driving licence / learner's licence application on the Sarathi Parivahan portal (sarathi.parivahan.gov.in). Photo 35×45 mm (420×525 px), 10-20 KB; signature 256×64 px, 10-20 KB, black pen on white paper. This is a single national spec document, not a state-specific one.",
+      "Learner's and driving licence applications on Sarathi Parivahan (sarathi.parivahan.gov.in) take a photo of 35 × 45 mm, 420 × 525 pixels preferred, and a signature of 256 × 64 pixels preferred, signed with a black pen on white paper. Each file is a JPG of 10–20 KB.",
     dpi: 300,
     applicationNotes: [
-      "Sarathi asks for camera photos or scans at a resolution of at least 300 DPI, in true colour, saved as JPG (for example image01.jpg).",
-      "The photo should be in colour against a light-coloured, preferably white, background, taken within the last six months.",
-      "Applicants who can't sign upload a thumb impression in place of the signature: the right thumb for women and the left thumb for men.",
+      "Sarathi asks for camera photos or scans at a resolution of at least 300 DPI, in true colour.",
+      "The photo should be in colour against a light-coloured, preferably white, background, taken within the last six months. Look straight at the camera; caps, hats and dark glasses are not acceptable, and religious headwear is allowed if it doesn't cover your face. If you wear glasses, avoid reflections so your eyes are clearly seen.",
+      "The signature must be your own. Applicants who can't sign upload a thumb impression instead: the right thumb for women and the left thumb for men.",
       "Sarathi tells you to keep each file under 20 KB by adjusting the scanner settings or cropping and resizing; if a file is over 20 KB, reduce the scan resolution or crop closer rather than lowering quality until the face blurs.",
+      "On the form, use the \"Upload Photograph / Signature\" link, choose each file and click \"Upload files\" to see them, then \"Save photo & signature image files\" before \"Next\". A file of the wrong size or format shows an error at this step.",
+      "The application is registered only once both files are uploaded. If the face or signature is unclear the application can be rejected, but you can re-upload through the approving authority until scrutiny is complete.",
     ],
     source: {
       url: "https://sarathi.parivahan.gov.in/sarathiservice/pdf/PhotoSign.pdf",
@@ -1303,11 +1343,11 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     faq: [
       {
         q: "How do I resize my photo and signature for a driving licence?",
-        a: "Use the two tabs in the resizer on this page. The photo comes out at 420 × 525 pixels and the signature at 256 × 64 pixels, each a JPG of 10 to 20 KB, as Sarathi's scan guide asks. Upload each file in its own box on Sarathi.",
+        a: "Use the two tabs in the resizer on this page, one for the photo and one for the signature. Each comes out at Sarathi's preferred pixel size as a JPG inside the 10–20 KB band. Upload each file in its own box on Sarathi.",
       },
     ],
     context:
-      "Driving licence and learner's licence applications nationwide go through the single Sarathi Parivahan portal (sarathi.parivahan.gov.in) — this is one national spec document, not a state-by-state one, even though the RTO issuing the licence is run by the state.",
+      "The licence itself is issued by your state's RTO, but the application goes through the national Sarathi portal, and Sarathi publishes one photo and signature guide for every state. Choose your state and service on Sarathi before you start.",
   },
   "voter-id": {
     id: "voter-id",
@@ -1318,7 +1358,7 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
     // (2,000,000 bytes, since caps count 1 KB as 1000 bytes) passes either way.
     photoLimitKb: 2000,
     photoAspectRatio: 3.5 / 4.5,
-    photoDimsNote: "None set by ECI",
+    photoDimsNote: "4.5 × 3.5 cm; no pixel size published",
     noSignatureUpload: true,
     photoBackground: "White",
     description: "ECI Form 6 asks for a recent, unsigned colour passport-size photograph, 4.5 × 3.5 cm, showing the front of the full face on a white background, eyes open and both edges of the face visible. On the Voters' Service Portal, the Form 6 photo field accepts JPG or JPEG files up to 2 MB.",
@@ -1329,11 +1369,16 @@ export const PORTAL_PRESETS: Record<string, PortalSpec> = {
       label: "ECI Voters' Service Portal, Form 6 photo upload field",
     },
     verification: "official",
-    context: "Form 6 is the application to register as a new voter, filed online on voters.eci.gov.in or on paper. The online form asks for a photograph only; there is no separate signature image.",
+    // Photo rules and the notes below from ECI's "Guidelines for filling up the
+    // application Form-6" (https://voters.eci.gov.in/guidelines/Form-6_en.pdf),
+    // re-read 1 Nov 2026; the 2 MB limit from the portal's upload field.
+    context: "Form 6 is the application to register as a new voter, filed online on voters.eci.gov.in or on paper. The online form asks for a photograph only; there is no separate signature image. Once you are enrolled, the voter ID card (EPIC) is sent free by speed post to the postal address you give.",
     applicationNotes: [
       "On the paper Form 6 the photograph is pasted in the box provided; online it is uploaded instead, and a sharp, well-lit file comfortably inside the limit is better than the smallest one you can make.",
-      "The form asks for an UNSIGNED photograph. Several Indian applications want your name or signature across the image; this one specifically does not, and signing it is a reason for the form to come back.",
-      "It states that both edges of the face must be clearly visible and the eyes open. A three-quarter angle, hair across the cheek, or a crop that clips an ear are the framing faults this wording is aimed at.",
+      "The photograph must be unsigned: don't sign across it or add your name, as some exam forms ask you to.",
+      "ECI's Form 6 guidelines ask for the eyes open and both edges of the face clearly visible, so face the camera straight on and keep hair off the sides of your face.",
+      "Give your name in English and in your state's official language. If you fill in only one, the system transliterates it into the other, which can misspell it.",
+      "Age and address proofs are self-attested copies of documents listed in the form. If you have none of the listed age proofs, you name the document you are using and must then appear in person before the Electoral Registration Officer, or an officer they name, for verification.",
     ],
   },
   cuet: {

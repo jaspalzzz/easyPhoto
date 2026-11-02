@@ -21,10 +21,11 @@ export default function HowPhotoCheckingWorksPage() {
           Properties the browser can measure
         </h2>
         <p>
-          A browser can read pixel dimensions, aspect ratio, encoded file size,
-          file format, and available DPI metadata. Resizing and compression can
-          target those recorded limits deterministically, although re-encoding can
-          change the final byte size and is checked again before download.
+          A browser can read the pixel size, the shape (aspect ratio), the file size,
+          the file format and any DPI number saved in the file. These are exact, so
+          resizing and compression can aim at a published limit precisely. Saving a
+          file again can change its size slightly, so the tool measures the final
+          file once more before you download it.
         </p>
       </section>
 
@@ -33,9 +34,9 @@ export default function HowPhotoCheckingWorksPage() {
           Properties the tool can only estimate
         </h2>
         <p>
-          Depending on the tool, on-device detection and image sampling may
-          estimate face position, head framing, background uniformity, lighting,
-          and whether important facial areas are visible. These results can flag
+          Depending on the tool, face detection and sampling parts of the image
+          can estimate face position, head size in the frame, how plain the
+          background is, lighting, and whether the face is clearly visible. These results can flag
           likely problems, but they are sensitive to image quality, pose, hair,
           head coverings, lighting, and detection accuracy.
         </p>
@@ -48,7 +49,7 @@ export default function HowPhotoCheckingWorksPage() {
         <ul className="list-disc space-y-2 pl-5">
           <li>Whether a photo is a current and true likeness of the applicant.</li>
           <li>Identity, eligibility, supporting documents, or application answers.</li>
-          <li>Requirements that are absent from or newer than the recorded source.</li>
+          <li>Rules that are missing from, or newer than, the source the page links.</li>
           <li>An authority&apos;s manual judgement or the result of its own biometric checks.</li>
           <li>That a portal or reviewing officer will accept the finished file.</li>
         </ul>
@@ -59,13 +60,13 @@ export default function HowPhotoCheckingWorksPage() {
           Use the result as a pre-check
         </h2>
         <p className="mt-2">
-          Review any warnings, compare the displayed specification with its linked
+          Read any warnings, compare the figures on the page with its linked
           source, and confirm the current instructions in the application portal
-          before submitting. See the{" "}
+          before submitting. The{" "}
           <Link href="/source-methodology/" className="font-medium text-brand underline">
             source methodology
           </Link>{" "}
-          for how those records are maintained.
+          explains where those figures come from.
         </p>
       </section>
 

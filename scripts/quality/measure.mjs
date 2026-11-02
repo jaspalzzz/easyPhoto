@@ -41,6 +41,19 @@ export const RENDERED_JARGON = {
   extracted: /\bextracted\b/gi,
   registry: /\bregistry\b/gi,
   preset: /\bpresets?\b/gi,
+  // Added 2 Nov 2026 after an independent AdSense-reviewer read found these on
+  // live pages: the data sense of "record", build vocabulary, colour codes and
+  // promises of a check the page cannot make.
+  recorded: /\brecorded\b|\b(?:this|the|our|a shared|a secondary)\s+record\b/gi,
+  canvas: /\bcanvas\b/gi,
+  workflow: /\bworkflows?\b/gi,
+  "compatibility tool": /\bcompatibility\s+(?:tool|photo|file)s?\b/gi,
+  "needs review": /\bneeds?[-\s]review\b/gi,
+  "colour code": /#[0-9A-Fa-f]{6}\b/g,
+  "official … specification": /\bOfficial\s+[A-Z][\w ]{0,30}\bspecification\b/g,
+  "checks passed": /\bchecks?\s+passed\b|\b\d\/\d\s+checks\b/gi,
+  "GDPR-safe": /\bGDPR[-\s]safe\b/gi,
+  "build vocabulary": /\binference\b|\bpipeline\b|\bdeterministic\b|\bmodel weights\b/gi,
 };
 
 /** The most pages one FAQ question may appear on without a recorded entry. */

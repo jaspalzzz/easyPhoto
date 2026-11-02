@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function Page() {
   return (
-    <BlogPostLayout slug={post.slug}>
+    <BlogPostLayout slug={post.slug} ctaHref="/tools/resize-kb/" ctaLabel="Compress to a KB limit">
       <p>
         Your Aadhaar number is requested everywhere — hotels, gas connections,
         coaching centres, rental agreements. But handing over the full 12-digit
@@ -29,60 +29,20 @@ export default function Page() {
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>A <strong>masked Aadhaar</strong> hides the first 8 digits and shows only the last 4.</li>
-          <li>Share it anywhere the full number isn&apos;t legally required — hotels, landlords, coaching/admission desks.</li>
-          <li>Get one free from UIDAI: on myAadhaar, choose the masked version when
-            you download e-Aadhaar. For a photo of the card you already have, cover
-            the first 8 digits with a solid box, then keep that edited copy.</li>
+          <li>Get one free from UIDAI: on myAadhaar, choose the masked version when you download e-Aadhaar.</li>
+          <li>For a photo of the card you already have, cover the first 8 digits with a solid box and share that edited copy.</li>
         </ul>
       </div>
 
-      <h2>What is a masked Aadhaar?</h2>
+      <h2>When to share a masked copy</h2>
       <p>
-        A masked Aadhaar hides the <strong>first 8 digits</strong> of your Aadhaar
-        number and shows only the <strong>last 4</strong> — enough to identify the
-        document to you, without exposing the full number.{" "}
-        <a href="https://uidai.gov.in" target="_blank" rel="noopener noreferrer">UIDAI</a>{" "}
-        offers a masked download on its site, and many verification flows now
-        accept the masked version.
+        Share the masked version whenever the person asking doesn&apos;t need the
+        full number: a hotel, a landlord, a coaching centre, or any copy you send
+        by email or a messaging app. Some bank and government KYC processes still
+        ask for the full number, or verify it by OTP; follow their instruction
+        there. If you aren&apos;t sure, ask whether a masked copy will do. You can
+        always share the full one later if it is genuinely required.
       </p>
-
-      <h2>When you can share a masked Aadhaar</h2>
-      <ul>
-        <li>Address or identity proof where the full number isn&apos;t legally mandated.</li>
-        <li>Hotels, private offices, coaching/admission desks, landlords.</li>
-        <li>Any time you&apos;re emailing or messaging a copy of the card.</li>
-      </ul>
-      <p>
-        Some government and banking (KYC) processes still require the full number —
-        follow the specific instruction there. When in doubt, mask it; you can always
-        share the full one if explicitly required.
-      </p>
-
-      <h2>Full vs. masked Aadhaar: when each is accepted</h2>
-      <table className="my-5 w-full border-collapse text-[14px]">
-        <thead>
-          <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-3 font-semibold text-ink">Situation</th>
-            <th className="py-2 pr-3 font-semibold text-ink">Which version</th>
-          </tr>
-        </thead>
-        <tbody className="text-ink-soft">
-          {[
-            ["Bank KYC (account opening, credit card)", "Full Aadhaar"],
-            ["e-KYC / OTP-based verification", "Full number required for OTP"],
-            ["Government portal identity verification", "Follow the portal's own instruction"],
-            ["Hotels and hostels (mandatory guest registration)", "Masked Aadhaar accepted"],
-            ["Coaching institutes and exam admission desks", "Masked Aadhaar accepted"],
-            ["Private landlord or rental agreements", "Masked Aadhaar accepted"],
-            ["Sharing via email or messaging apps", "Masked Aadhaar — never share the full card"],
-          ].map(([situation, version]) => (
-            <tr key={situation} className="border-b border-hairline/60">
-              <td className="py-2 pr-3 font-medium text-ink">{situation}</td>
-              <td className="py-2 pr-3">{version}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
 
       <h2>How to mask your Aadhaar yourself (free, private)</h2>
       <p>
@@ -109,8 +69,7 @@ export default function Page() {
         <li>Mask the QR code too if you don&apos;t want it scanned — it encodes your details.</li>
         <li>Share over secure channels; avoid public/unknown upload sites.</li>
         <li>e-Aadhaar PDFs are password-protected: the password is the first four letters of your name in capitals followed by your year of birth (for example RAVI1998). Open it, then mask a screenshot.</li>
-        <li>If the form caps the upload size, see the <Link href="/blog/how-to-prepare-documents-for-exam-applications-india/">exam documents guide</Link> for keeping a scan under the limit.</li>
-        <li>Need to extract details from your Aadhaar card? The <Link href="/tools/aadhaar-ocr/">Aadhaar OCR tool</Link> reads the number, name, DOB and address from a card photo — entirely in your browser, nothing uploaded.</li>
+        <li>If a form caps the upload size, bring the masked copy under the limit with the <Link href="/tools/resize-kb/">KB resizer</Link>; the <Link href="/blog/how-to-prepare-documents-for-exam-applications-india/">exam documents guide</Link> covers scans for exam forms.</li>
       </ul>
 
       <div className="mt-12">
@@ -118,19 +77,15 @@ export default function Page() {
           items={[
             {
               q: "Is a masked Aadhaar valid as ID proof?",
-              a: "For many private and KYC-light purposes, yes — UIDAI itself promotes masked Aadhaar to limit exposure. Some banking and government KYC still need the full number, so follow the specific instruction; whenever it isn't mandated, share the masked version.",
-            },
-            {
-              q: "Which digits does Aadhaar masking hide?",
-              a: "The first 8 of the 12-digit number. Only the last 4 stay visible — enough to identify the document to you without exposing the full number.",
+              a: "For many purposes, yes: UIDAI itself offers the masked download so people can limit who sees the full number. Some bank and government KYC still need the full number, so follow the instruction of whoever is asking.",
             },
             {
               q: "Can the black box be removed from a masked copy?",
-              a: "No. The masking tool burns the black box into the image pixels, so it can't be peeled off or recovered — unlike a highlight or box added in some PDF editors, which can be deleted.",
+              a: "Not if the box is solid and saved into the picture itself, as a phone's markup tool does when you save the edited photo. A highlighter, a see-through shape, or a box drawn on top of a PDF can sometimes be removed, so don't rely on those.",
             },
             {
-              q: "Is it safe to mask my Aadhaar online?",
-              a: "With this tool, yes — it runs entirely in your browser and your Aadhaar is never uploaded to any server. Avoid tools that upload your document to a server to mask it.",
+              q: "Is it safe to mask my Aadhaar on a website?",
+              a: "Only if the site never receives the file. UIDAI's own masked download and your phone's photo editor both keep the card off third-party servers; avoid sites that ask you to upload the card to mask it.",
             },
           ]}
         />

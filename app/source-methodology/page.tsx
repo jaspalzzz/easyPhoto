@@ -5,45 +5,42 @@ import { TrustPageLayout } from "@/components/site/TrustPageLayout";
 export const metadata = pageMetadata({
   title: "Source Methodology",
   description:
-    "How easyPhoto records official and secondary sources, verifies specification values, displays review dates, and handles conflicting guidance.",
+    "Where easyPhoto's photo sizes and KB limits come from, what the verified dates and labels on a page mean, and what happens when sources disagree.",
   path: "/source-methodology/",
 });
 
 export default function SourceMethodologyPage() {
   return (
     <TrustPageLayout
-      eyebrow="Source provenance"
-      title="How we verify and date specifications"
-      intro="A specification is useful only when a reader can see where it came from, when it was checked, and where uncertainty remains."
+      eyebrow="Sources"
+      title="Where the figures come from, and what the dates mean"
+      intro="A photo size or KB limit is only useful if you can see where it came from, when it was checked, and whether any doubt remains."
     >
       <section className="space-y-3">
         <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Source order
+          Which source comes first
         </h2>
         <p>
-          We first look for the responsible authority&apos;s live application
-          instructions, published notice, help page, or official PDF. We record
-          secondary guidance only when a primary page is unavailable or does not
-          state the value. A secondary record is not relabelled as official simply
-          because it appears plausible or is widely repeated.
+          The first place to look is the authority&apos;s own application
+          instructions, notice, help page or official PDF. Other guidance is used
+          only when the authority publishes nothing for that figure, and it is
+          never relabelled as official because it looks right or is widely repeated.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Claim-level recording
+          Each figure needs its own source
         </h2>
         <p>
-          A source can support one field without supporting every field. For
-          example, an instruction may publish a KB band but no fixed pixel size,
-          or describe a live-capture workflow without a prepared-photo upload.
-          In that case the unpublished field is omitted rather than inferred from
-          a common template or another portal.
+          A notice can give one figure without giving another. It may set a KB limit
+          but no pixel size, or say the photo is taken live with no upload at all.
+          When a figure is not published, the page leaves it out instead of
+          borrowing it from another exam or a common pattern.
         </p>
         <p>
-          Cycle-dependent recruitment notices are reviewed in their own context.
-          A value from an earlier notice is not automatically presented as current
-          merely because the authority and exam name are unchanged.
+          Recruitment notices change between years. A figure from last year&apos;s
+          notice is not shown as current just because the exam has the same name.
         </p>
       </section>
 
@@ -52,44 +49,49 @@ export default function SourceMethodologyPage() {
           What is compared
         </h2>
         <p>
-          For document photos, reviewers compare the recorded dimensions, file
-          size, file format, background instruction, and any published framing
-          rule with the cited source. For exam uploads, the comparison can also
-          include signature dimensions, KB bands, and name/date requirements.
-          Values not supported by the source should be removed, narrowed, or
-          marked for review.
+          For a document photo: the size, file size, file format, background and any
+          rule about head size or framing. For an exam upload, also the signature
+          size, the KB range and any name-and-date requirement. A figure the source
+          does not support is removed, narrowed or marked as needing a check.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Dates and visible status
+          The labels on a page
         </h2>
+        <ul className="list-disc space-y-2 pl-5">
+          <li>
+            <strong className="text-ink">Verified</strong> with a date means the
+            figures were compared with the linked official source on that date.
+          </li>
+          <li>
+            <strong className="text-ink">Confirm on the official source before you
+            submit</strong> means the page links an official source, but its figures
+            have no dated check yet.
+          </li>
+          <li>
+            <strong className="text-ink">No official source found yet</strong>{" "}
+            means we have not found an official source for the figures.
+          </li>
+        </ul>
         <p>
-          <strong className="text-ink">Verified date · source</strong> means a
-          person compared our figures with the linked source on that date.
-          <strong className="text-ink"> Source needs review</strong> means the
-          record lacks a dated primary-source confirmation. Neither label predicts
-          what an application portal will do later.
-        </p>
-        <p>
-          A guide&apos;s “last reviewed” date refers to its editorial review. A
-          specification&apos;s verification date refers to the cited requirements
-          record. They may differ because a guide can be edited without changing
-          the underlying numbers.
+          None of these labels says what a portal will do later. A guide&apos;s
+          &ldquo;last reviewed&rdquo; date is when its wording was checked; an exam
+          page&apos;s verified date is when its figures were. The two can differ,
+          because a guide can be edited without any number changing.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold tracking-tight text-ink">
-          Changes and conflicting sources
+          Changes and sources that disagree
         </h2>
         <p>
-          When a portal changes, we correct the figure in one place, so every page
-          and tool that uses it shows the same value. Where two current official
-          sources conflict, we disclose the conflict and direct users to the
-          application flow they are actually using. We do not invent a compromise
-          value.
+          When a portal changes a figure, it is corrected in one place, so every
+          page and tool that uses it shows the same value. When two current official
+          sources disagree, the page says so and points you to the application you
+          are actually using. It does not invent a number in between.
         </p>
         <p>
           Found a newer source?{" "}

@@ -41,12 +41,12 @@ describe("relatedPortals excludes deindexed pages", () => {
   });
 
   it("still fills up to the limit from other categories when its own is nearly gone", () => {
-    // uppsc's own category (state-psc) has only 2 of 12 members left indexed
-    // (itself and tgpsc). The fix must top up from other categories rather
-    // than returning a short list.
-    const r = relatedPortals("uppsc", 6);
+    // up-police is the only indexed page in its category (state police), and
+    // since the 1 Nov 2026 retirement no state-PSC page is indexed at all. The
+    // list must top up from other categories rather than come back short.
+    const r = relatedPortals("up-police", 6);
     expect(r.length).toBe(6);
-    expect(r.some((x) => x.id === "tgpsc")).toBe(true);
+    expect(r.every((x) => !isDeindexed(`/exam-requirements/${x.id}/`))).toBe(true);
   });
 
   it("never recommends the page to itself", () => {

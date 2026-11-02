@@ -1,64 +1,42 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  ShieldCheck,
-  Lock,
-  BadgeCheck,
-  Gift,
-  Ruler,
-} from "lucide-react";
+import { ArrowRight, Lock, Gift } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, ORG_ID, type Crumb } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
-import { PORTAL_KEYS } from "@/lib/portalPresets";
-import { READY_TOOLS } from "@/lib/toolsCatalog";
-import { ExploreTools } from "@/components/site/ExploreTools";
+import { SITE_COUNTS } from "@/components/site/siteCounts";
+import { AUTHOR } from "@/lib/author";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 export const metadata = pageMetadata({
   title: "About",
   description:
-    "How EasyPhoto researches document-photo requirements, identifies its " +
-    "sources, reviews specifications, and checks files privately in your browser.",
+    "Who runs easyPhoto, how the photo and signature requirements on it are " +
+    "checked against their sources, and how the tools keep your files on your device.",
   path: "/about/",
 });
 
 const STATS = [
-  { v: `${PORTAL_KEYS.length}`, l: "exam & form specs" },
-  { v: `${READY_TOOLS.length}`, l: "free tools" },
-  { v: "100%", l: "in your browser" },
-  { v: "₹0", l: "no watermark" },
+  { v: `${SITE_COUNTS.examForms}`, l: "exams & forms" },
+  { v: `${SITE_COUNTS.examFormsWithOfficialDate}`, l: "checked against an official notice" },
+  { v: `${SITE_COUNTS.tools}`, l: "free tools" },
+  { v: `${SITE_COUNTS.countries}`, l: "countries' photo sizes" },
 ];
 
 const VALUES = [
   {
-    icon: Ruler,
-    tile: "text-brand bg-brand/10",
-    title: "Specifications you can inspect",
-    body:
-      "Specification pages link to a published source where available. We identify whether a source is an official portal or secondary guidance, flag entries that need review, and use the recorded dimensions and limits when preparing your file.",
-  },
-  {
     icon: Lock,
     tile: "text-[hsl(142_55%_34%)] bg-[hsl(142_55%_34%)]/10 dark:text-[hsl(142_55%_60%)] dark:bg-[hsl(142_55%_34%)]/20",
-    title: "Privacy is the design",
+    title: "Your files stay on your device",
     body:
-      "Face detection, background removal, cropping, resizing, PDF conversion — every step runs on your own device. Your photos and documents are never uploaded, never stored, and gone when you close the tab. Not a setting; how it works.",
+      "Cropping, background removal, resizing and scanning run on your own phone or computer. Your photos and documents are not uploaded, and they are gone when you close the tab. The privacy policy covers the page counts the site does keep.",
   },
   {
     icon: Gift,
     tile: "text-[hsl(22_89%_50%)] bg-[hsl(22_89%_50%)]/10 dark:text-[hsl(22_89%_68%)] dark:bg-[hsl(22_89%_50%)]/20",
-    title: "Free, no catch",
+    title: "Free, without a catch on the download",
     body:
-      "No watermark, no account, no paywall on the download, and no upsell to a “pro” version of your own photo. The tools that are free stay free.",
-  },
-  {
-    icon: BadgeCheck,
-    tile: "text-[hsl(215_70%_50%)] bg-[hsl(215_70%_50%)]/10 dark:text-[hsl(215_70%_70%)] dark:bg-[hsl(215_70%_50%)]/20",
-    title: "Honest about sources",
-    body:
-      "When a country's rules come from guidance rather than a confirmed primary portal, we say so on the page. A wrong number is a rejected photo — so we'd rather flag uncertainty than hide it.",
+      "No watermark, no account and no paywall on the file you make. easyPhoto is free. Optional tips help pay for it, and it will also carry ads.",
   },
 ];
 
@@ -91,9 +69,9 @@ export default function AboutPage() {
           A passport photo should never cost you the application
         </h1>
         <p className="max-w-2xl text-pretty text-[18px] leading-relaxed text-muted-foreground">
-          EasyPhoto helps prepare passport, visa and exam photos against published
-          requirements — free, private, and entirely in your browser. Here&apos;s why
-          we built it that way and how we research the specifications we use.
+          easyPhoto is a free set of photo, signature and document tools for Indian
+          exam, ID and passport applications. Here is who runs it, why it works the
+          way it does, and how the requirements on it are checked.
         </p>
       </header>
 
@@ -112,87 +90,102 @@ export default function AboutPage() {
         ))}
       </dl>
 
-      {/* The "why" — a short, human mission paragraph */}
+      {/* Who runs it */}
       <section className="mt-12 max-w-2xl space-y-5">
-        <h2 className="text-xl font-semibold tracking-tight text-ink">Why we built it</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-ink">Who runs easyPhoto</h2>
         <p className="text-[18px] leading-[1.75] text-ink-soft">
-          Getting a passport or visa photo rejected over a couple of millimetres,
-          or the wrong shade of background, is a frustration most people have run
-          into. Studio photos are expensive and slow. And the &quot;free&quot;
-          online tools usually add a watermark, make you sign up, or quietly upload
-          your face to a server you&apos;ll never hear about again.
-        </p>
-        <p className="text-[18px] leading-[1.75] text-ink-soft">
-          We wanted something that applies documented sizes and measurable checks
-          without asking for your data. Final acceptance always belongs to the
-          authority receiving the application, so we show the source and any
-          uncertainty instead of promising an outcome.
+          easyPhoto is built and run by{" "}
+          <Link href={AUTHOR.url} className="font-medium text-brand hover:underline">
+            {AUTHOR.name}
+          </Link>
+          , a software developer in Punjab, India. He writes the tools, checks the
+          requirements and guides against their sources, and answers the email that
+          comes in through the{" "}
+          <Link href="/contact/" className="font-medium text-brand hover:underline">
+            contact page
+          </Link>
+          . easyPhoto is independent: it is not part of, or approved by, any
+          government department, exam board or passport office.
         </p>
       </section>
 
-      {/* Research methodology — how specification claims are produced and maintained */}
-      <section className="mt-12 border-t border-hairline pt-10">
-        <span className="eyebrow text-brand">Research methodology</span>
-        <h2 className="mt-2 text-xl font-semibold tracking-tight text-ink">
-          How we research and verify requirements
-        </h2>
-        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          A specification is a research record, not an acceptance guarantee. These
-          are the rules we follow when adding or updating one.
+      {/* The "why" */}
+      <section className="mt-12 max-w-2xl space-y-5">
+        <h2 className="text-xl font-semibold tracking-tight text-ink">Why it exists</h2>
+        <p className="text-[18px] leading-[1.75] text-ink-soft">
+          An application photo can be sent back over a few millimetres of head size,
+          the wrong background shade, or a file a few KB too large. Studio photos cost
+          money and a trip, and many online tools add a watermark, ask you to sign up,
+          or send your photo to their own server to process it.
         </p>
+        <p className="text-[18px] leading-[1.75] text-ink-soft">
+          easyPhoto applies the sizes each authority publishes and runs the checks it
+          can measure, without asking for your data. Whether a photo is accepted is
+          always the authority&apos;s decision, so each page shows its source and any
+          doubt about it instead of promising an outcome.
+        </p>
+      </section>
+
+      {/* How requirements are checked */}
+      <section className="mt-12 border-t border-hairline pt-10">
+        <span className="eyebrow text-brand">How requirements are checked</span>
+        <h2 className="mt-2 text-xl font-semibold tracking-tight text-ink">
+          Where the numbers come from
+        </h2>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <div className="ep-card p-6">
             <h3 className="text-base font-semibold tracking-tight text-ink">
-              Official and secondary sources
+              The authority first
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              We prefer the authority&apos;s portal, notification or published
-              instructions. If a primary source is unavailable or does not state a
-              required value, we may record reputable secondary guidance and label
-              it as such. We do not present secondary guidance as government-issued.
+              Figures come from the authority&apos;s own portal, notice or instructions
+              where one is published. When it is not, a page may use other guidance,
+              names it, and says it is not from the authority.
             </p>
           </div>
 
           <div className="ep-card p-6">
             <h3 className="text-base font-semibold tracking-tight text-ink">
-              Verification and review dates
+              A date on each check
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              We compare the recorded dimensions, file-size limits, format and
-              background instructions with the cited source. Where we have
-              confirmed a figure on a known date, the specification page shows
-              that date. Undated or secondary records remain identified as
-              needing stronger verification rather than receiving a made-up date.
+              When a figure has been compared with the official source, the page shows
+              the date. A figure that has not been is marked as still needing a check,
+              rather than given a date it did not earn.
             </p>
           </div>
 
           <div className="ep-card p-6">
             <h3 className="text-base font-semibold tracking-tight text-ink">
-              Deterministic and heuristic checks
+              Measured or estimated
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Pixel dimensions, aspect ratio, encoded file size, format and DPI are
-              deterministic checks: the browser can measure them directly. Face
-              position, head framing, background uniformity, lighting and image
-              quality depend on detection or sampling heuristics. Those results are
-              warnings and measurements, not proof that an authority will accept a
-              photo.
+              Pixel size, file size, format and DPI are read from the file, so they are
+              exact. Face position, head size, background and lighting are estimates,
+              shown as warnings. Neither can tell you the authority&apos;s decision.{" "}
+              <Link href="/how-photo-checking-works/" className="font-medium text-brand hover:underline">
+                How photo checking works
+              </Link>
             </p>
           </div>
 
           <div className="ep-card p-6">
             <h3 className="text-base font-semibold tracking-tight text-ink">
-              Corrections policy
+              Corrections
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Requirements change. If you find a newer notification or a portal
-              value that differs from ours, send the page or document through our{" "}
+              Rules change. If you find a newer notice that disagrees with a page, send
+              it through the{" "}
               <Link href="/contact/" className="font-medium text-brand hover:underline">
                 contact page
               </Link>
-              . We check the cited evidence, correct the figure and its review date
-              when warranted, and retain uncertainty when the available sources conflict.
+              . The figure is checked against it and corrected where the notice
+              supports the change. The{" "}
+              <Link href="/source-methodology/" className="font-medium text-brand hover:underline">
+                source methodology
+              </Link>{" "}
+              has the details.
             </p>
           </div>
         </div>
@@ -223,33 +216,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Pull-quote / promise — authenticity */}
-      <figure className="mt-12 rounded-2xl border border-brand/20 bg-brand-soft/20 p-7 sm:p-9">
-        <blockquote className="text-pretty text-xl font-medium leading-snug tracking-tight text-ink sm:text-2xl">
-          &ldquo;Accuracy is the whole point. A wrong number can waste an application
-          window. So we&apos;d rather show our sources and their limits than ask you
-          to trust us.&rdquo;
-        </blockquote>
-        <figcaption className="mt-4 flex items-center gap-2 text-sm text-ink-soft">
-          <ShieldCheck className="h-4 w-4 text-brand" strokeWidth={2} />
-          The easyPhoto team
-        </figcaption>
-      </figure>
-
-      {/* Cross-sell — never let the page dead-end */}
-      <ExploreTools
-        className="mt-14"
-        heading="See what you can make"
-        subtitle="Free, private, and ready in seconds — pick one and try it."
-      />
-
       {/* Closing CTA */}
       <div className="mt-12 flex flex-col items-start gap-3 rounded-xl border border-hairline bg-card p-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm leading-relaxed text-ink">
-          <span className="font-semibold">Spotted a spec that looks out of date?</span>{" "}
-          Accuracy is the whole point —{" "}
+          <span className="font-semibold">Spotted a figure that looks out of date?</span>{" "}
           <Link href="/contact/" className="font-medium text-brand hover:underline">
-            tell us
+            Send the newer notice
           </Link>
           .
         </p>

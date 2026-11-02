@@ -180,7 +180,7 @@ export function PhotoTool({ spec }: { spec: CountrySpec }) {
         {busy && (
           <ScanProgress
             label={STATUS_LABEL[status] ?? "Processing…"}
-            hint="First run sets up the AI — a few seconds. Your photo never leaves your device."
+            hint="The first run downloads the cut-out software — a few seconds."
             thumbnailUrl={sourceUrl}
             steps={MAKER_STEPS}
             activeKey={status}

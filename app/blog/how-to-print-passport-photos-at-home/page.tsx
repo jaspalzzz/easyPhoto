@@ -8,24 +8,16 @@ const post = getPost("how-to-print-passport-photos-at-home")!;
 
 const FAQ_ITEMS = [
   {
-    q: "What size should I print passport photos at home?",
-    a: "For an Indian passport applicant below four, the required print is 35×45 mm. Ordinary adult domestic applicants do not carry a photo because it is captured at the PSK/POPSK. Other countries and services use their own print dimensions.",
-  },
-  {
     q: "Can I print passport photos at home with a normal inkjet printer?",
-    a: "Yes, provided you use photo paper (glossy or semi-gloss, 200–250 gsm) and set the printer to photo quality at 300 DPI. Borderless printing gives cleaner edges. Standard plain paper gives washed-out colours that most counters and offices will not accept as a valid passport photo.",
+    a: "Yes, provided you use glossy or semi-gloss photo paper (200–250 gsm) and set the printer to photo quality. Plain paper gives washed-out colours and a matte surface, so it is a poor choice for an ID photo.",
   },
   {
     q: "How many passport photos fit on an A4 sheet?",
-    a: "At 35×45 mm per photo with 2 mm margins, you can fit up to 18 photos on one A4 sheet (6 columns × 3 rows). However, most home printers can't print fully to the edge of A4, so a 4×6 grid (12 photos, 3 columns × 4 rows) with margins is more reliable. The print sheet tool offers both A4 and 4×6 inch layouts.",
+    a: "Thirty 35×45 mm photos fit on A4 (5 across, 6 down) with the print sheet tool's 4 mm page margin and 3 mm gap. A 4×6 inch sheet takes six and a 5×6 inch sheet nine.",
   },
   {
-    q: "Do home-printed passport photos get accepted at the passport office?",
-    a: "Do not assume that. Ordinary adult Indian applicants do not submit a print. For a child below four, Passport Seva requires a recent 35×45 mm white-background print, but the application decision cannot be guaranteed from the printer or paper alone. Follow the current minor-photo guidance.",
-  },
-  {
-    q: "What DPI should passport photos be printed at?",
-    a: "At 300 DPI, a 35×45 mm layout is about 413×531 pixels. DPI is a print-layout calculation, not a universal acceptance rule; use the resolution and print method stated by the authority handling your document.",
+    q: "Will a home-printed photo be accepted?",
+    a: "That is the authority's decision, and some won't take one: Canada's printed passport photo must come from a commercial photographer. For India, only a passport applicant below four needs a print at all, and it must meet Passport Seva's 35×45 mm white-background rules.",
   },
 ];
 
@@ -46,49 +38,45 @@ export default function Page() {
       ctaLabel="Create a print-ready photo sheet free"
     >
       <p>
-        Studio, paper, ink and kiosk prices vary by city and provider. Printing a
-        prepared sheet at home or through a local photo service can reduce waste
-        because several correctly sized copies share one page. Check the current
-        local price before choosing a method. The challenge isn&apos;t the
-        purchase; it&apos;s getting the tile layout and
-        dimensions exactly right before you send the file to the printer. Here is
-        the complete approach.
+        Printing passport photos at home, or sending one sheet to a local photo
+        kiosk, works well when several correctly sized copies share one page.
+        The hard part isn&apos;t the printer; it&apos;s keeping every photo at
+        its real size from the file to the paper. Here is the whole process.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>
-            <strong>Create the sheet:</strong>{" "}
+            <strong>Make the sheet:</strong>{" "}
             <Link href="/tools/print-sheet/" className="text-brand underline">
               easyPhoto Print Sheet
             </Link>{" "}
-            — tiles your photo at 35×45&nbsp;mm on A4 or 4×6&nbsp;inch at
+            tiles your photo at its real size on A4 or a 4×6&nbsp;inch sheet at
             300&nbsp;DPI, with cut guides.
           </li>
           <li>
             <strong>Paper:</strong> glossy or semi-gloss photo paper, 200–250&nbsp;gsm.
           </li>
           <li>
-            <strong>Printer settings:</strong> photo quality, 300&nbsp;DPI, borderless
-            if possible. Disable &ldquo;fit to page&rdquo; scaling.
+            <strong>Printer:</strong> photo quality, and &ldquo;fit to page&rdquo;
+            switched off.
           </li>
           <li>
-            <strong>Cut:</strong> use scissors or a craft knife along the printed
-            guide lines. Each 35×45&nbsp;mm photo is ready to use.
+            <strong>Cut</strong> along the printed guides with a craft knife and ruler.
           </li>
         </ul>
       </div>
 
-      <h2>When does an Indian passport applicant need a 35×45 mm print?</h2>
+      <h2>Which print size do you need?</h2>
 
       <p>
-        Passport Seva requires a{" "}
-        <strong>35&nbsp;mm wide × 45&nbsp;mm tall</strong> white-background print
-        for a child below four. Ordinary adult fresh/reissue applicants in India
-        do not carry a photo; the PSK/POPSK captures it with their biometrics.
-        Other Indian documents, exams and foreign visa applications each need
-        their own current specification.
+        For an Indian passport, only an applicant below four needs a print:
+        35&nbsp;mm wide × 45&nbsp;mm tall on white (see the{" "}
+        <Link href="/blog/indian-passport-photo-requirements/" className="text-brand underline">
+          Indian passport photo rules
+        </Link>
+        ). Other documents use their own sizes:
       </p>
 
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -102,10 +90,9 @@ export default function Page() {
         <tbody className="text-ink-soft">
           {[
             ["Indian passport — child below four", "35×45 mm", "413×531 px"],
-            ["PAN Card (physical)", "25×35 mm", "295×413 px"],
-            ["Indian exam forms", "Varies by portal", "Pick your exam in the easyPhoto tool; many forms list KB only"],
-            ["US Passport", "51×51 mm (2×2 inch)", "600×600 px"],
-            ["UK / Schengen Visa", "35×45 mm", "413×531 px"],
+            ["PAN card (paper form)", "25×35 mm", "295×413 px"],
+            ["US passport", "51×51 mm (2×2 inch)", "600×600 px"],
+            ["UK passport, Schengen visa", "35×45 mm", "413×531 px"],
           ].map(([doc, size, px]) => (
             <tr key={doc} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{doc}</td>
@@ -119,35 +106,33 @@ export default function Page() {
       <h2>How many photos fit on a sheet?</h2>
 
       <p>
-        The answer depends on the paper size and margin settings. A 4×6&nbsp;inch
-        sheet (the most common photo print size in India) and an A4 sheet both work.
-        The{" "}
+        With the{" "}
         <Link href="/tools/print-sheet/" className="text-brand underline">
           print sheet tool
-        </Link>{" "}
-        auto-calculates the layout and generates a single JPEG at 300&nbsp;DPI
-        with faint cut guides — so you don&apos;t have to calculate margins or
-        tile the images manually.
+        </Link>
+        &apos;s 4&nbsp;mm page margin and 3&nbsp;mm gap between photos, these are
+        the most 35×45&nbsp;mm photos each paper takes. You can also ask for 4,
+        6 or 8 copies, and download the sheet as a JPG or a PDF.
       </p>
 
-      {/* CHART: photos per sheet */}
+      {/* CHART: photos per sheet, computed from lib/printSheet.ts defaults */}
       <figure className="my-8">
         <svg
           viewBox="0 0 560 220"
           style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif" }}
           role="img"
-          aria-label="Bar chart: number of 35x45 mm passport photos that fit on common paper sizes. 4x6 inch: 8, A4: up to 18, 5x6 inch: 10"
+          aria-label="Bar chart: number of 35x45 mm passport photos that fit on common paper sizes. 4x6 inch: 6, 5x6 inch: 9, A4: 30"
         >
           <title>Passport photos per sheet by paper size</title>
-          <desc>4×6 inch sheet fits 8 photos (2×4 grid). A4 sheet fits up to 18 photos (6×3 grid) with margins. 5×6 inch sheet fits 10 photos (2×5 grid). Source: easyPhoto print calculations at 300 DPI.</desc>
+          <desc>A 4×6 inch sheet fits 6 photos, a 5×6 inch sheet 9, and an A4 sheet 30, at 35×45 mm each with a 4 mm margin and 3 mm gap.</desc>
 
           {[
-            { label: "4×6 inch", val: 8, note: "2×4 grid — most reliable", color: "#f97316" },
-            { label: "5×6 inch", val: 10, note: "2×5 grid", color: "#38bdf8" },
-            { label: "A4", val: 18, note: "6×3 grid with margins", color: "#22c55e" },
+            { label: "4×6 inch", val: 6, note: "3 × 2 grid", color: "#f97316" },
+            { label: "5×6 inch", val: 9, note: "3 × 3 grid", color: "#38bdf8" },
+            { label: "A4", val: 30, note: "5 × 6 grid", color: "#22c55e" },
           ].map(({ label, val, note, color }, i) => {
             const y = 30 + i * 56;
-            const w = (val / 20) * 320;
+            const w = (val / 32) * 320;
             return (
               <g key={label}>
                 <text x="100" y={y + 14} textAnchor="end" fontSize="12" fill="currentColor" opacity="0.8" fontWeight="600">{label}</text>
@@ -159,7 +144,7 @@ export default function Page() {
           })}
 
           <text x="280" y="208" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.35">
-            Source: easyPhoto print layout calculations at 300 DPI, 35×45 mm per photo (2025)
+            35×45 mm photos, 4 mm page margin, 3 mm gap
           </text>
         </svg>
       </figure>
@@ -168,65 +153,59 @@ export default function Page() {
 
       <ol className="my-4 space-y-4 text-[15px]">
         <li>
-          <strong>Prepare the photo:</strong> start with a clear photo cropped to
-          the listed frame. If you haven&apos;t taken the photo yet, the{" "}
+          <strong>Prepare the photo:</strong> the{" "}
           <Link href="/passport-photo/" className="text-brand underline">
             passport photo maker
           </Link>{" "}
-          crops to the correct head-size and background automatically. If you
-          already have a photo, the{" "}
+          crops to the right head size and background for your country. If you
+          only need a white background, the{" "}
           <Link href="/tools/background-removal/" className="text-brand underline">
             background remover
           </Link>{" "}
-          can apply a white background first.
+          can apply one.
         </li>
         <li>
-          <strong>Generate the print sheet:</strong> open{" "}
+          <strong>Make the sheet:</strong> in{" "}
           <Link href="/tools/print-sheet/" className="text-brand underline">
             the print sheet tool
           </Link>
-          , upload your photo, select the paper size (A4 or 4×6&nbsp;inch) and
-          layout (4 or 6 photos). Download the JPEG — it is sized at exactly
-          300&nbsp;DPI for the chosen paper.
+          , upload the photo, pick the paper size and the number of copies, and
+          download the JPG or PDF.
         </li>
         <li>
-          <strong>Load photo paper:</strong> use glossy or semi-gloss photo paper,
-          200–250&nbsp;gsm. Avoid plain A4 paper — the colours appear washed out
-          and the surface is too matte for most offices to accept.
+          <strong>Load photo paper:</strong> glossy or semi-gloss, 200–250&nbsp;gsm.
+          Plain paper gives washed-out colours.
         </li>
         <li>
           <strong>Printer settings:</strong> set the media type to &ldquo;Photo
-          Paper&rdquo; or &ldquo;Glossy Paper&rdquo;. Set quality to &ldquo;Best&rdquo;
-          or &ldquo;High&rdquo;. If your printer supports borderless printing, enable
-          it. <strong>Disable &ldquo;fit to page&rdquo; / &ldquo;scale to fit&rdquo;</strong>{" "}
-          — this is the most common mistake; scaling shrinks the 35×45&nbsp;mm photos
-          to the wrong size.
+          Paper&rdquo; or &ldquo;Glossy Paper&rdquo; and quality to &ldquo;Best&rdquo;
+          or &ldquo;High&rdquo;. <strong>Switch off &ldquo;fit to page&rdquo; /
+          &ldquo;scale to fit&rdquo;</strong> and print at &ldquo;Actual size&rdquo;
+          or 100%; scaling shrinks every photo.
         </li>
         <li>
-          <strong>Print and cut:</strong> print one test page first to confirm colour
-          and size. Measure one photo: it should be exactly 35&nbsp;mm wide and
-          45&nbsp;mm tall. Cut along the printed guide lines using scissors or a
-          craft knife and ruler.
+          <strong>Test, then cut:</strong> print one page and measure one photo:
+          it should be exactly 35&nbsp;mm wide and 45&nbsp;mm tall. Then cut
+          along the guides with a craft knife and a metal ruler; scissors slip on
+          small formats.
         </li>
       </ol>
 
-      <h2>Common printing mistakes and how to avoid them</h2>
+      <h2>If the print comes out wrong</h2>
 
       <table className="my-5 w-full border-collapse text-[14px]">
         <thead>
           <tr className="border-b border-hairline text-left">
-            <th className="py-2 pr-4 font-semibold text-ink">Mistake</th>
+            <th className="py-2 pr-4 font-semibold text-ink">Problem</th>
             <th className="py-2 font-semibold text-ink">Fix</th>
           </tr>
         </thead>
         <tbody className="text-ink-soft">
           {[
-            ['"Fit to page" is on in the print dialog', 'Set to "Actual size" or "100%" — never scale the sheet or photos will be undersized'],
-            ["Plain A4 paper used instead of photo paper", "Use glossy or semi-gloss 200+ gsm — passport offices notice the difference"],
-            ["Printer set to draft / economy mode", "Set quality to Best or High for correct colour and sharpness"],
-            ["Photo cropped incorrectly before tiling", "Use the passport photo maker first to ensure the head fills 70–80% of the 35×45 mm frame"],
-            ["Cut lines off by 1–2 mm", "Use a craft knife + metal ruler for clean cuts; scissors can slip on small formats"],
-            ["Background appears off-white when printed", "Calibrate your monitor or add a slight brightness boost in the print settings"],
+            ["Photos measure smaller than 35×45 mm", "\"Fit to page\" was on. Print again at \"Actual size\" or 100%."],
+            ["Colours look dull or grainy", "Use photo paper and set the printer to Best or High rather than draft or economy."],
+            ["Head looks too big or small in the frame", "Crop with the passport photo maker for your country before making the sheet."],
+            ["White background prints slightly grey", "Raise the brightness a little in the printer dialog, or print at a photo kiosk."],
           ].map(([mistake, fix]) => (
             <tr key={mistake} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{mistake}</td>
@@ -235,39 +214,6 @@ export default function Page() {
           ))}
         </tbody>
       </table>
-
-      <h2>Are home-printed photos accepted at passport offices?</h2>
-
-      <p>
-        An ordinary adult Indian passport applicant does not submit a print. For
-        a child below four, the official{" "}
-        <a
-          href="https://www.passportindia.gov.in/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-brand underline"
-        >
-          Passport Seva
-        </a>{" "}
-        rules require a recent 35×45 mm white-background photograph and specify
-        its composition; our{" "}
-        <Link href="/blog/indian-passport-photo-requirements/" className="text-brand underline">
-          Indian passport photo requirements guide
-        </Link>{" "}
-        breaks these down. Those requirements do not make every home print
-        acceptable or guarantee an application outcome. Follow the current
-        guidance and ask Passport Seva if the required print method is unclear.
-      </p>
-
-      <p>
-        Exam workflows differ: IBPS and SBI use prepared photo files, UPSC lists a
-        prepared upload plus a live photograph step, and current SSC forms capture
-        the photograph live. Check the active notice before printing or preparing a file. The{" "}
-        <Link href="/blog/exam-photo-signature-size-guide/" className="text-brand underline">
-          exam photo size guide
-        </Link>{" "}
-        compares the recorded workflows and file requirements side by side.
-      </p>
 
       <div className="mt-12">
         <Faq items={FAQ_ITEMS} noSchema />

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { FileImage, Loader2, RefreshCcw, ShieldCheck } from "lucide-react";
+import { FileImage, Loader2, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
 import { detectFace, FaceModelLoadError } from "@/lib/faceDetection";
@@ -315,7 +315,7 @@ export function FaceCenteringTool() {
             <FileImage className="h-8 w-8 text-muted-foreground" />
             <div className="text-center">
               <p className="font-medium text-ink">Drop your photo here to check centering</p>
-              <p className="mt-1 text-sm text-muted-foreground">JPG or PNG · nothing is uploaded</p>
+              <p className="mt-1 text-sm text-muted-foreground">A straight-on photo with your whole head in frame · JPG or PNG</p>
             </div>
           </>
         )}
@@ -323,10 +323,6 @@ export function FaceCenteringTool() {
 
       {error && <p className="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</p>}
 
-      <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
-        Face detection runs entirely on your device — nothing is uploaded.
-      </p>
     </div>
   );
 }

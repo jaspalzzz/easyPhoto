@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import {
   Search, X, ArrowRight, LayoutGrid, Wrench,
-  BookUser, GraduationCap, FileText, Briefcase,
+  BookUser, GraduationCap, FileText, Briefcase, IdCard, PenLine,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -36,11 +36,12 @@ interface CatMeta { label: string; Icon: LucideIcon; tile: string }
 const CATS: Record<string, CatMeta> = {
   passport:     { label: "Passport & Visa", Icon: BookUser,      tile: "bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"           },
   exam:         { label: "Exams",           Icon: GraduationCap, tile: "bg-violet-50 text-violet-600 dark:bg-violet-900/30 dark:text-violet-400"   },
-  pdf:          { label: "PDF & Docs",      Icon: FileText,      tile: "bg-rose-50 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400"           },
+  govId:        { label: "Government ID",   Icon: IdCard,        tile: "bg-rose-50 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400"           },
+  signature:    { label: "Signatures",      Icon: PenLine,       tile: "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"       },
   professional: { label: "Professional",    Icon: Briefcase,     tile: "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400" },
 };
 
-const TAB_ORDER = ["all", "passport", "exam", "pdf", "professional"] as const;
+const TAB_ORDER = ["all", "passport", "exam", "govId", "signature", "professional"] as const;
 const POPULAR = ["Indian Passport", "Exam", "Signature", "Compress", "Schengen"];
 
 /* Light gold panel + gold button, derived from the --cta token. */

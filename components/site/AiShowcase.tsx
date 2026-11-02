@@ -12,11 +12,7 @@ import {
   Eye,
   Sun,
   Maximize2,
-  Aperture,
   ShieldCheck,
-  Lock,
-  Zap,
-  Tag,
   Download,
   Upload,
   Cpu,
@@ -35,32 +31,29 @@ const BEFORE_ISSUES = [
 /* HUD scan-line positions (%) for the selfie overlay */
 const HUD_TOPS = [22, 40, 62, 80] as const;
 
-interface AiCheck { label: string; tileBg: string; tileText: string; Icon: LucideIcon; }
+/*
+ * The sample photo's result, labelled as an example. Size is measured from
+ * the file; head, face, eye line, background and lighting are estimates from
+ * on-device detection, which can raise a warning but never "pass" a photo.
+ */
+interface AiCheck { label: string; kind: "Measured" | "Estimate"; tileBg: string; tileText: string; Icon: LucideIcon; }
 const AI_CHECKS: AiCheck[] = [
-  { label: "Head Size",     tileBg: "bg-blue-50 dark:bg-blue-900/30",     tileText: "text-blue-500 dark:text-blue-400",     Icon: User      },
-  { label: "Background",    tileBg: "bg-purple-50 dark:bg-purple-900/30", tileText: "text-purple-500 dark:text-purple-400", Icon: Focus     },
-  { label: "Face Centered", tileBg: "bg-sky-50 dark:bg-sky-900/30",       tileText: "text-sky-500 dark:text-sky-400",       Icon: Eye       },
-  { label: "Eye Position",  tileBg: "bg-indigo-50 dark:bg-indigo-900/30", tileText: "text-indigo-500 dark:text-indigo-400", Icon: Eye       },
-  { label: "Lighting",      tileBg: "bg-amber-50 dark:bg-amber-900/30",   tileText: "text-amber-600 dark:text-amber-400",   Icon: Sun       },
-  { label: "Dimensions",    tileBg: "bg-orange-50 dark:bg-orange-900/30", tileText: "text-orange-500 dark:text-orange-400", Icon: Maximize2 },
-  { label: "Image Quality", tileBg: "bg-pink-50 dark:bg-pink-900/30",     tileText: "text-pink-500 dark:text-pink-400",     Icon: Aperture  },
+  { label: "Dimensions",    kind: "Measured", tileBg: "bg-orange-50 dark:bg-orange-900/30", tileText: "text-orange-500 dark:text-orange-400", Icon: Maximize2 },
+  { label: "Head size",     kind: "Estimate", tileBg: "bg-blue-50 dark:bg-blue-900/30",     tileText: "text-blue-500 dark:text-blue-400",     Icon: User      },
+  { label: "Face centred",  kind: "Estimate", tileBg: "bg-sky-50 dark:bg-sky-900/30",       tileText: "text-sky-500 dark:text-sky-400",       Icon: Eye       },
+  { label: "Eye line",      kind: "Estimate", tileBg: "bg-indigo-50 dark:bg-indigo-900/30", tileText: "text-indigo-500 dark:text-indigo-400", Icon: Eye       },
+  { label: "Background",    kind: "Estimate", tileBg: "bg-purple-50 dark:bg-purple-900/30", tileText: "text-purple-500 dark:text-purple-400", Icon: Focus     },
+  { label: "Lighting",      kind: "Estimate", tileBg: "bg-amber-50 dark:bg-amber-900/30",   tileText: "text-amber-600 dark:text-amber-400",   Icon: Sun       },
 ];
 
-const MINI_STEPS = ["Scanning", "Analyzing", "Validating", "Optimizing"] as const;
+const MINI_STEPS = ["Find face", "Crop", "Background", "Resize"] as const;
 
 interface FlowStep { n: number; title: string; desc: string; Icon: LucideIcon; }
 const FLOW_STEPS: FlowStep[] = [
-  { n: 1, title: "Upload",              desc: "Upload your selfie from any device",                    Icon: Upload     },
-  { n: 2, title: "Automated checks",    desc: "Measures the photo against listed requirements",           Icon: Cpu        },
-  { n: 3, title: "Checks Complete",     desc: "Helps identify common rejection risks before you submit", Icon: ShieldCheck },
-  { n: 4, title: "Download",            desc: "Download the prepared result when processing finishes", Icon: Download   },
-];
-
-const TRUST_PILLS = [
-  { label: "Secure",  Icon: Lock,       cls: "text-blue-500"    },
-  { label: "Private", Icon: ShieldCheck, cls: "text-emerald-700 dark:text-emerald-300" },
-  { label: "On-device", Icon: Zap,      cls: "text-amber-500"   },
-  { label: "Free",    Icon: Tag,        cls: "text-pink-500"    },
+  { n: 1, title: "Add a photo",     desc: "A clear front-facing photo, taken from a little distance", Icon: Upload      },
+  { n: 2, title: "Automatic crop",  desc: "Cropped and sized to the document you picked",            Icon: Cpu         },
+  { n: 3, title: "Read warnings",   desc: "Retake if a warning points to blur, shadow or tilt",      Icon: ShieldCheck },
+  { n: 4, title: "Download",        desc: "Open the file and compare it with your form",             Icon: Download    },
 ];
 
 const NAVY = { background: "hsl(222 60% 8%)" } as const;
@@ -106,7 +99,7 @@ export function AiShowcase() {
             Automated checks for measurable details
           </h2>
           <p className="mt-3 text-[15px] text-muted-foreground">
-            From a selfie to a photo reviewed against measurable published requirements.
+            From an everyday photo to one cropped and sized for the document you pick.
             <span className="mt-1 block text-[12px] text-ink-faint">
               Example walkthrough below, shown with a sample photo.
             </span>
@@ -130,7 +123,7 @@ export function AiShowcase() {
                     <line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
                 </span>
-                <h3 className="text-[15px] font-bold text-ink">Your Selfie</h3>
+                <h3 className="text-[15px] font-bold text-ink">Original photo</h3>
               </div>
               <span className="rounded-full bg-red-50 dark:bg-red-900/20 px-3 py-1 text-xs font-bold text-red-700 dark:text-red-300">
                 Needs Improvement
@@ -142,7 +135,7 @@ export function AiShowcase() {
               <div className="relative h-[150px] w-[110px] sm:h-[190px] sm:w-[140px] lg:h-[240px] lg:w-[178px]">
                 <Image
                   src="/images/sample2_before_280.webp"
-                  alt="Example selfie before automated photo preparation"
+                  alt="Example photo before it is cropped and sized"
                   fill
                   sizes="(min-width: 1024px) 178px, 140px"
                   className="rounded-xl object-cover object-top"
@@ -199,7 +192,7 @@ export function AiShowcase() {
                 <h3 className="text-[15px] font-bold text-ink">Automated photo checks</h3>
               </div>
               <span className="shrink-0 whitespace-nowrap rounded-full border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-300">
-                Checks complete
+                Example
               </span>
             </div>
 
@@ -218,7 +211,7 @@ export function AiShowcase() {
                     {/* Inner dashed ring */}
                     <circle cx="75" cy="75" r="54" fill="none" stroke="#e2e8f0"
                       strokeWidth="1" strokeDasharray="4,3" />
-                    {/* Progress arc — amber, full ring: all 7 itemized checks pass */}
+                    {/* Decorative ring */}
                     <circle cx="75" cy="75" r="62" fill="none"
                       stroke="#f59e0b" strokeWidth="6"
                       strokeDasharray="390" strokeDashoffset="0"
@@ -226,12 +219,9 @@ export function AiShowcase() {
                   </svg>
                   {/* Centered text overlay */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-[24px] font-black leading-none text-emerald-700 dark:text-emerald-300">7/7</span>
+                    <span className="text-[24px] font-black leading-none text-emerald-700 dark:text-emerald-300">0</span>
                     <span className="mt-0.5 text-center text-xs font-semibold leading-tight text-muted-foreground">
-                      Checks<br />Passed
-                    </span>
-                    <span className="mt-1 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
-                      All Pass
+                      warnings
                     </span>
                   </div>
                 </div>
@@ -240,10 +230,10 @@ export function AiShowcase() {
                 <div className="min-w-0 flex-1 lg:w-full lg:flex-none">
                   <div className="mb-1.5 flex justify-between border-b border-hairline pb-1">
                     <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Check</span>
-                    <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Status</span>
+                    <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">How</span>
                   </div>
                   <ul className="flex flex-col gap-[5px] lg:gap-2">
-                    {AI_CHECKS.map(({ label, tileBg, tileText, Icon }) => (
+                    {AI_CHECKS.map(({ label, kind, tileBg, tileText, Icon }) => (
                       <li key={label} className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-1.5">
                           <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${tileBg}`}>
@@ -251,12 +241,15 @@ export function AiShowcase() {
                           </span>
                           <span className="text-xs lg:whitespace-nowrap font-semibold text-ink">{label}</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300">Pass</span>
-                          <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 text-[7px] font-bold text-white">
-                            ✓
-                          </span>
-                        </div>
+                        <span
+                          className={
+                            kind === "Measured"
+                              ? "text-xs font-bold text-emerald-700 dark:text-emerald-300"
+                              : "text-xs font-bold text-amber-700 dark:text-amber-300"
+                          }
+                        >
+                          {kind}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -267,9 +260,9 @@ export function AiShowcase() {
               <div className="flex items-start gap-2.5 rounded-xl border border-amber-100 dark:border-amber-800/30 bg-amber-50 dark:bg-amber-900/20 px-3 py-2.5">
                 <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" strokeWidth={2} />
                 <div>
-                  <p className="text-[12px] font-bold text-ink">Sample result: all 7 checks passed</p>
+                  <p className="text-[12px] font-bold text-ink">Example: no warnings on the sample photo</p>
                   <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
-                    Measured against the published specs for passport, visa, ID &amp; more.
+                    Size is measured exactly. The other rows are estimates: they can warn you, not approve the photo.
                   </p>
                 </div>
               </div>
@@ -347,7 +340,7 @@ export function AiShowcase() {
                   <div className="absolute inset-0 z-10 rounded-xl border-2 border-dashed border-emerald-400 pointer-events-none" />
                   <Image
                     src="/images/sample2_after_256.webp"
-                    alt="Sample passport photo prepared to the listed dimensions"
+                    alt="Example photo after cropping to 35 × 45 mm"
                     fill
                     sizes="128px"
                     className="object-cover object-top"
@@ -383,28 +376,16 @@ export function AiShowcase() {
             </div>
 
             {/* Compliance banner */}
-            <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-emerald-100 dark:border-emerald-800/30 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-2.5">
+            <div className="flex items-start gap-2.5 rounded-xl border border-emerald-100 dark:border-emerald-800/30 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-2.5">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700 dark:text-emerald-300" strokeWidth={2} />
               <div>
-                <p className="text-[12px] font-bold text-ink">Checked Against Published Requirements</p>
+                <p className="text-[12px] font-bold text-ink">Sized to the document you pick</p>
                 <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
-                  Prepared for the published requirements of passport, visa, OCI and ID documents.
+                  The millimetre size and background come from that document&apos;s published rule. The authority still makes the decision.
                 </p>
               </div>
             </div>
 
-            {/* Trust pills */}
-            <div className="mt-auto grid grid-cols-4 gap-1.5">
-              {TRUST_PILLS.map(({ label, Icon, cls }) => (
-                <div
-                  key={label}
-                  className="flex flex-col items-center justify-center gap-1 rounded-lg border border-hairline bg-paper py-2"
-                >
-                  <Icon className={`h-3.5 w-3.5 ${cls}`} strokeWidth={2} />
-                  <span className="text-xs font-semibold text-ink">{label}</span>
-                </div>
-              ))}
-            </div>
           </div>
 
         </div>

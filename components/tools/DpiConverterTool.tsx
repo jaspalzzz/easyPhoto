@@ -139,8 +139,7 @@ export function DpiConverterTool() {
         <Gauge className="h-7 w-7 text-brand" strokeWidth={1.5} />
         <p className="text-base font-medium text-foreground">Drop your JPG here</p>
         <p className="text-sm text-muted-foreground">
-          Sets the DPI tag without re-compressing — pixels stay identical · nothing
-          is uploaded
+          Sets the DPI tag without re-compressing — the pixels stay identical
         </p>
         <Button
           variant="outline"
