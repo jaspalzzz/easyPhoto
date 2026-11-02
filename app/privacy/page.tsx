@@ -100,8 +100,17 @@ export default function PrivacyPage() {
           your device and never uploaded. Pages for ID documents and PDFs
           (Aadhaar, PAN and the document scanner) and these policy pages never
           load Google&apos;s advertising or consent scripts. Google and its advertising partners
-          may use cookies or similar technologies to serve, limit and measure
-          ads. Visitors in the European Economic Area, the United Kingdom and
+          may use cookies or similar technologies, such as web beacons, and your
+          IP address to serve, limit and measure ads; see{" "}
+          <a
+            href="https://policies.google.com/technologies/partner-sites"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand hover:underline"
+          >
+            how Google uses information from sites that use its services
+          </a>
+          . Visitors in the European Economic Area, the United Kingdom and
           Switzerland will be shown Google&apos;s consent choices before any ad
           is served, and can change that choice later from the
           &quot;Privacy and cookie settings&quot; link Google adds to the page. Third-party vendors, including Google, use cookies to

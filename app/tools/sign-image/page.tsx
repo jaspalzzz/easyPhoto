@@ -13,7 +13,7 @@ export const metadata = pageMetadata({
   // Both lead the title; "across" stays in the description.
   title: "Sign on Photo or Image Online — Add Signature to Photo",
   description:
-    "Sign on a photo or image: draw, type or upload your signature, place it on or across " +
+    "Sign on a photo or image: draw or upload your own signature, place it on or across " +
     "the photo, and download a JPG or PNG. Free; nothing is uploaded.",
   path: `/tools/${tool.slug}/`,
 });
@@ -23,7 +23,7 @@ export default function Page() {
     <ToolPage
       title="Sign on Photo or Image Online"
       slug={tool.slug}
-      blurb="Draw your signature, type your name in a handwriting style, or upload a signature image, then place it on any photo or image."
+      blurb="Draw your signature, or upload a photo of it signed on plain paper, then place it on any photo or image you choose."
       faqItems={SIGN_IMAGE_FAQ}
     >
       {/* One slim row above the tool: the workflow link and a small before →
@@ -126,10 +126,11 @@ export default function Page() {
             Overlap a signature on a photo
           </h2>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Drop your photo into the tool above, then draw your signature, type
-            your name, or upload a signature image and put it on top. Drag it to
-            position, resize it, and download the combined image — the signature
-            sits over the photo, not beside it. Signing a PDF instead? Most PDF
+            Drop your photo into the tool above, then draw your signature or
+            upload a photo of it and put it on top. Drag it to position, resize
+            it, and download the combined image — the signature sits over the
+            photo, not beside it. Use only your own signature: a form that asks
+            for it expects your real handwriting. Signing a PDF instead? Most PDF
             readers, including the free Adobe Acrobat Reader, have a Fill &amp; Sign
             option that places the same signature image on the page.
           </p>
