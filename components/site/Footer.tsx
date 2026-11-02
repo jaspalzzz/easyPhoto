@@ -168,10 +168,16 @@ export function Footer() {
       {/* ── Bottom bar ────────────────────────────────────────────────── */}
       <div className="border-t border-white/10">
         <div className="container flex flex-col gap-3 py-5 text-xs text-white/70 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {new Date().getFullYear()} easyPhoto. Processed in your browser, never uploaded.
-            Always verify against official requirements before submitting.
-          </p>
+          <div className="max-w-xl space-y-1">
+            <p>
+              © {new Date().getFullYear()} easyPhoto. Processed in your browser, never uploaded.
+              Always verify against official requirements before submitting.
+            </p>
+            <p>
+              easyPhoto is an independent service, not affiliated with any government
+              department, exam board, passport office or embassy.
+            </p>
+          </div>
           <nav className="flex flex-wrap items-center gap-4">
             <Link href="/blog/" className="transition-colors hover:text-[hsl(var(--cta))]">Blog</Link>
             <Link href="/about/" className="transition-colors hover:text-[hsl(var(--cta))]">About</Link>

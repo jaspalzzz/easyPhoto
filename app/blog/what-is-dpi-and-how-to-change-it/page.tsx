@@ -25,7 +25,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can I increase DPI without losing quality?",
-    a: "You can increase the DPI metadata value without affecting quality — that just tells printers to print smaller. To increase DPI while keeping the same print size, you need more pixels (upsampling). AI-based upsamplers (like waifu2x or Real-ESRGAN) can add plausible detail. Simple nearest-neighbour or bilinear upsampling produces blurry results.",
+    a: "You can raise the DPI number without affecting quality; that only tells a printer to print smaller. To get more DPI at the same print size you need more pixels, and enlarging a small image makes it soft. For an ID photo or a signature, scan or photograph the original again at a higher resolution instead of enlarging the file.",
   },
   {
     q: "A portal says my PDF DPI should be 200 — what does that mean?",
@@ -51,7 +51,7 @@ export default function Page() {
     >
       <p>
         &ldquo;Scan at 200 DPI&rdquo; appears in NSDL&apos;s PAN instructions, UTIITSL
-        asks for 300 or 600&nbsp;dpi, and many Indian exam portals name a DPI too. Most tutorials tell you to open Photoshop or GIMP, navigate
+        asks for 300 or 600&nbsp;dpi, and several exam notices name a DPI too. Most tutorials tell you to open Photoshop or GIMP, navigate
         to Image Size, and type a new number. What they rarely explain is that this
         operation is usually just a metadata edit — it does not change a single pixel,
         and does not affect how the image looks on screen or on most web upload forms.
@@ -68,7 +68,7 @@ export default function Page() {
           </li>
           <li>
             <strong>To change DPI for a web portal</strong>{" "}
-            (NSDL, UTIITSL, NVSP, Sarathi):{" "}
+            (such as Protean or UTIITSL for PAN):{" "}
             <Link href="/tools/dpi-converter/" className="text-brand underline">
               use the DPI converter
             </Link>{" "}
@@ -137,10 +137,9 @@ export default function Page() {
       <h2>When does DPI matter for Indian government portals?</h2>
 
       <p>
-        Many Indian government upload portals check file size and, where published,
-        pixel dimensions. ECI&apos;s public Voter ID Form 6 guidance is different: it
-        publishes a physical photo size but no digital KB, pixel, format or DPI rule.
-        NSDL (Protean) lists 200&nbsp;DPI for the PAN photo and signature in its{" "}
+        Most Indian upload forms check the file size and, where they publish one,
+        the pixel size. The voter ID form, for example, sets a 2&nbsp;MB JPG limit
+        and no DPI at all. NSDL (Protean) lists 200&nbsp;DPI for the PAN photo and signature in its{" "}
         <a
           href="https://tin.tin.proteantech.in/pan/InstructionDSC.html"
           target="_blank"
@@ -174,10 +173,12 @@ export default function Page() {
           {[
             ["NSDL / Protean (PAN card)", "Yes — 200 DPI", "File size (photo ≤20 KB, signature ≤10 KB), size in cm"],
             ["UTIITSL (PAN card)", "Yes — 300 dpi photo, 600 dpi signature", "File size (photo under 30 KB, signature under 60 KB), 213×213 px photo"],
-            ["Voters' Service Portal / ECI (Form 6)", "Not specified", "Digital KB, pixel and format fields are not published in public Form 6 guidance"],
-            ["Sarathi (Driving Licence)", "Minimum 300 DPI scanning guidance", "File size (10–20 KB photo and signature), published pixel canvas"],
-            ["UPSC / SSC / IBPS exam portals", "Not specified", "File size in KB and pixel dimensions"],
-            ["India overseas passport guidance", "Not specified", "630×810 px and photo composition"],
+            ["Voters' Service Portal (Form 6)", "Not stated", "JPG or JPEG up to 2 MB; no pixel size"],
+            ["Sarathi (Driving Licence)", "Scan at 300 DPI or more", "10–20 KB photo at 420×525 px and signature at 256×64 px"],
+            ["IBPS and SBI", "Scan at 200 DPI or more", "20–50 KB photo at 200×230 px; 10–20 KB signature at 140×60 px"],
+            ["SSC", "300 DPI for the signature", "10–20 KB signature; the photo is taken live"],
+            ["RRB", "100 DPI or more for the signature", "30–49 KB signature of at least 140×60 px; the photo is taken live"],
+            ["UPSC", "Not stated", "20–200 KB photo; 20–100 KB signature image of 350–500 px"],
           ].map(([portal, dpi, checked]) => (
             <tr key={portal} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{portal}</td>
@@ -192,9 +193,8 @@ export default function Page() {
 
       <p>
         The safest way to change the DPI tag in a JPEG is to rewrite the JFIF/Exif
-        metadata without re-encoding the image. Re-encoding introduces compression
-        artefacts even if the quality setting is high — every JPEG encode/decode cycle
-        degrades the image slightly.{" "}
+        metadata without saving the image again. Every time a JPEG is saved
+        again it loses a little quality, even at a high quality setting.{" "}
         <Link href="/tools/dpi-converter/" className="text-brand underline">
           easyPhoto&apos;s DPI converter
         </Link>{" "}
@@ -214,7 +214,7 @@ export default function Page() {
           <strong>Upload your photo:</strong> JPEG, PNG, and WebP are accepted.
         </li>
         <li>
-          <strong>Set the target DPI:</strong> type the value (e.g., 200 for NSDL PAN, 300 for a UTIITSL PAN photo)
+          <strong>Set the DPI:</strong> type the value (e.g., 200 for NSDL PAN, 300 for a UTIITSL PAN photo)
           or pick PAN card in the tool. For print use, 300 DPI is the standard.
         </li>
         <li>
@@ -247,7 +247,7 @@ export default function Page() {
             ["Changing DPI fixes a blurry photo", "Blurriness is a pixel problem. Changing the DPI tag does not sharpen anything."],
             ["Low DPI causes portal rejection", "Most portals ignore DPI metadata. Rejection is almost always about file size or pixel count."],
             ["72 DPI is 'web resolution'", "Web browsers ignore DPI. All that matters is pixel dimensions. 72 DPI is a legacy default, not a quality specification."],
-            ["I need Photoshop to change DPI", "Any metadata editor can change the JFIF DPI tag without re-encoding. The DPI converter does it free in your browser."],
+            ["I need Photoshop to change DPI", "Any metadata editor can change the JFIF DPI tag without saving the image again. The DPI converter does it free in your browser."],
           ].map(([confusion, reality]) => (
             <tr key={confusion} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{confusion}</td>
@@ -272,10 +272,7 @@ export default function Page() {
             ["PAN card — NSDL (Protean)", "200 DPI", "Roughly 197×276 px at 3.5×2.5 cm"],
             ["PAN card photo — UTIITSL", "300 dpi", "Square, 213×213 px"],
             ["Passport photo home print", "300 DPI standard", "413×531 px at 35×45 mm"],
-            ["Magazine / press print", "300–350 DPI", "Depends on print size"],
-            ["Exam portal upload (UPSC/SSC)", "Not specified; pixel count matters", "Typically 100–300 px per side"],
-            ["Web display / social media", "72–96 DPI (irrelevant for web)", "Platform pixel size is what matters"],
-            ["Screen print / banner", "150 DPI at viewing distance", "Depends on print size"],
+            ["Web display / social media", "Ignored on screen", "The platform's pixel size is what matters"],
           ].map(([use, dpi, px]) => (
             <tr key={use} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{use}</td>
@@ -291,7 +288,7 @@ export default function Page() {
         <Link href="/tools/resize-kb/" className="text-brand underline">
           resize by KB tool
         </Link>{" "}
-        handles file-size targets for exam portals, while the{" "}
+        brings a file under a KB limit, while the{" "}
         <Link href="/exam-requirements/pan/" className="text-brand underline">
           PAN card resizer
         </Link>{" "}

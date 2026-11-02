@@ -9,15 +9,15 @@ const post = getPost("passport-photo-size-by-country")!;
 const FAQ_ITEMS = [
   {
     q: "What is the standard passport photo size?",
-    a: "There is no single standard. India's 35×45 mm print applies to a passport applicant below four; ordinary adults are photographed at the PSK/POPSK. The UK uses 35×45 mm, the US uses 2×2 inches, and Canada's printed passport photo is 50×70 mm.",
+    a: "There is no single standard. The UK, Australia, India (for a child below four) and Schengen visas use 35×45 mm, the US uses 2×2 inches, and Canada's printed passport photo is 50×70 mm.",
   },
   {
     q: "Why does my self-cropped passport photo keep getting rejected?",
-    a: "Photo size and head size are separate requirements. India's under-four print and overseas ICAO guidance use 80–85% face coverage, while the UK and US use different bands. Ordinary adult Indian applicants are photographed at the PSK/POPSK.",
+    a: "Usually because the head is the wrong size inside a correctly sized photo. The UK wants 29–34 mm from chin to crown on a 35×45 mm photo and the US 25–35 mm on a 2×2 inch photo, so a crop that only gets the outer size right still fails.",
   },
   {
     q: "Is a white background required for all countries?",
-    a: "No. The US uses white or off-white. India's under-four print and overseas ICAO guidance use white. Other authorities publish different options, so check the current source for the exact document.",
+    a: "No. The US and Canada want white or off-white, but the UK accepts any plain light colour and Australia allows light grey. Check the authority for your document before you set the background.",
   },
   {
     q: "Can I use a passport photo for a visa application?",
@@ -36,7 +36,7 @@ export const metadata = pageMetadata({
 export default function Page() {
   return (
     <BlogPostLayout slug={post.slug} faqItems={FAQ_ITEMS}>
-      <p className="text-sm text-ink-soft">Last updated: 1 November 2026</p>
+      <p className="text-sm text-ink-soft">Last updated: 2 November 2026</p>
       <p>
         There is no single &quot;passport photo size.&quot; Each country sets its
         own dimensions <em>and</em> its own rule for how much of the frame your
@@ -47,16 +47,16 @@ export default function Page() {
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
-          <li>Most countries use <strong>35×45&nbsp;mm</strong>. The US uses <strong>2×2&nbsp;in (51×51&nbsp;mm)</strong>. Canada uses <strong>50×70&nbsp;mm</strong>.</li>
+          <li>Most countries use <strong>35×45&nbsp;mm</strong>. The US uses <strong>2×2&nbsp;in (51×51&nbsp;mm)</strong>. Canada&apos;s printed passport photo is <strong>50×70&nbsp;mm</strong>.</li>
           <li>Head height (chin to crown) is a separate biometric requirement — not just how big the photo is.</li>
-          <li>Background colour varies: the UK accepts any plain light colour, white included, while some Schengen consulates do want grey.</li>
+          <li>Background colour varies too: the US wants white, the UK accepts any plain light colour, and Schengen missions set their own shade.</li>
         </ul>
       </div>
 
-      <h2>Concrete output example</h2>
+      <h2>One photo, different crops</h2>
       <p>
-        The same original portrait produces different deterministic frames when the
-        country changes. A photo made for the United States downloads as a
+        The same portrait comes out differently for each country. A photo made
+        for the United States downloads as a
         51×51&nbsp;mm square with a 25–35&nbsp;mm head band; one made for the United
         Kingdom downloads as
         35×45&nbsp;mm with a 29–34&nbsp;mm band. The tool crops around the face for
@@ -97,7 +97,7 @@ export default function Page() {
             </td>
             <td className="py-2 pr-3">35×45&nbsp;mm</td>
             <td className="py-2 pr-3">29–34&nbsp;mm</td>
-            <td className="py-2 pr-3">Light grey or cream</td>
+            <td className="py-2 pr-3">Any plain light colour</td>
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
@@ -117,17 +117,17 @@ export default function Page() {
           </tr>
           <tr className="border-b border-hairline/60">
             <td className="py-2 pr-3 font-medium text-ink">
-              <Link href="/schengen-visa-photo-maker/" className="text-brand underline">Schengen (EU visa)</Link>
+              <Link href="/schengen-visa-photo/" className="text-brand underline">Schengen (EU visa)</Link>
             </td>
             <td className="py-2 pr-3">35×45&nbsp;mm</td>
             <td className="py-2 pr-3">32–36&nbsp;mm</td>
-            <td className="py-2 pr-3">Light, uniform</td>
+            <td className="py-2 pr-3">Plain and light; shade set by each mission</td>
           </tr>
         </tbody>
       </table>
       <p>
         Sources:{" "}
-        <a href="https://travel.state.gov/content/travel/en/passports/photos.html" className="text-brand underline" target="_blank" rel="noopener noreferrer">U.S. State Department</a>
+        <a href="https://travel.state.gov/en/passports/apply/help/photos.html" className="text-brand underline" target="_blank" rel="noopener noreferrer">U.S. State Department</a>
         {" "}·{" "}
         <a href="https://www.gov.uk/photos-for-passports" className="text-brand underline" target="_blank" rel="noopener noreferrer">GOV.UK</a>
         {" "}·{" "}
@@ -136,13 +136,19 @@ export default function Page() {
         {" "}·{" "}<a href="https://www.passports.gov.au/help/passport-photos" className="text-brand underline" target="_blank" rel="noopener noreferrer">Australian Passport Office</a>
         {" "}·{" "}<a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02009R0810-20200202" className="text-brand underline" target="_blank" rel="noopener noreferrer">EU Visa Code</a>
       </p>
+      <p>
+        Adults applying for an Indian passport in India don&apos;t need a photo
+        at all; the{" "}
+        <Link href="/blog/indian-passport-photo-requirements/">Indian passport photo rules</Link>{" "}
+        explain when one is needed.
+      </p>
 
       <h2>Why head size matters as much as photo size</h2>
       <p>
         Two photos can be the same 35×45&nbsp;mm and still differ wildly. India&apos;s
-        under-four print guidance uses 80–85% face coverage, while the UK uses a
-        different composition.
-        A generic square crop almost never matches the required chin-to-crown band.
+        under-four print guidance wants the face to cover 80–85% of the photo,
+        while the UK wants a 29–34&nbsp;mm head on the same size. A generic square
+        crop almost never matches the required chin-to-crown band.
         That&apos;s why &quot;I cropped it myself&quot; photos fail so often. The
         head ratio is a biometric requirement, not a suggestion.
       </p>
@@ -152,8 +158,9 @@ export default function Page() {
         Many countries also specify a minimum pixel size and DPI for online
         uploads, separate from the print dimensions. A photo can be the right
         physical size but too low-resolution. Or the right resolution but the
-        wrong file size for the portal. Each country page above lists the exact
-        print size, pixel size, DPI and file-size range together.
+        wrong file size for the portal. The photo maker pages linked in the table
+        list the pixel size and file-size range where the authority publishes
+        them.
       </p>
 
       <h2>How to get the exact size without measuring</h2>
@@ -172,10 +179,10 @@ export default function Page() {
         correct. It all runs in your browser, with nothing uploaded.
       </p>
 
-      <h2>Troubleshooting country-size mismatches</h2>
+      <h2>When the size is right but the photo is refused</h2>
       <table className="my-5 w-full border-collapse text-[14px]"><thead><tr className="border-b border-hairline text-left"><th className="py-2 pr-3 font-semibold text-ink">Failure</th><th className="py-2 font-semibold text-ink">Fix</th></tr></thead><tbody className="text-ink-soft">{[
         ["Correct outer size, wrong head scale", "Re-crop using the country's chin-to-crown band; do not resize the whole photo alone."],
-        ["Background colour refused", "Use the selected authority's published colour — some Schengen consulates ask for light grey specifically."],
+        ["Background colour refused", "Use the colour the authority publishes; a Schengen mission may name its own shade."],
         ["Canadian printed passport submission refused", "Use a commercial photographer and obtain the required certification and guarantor signature."],
         ["Portal rejects a visually correct image", "Check that portal's current pixel, format and file-size fields in addition to print dimensions."],
       ].map(([failure, fix]) => <tr key={failure} className="border-b border-hairline/60"><td className="py-2 pr-3 font-medium text-ink">{failure}</td><td className="py-2">{fix}</td></tr>)}</tbody></table>

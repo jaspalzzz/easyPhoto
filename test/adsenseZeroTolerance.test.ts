@@ -16,6 +16,7 @@ import { describe, expect, it } from "vitest";
 import { isAdSenseExcludedPath } from "@/lib/adExclusions";
 import { DEINDEXED_PATHS, isDeindexed } from "@/lib/deindexed";
 import { MAKER_PAGES, makerSpec } from "@/lib/makerPages";
+import { getMakerContent } from "@/lib/makerContent";
 
 const makerSource = fs.readFileSync(path.join(process.cwd(), "app/[maker]/page.tsx"), "utf8");
 const goodToKnow = makerSource.slice(
@@ -24,10 +25,17 @@ const goodToKnow = makerSource.slice(
 );
 
 describe("AdSense zero tolerance", () => {
-  it("gives every indexed maker visitor-facing Good to know copy", () => {
+  it("gives every indexed maker visitor-facing copy of its own, never the developer notes", () => {
+    // Good to know is optional since 2 Nov 2026: where it only repeated the
+    // body it was cut (one fact once per page). What must never return is the
+    // old `?? spec.notes` fallback, which printed developer documentation.
+    expect(makerSource).not.toMatch(/GOOD_TO_KNOW\[spec\.id\]\s*\?\?\s*spec\.notes/);
     const missing = MAKER_PAGES.filter((m) => !isDeindexed(`/${m.slug}/`))
-      .map((m) => makerSpec(m.slug)!.id)
-      .filter((id) => !new RegExp(`(^|\\n)\\s*"?${id}"?:`).test(goodToKnow));
+      .filter((m) => {
+        const id = makerSpec(m.slug)!.id;
+        return !new RegExp(`(^|\\n)\\s*"?${id}"?:`).test(goodToKnow) && !getMakerContent(m.slug)?.intro;
+      })
+      .map((m) => m.slug);
     expect(missing).toEqual([]);
   });
 

@@ -1,28 +1,19 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Building2,
-  Clock3,
-  Mail,
-  MapPin,
-  ShieldCheck,
-  UserRound,
-} from "lucide-react";
+import { Clock3, Mail, MapPin, UserRound } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, ORG_ID, type Crumb } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
-import { ExploreTools } from "@/components/site/ExploreTools";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
-// Live inbox — routed via Cloudflare Email Routing to the team mailbox.
+// Live inbox — routed via Cloudflare Email Routing to the owner's mailbox.
 const EMAIL = "hello@easyphoto.in";
 
 export const metadata = pageMetadata({
   title: "Contact",
   description:
-    "Get in touch with EasyPhoto to report a photo-spec correction or a bug, or " +
-    "to ask a question. We read every message.",
+    "Email easyPhoto to report an out-of-date photo requirement or a bug, or " +
+    "to ask a question. Every message is read by the person who runs the site.",
   path: "/contact/",
 });
 
@@ -52,11 +43,11 @@ export default function ContactPage() {
         <header className="space-y-3 border-b border-hairline pb-7">
           <span className="eyebrow text-brand">Contact</span>
           <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
-            We read every message
+            Contact easyPhoto
           </h1>
           <p className="max-w-xl text-[18px] leading-relaxed text-muted-foreground">
-            A question, a bug report, or a photo specification that needs
-            updating? We&apos;d like to hear from you.
+            A question, a bug report, or a photo requirement that needs updating?
+            Every message is read by Jaspal Kumar, who runs the site.
           </p>
         </header>
 
@@ -64,17 +55,19 @@ export default function ContactPage() {
           <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand/10 text-brand">
             <Mail className="h-5 w-5" strokeWidth={1.75} />
           </span>
-          <h2 className="mt-4 text-base font-semibold tracking-tight text-ink">Email us</h2>
+          <h2 className="mt-4 text-base font-semibold tracking-tight text-ink">Email</h2>
           <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-            The fastest way to reach us. We aim to reply within a couple of
-            business days.
+            Email is the way to reach easyPhoto.
           </p>
-          <a
-            href={`mailto:${EMAIL}`}
-            className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-cta px-4 py-2.5 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
-          >
-            {EMAIL} <ArrowRight className="h-4 w-4" strokeWidth={2} />
-          </a>
+          {/* Cloudflare's email obfuscation turns a mailto link into a
+              /cdn-cgi/ link that 404s and reads "[email protected]" without
+              JavaScript. Its email_off markers leave this address as written. */}
+          <div
+            className="mt-4"
+            dangerouslySetInnerHTML={{
+              __html: `<!--email_off--><a href="mailto:${EMAIL}" class="inline-flex items-center gap-1.5 rounded-lg bg-cta px-4 py-2.5 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]">${EMAIL}</a><!--/email_off-->`,
+            }}
+          />
         </div>
 
         <section aria-labelledby="operator-heading" className="space-y-4">
@@ -82,9 +75,6 @@ export default function ContactPage() {
             <h2 id="operator-heading" className="text-lg font-semibold tracking-tight text-ink">
               Who operates easyPhoto
             </h2>
-            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-              Clear ownership and contact details for this independent service.
-            </p>
           </div>
 
           <dl className="grid gap-3 sm:grid-cols-2">
@@ -94,24 +84,14 @@ export default function ContactPage() {
                 Operator
               </dt>
               <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                easyPhoto is built and maintained by{" "}
+                easyPhoto is independently owned and run by{" "}
                 <Link
                   href="/authors/jaspal-kumar/"
                   className="font-medium text-brand underline decoration-brand/40 underline-offset-2 hover:decoration-brand"
                 >
-                  Jaspal Kumar, easyPhoto developer
+                  Jaspal Kumar
                 </Link>
-                .
-              </dd>
-            </div>
-
-            <div className="rounded-lg border border-hairline bg-card p-4">
-              <dt className="flex items-center gap-2 text-sm font-semibold text-ink">
-                <Building2 className="h-4 w-4 text-brand" strokeWidth={1.75} />
-                Ownership
-              </dt>
-              <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                easyPhoto is independently owned and operated by Jaspal Kumar.
+                , who builds the tools and checks the requirements on the site.
               </dd>
             </div>
 
@@ -131,43 +111,36 @@ export default function ContactPage() {
                 Location
               </dt>
               <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                Punjab, India. Region-level only; no private residential address is published.
+                Punjab, India.
               </dd>
             </div>
           </dl>
         </section>
 
         <section className="space-y-2 border-t border-hairline pt-8">
-          <h2 className="text-lg font-semibold tracking-tight">Reporting a spec correction</h2>
+          <h2 className="text-lg font-semibold tracking-tight">Reporting an out-of-date requirement</h2>
           <p className="leading-relaxed text-muted-foreground">
-            EasyPhoto&apos;s value is accuracy. If you find a country&apos;s photo
-            size, background colour or file-size limit is out of date, email us
-            with the country, the detail, and a link to the official source. We
-            prioritise these.
+            If a photo size, background colour or KB limit on easyPhoto no longer
+            matches the authority&apos;s instructions, email the page link, the
+            figure that changed, and a link to the newer notice. These are handled
+            first. The{" "}
+            <Link href="/corrections-policy/" className="font-medium text-brand hover:underline">
+              corrections policy
+            </Link>{" "}
+            explains what happens next.
           </p>
         </section>
 
         <section className="space-y-2 border-t border-hairline pt-8">
           <h2 className="text-lg font-semibold tracking-tight">What to include in a bug report</h2>
           <p className="leading-relaxed text-muted-foreground">
-            Tell us the page, device and browser, the step that failed, and what
+            Say which page, device and browser, the step that failed, and what
             you expected to happen. For privacy, do not email an identity document
             or a real application photo. A screen recording made with a harmless
             sample file is usually enough to reproduce a visual or download issue.
           </p>
         </section>
 
-        <p className="inline-flex items-start gap-2 border-t border-hairline pt-8 text-xs text-muted-foreground">
-          <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={1.75} />
-          We don&apos;t collect your photos. There&apos;s nothing to ask about
-          your images, because they never leave your device.
-        </p>
-
-        <ExploreTools
-          className="border-t border-hairline pt-10"
-          heading="While you're here"
-          subtitle="The most-used free tools — no sign-up, nothing uploaded."
-        />
       </article>
     </div>
   );

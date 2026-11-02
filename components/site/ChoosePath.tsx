@@ -6,9 +6,7 @@ import {
   Wrench,
   ScrollText,
 } from "lucide-react";
-import { PORTAL_KEYS } from "@/lib/portalPresets";
-import { LAUNCH_ORDER } from "@/lib/countrySpecs";
-import { LISTED_TOOLS } from "@/lib/toolsCatalog";
+import { SITE_COUNTS } from "@/components/site/siteCounts";
 import { TrackedLink } from "@/components/site/TrackedLink";
 import type { HomepagePath } from "@/lib/analytics";
 
@@ -24,12 +22,8 @@ import type { HomepagePath } from "@/lib/analytics";
  *
  * Additive by design: it links into existing hub routes only (no new URLs) and
  * complements — does not replace — the sections further down the page. Counts
- * are read from the live registries so they never drift from reality.
+ * come from SITE_COUNTS so they match every other page.
  */
-
-const EXAM_COUNT = PORTAL_KEYS.length;
-const COUNTRY_COUNT = LAUNCH_ORDER.length;
-const TOOL_COUNT = LISTED_TOOLS.length;
 
 interface Path {
   analyticsPath: HomepagePath;
@@ -59,7 +53,7 @@ const PATHS: Path[] = [
         Exam &amp; Government <span className="whitespace-nowrap">Applications</span>
       </>
     ),
-    desc: `Photo, signature and document sizes for ${EXAM_COUNT}+ Indian exam and recruitment forms — each linked to a named source and clearly labelled when current figures still need review.`,
+    desc: `Photo, signature and document sizes for ${SITE_COUNTS.examForms} Indian exam and recruitment forms. ${SITE_COUNTS.examFormsWithOfficialDate} are checked against the authority's own notice, with the date; the rest are marked as still needing a check.`,
     href: "/exam-requirements/",
     cta: "Find your exam or form",
     chips: [
@@ -79,7 +73,7 @@ const PATHS: Path[] = [
     Icon: Plane,
     eyebrow: "Passport & Visa",
     title: <>Passport &amp; Visa Photos</>,
-    desc: `Passport, visa and OCI photo preparation for ${COUNTRY_COUNT}+ countries — selected size, background guidance and linked source details.`,
+    desc: `Passport, visa and OCI photo sizes for ${SITE_COUNTS.countries} countries, with the background each one asks for and a link to where the rule comes from.`,
     href: "/passport-photo/",
     cta: "Make a passport or visa photo",
     chips: [
@@ -98,7 +92,7 @@ const PATHS: Path[] = [
     Icon: Wrench,
     eyebrow: "Document Utilities",
     title: <>Document Utilities</>,
-    desc: `${TOOL_COUNT}+ free tools to resize, compress, convert, sign and read documents — everything runs in your browser.`,
+    desc: `${SITE_COUNTS.tools} free tools to resize, compress, sign, scan and read documents.`,
     href: "/tools/",
     cta: "Open all tools",
     chips: [
@@ -177,7 +171,7 @@ export function ChoosePath() {
             <span className="mark-gold whitespace-nowrap text-ink">published specs</span>
           </h2>
           <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
-            Pick your path — specification pages show a published source where available and flag entries that need review.
+            Pick your path. Each requirement page links the official source and says when a figure is not from one.
           </p>
         </div>
 

@@ -50,7 +50,7 @@ describe("digital upload detection", () => {
     // limit is shown once, in the spec card and the upload sentence.
     const page = fs.readFileSync(path.join(process.cwd(), "app/[maker]/page.tsx"), "utf8");
     expect(page).toContain('<SpecRow label="File size" value={kb} />');
-    expect(page).toContain("uploads accept ${formatFileSizeKb(spec.digital.fileSizeKb)}");
+    expect(page).toContain("The published limit is ${formatFileSize(spec.digital.fileSizeKb)}");
     for (const spec of Object.values(COUNTRY_SPECS)) {
       if (!acceptsDigitalUpload(spec)) continue;
       expect(countryFaqItems(spec, "visa").some((f) => UPLOAD_Q.test(f.q))).toBe(false);

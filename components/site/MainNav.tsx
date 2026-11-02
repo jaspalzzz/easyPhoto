@@ -7,7 +7,7 @@ import {
   ChevronDown, ArrowRight, Lock, Zap, Globe, GraduationCap,
   PenLine, Search, Flame, ShieldCheck, BadgeCheck, Minimize2,
 } from "lucide-react";
-import { LISTED_TOOLS } from "@/lib/toolsCatalog";
+import { SITE_COUNTS } from "@/components/site/siteCounts";
 import { MENU_COLUMNS } from "@/lib/toolMenu";
 import { cn } from "@/lib/utils";
 
@@ -376,7 +376,7 @@ export function MainNav({ onDark = false }: { onDark?: boolean }) {
                 role="menuitem"
                 className="inline-flex items-center gap-1.5 rounded-lg border border-hairline-strong bg-surface px-3.5 py-2 text-[12px] font-bold text-ink shadow-sm transition-colors hover:bg-accent"
               >
-                View all {LISTED_TOOLS.length} tools
+                View all {SITE_COUNTS.tools} tools
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>

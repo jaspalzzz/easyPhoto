@@ -21,11 +21,11 @@ export default function Page() {
       faqItems={[
         {
           q: "Does changing the DPI affect image quality?",
-          a: "No. DPI (dots per inch) is just a metadata tag in the file header that tells a printer or a portal how large to render the image. This tool rewrites only that tag — the actual pixels are left byte-for-byte unchanged, so there is zero quality loss and the file size barely changes.",
+          a: "No. DPI (dots per inch) is a label saved in the file that tells a printer or a portal how large to show the image. This tool rewrites only that label; the pixels are left exactly as they were, so nothing is lost and the file size barely changes.",
         },
         {
-          q: "Why does NSDL PAN ask for 200 DPI?",
-          a: "The NSDL PAN application portal checks the declared DPI in the scanned photo and signature. If the scan was saved at 72 DPI (the browser/phone default), the portal can reject it even when the pixel dimensions are correct. Setting the tag to 200 DPI satisfies that check without re-scanning.",
+          q: "Why does the NSDL (Protean) PAN form ask for 200 DPI?",
+          a: "The NSDL (now Protean) PAN application portal checks the declared DPI in the scanned photo and signature. If the scan was saved at 72 DPI (the browser/phone default), the portal can reject it even when the pixel dimensions are correct. Setting the tag to 200 DPI satisfies that check without re-scanning.",
         },
         {
           q: "What DPI should I use for printing a passport photo?",
@@ -33,7 +33,7 @@ export default function Page() {
         },
         {
           q: "Does it work on PNG files?",
-          a: "This tool edits the JFIF DPI tag used by JPG files, which is what Indian government portals read. PNG stores resolution differently (a pHYs chunk) and most portals expect JPG anyway. Convert a PNG to JPG with the format converter first, then set its DPI here.",
+          a: "No. This tool edits the DPI label in JPG files. PNG files store it differently, and most portals that check DPI ask for a JPG anyway. Convert a PNG to JPG with the format converter first, then set its DPI here.",
         },
       ]}
     >

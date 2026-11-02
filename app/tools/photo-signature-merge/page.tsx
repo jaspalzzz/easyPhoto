@@ -25,7 +25,7 @@ export default function Page() {
       faqItems={[
         {
           q: "Why would I need my photo and signature on one image?",
-          a: "Some application and exam forms ask you to paste a photo and signature together in a single box, or to upload one combined image rather than two separate files. This tool composites them onto one clean white canvas so you can do that in one step.",
+          a: "Some application and exam forms ask you to paste a photo and signature together in a single box, or to upload one combined image rather than two separate files. This tool places both on one white image so you can do that in one step.",
         },
         {
           q: "Should I choose stacked or side-by-side?",
@@ -37,11 +37,7 @@ export default function Page() {
         },
         {
           q: "My form has a KB limit. What do I do with the merged file?",
-          a: "Download the merged JPG, then open it in the Compress to KB tool (linked under the result) and enter your form's limit. Merging adds the signature's pixels, so check the size even if your photo alone was under the limit.",
-        },
-        {
-          q: "Is anything uploaded to a server?",
-          a: "No. Both images are read and combined entirely in your browser using JavaScript and the HTML canvas. Neither your photo nor your signature ever leaves your device.",
+          a: "Download the merged JPG, then open it in the Compress to KB tool (linked under the result) and enter your form's limit. The merged file is bigger than the photo alone, so check its size even if the photo was under the limit.",
         },
       ]}
     >

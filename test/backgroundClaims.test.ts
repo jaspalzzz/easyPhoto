@@ -64,9 +64,11 @@ describe("background data matches the published standard", () => {
   });
 
   it("keeps UK glasses on the published standard, not the US rule", () => {
-    // HMPO allows frames over the eye socket provided both eyes stay visible.
+    // gov.uk/photos-for-passports: "Do not wear glasses in your photo unless
+    // you have to" — neither the US outright ban nor a plain "allowed".
     const uk = COUNTRY_SPECS.uk!;
     expect(uk.glasses).not.toBe(false);
-    expect(String(uk.glasses)).toMatch(/allow/i);
+    expect(String(uk.glasses)).toMatch(/only if you have to/i);
+    expect(String(uk.glasses)).not.toMatch(/^allowed/i);
   });
 });

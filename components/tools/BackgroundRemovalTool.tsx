@@ -73,7 +73,7 @@ function Body({ source }: { source: ToolSource }) {
     return (
       <ScanProgress
         label="Removing background…"
-        hint="First run sets up the AI — a few seconds. Your photo never leaves your device."
+        hint="The first run downloads the cut-out software — a few seconds."
         thumbnailUrl={source.thumbUrl || source.url}
       />
     );
@@ -148,5 +148,12 @@ export function BackgroundRemovalTool() {
   React.useEffect(() => {
     track({ name: "tool_view", tool: TOOL });
   }, []);
-  return <ImageToolShell acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}>{(source) => <Body source={source} />}</ImageToolShell>;
+  return (
+    <ImageToolShell
+      acceptedWorkflowKinds={WORKFLOW_GENERIC_IMAGE_KINDS}
+      uploaderHint="Works best when the person or object stands out clearly from what is behind it"
+    >
+      {(source) => <Body source={source} />}
+    </ImageToolShell>
+  );
 }

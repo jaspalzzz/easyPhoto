@@ -25,14 +25,13 @@ export default function Page() {
       slug={tool.slug}
       blurb="Draw your signature, type your name in a handwriting style, or upload a signature image, then place it on any photo or image."
       faqItems={SIGN_IMAGE_FAQ}
-      footnote="Signing runs entirely on your device. Your photos and signature data are never uploaded."
     >
       {/* One slim row above the tool: the workflow link and a small before →
           after illustration. The tool is the star of the page, so these stay
           compact (text and order unchanged) and the upload card sits high. */}
       <div className="support mb-5 flex items-center gap-4 rounded-xl border px-4 py-3">
         <div className="min-w-0 flex-1 text-sm text-ink">
-          Need the workflow first? Read{" "}
+          Want the steps first? Read{" "}
           <Link
             href="/blog/how-to-sign-on-image-online/"
             className="font-medium text-brand hover:underline"
@@ -169,7 +168,7 @@ export default function Page() {
             cleaned up on a transparent or white background, that is a different
             job — use the{" "}
             <Link href="/tools/signature-cleaner/" className="font-medium text-brand hover:underline">
-              photo-to-signature converter
+              Signature Cleaner
             </Link>
             , then bring the result back here to place it on your photo.
           </p>

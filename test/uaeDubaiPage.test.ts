@@ -26,8 +26,8 @@ describe("UAE & Dubai visa page", () => {
     expect(COUNTRY_SPECS.uae.applicationNotes?.[0]).toContain("GDRFA, the residency and visa office for Dubai");
   });
 
-  it("dates the UAE maker by its own last text change (Good to know rewritten 1 Nov 2026)", () => {
+  it("dates the UAE maker by its own last text change (rewritten 2 Nov 2026 from the ICP photo guide)", () => {
     const dates = Object.fromEntries(sitemap().map((e) => [e.url.replace(/^https:\/\/[^/]+/, ""), String(e.lastModified)]));
-    expect(dates["/uae-visa-photo-maker/"]).toBe("2026-11-01");
+    expect(dates["/uae-visa-photo-maker/"]).toBe("2026-11-02");
   });
 });

@@ -49,9 +49,8 @@ export default function Page() {
       title="Resume & CV Photo Maker"
       slug="resume-photo"
       path="/tools/resume-photo/"
-      blurb={`Make a professional passport-size photo (${mm.width}×${mm.height}mm) for your resume, CV or bio-data — correct size, clean white background, free. Nothing is uploaded.`}
+      blurb={`Make a professional passport-size photo (${mm.width}×${mm.height}mm) for your resume, CV or bio-data, on a clean white background.`}
       faqItems={FAQ}
-      footnote="Your photo is processed entirely in your browser. Nothing is uploaded."
     >
       {/* India 35x45mm passport spec, with the passport-submission advisory
           stripped — this is resume context, not a passport application. */}
@@ -78,7 +77,7 @@ export default function Page() {
         </h2>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           If a job portal caps the file size, compress the finished photo to an
-          exact KB target. Your image stays in your browser.
+          exact KB limit.
         </p>
         <div className="mt-4 flex flex-wrap gap-1.5">
           {[20, 50, 100].map((kb) => (
@@ -104,19 +103,19 @@ export default function Page() {
           Decide the destination before choosing the crop
         </h2>
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          This page uses the India passport-style 35×45 mm size as a practical
-          default for a CV or bio-data form; no recruitment authority or employer makes
-          that size universal. If a job portal publishes pixels, a square
+          This page uses the India passport-style 35×45 mm size because CV and
+          bio-data forms that ask for a photo usually mean that size; no recruitment
+          authority or employer makes it a universal rule. If a job portal publishes pixels, a square
           profile image, an aspect ratio or a KB ceiling, use those fields instead.
           Keep your original headshot so you can make each required crop without
           stretching an already-exported file.
         </p>
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Check the downloaded image itself before attaching it: confirm the face
-          is not distorted, the background replacement has clean edges, and the
-          encoded dimensions match the application. The tool prepares the file in
-          your browser; it does not decide whether a photograph belongs on a
-          particular resume or whether an employer will accept one.
+          is not distorted, the new background has clean edges, and the pixel size
+          matches the application. The tool prepares the file; it does not decide
+          whether a photograph belongs on a particular resume or whether an employer
+          will accept one.
         </p>
       </section>
     </ToolPage>

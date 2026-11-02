@@ -4,6 +4,7 @@ import { pageMetadata } from "@/lib/seo";
 import { BlogPostLayout } from "@/components/blog/BlogPostLayout";
 import { Faq } from "@/components/site/Faq";
 import { getPost } from "@/lib/blog";
+import { PORTAL_PRESETS } from "@/lib/portalPresets";
 
 const post = getPost("add-name-date-on-exam-photo")!;
 
@@ -14,11 +15,12 @@ const SOURCES = {
   navy:
     "https://www.joinindiannavy.gov.in/files/Advt_Agniveer_MR_English.pdf",
   airforce:
-    "https://iafrecruitment.edcil.co.in/agniveervayu/pdffiles/Advt%20Agniveervayu%2001%20of%2027.pdf",
+    "https://iafrecruitment.edcil.co.in/agniveervayu/pdffiles/Advt%20Agniveervayu%2002%20of%2027.pdf",
   upsc:
     "https://upsconline.nic.in/candidate/resources/bzh30/login/upsc-candidates-portal/dist/assets/instruction-photo-signature-upload-upsc-CCLCIgId.pdf",
   ssc: "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_cht_2026.pdf",
   ibps: "https://www.ibps.in/wp-content/uploads/Detailed-Notification-CRP-SPL-XVI_Final_V1_30.06.2026.pdf",
+  tnpsc: PORTAL_PRESETS.tnpsc.source!.url,
 } as const;
 
 const FAQ_ITEMS = [
@@ -32,11 +34,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "Which applications can use a digital name-and-date strip?",
-    a: "The current APPSC Direct Recruitment OTPR manual and Kerala PSC guidance require the candidate's name and photography date on the image. Confirm the notice for the specific recruitment before preparing it.",
+    a: "TNPSC, the APPSC Direct Recruitment OTPR manual and Kerala PSC ask for the candidate's name and the photography date on the image. Confirm the notice for your recruitment before preparing it.",
   },
   {
     q: "Should I add a digital strip for UPSC, SSC, IBPS, Navy Agniveer or Agniveervayu?",
-    a: "Not for the current SSC, IBPS or UPSC workflows. Navy Agniveer and Agniveervayu notices instead require the candidate to hold a physical black slate with the name and photography date when the photo is taken; a digital strip does not replace that slate.",
+    a: "Not for SSC, IBPS or UPSC: their current instructions ask for none. Navy Agniveer and Agniveervayu notices instead require the candidate to hold a physical black slate with the name and photography date when the photo is taken; a digital strip does not replace that slate.",
   },
 ];
 
@@ -57,22 +59,22 @@ export default function Page() {
       faqItems={FAQ_ITEMS}
     >
       <div className="mb-5 text-sm text-muted-foreground">
-        Last updated 1 November 2026 · Checked against the linked authority instructions on 16 July 2026
+        Last updated 2 November 2026 · Checked against the linked authority instructions on 16 July 2026
       </div>
       <p>
         A digital name-and-date strip is needed only when the application
-        instructions ask for one. The current APPSC Direct Recruitment manual
-        and Kerala PSC guidance do; the current UPSC, SSC and IBPS instructions
-        do not. Navy Agniveer and Agniveervayu use a different workflow: the
-        candidate is photographed holding a physical black slate, so adding text
-        afterward is not a substitute.
+        instructions ask for one. TNPSC, the APPSC Direct Recruitment manual
+        and Kerala PSC do; the current UPSC, SSC and IBPS instructions do not.
+        Navy Agniveer and Agniveervayu work differently: the candidate is
+        photographed holding a physical black slate, so adding text afterward
+        is not a substitute.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
         <p className="!mt-0 text-sm font-semibold text-ink">Quick answer</p>
         <ul className="!mt-2 text-[15px]">
           <li>
-            Digital strip: APPSC Direct Recruitment OTPR and Kerala PSC currently
+            Digital strip: TNPSC, APPSC Direct Recruitment OTPR and Kerala PSC
             ask for the candidate&apos;s name and photography date on the image.
           </li>
           <li>
@@ -85,7 +87,7 @@ export default function Page() {
         </ul>
       </div>
 
-      <h2>Before and after: what the digital tool changes</h2>
+      <h2>What the name-and-date tool adds</h2>
       <p>
         The <Link href="/tools/photo-with-name-date/">name-and-date tool</Link>{" "}
         adds a separate light strip below the photo and prints the entered name
@@ -94,7 +96,7 @@ export default function Page() {
         dimensions and size against that form.
       </p>
 
-      <h2>Which workflows use a strip, slate or neither</h2>
+      <h2>Which exams use a strip, a slate or neither</h2>
       <div className="my-5 overflow-x-auto">
         <table className="w-full min-w-[38rem] border-collapse text-[14px]">
           <thead>
@@ -106,6 +108,12 @@ export default function Page() {
           </thead>
           <tbody className="text-ink-soft">
             {[
+              [
+                "TNPSC",
+                "Name and photography date in a strip across the bottom of the photo",
+                SOURCES.tnpsc,
+                "TNPSC Combined Technical Services notice, paragraphs 3.3–3.5",
+              ],
               [
                 "APPSC Direct Recruitment OTPR",
                 "Digital name and photography date printed on the photo",
@@ -128,7 +136,7 @@ export default function Page() {
                 "Agniveervayu",
                 "Physical black slate held in the photo; not a digital strip",
                 SOURCES.airforce,
-                "IAF Intake 01/2027 notice, paragraph 43.3.1",
+                "IAF Agniveervayu Intake 02/2027 notice",
               ],
               [
                 "UPSC",
@@ -175,11 +183,14 @@ export default function Page() {
 
       <h2>What a digital strip needs to contain</h2>
       <p>
-        APPSC&apos;s Direct Recruitment OTPR manual says the photograph should have
-        the candidate&apos;s name and the date it was taken printed on it. Kerala PSC
-        says the name and photography date should be printed at the bottom. These
-        sources do not create a universal font or date-format rule for other
-        forms, so follow the current notice for the application you are preparing.
+        TNPSC is the most exact: its photo is 130 × 170 pixels, of which the
+        bottom 55 pixels carry your name and the date of photography, and that
+        date must fall on or after the date of the notification you are applying
+        under. APPSC&apos;s Direct Recruitment OTPR manual says the photograph
+        should have the candidate&apos;s name and the date it was taken printed on
+        it, and Kerala PSC says both go at the bottom. None of them sets a font
+        or a date format for other forms, so follow the notice you are applying
+        under.
       </p>
 
       <figure className="my-7 overflow-hidden rounded-xl border border-hairline">
@@ -196,7 +207,7 @@ export default function Page() {
         </figcaption>
       </figure>
 
-      <h2>Why the workflows are easy to confuse</h2>
+      <h2>Why a strip and a slate are easy to confuse</h2>
       <p>
         A digital strip and a slate photo both display a name and date, but they
         are not interchangeable. The strip is added to an existing image. A slate
@@ -207,7 +218,7 @@ export default function Page() {
 
       <h2>How to prepare a digital strip when it is listed</h2>
       <p>
-        For APPSC, Kerala PSC or another form that explicitly asks for digital
+        For TNPSC, APPSC, Kerala PSC or another form that asks for printed
         text, the{" "}
         <Link href="/tools/photo-with-name-date/">
           photo with name &amp; date tool
@@ -218,23 +229,12 @@ export default function Page() {
         <li>Upload the photo you intend to use.</li>
         <li>Enter the candidate&apos;s name and the date the photograph was taken.</li>
         <li>Review the strip placement and export the JPG.</li>
-        <li>Check the finished file against the current application instructions.</li>
+        <li>Check the finished file&apos;s pixel size and KB against the form, because the strip makes the image taller.</li>
       </ul>
       <p>
         The tool runs in the browser, so the photo, name and date are not sent to
-        the site&apos;s server. The{" "}
-        <Link href="/exam-requirements/ssc/">SSC requirements page</Link>{" "}
-        explains why current SSC applications do not use this strip.
-      </p>
-
-      <h2>Then check the relevant file limits</h2>
-      <p>
-        After adding a strip, compare the finished file with the limits printed
-        on the form you are filling in. The{" "}
-        <Link href="/tools/photo-with-name-date/">name and date tool</Link> lists
-        which 2026 exams ask for a strip and which ask for none. For UPSC,
-        use the <Link href="/exam-requirements/upsc/">UPSC requirements page</Link>{" "}
-        and its linked instruction PDF instead of adding text.
+        a server. Its exam list shows which forms ask for a strip and which ask
+        for none.
       </p>
 
       <h2>Name-and-date troubleshooting</h2>
@@ -265,7 +265,7 @@ export default function Page() {
             ],
             [
               "The notice does not mention a name/date treatment",
-              "Leave the photo plain and follow the workflow described by that authority.",
+              "Leave the photo plain and follow that authority's photo instructions.",
             ],
           ].map(([problem, check]) => (
             <tr key={problem} className="border-b border-hairline/60">
@@ -276,7 +276,7 @@ export default function Page() {
         </tbody>
       </table>
       <p>
-        For other measurable upload problems, see{" "}
+        For other upload problems, see{" "}
         <Link href="/blog/why-exam-photo-signature-rejected/">
           why exam photos and signatures get rejected
         </Link>

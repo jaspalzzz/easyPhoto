@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { AUTHOR } from "@/lib/author";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
@@ -7,9 +8,9 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { TrustPageLayout } from "@/components/site/TrustPageLayout";
 
 export const metadata = pageMetadata({
-  title: `${AUTHOR.name}, ${AUTHOR.title}`,
+  title: `About ${AUTHOR.name}, who builds easyPhoto`,
   description:
-    "About Jaspal Kumar, the developer who builds easyPhoto's privacy-first browser tools and maintains its source-linked specification records.",
+    "Jaspal Kumar builds easyPhoto's in-browser photo, signature and document tools and checks each requirement on the site against its published source.",
   path: AUTHOR.url,
 });
 
@@ -34,7 +35,7 @@ export default function JaspalKumarPage() {
       <TrustPageLayout
         eyebrow="Author"
         title={AUTHOR.name}
-        intro="Developer of easyPhoto's in-browser image and document tools."
+        intro="Builds easyPhoto's photo, signature and document tools, and checks the requirements behind them."
       >
         <section className="grid gap-6 sm:grid-cols-[160px_1fr] sm:items-start">
           <Image
@@ -47,7 +48,7 @@ export default function JaspalKumarPage() {
           />
           <div className="space-y-3">
             <h2 className="text-xl font-semibold tracking-tight text-ink">
-              {AUTHOR.title}
+              About Jaspal
             </h2>
             <p>{AUTHOR.bio}</p>
             <a
@@ -64,60 +65,59 @@ export default function JaspalKumarPage() {
 
         <section className="space-y-3">
           <h2 className="text-xl font-semibold tracking-tight text-ink">
-            Experience and role
+            What he does not claim
           </h2>
           <p>
-            Jaspal has more than ten years of hands-on web and mobile development
-            experience. On easyPhoto, his work includes browser-based image
-            processing, product maintenance, and keeping specification data tied
-            to the sources shown on the site.
-          </p>
-          <p>
-            This experience is in software development. Jaspal is not presented as
-            a government official, passport officer, exam-board representative, or
-            independent authority on application acceptance. Requirement claims
-            rely on the cited source and review process, not on a personal title.
+            Jaspal is a software developer. He is not a government official,
+            passport officer or exam-board member, and nothing on easyPhoto speaks
+            for any authority. When a page gives a KB limit or a photo size, what
+            backs it is the authority&apos;s notice linked on that page, not his
+            job title.
           </p>
         </section>
 
         <section className="rounded-xl border border-hairline bg-card p-6">
           <h2 className="text-lg font-semibold tracking-tight text-ink">
-            Editorial responsibility
+            How the guides are written
           </h2>
           <p className="mt-2">
-            Published guidance may begin with AI-assisted drafting, but substantive
-            requirements are reviewed by a person against the recorded sources.
-            The full process is described in the editorial and source-methodology
-            pages linked in the site footer.
+            Some guides start as a draft written with an AI tool. Before a guide is
+            published, Jaspal checks every size, limit and rule in it against the
+            linked source and removes anything the source does not say. The 
+            <Link href="/editorial-policy/" className="font-medium text-brand underline decoration-brand/30 underline-offset-2 hover:decoration-brand">
+              editorial policy
+            </Link> 
+            and 
+            <Link href="/source-methodology/" className="font-medium text-brand underline decoration-brand/30 underline-offset-2 hover:decoration-brand">
+              source methodology
+            </Link> 
+            explain this in full.
           </p>
         </section>
 
         <section className="space-y-3">
           <h2 className="text-xl font-semibold tracking-tight text-ink">
-            Work on easyPhoto
+            His work on easyPhoto
           </h2>
           <p>
-            Jaspal maintains the browser-side image pipelines, PDF utilities,
-            accessibility and mobile behaviour, and the shared records that feed
-            specification pages and exam tools. That includes writing automated
-            checks for file dimensions and formats, reviewing corrections, and
-            keeping uncertainty visible when a primary source does not publish a
-            value.
+            He writes the photo, signature and document tools, and tests that each
+            download opens and has the pixel size, file size and format it shows.
+            He also works on how the site behaves on phones and for people using
+            assistive technology.
           </p>
           <p>
-            Tool output is tested as software behaviour: whether a file opens,
-            has the requested measurable properties, and remains usable on common
-            screen sizes. Application decisions remain with the relevant
-            authority, and readers are directed to its current instructions.
+            When an authority publishes only a KB limit, the tool asks for that
+            and nothing more. It does not guess a pixel size, background colour or
+            ink colour from another exam&apos;s form.
           </p>
           <p>
-            Specification research is recorded separately from product code so a
-            source can be reviewed without relying on a marketing claim. When an
-            authority publishes only a file-size band, the interface should not
-            invent pixels, background colour, or signature ink from a familiar
-            portal template.
+            When a reader reports a figure that has changed, he checks it against
+            the newer notice and corrects the page, as set out in the 
+            <Link href="/corrections-policy/" className="font-medium text-brand underline decoration-brand/30 underline-offset-2 hover:decoration-brand">
+              corrections policy
+            </Link>
+            .
           </p>
-          <p>That omission is an intentional accuracy decision.</p>
         </section>
       </TrustPageLayout>
     </>

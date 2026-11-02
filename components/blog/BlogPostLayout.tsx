@@ -137,32 +137,26 @@ export function BlogPostLayout({
           </div>
         </aside>
 
-        {/* Editorial standards — the "How / Why" E-E-A-T signal: real process,
-            dated verification, on-device privacy, corrections invite. All
-            truthful; no invented person or credentials. */}
-        <aside className="mt-12 rounded-xl border border-hairline bg-accent/5 p-5 text-sm leading-relaxed text-ink-soft">
-          <p className="font-semibold text-ink">How we keep this accurate</p>
-          <p className="mt-2">
-            Specification pages show the named source and verification status.
-            Entries confirmed against an official source are dated; entries still
-            awaiting confirmation are marked for review. Every tool runs entirely
-            in your browser; your documents are never uploaded.
-          </p>
-          <p className="mt-2">
-            Spotted something out of date?{" "}
-            <Link href="/contact/" className="font-medium text-brand underline">
-              Tell us
-            </Link>{" "}
-            and we&apos;ll correct it.
-          </p>
-        </aside>
+        {/* Sources note — only on posts that quote official requirements, so
+            a lifestyle or how-to post doesn't carry a promise it has no use for. */}
+        {post.citesOfficialSources && (
+          <aside className="mt-12 rounded-xl border border-hairline bg-accent/5 p-5 text-sm leading-relaxed text-ink-soft">
+            <p className="font-semibold text-ink">Where these figures come from</p>
+            <p className="mt-2">
+              Each size or rule quoted above links to the official notice or
+              portal page it comes from. Authorities change them between cycles,
+              so open that link before you submit. Spotted something out of date?{" "}
+              <Link href="/contact/" className="font-medium text-brand underline">
+                Tell us
+              </Link>{" "}
+              and we&apos;ll correct it.
+            </p>
+          </aside>
+        )}
 
-        {/* Closing CTA */}
+        {/* Closing CTA — the sentence is written for each post in lib/blog.ts. */}
         <div className="mt-12 flex flex-col items-start gap-3 rounded-xl border border-brand/25 bg-brand-soft/20 p-5 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-ink">
-            <span className="font-semibold">Ready to make yours?</span>{" "}
-            Selected size and background, checked before you download — free, in your browser.
-          </p>
+          <p className="text-sm text-ink">{post.ctaText}</p>
           <Link
             href={ctaHref}
             className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-cta px-4 py-2.5 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"

@@ -85,11 +85,11 @@ export function DocPhotoLanding({
           faqSchema(faqItems),
           howToSchema({
             name: `How to make a ${doc} photo online`,
-            description: `Prepare a ${doc} photo at the selected size and background in your browser in three steps.`,
+            description: `Prepare a ${doc} photo for your country in your browser in three steps.`,
             steps: [
               { name: "Choose your country", text: `Select the country you need the ${doc} photo for.` },
               { name: "Upload your photo", text: "Drop in a clear, front-facing photo — it stays on your device." },
-              { name: "Download", text: `We size the head and set the selected background; inspect the result and confirm the current destination instructions.` },
+              { name: "Download", text: `We size the head and set the background; check the result and the current destination instructions.` },
             ],
           }),
         ]}
@@ -146,7 +146,7 @@ export function DocPhotoLanding({
         {/* Section header */}
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
-            <span className="eyebrow text-brand">Requirements published by the named authority</span>
+            <span className="eyebrow text-brand">Sizes with linked sources</span>
             <h2 className="mt-1 text-xl font-semibold tracking-tight text-ink">
               {kind === "passport" ? "Passport" : "Visa"} photo size by country
             </h2>

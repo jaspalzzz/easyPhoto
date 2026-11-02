@@ -46,7 +46,9 @@ export default function Page() {
         </h3>
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
           A file below the lower number is refused too. Type the lower number in the Minimum box and
-          the higher one in the Target size box; the download lands between the two.
+          the higher one in the Target size box; the download lands between the two. A clear,
+          full-size original usually comes out above the minimum on its own. If it still comes out
+          smaller, the file is brought up to the minimum. The picture itself does not change.
         </p>
         <p className="text-sm text-muted-foreground">Or open the tool set to a common size:</p>
         <div className="flex flex-wrap gap-2">

@@ -28,240 +28,162 @@ export interface MakerContent {
 export const MAKER_CONTENT: Record<string, MakerContent> = {
   "india-passport-photo-maker": {
     intro:
-      "For an ordinary adult fresh/reissue application in India, Passport Seva captures your photograph and biometrics at the PSK/POPSK; you do not upload or carry a photo. This maker is useful for the 35×45mm white-background print required for a child below four, or when a separate overseas workflow asks you to prepare a photo.",
+      "For an ordinary adult fresh or reissue application, Passport Seva takes your photograph and biometrics at the PSK or POPSK, and its visit guidance says you do not need to bring a photo. This maker is for the white-background print a child below four must carry, or for a photo an Indian mission abroad asks for.",
     sections: [
       {
-        h: "Ordinary adult applications use centre capture",
-        p: "Passport Seva says applicants attend the PSK or POPSK so their photograph and biometrics can be obtained there, and its visit guidance says a photograph is not required. The online form is used for the application and appointment; it is not an adult passport-photo upload.",
+        h: "What the under-four print must show",
+        p: "Passport Seva's fresh and reissue instructions ask a child below four to carry a recent colour photograph. Its minor-photo guidance writes the size as 45 mm × 35 mm, height first, which is the same portrait print as the 35 × 45 mm this maker prepares. It asks for a close-up of the head and the top of the shoulders, and its sample pictures show how tight that framing is.",
       },
       {
-        h: "The 35×45mm print is for a child below four",
-        p: "Passport Seva's fresh/reissue instructions require a minor below four to carry a recent 4.5×3.5cm (45×35mm) colour photograph with a white background. The linked minor-photo guidance also specifies a frontal, centred image, open eyes, even lighting and 80–85% face coverage.",
+        h: "What the minor-photo guidance rules out",
+        p: "The child should look straight at the camera with eyes open and no hair across them, with the full head showing from the top of the hair to the bottom of the chin, centred in the frame. Lighting must be even: no shadows on the face or the background, no flash reflections and no red eye. Skin tones should look natural, with appropriate brightness and contrast, and the expression should look natural too. A head covering is allowed only for religious reasons, and even then the face from the bottom of the chin to the top of the forehead, and both edges of the face, must be clearly shown.",
       },
       {
         h: "Overseas, OCI and e-Visa are separate",
-        p: "Indian missions abroad use separate ICAO guidance that specifies 630×810 pixels for photograph capture or upload. OCI and Indian e-Visa applications use different square-photo specifications. Select the workflow that will process your application and confirm its current instructions before submitting.",
+        p: "Indian missions abroad follow separate ICAO guidance that asks for a 630 × 810 pixel photograph. OCI and the Indian e-Visa use square photos with their own rules; the e-Visa, for example, takes a square JPEG between 350 × 350 and 1000 × 1000 pixels. Follow the instructions of the office handling your application.",
       },
     ],
-    faqs: [
-      {
-        q: "Do adults upload a photo with a Passport Seva application?",
-        a: "No. In the ordinary domestic fresh/reissue workflow, an adult's photo and biometrics are captured at the PSK/POPSK. Passport Seva's visit guidance says a photograph is not required.",
-      },
-      {
-        q: "Who needs the 35×45mm white-background print?",
-        a: "A child below four years. Passport Seva instructs that applicant to carry a recent 4.5×3.5cm colour photograph with a white background.",
-      },
-      {
-        q: "Where does the 630×810 pixel format apply?",
-        a: "It appears in the current ICAO guidance for passport applications through Indian embassies and consulates abroad. It is not an ordinary domestic adult PSK/POPSK upload size.",
-      },
-      {
-        q: "Can I reuse this photo for OCI or an Indian e-Visa?",
-        a: "Use the dedicated OCI or e-Visa photo option instead. Both are square digital-photo workflows with specifications that differ from the under-four passport print.",
-      },
-    ],
+    faqs: [],
   },
 
   "us-passport-photo-maker": {
     intro:
-      "A US passport photo is 2×2 inches (51×51mm) on a plain white or off-white background. That's the size the US Department of State sets for Form DS-11. This maker crops your head to the exact required range and sets the background, ready to print or upload.",
+      "A US passport photo is 2 × 2 inches (51 × 51 mm), in colour, on a plain white or off-white background. The State Department uses the same photo for the DS-11 passport form, online renewal and the DS-160 visa form; what differs is how you submit it.",
     sections: [
       {
-        h: "US passport photo specification",
-        p: "The photo has to be 2×2 inches square, in colour, taken within the last six months, on a plain white or off-white background. Your head, from the bottom of the chin to the top of the head, must be between 1 and 1⅜ inches (25–35mm). You'll need a neutral expression with both eyes open, and glasses are no longer allowed.",
+        h: "Printing at home, at a pharmacy or for online renewal",
+        p: "Print the 2 × 2 photo at home on photo paper, take the downloaded file to a pharmacy photo kiosk, or upload it when you renew online. The maker gives you the single photo and a 4 × 6 sheet with several copies, so one print gives you spares.",
       },
       {
-        h: "Printing at home, a pharmacy, or online",
-        p: "You can print the 2×2 photo at home on photo paper, take the downloaded file to a CVS, Walgreens or Costco kiosk, or upload it directly when you renew online. The maker gives you a correctly sized 2×2 image plus a 4×6 print sheet so you don't waste paper.",
+        h: "What gets a photo refused",
+        p: "Shadows on your face or the background, a head that is too large or too small for the frame, and a non-neutral expression can all get a photo sent back. The maker sizes your head and replaces the background; check the lighting and your expression yourself before you print.",
       },
       {
-        h: "Common reasons US passport photos are rejected",
-        p: "Most rejections come from shadows on the face or background, the head being too large or too small in the frame, wearing glasses, or a non-neutral expression. Sizing the head automatically and replacing the background removes the two biggest causes.",
+        h: "The same photo for a US visa (DS-160) and the DV Lottery",
+        p: "A DS-160 visa photo uses the same 2 × 2 inch composition, but it is uploaded rather than printed: a square JPEG from 600 × 600 to 1200 × 1200 pixels, no larger than 240 KB. The Diversity Visa Lottery entry uses the same limits. Make the photo here, then compress it to fit under 240 KB.",
       },
       {
-        h: "The same photo for a US visa (DS-160)",
-        p: "A US visa photo uses the identical 2×2 inch square composition, so one image serves both applications. What differs is delivery: the DS-160 is uploaded rather than printed, and the upload adds its own limits — a square JPEG between 600×600 and 1200×1200 pixels, under 240 KB. Make the photo here, then compress it to land under that cap. The Diversity Visa Lottery uses the same photo and enforces those figures strictly.",
+        h: "Checking the file and the print",
+        p: "The online renewal uploader takes JPEG, PNG, HEIC or HEIF files, while the DS-160 and the DV entry want a JPEG. On a printed copy, measure from the bottom edge of the photo up to your eyes: the State Department's range is 28–35 mm (1⅛ to 1⅜ inches).",
       },
     ],
     faqs: [
       {
-        q: "What size is a US passport photo?",
-        a: "Exactly 2×2 inches (51×51mm), square, with the head 1 to 1⅜ inches (25–35mm) from chin to crown.",
-      },
-      {
-        q: "Can I print a US passport photo at home?",
-        a: "Yes. Download the photo and the 4×6 sheet and print on photo paper, or take the file to a pharmacy photo kiosk. The State Department accepts home-printed photos that meet the spec.",
-      },
-      {
-        q: "Does a US passport photo need a white background?",
-        a: "It needs a plain white or off-white background with no shadows. The tool applies the selected white background; inspect the result before submitting.",
-      },
-      {
         q: "How recent does my US passport photo have to be?",
-        a: "It must be taken within the last six months and reflect your current appearance.",
-      },
-      {
-        q: "What are the DS-160 US visa photo requirements?",
-        a: "A square colour photo between 600×600 and 1200×1200 pixels, saved as JPEG and under 240 KB, on a plain white background with a neutral expression. The composition is the same 2×2 inch framing as the passport photo — the difference is that the visa photo is uploaded rather than printed.",
-      },
-      {
-        q: "Is a US visa photo the same size as a passport photo?",
-        a: "Visually yes: both use the square 2×2 inch format on a white background. The DS-160 visa photo additionally has to satisfy the 600×600-pixel minimum and the 240 KB file-size cap because it is submitted digitally.",
-      },
-      {
-        q: "Can I use this photo for the DV Lottery or a Green Card application?",
-        a: "It produces the square white-background photo those applications use. The Diversity Visa Lottery enforces the 600×600-pixel minimum and the under-240 KB limit strictly, so check the exported file against the current instructions before submitting.",
+        a: "It must have been taken within the last six months and show how you look now.",
       },
     ],
   },
 
-
-
   "canada-visa-photo-maker": {
     intro:
-      "Canadian temporary-resident photos — visitor, study and work — are 35×45mm on a plain white or light background, following IRCC's requirements. This maker sizes the head, sets the background and checks compliance, all in your browser. Permanent residence, Express Entry and the printed passport booklet are separate processes with their own instructions; the sections below say what each one does differently rather than assuming one photo covers them all.",
+      "IRCC asks visitor visa, study permit and work permit applicants for two identical photos, taken within the last six months, at least 35 × 45 mm, on a plain white or light-coloured background.",
     sections: [
       {
-        h: "The printed passport booklet is the exception",
-        p: "Everything on this page is the 35×45mm temporary-resident photo — visitor, study and work. Two things it is not. The printed photo for a new Canadian passport booklet is 50×70mm and canada.ca requires a commercial photographer to certify it and write the studio details on the back; no browser tool can produce that certification, so for the booklet you need a photographer and this maker will not pretend otherwise. Permanent residence and Express Entry are their own processes with their own instructions — check what your application asks for rather than assuming the visitor figure carries over.",
-      },
-      {
-        h: "Canada visa photo specification",
-        p: "IRCC asks for a 35×45mm photo with the face (chin to crown) measuring 31–36mm, on a plain white or light-coloured background with even lighting and no shadows. You'll need a neutral expression with the mouth closed, and the photo has to be recent.",
-      },
-      {
-        h: "Digital upload vs. printed photo",
-        p: "Some applications take a printed 35×45mm photo, while online IRCC portals accept a digital file with their own size limits. The maker produces both a print-ready file and an image you can compress to the portal's file-size cap with the resize tool.",
-      },
-      {
-        h: "Same photo for study and work permits",
-        p: "The 35×45mm white-background photo works across Canadian visitor visas, study permits and work permits. Always verify the latest photo and file requirements on the IRCC website, since digital caps can differ by stream.",
+        h: "If you apply online",
+        p: "IRCC's photo specification describes printed photos and says a digital photo must not be altered in any way. It publishes no file-size limit, so if your online application asks for a photo file, follow the size shown in the application.",
       },
     ],
-    faqs: [
-      {
-        q: "What size is a Canada visa photo?",
-        a: "35×45mm with the head 31–36mm from chin to crown, on a plain white or light background.",
-      },
-      {
-        q: "Does a Canada visa photo need a white background?",
-        a: "A plain white or light-coloured, evenly lit background with no shadows. The tool applies the selected recorded background automatically; inspect the result before upload.",
-      },
-      {
-        q: "Can I use the same photo for a study or work permit?",
-        a: "Yes. Canadian visitor visas, study permits and work permits all use the same 35×45mm photo specification.",
-      },
-      {
-        q: "How do I meet the IRCC online file-size limit?",
-        a: "Make the 35×45mm photo here, then use the resize-to-KB tool to compress it to the limit shown on your IRCC application.",
-      },
-    ],
+    faqs: [],
   },
 
   "uk-passport-photo-maker": {
     intro:
-      "A UK passport photo is 35×45mm on a plain light-coloured background. HM Passport Office names shades of white, cream, ivory and light grey as acceptable examples, so a white background is fine, despite how often the opposite is asserted elsewhere. This maker applies a light background and sizes your head to the required band.",
+      "A UK passport photo is 35 × 45 mm on a plain light-coloured background, taken within the last month. HM Passport Office gives shades of white, cream, ivory and light grey as examples, so a white background is fine.",
     sections: [
       {
         h: "What background a UK passport photo needs",
-        p: "HM Passport Office accepts a plain background in any light colour, naming shades of white, cream, ivory and light grey among its examples. What fails is a background that is dark, coloured, patterned, textured, or carries a shadow behind your head. This maker defaults to a light grey because it also suits Schengen consulates that do ask for grey, and because it keeps your outline visible against a pale top; change it if you prefer. Confirm the current guidance before submitting.",
+        p: "What fails is a background that is dark, coloured, patterned or textured, or one with a shadow behind your head. This maker starts with a light cream background, which keeps your outline visible if you wear a pale top; you can change it.",
       },
       {
-        h: "UK passport photo specification",
-        p: "The photo is 35×45mm with the head (chin to crown) between 29 and 34mm. You'll need a neutral expression with your mouth closed, both eyes open and visible, and nothing covering the face. Glasses are allowed provided both eyes stay clearly visible — frames may sit over the eye socket but must not hide the white or pupil, and if glare stops the checks locating your eyes you must take them off.",
+        h: "Glasses",
+        p: "gov.uk asks you not to wear glasses in the photo unless you have to. If you do, they cannot be sunglasses or tinted, and both eyes must stay clearly visible without glare.",
       },
       {
-        h: "Online photo code vs. printed photo",
-        p: "When you apply online you can either upload a digital photo or use a code from a photo booth. One nuance is worth knowing before using any editor: the customer-facing online rules say the photo must be unedited, while HMPO's examiner standard permits a digitally edited background where the edit does not affect the image of you. Neither automatic acceptance nor automatic rejection follows, so an unedited capture against a suitable wall is the safer route for the online code. For a printed photo, download the 6×4 sheet and print it on photo paper.",
+        h: "Online photo code or printed photo",
+        p: "When you apply online you can upload a digital photo or use a code from a photo booth. The gov.uk service says the photo must be unedited, while HMPO's examiner standard allows a digitally edited background if the edit does not change how you look. Because the two do not read alike, a photo taken against a suitable plain wall is the safer choice for the online code. For a printed photo, download the 6 × 4 sheet and print it on photo paper.",
       },
       {
-        h: "A UK visa photo: same rules, but it must be a different photo",
-        p: "UK Visas and Immigration works to the same 35×45mm frame, plain light background, neutral expression and mouth-closed rules — but it also states that the photo you submit must not be the one already in your passport or identity card. Same specification, different image, so take a fresh photo rather than reusing the one you printed. The visa route is digital: the guidance describes a JPG of at least 600×750 pixels between 50 KB and 6 MB. Make the new photo here, then compress it into that band, and confirm the figures on the application screen before uploading.",
+        h: "A UK visa needs a different photo",
+        p: "UK Visas and Immigration uses the same 35 × 45 mm frame and plain light background, but it says the photo you submit must not be the one already in your passport or identity card. Take a fresh photo to the same rules, and check the upload limits on the visa application screen.",
       },
     ],
     faqs: [
       {
-        q: "What background colour does a UK passport photo need?",
-        a: "HM Passport Office asks for a plain light-coloured background and gives shades of white, cream, ivory and light grey as examples, so white is acceptable. The tool applies a light background for you. One nuance worth knowing: the gov.uk digital service tells customers the photo must be unedited, while HMPO's examiner standard allows a digitally edited background where the edit does not affect your own image. An unedited capture is the safer route for the online photo code.",
-      },
-      {
-        q: "What size is a UK passport photo?",
-        a: "35×45mm, with the head measuring 29–34mm from chin to crown.",
-      },
-      {
         q: "Can I take a UK passport photo at home for the online application?",
-        a: "Yes. Take a front-facing photo against a plain wall in even light, then use this maker to set the correct size and light grey background and upload it.",
-      },
-      {
-        q: "Are glasses allowed in a UK passport photo?",
-        a: "Yes, provided both eyes stay clearly visible. Frames may sit over the eye socket or eyelids but must not hide the white or pupil of the eye, and glare or reflection that stops the checks finding your eyes means you have to remove them. The blanket no-glasses rule belongs to the US, not the UK — though taking them off is still the simplest way to avoid a glare problem.",
-      },
-      {
-        q: "Can I reuse my UK passport photo for a UK visa application?",
-        a: "No. The specification is the same — 35×45mm, plain light background, neutral expression — but UK Visas and Immigration states the photo you submit must not be the one already used in your passport or identity card. Take a fresh photo to the same rules. The digital guidance describes a JPG of at least 600×750 pixels between 50 KB and 6 MB; confirm the figures on the application screen before uploading.",
-      },
-      {
-        q: "What background does a UK visa photo need?",
-        a: "A plain light-coloured background, the same as the passport photo. This maker applies light grey or cream; avoid patterns and shadows, then confirm the current UKVI instructions before uploading.",
+        a: "Yes, but gov.uk says you need someone to help you take it. Stand against a plain light wall in even light, then size the photo here before you upload it.",
       },
     ],
   },
-
 
   "australia-passport-photo-maker": {
     intro:
-      "An Australian passport photo is 35×45mm on a plain white or light grey background, following the Australian Passport Office. There's one extra step: your guarantor signs the back of the printed photo. This maker prepares the selected image dimensions and background; the endorsement is added after printing.",
+      "The Australian Passport Office accepts a photo 35–40 mm wide and 45–50 mm high, with the head 32–36 mm from chin to crown, on a plain white or light grey background. This maker prepares 35 × 45 mm, the smallest size in that range.",
     sections: [
       {
-        h: "Australia passport photo specification",
-        p: "The Australian Passport Office requires a 35×45mm photo with the head (chin to crown) 32–36mm, on a plain white or light grey background with even lighting. You'll need a neutral expression with mouth closed and both eyes open, and glasses should be removed unless medically necessary.",
-      },
-      {
-        h: "The guarantor declaration",
-        p: "For a new Australian passport, one of your two printed photos has to be endorsed on the back by your guarantor confirming it's a true likeness, signed and dated. This maker produces the correctly sized photo to print, and the endorsement is written by hand after you print it.",
-      },
-      {
         h: "Printing your Australian photo",
-        p: "Download the 35×45mm photo and the 6×4 print sheet, then print on photo paper at a pharmacy or photo lab. Make sure the printed size is exact, since the passport office measures the head height against the 32–36mm band.",
+        p: "You need two prints, no more than six months old. The Passport Office wants good-quality colour prints made by dye sublimation, not on an inkjet printer, on heavy-weight glossy paper of at least 200 gsm. Ask a pharmacy or photo lab to print the 6 × 4 sheet that way, then measure the printed head with a ruler before you hand a copy to your guarantor.",
+      },
+      {
+        h: "What the Passport Office turns away",
+        p: "Its examples of unacceptable photos include retouching or skin smoothing, an edited background, a parent's hand or any object in shot, wireless earbuds, a patterned head covering, heavy make-up, red eye, ink marks, and a blurred or grainy image. Because an edited background is on that list, photograph yourself against a plain white or light grey wall rather than relying on the maker to replace it. Poor eyesight alone is not a medical reason to keep glasses on; hearing aids may stay in. Anyone over three must look straight at the camera with eyes open and a neutral expression, while a child under three may have their mouth open. If a medical condition stops you meeting a rule, you need a medical certificate or a completed B-11 form.",
+      },
+      {
+        h: "Professional photos and online services",
+        p: "The Passport Office recommends a professional passport photo provider, such as a post office, chemist or camera store, and advises against online photo services and mobile apps because of the risk of identity fraud. This maker runs on your device and sends your photo nowhere, but your prints still have to meet every rule above.",
       },
       {
         h: "If you are applying for a visa rather than a passport",
-        p: "Everything above is the Australian Passport Office specification. Visa applications are a separate process run by Home Affairs, and what they ask for depends on the visa: some subclasses collect your photograph and biometrics at a collection centre rather than taking an upload, and the ones that do accept a photo state their own requirements in the application. We have not found a single published specification covering visitor, student, work and partner visas alike, so we are not going to claim one. Open the requirements for your subclass in ImmiAccount and work to those; the guarantor endorsement described above belongs to the passport application and does not apply.",
+        p: "Visa applications are run by Home Affairs, and what they ask for depends on the visa: some subclasses collect your photograph and biometrics at a collection centre, and the ones that take a photo state their own requirements in the application. We have not found one published specification covering visitor, student, work and partner visas, so open the requirements for your subclass in ImmiAccount and work to those.",
       },
     ],
     faqs: [
       {
-        q: "Does an Australian passport photo need a guarantor's signature?",
-        a: "Yes. Your guarantor has to endorse the back of one printed photo confirming it's a true likeness, signed and dated. This tool prepares the selected photo dimensions and background; the signature is added by hand after printing.",
-      },
-      {
-        q: "What size is an Australian passport photo?",
-        a: "35×45mm, with the head 32–36mm from chin to crown, on a plain white or light grey background.",
-      },
-      {
-        q: "Can the background be white for an Australian passport?",
-        a: "The recorded options are plain white or light grey, uniform and without shadows. The tool applies the selected background; inspect the result before submitting.",
-      },
-      {
-        q: "Can I take an Australian passport photo at home?",
-        a: "Yes. Take a front-facing photo in even light against a plain wall, size it here, print it, and have your guarantor endorse the back.",
-      },
-      {
         q: "Does an Australian visa photo need a guarantor signature?",
-        a: "No. The guarantor endorsement is part of the passport application, not a visa application.",
-      },
-      {
-        q: "Can I use this photo for an Australian visa?",
-        a: "Check the requirements for your visa subclass first. Visas are handled by Home Affairs rather than the Passport Office: some subclasses collect your photograph and biometrics at a collection centre instead of accepting an upload, and those that do take a photo set their own requirements in the application. The 35×45mm specification on this page is the passport one, and we have not found a published rule extending it across all visa subclasses.",
+        a: "No. The guarantor endorsement belongs to the passport application, not to a visa application.",
       },
     ],
   },
 
+  "pakistan-passport-photo-maker": {
+    intro:
+      "For an online Pakistani passport renewal, the DGI&P e-services page asks for a photo file of 350 × 467 pixels, JPEG or JPG, no larger than 3 MB, on a plain white background.",
+    sections: [
+      {
+        h: "Checking the file before you upload",
+        p: "The “JPG for upload” download is made at exactly 350 × 467 pixels and saved as a JPEG (.jpg); the print download is a separate file sized for a 35 × 45 mm print, so upload the JPG, not the print file. Before you upload, open the file's details — Properties on Windows, Get Info on a Mac, or the info view in your phone's gallery — and confirm it reads 350 × 467. DGI&P sets a 3 MB ceiling and no minimum, so a well-compressed JPEG of a few hundred kilobytes is fine. Look at the photo at its real size as well: at 350 × 467 pixels, a shadow beside the nose or hair over an eyebrow is easy to miss in a large preview.",
+      },
+    ],
+    faqs: [
+      {
+        q: "Do I also need a printed photo for the online renewal?",
+        a: "No. On the e-services route the photo goes through the website as a file and is never handed over on paper, so the pixel size is what matters, not a print size.",
+      },
+    ],
+  },
+
+  "nepal-passport-photo-maker": {
+    intro:
+      "Use this maker for any form that asks for an MRP size photo, or for the one Nepali ePassport case that needs a printed photo, explained below.",
+    sections: [
+      {
+        h: "How the ePassport photo is taken",
+        p: "You start with the online pre-enrolment form, which you can fill in at home on a computer or with the mobile app. While filling it in you choose an enrolment centre — your District or Area Administration Office, the Department of Passports, or the embassy or consulate if you are abroad — and book an appointment. After you submit it you get the full form with a barcode and QR code: print it, or bring the original form on your phone, not a screenshot. At the centre the steps are a form check, the fee payment, then registration, where staff take your photo and biometrics. You hear by email or SMS when the passport is ready, and you collect it where you applied. A renewal follows the same steps as a new passport.",
+      },
+    ],
+    faqs: [],
+  },
+
+  "uae-visa-photo-maker": {
+    intro:
+      "Prepare a UAE visa photo for a typing-centre or GDRFA Dubai application on a plain white background. Check the size with your channel first: the UAE has no single photo size for every application.",
+    sections: [],
+    faqs: [],
+  },
 
   "india-visa-photo-maker": {
     intro:
-      "Visiting India? The Indian e-Visa photo isn't the same as a passport photo. It's a square image (350–1000px), JPEG, on a plain white or light background, uploaded to the e-Visa portal. This maker prepares that recorded square frame; confirm the current upload instructions before use.",
+      "Visiting India? The Indian e-Visa photo isn't the same as a passport photo. It's a square image (350–1000px), JPEG, on a plain white or light background, uploaded to the e-Visa portal. This maker prepares that square photo; confirm the current upload instructions before use.",
     sections: [
       {
         h: "Indian e-Visa photo requirements",
@@ -269,7 +191,7 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
       },
       {
         h: "It's square, not the 35×45mm passport size",
-        p: "Don't confuse this with the ordinary domestic Indian passport workflow, where an adult is photographed at the PSK/POPSK. The 35×45mm passport print applies to a child below four, while the e-Visa photo for foreign visitors is a separate square upload.",
+        p: "Don't confuse this with the ordinary domestic Indian passport process, where an adult is photographed at the PSK/POPSK. The 35×45mm passport print applies to a child below four, while the e-Visa photo for foreign visitors is a separate square upload.",
       },
       {
         h: "File size and uploading",
@@ -330,37 +252,12 @@ export const MAKER_CONTENT: Record<string, MakerContent> = {
   },
   "ireland-visa-photo-maker": {
     intro:
-      "An Irish visa photograph is not a digital upload. Immigration Service Delivery asks for two printed colour photographs sent with the application, and they carry writing on the back. The size overlaps the passport photo — 35×45mm at the minimum, up to 38×50mm — so this maker produces the right image; the rest of this page is the part that catches people out.",
-    sections: [
-      {
-        h: "Two prints, not one upload",
-        p: "The application requires two recent colour photographs, printed on photographic paper, taken no more than six months ago. Use the print sheet to produce a pair rather than a single image, and do not submit only a digital file — the visa process is not the same as the online passport route, which is where the 35×45mm figure on most photo sites comes from.",
-      },
-      {
-        h: "Write your name and transaction number on the back",
-        p: "Immigration Service Delivery asks for the applicant's name and the transaction number written in block letters on the reverse of each photograph. That is done by hand after printing; no tool can add it for you. Photographs arriving without it are a routine reason for a visa application being returned.",
-      },
-      {
-        h: "Size, framing and background",
-        p: "The accepted range runs from 35×45mm to 38×50mm, with the face occupying roughly 70–80% of the frame, against a plain white, cream or light grey background. This maker crops to 35×45mm, which sits at the bottom of that range and is accepted; if your local office asks for a larger print, take the exported image to a photo shop at the size they specify.",
-      },
-    ],
+      "An Irish visa needs two printed colour photos, not a digital upload, and each one has writing on the back. This maker prepares the image for you to print.",
+    sections: [],
     faqs: [
       {
-        q: "How many photographs does an Irish visa application need?",
-        a: "Two recent printed colour photographs, on photographic paper, taken within the last six months. This is different from the online passport application, which takes a single digital image.",
-      },
-      {
-        q: "Do I write anything on an Irish visa photo?",
-        a: "Yes. Immigration Service Delivery asks for your name and the transaction number in block letters on the back of each photograph. Write it by hand after printing.",
-      },
-      {
-        q: "What size is an Irish visa photo?",
-        a: "From 35×45mm up to 38×50mm, with the face about 70–80% of the frame on a plain white, cream or light grey background. Confirm the current rules on the Immigration Service Delivery photograph page before you send the application.",
-      },
-      {
         q: "Can I use my Irish passport photo for a visa application?",
-        a: "The image itself can meet both descriptions, but the submission differs: a visa needs two printed copies with details written on the back, while the online passport route takes one digital file. Prepare the prints for the visa rather than reusing an upload.",
+        a: "The image can meet both sets of rules, but the visa needs two printed copies with your name and transaction number on the back, while the online passport service takes one digital file. Print the copies for the visa rather than reusing an upload.",
       },
     ],
   },

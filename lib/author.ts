@@ -5,17 +5,23 @@
  */
 export const AUTHOR = {
   name: "Jaspal Kumar",
-  /** A bounded description of Jaspal's role, not an authority credential. */
-  title: "easyPhoto developer",
+  /**
+   * What Jaspal does for readers, as a heading or a line under his name. A
+   * plain description of the job, not an authority credential.
+   */
+  title: "Developer of easyPhoto",
+  /** The same, for use mid-sentence: "Reviewed by Jaspal Kumar, who builds …". */
+  byline: "who builds easyPhoto and checks each requirement against its published source",
   bio:
-    "Jaspal Kumar builds and maintains easyPhoto. With over 10 years of hands-on " +
-    "experience in web and mobile development, he focuses on privacy-first " +
-    "in-browser image tools and maintains source-linked specification records " +
-    "for easyPhoto.",
+    "Jaspal Kumar builds and runs easyPhoto. He has more than ten years of " +
+    "experience in web and mobile development. For each exam, ID and passport " +
+    "requirement on the site, he compares the figures with the authority's " +
+    "published notice where one exists, links that source on the page, and marks " +
+    "any figure that still needs a check.",
   knowsAbout: [
     "Web and mobile development",
     "In-browser image processing",
-    "Source-linked document photo specifications",
+    "Indian exam and document photo requirements",
   ],
   /** On-site identity is the byline and Person-schema URL. */
   url: "/authors/jaspal-kumar/",

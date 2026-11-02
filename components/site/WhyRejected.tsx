@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowRight, Sparkles, CheckCircle2, ShieldCheck, Lock, Zap, Users,
+  ArrowRight, Sparkles, CheckCircle2, ShieldCheck,
   AlertTriangle, User, ImageOff, Sun, Focus, Maximize2, EyeOff,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -18,30 +18,31 @@ const REASONS: Reason[] = [
   { Icon: EyeOff,    label: "Eyes not visible",       detail: "Eyes covered, closed or hair/glare blocking eyes"   },
 ];
 
-const AUTOMATED_CHECKS = [
-  "Checking head size & framing",
-  "Verifying background",
-  "Analyzing lighting & clarity",
-  "Validating dimensions",
-  "Checking face position",
-  "Ensuring eyes visibility",
+/*
+ * What the checker actually does with each item. Size and format are read
+ * from the file, so they are exact. Face, background and lighting come from
+ * on-device detection and sampling: they are estimates that raise a warning,
+ * never a "pass" (see /how-photo-checking-works/). Eye visibility and glare
+ * are not checked at all, so they are not listed here.
+ */
+type CheckKind = "Measured" | "Estimate";
+const CHECKS: { label: string; kind: CheckKind }[] = [
+  { label: "Pixel size and ratio", kind: "Measured" },
+  { label: "File size and format", kind: "Measured" },
+  { label: "Head size in the frame", kind: "Estimate" },
+  { label: "Face centred and level", kind: "Estimate" },
+  { label: "Plain, light background", kind: "Estimate" },
+  { label: "Even lighting", kind: "Estimate" },
 ];
 
+/* The sample photo's own result, shown as an example. */
 const RESULTS = [
-  { attr: "Head size",      val: "Correct"  },
-  { attr: "Background",    val: "White"    },
-  { attr: "Lighting",      val: "Good"     },
-  { attr: "Dimensions",    val: "Valid"    },
-  { attr: "Face position", val: "Centered" },
-  { attr: "Eyes visible",  val: "Yes"      },
-];
-
-interface TrustItem { Icon: LucideIcon; title: string; sub: string; }
-const TRUST_ITEMS: TrustItem[] = [
-  { Icon: ShieldCheck, title: "Checked for measurable requirements", sub: "Size, background & framing measured" },
-  { Icon: Lock,        title: "100% Private",      sub: "Your photos never leave your device"   },
-  { Icon: Zap,         title: "On-device results", sub: "Review measurable photo properties"    },
-  { Icon: Users,       title: "No Account Needed", sub: "Free to use — no signup, no watermark" },
+  { attr: "Pixel size",    val: "Matches"      },
+  { attr: "File size",     val: "Within limit" },
+  { attr: "Head size",     val: "No warning"   },
+  { attr: "Face position", val: "No warning"   },
+  { attr: "Background",    val: "No warning"   },
+  { attr: "Lighting",      val: "No warning"   },
 ];
 
 const NAVY = { background: "hsl(222 60% 8%)" } as const;
@@ -87,8 +88,9 @@ export function WhyRejected() {
             <span className="text-cta-text">rejected</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-            These measurable photo problems can conflict with listed requirements.
-            easyPhoto flags measurable issues and can adjust size, background and framing.
+            Most returned photos fail on something you can see or measure. easyPhoto
+            measures the file exactly and estimates the face, background and lighting,
+            so you can fix a problem before you submit.
           </p>
         </div>
 
@@ -150,17 +152,26 @@ export function WhyRejected() {
               </div>
             </div>
 
-            {/* Check items — fill remaining height */}
+            {/* Check items — what each check is, not a fixed result */}
             <div className="mt-4 flex flex-1 flex-col justify-between">
-              {AUTOMATED_CHECKS.map((check) => (
-                <div key={check} className="flex items-center gap-2.5 py-1">
+              {CHECKS.map(({ label, kind }) => (
+                <div key={label} className="flex items-center gap-2.5 py-1">
                   <CheckCircle2 className="h-4 w-4 shrink-0 text-cta-text" strokeWidth={2} />
-                  <span className="flex-1 text-[12px] text-ink">{check}</span>
-                  <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[12px] font-bold text-brand">
-                    Pass
+                  <span className="flex-1 text-[12px] text-ink">{label}</span>
+                  <span
+                    className={
+                      kind === "Measured"
+                        ? "rounded-full bg-brand-soft px-2 py-0.5 text-[12px] font-bold text-brand"
+                        : "rounded-full bg-amber-50 px-2 py-0.5 text-[12px] font-bold text-amber-800 dark:bg-amber-900/20 dark:text-amber-300"
+                    }
+                  >
+                    {kind}
                   </span>
                 </div>
               ))}
+              <p className="mt-3 text-xs leading-snug text-muted-foreground">
+                An estimate can only warn. Eyes, glare and expression are for you to check.
+              </p>
             </div>
           </div>
 
@@ -177,15 +188,14 @@ export function WhyRejected() {
               <div className="mb-3 flex items-center gap-1.5">
                 <CheckCircle2 className="h-[15px] w-[15px] text-cta-text" strokeWidth={2} />
                 <h3 className="text-[14px] font-semibold text-brand">
-                  Checked for measurable requirements
-                  <span className="ml-1 font-medium text-muted-foreground">(No detectable issues)</span>
+                  Example: the sample photo
                 </h3>
               </div>
               <div className="flex justify-center">
                 <div className="w-[140px] overflow-hidden rounded-xl border border-hairline">
                   <Image
                     src="/images/sample6_after_280.webp"
-                    alt="Sample passport photo with no measurable issues detected"
+                    alt="Example passport photo used for the sample check"
                     width={140}
                     height={187}
                     loading="lazy"
@@ -205,8 +215,7 @@ export function WhyRejected() {
                   <ShieldCheck className="h-7 w-7 text-cta" strokeWidth={1.75} />
                 </div>
                 <div>
-                  <p className="text-[36px] font-black leading-none tracking-tight text-ink">6/6</p>
-                  <p className="text-[12px] font-bold text-ink">Checks Passed</p>
+                  <p className="text-[18px] font-black leading-tight tracking-tight text-ink">No issues found</p>
                   <p className="text-xs text-muted-foreground">Example result for the sample photo above</p>
                 </div>
               </div>
@@ -226,31 +235,19 @@ export function WhyRejected() {
 
         </div>
 
-        {/* ── trust strip + CTA ── */}
-        <div className="mt-5 flex flex-col items-center gap-5 rounded-2xl border border-amber-100 dark:border-amber-800/30 bg-amber-50/40 dark:bg-amber-900/10 p-6 sm:flex-row sm:gap-8">
-          <div className="grid flex-1 grid-cols-2 gap-4 sm:grid-cols-4">
-            {TRUST_ITEMS.map(({ Icon, title, sub }) => (
-              <div key={title} className="flex items-start gap-2.5">
-                <Icon className="h-5 w-5 shrink-0 text-cta-text" strokeWidth={1.75} />
-                <div>
-                  <p className="text-[12px] font-bold text-ink">{title}</p>
-                  <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{sub}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="flex shrink-0 flex-col items-center gap-1.5">
-            <Link
-              href="/passport-photo/"
-              className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold transition-opacity hover:opacity-90"
-              style={{ background: "hsl(var(--cta))", color: "hsl(222 60% 8%)" }}
-            >
-              Try it free <ArrowRight className="h-4 w-4" />
-            </Link>
-            <p className="text-xs text-muted-foreground">
-              No signup&nbsp;•&nbsp;No uploads&nbsp;•&nbsp;100% Free
-            </p>
-          </div>
+        {/* ── CTA ── */}
+        <div className="mt-5 flex flex-col items-center gap-3 rounded-2xl border border-amber-100 dark:border-amber-800/30 bg-amber-50/40 dark:bg-amber-900/10 p-6 sm:flex-row sm:justify-between sm:gap-8">
+          <p className="max-w-xl text-[14px] leading-relaxed text-ink">
+            Check your own photo against the size your form lists. The result shows
+            which parts were measured and which are estimates.
+          </p>
+          <Link
+            href="/tools/compliance-checker/"
+            className="inline-flex shrink-0 items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold transition-opacity hover:opacity-90"
+            style={{ background: "hsl(var(--cta))", color: "hsl(222 60% 8%)" }}
+          >
+            Check a photo <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
 
       </div>

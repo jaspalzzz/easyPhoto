@@ -39,12 +39,12 @@ export default function CorrectionsPolicyPage() {
         <ul className="list-disc space-y-2 pl-5">
           <li>The easyPhoto URL where the statement appears.</li>
           <li>The exact sentence, table row, or tool value that may be outdated.</li>
-          <li>The application workflow and notice cycle you are using.</li>
+          <li>Which application and which year&apos;s notice you are using.</li>
           <li>A first-party instruction page or PDF, including its paragraph or page number.</li>
         </ul>
         <p>
           We do not need a copy of your photo, signature, identity document, or
-          completed application to investigate a specification. Please remove
+          completed application to look into a figure. Please remove
           personal details from any screenshot you choose to send.
         </p>
       </section>
@@ -54,12 +54,12 @@ export default function CorrectionsPolicyPage() {
           What happens next
         </h2>
         <p>
-          We compare the report with the responsible authority&apos;s current
-          instructions and the source already recorded for the page. If the
-          evidence supports a correction, we update the underlying specification
-          and any dependent copy, then record a new verification or review date.
-          If sources conflict, we keep the uncertainty visible rather than choose
-          an unsupported number.
+          Jaspal Kumar, who runs easyPhoto, compares the report with the
+          authority&apos;s current instructions and with the source the page
+          already links. If the newer notice supports the change, the figure is
+          corrected and the page shows the new date of the check. If two sources
+          disagree, the page says so rather than picking a number neither of them
+          supports.
         </p>
       </section>
 
@@ -69,17 +69,17 @@ export default function CorrectionsPolicyPage() {
       </p>
 
       <p>
-        Corrections are applied to the shared source record where possible so the
-        affected guide, specification table, and tool read the same revised value.
-        Editorial wording is updated separately when the change alters the
-        workflow rather than a number. We do not silently turn unresolved reports
-        into confirmed requirements.
+        A corrected figure is changed in one place, so the tool, the exam page and
+        any guide that uses it all show the same new value. When the change is to
+        how an application works rather than to a number, the guide wording is
+        rewritten as well. A report that cannot be confirmed is not turned into a
+        stated requirement.
       </p>
       <p>
-        Reports about broken downloads or browser behaviour follow the same
-        evidence-first approach. We reproduce the steps with a non-sensitive test
-        file, identify the affected browser or device, and distinguish a software
-        defect from a portal-side message before changing user guidance.
+        Reports about broken downloads or a tool misbehaving are handled the same
+        way: the steps are repeated with a harmless sample file on the browser or
+        device you named, to tell an easyPhoto bug apart from a message the portal
+        itself shows, before any guidance changes.
       </p>
     </TrustPageLayout>
   );

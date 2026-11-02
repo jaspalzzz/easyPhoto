@@ -13,15 +13,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What is the SIR photo size in KB or pixels?",
-    a: "The Election Commission publishes no SIR-specific photo size, KB limit, pixel dimension, format or DPI. Pages quoting an exact figure such as \"35×45 mm, 200 KB\" are not citing an official SIR requirement. Treat any precise number with caution and check your state CEO or your BLO.",
-  },
-  {
-    q: "When do I actually need a recent photo during SIR?",
-    a: "Only in a narrow case: if the photograph pre-printed on your paper enumeration form is wrong or outdated, ECI guidance says a recent photograph may be affixed — and even then the Commission has clarified it is not mandatory. A fresh photo is a genuine requirement when you file a new registration (Form 6) or a correction (Form 8), which use the standard voter photograph.",
-  },
-  {
-    q: "Is attaching a photo to the enumeration form mandatory?",
-    a: "No. The Election Commission has clarified that enumeration forms are accepted without an affixed photograph.",
+    a: "The Election Commission publishes no SIR-specific photo size, KB limit, pixel dimension, format or DPI. A page quoting an exact figure such as \"35×45 mm, 200 KB\" is not citing an official SIR requirement. Treat any precise number with caution and check your state CEO or your BLO.",
   },
 ];
 
@@ -42,11 +34,11 @@ export default function Page() {
       ctaLabel="Prepare a voter (Form 6) photo"
     >
       <p>
-        With the Special Intensive Revision (SIR) of electoral rolls underway, millions of
-        people are searching for a &ldquo;SIR photo size.&rdquo; The honest answer is that
+        With the Special Intensive Revision (SIR) of electoral rolls underway, many
+        people are looking for a &ldquo;SIR photo size.&rdquo; The short answer is that
         the online enumeration form has no photo-upload step, and the Election Commission
-        publishes no SIR photo specification at all. This guide separates what is actually
-        required from what some sites have invented to farm the search.
+        publishes no SIR photo size at all. This guide sets out what the form does ask
+        for, and the one case where a photo matters.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
@@ -116,7 +108,7 @@ export default function Page() {
         <strong>new registration</strong> (a fresh Form&nbsp;6) or a{" "}
         <strong>correction or photo replacement</strong> (Form&nbsp;8), that does use the
         standard voter (EPIC) photograph — and that is a genuine, published requirement: a
-        recent, good-quality, unsigned colour photo on a plain light background. For the full
+        recent, good-quality, unsigned colour photo on a white background. For the full
         ECI/Form&nbsp;6 detail see our{" "}
         <Link href="/blog/voter-id-photo-requirements-2026/" className="text-brand underline">
           Voter ID photo requirements guide
@@ -128,28 +120,14 @@ export default function Page() {
         prepares it entirely in your browser — nothing is uploaded.
       </p>
 
-      <h2>A note on &ldquo;SIR photo size&rdquo; pages</h2>
+      <h2>If you see a &ldquo;SIR photo size&rdquo; quoted</h2>
 
       <p>
-        Because so many people are searching during SIR, several sites have published pages
-        quoting a precise &ldquo;SIR photo size&rdquo; and pointing to a resizer. Treat an
-        exact KB or pixel figure with caution: the enumeration process we can verify against
-        the ECI source does not require a photo upload and does not publish such a spec. When
-        a number can decide whether an official form is accepted, we would rather show you the
-        source and the uncertainty than repeat a figure the Election Commission has not
-        published.
+        Some pages quote an exact KB or pixel size for a &ldquo;SIR photo&rdquo;. No ECI
+        source we could find sets one, and the enumeration form takes no upload, so treat
+        such a figure with caution. If a photo is needed, it is for Form&nbsp;6 or
+        Form&nbsp;8, and those forms&apos; own rules apply.
       </p>
-
-      <div className="my-8 rounded-xl border border-hairline bg-paper p-5">
-        <h3 className="!mt-0 text-base font-semibold text-ink">What is verifiable vs. what is not</h3>
-        <p className="!mb-0 !mt-2 text-sm leading-relaxed text-ink-soft">
-          Verifiable from the ECI source: the online enumeration form uses Aadhaar-matched
-          login and e-Sign with no photo upload, and no SIR photo size is published. Not
-          established anywhere official: a specific &ldquo;SIR photo&rdquo; KB, pixel, format
-          or DPI value. The genuine photo requirement lives in the standard voter forms
-          (Form&nbsp;6 / Form&nbsp;8), not in SIR itself.
-        </p>
-      </div>
 
       <div className="mt-12">
         <Faq items={FAQ_ITEMS} noSchema />

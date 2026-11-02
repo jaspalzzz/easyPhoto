@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Loader2, Download, FileUp, Trash2, CheckCircle2, AlertCircle, FileImage, Archive, RefreshCw, ShieldCheck, Minimize2, Crop } from "lucide-react";
+import { Loader2, Download, FileUp, Trash2, CheckCircle2, AlertCircle, FileImage, Archive, RefreshCw, Minimize2, Crop } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { CardContent, ToolCard } from "@/components/ui/card";
@@ -303,9 +303,6 @@ export function FormatConverterTool({
             <FileUp className="h-8 w-8 text-brand" strokeWidth={1.75} />
             <p className="font-semibold tracking-tight">Select images, or drop them here</p>
             <p className="text-xs text-muted-foreground">Upload multiple JPG, PNG, WebP, or iPhone HEIC photos to convert.</p>
-            <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-ink-soft">
-              <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.75} /> Processed 100% locally
-            </p>
             <input
               id="converter-file-input"
               ref={fileInputRef}

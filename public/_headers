@@ -35,6 +35,12 @@
 /baby-passport-photo/
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Embedder-Policy: credentialless
+/schengen-visa-photo/
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: credentialless
+/canada-passport-photo/
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: credentialless
 /tools/background-removal/
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Embedder-Policy: credentialless
@@ -119,6 +125,56 @@
 # together they were a third of the indexed inventory behind two "low value
 # content" rejections. `follow` so internal links still pass. The list is
 # lib/deindexed.ts; test/deindexed.test.ts fails if these drift apart.
+/exam-requirements/army-agniveer/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/airforce-agniveer/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/navy-agniveer/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/afcat/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/clat/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/cat/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/cuet/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/ctet/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/uppsc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/tgpsc/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/sbi/
+  X-Robots-Tag: noindex, follow
+/exam-requirements/passport-seva/
+  X-Robots-Tag: noindex, follow
+/exam-calendar/
+  X-Robots-Tag: noindex, follow
+/schengen-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/france-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/germany-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/italy-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/netherlands-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/oman-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/saudi-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/china-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/new-zealand-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/malaysia-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/canada-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
+/ireland-visa-photo-maker/
+  X-Robots-Tag: noindex, follow
 /exam-requirements/nabard/
   X-Robots-Tag: noindex, follow
 /exam-requirements/cisf/

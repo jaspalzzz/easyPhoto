@@ -124,7 +124,7 @@ export function SscGuide() {
       </section>
 
       <section className="space-y-2">
-        <h2 className={h2}>A signature SSC won&apos;t reject</h2>
+        <h2 className={h2}>How to sign for the SSC form</h2>
         <ul className={`${prose} list-disc space-y-1.5 pl-5`}>
           <li>
             Draw a box about 6 cm wide and 2 cm high on white paper and sign inside it, so your

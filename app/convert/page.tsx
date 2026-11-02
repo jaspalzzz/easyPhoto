@@ -35,7 +35,7 @@ const FORMATS: {
     name: "HEIC",
     tag: "What your iPhone saves",
     body:
-      "iPhones have saved photos as HEIC by default since iOS 11 because it stores the same quality in roughly half the space. The trade-off is reach: most exam portals, Windows photo viewers and older editors still expect something else, and HEIC barely renders outside Apple's ecosystem.",
+      "iPhones have saved photos as HEIC by default since iOS 11 because it stores the same quality in roughly half the space. The trade-off is reach: most exam portals, Windows photo viewers and older editors still expect something else, and away from Apple devices a HEIC file often will not open without extra software.",
     convertWhen:
       "Convert to JPG when a form or a Windows app refuses the file — that is the universally accepted option. Convert to PNG instead if you need lossless quality or transparency, or straight to WebP if the destination is a website.",
   },
@@ -81,10 +81,6 @@ const CONVERT_FAQ: FaqItem[] = [
   {
     q: "Does transparency survive a conversion?",
     a: "Between PNG and WebP, yes — both support an alpha channel. Converting either to JPG removes transparency, because JPG cannot store it; the transparent area is filled in, usually with white.",
-  },
-  {
-    q: "Are my images uploaded when I convert them?",
-    a: "No. The converter runs entirely in your browser using your own device, so the file never leaves it. There is no sign-up and no watermark.",
   },
 ];
 

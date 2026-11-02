@@ -422,7 +422,7 @@ export function ExamPackageTool() {
         `processed in your browser.`,
         ``,
         `Files in this kit:`,
-        `  • ${base}-photo.jpg   — ${photo.width}x${photo.height}px, ${formatKb(photo.bytes)}${livePhoto ? " (compatibility file; current workflow uses live capture)" : ""}`,
+        `  • ${base}-photo.jpg   — ${photo.width}x${photo.height}px, ${formatKb(photo.bytes)}${livePhoto ? " (spare copy; this exam takes the photo live in the form)" : ""}`,
         signature
           ? `  • ${base}-signature.${signature.format} — ${signature.width}x${signature.height}px, ${formatKb(signature.bytes)}`
           : null,
@@ -436,7 +436,7 @@ export function ExamPackageTool() {
         ``,
         `Always confirm against the official portal before you submit.`,
         livePhoto
-          ? `IMPORTANT: the stored current workflow captures the photograph live. Do not upload this compatibility photo unless the active form explicitly provides a photo-file field.`
+          ? `IMPORTANT: this exam's form takes your photo live through the camera. Upload this spare photo only if your form shows a photo-upload field.`
           : null,
         needsNameDate
           ? `IMPORTANT: this exam requires your name and the date the photo was taken printed below the photo. Check the photo shows both before you upload it.`
@@ -642,7 +642,7 @@ export function ExamPackageTool() {
           <div className="space-y-4">
             {livePhoto && (
               <p className="border-l-2 border-amber-500 bg-amber-50/60 py-2 pl-3 pr-2 text-sm text-amber-900 dark:border-amber-700/50 dark:bg-amber-900/20 dark:text-amber-300">
-                The stored current workflow captures the photograph live. This optional file is for compatibility or preparation only; do not upload it unless the active form provides a photo-file field.
+                This exam&apos;s form takes your photo live through the camera, so you don&apos;t need a photo file. You can prepare a spare one, but upload it only if your form shows a photo-upload field.
               </p>
             )}
             {needsNameDate && (
@@ -660,7 +660,7 @@ export function ExamPackageTool() {
             )}
             <StepUpload
               kind="photo"
-              label={livePhoto ? "Add an optional compatibility photo" : "Upload your passport-style photo"}
+              label={livePhoto ? "Add a spare photo (optional)" : "Upload your passport-style photo"}
               asset={photo}
               busy={busy}
               onFile={processPhoto}
@@ -712,7 +712,7 @@ export function ExamPackageTool() {
                     requirement={spec.name.split(" (")[0]}
                     checks={[
                       {
-                        label: livePhoto ? "Compatibility photo size" : "Photo size",
+                        label: livePhoto ? "Spare photo size" : "Photo size",
                         value: spec.photoMinKb
                           ? `${formatKb(photo.bytes)} (needs ${spec.photoMinKb}–${spec.photoLimitKb} KB)`
                           : `${formatKb(photo.bytes)} (needs ≤ ${spec.photoLimitKb} KB)`,
@@ -826,7 +826,7 @@ export function ExamPackageTool() {
                   <ol className="mt-1.5 list-decimal space-y-1 pl-4 text-muted-foreground">
                     <li>Log in to the {spec?.name.split(" (")[0]} application portal.</li>
                     {livePhoto ? (
-                      <li>Complete the portal&apos;s live photograph step. Upload only the separate files the active form requests{signature ? ", such as the signature" : ""}.</li>
+                      <li>Take the live photo when the form asks for it. Upload only the files the form asks for{signature ? ", such as the signature" : ""}.</li>
                     ) : (
                       <li>Upload these files where the form asks for photo{signature ? " and signature" : ""}.</li>
                     )}
@@ -845,14 +845,14 @@ export function ExamPackageTool() {
                   <RotateCcw className="h-4 w-4" /> Prepare another exam
                 </Button>
                 <ToolLimitationsNotice
-                  summary="Checks measurable file properties such as dimensions and file size. The package builder does not assess every visual photo or signature requirement, and it cannot guarantee acceptance — verify the current application instructions on the official portal."
+                  summary="Checks measurable file properties such as dimensions and file size. The kit does not judge every visual photo or signature rule, and it cannot tell you whether the form will accept the files — verify the current application instructions on the official portal."
                   canCheck={[
                     "Generated photo and signature file sizes",
-                    "Output format and encoded dimensions used by this workflow",
+                    "File format and pixel size of each file",
                   ]}
                   cannotCheck={[
                     "Identity, recency, expression, or signature authenticity",
-                    "Requirements not included in the selected preset",
+                    "Rules your notice adds beyond KB, pixel size and format",
                     "The portal or reviewing authority’s final decision",
                   ]}
                 />

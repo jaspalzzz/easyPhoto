@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import {
   listedPortalSpecs,
   portalCategory,
+  specProvenance,
   PORTAL_CATEGORY_LABEL,
   type PortalCategory,
 } from "@/lib/specRegistry";
@@ -15,12 +16,13 @@ export const metadata = pageMetadata({
   title: "Exam Photo & Signature Size Requirements 2026 — India",
   titleAbsolute: true,
   description:
-    "Photo and signature size, dimensions and file-size limits for 20+ Indian exam and recruitment forms. See each named source and when it was checked, then confirm the form you are filling in before resizing.",
+    "Photo and signature sizes for SSC, UPSC, RRB, IBPS, CSIR-NET, PAN, voter ID and other Indian forms, each with its official source and the date we checked it.",
   path: "/exam-requirements/",
 });
 
+// 2000 KB reads as the portal's own "2 MB".
 const photoKb = (min: number | undefined, max: number) =>
-  min ? `${min}–${max} KB` : `≤ ${max} KB`;
+  min ? `${min}–${max} KB` : max >= 1000 && max % 1000 === 0 ? `≤ ${max / 1000} MB` : `≤ ${max} KB`;
 
 /** Display order of the topical categories on the directory. */
 const CATEGORY_ORDER: PortalCategory[] = [
@@ -54,7 +56,7 @@ export default function Page() {
           collectionPageSchema({
             name: "Exam Photo & Signature Size Requirements 2026",
             description:
-              "Photo and signature size, dimensions and file-size limits for 20+ Indian exam and recruitment forms, with a named source for each exam.",
+              "Photo and signature sizes for Indian exam, recruitment and ID forms, each with its official source and the date it was checked.",
             url: "/exam-requirements/",
           }),
         ]}
@@ -67,10 +69,10 @@ export default function Page() {
           Exam Photo &amp; Signature Size Requirements
         </h1>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          Pick your exam and open its own page: the recorded photo and signature
-          figures, the named source they came from, whether that source has been
-          confirmed, and the resizer already set to that portal&apos;s target. Confirm
-          the current instructions on the portal before submitting.
+          Pick your exam to open its page. Each one gives the photo and signature
+          sizes from the official notice, links to that notice with the date we
+          checked it, and has a resizer already set to those sizes. Check the
+          instructions on the form itself before you submit.
         </p>
         <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
           If you would rather see every exam&apos;s numbers side by side instead of
@@ -80,49 +82,31 @@ export default function Page() {
           </Link>{" "}
           puts the KB limits and pixel dimensions in one table.
         </p>
-        <p className="text-sm">
-          <Link href="/exam-photo-size/" className="font-medium text-brand hover:underline">
-            See the full size comparison table →
-          </Link>{" "}
-          <span className="text-muted-foreground">— all exams&apos; KB &amp; pixel limits in one view.</span>{" "}
-          <Link href="/exam-calendar/" className="font-medium text-brand hover:underline">
-            Upcoming exam dates →
-          </Link>
-        </p>
       </header>
 
       <section className="rounded-lg border border-hairline bg-paper p-5 sm:p-6">
         <h2 className="text-base font-semibold tracking-tight">
-          How to read this requirements directory
+          Before you use these pages
         </h2>
         <div className="mt-3 max-w-3xl space-y-3 text-sm leading-relaxed text-muted-foreground">
           <p>
-            A page marked verified means the displayed fields were checked against
-            the named first-party document on the recorded review date. It does not
-            promise acceptance or make the numbers permanent: recruitment notices
-            are cycle-specific, and an authority can replace its upload rules.
+            Each page names the notice its sizes come from and the date we last
+            checked it. Exam bodies issue a new notice for each recruitment and
+            can change the upload rules between them, so if the form you are
+            filling in shows different limits, follow the form.
           </p>
           <p>
-            A page marked as needing review says less on purpose. It tells you
-            what the public source confirms and which figures are easyPhoto
-            defaults, because the current limits appear only after sign-in, inside
-            an image-only notice, or on a document we could not open. Read that
-            warning before opening the resizer; the form you are filling in wins
-            when it disagrees with a default.
+            A file has to pass several separate checks: its size in KB, its width
+            and height in pixels, and its file type. A photo can be small enough in
+            KB and still be the wrong shape. Renaming a PNG to .jpg does not make it
+            a JPG, so save it again as a JPG instead. Where a notice gives no pixel
+            size, the page says so rather than borrowing one from another exam.
           </p>
           <p>
-            Treat KB, pixels, physical dimensions and encoded format as separate
-            checks. A file can be below a byte ceiling while using the wrong canvas,
-            and renaming an extension does not convert its encoded data. Pages omit
-            a field when the cited source does not publish it instead of borrowing
-            a familiar value from another exam.
-          </p>
-          <p>
-            The embedded tools prepare measurable file properties in your browser.
-            They cannot complete a live-camera step, read a private application
-            screen or predict an authority&apos;s decision. Keep the original photo and
-            signature so you can re-export them if the current portal displays a
-            different band during your application.
+            The resizers work in your browser and only prepare the file. They
+            can&apos;t take a live photo for you or tell you what the exam body will
+            decide. Keep your original photo and signature, so you can make a new
+            file if the form asks for something different.
           </p>
         </div>
       </section>
@@ -142,12 +126,15 @@ export default function Page() {
                     {s.name.split(" (")[0]}
                   </span>
                   <span className="spec mt-1 block normal-case tracking-[0.06em]">
-                    {s.noPhotoUpload ? (
+                    {/* CLAUDE.md §3: an easyPhoto default is never listed as the size. */}
+                    {!specProvenance(s).verified ? (
+                      "No published size limit"
+                    ) : s.noPhotoUpload ? (
                       "Photo: live capture"
                     ) : (
                       <>Photo {photoKb(s.photoMinKb, s.photoLimitKb)}</>
                     )}
-                    {s.sigLimitKb
+                    {s.sigLimitKb && specProvenance(s).verified
                       ? ` · Sign ${photoKb(s.sigMinKb, s.sigLimitKb)}`
                       : ""}
                   </span>
@@ -162,7 +149,7 @@ export default function Page() {
       <section className="rounded-lg border border-hairline bg-paper p-5 sm:p-6">
         <h2 className="text-base font-semibold tracking-tight">Need to resize now?</h2>
         <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Pick your exam above for the exact spec, or jump straight to the tools.
+          Pick your exam above for its sizes, or go straight to a tool.
         </p>
         <div className="mt-4 flex flex-wrap gap-1.5">
           <Link href="/tools/exam-package/" className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-brand transition-colors hover:bg-brand-soft/50">

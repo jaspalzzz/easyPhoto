@@ -46,7 +46,7 @@ export function SpecificationProvenance({
       ? `Verified ${formatIsoDate(verifiedOn)}`
       : hasSource
         ? "Confirm on the official source before you submit"
-        : "Source needs review";
+        : "No official source found yet";
 
   return (
     <div className="flex flex-col gap-1.5 text-xs text-ink-soft sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3">

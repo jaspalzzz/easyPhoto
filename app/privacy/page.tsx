@@ -29,7 +29,7 @@ export default function PrivacyPage() {
             description:
               "How easyPhoto handles your data: it doesn't. Photos and PDFs are processed entirely in your browser and never uploaded.",
             url: "/privacy/",
-            dateModified: "2026-10-14",
+            dateModified: "2026-11-02",
           }),
         ]}
       />
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
         <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
           Privacy Policy
         </h1>
-        <p className="text-sm text-muted-foreground">Last updated: October 14, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: November 2, 2026</p>
       </header>
 
       {/* The short version — highlighted so it's the first thing read */}
@@ -58,62 +58,53 @@ export default function PrivacyPage() {
       <article className="mt-2 divide-y divide-hairline [&>section]:py-8">
 
         <Section title="Your images and files">
-          Every operation (face detection, background removal, cropping,
-          resizing, PDF conversion and file compression) runs entirely in your
-          web browser using your device&apos;s own processor. Your images and
-          PDFs are <strong className="text-foreground">never uploaded</strong> to
-          us or any third party, and we never see, receive, copy, or store them.
-          They are held only in your browser&apos;s memory while you work and are
-          discarded when you close or refresh the page. We do not use cookies,
-          localStorage, or any other mechanism to persist your images.
+          Every step (face detection, background removal, cropping, resizing,
+          turning a scan into a PDF, and compression) runs in your web browser
+          on your own phone or computer. Your images and PDFs are{" "}
+          <strong className="text-foreground">never uploaded</strong> to us or
+          anyone else, and we never see, receive, copy or keep them. They exist
+          only in the open tab while you work and are gone when you close or
+          refresh it. Nothing on the site saves your images in your browser for
+          later.
         </Section>
 
         <Section title="What is downloaded to your browser">
-          To run image analysis locally, your browser downloads read-only program
-          files and model weights. MediaPipe and OCR runtimes come from jsDelivr,
-          the face-landmark model comes from Google Cloud Storage, and the primary
-          background-removal files come from models.easyphoto.in, an easyPhoto
-          asset host. If that self-hosted background model file is unavailable,
-          the code may request the same fallback model file from Hugging Face.
-          These are one-directional software downloads to your device: your image
-          or PDF bytes are not sent to any of those hosts.
+          To do this work on your device, your browser downloads the software it
+          needs the first time you use a tool. The face-detection and
+          text-reading software comes from jsDelivr, a face-detection data file
+          comes from Google Cloud Storage, and the background-removal
+          software comes from models.easyphoto.in, easyPhoto&apos;s own file
+          server. If that server cannot be reached, the same background-removal
+          file is fetched from Hugging Face instead. These are downloads to your
+          device only: your photo or PDF is never sent to any of these services.
         </Section>
 
         <Section title="Analytics and tracking">
           We use Cloudflare&apos;s cookieless, aggregate web analytics to count
           page views and measure site speed — it sets no cookies, does no
           fingerprinting or cross-site tracking, and builds no personal
-          profiles. Apart from Google&apos;s advertising cookies on pages that
-          show ads (see Advertising below), we run no trackers or behavioural
-          profiling of any kind. As with any website, the server that hosts
+          profiles. We run no other trackers. Once ads are switched on,
+          Google&apos;s advertising cookies (see Advertising below) will be the
+          one exception. As with any website, the server that hosts
           these pages may keep standard, short-lived technical logs (such as
-          IP address and browser type) for the page requests themselves —
-          never any image content. Your images still never leave your device.
+          IP address and browser type) for the page requests themselves. Those
+          logs never contain your images.
         </Section>
 
         <Section title="Advertising">
-          When advertising is on, easyPhoto shows Google AdSense ads on
-          articles, guides, exam pages and the photo and signature tools,
-          placed below the tool and its result, never inside the upload,
-          preview or download area. On those tool pages Google&apos;s advertising
-          script runs on the same page as the tool: your photo is still edited
-          on your device and easyPhoto never uploads it, but the script is
-          there. Pages for ID documents and PDFs (Aadhaar, PAN, the PDF tools,
-          the document scanner, form filling and text recognition) and these
-          policy pages never load Google&apos;s advertising or consent scripts.
-          Google and its advertising partners may
-          use cookies or similar technologies to serve, limit, and measure ads.
-          When advertising is enabled and the European-regulations message is
-          published, visitors in the European Economic Area, the United Kingdom,
-          and Switzerland are shown Google&apos;s consent choices before eligible
-          ads are served. Google determines that regional eligibility; the
-          consent message is not shown to visitors outside those regions unless
-          Google requires another regional message or the visitor opens a message
-          test URL. After making a choice, an eligible visitor can use the
-          &quot;Privacy and cookie settings&quot; link that Google adds to an
-          ad-supported page to reopen the message and change that choice. You can
-          also learn about Google&apos;s advertising practices and control ad
-          personalisation in your Google ad settings. Third-party vendors, including Google, use cookies to
+          easyPhoto does not show ads yet. When ads are switched on,
+          Google AdSense ads will appear on articles, guides, exam pages and the photo
+          and signature tools, below the tool and its result and never inside the
+          upload, preview or download area. On those tool pages Google&apos;s ad
+          code runs on the same page as the tool; your photo is still edited on
+          your device and never uploaded. Pages for ID documents and PDFs
+          (Aadhaar, PAN and the document scanner) and these policy pages never
+          load Google&apos;s advertising or consent scripts. Google and its advertising partners
+          may use cookies or similar technologies to serve, limit and measure
+          ads. Visitors in the European Economic Area, the United Kingdom and
+          Switzerland will be shown Google&apos;s consent choices before any ad
+          is served, and can change that choice later from the
+          &quot;Privacy and cookie settings&quot; link Google adds to the page. Third-party vendors, including Google, use cookies to
           serve ads based on your prior visits to this and other websites.
           Google&apos;s advertising cookies let it and its partners show you ads
           based on those visits. You can turn off personalised ads in{" "}
@@ -155,6 +146,16 @@ export default function PrivacyPage() {
         <Section title="Changes">
           If this policy changes, we&apos;ll update the date above. Material
           changes will be reflected on this page.
+        </Section>
+
+        <Section title="Questions">
+          easyPhoto is run by Jaspal Kumar, Punjab, India, who is responsible for
+          this policy. For a question about it, write from the{" "}
+          <Link href="/contact/" className="text-brand hover:underline">
+            contact page
+          </Link>
+          . There are no accounts, and we never hold a copy of your photos or
+          files, so there is nothing of that kind to request or delete.
         </Section>
 
         <p className="pt-8 text-sm leading-relaxed text-muted-foreground">

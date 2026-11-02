@@ -24,22 +24,24 @@ export const EXAM_TEMPLATE_UPDATED = "2026-10-13";
 const PAGE_UPDATED: Record<string, string> = {
   // 15 Oct 2026: searchers' words in the SSC and UPSC descriptions, the Air Force
   // title and description, and the Voter ID H1.
-  ssc: "2026-10-15",
-  rrb: "2026-10-14",
-  upsc: "2026-10-15",
-  "driving-licence": "2026-10-14",
-  "voter-id": "2026-10-15",
+  ssc: "2026-11-02",
+  rrb: "2026-11-02",
+  upsc: "2026-11-02",
+  "driving-licence": "2026-11-02",
+  "voter-id": "2026-11-02",
   "airforce-agniveer": "2026-10-15",
-  pan: "2026-10-14",
-  oci: "2026-10-14",
+  pan: "2026-11-02",
+  oci: "2026-11-02",
   "passport-seva": "2026-11-01",
   ds160: "2026-10-14",
-  // 1 Nov 2026: AdSense remediation (plain-language copy, links to indexed pages only).
+  // 1–2 Nov 2026: AdSense remediation (plain-language copy, contradictions and templated copy removed, links to indexed pages only).
   ctet: "2026-11-01",
-  "csir-net": "2026-11-01",
-  niacl: "2026-11-01",
+  "csir-net": "2026-11-02",
+  niacl: "2026-11-02",
   clat: "2026-11-01",
   "army-agniveer": "2026-11-01",
+  ibps: "2026-11-02",
+  "up-police": "2026-11-02",
 };
 
 export function examPageLastModified(examId: string): string {

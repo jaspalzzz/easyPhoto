@@ -9,7 +9,7 @@ const post = getPost("pan-card-photo-size")!;
 const FAQ_ITEMS = [
   {
     q: "What is the photo size for a PAN card application?",
-    a: "The physical size is 25×35 mm (portrait). For Protean (NSDL) upload, the photo is a colour JPEG (height 3.5 cm, width 2.5 cm) scanned at 200 DPI, which gives about 197×276 px, and at most 20 KB. For UTIITSL, it is a square colour JPEG of 213×213 px, 300 dpi, under 30 KB. Use the same printed photo for both — only the digital file differs.",
+    a: "The physical size is 25×35 mm (portrait). For Protean (NSDL) upload, the photo is a colour JPEG (height 3.5 cm, width 2.5 cm) scanned at 200 DPI, which gives about 197×276 px, and at most 20 KB. For UTIITSL, it is a square colour JPEG of 213×213 px, 300 dpi, under 30 KB.",
   },
   {
     q: "What is the signature size for a PAN card application?",
@@ -17,15 +17,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "Why does my PAN card photo keep getting rejected?",
-    a: "The most common reasons are: a file over the limit for your route (Protean allows at most 20 KB for the photo and 10 KB for the signature), the wrong shape (UTIITSL needs a square crop), a non-white background, or a black-and-white photo when colour is required. The PAN card resizer on easyPhoto prepares both files to Protean's published sizes.",
+    a: "Usually a file over the limit for your route (Protean allows at most 20 KB for the photo and 10 KB for the signature), the wrong shape (UTIITSL needs a square crop), or a black-and-white photo where colour is required. The PAN card resizer on easyPhoto prepares both files at Protean's published sizes.",
   },
   {
     q: "Can I use the same photo for NSDL and UTIITSL?",
-    a: "Yes for print (both accept a 25×35 mm passport-size photo). No for digital upload — Protean's photo works out to a portrait file of about 197×276 px, while UTIITSL needs a 213×213 px square crop. You'll need to resize the same image to two different outputs depending on which portal you use.",
-  },
-  {
-    q: "Is a mobile photo accepted for a PAN card application?",
-    a: "Yes, provided it meets the spec: white or light-coloured background, frontal face, colour JPEG, and within the KB limit. Many applicants take a selfie against a white wall, crop it to the shape their portal asks for, and resize to the required KB. Avoid low-light shots — blurry or grainy images can be rejected.",
+    a: "The same original photo, yes; the same file, no. Protean's photo works out to a portrait file of about 197×276 px, while UTIITSL needs a 213×213 px square. Make two files from the original, one for each route.",
   },
 ];
 
@@ -46,12 +42,10 @@ export default function Page() {
       ctaLabel="Resize PAN card photo & signature free"
     >
       <p>
-        India had 80.08&nbsp;crore PAN cards in circulation as of March&nbsp;2025
-        (Income Tax Department data via IndiaGraphs, July&nbsp;2025), and every new
-        application needs a photo and signature file that matches the portal&apos;s
-        spec. The requirement isn&apos;t complicated, but Protean (formerly NSDL) and
-        UTIITSL publish <em>different</em> figures. Here&apos;s every number you need
-        before you open the upload form.
+        An online PAN application needs a photo file and a signature file, and the
+        two agencies that take applications, Protean (formerly NSDL) and UTIITSL,
+        publish <em>different</em> sizes for both. Here is every number for each
+        route, so you can prepare the right files before you open the form.
       </p>
 
       <div className="my-7 rounded-xl border border-brand/20 bg-brand-soft/15 p-5">
@@ -102,8 +96,8 @@ export default function Page() {
 
       <p>
         The physical print size is <strong>25&nbsp;mm wide × 35&nbsp;mm tall</strong> —
-        a standard passport-size portrait photo. Both portals accept the same printed
-        copy. Where they diverge is the digital upload spec.
+        a standard passport-size portrait photo, which is what you paste on a paper
+        application. Online, the two routes want different files.
       </p>
 
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -255,11 +249,8 @@ export default function Page() {
       </p>
 
       <p>
-        {/* [UNIQUE INSIGHT] */}
-        The practical consequence: the <em>same printed photo</em> is acceptable at
-        the counter for both portals, but you need two different digital exports for
-        online applications — a portrait JPEG for NSDL and a square-cropped JPEG for
-        UTIITSL. The{" "}
+        In practice you need two different files from the same photo: a portrait
+        JPEG for Protean and a square JPEG for UTIITSL. The{" "}
         <Link href="/exam-requirements/pan/" className="text-brand underline">
           easyPhoto PAN card resizer
         </Link>{" "}
@@ -272,7 +263,7 @@ export default function Page() {
       <p>
         A file outside the published spec can hold up your application — UTIITSL
         says applications may be rejected at verification if a document is not in
-        the required format. The most common causes:
+        the required format. Check these before you upload:
       </p>
 
       <table className="my-5 w-full border-collapse text-[14px]">
@@ -287,11 +278,11 @@ export default function Page() {
             ["File over the KB limit", "Compress below the cap for your route before uploading"],
             ["Wrong pixel dimensions", "Export at the portal-specific size, not a generic 'small' setting"],
             ["Portrait photo for UTIITSL", "Square-crop to 213×213 px before upload"],
-            ["Coloured or patterned background", "Shoot against a plain white wall; use background removal if needed"],
+            ["Patterned or dark background", "Shoot against a plain white wall; use background removal if needed"],
             ["Black-and-white photo", "Both routes ask for a colour photograph — rescan or re-export it in colour"],
-            ["Signature touching the border", "Leave a 3–5 px white margin on all sides when cropping"],
+            ["Signature touching the edge", "Leave a thin white margin on every side when cropping"],
             ["Signature on lined or tinted paper", "Use plain white unlined paper"],
-            ["Blue ink for signature", "Black ink scans cleanest, especially in UTIITSL's black-and-white mode"],
+            ["Faint or blue ink", "Sign in black; it scans cleanest, especially in UTIITSL's black-and-white mode"],
           ].map(([reason, fix]) => (
             <tr key={reason} className="border-b border-hairline/60">
               <td className="py-2 pr-4 font-medium text-ink">{reason}</td>
@@ -330,8 +321,7 @@ export default function Page() {
       </ol>
 
       <p>
-        If you only need to hit a specific KB target without the portal&apos;s settings, use
-        the{" "}
+        If you only need to bring a file under a KB limit, use the{" "}
         <Link href="/tools/resize-kb/" className="text-brand underline">
           resize image to exact KB
         </Link>{" "}
@@ -339,7 +329,7 @@ export default function Page() {
         <Link href="/tools/signature-resize/?target=20" className="text-brand underline">
           signature resize to 20&nbsp;KB
         </Link>{" "}
-        tool is already set to the most common Indian exam portal limit.
+        tool starts at 20&nbsp;KB, and you can change the limit to Protean&apos;s 10&nbsp;KB.
       </p>
 
       <p>

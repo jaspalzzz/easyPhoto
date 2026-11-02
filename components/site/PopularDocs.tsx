@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { ArrowRight, Globe, BookOpen, ShieldCheck, Wrench, Lock } from "lucide-react";
+import { ArrowRight, Globe, GraduationCap } from "lucide-react";
 import { Flag } from "@/components/site/Flag";
 import { COUNTRY_SPECS, LAUNCH_ORDER } from "@/lib/countrySpecs";
 import { MAKER_PAGES, primaryMakerPath } from "@/lib/makerPages";
-import { PORTAL_KEYS } from "@/lib/portalPresets";
-import { LISTED_TOOLS } from "@/lib/toolsCatalog";
 import { isDeindexed } from "@/lib/deindexed";
 
 /* ── Popular Countries ─────────────────────────────────────────────────
@@ -18,7 +16,7 @@ const HERO_COUNTRIES = [
   { id: "india",  name: "India",  sub: "Passport · Visa · ID", href: "/passport-photo/"        },
   { id: "us",     name: "USA",    sub: "Passport · Visa",      href: primaryMakerPath("us")     },
   { id: "uk",     name: "UK",     sub: "Passport · Visa",      href: primaryMakerPath("uk")     },
-  { id: "canada", name: "Canada", sub: "Passport · Visa",      href: primaryMakerPath("canada") },
+  { id: "canada", name: "Canada", sub: "Passport · Visa",      href: "/canada-passport-photo/" },
 ];
 
 const HERO_IDS = new Set(HERO_COUNTRIES.map((c) => c.id));
@@ -41,41 +39,32 @@ const MORE_COUNTRIES = LAUNCH_ORDER.filter(
   }))
   .filter((c) => Boolean(c.label));
 
-// Row 2 — Identity documents (icon tiles)
+// Row 2 — Identity documents (icon tiles). The second line says what the page
+// helps with, never the authority's name: an authority label beside our link
+// reads as if the department stands behind the tool.
 const ID_DOCS = [
-  { label: "Aadhaar Card",    sub: "UIDAI",              href: "/aadhaar-photo/"                       },
-  { label: "PAN Card",        sub: "Income Tax India",   href: "/exam-requirements/pan/"              },
-  { label: "OCI Card",        sub: "Ministry of Home",   href: "/exam-requirements/oci/"              },
-  { label: "Driving License", sub: "All States",         href: "/exam-requirements/driving-licence/"  },
-  { label: "Voter ID Card",   sub: "Election Commission",href: "/exam-requirements/voter-id/"          },
+  { label: "Aadhaar Card",    sub: "Enrolment & update photo", href: "/aadhaar-photo/"                      },
+  { label: "PAN Card",        sub: "Photo & signature sizes",  href: "/exam-requirements/pan/"             },
+  { label: "OCI Card",        sub: "Photo & signature upload", href: "/exam-requirements/oci/"             },
+  { label: "Driving Licence", sub: "Sarathi upload sizes",     href: "/exam-requirements/driving-licence/" },
+  { label: "Voter ID Card",   sub: "Form 6 photo",             href: "/exam-requirements/voter-id/"        },
 ];
 
 const POPULAR_EXAMS = [
-  { label: "SSC",           sub: "CGL, CHSL, MTS",      href: "/exam-requirements/ssc/"              },
-  { label: "UPSC",          sub: "Civil Services IAS",   href: "/exam-requirements/upsc/"             },
-  { label: "Railway RRB",   sub: "NTPC, Group D",        href: "/exam-requirements/rrb/"          },
-  { label: "IBPS Banking",  sub: "PO, Clerk, SO",        href: "/exam-requirements/ibps/"             },
-  { label: "SBI PO",        sub: "Probationary Officer", href: "/exam-requirements/sbi/"           },
-  { label: "CUET",          sub: "NTA admissions",       href: "/exam-requirements/cuet/"        },
-  { label: "Agniveer",      sub: "Army recruitment",     href: "/exam-requirements/army-agniveer/" },
-  { label: "CTET",          sub: "Teacher Eligibility",  href: "/exam-requirements/ctet/"        },
-];
-
-const STATS = [
-  { Icon: Globe,       value: `${LAUNCH_ORDER.length}+`, label: "Countries Supported",       sub: "Requirements from named authorities"},
-  { Icon: BookOpen,    value: `${PORTAL_KEYS.length}+`,  label: "Exam Specifications",       sub: "SSC, UPSC, Railway, Banking & more"},
-  { Icon: ShieldCheck, value: "Linked",                  label: "Spec Sources",              sub: "Official source where available"   },
-  { Icon: Wrench,      value: `${LISTED_TOOLS.length}+`,  label: "Free Tools",                sub: "Photo, PDF, signature & more"      },
-  { Icon: Lock,        value: "0",                       label: "Uploads to any server",     sub: "Everything runs in your browser"   },
+  { label: "SSC",          sub: "CGL, CHSL, MTS",        href: "/exam-requirements/ssc/"       },
+  { label: "UPSC",         sub: "Civil Services",        href: "/exam-requirements/upsc/"      },
+  { label: "Railway RRB",  sub: "NTPC, Group D",         href: "/exam-requirements/rrb/"       },
+  { label: "IBPS Banking", sub: "PO, Clerk, SO",         href: "/exam-requirements/ibps/"      },
+  { label: "CSIR-NET",     sub: "NTA, CSIR-UGC NET",     href: "/exam-requirements/csir-net/"  },
+  { label: "UP Police",    sub: "Police recruitment",    href: "/exam-requirements/up-police/" },
 ];
 
 export function PopularDocs() {
   return (
     <section className="border-t border-hairline bg-card">
       <div className="container reveal py-14 sm:py-20">
-        <div className="grid gap-10 lg:grid-cols-[1fr_240px] lg:gap-8">
+        <div className="grid gap-10">
 
-          {/* LEFT: Documents + Exams stacked */}
           <div className="flex flex-col gap-10">
 
             {/* Popular Countries — 4 hero cards + long-tail flag chips */}
@@ -171,7 +160,7 @@ export function PopularDocs() {
             {/* Popular Exams */}
             <div>
               <h2 className="mb-5 text-[18px] font-bold text-ink">Popular Exams</h2>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {POPULAR_EXAMS.map((exam) => (
                   <Link
                     key={exam.href + exam.label}
@@ -179,10 +168,11 @@ export function PopularDocs() {
                     className="group flex items-center gap-3 rounded-xl border border-hairline bg-card p-3.5 transition-colors hover:border-hairline-strong hover:bg-surface"
                   >
                     <span
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-black leading-none text-cta"
+                      aria-hidden="true"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-cta"
                       style={{ background: "hsl(222 60% 8%)" }}
                     >
-                      {exam.label.slice(0, 2).toUpperCase()}
+                      <GraduationCap className="h-4 w-4" strokeWidth={1.75} />
                     </span>
                     <div>
                       <p className="text-[12px] font-semibold leading-tight text-ink">
@@ -203,24 +193,6 @@ export function PopularDocs() {
               </Link>
             </div>
 
-          </div>
-
-          {/* RIGHT: Stats panel — full height */}
-          <div className="flex flex-col justify-between gap-6 rounded-2xl border border-hairline bg-card p-6">
-            {STATS.map(({ Icon, value, label, sub }) => (
-              <div key={label} className="flex items-start gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft">
-                  <Icon className="h-5 w-5 text-brand" strokeWidth={1.75} />
-                </span>
-                <div>
-                  <p className="text-[24px] font-black leading-none tracking-tight text-ink">
-                    {value}
-                  </p>
-                  <p className="mt-0.5 text-[12px] font-semibold text-ink">{label}</p>
-                  <p className="mt-0.5 text-[12px] leading-snug text-muted-foreground">{sub}</p>
-                </div>
-              </div>
-            ))}
           </div>
 
         </div>

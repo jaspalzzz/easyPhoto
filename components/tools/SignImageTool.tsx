@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Download, FileUp, ShieldCheck, PenLine, Minimize2, Maximize2 } from "lucide-react";
+import { Download, FileUp, PenLine, Minimize2, Maximize2 } from "lucide-react";
 import { ProcessingState } from "@/components/site/ProcessingState";
 import { WorkflowNextSteps } from "@/components/site/WorkflowNextSteps";
 import { Button } from "@/components/ui/button";
@@ -379,10 +379,7 @@ export function SignImageTool() {
           >
             <FileUp className="h-8 w-8 text-brand" strokeWidth={1.75} />
             <p className="font-semibold tracking-tight text-sm">Select photo or document image, or drop it here</p>
-            <p className="text-xs text-muted-foreground">Modify JPG, PNG, WebP, or HEIC images offline privately.</p>
-            <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-ink-soft">
-              <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.75} /> Processed 100% locally
-            </p>
+            <p className="text-xs text-muted-foreground">The photo or page you want to sign · JPG, PNG, WebP or HEIC</p>
             <input
               id="image-signer-file-input"
               ref={fileInputRef}

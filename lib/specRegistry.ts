@@ -140,6 +140,61 @@ export function sigDimsPx(spec: PortalSpec, unit = "px"): string | null {
   return formatDims(spec.sigWidthPx, spec.sigHeightPx, unit);
 }
 
+/**
+ * The photo size as the authority states it, for requirement cards and tables:
+ * exact or preferred pixels, a pixel range per side (OCI), centimetres with our
+ * pixel conversion clearly marked (PAN), or a note (ECI). Null when nothing is
+ * published, so callers hide the row instead of printing a dash.
+ */
+export function photoSizeLabel(spec: PortalSpec, withConversion = true): string | null {
+  return sizeLabel({
+    withConversion,
+    w: spec.photoWidthPx,
+    h: spec.photoHeightPx,
+    qualifier: spec.photoDimsQualifier,
+    side: spec.photoSidePx,
+    cm: spec.photoDimsCm,
+    note: spec.photoDimsNote,
+    converted: spec.pixelsConverted,
+    dpi: spec.dpi,
+  });
+}
+
+/** The signature size as the authority states it; see photoSizeLabel. */
+export function sigSizeLabel(spec: PortalSpec, withConversion = true): string | null {
+  return sizeLabel({
+    withConversion,
+    w: spec.sigWidthPx,
+    h: spec.sigHeightPx,
+    qualifier: spec.sigDimsQualifier,
+    side: spec.sigSidePx,
+    cm: spec.sigDimsCm,
+    converted: spec.pixelsConverted,
+    dpi: spec.dpi,
+  });
+}
+
+function sizeLabel(o: {
+  /** Append our pixel conversion to a centimetre size (off where the page explains it in prose). */
+  withConversion: boolean;
+  w?: number;
+  h?: number;
+  qualifier?: string;
+  side?: { min: number; max: number };
+  cm?: string;
+  note?: string;
+  converted?: boolean;
+  dpi?: number;
+}): string | null {
+  const px = formatDims(o.w, o.h, " px");
+  if (o.converted && o.cm) {
+    return px && o.dpi && o.withConversion ? `${o.cm}, about ${px} at ${o.dpi} DPI` : o.cm;
+  }
+  if (px) return o.qualifier ? `${px} (${o.qualifier})` : px;
+  if (o.side) return `${o.side.min}–${o.side.max} px each side`;
+  return o.note ?? o.cm ?? null;
+}
+
 /** UI-ready trust descriptor for a spec's provenance. */
 export interface SpecProvenance {
   /** True only when confirmed against the official source. */
