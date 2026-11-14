@@ -188,7 +188,7 @@ export function DpiConverterTool() {
             DPI metadata editing applies to JPG files. Convert this image to JPG
             first with the{" "}
             <Link
-              href="/tools/format-converter/"
+              href="/convert/"
               className="underline underline-offset-2"
             >
               format converter

@@ -1,6 +1,7 @@
+import { isDeindexed } from "@/lib/deindexed";
 import { SITE_URL } from "@/lib/site";
 import { TOOLS_CATALOG } from "@/lib/toolsCatalog";
-import { allPortalSpecs } from "@/lib/specRegistry";
+import { listedPortalSpecs } from "@/lib/specRegistry";
 import { BLOG_POSTS } from "@/lib/blog";
 import { MAKER_PAGES, makerPath } from "@/lib/makerPages";
 import { COUNTRY_SPECS, effectivePrintMm } from "@/lib/countrySpecs";
@@ -57,8 +58,8 @@ export function GET() {
   );
   lines.push(
     `- [Exam photo & signature requirements](${u("/exam-requirements/")}): ` +
-      "photo and signature size rules for 30+ Indian exam and recruitment portals, " +
-      "each with its official source and whether we have checked it."
+      "photo and signature size rules for Indian exam, recruitment and ID forms, " +
+      "each with its official source and the date we checked it."
   );
   lines.push(
     `- [Exam Application Kit](${u("/tools/exam-package/")}): prepare a photo and ` +
@@ -72,7 +73,8 @@ export function GET() {
   lines.push("");
   for (const m of MAKER_PAGES) {
     const spec = COUNTRY_SPECS[m.countryId];
-    if (!spec) continue;
+    // Retired and hidden makers stay out: this file lists only pages we stand behind.
+    if (!spec || isDeindexed(`/${m.slug}/`)) continue;
     const mm = effectivePrintMm(spec);
     const docLabel = m.kind === "visa" ? "visa" : "passport";
     // "Schengen Visa" + "visa photo" would double the word — strip it.
@@ -86,7 +88,7 @@ export function GET() {
 
   // Tools, grouped as in the catalog.
   for (const group of TOOLS_CATALOG) {
-    const tools = group.tools.filter((t) => t.ready);
+    const tools = group.tools.filter((t) => t.ready && !isDeindexed(`/tools/${t.slug}/`));
     if (!tools.length) continue;
     lines.push(`## ${group.group}`);
     lines.push("");
@@ -104,7 +106,7 @@ export function GET() {
       "portals. Each page cites the official source and the date it was confirmed."
   );
   lines.push("");
-  for (const s of allPortalSpecs()) {
+  for (const s of listedPortalSpecs()) {
     const photo = s.noPhotoUpload
       ? "photo taken live in the form (no upload)"
       : `photo ${kb(s.photoMinKb, s.photoLimitKb)}`;

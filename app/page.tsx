@@ -14,6 +14,7 @@ import { Faq, HOME_FAQ } from "@/components/site/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { softwareApplicationSchema, faqSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
+import { GUIDE_COUNT } from "@/lib/guideCount";
 import { ToolSearch } from "@/components/site/ToolSearch";
 import { RecentTools } from "@/components/site/RecentTools";
 import { LatestGuides } from "@/components/site/LatestGuides";
@@ -56,7 +57,7 @@ export default function HomePage() {
               "Free tools for Indian passport photos, visa photos, exam form resizing and government document images. Everything runs in your browser, nothing is uploaded.",
             url: "/",
             category: "UtilitiesApplication",
-            dateModified: "2026-11-02",
+            dateModified: "2026-11-14",
           }),
           faqSchema(HOME_FAQ),
         ]}
@@ -103,7 +104,7 @@ export default function HomePage() {
           </div>
 
           {/* ── Stats band — anchored to hero bottom, same bg ─────────── */}
-          <StatsBand />
+          <StatsBand guideCount={GUIDE_COUNT} />
         </div>
       </section>
 

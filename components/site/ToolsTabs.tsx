@@ -27,7 +27,7 @@ const TABS: Tab[] = [
       { title: "Baby Passport Photo",   desc: "Under-4 passport print rules",          href: "/baby-passport-photo/",          Icon: Baby          },
       { title: "Resume / CV Photo",     desc: "Job applications & CVs",                href: "/tools/resume-photo/",           Icon: FileText      },
       { title: "Pre-submission Check",  desc: "Check photo + signature before you submit", href: "/tools/compliance-checker/", Icon: ScanLine      },
-      { title: "Aadhaar Photo",         desc: "Photo for Aadhaar update or enrolment", href: "/aadhaar-photo/",                Icon: UserCircle    },
+      { title: "Aadhaar Photo",         desc: "How the Aadhaar photo gets changed"  , href: "/aadhaar-photo/",                Icon: UserCircle    },
     ],
   },
   {

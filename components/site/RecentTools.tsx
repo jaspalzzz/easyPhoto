@@ -6,6 +6,7 @@ import { History, ArrowRight } from "lucide-react";
 import { getRecentTools } from "@/lib/recentTools";
 import { getTool } from "@/lib/toolsCatalog";
 import { PORTAL_PRESETS } from "@/lib/portalPresets";
+import { examPagePath, EXAM_KIT_PATH } from "@/lib/specRegistry";
 
 interface RecentEntry {
   href: string;
@@ -22,10 +23,11 @@ function resolve(name: string): RecentEntry | null {
     if (!spec) return null;
     // The exam page embeds the same resizer; /tools/form-resizer/ is a
     // retired, host-redirected route (several to the generic hub).
-    return {
-      href: `/exam-requirements/${id}/#resizer`,
-      label: `${spec.name.split(" (")[0]} resizer`,
-    };
+    // An exam whose page was retired or hidden is still in the Exam Kit.
+    const examPage = examPagePath(id);
+    return examPage
+      ? { href: `${examPage}#resizer`, label: `${spec.name.split(" (")[0]} resizer` }
+      : { href: EXAM_KIT_PATH, label: "Exam Application Kit" };
   }
   const tool = getTool(name);
   // Retired tools (ready: false) only survive as redirects; don't send a
@@ -46,6 +48,8 @@ export function RecentTools() {
     const resolved = getRecentTools()
       .map(resolve)
       .filter((e): e is RecentEntry => e !== null)
+      // Two exams without a page both resolve to the Exam Kit: show it once.
+      .filter((e, i, all) => all.findIndex((o) => o.href === e.href) === i)
       .slice(0, 3);
     setEntries(resolved);
   }, []);

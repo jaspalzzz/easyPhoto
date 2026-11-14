@@ -39,6 +39,19 @@ export function listedPortalSpecs(): PortalSpec[] {
   return allPortalSpecs().filter((s) => !isDeindexed(`/exam-requirements/${s.id}/`));
 }
 
+/**
+ * Where a visitor goes to resize for this exam. A listed exam has its own
+ * page with the resizer on it. An exam without one (hidden or retired as thin)
+ * is still offered inside the Exam Application Kit, so tools send people
+ * there instead of to a URL that redirects to the hub and drops their exam.
+ */
+export function examPagePath(id: string): string | null {
+  const path = `/exam-requirements/${id}/`;
+  return isDeindexed(path) ? null : path;
+}
+
+export const EXAM_KIT_PATH = "/tools/exam-package/";
+
 /** Topical grouping — drives "related exams" interlinking (cluster the matrix). */
 export type PortalCategory =
   | "national"

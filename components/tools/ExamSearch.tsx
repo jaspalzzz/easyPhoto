@@ -28,7 +28,7 @@ const POPULAR = ["SSC", "UPSC", "IBPS", "Railway", "PAN"];
 const TRUST = [
   {
     Icon: Landmark,
-    text: `${SITE_COUNTS.examForms} exams and forms; ${SITE_COUNTS.examFormsWithOfficialDate} checked against the official notice, with the date`,
+    text: `${SITE_COUNTS.examKitForms} exams and forms; ${SITE_COUNTS.examKitFormsWithOfficialDate} checked against the official notice, with the date`,
   },
   { Icon: Gift, text: "Free, with no sign-up" },
 ];

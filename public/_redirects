@@ -260,3 +260,41 @@
 /blog/how-to-compress-photo-to-50kb/ /blog/how-to-reduce-passport-photo-size-for-online-forms/ 301
 /canada-visa-photo-maker/ /canada-passport-photo/ 301
 /ireland-visa-photo-maker/ /visa-photo/ 301
+
+# AdSense readiness check, 14 Nov 2026 (owner in chat: "Fix all things which can
+# lead reject"; decisions delegated). These 28 pages were already noindexed and
+# out of the sitemap, and since 1 Nov nothing on the site links to them, so they
+# had no visitors and no search presence: 24 exam pages and 3 visa makers built
+# from the shared template, and one short Aadhaar PDF note. They were still
+# served as live pages on the domain. Each now lands on the indexed page that
+# answers the same need; the exam settings stay in the Exam Application Kit.
+# Not SEO-visible: no indexed URL, title or text changes. Reversible by deleting
+# the line.
+/exam-requirements/bpsc/ /exam-requirements/ 301
+/exam-requirements/bsf/ /exam-requirements/ 301
+/exam-requirements/ccc-nielit/ /exam-requirements/ 301
+/exam-requirements/cds/ /exam-requirements/ 301
+/exam-requirements/crpf/ /exam-requirements/ 301
+/exam-requirements/epfo/ /exam-requirements/ 301
+/exam-requirements/fci/ /exam-requirements/ 301
+/exam-requirements/gate/ /exam-requirements/ 301
+/exam-requirements/gpsc/ /exam-requirements/ 301
+/exam-requirements/hpsc/ /exam-requirements/ 301
+/exam-requirements/itbp/ /exam-requirements/ 301
+/exam-requirements/kerala-psc/ /exam-requirements/ 301
+/exam-requirements/kpsc/ /exam-requirements/ 301
+/exam-requirements/lic/ /exam-requirements/ 301
+/exam-requirements/mpsc/ /exam-requirements/ 301
+/exam-requirements/nda/ /exam-requirements/ 301
+/exam-requirements/nta/ /exam-requirements/ 301
+/exam-requirements/rbi/ /exam-requirements/ 301
+/exam-requirements/rpsc/ /exam-requirements/ 301
+/exam-requirements/tnpsc/ /exam-requirements/ 301
+/exam-requirements/ugc-net/ /exam-requirements/ 301
+/exam-requirements/upsssc/ /exam-requirements/ 301
+/exam-requirements/wbpsc/ /exam-requirements/ 301
+/exam-requirements/ds160/ /us-passport-photo/ 301
+/india-visa-photo-maker/ /visa-photo/ 301
+/japan-visa-photo-maker/ /visa-photo/ 301
+/singapore-visa-photo-maker/ /visa-photo/ 301
+/unlock-aadhaar-pdf/ /aadhaar-photo/ 301
