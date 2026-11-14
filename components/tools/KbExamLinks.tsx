@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { PORTAL_PRESETS, type PortalSpec } from "@/lib/portalPresets";
+import type { PortalSpec } from "@/lib/portalPresets";
+import { listedPortalSpecs } from "@/lib/specRegistry";
 
 /**
  * "Exams with this exact cap" — cross-references the verified spec registry
@@ -9,7 +10,8 @@ import { PORTAL_PRESETS, type PortalSpec } from "@/lib/portalPresets";
  * internal-link path from the tool page to the citable spec page.
  */
 export function KbExamLinks({ kind, kb }: { kind: "photo" | "signature"; kb: number }) {
-  const matches = Object.values(PORTAL_PRESETS).filter((s: PortalSpec) =>
+  // Only exams that have a page: a hidden or retired one would redirect to the hub.
+  const matches = listedPortalSpecs().filter((s: PortalSpec) =>
     kind === "photo" ? s.photoLimitKb === kb : s.sigLimitKb === kb
   );
   if (matches.length === 0) return null;

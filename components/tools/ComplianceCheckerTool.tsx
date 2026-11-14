@@ -6,7 +6,7 @@ import { CheckCircle2, AlertTriangle, XCircle, Loader2, ArrowRight, Share2 } fro
 import { Uploader } from "@/components/tool/Uploader";
 import { useWorkflowHandoff } from "@/components/site/useWorkflowHandoff";
 import { ToolLimitationsNotice } from "@/components/site/ToolLimitationsNotice";
-import { allPortalSpecs, getPortalSpec } from "@/lib/specRegistry";
+import { allPortalSpecs, examPagePath, EXAM_KIT_PATH, getPortalSpec } from "@/lib/specRegistry";
 import {
   checkCompliance,
   overallVerdict,
@@ -21,6 +21,9 @@ import { track, deviceClass } from "@/lib/analytics";
 import { consumeWorkflowPayload, WORKFLOW_GENERIC_IMAGE_KINDS } from "@/lib/workflowHandoff";
 
 const SPECS = allPortalSpecs();
+
+const FIX_BUTTON =
+  "inline-flex items-center gap-1 rounded-md bg-cta px-3.5 py-2 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]";
 
 type Verdict = ComplianceReport["verdict"];
 
@@ -84,6 +87,7 @@ export function ComplianceCheckerTool() {
   }, []);
 
   const spec = getPortalSpec(examId);
+  const examPage = spec ? examPagePath(spec.id) : null;
   const noSig = kind === "signature" && spec && spec.sigLimitKb == null;
 
   // Latest-request guard: a check is async (decode, then face analysis), so an
@@ -378,21 +382,24 @@ export function ComplianceCheckerTool() {
               // this keys off the file verdict, not the face checks. Photo fixes
               // carry the file into the exam page's embedded resizer (which
               // auto-loads it into its photo tab). Signature stays a plain link
-              // to avoid landing in the wrong slot. /tools/form-resizer/ is a
-              // retired, host-redirected route — link the live exam page.
-              kind === "photo" && sourceFile ? (
+              // to avoid landing in the wrong slot. An exam without its own
+              // page goes to the Exam Application Kit, which offers every exam
+              // listed here; its old page URL redirects to the hub and would
+              // drop both the exam and the file.
+              !examPage ? (
+                <Link href={EXAM_KIT_PATH} className={FIX_BUTTON}>
+                  Fix it in the Exam Application Kit <ArrowRight className="h-4 w-4" />
+                </Link>
+              ) : kind === "photo" && sourceFile ? (
                 <button
                   type="button"
-                  onClick={() => handoff(sourceFile, sourceFile.name, `/exam-requirements/${spec.id}/#resizer`)}
-                  className="inline-flex items-center gap-1 rounded-md bg-cta px-3.5 py-2 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
+                  onClick={() => handoff(sourceFile, sourceFile.name, `${examPage}#resizer`)}
+                  className={FIX_BUTTON}
                 >
                   Fix it — resize for {spec.name.split(" (")[0]} <ArrowRight className="h-4 w-4" />
                 </button>
               ) : (
-                <Link
-                  href={`/exam-requirements/${spec.id}/#resizer`}
-                  className="inline-flex items-center gap-1 rounded-md bg-cta px-3.5 py-2 text-sm font-semibold text-cta-foreground transition-colors hover:bg-[hsl(22_89%_46%)]"
-                >
+                <Link href={`${examPage}#resizer`} className={FIX_BUTTON}>
                   Fix it — resize for {spec.name.split(" (")[0]} <ArrowRight className="h-4 w-4" />
                 </Link>
               )
@@ -410,9 +417,9 @@ export function ComplianceCheckerTool() {
               )}
               Save / share result
             </button>
-            {spec && (
+            {examPage && (
               <Link
-                href={`/exam-requirements/${spec.id}/`}
+                href={examPage}
                 className="rounded-md border border-hairline-strong bg-card px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent/50"
               >
                 See the full spec

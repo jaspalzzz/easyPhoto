@@ -273,10 +273,9 @@ export function FaceCenteringTool() {
           {faceBox && offsetPct != null && offsetPct > 4 && (
             <div className="rounded-lg border border-amber-200/60 bg-amber-50/40 px-4 py-3 text-sm text-amber-800 dark:bg-amber-900/20 dark:text-amber-300">
               Your face centre is about <strong>{offsetPct}% off-centre</strong>. Re-crop the photo so the face sits in the middle.
-              Try the{" "}
-              <Link href="/tools/image-crop/" className="underline underline-offset-2">image crop tool</Link>{" "}
-              or{" "}
-              <Link href="/tools/auto-crop/" className="underline underline-offset-2">auto-crop to spec</Link>.
+              The{" "}
+              <Link href="/passport-photo/" className="underline underline-offset-2">passport photo maker</Link>{" "}
+              crops and centres it for you.
             </div>
           )}
         </div>

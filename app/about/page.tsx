@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbSchema, ORG_ID, type Crumb } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { SITE_COUNTS } from "@/components/site/siteCounts";
+import { GUIDE_COUNT } from "@/lib/guideCount";
 import { AUTHOR } from "@/lib/author";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
@@ -17,10 +18,10 @@ export const metadata = pageMetadata({
 });
 
 const STATS = [
-  { v: `${SITE_COUNTS.examForms}`, l: "exams & forms" },
-  { v: `${SITE_COUNTS.examFormsWithOfficialDate}`, l: "checked against an official notice" },
+  { v: `${SITE_COUNTS.examPages}`, l: "exam & ID forms, each with its official source" },
+  { v: `${SITE_COUNTS.countryPages}`, l: "countries' and regions' photo sizes" },
   { v: `${SITE_COUNTS.tools}`, l: "free tools" },
-  { v: `${SITE_COUNTS.countries}`, l: "countries' photo sizes" },
+  { v: `${GUIDE_COUNT}`, l: "guides" },
 ];
 
 const VALUES = [

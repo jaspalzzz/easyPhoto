@@ -8,7 +8,8 @@ import { SITE_COUNTS } from "@/components/site/siteCounts";
 /**
  * StatsBand — factual credibility strip with count-up animation.
  * Numbers animate from 0 → target when the band scrolls into view (once per session).
- * Every value comes from SITE_COUNTS, the same numbers every other page prints.
+ * Every value counts pages a visitor can open (SITE_COUNTS, plus the guide
+ * count the server page passes in), so each number matches what its link leads to.
  */
 
 interface Stat {
@@ -19,17 +20,12 @@ interface Stat {
   sub: string;
 }
 
-const STATS: Stat[] = [
-  { Icon: Globe,      num: SITE_COUNTS.countries, suffix: "", label: "Countries",         sub: "Passport & visa photo sizes"  },
-  { Icon: FileCheck2, num: SITE_COUNTS.examForms, suffix: "", label: "Exams & forms",     sub: "SSC, UPSC, Railway & more"    },
-  { Icon: Wrench,     num: SITE_COUNTS.tools,     suffix: "", label: "Free tools",        sub: "Photo, ID & signature"        },
-  {
-    Icon: Landmark,
-    num: SITE_COUNTS.examFormsWithOfficialDate,
-    suffix: "",
-    label: "Checked at the source",
-    sub: "Exams & forms with a dated official source",
-  },
+/** guideCount comes from the server page so the blog registry stays out of the client bundle. */
+const buildStats = (guideCount: number): Stat[] => [
+  { Icon: Globe,      num: SITE_COUNTS.countryPages, suffix: "", label: "Countries & regions", sub: "Passport & visa photo sizes" },
+  { Icon: FileCheck2, num: SITE_COUNTS.examPages,    suffix: "", label: "Exam & ID forms",     sub: "Each with its official source" },
+  { Icon: Wrench,     num: SITE_COUNTS.tools,        suffix: "", label: "Free tools",          sub: "Photo, ID & signature" },
+  { Icon: Landmark,   num: guideCount,               suffix: "", label: "Guides",              sub: "Rules traced to the notice" },
 ];
 
 const NAVY = { background: "hsl(222 60% 8%)" } as const;
@@ -55,7 +51,8 @@ function useCountUp(target: number, active: boolean, duration = 1100): number {
  * Renders without a <section> wrapper — intended to sit inside the hero
  * <section> as its bottom "foundation row", visually anchored to the hero.
  */
-export function StatsBand() {
+export function StatsBand({ guideCount }: { guideCount: number }) {
+  const STATS = React.useMemo(() => buildStats(guideCount), [guideCount]);
   const statsRef = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState(false);
 

@@ -45,7 +45,7 @@ const BOTTOM_CARDS: Card[] = [
     title: "Exam Application Kit",
     outcome:
       "Pick your exam and prepare each file its form asks for — SSC, UPSC, Railway, Banking and more.",
-    includes: ["Photo + signature", "Photo issue checker", `${SITE_COUNTS.examForms} exams & forms`],
+    includes: ["Photo + signature", "Photo issue checker", `Settings for ${SITE_COUNTS.examKitForms} exams & forms`],
     href: "/tools/exam-package/",
     cta: "Build your exam kit",
     iconBg: "bg-amber-50 dark:bg-amber-900/20",
