@@ -64,7 +64,7 @@ const LANDING_UPDATED: Record<string, string> = {
   // 15 Oct 2026: "MRP size photo" title and H1; visitor-facing Good to know.
   "/nepal-passport-photo-maker/": "2026-11-02",
   // 15 Oct 2026: homepage H1 in visitors' words.
-  "/": "2026-11-02",
+  "/": "2026-11-14",
   // 15 Oct 2026: "Passport Size Photo Maker" title, intro and tool links
   // (14 Oct: passport size in cm and in pixels at 300 DPI).
   "/passport-photo/": "2026-11-02",
@@ -72,12 +72,12 @@ const LANDING_UPDATED: Record<string, string> = {
   "/uk-passport-photo/": "2026-11-02",
   "/schengen-visa-photo/": "2026-11-02",
   "/blog/": "2026-11-02",
-  "/about/": "2026-11-02",
+  "/about/": "2026-11-14",
   "/contact/": "2026-11-02",
   "/aadhaar-photo/": "2026-11-02",
   "/convert/": "2026-11-02",
   "/baby-passport-photo/": "2026-11-02",
-  "/visa-photo/": "2026-11-02",
+  "/visa-photo/": "2026-11-14",
   "/india-passport-photo-maker/": "2026-11-02",
   "/uk-passport-photo-maker/": "2026-11-02",
   "/pakistan-passport-photo-maker/": "2026-11-02",

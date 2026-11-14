@@ -43,7 +43,7 @@ const MORE_COUNTRIES = LAUNCH_ORDER.filter(
 // helps with, never the authority's name: an authority label beside our link
 // reads as if the department stands behind the tool.
 const ID_DOCS = [
-  { label: "Aadhaar Card",    sub: "Enrolment & update photo", href: "/aadhaar-photo/"                      },
+  { label: "Aadhaar Card",    sub: "How to change the photo", href: "/aadhaar-photo/"                      },
   { label: "PAN Card",        sub: "Photo & signature sizes",  href: "/exam-requirements/pan/"             },
   { label: "OCI Card",        sub: "Photo & signature upload", href: "/exam-requirements/oci/"             },
   { label: "Driving Licence", sub: "Sarathi upload sizes",     href: "/exam-requirements/driving-licence/" },

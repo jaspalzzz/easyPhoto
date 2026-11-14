@@ -53,7 +53,7 @@ const PATHS: Path[] = [
         Exam &amp; Government <span className="whitespace-nowrap">Applications</span>
       </>
     ),
-    desc: `Photo, signature and document sizes for ${SITE_COUNTS.examForms} Indian exam and recruitment forms. ${SITE_COUNTS.examFormsWithOfficialDate} are checked against the authority's own notice, with the date; the rest are marked as still needing a check.`,
+    desc: `Photo and signature sizes for ${SITE_COUNTS.examPages} Indian exam, recruitment and ID forms. Each page links the authority's own notice and gives the date it was checked.`,
     href: "/exam-requirements/",
     cta: "Find your exam or form",
     chips: [
@@ -73,7 +73,7 @@ const PATHS: Path[] = [
     Icon: Plane,
     eyebrow: "Passport & Visa",
     title: <>Passport &amp; Visa Photos</>,
-    desc: `Passport, visa and OCI photo sizes for ${SITE_COUNTS.countries} countries, with the background each one asks for and a link to where the rule comes from.`,
+    desc: `Passport and visa photo sizes for ${SITE_COUNTS.countryPages} countries and regions, with the background each one asks for and a link to where the rule comes from.`,
     href: "/passport-photo/",
     cta: "Make a passport or visa photo",
     chips: [
