@@ -11,6 +11,8 @@
  * limits are tight (5 MB total for the entire origin).
  */
 
+import { keepDocumentWhile } from "@/lib/unsavedWork";
+
 export interface WorkflowPayload {
   blob: Blob;
   /** Suggested filename for the receiving tool's file-info header. */
@@ -55,6 +57,10 @@ export interface ExamWorkflowDraft {
 
 let pending: WorkflowPayload | null = null;
 let examDraft: ExamWorkflowDraft | null = null;
+
+// Both live only in this document, so a link must not load a fresh one while
+// either is set (lib/unsavedWork.ts).
+keepDocumentWhile(() => pending !== null || examDraft !== null);
 
 /** Store an output blob so the next tool can auto-load it on mount. */
 export function setWorkflowPayload(
