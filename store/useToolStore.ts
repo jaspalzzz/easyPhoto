@@ -31,6 +31,7 @@ import {
 } from "@/lib/segmentation";
 import { ensureDecodable } from "@/lib/heic";
 import { track, deviceClass, type EngineLabel } from "@/lib/analytics";
+import { keepDocumentWhile } from "@/lib/unsavedWork";
 
 /**
  * Upper bound for a single segmentation attempt. webgpu/fp16 finishes in
@@ -619,3 +620,11 @@ async function rebuildPresets(
     },
   });
 }
+
+// A photo loaded in a maker, or picked on the homepage and waiting for one,
+// lives only in this document: links keep the document while it is here
+// (lib/unsavedWork.ts).
+keepDocumentWhile(() => {
+  const { sourceFile, pendingFile } = useToolStore.getState();
+  return sourceFile !== null || pendingFile !== null;
+});

@@ -40,6 +40,7 @@ import { PwaInstallHint } from "@/components/site/PwaInstallHint";
 import { CommandPalette } from "@/components/site/CommandPalette";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { AdSenseScript } from "@/components/site/AdSenseScript";
+import { IsolationBoundary } from "@/components/site/IsolationBoundary";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import {
@@ -179,6 +180,7 @@ export default function RootLayout({
         <PwaInstallHint />
         <CommandPalette />
         <AdSenseScript />
+        <IsolationBoundary />
       </body>
     </html>
   );
