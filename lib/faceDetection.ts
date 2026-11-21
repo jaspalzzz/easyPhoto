@@ -20,13 +20,7 @@
 import type { FaceMeasurements } from "./headPositioning";
 import { withTimeout } from "./withTimeout";
 
-// Pinned versions keep the wasm + model in lock-step and the result reproducible.
-// MUST match the installed @mediapipe/tasks-vision package version (the JS API
-// is bundled from the package; the wasm is fetched from this CDN path).
-const TASKS_VISION_VERSION = "0.10.35";
-const WASM_BASE = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${TASKS_VISION_VERSION}/wasm`;
-const MODEL_URL =
-  "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
+import { faceEngineFiles, FACE_MODEL_URL } from "./faceModelAssets";
 
 // MediaPipe FaceLandmarker (468 + iris) indices we rely on.
 const IDX = {
@@ -82,10 +76,11 @@ async function loadLandmarker() {
   const { FilesetResolver, FaceLandmarker } = await import(
     "@mediapipe/tasks-vision"
   );
-  const fileset = await FilesetResolver.forVisionTasks(WASM_BASE);
+  // Older devices without WebAssembly SIMD need the slower build of the engine.
+  const fileset = faceEngineFiles(await FilesetResolver.isSimdSupported());
   const create = (delegate: "GPU" | "CPU") =>
     FaceLandmarker.createFromOptions(fileset, {
-      baseOptions: { modelAssetPath: MODEL_URL, delegate },
+      baseOptions: { modelAssetPath: FACE_MODEL_URL, delegate },
       runningMode: "IMAGE",
       numFaces: 1,
     });
