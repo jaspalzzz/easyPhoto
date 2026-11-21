@@ -1,34 +1,19 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { Space_Grotesk, Inter, JetBrains_Mono, Outfit } from "next/font/google";
+import { preload } from "react-dom";
 import "./globals.css";
+// After globals.css on purpose: fonts.css sets the --font-* variables on
+// :root, and globals.css has its own :root rule for --font-outfit that must
+// not be the last word (next/font's stylesheet also came after globals.css).
+import "./fonts/fonts.css";
 
-// Self-hosted at build (no runtime CDN — keeps the CSP tight).
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-outfit",
-  display: "swap",
-  preload: false,
-});
-const display = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-display",
-  display: "swap",
-});
-const sans = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
-  display: "swap",
-  preload: false,
-});
+// The two fonts every page needs for its first paint (headings and body
+// text), preloaded so they arrive with the HTML instead of after the CSS.
+// `new URL` gives the hashed address the bundler serves the file from.
+const PRELOADED_FONTS = [
+  new URL("./fonts/space-grotesk-latin.woff2", import.meta.url).pathname,
+  new URL("./fonts/inter-latin.woff2", import.meta.url).pathname,
+];
 import { Footer } from "@/components/site/Footer";
 import { Wordmark } from "@/components/site/Wordmark";
 import { LogoMark } from "@/components/site/LogoMark";
@@ -120,11 +105,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // React writes font preloads at the top of <head>, ahead of the stylesheets.
+  for (const href of PRELOADED_FONTS) {
+    preload(href, { as: "font", type: "font/woff2", crossOrigin: "" });
+  }
+
   return (
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${outfit.variable} ${display.variable} ${sans.variable} ${mono.variable}`}
     >
       <head>
         {/* Anti-FOUC: apply stored/system theme BEFORE first paint */}
