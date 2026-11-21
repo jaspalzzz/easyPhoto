@@ -29,7 +29,7 @@ export default function PrivacyPage() {
             description:
               "How easyPhoto handles your data: it doesn't. Photos and PDFs are processed entirely in your browser and never uploaded.",
             url: "/privacy/",
-            dateModified: "2026-11-02",
+            dateModified: "2026-11-21",
           }),
         ]}
       />
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
         <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
           Privacy Policy
         </h1>
-        <p className="text-sm text-muted-foreground">Last updated: November 2, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: November 21, 2026</p>
       </header>
 
       {/* The short version — highlighted so it's the first thing read */}
@@ -70,11 +70,10 @@ export default function PrivacyPage() {
 
         <Section title="What is downloaded to your browser">
           To do this work on your device, your browser downloads the software it
-          needs the first time you use a tool. The face-detection and
-          text-reading software comes from jsDelivr, a face-detection data file
-          comes from Google Cloud Storage, and the background-removal
-          software comes from models.easyphoto.in, easyPhoto&apos;s own file
-          server. If that server cannot be reached, the same background-removal
+          needs the first time you use a tool. The face-detection software
+          comes from easyphoto.in itself. The text-reading software comes from
+          jsDelivr, and the background-removal software comes from
+          models.easyphoto.in, easyPhoto&apos;s own file server. If that server cannot be reached, the same background-removal
           file is fetched from Hugging Face instead. These are downloads to your
           device only: your photo or PDF is never sent to any of these services.
         </Section>
