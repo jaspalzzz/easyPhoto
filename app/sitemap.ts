@@ -111,8 +111,8 @@ const TRUST_PAGE_UPDATED: Record<string, string> = {
 const TRUST_PAGES_UPDATED = "2026-07-13";
 /** /terms/ — moves only when the terms text changes (7 Oct 2026: support-payment refunds). */
 const TERMS_UPDATED = "2026-11-02";
-/** /privacy/ — moves only when the policy text changes (8 Oct 2026: ad-cookie disclosure, tips; 14 Oct 2026: where ads run). */
-const PRIVACY_UPDATED = "2026-11-02";
+/** /privacy/ — moves only when the policy text changes (8 Oct 2026: ad-cookie disclosure, tips; 14 Oct 2026: where ads run; 21 Nov 2026: face detection served from easyphoto.in). */
+const PRIVACY_UPDATED = "2026-11-21";
 /** /tools/ index — moves only when its own content changes (8 Oct 2026: unfinished-tool cards removed). */
 const TOOLS_INDEX_UPDATED = "2026-11-02";
 /**

@@ -12,8 +12,9 @@ const FACE_PHOTO = path.join(__dirname, "fixtures", "face-photo.jpg");
  */
 const PAST_LOAD_LIMIT_MS = 91_000;
 
-// MediaPipe FaceLandmarker: the wasm runtime (jsDelivr) and the model file.
-const FACE_ENGINE = /tasks-vision@[^/]+\/wasm\/|face_landmarker\.task/;
+// MediaPipe FaceLandmarker: the wasm runtime and the model file, both served
+// by the site itself (lib/faceModelAssets.ts).
+const FACE_ENGINE = /vision_wasm(?:_nosimd)?_internal\.|face_landmarker\./;
 
 /** Hang every request matching `pattern`; resolves once the first one is made. */
 async function stallRequests(page: Page, pattern: RegExp): Promise<() => Promise<void>> {

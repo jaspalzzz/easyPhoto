@@ -8,11 +8,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const vision = vi.hoisted(() => ({
-  forVisionTasks: vi.fn(),
+  isSimdSupported: vi.fn(),
   createFromOptions: vi.fn(),
 }));
 vi.mock("@mediapipe/tasks-vision", () => ({
-  FilesetResolver: { forVisionTasks: vision.forVisionTasks },
+  FilesetResolver: { isSimdSupported: vision.isSimdSupported },
   FaceLandmarker: { createFromOptions: vision.createFromOptions },
 }));
 
@@ -51,12 +51,12 @@ function outcome<T>(p: Promise<T>) {
 beforeEach(async () => {
   vi.useFakeTimers();
   vi.spyOn(console, "warn").mockImplementation(() => {});
-  vision.forVisionTasks.mockResolvedValue({});
+  vision.isSimdSupported.mockResolvedValue(true);
   await disposeLandmarker();
 });
 
 afterEach(() => {
-  vision.forVisionTasks.mockReset();
+  vision.isSimdSupported.mockReset();
   vision.createFromOptions.mockReset();
   vi.restoreAllMocks();
   vi.useRealTimers();
@@ -79,12 +79,12 @@ describe("face model load", () => {
   });
 
   it("does not cache a failed load: the next call loads afresh and succeeds", async () => {
-    vision.forVisionTasks.mockRejectedValueOnce(new TypeError("Failed to fetch"));
+    vision.isSimdSupported.mockRejectedValueOnce(new TypeError("Failed to fetch"));
     await expect(detectFace(IMAGE, SIZE)).rejects.toBeInstanceOf(FaceModelLoadError);
 
     vision.createFromOptions.mockResolvedValue(landmarker());
     await expect(detectFace(IMAGE, SIZE)).resolves.toMatchObject({ faceCount: 1 });
-    expect(vision.forVisionTasks).toHaveBeenCalledTimes(2);
+    expect(vision.isSimdSupported).toHaveBeenCalledTimes(2);
   });
 
   it("does not cache a timed-out load either", async () => {
