@@ -42,6 +42,19 @@ describe("privacy network-host disclosure", () => {
     expect(privacy).not.toContain("Google Cloud Storage");
   });
 
+  // Background removal downloads two things. The model comes from
+  // models.easyphoto.in (lib/segmentation.ts). The engine that runs it,
+  // onnxruntime-web, is fetched from cdn.jsdelivr.net by the
+  // @huggingface/transformers library's own default, so no URL for it appears
+  // in our source; it was seen on the live site on 23 Nov 2026. Until then the
+  // policy named jsDelivr for text reading only.
+  it("says background removal's software comes from jsDelivr and its data file from our own server", () => {
+    const text = privacy.replace(/\s+/g, " ");
+    expect(text).toMatch(/Background removal needs two downloads: the software that runs it comes from jsDelivr/);
+    expect(text).toMatch(/its data file comes from models\.easyphoto\.in/);
+    expect(text).toMatch(/the same data file is fetched from Hugging Face/);
+  });
+
   it("does not disclose the obsolete staticimgly host", () => {
     expect(headers).not.toContain("staticimgly.com");
     expect(privacy).not.toContain("staticimgly.com");
