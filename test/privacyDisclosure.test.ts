@@ -13,7 +13,6 @@ const runtimeSources = [
 
 const disclosedHosts = [
   "cdn.jsdelivr.net",
-  "storage.googleapis.com",
   "models.easyphoto.in",
   "huggingface.co",
 ] as const;
@@ -26,9 +25,21 @@ describe("privacy network-host disclosure", () => {
     }
 
     expect(privacy).toContain("jsDelivr");
-    expect(privacy).toContain("Google Cloud Storage");
     expect(privacy).toContain("models.easyphoto.in");
     expect(privacy).toContain("Hugging Face");
+  });
+
+  // Since 21 Nov 2026 the face-detection engine and model are files of this
+  // site (lib/faceModelAssets.ts), so the policy says so and no longer names
+  // Google Cloud Storage, which nothing downloads from any more.
+  it("says face detection comes from easyphoto.in and names no host it no longer uses", () => {
+    const faceSources = ["lib/faceDetection.ts", "lib/faceModelAssets.ts"]
+      .map((file) => fs.readFileSync(path.join(root, file), "utf8"))
+      .join("\n");
+    expect(faceSources).not.toMatch(/https?:\/\//);
+    expect(runtimeSources).not.toContain("storage.googleapis.com");
+    expect(privacy).toMatch(/face-detection\s+software\s+comes\s+from\s+easyphoto\.in\s+itself/);
+    expect(privacy).not.toContain("Google Cloud Storage");
   });
 
   it("does not disclose the obsolete staticimgly host", () => {
