@@ -53,11 +53,12 @@ const TABS: Tab[] = [
     ],
   },
   {
-    id: "documents", label: "ID & Documents", Icon: FileText,
+    id: "documents", label: "ID Photos", Icon: FileText,
     tools: [
-      { title: "Scan Photo Online",     desc: "Turn a JPG into a scanned copy",        href: "/tools/document-scanner/",       Icon: ScanLine      },
-      { title: "Aadhaar Card OCR",      desc: "Read number, name and DOB",             href: "/tools/aadhaar-ocr/",            Icon: FileText      },
-      { title: "PAN Card OCR",          desc: "Read PAN number and name",              href: "/tools/pan-card-ocr/",           Icon: CreditCard    },
+      { title: "PAN Card Photo",        desc: "Photo and signature size",              href: "/exam-requirements/pan/",        Icon: CreditCard    },
+      { title: "Voter ID Photo",        desc: "Form 6 photo size",                     href: "/exam-requirements/voter-id/",   Icon: UserCircle    },
+      { title: "Driving Licence Photo", desc: "Sarathi photo and signature",           href: "/exam-requirements/driving-licence/", Icon: FileText },
+      { title: "OCI Card Photo",        desc: "Photo and signature size",              href: "/exam-requirements/oci/",        Icon: Globe         },
       { title: "Convert Image Format",  desc: "HEIC, WEBP or PNG to JPG",              href: "/convert/",                      Icon: RefreshCw     },
     ],
   },

@@ -165,11 +165,8 @@ export default function Page() {
         </a>{" "}
         portal lets you update your name, address, date of birth, gender and
         language online, but the photograph, fingerprints, iris and mobile number
-        need a centre visit. Before you share a copy of the card,{" "}
-        <Link href="/blog/how-to-mask-aadhaar-before-sharing/" className="text-brand underline">
-          mask the first eight digits
-        </Link>
-        , as UIDAI recommends.
+        need a centre visit. Before you share a copy of the card, mask the first
+        eight digits, as UIDAI recommends.
       </p>
 
       <h2>How to make each file</h2>

@@ -106,8 +106,6 @@ describe("deindexed pages", () => {
       "/tools/resume-photo/",
       "/tools/face-centering/",
       "/tools/white-background/",
-      "/tools/pan-card-ocr/",
-      "/tools/aadhaar-ocr/",
       "/tools/",
     ]) {
       expect(isDeindexed(keep), `${keep} earns traffic and must stay`).toBe(

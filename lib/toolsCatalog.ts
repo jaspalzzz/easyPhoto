@@ -12,6 +12,11 @@ export interface ToolEntry {
   slug: string;
   title: string;
   blurb: string;
+  /**
+   * False for a tool that is unfinished or retired. Such a tool is left out of
+   * the sitemap, every list, site search and "recent tools", so nothing sends
+   * a visitor to an address that is not served.
+   */
   ready: boolean;
   popular?: boolean;
   icon: string;
@@ -327,8 +332,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         title: "Document Scanner",
         blurb:
           "Photograph a page and get a flat, evenly-lit PDF. Straightens the perspective and removes shadows, entirely on your device.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026 (lib/deindexed.ts): its address is a redirect now.
+        ready: false,
         icon: "ScanLine",
       },
       {
@@ -407,16 +412,16 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "aadhaar-ocr",
         title: "Aadhaar Card OCR",
         blurb: "Upload a photo of your Aadhaar card and extract the number, name, DOB, gender and address — on-device.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026 (lib/deindexed.ts): its address is a redirect now.
+        ready: false,
         icon: "ScanLine",
       },
       {
         slug: "pan-card-ocr",
         title: "PAN Card OCR",
         blurb: "Upload a photo of your PAN card and extract the PAN number, name, father's name and date of birth.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026 (lib/deindexed.ts): its address is a redirect now.
+        ready: false,
         icon: "CreditCard",
       },
     ],
