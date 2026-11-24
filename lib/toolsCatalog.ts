@@ -73,24 +73,24 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "resize-dimensions",
         title: "Resize Image (Pixels)",
         blurb: "Resize a photo to exact pixel width and height with crisp quality.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "Scaling",
       },
       {
         slug: "image-crop",
         title: "Image Crop",
         blurb: "Crop any image with a draggable box — trim to exact pixels and download as PNG or JPG.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "Crop",
       },
       {
         slug: "linkedin-photo",
         title: "LinkedIn Photo Maker",
         blurb: "Crop any photo to a square LinkedIn profile picture, centred on your face.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "UserSquare",
       },
       {
@@ -111,7 +111,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "format-converter",
         title: "Image Format Converter",
         blurb: "Convert images between JPG, PNG, WebP, and HEIC offline.",
-        ready: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "RefreshCw",
       },
       {
@@ -126,8 +127,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "print-sheet",
         title: "Passport Photo Print Sheet",
         blurb: "Tile 4, 6 or 8 passport photos on an A4, A5 or photo-paper sheet, ready for a print shop.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "Printer",
       },
       {
@@ -141,8 +142,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "camera-capture",
         title: "Take Passport Photo with Camera",
         blurb: "Capture a photo with your phone or webcam using an oval face guide — no need to upload a file.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "Camera",
       },
       {
@@ -163,14 +164,16 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "red-eye-removal",
         title: "Red-Eye Removal",
         blurb: "Tap each pupil to remove flash red-eye before printing your photo — fully in your browser.",
-        ready: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "Eye",
       },
       {
         slug: "straighten-photo",
         title: "Straighten Tilted Photo",
         blurb: "Auto-level a tilted passport photo so your eyes are straight — detects the angle on-device.",
-        ready: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "RotateCw",
       },
       {
@@ -185,8 +188,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "auto-crop",
         title: "Auto-Crop to Passport Spec",
         blurb: "AI detects your face and automatically crops and resizes your photo to the correct passport size for your country.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "Scan",
       },
       {
@@ -209,24 +212,24 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "pdf-merge",
         title: "Merge PDF",
         blurb: "Combine multiple PDF documents into a single document privately.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "FileText",
       },
       {
         slug: "pdf-split",
         title: "Split PDF",
         blurb: "Extract selected pages or split PDF pages into a new document.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "Scissors",
       },
       {
         slug: "pdf-compress",
         title: "Compress PDF to KB",
         blurb: "Shrink a PDF to fit form upload limits (100 KB, 200 KB, 500 KB).",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "FileDown",
       },
       {
@@ -241,30 +244,32 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "pdf-reorder",
         title: "Reorder & Rotate PDF",
         blurb: "Rearrange, rotate, or delete pages of a PDF visually.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "ArrowUpDown",
       },
       {
         slug: "sign-pdf",
         title: "Sign PDF Document",
         blurb: "Draw or place a signature image on any page of a PDF.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "PenLine",
       },
       {
         slug: "watermark-pdf",
         title: "Watermark PDF",
         blurb: "Stamp a text watermark (CONFIDENTIAL, DRAFT…) across every page.",
-        ready: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "Stamp",
       },
       {
         slug: "pdf-page-numbers",
         title: "Add Page Numbers to PDF",
         blurb: "Number every page — choose the position, format and start value.",
-        ready: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "Hash",
       },
     ],
@@ -279,7 +284,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "transparent-signature",
         title: "Transparent Signature PNG",
         blurb: "Turn a signature scan into a clean, cropped, transparent PNG.",
-        ready: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "PenLine",
       },
       {
@@ -341,8 +347,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         title: "Compress Document to KB",
         blurb:
           "Shrink any document — JPG, PNG, or PDF — to an exact KB target. Auto-detects the format and applies the right compression in one step.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "FileDown",
       },
       {
@@ -358,29 +364,32 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "jpg-to-pdf",
         title: "JPG / Images to PDF",
         blurb: "Combine one or more images into a single PDF, one image per page.",
-        ready: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "FileStack",
       },
       {
         slug: "pdf-to-jpg",
         title: "PDF to JPG",
         blurb: "Export every page of a PDF as a high-quality JPG image.",
-        ready: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "FileImage",
       },
       {
         slug: "extract-pages",
         title: "Extract PDF Pages",
         blurb: "Select and pull specific pages from a PDF — certificate, marksheet page, or any section — into a new file.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "Scissors",
       },
       {
         slug: "form-fill",
         title: "Fill PDF Form",
         blurb: "Upload a fillable AcroForm PDF, type into each field, and download the completed document.",
-        ready: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "PenLine",
       },
     ],
@@ -396,16 +405,16 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         title: "Image to Text (OCR)",
         blurb:
           "Upload a JPG, PNG, screenshot or scanned document and get the text out instantly. Supports English and Hindi.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "ScanText",
       },
       {
         slug: "pdf-to-text",
         title: "PDF to Text",
         blurb: "Extract all embedded text from a PDF instantly — copy or download as .txt. Works on digital PDFs, not scans.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "FileText",
       },
       {

@@ -321,3 +321,36 @@
 # the lines and setting the tools back to `ready: true` in lib/toolsCatalog.ts.
 /tools/unlock-pdf/ /tools/ 301
 /tools/mask-aadhaar/ /aadhaar-photo/ 301
+
+# 24 Nov 2026 (owner in chat: "remove the other 24 hidden tool pages too").
+# These 24 tools were hidden from search in August and off the menus since
+# 1 Nov, but were still served on the domain: PDF and document tools, the
+# general text reader and photo utilities. Each lands on the listed page
+# closest to the same need. The home-printing guide linked print-sheet and now
+# describes the passport maker's own print sheet; the photo checker linked
+# straighten-photo and now gives the step in words. Reversible by deleting a
+# line and setting the tool back to `ready: true` in lib/toolsCatalog.ts.
+/tools/auto-crop/ /passport-photo/ 301
+/tools/camera-capture/ / 301
+/tools/compress-document/ /tools/resize-kb/ 301
+/tools/extract-pages/ /tools/ 301
+/tools/form-fill/ /tools/ 301
+/tools/format-converter/ /convert/ 301
+/tools/image-crop/ /tools/ 301
+/tools/image-to-text/ /tools/ 301
+/tools/jpg-to-pdf/ /tools/ 301
+/tools/linkedin-photo/ /tools/resume-photo/ 301
+/tools/pdf-compress/ /tools/ 301
+/tools/pdf-merge/ /tools/ 301
+/tools/pdf-page-numbers/ /tools/ 301
+/tools/pdf-reorder/ /tools/ 301
+/tools/pdf-split/ /tools/ 301
+/tools/pdf-to-jpg/ /tools/ 301
+/tools/pdf-to-text/ /tools/ 301
+/tools/red-eye-removal/ /tools/ 301
+/tools/resize-dimensions/ /tools/resize-kb/ 301
+/tools/sign-pdf/ /tools/sign-image/ 301
+/tools/transparent-signature/ /tools/signature-background-removal/ 301
+/tools/watermark-pdf/ /tools/ 301
+/tools/print-sheet/ /passport-photo/ 301
+/tools/straighten-photo/ /tools/face-centering/ 301

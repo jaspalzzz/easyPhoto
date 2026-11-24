@@ -39,6 +39,13 @@ describe("sheetPlacements", () => {
     expect(sheetPlacements({ width: 51, height: 51 }, { paperSize: "4x6", marginMm: 5, gapMm: 2 }).layout.capacity).toBe(2);
   });
 
+  it("matches the counts the home-printing guide publishes", () => {
+    // Maker defaults (components/tool/ExportPanel.tsx): 4 mm margin, 3 mm gap.
+    const fit = (paperSize: "4x6" | "5x7" | "a4") =>
+      sheetPlacements(PASSPORT, { paperSize, marginMm: 4, gapMm: 3 }).layout.capacity;
+    expect([fit("4x6"), fit("5x7"), fit("a4")]).toEqual([6, 9, 30]);
+  });
+
   it("knows every paper the print-sheet tool offers", () => {
     for (const k of ["a4", "a5", "4x6", "5x6", "4x4"] as const) {
       expect(PAPER_DIMENSIONS[k].w).toBeGreaterThan(0);
