@@ -165,10 +165,13 @@ describe("eyes level — 5 deg passes, 10 warns, beyond fails", () => {
   it("treats tilt in either direction the same", async () => {
     expect(await statusOf({ rollDeg: -12 }, "Eyes level")).toBe("fail");
   });
-  it("offers the straighten tool when tilted", async () => {
+  it("says how to fix a tilt, without a link to the retired straighten tool", async () => {
+    // Face Centering measures tilt but can't rotate a photo, so the advice is
+    // a step the applicant can do (24 Nov 2026).
     detectFace.mockResolvedValue(face({ rollDeg: 12 }));
     const c = get(await checkPhotoQuality({} as HTMLImageElement, SIZE), "Eyes level");
-    expect(c?.href).toBe("/tools/straighten-photo/");
+    expect(c?.href).toBeUndefined();
+    expect(c?.fix).toMatch(/rotate it in your phone's photo editor/);
   });
 });
 

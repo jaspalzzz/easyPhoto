@@ -18,9 +18,6 @@ upload, no sign-up, and no watermark.
 - SSC photo and signature resizer: https://easyphoto.in/ssc-photo-resizer/
 - Exam photo & signature kit (all portals): https://easyphoto.in/tools/exam-package/
 - Exam photo and signature requirements (30+ portals): https://easyphoto.in/exam-requirements/
-- Photo print-sheet generator: https://easyphoto.in/tools/print-sheet/
-- PDF compress: https://easyphoto.in/tools/pdf-compress/
-- PDF merge: https://easyphoto.in/tools/pdf-merge/
 - DPI metadata converter: https://easyphoto.in/tools/dpi-converter/
 - All tools: https://easyphoto.in/tools/
 
