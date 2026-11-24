@@ -21,7 +21,6 @@ upload, no sign-up, and no watermark.
 - Photo print-sheet generator: https://easyphoto.in/tools/print-sheet/
 - PDF compress: https://easyphoto.in/tools/pdf-compress/
 - PDF merge: https://easyphoto.in/tools/pdf-merge/
-- Aadhaar masking tool: https://easyphoto.in/tools/mask-aadhaar/
 - DPI metadata converter: https://easyphoto.in/tools/dpi-converter/
 - All tools: https://easyphoto.in/tools/
 

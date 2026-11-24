@@ -39,7 +39,7 @@ export async function extractTextFromPdf(
     pdf = await pdfjs.getDocument({ data }).promise;
   } catch (err: unknown) {
     if (err instanceof Error && err.name === "PasswordException") {
-      throw new Error("This PDF is password-protected. Use the Unlock PDF tool first.");
+      throw new Error("This PDF is password-protected. Use a copy without the password.");
     }
     throw err;
   }

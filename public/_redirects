@@ -313,3 +313,11 @@
 /tools/pan-card-ocr/ /exam-requirements/pan/ 301
 /tools/document-scanner/ /tools/ 301
 /blog/how-to-mask-aadhaar-before-sharing/ /aadhaar-photo/ 301
+
+# 24 Nov 2026, same review as above. Two pages already hidden from search and
+# unlinked since 1 Nov were still served: a PDF password remover and an Aadhaar
+# masking tool. No Google clicks or impressions in the 28 days to 23 Nov. Not
+# SEO-visible: no indexed URL, title or text changes. Reversible by deleting
+# the lines and setting the tools back to `ready: true` in lib/toolsCatalog.ts.
+/tools/unlock-pdf/ /tools/ 301
+/tools/mask-aadhaar/ /aadhaar-photo/ 301

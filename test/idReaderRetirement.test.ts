@@ -16,7 +16,8 @@ import sitemap from "@/app/sitemap";
 import { BLOG_POSTS } from "@/lib/blog";
 import { isDeindexed } from "@/lib/deindexed";
 import { SITE_URL } from "@/lib/site";
-import { LISTED_CATALOG, LISTED_TOOLS } from "@/lib/toolsCatalog";
+import { buildSearchIndex } from "@/lib/toolSearch";
+import { LISTED_CATALOG, LISTED_TOOLS, getTool } from "@/lib/toolsCatalog";
 
 const RETIRED_TOOLS = ["aadhaar-ocr", "pan-card-ocr", "document-scanner"] as const;
 const RETIRED_POST = "how-to-mask-aadhaar-before-sharing";
@@ -101,5 +102,39 @@ describe("retired ID-reader pages", () => {
       // A page's own metadata path is not a link to it.
       .filter((file) => link.test(read(file).replace(/path:\s*"[^"]+"/g, "")));
     expect(offenders).toEqual([]);
+  });
+});
+
+describe("hidden pages on the same topic", () => {
+  // Hidden from search since August and unlinked since 1 Nov 2026, but still
+  // served until 24 Nov: the PDF password remover and the Aadhaar masking tool.
+  const HIDDEN_RETIRED = ["unlock-pdf", "mask-aadhaar"] as const;
+
+  it("redirect in one hop to a page that is listed", () => {
+    const rules = redirects();
+    for (const slug of HIDDEN_RETIRED) {
+      const target = rules.get(`/tools/${slug}/`);
+      expect(target, `${slug} has no redirect`).toBeDefined();
+      expect(isDeindexed(target!), `${slug} lands on a hidden page`).toBe(false);
+      expect(rules.has(target!), `${slug} lands on another redirect`).toBe(false);
+    }
+  });
+
+  it("are not offered by site search or recent tools", () => {
+    const searchable = new Set(buildSearchIndex().map((item) => item.path));
+    for (const slug of [...HIDDEN_RETIRED, ...RETIRED_TOOLS]) {
+      expect(searchable.has(`/tools/${slug}/`), slug).toBe(false);
+      expect(getTool(slug)?.ready, slug).toBe(false);
+    }
+  });
+
+  it("leave Aadhaar findable in site search", () => {
+    expect(buildSearchIndex().some((item) => item.path === "/aadhaar-photo/")).toBe(true);
+  });
+
+  it("no tool message sends a visitor to the retired password remover", () => {
+    for (const file of ["components/tools/EncryptedPdfNotice.tsx", "lib/pdfCompress.ts", "lib/pdfToImages.ts", "lib/pdfToText.ts"]) {
+      expect(read(file), file).not.toMatch(/Unlock PDF tool|\/tools\/unlock-pdf/);
+    }
   });
 });

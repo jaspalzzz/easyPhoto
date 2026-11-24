@@ -233,8 +233,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         slug: "unlock-pdf",
         title: "Unlock PDF (Remove Password)",
         blurb: "Remove the password from a protected PDF — like the e-Aadhaar — and download an unprotected copy.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "LockOpen",
       },
       {
@@ -350,8 +350,8 @@ export const TOOLS_CATALOG: ToolGroup[] = [
         title: "Mask Aadhaar / Document",
         blurb:
           "Hide the first 8 digits of your Aadhaar (or any sensitive detail) with a permanent black redaction — fully in your browser.",
-        ready: true,
-        popular: true,
+        // Retired 24 Nov 2026: its address is a redirect now (public/_redirects).
+        ready: false,
         icon: "EyeOff",
       },
       {

@@ -31,7 +31,7 @@ export class PdfTooLargeError extends Error {
 export class PdfEncryptedError extends Error {
   constructor() {
     super(
-      "This PDF is password-protected or restricted. Use the Unlock PDF tool first."
+      "This PDF is password-protected or restricted. Use a copy without a password or restrictions."
     );
     this.name = "PdfEncryptedError";
   }
