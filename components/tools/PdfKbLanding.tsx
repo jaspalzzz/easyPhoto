@@ -145,12 +145,6 @@ export function PdfKbLanding({ kb }: { kb: number }) {
         <h2 className="eyebrow mb-3">More PDF tools</h2>
         <div className="flex flex-wrap gap-2">
           <Link
-            href="/tools/unlock-pdf/"
-            className="rounded-md border border-hairline px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-ink/30 hover:bg-accent/40"
-          >
-            Unlock / remove PDF password
-          </Link>
-          <Link
             href="/tools/pdf-merge/"
             className="rounded-md border border-hairline px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-ink/30 hover:bg-accent/40 hover:text-foreground"
           >

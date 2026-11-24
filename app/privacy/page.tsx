@@ -29,7 +29,7 @@ export default function PrivacyPage() {
             description:
               "How easyPhoto handles your data: it doesn't. Photos and PDFs are processed entirely in your browser and never uploaded.",
             url: "/privacy/",
-            dateModified: "2026-11-23",
+            dateModified: "2026-11-24",
           }),
         ]}
       />
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
         <h1 className="text-[30px] font-semibold leading-tight tracking-tight text-ink sm:text-[36px]">
           Privacy Policy
         </h1>
-        <p className="text-sm text-muted-foreground">Last updated: November 23, 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: November 24, 2026</p>
       </header>
 
       {/* The short version — highlighted so it's the first thing read */}
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
           upload, preview or download area. On those tool pages Google&apos;s ad
           code runs on the same page as the tool; your photo is still edited on
           your device and never uploaded. Pages for ID documents and PDFs
-          (Aadhaar, PAN and the document scanner) and these policy pages never
+          (Aadhaar and PAN) and these policy pages never
           load Google&apos;s advertising or consent scripts. Google and its advertising partners
           may use cookies or similar technologies, such as web beacons, and your
           IP address to serve, limit and measure ads; see{" "}

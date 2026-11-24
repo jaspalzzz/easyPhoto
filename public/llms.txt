@@ -21,7 +21,6 @@ upload, no sign-up, and no watermark.
 - Photo print-sheet generator: https://easyphoto.in/tools/print-sheet/
 - PDF compress: https://easyphoto.in/tools/pdf-compress/
 - PDF merge: https://easyphoto.in/tools/pdf-merge/
-- Aadhaar masking tool: https://easyphoto.in/tools/mask-aadhaar/
 - DPI metadata converter: https://easyphoto.in/tools/dpi-converter/
 - All tools: https://easyphoto.in/tools/
 
@@ -31,7 +30,6 @@ Content guides (answer-first format with source context where available):
 
 - Passport photo size by country: https://easyphoto.in/blog/passport-photo-size-by-country/
 - Best free passport photo maker India 2026: https://easyphoto.in/blog/best-free-passport-photo-maker-india-2026/
-- How to mask Aadhaar before sharing: https://easyphoto.in/blog/how-to-mask-aadhaar-before-sharing/
 - Why exam photos and signatures are rejected: https://easyphoto.in/blog/why-exam-photo-signature-rejected/
 - Exam photo name/date guide: https://easyphoto.in/blog/add-name-date-on-exam-photo/
 - Resume photo size and rules: https://easyphoto.in/blog/resume-photo-size-and-rules/

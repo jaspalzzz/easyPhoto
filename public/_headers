@@ -199,6 +199,12 @@
   X-Robots-Tag: noindex, follow
 /unlock-aadhaar-pdf/
   X-Robots-Tag: noindex, follow
+/tools/aadhaar-ocr/
+  X-Robots-Tag: noindex, follow
+/tools/pan-card-ocr/
+  X-Robots-Tag: noindex, follow
+/tools/document-scanner/
+  X-Robots-Tag: noindex, follow
 /tools/auto-crop/
   X-Robots-Tag: noindex, follow
 /tools/camera-capture/

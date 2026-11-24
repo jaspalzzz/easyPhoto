@@ -62,6 +62,16 @@ export function buildSearchIndex(): SearchItem[] {
     });
   });
 
+  // The Aadhaar page is a guide, not a catalog tool, so it is listed by hand:
+  // without it a search for "aadhaar" finds nothing now that the Aadhaar
+  // tools are retired (24 Nov 2026).
+  items.push({
+    title: "Aadhaar Photo: How to Change It",
+    category: "Government Portals",
+    path: "/aadhaar-photo/",
+    keywords: ["aadhaar", "photo", "update", "uidai"],
+  });
+
   // Every portal key has an /exam-requirements/<key>/ page with the resizer
   // embedded. The old /tools/form-resizer/<key>/ routes are host redirects —
   // several of them to the generic hub, which loses the exam the user asked for.

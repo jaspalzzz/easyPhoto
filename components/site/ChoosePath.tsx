@@ -18,7 +18,7 @@ import type { HomepagePath } from "@/lib/analytics";
  *
  *   1. Exam & Government Applications  — India-first, the business focus.
  *   2. Passport & Visa Photos          — prominent, global, revenue-oriented.
- *   3. Document Utilities              — PDF, signature, image & OCR support.
+ *   3. Document Utilities              — photo, signature and image tools.
  *
  * Additive by design: it links into existing hub routes only (no new URLs) and
  * complements — does not replace — the sections further down the page. Counts
@@ -92,15 +92,15 @@ const PATHS: Path[] = [
     Icon: Wrench,
     eyebrow: "Document Utilities",
     title: <>Document Utilities</>,
-    desc: `${SITE_COUNTS.tools} free tools to resize, compress, sign, scan and read documents.`,
+    desc: `${SITE_COUNTS.tools} free tools to resize, compress, clean up and sign photos and signatures.`,
     href: "/tools/",
     cta: "Open all tools",
     chips: [
-      { label: "Scan a photo", href: "/tools/document-scanner/" },
       { label: "Sign", href: "/tools/sign-image/" },
       { label: "Resize to KB", href: "/tools/resize-kb/" },
       { label: "Remove BG", href: "/tools/background-removal/" },
-      { label: "Read Aadhaar (OCR)", href: "/tools/aadhaar-ocr/" },
+      { label: "Name & date", href: "/tools/photo-with-name-date/" },
+      { label: "Change DPI", href: "/tools/dpi-converter/" },
     ],
     iconBg: "bg-violet-50 dark:bg-violet-900/20",
     iconText: "text-violet-600 dark:text-violet-400",

@@ -220,7 +220,7 @@
 # the indexed page that best answers the same need. The sitemap goes 123 → 120.
 /blog/how-to-merge-pdf-free/ /blog/how-to-prepare-documents-for-exam-applications-india/ 301
 /blog/how-to-compress-pdf/ /blog/how-to-prepare-documents-for-exam-applications-india/ 301
-/blog/image-to-text-online-free-ocr/ /tools/aadhaar-ocr/ 301
+/blog/image-to-text-online-free-ocr/ /tools/ 301
 
 # AdSense low-value remediation, round 5 (1 Nov 2026; owner in chat: "Our
 # website should not leave any reason for the rejection"). Independent reviewer
@@ -298,3 +298,26 @@
 /japan-visa-photo-maker/ /visa-photo/ 301
 /singapore-visa-photo-maker/ /visa-photo/ 301
 /unlock-aadhaar-pdf/ /aadhaar-photo/ 301
+
+# 24 Nov 2026, after AdSense's 14th rejection (23 Nov, "We found some policy
+# violations", no policy named, verdict within a day). Owner approved in chat
+# on 24 Nov ("Yes, prepare it"). The two ID-card readers, the photo-to-scanned-
+# copy tool and the Aadhaar masking post are the pages most likely to trip an
+# automated topic check and sit outside the site's subject (photo and signature
+# preparation for applications): 191 of 8,889 Google clicks in the 28 days to
+# 23 Nov. Each lands on the indexed page closest to the same need. The sitemap
+# goes 88 -> 84. /blog/image-to-text-online-free-ocr/ above used to land on the
+# Aadhaar reader and now lands on the tools page. Reversible by deleting these
+# lines with the matching lib/deindexed.ts and public/_headers entries.
+/tools/aadhaar-ocr/ /aadhaar-photo/ 301
+/tools/pan-card-ocr/ /exam-requirements/pan/ 301
+/tools/document-scanner/ /tools/ 301
+/blog/how-to-mask-aadhaar-before-sharing/ /aadhaar-photo/ 301
+
+# 24 Nov 2026, same review as above. Two pages already hidden from search and
+# unlinked since 1 Nov were still served: a PDF password remover and an Aadhaar
+# masking tool. No Google clicks or impressions in the 28 days to 23 Nov. Not
+# SEO-visible: no indexed URL, title or text changes. Reversible by deleting
+# the lines and setting the tools back to `ready: true` in lib/toolsCatalog.ts.
+/tools/unlock-pdf/ /tools/ 301
+/tools/mask-aadhaar/ /aadhaar-photo/ 301
