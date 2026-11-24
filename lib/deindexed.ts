@@ -168,6 +168,20 @@ export const DEINDEXED_PATHS: readonly string[] = [
   // 210 words of their own and one Google click each in 90 days.
   "/canada-visa-photo-maker/",
   "/ireland-visa-photo-maker/",
+  // 24 Nov 2026: AdSense rejected the site a 14th time on 23 Nov, this time
+  // naming no policy ("We found some policy violations"), within a day of the
+  // request. Policy center, Search Console and Safe Browsing all show nothing,
+  // so the cause is not known. These are the pages most likely to trip an
+  // automated topic check: two that read the number, name and date of birth
+  // off a government ID card, and one that turns a photo into a "scanned
+  // copy". They are also outside what the site is for (photo and signature
+  // preparation for applications). Together 191 of 8,889 Google clicks in the
+  // 28 days to 23 Nov 2026. Each 301s to an indexed page (public/_redirects).
+  // Owner approved in chat on 24 Nov 2026 ("Yes, prepare it"). REVERSIBLE:
+  // delete these three lines, their _headers blocks and their _redirects lines.
+  "/tools/aadhaar-ocr/",
+  "/tools/pan-card-ocr/",
+  "/tools/document-scanner/",
 ] as const;
 
 const DEINDEXED = new Set(DEINDEXED_PATHS);

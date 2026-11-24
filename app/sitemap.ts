@@ -28,11 +28,9 @@ const TOOLS_UPDATED = "2026-09-08";
  * their real date (13 Oct 2026: titles, snippets and FAQs in searchers' words).
  */
 const TOOL_UPDATED: Record<string, string> = {
-  // 15 Oct 2026: "Scan Photo Online" title and steps; exam kit description without internal words.
-  "document-scanner": "2026-11-02",
+  // 15 Oct 2026: exam kit description without internal words.
   "exam-package": "2026-11-02",
-  // 15 Oct 2026: keyword map (docs/keyword-map-2026-10.md) for the next four tool pages.
-  "aadhaar-ocr": "2026-11-02",
+  // 15 Oct 2026: keyword map (docs/keyword-map-2026-10.md) for the next three tool pages.
   "resume-photo": "2026-11-02",
   "face-centering": "2026-11-02",
   "signature-resize": "2026-11-02",
@@ -52,7 +50,6 @@ const TOOL_UPDATED: Record<string, string> = {
   "resize-kb": "2026-11-02",
   // 1–2 Nov 2026: AdSense remediation (plain-language copy, contradictions and templated copy removed, links to indexed pages only).
   "compliance-checker": "2026-11-02",
-  "pan-card-ocr": "2026-11-02",
 };
 /**
  * Landing pages whose own copy changed after LAST_UPDATED. The page's
@@ -64,15 +61,16 @@ const LANDING_UPDATED: Record<string, string> = {
   // 15 Oct 2026: "MRP size photo" title and H1; visitor-facing Good to know.
   "/nepal-passport-photo-maker/": "2026-11-02",
   // 15 Oct 2026: homepage H1 in visitors' words.
-  "/": "2026-11-14",
+  // 24 Nov 2026: cards, tabs and counts without the retired ID-reader tools.
+  "/": "2026-11-24",
   // 15 Oct 2026: "Passport Size Photo Maker" title, intro and tool links
   // (14 Oct: passport size in cm and in pixels at 300 DPI).
   "/passport-photo/": "2026-11-02",
   // 1–2 Nov 2026: AdSense remediation (plain-language copy, contradictions and templated copy removed, links to indexed pages only).
   "/uk-passport-photo/": "2026-11-02",
   "/schengen-visa-photo/": "2026-11-02",
-  "/blog/": "2026-11-02",
-  "/about/": "2026-11-14",
+  "/blog/": "2026-11-24",
+  "/about/": "2026-11-24",
   "/contact/": "2026-11-02",
   "/aadhaar-photo/": "2026-11-02",
   "/convert/": "2026-11-02",
@@ -111,10 +109,10 @@ const TRUST_PAGE_UPDATED: Record<string, string> = {
 const TRUST_PAGES_UPDATED = "2026-07-13";
 /** /terms/ — moves only when the terms text changes (7 Oct 2026: support-payment refunds). */
 const TERMS_UPDATED = "2026-11-02";
-/** /privacy/ — moves only when the policy text changes (8 Oct 2026: ad-cookie disclosure, tips; 14 Oct 2026: where ads run; 21 Nov 2026: face detection served from easyphoto.in; 23 Nov 2026: both background-removal downloads named). */
-const PRIVACY_UPDATED = "2026-11-23";
-/** /tools/ index — moves only when its own content changes (8 Oct 2026: unfinished-tool cards removed). */
-const TOOLS_INDEX_UPDATED = "2026-11-02";
+/** /privacy/ — moves only when the policy text changes (8 Oct 2026: ad-cookie disclosure, tips; 14 Oct 2026: where ads run; 21 Nov 2026: face detection served from easyphoto.in; 23 Nov 2026: both background-removal downloads named; 24 Nov 2026: the document scanner is no longer listed among the ad-free pages, as it is retired). */
+const PRIVACY_UPDATED = "2026-11-24";
+/** /tools/ index — moves only when its own content changes (8 Oct 2026: unfinished-tool cards removed; 24 Nov 2026: ID-reader tools and the scanner retired). */
+const TOOLS_INDEX_UPDATED = "2026-11-24";
 /**
  * /exam-requirements/ and /exam-photo-size/ — the overview list and table of
  * every exam. Move when an exam's row or card changes (8 Oct 2026: SSC live

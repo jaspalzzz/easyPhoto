@@ -81,12 +81,12 @@ const BOTTOM_CARDS: Card[] = [
   },
   {
     icon: <FileText className="h-5 w-5 text-emerald-600 dark:text-emerald-400" strokeWidth={1.75} />,
-    title: "ID & Documents",
+    title: "ID Photos",
     outcome:
-      "Turn a phone photo into a clean scanned copy, or read the details off an Aadhaar or PAN card. Every file stays on your device.",
-    includes: ["Scan a photo", "Aadhaar OCR", "PAN OCR"],
-    href: "/tools/#document",
-    cta: "Open document tools",
+      "Photo and signature sizes for PAN, voter ID and driving licence applications, each with a link to the official source.",
+    includes: ["PAN card", "Voter ID", "Driving licence"],
+    href: "/exam-requirements/",
+    cta: "Open ID forms",
     iconBg: "bg-emerald-50 dark:bg-emerald-900/20",
     chipBg: "bg-emerald-50 dark:bg-emerald-900/20",
     chipText: "text-emerald-600 dark:text-emerald-400",

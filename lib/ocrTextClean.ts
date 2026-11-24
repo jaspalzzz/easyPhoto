@@ -52,22 +52,3 @@ export function cleanOcrText(raw: string): string {
 
   return result.join("\n").trim();
 }
-
-/** Rough heuristic: does the OCR text look like a known ID card? */
-export function detectIdCard(text: string): "aadhaar" | "pan" | null {
-  const t = text.toLowerCase();
-  if (
-    t.includes("aadhaar") ||
-    t.includes("uidai") ||
-    t.includes("unique identification")
-  )
-    return "aadhaar";
-  if (
-    t.includes("income tax") ||
-    t.includes("permanent account") ||
-    // PAN format detected even if label was missed
-    /\b[A-Z]{5}[0-9]{4}[A-Z]\b/.test(text)
-  )
-    return "pan";
-  return null;
-}

@@ -4,7 +4,7 @@ import * as React from "react";
 import { FileUp, Copy, Download, ShieldCheck, Loader2, CheckCircle2, RefreshCw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { recognizeFile, type OcrLang } from "@/lib/ocr";
-import { cleanOcrText, detectIdCard } from "@/lib/ocrTextClean";
+import { cleanOcrText } from "@/lib/ocrTextClean";
 import { track, deviceClass } from "@/lib/analytics";
 import { downloadBlob } from "@/lib/download";
 
@@ -28,7 +28,6 @@ export function ImageToTextTool() {
   const [error, setError] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<{ text: string; confidence: number } | null>(null);
   const [rawOcrText, setRawOcrText] = React.useState<string | null>(null);
-  const [cardHint, setCardHint] = React.useState<"aadhaar" | "pan" | null>(null);
   const [copied, setCopied] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -54,7 +53,6 @@ export function ImageToTextTool() {
     setError(null);
     setResult(null);
     setRawOcrText(null);
-    setCardHint(null);
     setProgress(0);
   };
 
@@ -65,7 +63,6 @@ export function ImageToTextTool() {
     setError(null);
     setResult(null);
     setRawOcrText(null);
-    setCardHint(null);
     setProgress(0);
     setCopied(false);
   };
@@ -97,7 +94,6 @@ export function ImageToTextTool() {
       const cleaned = cleanOcrText(res.text);
       setRawOcrText(res.text);
       setResult({ ...res, text: cleaned });
-      setCardHint(detectIdCard(res.text));
       track({ name: "tool_success", tool: TOOL, device: deviceClass() });
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "OCR failed. Please try a clearer image.");
@@ -257,23 +253,6 @@ export function ImageToTextTool() {
       {/* Result */}
       {result && (
         <div className="space-y-2">
-          {/* ID card detected — suggest dedicated tool */}
-          {cardHint && (
-            <div className="rounded-md border border-brand/30 bg-brand/5 px-3 py-2.5 text-xs text-ink">
-              <span className="font-semibold">
-                {cardHint === "aadhaar" ? "Aadhaar card detected." : "PAN card detected."}
-              </span>{" "}
-              For structured fields (number, name, DOB, address), use the{" "}
-              <a
-                href={cardHint === "aadhaar" ? "/tools/aadhaar-ocr" : "/tools/pan-card-ocr"}
-                className="font-semibold text-brand underline underline-offset-2 hover:opacity-80"
-              >
-                {cardHint === "aadhaar" ? "Aadhaar OCR" : "PAN Card OCR"}
-              </a>{" "}
-              tool — it extracts each field separately with validation.
-            </div>
-          )}
-
           <div className="flex items-center justify-between">
             <p className="text-xs font-semibold text-ink-soft uppercase tracking-wider">
               Extracted text

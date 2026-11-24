@@ -333,15 +333,6 @@ export default function Page() {
       </p>
 
       <p>
-        If you need to pull the PAN number, name, or date of birth from a photo of
-        your card, the free{" "}
-        <Link href="/tools/pan-card-ocr/" className="text-brand underline">
-          PAN card OCR tool
-        </Link>{" "}
-        reads the text directly from the image — nothing is uploaded.
-      </p>
-
-      <p>
         Need the specs for other Indian government IDs too? The{" "}
         <Link href="/blog/indian-government-id-photo-requirements/" className="text-brand underline">
           Indian government ID photo requirements guide

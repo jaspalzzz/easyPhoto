@@ -143,7 +143,7 @@ export async function compressPdfToTarget(
   let base = await pdfToCanvases(file, { scale: RENDER_SCALE, maxPages: 30 });
   if (base.length === 0)
     throw new Error(
-      "This PDF has no readable pages — it may be empty, corrupted, or password-protected. If it has a password, unlock it first with the Unlock PDF tool."
+      "This PDF has no readable pages — it may be empty, corrupted, or password-protected. If it has a password, use a copy without one."
     );
 
   // Track only the best total (bytes) and which ladder index produced it.

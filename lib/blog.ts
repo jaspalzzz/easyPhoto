@@ -51,7 +51,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "PAN, voter ID, driving-licence and Aadhaar photo rules side by side: the file-size limits, pixel sizes and crop shapes each official portal publishes.",
     date: "July 4, 2026",
     dateISO: "2026-07-04",
-    updatedISO: "2026-11-02",
+    updatedISO: "2026-11-24",
     excerpt:
       "PAN, voter ID, Aadhaar and driving-licence applications each set their own photo rules. Compare the limits each portal publishes before you prepare a file.",
     readMins: 8,
@@ -160,19 +160,6 @@ export const BLOG_POSTS: BlogPost[] = [
     citesOfficialSources: true,
   },
   {
-    slug: "how-to-mask-aadhaar-before-sharing",
-    title: "How to Mask Your Aadhaar Number Before Sharing It (Free)",
-    description:
-      "UIDAI recommends sharing a masked Aadhaar hiding the first 8 digits. Here's when to share it and how to mask yours free, entirely on your device.",
-    date: "June 10, 2026",
-    dateISO: "2026-06-10",
-    updatedISO: "2026-11-02",
-    excerpt:
-      "Sharing your full Aadhaar number is risky. UIDAI says to share a masked copy showing only the last 4 digits. Here's how to do it safely and free, entirely on your device.",
-    readMins: 4,
-    ctaText: "Masked copy too big for the form? Bring it under the portal's KB limit.",
-  },
-  {
     slug: "how-to-sign-exam-application-forms-india",
     title: "How to Sign an Exam Application Form in India (SSC, UPSC, IBPS Rules)",
     description:
@@ -206,7 +193,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Prepare the photo, signature, certificate scans and masked Aadhaar for SSC, UPSC, IBPS and Railway forms, in an order that avoids redoing work.",
     date: "June 21, 2026",
     dateISO: "2026-06-21",
-    updatedISO: "2026-11-02",
+    updatedISO: "2026-11-24",
     excerpt:
       "A checklist for the four uploads most exam forms ask for: photo, signature, certificate PDFs and a masked Aadhaar.",
     readMins: 10,
@@ -345,7 +332,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "PAN card photo is 25×35 mm, JPEG, max 20 KB for Protean (NSDL) or under 30 KB for UTIITSL. Signature specs differ too. Official figures and a free resizer.",
     date: "June 23, 2026",
     dateISO: "2026-06-23",
-    updatedISO: "2026-11-02",
+    updatedISO: "2026-11-24",
     excerpt:
       "Protean (NSDL) and UTIITSL publish different PAN photo and signature sizes. Here are both side by side, and which one your route needs.",
     readMins: 7,
@@ -438,7 +425,6 @@ const CLUSTERS: Record<string, string[]> = {
     "pan-card-photo-size",
     "voter-id-photo-requirements-2026",
     "driving-licence-photo-size-sarathi",
-    "how-to-mask-aadhaar-before-sharing",
   ],
   signature: [
     "how-to-sign-on-image-online",

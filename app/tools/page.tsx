@@ -41,7 +41,7 @@ export const metadata = pageMetadata({
   title: "Free Photo, Signature & ID Document Tools",
   description:
     "Free in-browser tools: background remover, compress a photo to a KB size, " +
-    "white background, signature tools, a document scanner and Aadhaar/PAN OCR. Nothing is uploaded.",
+    "white background, name and date on a photo, and signature tools. Nothing is uploaded.",
   path: "/tools/",
 });
 
@@ -59,7 +59,7 @@ export default function ToolsHubPage() {
           collectionPageSchema({
             name: "Free Photo, Signature & ID Document Tools",
             description:
-              "Free in-browser tools: background remover, compress a photo to a KB size, white background, signature tools, a document scanner and Aadhaar/PAN OCR. Nothing is uploaded.",
+              "Free in-browser tools: background remover, compress a photo to a KB size, white background, name and date on a photo, and signature tools. Nothing is uploaded.",
             url: "/tools/",
           }),
         ]}
@@ -87,7 +87,7 @@ export default function ToolsHubPage() {
           { title: "Passport & Visa",  sub: "All countries",          href: "/passport-photo/",     Icon: Globe,         iconBg: "bg-amber-100 dark:bg-amber-900/30",   iconText: "text-amber-600 dark:text-amber-400",   span: "" },
           { title: "Exam Tools",       sub: "SSC, UPSC, Banking",     href: "/tools/exam-package/", Icon: GraduationCap, iconBg: "bg-blue-100 dark:bg-blue-900/30",     iconText: "text-blue-600 dark:text-blue-400",     span: "" },
           { title: "Image Tools",      sub: "Resize, KB, background", href: "#photo",              Icon: Aperture,      iconBg: "bg-emerald-100 dark:bg-emerald-900/30",iconText: "text-emerald-600 dark:text-emerald-400",span: "" },
-          { title: "ID & Documents",   sub: "Scan, Aadhaar, PAN",     href: "#document",           Icon: FileText,      iconBg: "bg-violet-100 dark:bg-violet-900/30", iconText: "text-violet-600 dark:text-violet-400",  span: "" },
+          { title: "ID Photos",        sub: "PAN, voter ID, licence", href: "/exam-requirements/", Icon: FileText,      iconBg: "bg-violet-100 dark:bg-violet-900/30", iconText: "text-violet-600 dark:text-violet-400",  span: "" },
           { title: "Signature Tools",  sub: "PNG, crop, cleaner",     href: "#signature",          Icon: PenLine,       iconBg: "bg-rose-100 dark:bg-rose-900/30",     iconText: "text-rose-600 dark:text-rose-400",     span: "col-span-2 sm:col-span-1" },
         ].map(({ title, sub, href, Icon, iconBg, iconText, span }) => (
           <Link
@@ -263,8 +263,7 @@ export default function ToolsHubPage() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               The photo and signature tools take JPG, PNG, WebP and iPhone HEIC files. Passport and
               exam photos are saved as JPG, because that is what most forms ask for; a signature can
-              be saved as a JPG on white or a PNG with a see-through background. The document scanner
-              saves a PDF or a JPG.
+              be saved as a JPG on white or a PNG with a see-through background.
             </p>
           </div>
           <div>

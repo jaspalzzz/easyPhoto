@@ -146,11 +146,7 @@ export default function Page() {
         The simplest way is UIDAI&apos;s own: on myAadhaar, choose the masked
         version when you download e-Aadhaar. If you mask a copy yourself, the
         box must be solid and saved into the image; a box drawn on top of a PDF
-        can often be deleted. The{" "}
-        <Link href="/blog/how-to-mask-aadhaar-before-sharing/">
-          Aadhaar masking guide
-        </Link>{" "}
-        covers both routes. If the form asks for the full number, follow the
+        can often be deleted. If the form asks for the full number, follow the
         form.
       </p>
 

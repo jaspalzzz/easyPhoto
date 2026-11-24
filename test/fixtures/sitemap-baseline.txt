@@ -16,7 +16,6 @@
 /blog/best-free-passport-photo-maker-india-2026/
 /blog/driving-licence-photo-size-sarathi/
 /blog/exam-photo-signature-size-guide/
-/blog/how-to-mask-aadhaar-before-sharing/
 /blog/how-to-prepare-documents-for-exam-applications-india/
 /blog/how-to-print-passport-photos-at-home/
 /blog/how-to-reduce-passport-photo-size-for-online-forms/
@@ -68,14 +67,11 @@
 /source-methodology/
 /terms/
 /tools/
-/tools/aadhaar-ocr/
 /tools/background-removal/
 /tools/compliance-checker/
-/tools/document-scanner/
 /tools/dpi-converter/
 /tools/exam-package/
 /tools/face-centering/
-/tools/pan-card-ocr/
 /tools/photo-signature-merge/
 /tools/photo-with-name-date/
 /tools/resize-kb/
