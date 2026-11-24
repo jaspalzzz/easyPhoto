@@ -129,8 +129,7 @@ export async function checkPhotoQuality(
         label: "Eyes level",
         status: tilt <= 10 ? "warn" : "fail",
         detail: `Your head is tilted about ${Math.round(tilt)}°.`,
-        fix: "Straighten the photo so your eyes are level.",
-        href: "/tools/straighten-photo/",
+        fix: "Retake the photo with your head level, or rotate it in your phone's photo editor until your eyes are level.",
       });
     }
 

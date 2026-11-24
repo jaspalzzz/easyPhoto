@@ -360,7 +360,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "Print passport photos at home: tile them on a 4×6 inch or A4 sheet at 300 DPI, use photo paper, switch off 'fit to page', and cut along the guides.",
     date: "June 25, 2026",
     dateISO: "2026-06-25",
-    updatedISO: "2026-11-02",
+    updatedISO: "2026-11-24",
     excerpt:
       "Printing passport photos at home comes down to a correctly cropped image, photo paper, and 'fit to page' switched off so each photo prints at its real size.",
     readMins: 6,

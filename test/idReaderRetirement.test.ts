@@ -14,7 +14,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import sitemap from "@/app/sitemap";
 import { BLOG_POSTS } from "@/lib/blog";
-import { isDeindexed } from "@/lib/deindexed";
+import { DEINDEXED_PATHS, isDeindexed } from "@/lib/deindexed";
 import { SITE_URL } from "@/lib/site";
 import { buildSearchIndex } from "@/lib/toolSearch";
 import { LISTED_CATALOG, LISTED_TOOLS, getTool } from "@/lib/toolsCatalog";
@@ -108,7 +108,24 @@ describe("retired ID-reader pages", () => {
 describe("hidden pages on the same topic", () => {
   // Hidden from search since August and unlinked since 1 Nov 2026, but still
   // served until 24 Nov: the PDF password remover and the Aadhaar masking tool.
-  const HIDDEN_RETIRED = ["unlock-pdf", "mask-aadhaar"] as const;
+  // The other 24 went the same day (owner: "remove the other 24 hidden tool
+  // pages too").
+  const HIDDEN_RETIRED = [
+    "unlock-pdf", "mask-aadhaar",
+    "auto-crop", "camera-capture", "compress-document", "extract-pages",
+    "form-fill", "format-converter", "image-crop", "image-to-text",
+    "jpg-to-pdf", "linkedin-photo", "pdf-compress", "pdf-merge",
+    "pdf-page-numbers", "pdf-reorder", "pdf-split", "pdf-to-jpg",
+    "pdf-to-text", "print-sheet", "red-eye-removal", "resize-dimensions",
+    "sign-pdf", "straighten-photo", "transparent-signature", "watermark-pdf",
+  ] as const;
+
+  it("every hidden tool page is a redirect: none is served any more", () => {
+    const rules = redirects();
+    const served = DEINDEXED_PATHS.filter((p) => p.startsWith("/tools/") && !rules.has(p));
+    expect(served).toEqual([]);
+  });
+
 
   it("redirect in one hop to a page that is listed", () => {
     const rules = redirects();

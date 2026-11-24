@@ -13,7 +13,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How many passport photos fit on an A4 sheet?",
-    a: "Thirty 35×45 mm photos fit on A4 (5 across, 6 down) with the print sheet tool's 4 mm page margin and 3 mm gap. A 4×6 inch sheet takes six and a 5×6 inch sheet nine.",
+    a: "Thirty 35×45 mm photos fit on A4 (5 across, 6 down) with the passport photo maker's 4 mm page margin and 3 mm gap. A 4×6 inch sheet takes six and a 5×7 inch sheet nine.",
   },
   {
     q: "Will a home-printed photo be accepted?",
@@ -34,8 +34,8 @@ export default function Page() {
     <BlogPostLayout
       slug={post.slug}
       faqItems={FAQ_ITEMS}
-      ctaHref="/tools/print-sheet/"
-      ctaLabel="Create a print-ready photo sheet free"
+      ctaHref="/passport-photo/"
+      ctaLabel="Make a photo and its print sheet free"
     >
       <p>
         Printing passport photos at home, or sending one sheet to a local photo
@@ -49,11 +49,12 @@ export default function Page() {
         <ul className="!mt-2 text-[15px]">
           <li>
             <strong>Make the sheet:</strong>{" "}
-            <Link href="/tools/print-sheet/" className="text-brand underline">
-              easyPhoto Print Sheet
+            the{" "}
+            <Link href="/passport-photo/" className="text-brand underline">
+              passport photo maker
             </Link>{" "}
-            tiles your photo at its real size on A4 or a 4×6&nbsp;inch sheet at
-            300&nbsp;DPI, with cut guides.
+            downloads a PDF with your photo tiled at its real size on
+            4×6&nbsp;inch, 5×7&nbsp;inch, A4 or Letter paper, with cut guides.
           </li>
           <li>
             <strong>Paper:</strong> glossy or semi-gloss photo paper, 200–250&nbsp;gsm.
@@ -106,29 +107,25 @@ export default function Page() {
       <h2>How many photos fit on a sheet?</h2>
 
       <p>
-        With the{" "}
-        <Link href="/tools/print-sheet/" className="text-brand underline">
-          print sheet tool
-        </Link>
-        &apos;s 4&nbsp;mm page margin and 3&nbsp;mm gap between photos, these are
-        the most 35×45&nbsp;mm photos each paper takes. You can also ask for 4,
-        6 or 8 copies, and download the sheet as a JPG or a PDF.
+        With the photo maker&apos;s 4&nbsp;mm page margin and 3&nbsp;mm gap
+        between photos, these are the most 35×45&nbsp;mm photos each paper
+        takes. You can ask for fewer copies, or change the margin and the gap.
       </p>
 
-      {/* CHART: photos per sheet, computed from lib/printSheet.ts defaults */}
+      {/* CHART: photos per sheet, from lib/printSheet.ts defaults (test/printSheet.test.ts) */}
       <figure className="my-8">
         <svg
           viewBox="0 0 560 220"
           style={{ maxWidth: "100%", height: "auto", fontFamily: "'Inter', system-ui, sans-serif" }}
           role="img"
-          aria-label="Bar chart: number of 35x45 mm passport photos that fit on common paper sizes. 4x6 inch: 6, 5x6 inch: 9, A4: 30"
+          aria-label="Bar chart: number of 35x45 mm passport photos that fit on common paper sizes. 4x6 inch: 6, 5x7 inch: 9, A4: 30"
         >
           <title>Passport photos per sheet by paper size</title>
-          <desc>A 4×6 inch sheet fits 6 photos, a 5×6 inch sheet 9, and an A4 sheet 30, at 35×45 mm each with a 4 mm margin and 3 mm gap.</desc>
+          <desc>A 4×6 inch sheet fits 6 photos, a 5×7 inch sheet 9, and an A4 sheet 30, at 35×45 mm each with a 4 mm margin and 3 mm gap.</desc>
 
           {[
             { label: "4×6 inch", val: 6, note: "3 × 2 grid", color: "#f97316" },
-            { label: "5×6 inch", val: 9, note: "3 × 3 grid", color: "#38bdf8" },
+            { label: "5×7 inch", val: 9, note: "3 × 3 grid", color: "#38bdf8" },
             { label: "A4", val: 30, note: "5 × 6 grid", color: "#22c55e" },
           ].map(({ label, val, note, color }, i) => {
             const y = 30 + i * 56;
@@ -165,12 +162,11 @@ export default function Page() {
           can apply one.
         </li>
         <li>
-          <strong>Make the sheet:</strong> in{" "}
-          <Link href="/tools/print-sheet/" className="text-brand underline">
-            the print sheet tool
-          </Link>
-          , upload the photo, pick the paper size and the number of copies, and
-          download the JPG or PDF.
+          <strong>Make the sheet:</strong> under the finished photo, pick the
+          paper size and the number of copies in &ldquo;PDF Print Sheet
+          Layout&rdquo;, and download the PDF. If a shop or kiosk can&apos;t open a
+          PDF, download the single photo as a JPG there and ask them to print it
+          at its real size.
         </li>
         <li>
           <strong>Load photo paper:</strong> glossy or semi-gloss, 200–250&nbsp;gsm.

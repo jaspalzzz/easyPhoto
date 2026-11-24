@@ -220,10 +220,6 @@ const ceil4 = (value) => Math.ceil(value * 1e4) / 1e4;
       .map((line) => line.trim().split(/\s+/)[0])
   );
   const HUBS = new Set(["/", "/tools/", "/exam-requirements/", "/exam-photo-size/", "/passport-photo/", "/visa-photo/"]);
-  // Hidden from Search but complete enough for a visitor, so article text may
-  // link it (never chrome or hubs): /tools/print-sheet/ is ~500 words of its
-  // own and is the tool the printing guide is about. Keep this list short.
-  const CONTENT_LINKABLE_HIDDEN = new Set(["/tools/print-sheet/"]);
   const target = (href) => {
     const p = href.split(/[?#]/)[0];
     if (!p.startsWith("/") || /\.\w{2,5}$/.test(p)) return null;
@@ -246,15 +242,15 @@ const ceil4 = (value) => Math.ceil(value * 1e4) / 1e4;
         problems.push(`NEW: ${route} links ${to} (${hidden.has(to) ? "hidden from the index" : "redirected"}) from its ${HUBS.has(route) ? "hub content" : "header, nav or footer"}`);
       }
     }
-    // Article and tool text: no redirected page, and no hidden page unless it
-    // is on the short list above. The crawler follows these links too.
+    // Article and tool text: no redirected page and no hidden page. The crawler
+    // follows these links too.
     const main = page.html.match(/<main\b[\s\S]*?<\/main>/i)?.[0] ?? "";
     if (!HUBS.has(route)) {
       for (const [, href] of main.matchAll(/href="([^"]+)"/g)) {
         const to = target(href);
         if (!to) continue;
         checked += 1;
-        if (redirected.has(to) || (hidden.has(to) && !CONTENT_LINKABLE_HIDDEN.has(to))) {
+        if (redirected.has(to) || hidden.has(to)) {
           problems.push(`NEW: ${route} links ${to} (${hidden.has(to) ? "hidden from the index" : "redirected"}) from its page content`);
         }
       }

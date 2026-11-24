@@ -64,10 +64,9 @@ describe("searchTools", () => {
   it.each([
     ["remove background", "/tools/background-removal/"],
     ["background remove", "/tools/background-removal/"],
-    ["jpg to pdf", "/tools/jpg-to-pdf/"],
-    ["pdf compress", "/tools/pdf-compress/"],
-    ["compress pdf", "/tools/pdf-compress/"],
-    ["resize photo", "/tools/resize-dimensions/"],
+    ["sign image", "/tools/sign-image/"],
+    ["name date photo", "/tools/photo-with-name-date/"],
+    ["signature crop", "/tools/signature-crop/"],
     ["ssc photo", "/exam-requirements/ssc/"],
     ["ssc signature", "/exam-requirements/ssc/"],
     ["upsc photo", "/exam-requirements/upsc/"],
@@ -96,7 +95,7 @@ describe("searchTools", () => {
   });
 
   it("ranks title matches first", () => {
-    expect(searchTools(index, "merge pdf", 5).results[0]!.path).toBe("/tools/pdf-merge/");
+    expect(searchTools(index, "signature crop", 5).results[0]!.path).toBe("/tools/signature-crop/");
   });
 
   it("returns nothing for a blank query", () => {
